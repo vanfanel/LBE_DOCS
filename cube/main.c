@@ -7,6 +7,8 @@
 #include <errno.h>
 
 #include "context.h"
+#include "lbeTransform.h"
+#include "teclado.h"
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
