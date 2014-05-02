@@ -32,7 +32,6 @@ static int init_gl(void)
 	//static const GLfloat vVertices[] = {
 
 	GLfloat vVertices[ 7512 ] = {
-
 		// front
 		-1.0f, 0.5f, +1.0f, // point blue
 		+1.0f, 0.5f, +1.0f, // point magenta
@@ -47,8 +46,6 @@ static int init_gl(void)
 			1.0f,  0.0f,  1.0f, // magenta
 			0.0f,  1.0f,  1.0f, // cyan
 			1.0f,  1.0f,  1.0f, // white
-
-
 	};
 
 	static const GLfloat vNormals[] = {
@@ -181,6 +178,8 @@ static int init_gl(void)
 	gl.normalsoffset = sizeof(vVertices) + sizeof(vColors);
 	glGenBuffers(1, &gl.vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, gl.vbo);
+	//Esta llamada a glBufferData() sólo inicializa: los datos se suben al buffer object en las llamadas a 
+	//glBufferSubData() sucesivas.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vVertices) + sizeof(vColors) + sizeof(vNormals), 0, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, gl.positionsoffset, sizeof(vVertices), &vVertices[0]);
 	glBufferSubData(GL_ARRAY_BUFFER, gl.colorsoffset, sizeof(vColors), &vColors[0]);

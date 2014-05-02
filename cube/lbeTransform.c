@@ -138,15 +138,15 @@ void lbeRotate (lbeMatrix *result, int axis_x, int axis_y, int axis_z, float deg
 	//No debemos pasar result como matriz resultado en el producto porque ya se pasa como factor, y 
 	//es alterada durante la multiplicación al ser el resultado.Por eso recogemos sobre res y luego hacemos memcp 
 	if (axis_x == 1) {	
-		printf ("mult X\n");
+		//printf ("mult X\n");
 		lbeMatrixMultiply(&res, result, &mat_rx);		
 	}
 	if (axis_y == 1) {	
-		printf ("mult Y\n");
+		//printf ("mult Y\n");
 		lbeMatrixMultiply(&res, result, &mat_ry);		
 	}
 	if (axis_z == 1) {	
-		printf ("mult Z\n");
+		//printf ("mult Z\n");
 		lbeMatrixMultiply(&res, result, &mat_rz);		
 	}
 	

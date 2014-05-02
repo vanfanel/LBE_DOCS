@@ -56,15 +56,20 @@ GLbyte vertexShaderSrc[] =
 	"uniform mat4 modelviewprojection;	\n"
 	"attribute vec4 vertexPosition;		\n"
 	"attribute vec4 vertexColor;		\n"
+	"varying vec4 vyVertexColor;		\n"
 	"void main () {				\n"
+//	"	vyVertexColor = vec4 (1.0, 0.0, 0.0, 1.0);		\n"
+	"	vyVertexColor = vertexColor;				\n"
 	"	gl_Position = modelviewprojection * vertexPosition;	\n"
 	"}					\n"
 ;
 
 GLbyte fragmentShaderSrc[] = 
 	"precision mediump float;			 \n"
+	"varying vec4 vyVertexColor;			 \n"
 	"void main (){				 	 \n"
-	"	 gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
+	"	 gl_FragColor = vyVertexColor;		 \n"
+	//"	 gl_FragColor = vec4 (0.0, 1.0, 0.0, 1.0);	 \n"
 	"}					 	 \n"
 ;
 
@@ -187,24 +192,55 @@ int main(int argc, char *argv[])
 			   -0.3f, -0.5f, 0.0f,
 			    0.3f, -0.5f, 0.0f};
 	
+	float colors[] = {
+			    1.0, 0.0, 0.0,		//Rojo
+			    0.0, 1.0, 0.0,		//Verde
+			    0.0, 0.0, 1.1		//Azul	
+	};	
+	
 	//Creamos el buffer object para poder colocar el array de vértices en un lugar de memoria accesible para GLES
+	//Se usa para guardar todos los atributos de los vértices: posición, color, normal.
 	GLuint vertexBuffer;
 	glGenBuffers (1, &vertexBuffer);
 	
 	//Colocamos el array en memoria de GLES: lo bindamos al GL_ARRAY_BUFFER,y a través de eso le pasamos los dats
-	glBindBuffer (GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData (GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	//El buffer object donde vamos a guardar los vértices va a tener, además de su posición, su color asociado y
+	//si nos interesa incluso la normal de cada uno. Para ello, primero se inicializa el buffer con la llamada
+	//a glBufferData(), y luego ya se meten los datos con glBufferSubData()
+	//Originalmente, como sólo había que subir el array de las posiciones, se hacía directamente en glBufferData()
+	//glBindBuffer (GL_ARRAY_BUFFER, vertexBuffer);
+	//glBufferData (GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	glBindBuffer (GL_ARRAY_BUFFER, vertexBuffer);
+
+	//Calculamos los offsets dentro del buffer object de cada uno de los atributos: posición, color, normal
+	//Usamos uintptr_t porque son enteros que nos garantizan que guardan un puntero sin problemas.
+	//Acostúmbrate a la conversión entre entero sin signo y puntero, porque un puntero es un entero sin signo.
+	uintptr_t positionsOffset = 0;
+	uintptr_t colorsOffset = (sizeof(vertices));
+	uintptr_t normalsOffset = (sizeof(vertices)) + sizeof(colors);
+
+	glBufferData (GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(colors), NULL, GL_STATIC_DRAW);
+	glBufferSubData (GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+	glBufferSubData (GL_ARRAY_BUFFER, colorsOffset, sizeof(colors), colors);
+	
 	//Cogemos el número de atributo de vertexPosition en el shader. Alternativamente, podríamos especificar
 	//el nuestro con glBindAttribLocation(), pero antes de linkar el programa.
-	GLint attVertices;
-	attVertices = glGetAttribLocation (programObject, "vertexPosition"); 
-	//Activamos ese atributo para que pueda ser usado desde el vertex shader
-	glEnableVertexAttribArray(attVertices);	
+	GLint attPositions;
+	GLint attColors;
+	attPositions = glGetAttribLocation (programObject, "vertexPosition"); 
+	attColors =    glGetAttribLocation (programObject, "vertexColor");
+	//Activamos cada atributo para que pueda ser usado desde el vertex shader
+	glEnableVertexAttribArray(attPositions);	
+	glEnableVertexAttribArray(attColors);	
 
-	//Aquí es donde pasamos el buffer de manera implícita: se leerán los datos del buffer que esté en este
-	//momento bounded a GL_ARRAY_BUFFER (cosa que hicimos en glBindBuffer()).	
-	glVertexAttribPointer(attVertices, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	//Aquí lo que hacemos es pasar las direccions de los datos de los atributos: posición, color, normal. 
+	//Esos atributos se pasan al buffer object que esté bound al GL_ARRAY_BUFFER en este momento, tras
+	//la última llamada a glBindBuffer()
+	//RECUERDA: UN BUFFER OBJECT, TRES ATRIBUTOS DE CADA VÉRTICE QUE GUARDAMOS EN ÉL
+	
+	glVertexAttribPointer(attPositions, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)(positionsOffset));
+	glVertexAttribPointer(attColors, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)colorsOffset);
 
 	//Deshacemos el binding para no alterar los datos del buffer sin querer.
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -224,13 +260,12 @@ int main(int argc, char *argv[])
 	int exit_condition = 0;
 	while (!exit_condition) {
 		lbeRotate (&mvp, 0, 1, 0, 1.5f);
-		lbePrintMatrix (&mvp);
+		//lbePrintMatrix (&mvp);
 		glUniformMatrix4fv(mvpOBJ, 1, GL_FALSE, &mvp.m[0][0]);
 		draw (0);	
 		if (loops >= 500)
 			exit_condition = 1;
 		loops++;
 	}
-
 	return 0;
 }
