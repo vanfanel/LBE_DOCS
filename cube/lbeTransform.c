@@ -3,18 +3,28 @@
  *
  */
 #include "lbeTransform.h"
+#include <string.h>
+#include <math.h>
+#include <stdio.h>
+#include <GLES2/gl2.h>
+
+#define PI 3.141517
 
 void lbeLoadIdentity (lbeMatrix *resultado){
-	 lbeMatrix res = {{{1, 0, 0, 0},
-		           {0, 1, 0, 0},
-		           {0, 0, 1, 0},
-		           {0, 0, 0, 1}}};
+	lbeMatrix res = {{{1, 0, 0, 0},
+		          {0, 1, 0, 0},
+		          {0, 0, 1, 0},
+		          {0, 0, 0, 1}}};
+	
+	memcpy ((*resultado).m, res.m, sizeof ((*resultado).m));
 }
 
 void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *matrix_b){
-	int i,j,accum;
-	accum = 0;
+	int i,j;
+	float accum = 0.0f;
 
+	//lbeMatrix res = {{ {1,0,0,0},  {0,1,0,0},  {0,0,1,0},	{0,0,0,1} }};
+	//memcpy (resultado, &res, sizeof(resultado));
 	//La idea es que dejamos fija una fila de la primera matriz y vamos avanzando en la segunda por columnas.
 	//En bloques porque en uno solo habría que introducir un iterador más y eso complica la lectura.
 	for (i = 0; i < 4; i++){
@@ -22,7 +32,7 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
 				accum = accum + (*matrix_a).m[0][j] * (*matrix_b).m[j][i];
 		}
 		(*resultado).m[0][i] = accum; 
-		accum = 0;
+		accum = 0.0f;
 	}
 	
 	for (i = 0; i < 4; i++){
@@ -30,7 +40,7 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
 				accum = accum + (*matrix_a).m[1][j] * (*matrix_b).m[j][i];
 		}
 		(*resultado).m[1][i] = accum; 
-		accum = 0;
+		accum = 0.0f;
 	}
 	
 	for (i = 0; i < 4; i++){
@@ -38,7 +48,7 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
 				accum = accum + (*matrix_a).m[2][j] * (*matrix_b).m[j][i];
 		}
 		(*resultado).m[2][i] = accum; 
-		accum = 0;
+		accum = 0.0f;
 	}
 
 	for (i = 0; i < 4; i++){
@@ -46,7 +56,7 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
 				accum = accum + (*matrix_a).m[3][j] * (*matrix_b).m[j][i];
 		}
 		(*resultado).m[3][i] = accum; 
-		accum = 0;
+		accum = 0.0f;
 	}
 }
 
@@ -60,7 +70,6 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
  * que se transforma el modelo o el sistema de referencia.
  */
 
-//void lbeRotate (float **mat, int axis_x, int axis_y, int axis_z, float rad){
 /*Los radianes son una forma ingeniosa de especificar un ángulo: como se trata del arco cuya longitud es igual al
 * radio, las circunferencias más pequeñas tienen un tamaño de radián más pequeño y tienen el mismo número de 
 * radianes que las grandes. Son un buen sustituto a los grados, que son sólo una división en partes iguales.	
@@ -86,41 +95,96 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
 /*Recuerda que se acumulan las sucesivas transformaciones emulando el mismo modo que usa OpenGL clásico:
  * acumulándolas sobre el sistema local al modelo o el sistema de referencia del observador, o sea, que cada
  * nueva matriz entra postmultiplicando en el matrix stack.*/  
-/*	int i;
-	int rot[] = {axis_x, axis_y, axis_z };
+
+/*Por si te lias con lo de "matriz_identidad * rot_x * vértice", recuerda que, aunque efectivamente puedes
+ * multiplicar primero las matrices entre sí respetando el órden, eso no cambia nada respecto a premultiplicar
+ * el vector por rot_x y luego premultiplicar de nuevo el resultado por matriz_identidad, ya que si eligieses
+ * multiplicar primero las matrices entre sí, un producto matricial es cada fila por todas las columnas, por
+ * lo que al final, si premultiplicas o postmultiplicas por una identidad, la matriz de rotación queda intacta,
+ * como es de esperar
+ */
+
+/*Se toma la decisión de diseño de crear una matriz llamada "res" para recocer el resultado porque se decide 
+ * permitir que la función lbeMatrixMultiply() machaque el contenido de la matriz resultado internamente durante
+ * la multiplicación. Esto se podría cambiar, no permitiendo que en lbeMatrixMultiply() se machaque la matriz
+ * resultado durante la multiplicación, sólo al final, con lo que la matriz "res" y el consiguiente memcpy 
+ * se haría allí.*/
+	
+void lbeRotate (lbeMatrix *result, int axis_x, int axis_y, int axis_z, float deg){
+	
+	int i;
+	float rad = 2 * PI / 360 * deg ;
 
 	float c = cos (rad);
 	float s = sin (rad);
 
-	//Nos imaginamos que cada linea va de arriba a abajo: tres columnas de 16 elementos cada.
+	lbeMatrix mat_rx = {{{1, 0, 0, 0}, 
+	       	      	     {0, c,-s, 0}, 
+	       	             {0, s, c, 0}, 
+	       	             {0, 0, 0, 1}}};
 
-	       {1, 0, 0, 0, 
-		0, c,-s, 0, 
-		0, s, c, 0, 
-		0, 0, 0, 1},
+	lbeMatrix mat_ry = {{{c, 0, s, 0}, 
+	       	             {0, 1, 0, 0}, 
+	       	             {-s,0, c, 0}, 
+	       	             {0, 0, 0, 1}}};
 
-	       {c, 0, s, 0, 
-	        0, 1, 0, 0, 
-	       -s, 0, c, 0, 
-		0, 0, 0, 1},
+	lbeMatrix mat_rz = {{{c,-s, 0, 0}, 
+	       	      	     {s, c, 0, 0}, 
+	       	             {0, 0, 1, 0}, 
+	       	             {0, 0, 0, 1}}};
 
-	       {c,-s, 0, 0, 
-		s, c, 0, 0, 
-		0, 0, 1, 0, 
-		0, 0, 0, 1}
-	}	
+	lbeMatrix res;
 
-	if (axis_x == 1) 	
-		*mat = *mat 
-	if (axis_y == 1) 	
+	//No debemos pasar result como matriz resultado en el producto porque ya se pasa como factor, y 
+	//es alterada durante la multiplicación al ser el resultado.Por eso recogemos sobre res y luego hacemos memcp 
+	if (axis_x == 1) {	
+		printf ("mult X\n");
+		lbeMatrixMultiply(&res, result, &mat_rx);		
+	}
+	if (axis_y == 1) {	
+		printf ("mult Y\n");
+		lbeMatrixMultiply(&res, result, &mat_ry);		
+	}
+	if (axis_z == 1) {	
+		printf ("mult Z\n");
+		lbeMatrixMultiply(&res, result, &mat_rz);		
+	}
 	
-	if (axis_z == 1) 	
-
-}*/
-
-lbeProjection() {
-
+	memcpy ((*result).m, res.m, sizeof (*result).m);
+	return;
 }
 
+lbeProjection() {
+	
+}
 
+void lbePrintMatrix(lbeMatrix *mat) {
+	int i,j;
+	printf ("Matriz resultante: \n");
+	for (i=0; i<4; i++){
+		for (j=0; j<4; j++){
+			printf ("%f ", (*mat).m[i][j]);		
+		}
+		printf ("\n");
+	}
+}
 
+void lbeCheckGLError (){
+	//Función de checkeo de flags de error activos, para ser usada tras llamadas dudosas.
+	GLenum err  = glGetError();
+ 
+        while(err!=GL_NO_ERROR) {
+                char* error;
+                switch(err) {
+                        case GL_INVALID_OPERATION:      error="INVALID_OPERATION";      break;
+                        case GL_INVALID_ENUM:           error="INVALID_ENUM";           break;
+                        case GL_INVALID_VALUE:          error="INVALID_VALUE";          break;
+                        case GL_OUT_OF_MEMORY:          error="OUT_OF_MEMORY";          break;
+                        case GL_INVALID_FRAMEBUFFER_OPERATION: error="INVALID_FRAMEBUFFER_OPERATION";  break;
+                	default: error = "OTHER ERROR"; break;
+		}
+
+		printf ("ERROR - error numerado de OpenGL: %s\n", error); 
+                err=glGetError();
+        }
+}

@@ -30,18 +30,34 @@ static int init_gl(void)
 }
 
 static void draw(uint32_t i)
-{
-	glDrawArrays(GL_TRIANGLES,0,3);
+{	
+	glClearColor (0.3f, 0.3f, 0.2f, 1.0f);	
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	eglSwapBuffers(eglInfo.display, eglInfo.surface);
+	//Sólo para el contexto DRM/KMS
+	DRM_PageFlip();	
 }
 
 //Recuerda: los uniform son las variables que le pasamos desde el programa en C, 
+//Los attributes se llaman así porque son atributos del vértice, que es lo que se dedica a procesar el shader,
+//un vértice por cada vez que se ejecuta su código.
 //Las variables gl_* ya vienen definidas y son los valores que le pasamos de vuelta a GLES.
 //Así, gl_Position es la posición final de un vértice (tras las transformaciones de cámara/modelo/proyección)
 //y gl_fragColor es el color del píxel de cada fragment.
+//Este vertex shader hace lo mínimo que debe hacer: dar la posición en eye coordinates (clipping space) del vértice.
+//Recuerda también que las entradas (attributes, uniforms) se pueden llamar como te de la gana. Sólo tienes que
+//tener en cuenta que las salidas tienen nombres fijos: gl_Position en el vertex shader y gl_FragColor en el fragment.
+//Recuerda además que un vértice tiene tres atributos: posición, color y normal.
+//Recuerda además que para pasar información de un shader a otro se usan los varying.
+
 GLbyte vertexShaderSrc[] = 
+	"uniform mat4 modelviewprojection;	\n"
 	"attribute vec4 vertexPosition;		\n"
+	"attribute vec4 vertexColor;		\n"
 	"void main () {				\n"
-	"	gl_Position = vertexPosition;	\n"
+	"	gl_Position = modelviewprojection * vertexPosition;	\n"
 	"}					\n"
 ;
 
@@ -51,8 +67,6 @@ GLbyte fragmentShaderSrc[] =
 	"	 gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
 	"}					 	 \n"
 ;
-
-
 
 GLuint CompileShader (GLuint shaderType, const char *shaderSrc){
 	//Función que recibe el tipo de un shader (un define de GL que indica si es un GL_VERTEX_SHADER o 
@@ -185,7 +199,6 @@ int main(int argc, char *argv[])
 	//el nuestro con glBindAttribLocation(), pero antes de linkar el programa.
 	GLint attVertices;
 	attVertices = glGetAttribLocation (programObject, "vertexPosition"); 
-	
 	//Activamos ese atributo para que pueda ser usado desde el vertex shader
 	glEnableVertexAttribArray(attVertices);	
 
@@ -196,15 +209,28 @@ int main(int argc, char *argv[])
 	//Deshacemos el binding para no alterar los datos del buffer sin querer.
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glClearColor (0.3f, 0.3f, 0.2f, 1.0f);	
-	glClear(GL_COLOR_BUFFER_BIT);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	//Subimos a GL la matriz de transformación + proyeccción. La secuencia es parecida.
+	//Pendiente agrupar todas las variables que son operacionales a este nivel en una estructura.
+	lbeMatrix mvp;
+	lbeLoadIdentity (&mvp);	
+	GLint mvpOBJ;
+	mvpOBJ = glGetUniformLocation (programObject, "modelviewprojection");	
+	glUniformMatrix4fv(mvpOBJ, 1, GL_FALSE, &mvp.m[0][0]);
 
-	eglSwapBuffers(eglInfo.display, eglInfo.surface);
-	//Sólo para el contexto DRM/KMS
-	DRM_PageFlip();	
-
-	getchar();
+	
+	lbePrintMatrix (&mvp);
+	//Vamos a animar un poco las cosas, a base de ir actualizando la matriz modelviewprojection
+	int loops = 0;
+	int exit_condition = 0;
+	while (!exit_condition) {
+		lbeRotate (&mvp, 0, 1, 0, 1.5f);
+		lbePrintMatrix (&mvp);
+		glUniformMatrix4fv(mvpOBJ, 1, GL_FALSE, &mvp.m[0][0]);
+		draw (0);	
+		if (loops >= 500)
+			exit_condition = 1;
+		loops++;
+	}
 
 	return 0;
 }
