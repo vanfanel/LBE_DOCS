@@ -154,8 +154,32 @@ void lbeRotate (lbeMatrix *result, int axis_x, int axis_y, int axis_z, float deg
 	return;
 }
 
-lbeProjection() {
+/*Caso más general de proyección con perspectiva: frustrum de plano cercano no centrado en 0.0.0
+* No se realiza cambio de RHS a LHS, así que las coordenadas NDC resultantes (en GLES realmente también se
+* esperan coordenadas NDC, de ahí que si no llevas a cabo ninguna proyección, dibujes lo que dibujes sólo
+* se va a ver lo que quede dentro del cubo X [1, -1], Y [1, -1], Z [1, -1]) van a estar respecto a un sistema
+* tal que Z positivo es hacia el observador, Z negativo es hacia adelante, X positivo es hacia la derecha e
+* Y positivo es hacia arriba. 
+* Como no se hace este cambio de RHS a LHS, la fila de Z pierde los signos negativos respecto al desarrollo
+* de la sección 6. 
+*/
+lbeProjection(lbeMatrix *result, float l, float r, float b, float t, float n, float f) {
+	float t11 = (2 * n) / (r - l);
+	float t13 = (r + l) / (r - l);
 	
+	float t22 = (2 * n) / (t - b);
+	float t23 = (t + b) / (t - b);
+
+	float t33 = (f + n) / (f - n);
+	float t34 = (2 * f) / (f - n); 
+	
+	lbeMatrix res = {{{t11,   0, t13,   0},
+			  {  0, t22, t23,   0}, 
+			  {  0,   0, t33, t34},
+			  {  0,   0,  -1,   0}				
+	}};	
+	
+	memcpy ((*result).m, res.m, sizeof((*result).m));
 }
 
 void lbePrintMatrix(lbeMatrix *mat) {

@@ -31,10 +31,19 @@ static int init_gl(void)
 
 static void draw(uint32_t i)
 {	
-	glClearColor (0.3f, 0.3f, 0.2f, 1.0f);	
+	glClearColor (0.3f, 0.3f, 0.2f, 0.5f);	
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	//glDrawArrays(GL_TRIANGLES, 0, 3);
+	//Pasamos a dibujar un strip (serie de triángulos conectados) para formar la cara. Nos permite reutilizar
+	//los vértices para el segundo triángulo del strip, de manera que con una llamada y cuatro vértices
+	//dibujamos un cuadrado.	
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+/*	glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
+	glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
+	glDrawArrays(GL_TRIANGLE_STRIP, 12, 4);
+*/		
+
 	eglSwapBuffers(eglInfo.display, eglInfo.surface);
 	//Sólo para el contexto DRM/KMS
 	DRM_PageFlip();	
@@ -61,7 +70,7 @@ GLbyte vertexShaderSrc[] =
 //	"	vyVertexColor = vec4 (1.0, 0.0, 0.0, 1.0);		\n"
 	"	vyVertexColor = vertexColor;				\n"
 	"	gl_Position = modelviewprojection * vertexPosition;	\n"
-	"}					\n"
+	"}								\n"
 ;
 
 GLbyte fragmentShaderSrc[] = 
@@ -147,9 +156,12 @@ int setupShaders (){
 	return 0;
 }
 
-float vertices[] = {0.0f, 0.5f, 0.0f,
-		   -0.5f, -0.5f, 0.0f,
-		    0.5f, -0.5f, 0.0f};
+void tempCompensateRatio (lbeMatrix* mat){
+	
+	float ratio = eglInfo.height / eglInfo.width;
+	
+
+}
 
 int main(int argc, char *argv[])
 {
@@ -185,21 +197,127 @@ int main(int argc, char *argv[])
 	glViewport (0, 0, eglInfo.width, eglInfo.height);
 	
 	//MAC Bloque de paso de geometría a memoria de GLES
-
-	//Triángulo con la misma longitud de base (1 unidad) que de altura
-	//Dados en órden de RHS, situado en el plano Z=0
-	float vertices[] = {0.0f, 0.5f, 0.0f,
-			   -0.3f, -0.5f, 0.0f,
-			    0.3f, -0.5f, 0.0f};
+	//Damos las "coordenadas en RHS con Z negativa hacia adelante", lo que implica: 
+	//Z positiva hacia el observador, X positiva hacia la derecha, Y positiva hacia arriba. 
+	//Mientras no implementemos una proyección que cambie de RHS a LHS, esto es así. Si lo hiciésemos,
+	//simplemente
+	//Situado en el plano Z=0
+	//Se dan en órden CCW siempre.
+	/*float vertices[] = {
+			   -0.3f,-0.3f,+0.3f,		//Front
+			   +0.3f,-0.3f,+0.3f,
+ 			   -0.3f,+0.3f,+0.3f,
+			   +0.3f,+0.3f,+0.3f,  
+		
+			   -0.3f,-0.3f,-0.3f,		//Back
+			   +0.3f,-0.3f,-0.3f,
+ 			   -0.3f,+0.3f,-0.3f,
+			   +0.3f,+0.3f,-0.3f,  
 	
-	float colors[] = {
+			   +0.3f,-0.3f,-0.3f,		//right side 
+			   +0.3f,-0.3f,+0.3f, 
+			   +0.3f,+0.3f,-0.3f, 
+			   +0.3f,+0.3f,-0.3f 
+			
+			   -0.3f,-0.3f,-0.3f,		//left side 
+			   -0.3f,-0.3f,+0.3f, 
+			   -0.3f,+0.3f,-0.3f, 
+			   -0.3f,+0.3f,-0.3f 
+	};*/
+	//float rat = (float)eglInfo.height / (float)eglInfo.width;
+	float rat = (float)eglInfo.width / (float)eglInfo.height;
+	printf ("Phisical ratio %f\n", rat);
+	float vertices[] = {
+		// front
+		-0.5f, -0.5f*rat, +0.5f, // point blue
+		+0.5f, -0.5f*rat, +0.5f, // point magenta
+		-0.5f, +0.5f*rat, +0.5f, // point cyan
+		+0.5f, +0.5f*rat, +0.5f // point white
+		// back
+		/*+0.5f, -0.5f, -0.5f, // point red
+		-0.5f, -0.5f, -0.5f, // point black
+		+0.5f, +0.5f, -0.5f, // point yellow
+		-0.5f, +0.5f, -0.5f, // point green
+		// right
+		+0.5f, -0.5f, +0.5f, // point magenta
+		+0.5f, -0.5f, -0.5f, // point red
+		+0.5f, +0.5f, +0.5f, // point white
+		+0.5f, +0.5f, -0.5f, // point yellow
+		// left
+		-0.5f, -0.5f, -0.5f, // point black
+		-0.5f, -0.5f, +0.5f, // point blue
+		-0.5f, +0.5f, -0.5f, // point green
+		-0.5f, +0.5f, +0.5f, // point cyan
+		// top
+		-0.5f, +0.5f, +0.5f, // point cyan
+		+0.5f, +0.5f, +0.5f, // point white
+		-0.5f, +0.5f, -0.5f, // point green
+		+0.5f, +0.5f, -0.5f, // point yellow
+		// bottom
+		-0.5f, -0.5f, -0.5f, // point black
+		+0.5f, -0.5f, -0.5f, // point red
+		-0.5f, -0.5f, +0.5f, // point blue
+		+0.5f, -0.5f, +0.5f // point magenta*/
+	};
+
+
+	static const GLfloat colors[] = {
+		// front
+		0.0f, 0.0f, 1.0f, // blue
+		1.0f, 0.0f, 1.0f, // magenta
+		0.0f, 1.0f, 1.0f, // cyan
+		1.0f, 1.0f, 1.0f, // white
+		// back
+		1.0f, 0.0f, 0.0f, // red
+		0.0f, 0.0f, 0.0f, // black
+		1.0f, 1.0f, 0.0f, // yellow
+		0.0f, 1.0f, 0.0f, // green
+		// right
+		1.0f, 0.0f, 1.0f, // magenta
+		1.0f, 0.0f, 0.0f, // red
+		1.0f, 1.0f, 1.0f, // white
+		1.0f, 1.0f, 0.0f, // yellow
+		// left
+		0.0f, 0.0f, 0.0f, // black
+		0.0f, 0.0f, 1.0f, // blue
+		0.0f, 1.0f, 0.0f, // green
+		0.0f, 1.0f, 1.0f, // cyan
+		// top
+		0.0f, 1.0f, 1.0f, // cyan
+		1.0f, 1.0f, 1.0f, // white
+		0.0f, 1.0f, 0.0f, // green
+		1.0f, 1.0f, 0.0f, // yellow
+		// bottom
+		0.0f, 0.0f, 0.0f, // black
+		1.0f, 0.0f, 0.0f, // red
+		0.0f, 0.0f, 1.0f, // blue
+		1.0f, 0.0f, 1.0f // magenta
+	};
+
+	/*float colors[] = {
 			    1.0, 0.0, 0.0,		//Rojo
 			    0.0, 1.0, 0.0,		//Verde
-			    0.0, 0.0, 1.1		//Azul	
-	};	
+			    0.0, 0.0, 1.0,		//Azul	
+			    1.0, 0.0, 0.0,		//Rojo
+			    
+			    1.0, 0.0, 0.0,		//Rojo
+			    0.0, 1.0, 0.0,		//Verde
+			    0.0, 0.0, 1.0,		//Azul	
+			    1.0, 0.0, 0.0,		//Rojo
+	
+			    1.0, 0.0, 0.0,		//Rojo
+			    0.0, 1.0, 0.0,		//Verde
+			    0.0, 0.0, 1.0,		//Azul	
+			    1.0, 0.0, 0.0,		//Rojo
+			   
+		            1.0, 0.0, 0.0,		//Rojo
+			    0.0, 1.0, 0.0,		//Verde
+			    0.0, 0.0, 1.0,		//Azul	
+			    1.0, 0.0, 0.0		//Rojo
+	};*/	
 	
 	//Creamos el buffer object para poder colocar el array de vértices en un lugar de memoria accesible para GLES
-	//Se usa para guardar todos los atributos de los vértices: posición, color, normal.
+	//Se us5 para guardar todos los atributos de los vértices: posición, color, normal.
 	GLuint vertexBuffer;
 	glGenBuffers (1, &vertexBuffer);
 	
@@ -254,17 +372,17 @@ int main(int argc, char *argv[])
 	glUniformMatrix4fv(mvpOBJ, 1, GL_FALSE, &mvp.m[0][0]);
 
 	
-	lbePrintMatrix (&mvp);
+	//lbePrintMatrix (&mvp);
 	//Vamos a animar un poco las cosas, a base de ir actualizando la matriz modelviewprojection
 	int loops = 0;
 	int exit_condition = 0;
 	while (!exit_condition) {
-		lbeRotate (&mvp, 0, 1, 0, 1.5f);
+		//lbeRotate (&mvp, 0, 1, 0, 1.5f);
 		//lbePrintMatrix (&mvp);
 		glUniformMatrix4fv(mvpOBJ, 1, GL_FALSE, &mvp.m[0][0]);
 		draw (0);	
-		if (loops >= 500)
-			exit_condition = 1;
+		if (loops >= 300)
+			//exit_condition = 1;
 		loops++;
 	}
 	return 0;
