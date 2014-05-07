@@ -39,10 +39,10 @@ static void draw(uint32_t i)
 	//los vértices para el segundo triángulo del strip, de manera que con una llamada y cuatro vértices
 	//dibujamos un cuadrado.	
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-/*	glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
+	glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
 	glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
 	glDrawArrays(GL_TRIANGLE_STRIP, 12, 4);
-*/		
+		
 
 	eglSwapBuffers(eglInfo.display, eglInfo.surface);
 	//Sólo para el contexto DRM/KMS
@@ -195,6 +195,8 @@ int main(int argc, char *argv[])
 	//Establecemos el viewport
 	printf ("Usando modo de vídeo %d x %d\n", eglInfo.width, eglInfo.height);
 	glViewport (0, 0, eglInfo.width, eglInfo.height);
+	glEnable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
 	
 	//MAC Bloque de paso de geometría a memoria de GLES
 	//Damos las "coordenadas en RHS con Z negativa hacia adelante", lo que implica: 
@@ -225,16 +227,17 @@ int main(int argc, char *argv[])
 			   -0.3f,+0.3f,-0.3f 
 	};*/
 	//float rat = (float)eglInfo.height / (float)eglInfo.width;
-	float rat = (float)eglInfo.width / (float)eglInfo.height;
-	printf ("Phisical ratio %f\n", rat);
-	float vertices[] = {
+	float ratio = (float)eglInfo.width / (float)eglInfo.height;
+	//float rat = 1;
+	printf ("Phisical ratio W/H: %f\n", ratio);
+	static const GLfloat vertices[] = {
 		// front
-		-0.5f, -0.5f*rat, +0.5f, // point blue
-		+0.5f, -0.5f*rat, +0.5f, // point magenta
-		-0.5f, +0.5f*rat, +0.5f, // point cyan
-		+0.5f, +0.5f*rat, +0.5f // point white
+		-0.5f, -0.5f, +0.5f, // point blue
+		+0.5f, -0.5f, +0.5f, // point magenta
+		-0.5f, +0.5f, +0.5f, // point cyan
+		+0.5f, +0.5f, +0.5f, // point white
 		// back
-		/*+0.5f, -0.5f, -0.5f, // point red
+		+0.5f, -0.5f, -0.5f, // point red
 		-0.5f, -0.5f, -0.5f, // point black
 		+0.5f, +0.5f, -0.5f, // point yellow
 		-0.5f, +0.5f, -0.5f, // point green
@@ -261,38 +264,72 @@ int main(int argc, char *argv[])
 	};
 
 
-	static const GLfloat colors[] = {
+	/*static const GLfloat colors[] = {
 		// front
-		0.0f, 0.0f, 1.0f, // blue
-		1.0f, 0.0f, 1.0f, // magenta
-		0.0f, 1.0f, 1.0f, // cyan
-		1.0f, 1.0f, 1.0f, // white
+		0.0f, 0.0f, 0.5f, // blue
+		0.5f, 0.0f, 0.5f, // magenta
+		0.0f, 0.5f, 0.5f, // cyan
+		0.5f, 0.5f, 0.5f, // white
 		// back
-		1.0f, 0.0f, 0.0f, // red
+		0.5f, 0.0f, 0.0f, // red
 		0.0f, 0.0f, 0.0f, // black
-		1.0f, 1.0f, 0.0f, // yellow
-		0.0f, 1.0f, 0.0f, // green
+		0.5f, 0.5f, 0.0f, // yellow
+		0.0f, 0.5f, 0.0f, // green
 		// right
-		1.0f, 0.0f, 1.0f, // magenta
-		1.0f, 0.0f, 0.0f, // red
-		1.0f, 1.0f, 1.0f, // white
-		1.0f, 1.0f, 0.0f, // yellow
+		0.5f, 0.0f, 0.5f, // magenta
+		0.5f, 0.0f, 0.0f, // red
+		0.5f, 0.5f, 0.5f, // white
+		0.5f, 0.5f, 0.0f, // yellow
 		// left
 		0.0f, 0.0f, 0.0f, // black
-		0.0f, 0.0f, 1.0f, // blue
-		0.0f, 1.0f, 0.0f, // green
-		0.0f, 1.0f, 1.0f, // cyan
+		0.0f, 0.0f, 0.5f, // blue
+		0.0f, 0.5f, 0.0f, // green
+		0.0f, 0.5f, 0.5f, // cyan
 		// top
-		0.0f, 1.0f, 1.0f, // cyan
-		1.0f, 1.0f, 1.0f, // white
-		0.0f, 1.0f, 0.0f, // green
-		1.0f, 1.0f, 0.0f, // yellow
+		0.0f, 0.5f, 0.5f, // cyan
+		0.5f, 0.5f, 0.5f, // white
+		0.0f, 0.5f, 0.0f, // green
+		0.5f, 0.5f, 0.0f, // yellow
 		// bottom
 		0.0f, 0.0f, 0.0f, // black
-		1.0f, 0.0f, 0.0f, // red
-		0.0f, 0.0f, 1.0f, // blue
-		1.0f, 0.0f, 1.0f // magenta
+		0.5f, 0.0f, 0.0f, // red
+		0.0f, 0.0f, 0.5f, // blue
+		0.5f, 0.0f, 0.5f // magenta
+	};*/
+
+	static const GLfloat colors[] = {
+		// front
+		1.0f, 0.0f, 0.0f, // blue
+		1.0f, 0.0f, 0.0f, // magenta
+		1.0f, 0.0f, 0.0f, // cyan
+		1.0f, 0.0f, 0.0f, // white
+		// back
+		0.0f, 1.0f, 0.0f, // red
+		0.0f, 1.0f, 0.0f, // black
+		0.0f, 1.0f, 0.0f, // yellow
+		0.0f, 1.0f, 0.0f, // green
+		// right
+		0.0f, 0.0f, 1.0f, // magenta
+		0.0f, 0.0f, 1.0f, // red
+		0.0f, 0.0f, 1.0f, // white
+		0.0f, 0.0f, 1.0f, // yellow
+		// left
+		1.0f, 1.0f, 1.0f, // black
+		1.0f, 1.0f, 1.0f, // blue
+		1.0f, 1.0f, 1.0f, // green
+		1.0f, 1.0f, 1.0f, // cyan
+		// top
+		0.0f, 0.5f, 0.5f, // cyan
+		0.5f, 0.5f, 0.5f, // white
+		0.0f, 0.5f, 0.0f, // green
+		0.5f, 0.5f, 0.0f, // yellow
+		// bottom
+		0.0f, 0.0f, 0.0f, // black
+		0.5f, 0.0f, 0.0f, // red
+		0.0f, 0.0f, 0.5f, // blue
+		0.5f, 0.0f, 0.5f // magenta
 	};
+
 
 	/*float colors[] = {
 			    1.0, 0.0, 0.0,		//Rojo
@@ -369,21 +406,37 @@ int main(int argc, char *argv[])
 	lbeLoadIdentity (&mvp);	
 	GLint mvpOBJ;
 	mvpOBJ = glGetUniformLocation (programObject, "modelviewprojection");	
-	glUniformMatrix4fv(mvpOBJ, 1, GL_FALSE, &mvp.m[0][0]);
 
+	//Empezamos colocando como matriz modelviewprojection la identidad.
+	glUniformMatrix4fv(mvpOBJ, 1, GL_FALSE, &mvp.m[0][0]);
 	
 	//lbePrintMatrix (&mvp);
-	//Vamos a animar un poco las cosas, a base de ir actualizando la matriz modelviewprojection
+	//Vamos a animar un poco las cosas, a base de ir actualizando el uniform correspondiente a la matriz mvp, 
+	//a través del objeto mvpOBJ(GLint), usando la función glUniformMatrix4fv()
 	int loops = 0;
 	int exit_condition = 0;
-	while (!exit_condition) {
+
+	lbeMatrix projection;
+	lbeLoadIdentity (&projection);
+	lbeProjection (&projection, -2.8f, 2.8f, -2.8f*ratio, 2.8f*ratio, 1.0f, -10.0f);
+	
+	//lbePrintMatrix(&projection);
+
+	//while (!exit_condition) {
+
 		//lbeRotate (&mvp, 0, 1, 0, 1.5f);
-		//lbePrintMatrix (&mvp);
+
+		//lbeMatrixMultiply (&mvp, &projection, &mvp);
+
 		glUniformMatrix4fv(mvpOBJ, 1, GL_FALSE, &mvp.m[0][0]);
+		
 		draw (0);	
-		if (loops >= 300)
-			//exit_condition = 1;
+		
+		if (loops >= 500)
+			exit_condition = 1;
 		loops++;
-	}
+		getchar();
+	//}
+	
 	return 0;
 }

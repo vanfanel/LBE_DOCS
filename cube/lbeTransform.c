@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <GLES2/gl2.h>
 
-#define PI 3.141517
+#define PI 3.1415926535897932384626433832795f
 
 void lbeLoadIdentity (lbeMatrix *resultado){
 	lbeMatrix res = {{{1, 0, 0, 0},
@@ -22,8 +22,7 @@ void lbeLoadIdentity (lbeMatrix *resultado){
 void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *matrix_b){
 	int i,j;
 	float accum = 0.0f;
-
-	//lbeMatrix res = {{ {1,0,0,0},  {0,1,0,0},  {0,0,1,0},	{0,0,0,1} }};
+	float res[4][4] = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
 	//memcpy (resultado, &res, sizeof(resultado));
 	//La idea es que dejamos fija una fila de la primera matriz y vamos avanzando en la segunda por columnas.
 	//En bloques porque en uno solo habría que introducir un iterador más y eso complica la lectura.
@@ -31,7 +30,7 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
 		for (j = 0; j < 4; j++){
 				accum = accum + (*matrix_a).m[0][j] * (*matrix_b).m[j][i];
 		}
-		(*resultado).m[0][i] = accum; 
+		res[0][i] = accum; 
 		accum = 0.0f;
 	}
 	
@@ -39,7 +38,7 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
 		for (j = 0; j < 4; j++){
 				accum = accum + (*matrix_a).m[1][j] * (*matrix_b).m[j][i];
 		}
-		(*resultado).m[1][i] = accum; 
+		res[1][i] = accum; 
 		accum = 0.0f;
 	}
 	
@@ -47,7 +46,7 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
 		for (j = 0; j < 4; j++){
 				accum = accum + (*matrix_a).m[2][j] * (*matrix_b).m[j][i];
 		}
-		(*resultado).m[2][i] = accum; 
+		res[2][i] = accum; 
 		accum = 0.0f;
 	}
 
@@ -55,9 +54,24 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
 		for (j = 0; j < 4; j++){
 				accum = accum + (*matrix_a).m[3][j] * (*matrix_b).m[j][i];
 		}
-		(*resultado).m[3][i] = accum; 
+		res[3][i] = accum; 
 		accum = 0.0f;
 	}
+	memcpy((*resultado).m, res, sizeof((*resultado).m));
+}
+
+void lbeMatrixVectorMultiply (lbeVector *resultado, lbeMatrix *mat, lbeVector *vec){
+	int i,j;	
+	float accum = 0.0f;
+	lbeVector res;
+	for (i = 0; i < 4; i++){
+		for (j = 0; j < 4; j++){
+			accum = accum + (*mat).m[i][j] * (*vec).v[j];	
+		}
+		res.v[i] = accum;
+		accum = 0.0f;
+	}
+	memcpy ((*resultado).v, res.v, sizeof((*resultado).v));
 }
 
 /* La función de rotación asume la interpretación de OpenGL "clásico": las transformaciones se hacen 
@@ -104,13 +118,7 @@ void lbeMatrixMultiply (lbeMatrix *resultado, lbeMatrix *matrix_a, lbeMatrix *ma
  * como es de esperar
  */
 
-/*Se toma la decisión de diseño de crear una matriz llamada "res" para recocer el resultado porque se decide 
- * permitir que la función lbeMatrixMultiply() machaque el contenido de la matriz resultado internamente durante
- * la multiplicación. Esto se podría cambiar, no permitiendo que en lbeMatrixMultiply() se machaque la matriz
- * resultado durante la multiplicación, sólo al final, con lo que la matriz "res" y el consiguiente memcpy 
- * se haría allí.*/
-	
-void lbeRotate (lbeMatrix *result, int axis_x, int axis_y, int axis_z, float deg){
+void lbeRotate (lbeMatrix *resultado, int axis_x, int axis_y, int axis_z, float deg){
 	
 	int i;
 	float rad = 2 * PI / 360 * deg ;
@@ -133,25 +141,20 @@ void lbeRotate (lbeMatrix *result, int axis_x, int axis_y, int axis_z, float deg
 	       	             {0, 0, 1, 0}, 
 	       	             {0, 0, 0, 1}}};
 
-	lbeMatrix res;
-
 	//No debemos pasar result como matriz resultado en el producto porque ya se pasa como factor, y 
 	//es alterada durante la multiplicación al ser el resultado.Por eso recogemos sobre res y luego hacemos memcp 
 	if (axis_x == 1) {	
 		//printf ("mult X\n");
-		lbeMatrixMultiply(&res, result, &mat_rx);		
+		lbeMatrixMultiply(resultado, resultado, &mat_rx);		
 	}
 	if (axis_y == 1) {	
 		//printf ("mult Y\n");
-		lbeMatrixMultiply(&res, result, &mat_ry);		
+		lbeMatrixMultiply(resultado, resultado, &mat_ry);		
 	}
 	if (axis_z == 1) {	
 		//printf ("mult Z\n");
-		lbeMatrixMultiply(&res, result, &mat_rz);		
+		lbeMatrixMultiply(resultado, resultado, &mat_rz);		
 	}
-	
-	memcpy ((*result).m, res.m, sizeof (*result).m);
-	return;
 }
 
 /*Caso más general de proyección con perspectiva: frustrum de plano cercano no centrado en 0.0.0
@@ -163,21 +166,22 @@ void lbeRotate (lbeMatrix *result, int axis_x, int axis_y, int axis_z, float deg
 * Como no se hace este cambio de RHS a LHS, la fila de Z pierde los signos negativos respecto al desarrollo
 * de la sección 6. 
 */
-lbeProjection(lbeMatrix *result, float l, float r, float b, float t, float n, float f) {
+void lbeProjection(lbeMatrix *result, float l, float r, float b, float t, float n, float f) {
 	float t11 = (2 * n) / (r - l);
 	float t13 = (r + l) / (r - l);
 	
 	float t22 = (2 * n) / (t - b);
 	float t23 = (t + b) / (t - b);
 
-	float t33 = (f + n) / (f - n);
-	float t34 = (2 * f) / (f - n); 
+	float t33 =   (f + n) / (f - n);
+	float t34 =   (2 * f) / (f - n); 
 	
 	lbeMatrix res = {{{t11,   0, t13,   0},
 			  {  0, t22, t23,   0}, 
 			  {  0,   0, t33, t34},
-			  {  0,   0,  -1,   0}				
+			  {  0,   0,  1,   0}				
 	}};	
+	lbePrintMatrix(&res);	
 	
 	memcpy ((*result).m, res.m, sizeof((*result).m));
 }

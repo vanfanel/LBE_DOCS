@@ -273,14 +273,18 @@ static void draw(uint32_t i)
 	
 	ESMatrix modelview;
 	esMatrixLoadIdentity(&modelview);
-	esTranslate(&modelview, 0.0f, 0.0f, -1.0f);
+	esTranslate(&modelview, 0.0f, 0.0f, -8.0f);
 	rAngle = rAngle + rSpeed;
 	esRotate(&modelview, -rAngle*0.1 , 0.0f, 1.0f, 0.0f);
 	GLfloat aspect = (GLfloat)(drm.mode->vdisplay) / (GLfloat)(drm.mode->hdisplay);
 	ESMatrix projection;
 	esMatrixLoadIdentity(&projection);
-	esFrustum(&projection, -2.8f, +2.8f, -2.8f * aspect, +2.8f * aspect, 4.0f, 10.0f);
+	esFrustum(&projection, -2.8f, +2.8f, -2.8f * aspect, +2.8f * aspect, 6.0f, 10.0f);
 	
+	/*ESMatrix modelviewprojection;
+	esMatrixLoadIdentity(&modelviewprojection);
+	memcpy (modelviewprojection.m, projection.m, sizeof (modelviewprojection.m));
+	*/
 	ESMatrix modelviewprojection;
 	esMatrixLoadIdentity(&modelviewprojection);
 	esMatrixMultiply(&modelviewprojection, &modelview, &projection);
