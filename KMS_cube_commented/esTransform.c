@@ -103,6 +103,22 @@ esRotate(ESMatrix *result, GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
       zs = z * sinAngle;
       oneMinusCos = 1.0f - cosAngle;
 
+      //Respecto a la matriz de rotación positiva, se está guardando de tal manera que en el vector de 16 elementos
+      //queda "una columna tras otra". Se ve ensegida si sigues la secuencia de ingreso de los elementos sucesivos
+      //en memoria: m.[0][0],  m.[1][0],  m.[2][0], m.[3][0]... 
+      //Así que modelview y projection tienen sus elementos, en el vector de 16 elementos, una fila tras otra. Ese
+      //es el punto de vista de GLSL, el de la colocación de los 16 elementos.
+      //Ahora, desde el punto de vista de C, si miramos la matriz de rotación en sentido positivo, se está metiendo
+      //sin transponer. Pero como es de rotación pura, podemos interpretar que se está metiendo la matriz de 
+      //rotación en sentido negativo traspuesta.
+      //Vamos a interpretar esto último por coherencia con esFrustum(), de manera que veamos que ambas matrices
+      //quedan traspuestas desde el punto de vista de C, y así justificamos que, como el producto de matrices
+      //está implementado normal (1a aporta filas y 2a columnas) la composición de mvp en kmscube.c se hace con el
+      //órden cambiado.
+      //De hecho, si rotamos en kmscube en torno a Z, vemos que se rota en sentido negativo. Eso confirma que
+      //obviamente lo que se está haciendo aquí es meter traspuesta la matriz de rotación en sentido negativo,
+      //que es la traspuesta de la de rotación en sentido positivo. 
+
       rotMat.m[0][0] = (oneMinusCos * xx) + cosAngle;
       rotMat.m[0][1] = (oneMinusCos * xy) - zs;
       rotMat.m[0][2] = (oneMinusCos * zx) + ys;
@@ -130,6 +146,7 @@ esRotate(ESMatrix *result, GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 void ESUTIL_API
 esFrustum(ESMatrix *result, float left, float right, float bottom, float top, float nearZ, float farZ)
 {
+    
     float       deltaX = right - left;
     float       deltaY = top - bottom;
     float       deltaZ = farZ - nearZ;
@@ -194,27 +211,33 @@ esOrtho(ESMatrix *result, float left, float right, float bottom, float top, floa
 void ESUTIL_API
 esMatrixMultiply(ESMatrix *result, ESMatrix *srcA, ESMatrix *srcB)
 {
+    //MAC esMatrixMultiply() sí que funciona de la manera esperada (se ve fácil): la primera matriz (srcA) aporta
+    //las filas y srcB las columnas. En el órden correcto, tal como lo hemos hecho siempre en papel.
+    //Es fundamental fijar esto porque, en cambio, las funciones esRotate() y esFrustum() guardan las
+    //matrices que esperamos traspuestas, y hay que combinar que sabemos que esMatrixMultiply() funciona "normal"
+    //con el órden en que podemos esperar que se multipliquen las matrices que hayan salido de esRotate() y
+    //esFrustum()
     ESMatrix    tmp;
     int         i;
 
 	for (i=0; i<4; i++)
 	{
-		tmp.m[i][0] =	(srcA->m[i][0] * srcB->m[0][0]) +
+		tmp.m[i][0] =			(srcA->m[i][0] * srcB->m[0][0]) +
 						(srcA->m[i][1] * srcB->m[1][0]) +
 						(srcA->m[i][2] * srcB->m[2][0]) +
 						(srcA->m[i][3] * srcB->m[3][0]) ;
 
-		tmp.m[i][1] =	(srcA->m[i][0] * srcB->m[0][1]) + 
+		tmp.m[i][1] =			(srcA->m[i][0] * srcB->m[0][1]) + 
 						(srcA->m[i][1] * srcB->m[1][1]) +
 						(srcA->m[i][2] * srcB->m[2][1]) +
 						(srcA->m[i][3] * srcB->m[3][1]) ;
 
-		tmp.m[i][2] =	(srcA->m[i][0] * srcB->m[0][2]) + 
+		tmp.m[i][2] =			(srcA->m[i][0] * srcB->m[0][2]) + 
 						(srcA->m[i][1] * srcB->m[1][2]) +
 						(srcA->m[i][2] * srcB->m[2][2]) +
 						(srcA->m[i][3] * srcB->m[3][2]) ;
 
-		tmp.m[i][3] =	(srcA->m[i][0] * srcB->m[0][3]) + 
+		tmp.m[i][3] =			(srcA->m[i][0] * srcB->m[0][3]) + 
 						(srcA->m[i][1] * srcB->m[1][3]) +
 						(srcA->m[i][2] * srcB->m[2][3]) +
 						(srcA->m[i][3] * srcB->m[3][3]) ;

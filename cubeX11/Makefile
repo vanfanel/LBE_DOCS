@@ -1,6 +1,6 @@
-##CFLAGS=-O0 -ggdb -I. -I/usr/include/drm
-CFLAGS=-O2 -I. -I/usr/include/drm
-LDFLAGS=-lGLESv2 -lEGL -lm -ldrm -lgbm
+CFLAGS=-O0 -ggdb -I. -I/usr/include/drm
+##CFLAGS=-O2 -I. -I/usr/include/drm
+LDFLAGS=-lGLESv2 -lEGL -lm -ldrm -lgbm -lX11
 TARGET=cube
 SOURCES=*.c
 COMPILER=gcc

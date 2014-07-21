@@ -37,8 +37,8 @@ static void draw_cube(uint32_t i)
 	//dibujamos un cuadrado.	
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
-	glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
-	glDrawArrays(GL_TRIANGLE_STRIP, 12, 4);
+	//glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
+	//glDrawArrays(GL_TRIANGLE_STRIP, 12, 4);
 	//printf ("pintado...\n");	
 
 }
@@ -60,7 +60,7 @@ static void draw_horizon(float viewerZ){
 static void flip_page(){
 	eglSwapBuffers(eglInfo.display, eglInfo.surface);
 	//Sólo para el contexto DRM/KMS
-	DRM_PageFlip();	
+	//DRM_PageFlip();	
 
 }
 
@@ -178,18 +178,7 @@ int setupShaders (){
 
 int main(int argc, char *argv[])
 {
-	int ret = init_drm();
-	if (ret) {
-		printf("failed to initialize DRM\n");
-		return ret;
-	}
-
-	ret = init_gbm();
-	if (ret) {
-		printf("failed to initialize GBM\n");
-		return ret;
-	}
-
+	int ret;
 	ret = init_egl();
 	if (ret) {
 		printf("failed to initialize EGL\n");
@@ -241,7 +230,7 @@ int main(int argc, char *argv[])
 		+1.0f, -1.0f, -1.0f, // point red
 		-1.0f, -1.0f, -1.0f, // point black
 		+1.0f, +1.0f, -1.0f, // point yellow
-		-1.0f, +1.0f, -1.0f, // point green
+		-1.0f, +1.0f, -1.0f, // point green*/
 		// right
 		+1.0f, -1.0f, +1.0f, // point magenta
 		+1.0f, -1.0f, -1.0f, // point red
@@ -251,8 +240,8 @@ int main(int argc, char *argv[])
 		-1.0f, -1.0f, -1.0f, // point black
 		-1.0f, -1.0f, +1.0f, // point blue
 		-1.0f, +1.0f, -1.0f, // point green
-		-1.0f, +1.0f, +1.0f, // point cyan*/
-		// top
+		-1.0f, +1.0f, +1.0f, // point cyan
+	/*	// top
 		-2.0f, +2.0f, +2.0f, // point cyan
 		+2.0f, +2.0f, +2.0f, // point white
 		-2.0f, +2.0f, -2.0f, // point green
@@ -262,7 +251,7 @@ int main(int argc, char *argv[])
 		+2.0f, -2.0f, -2.0f, // point red
 		-2.0f, -2.0f, +2.0f, // point blue
 		+2.0f, -2.0f, +2.0f // point magenta
-	
+	*/
 	};
 	
 	/*static const float vertices[] = {
@@ -447,7 +436,7 @@ int main(int argc, char *argv[])
 
 	//Última línea de geometría actualizada
 	//int oldestLine = 0;	
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	
 

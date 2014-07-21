@@ -1,0 +1,377 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BLOCKSIZE_H	SDL_fbvideo.c	897;"	d	file:
+BLOCKSIZE_W	SDL_fbvideo.c	896;"	d	file:
+DRM_MODE_OBJECT_PLANE	drmset.c	14;"	d	file:
+KMS_AddMode	SDL_fbvideo.c	/^static int KMS_AddMode(_THIS, int index, unsigned int w, unsigned int h, int check_timings)$/;"	f	file:	signature:(_THIS, int index, unsigned int w, unsigned int h, int check_timings)
+KMS_AllocHWSurface	SDL_fbvideo.c	/^static int KMS_AllocHWSurface(_THIS, SDL_Surface *surface)$/;"	f	file:	signature:(_THIS, SDL_Surface *surface)
+KMS_AllocHWSurface	SDL_fbvideo.c	/^static int KMS_AllocHWSurface(_THIS, SDL_Surface *surface);$/;"	p	file:	signature:(_THIS, SDL_Surface *surface)
+KMS_Available	SDL_fbvideo.c	/^static int KMS_Available(void)$/;"	f	file:	signature:(void)
+KMS_CreateDevice	SDL_fbvideo.c	/^static SDL_VideoDevice *KMS_CreateDevice(int devindex)$/;"	f	file:	signature:(int devindex)
+KMS_DeleteDevice	SDL_fbvideo.c	/^static void KMS_DeleteDevice(SDL_VideoDevice *device)$/;"	f	file:	signature:(SDL_VideoDevice *device)
+KMS_DirectUpdate	SDL_fbvideo.c	/^static void KMS_DirectUpdate(_THIS, int numrects, SDL_Rect *rects)$/;"	f	file:	signature:(_THIS, int numrects, SDL_Rect *rects)
+KMS_DirectUpdate	SDL_fbvideo.c	/^static void KMS_DirectUpdate(_THIS, int numrects, SDL_Rect *rects);$/;"	p	file:	signature:(_THIS, int numrects, SDL_Rect *rects)
+KMS_FlipHWSurface	SDL_fbvideo.c	/^static int KMS_FlipHWSurface(_THIS, SDL_Surface *surface)$/;"	f	file:	signature:(_THIS, SDL_Surface *surface)
+KMS_FlipHWSurface	SDL_fbvideo.c	/^static int KMS_FlipHWSurface(_THIS, SDL_Surface *surface);$/;"	p	file:	signature:(_THIS, SDL_Surface *surface)
+KMS_FreeHWSurface	SDL_fbvideo.c	/^static void KMS_FreeHWSurface(_THIS, SDL_Surface *surface)$/;"	f	file:	signature:(_THIS, SDL_Surface *surface)
+KMS_FreeHWSurface	SDL_fbvideo.c	/^static void KMS_FreeHWSurface(_THIS, SDL_Surface *surface);$/;"	p	file:	signature:(_THIS, SDL_Surface *surface)
+KMS_FreeHWSurfaces	SDL_fbvideo.c	/^static void KMS_FreeHWSurfaces(_THIS)$/;"	f	file:
+KMS_FreeHWSurfaces	SDL_fbvideo.c	/^static void KMS_FreeHWSurfaces(_THIS);$/;"	p	file:
+KMS_InitHWSurfaces	SDL_fbvideo.c	/^static int KMS_InitHWSurfaces(_THIS, SDL_Surface *screen, char *base, int size)$/;"	f	file:	signature:(_THIS, SDL_Surface *screen, char *base, int size)
+KMS_InitHWSurfaces	SDL_fbvideo.c	/^static int KMS_InitHWSurfaces(_THIS, SDL_Surface *screen, char *base, int size);$/;"	p	file:	signature:(_THIS, SDL_Surface *screen, char *base, int size)
+KMS_ListModes	SDL_fbvideo.c	/^static SDL_Rect **KMS_ListModes(_THIS, SDL_PixelFormat *format, Uint32 flags)$/;"	f	file:	signature:(_THIS, SDL_PixelFormat *format, Uint32 flags)
+KMS_ListModes	SDL_fbvideo.c	/^static SDL_Rect **KMS_ListModes(_THIS, SDL_PixelFormat *format, Uint32 flags);$/;"	p	file:	signature:(_THIS, SDL_PixelFormat *format, Uint32 flags)
+KMS_LockHWSurface	SDL_fbvideo.c	/^static int KMS_LockHWSurface(_THIS, SDL_Surface *surface)$/;"	f	file:	signature:(_THIS, SDL_Surface *surface)
+KMS_LockHWSurface	SDL_fbvideo.c	/^static int KMS_LockHWSurface(_THIS, SDL_Surface *surface);$/;"	p	file:	signature:(_THIS, SDL_Surface *surface)
+KMS_SetColors	SDL_fbvideo.c	/^static int KMS_SetColors(_THIS, int firstcolor, int ncolors, SDL_Color *colors)$/;"	f	file:	signature:(_THIS, int firstcolor, int ncolors, SDL_Color *colors)
+KMS_SetColors	SDL_fbvideo.c	/^static int KMS_SetColors(_THIS, int firstcolor, int ncolors, SDL_Color *colors);$/;"	p	file:	signature:(_THIS, int firstcolor, int ncolors, SDL_Color *colors)
+KMS_SetVideoMode	SDL_fbvideo.c	/^static SDL_Surface *KMS_SetVideoMode(_THIS, SDL_Surface *current, int width, int height, int bpp, Uint32 flags);$/;"	p	file:	signature:(_THIS, SDL_Surface *current, int width, int height, int bpp, Uint32 flags)
+KMS_SetVideoMode	SDL_fbvideo.c	/^static SDL_Surface *KMS_SetVideoMode(_THIS, SDL_Surface *current,$/;"	f	file:	signature:(_THIS, SDL_Surface *current, int width, int height, int bpp, Uint32 flags)
+KMS_UnlockHWSurface	SDL_fbvideo.c	/^static void KMS_UnlockHWSurface(_THIS, SDL_Surface *surface)$/;"	f	file:	signature:(_THIS, SDL_Surface *surface)
+KMS_UnlockHWSurface	SDL_fbvideo.c	/^static void KMS_UnlockHWSurface(_THIS, SDL_Surface *surface);$/;"	p	file:	signature:(_THIS, SDL_Surface *surface)
+KMS_VideoInit	SDL_fbvideo.c	/^static int KMS_VideoInit(_THIS, SDL_PixelFormat *vformat)$/;"	f	file:	signature:(_THIS, SDL_PixelFormat *vformat)
+KMS_VideoInit	SDL_fbvideo.c	/^static int KMS_VideoInit(_THIS, SDL_PixelFormat *vformat);$/;"	p	file:	signature:(_THIS, SDL_PixelFormat *vformat)
+KMS_VideoQuit	SDL_fbvideo.c	/^static void KMS_VideoQuit(_THIS)$/;"	f	file:
+KMS_VideoQuit	SDL_fbvideo.c	/^static void KMS_VideoQuit(_THIS);$/;"	p	file:
+KMS_WaitIdle	SDL_fbvideo.c	/^static void KMS_WaitIdle(_THIS)$/;"	f	file:
+KMS_WaitIdle	SDL_fbvideo.c	/^static void KMS_WaitIdle(_THIS);$/;"	p	file:
+KMS_WaitVBL	SDL_fbvideo.c	/^static void KMS_WaitVBL(_THIS)$/;"	f	file:
+KMS_WaitVBL	SDL_fbvideo.c	/^static void KMS_WaitVBL(_THIS);$/;"	p	file:
+KMS_allocate_buffer	SDL_fbvideo.c	/^KMS_allocate_buffer(int width, int height, int *stride)$/;"	f	file:	signature:(int width, int height, int *stride)
+KMS_bootstrap	SDL_fbvideo.c	/^VideoBootStrap KMS_bootstrap = {$/;"	v
+_GNU_SOURCE	docs/drm-howto/modeset-double-buffered.c	29;"	d	file:
+_GNU_SOURCE	docs/drm-howto/modeset-vsync.c	24;"	d	file:
+_GNU_SOURCE	docs/drm-howto/modeset.c	29;"	d	file:
+_GNU_SOURCE	modeset.c	29;"	d	file:
+b	docs/drm-howto/modeset-vsync.c	/^	uint8_t r, g, b;$/;"	m	struct:modeset_dev	file:	access:public
+b_up	docs/drm-howto/modeset-vsync.c	/^	bool r_up, g_up, b_up;$/;"	m	struct:modeset_dev	file:	access:public
+bo	SDL_fbvideo.c	/^struct kms_bo *bo[2];$/;"	v	typeref:struct:kms_bo
+bo	drmset.h	/^	struct kms_bo *bo[2];	$/;"	m	struct:drm_videodevice	typeref:struct:drm_videodevice::kms_bo	access:public
+bufs	docs/drm-howto/modeset-double-buffered.c	/^	struct modeset_buf bufs[2];$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_buf	file:	access:public
+bufs	docs/drm-howto/modeset-vsync.c	/^	struct modeset_buf bufs[2];$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_buf	file:	access:public
+clasificar_triangulo	line.c	/^void clasificar_triangulo (triangulo* t){$/;"	f	signature:(triangulo* t)
+cleanup	docs/drm-howto/modeset-vsync.c	/^	bool cleanup;$/;"	m	struct:modeset_dev	file:	access:public
+complete_mode	SDL_fbvideo.c	/^static int complete_mode (drmModeModeInfo *modinfo)$/;"	f	file:	signature:(drmModeModeInfo *modinfo)
+conn	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t conn;$/;"	m	struct:modeset_dev	file:	access:public
+conn	docs/drm-howto/modeset-vsync.c	/^	uint32_t conn;$/;"	m	struct:modeset_dev	file:	access:public
+conn	docs/drm-howto/modeset.c	/^	uint32_t conn;$/;"	m	struct:modeset_dev	file:	access:public
+conn	modeset.c	/^	uint32_t conn;$/;"	m	struct:modeset_dev	file:	access:public
+connector	SDL_fbvideo.c	/^drmModeConnector *connector;$/;"	v
+connector	drmset.h	/^	drmModeConnector *connector;$/;"	m	struct:drm_videodevice	access:public
+connector_type_names	SDL_fbvideo.c	/^struct type_name connector_type_names[] = {$/;"	v	typeref:struct:type_name
+connector_type_names	drm_names.h	/^struct type_name connector_type_names[] = {$/;"	v	typeref:struct:type_name
+crtc	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t crtc;$/;"	m	struct:modeset_dev	file:	access:public
+crtc	docs/drm-howto/modeset-vsync.c	/^	uint32_t crtc;$/;"	m	struct:modeset_dev	file:	access:public
+crtc	docs/drm-howto/modeset.c	/^	uint32_t crtc;$/;"	m	struct:modeset_dev	file:	access:public
+crtc	drmset.h	/^	drmModeCrtc *crtc;$/;"	m	struct:drm_videodevice	access:public
+crtc	modeset.c	/^	uint32_t crtc;$/;"	m	struct:modeset_dev	file:	access:public
+drmAllocateBuffer	drmset.h	/^static struct kms_bo *drmAllocateBuffer(struct kms_driver *kms, int width, int height, int *stride);$/;"	p	signature:(struct kms_driver *kms, int width, int height, int *stride)
+drmDevice	drmset.c	/^struct drm_videodevice *drmDevice;$/;"	v	typeref:struct:drm_videodevice
+drmDevice	main.c	/^struct drm_videodevice *drmDevice;$/;"	v	typeref:struct:drm_videodevice
+drm_videodevice	drmset.h	/^typedef struct drm_videodevice {$/;"	s
+drm_videodevice	drmset.h	/^} drm_videodevice;$/;"	t	typeref:struct:drm_videodevice
+drm_videodevice::bo	drmset.h	/^	struct kms_bo *bo[2];	$/;"	m	struct:drm_videodevice	typeref:struct:drm_videodevice::kms_bo	access:public
+drm_videodevice::connector	drmset.h	/^	drmModeConnector *connector;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::crtc	drmset.h	/^	drmModeCrtc *crtc;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::encoder	drmset.h	/^	drmModeEncoder *encoder; $/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::fb	drmset.h	/^	uint32_t fb;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::fd	drmset.h	/^	uint32_t fd;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::handle	drmset.h	/^	unsigned handle;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::height	drmset.h	/^	uint32_t height;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::kms	drmset.h	/^	struct kms_driver *kms;$/;"	m	struct:drm_videodevice	typeref:struct:drm_videodevice::kms_driver	access:public
+drm_videodevice::mappedmem	drmset.h	/^	uint8_t *mappedmem;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::mode	drmset.h	/^	drmModeModeInfo mode;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::resources	drmset.h	/^	drmModeRes *resources;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::saved_crtc	drmset.h	/^	drmModeCrtc *saved_crtc;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::size	drmset.h	/^	uint32_t size;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::src_height	drmset.h	/^	uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::src_offsetx	drmset.h	/^	uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::src_offsety	drmset.h	/^	uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::src_width	drmset.h	/^	uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::stride	drmset.h	/^	uint32_t stride;$/;"	m	struct:drm_videodevice	access:public
+drm_videodevice::width	drmset.h	/^	uint32_t width;$/;"	m	struct:drm_videodevice	access:public
+encoder	SDL_fbvideo.c	/^drmModeEncoder* encoder;$/;"	v
+encoder	drmset.h	/^	drmModeEncoder *encoder; $/;"	m	struct:drm_videodevice	access:public
+encoder_type_names	drm_names.h	/^struct type_name encoder_type_names[] = {$/;"	v	typeref:struct:type_name
+evctx	SDL_fbvideo.c	/^drmEventContext evctx;$/;"	v
+fb	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t fb;$/;"	m	struct:modeset_buf	file:	access:public
+fb	docs/drm-howto/modeset-vsync.c	/^	uint32_t fb;$/;"	m	struct:modeset_buf	file:	access:public
+fb	docs/drm-howto/modeset.c	/^	uint32_t fb;$/;"	m	struct:modeset_dev	file:	access:public
+fb	drmset.h	/^	uint32_t fb;$/;"	m	struct:drm_videodevice	access:public
+fb	modeset.c	/^	uint32_t fb;$/;"	m	struct:modeset_dev	file:	access:public
+fb_id	SDL_fbvideo.c	/^uint32_t fb_id[2];$/;"	v
+fd	SDL_fbvideo.c	/^int fd, modes;$/;"	v
+fd	drmset.h	/^	uint32_t fd;$/;"	m	struct:drm_videodevice	access:public
+fds	SDL_fbvideo.c	/^fd_set fds;$/;"	v
+flip_page	SDL_fbvideo.c	/^int flip_page = 0;$/;"	v
+front_buf	docs/drm-howto/modeset-double-buffered.c	/^	unsigned int front_buf;$/;"	m	struct:modeset_dev	file:	access:public
+front_buf	docs/drm-howto/modeset-vsync.c	/^	unsigned int front_buf;$/;"	m	struct:modeset_dev	file:	access:public
+g	docs/drm-howto/modeset-vsync.c	/^	uint8_t r, g, b;$/;"	m	struct:modeset_dev	file:	access:public
+g_up	docs/drm-howto/modeset-vsync.c	/^	bool r_up, g_up, b_up;$/;"	m	struct:modeset_dev	file:	access:public
+handle	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t handle;$/;"	m	struct:modeset_buf	file:	access:public
+handle	docs/drm-howto/modeset-vsync.c	/^	uint32_t handle;$/;"	m	struct:modeset_buf	file:	access:public
+handle	docs/drm-howto/modeset.c	/^	uint32_t handle;$/;"	m	struct:modeset_dev	file:	access:public
+handle	drmset.h	/^	unsigned handle;$/;"	m	struct:drm_videodevice	access:public
+handle	modeset.c	/^	uint32_t handle;$/;"	m	struct:modeset_dev	file:	access:public
+height	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t height;$/;"	m	struct:modeset_buf	file:	access:public
+height	docs/drm-howto/modeset-vsync.c	/^	uint32_t height;$/;"	m	struct:modeset_buf	file:	access:public
+height	docs/drm-howto/modeset.c	/^	uint32_t height;$/;"	m	struct:modeset_dev	file:	access:public
+height	drmset.h	/^	uint32_t height;$/;"	m	struct:drm_videodevice	access:public
+height	modeset.c	/^	uint32_t height;$/;"	m	struct:modeset_dev	file:	access:public
+kms	SDL_fbvideo.c	/^struct kms_driver *kms;$/;"	v	typeref:struct:kms_driver
+kms	drmset.h	/^	struct kms_driver *kms;$/;"	m	struct:drm_videodevice	typeref:struct:drm_videodevice::kms_driver	access:public
+leer_linea	line.c	/^void leer_linea(tlinea* linea);$/;"	p	file:	signature:(tlinea* linea)
+leer_linea	line.c	/^void leer_linea(tlinea* linea){$/;"	f	signature:(tlinea* linea)
+leer_triangulo	line.c	/^void leer_triangulo(triangulo* t);$/;"	p	file:	signature:(triangulo* t)
+leer_triangulo	line.c	/^void leer_triangulo(triangulo* t){$/;"	f	signature:(triangulo* t)
+linea_bressenham	line.c	/^void linea_bressenham (tlinea* linea) {$/;"	f	signature:(tlinea* linea)
+linea_bressenham	line.c	/^void linea_bressenham (tlinea* linea);$/;"	p	file:	signature:(tlinea* linea)
+macDraw	main.c	/^void macDraw (){$/;"	f
+macDrmCleanup	drmset.c	/^void macDrmCleanup()$/;"	f
+macDrmCleanup	drmset.h	/^void macDrmCleanup ();$/;"	p	signature:()
+macDrmPutPixel	drmset.c	/^void macDrmPutPixel( int x, int y, uint8_t r, uint8_t g, uint8_t b) {$/;"	f	signature:( int x, int y, uint8_t r, uint8_t g, uint8_t b)
+macDrmPutPixel	drmset.h	/^void macDrmPutPixel( int x, int y, uint8_t r, uint8_t g, uint8_t b);$/;"	p	signature:( int x, int y, uint8_t r, uint8_t g, uint8_t b)
+macDrmSetup	drmset.c	/^int macDrmSetup (){$/;"	f
+macDrmSetup	drmset.h	/^int macDrmSetup ();$/;"	p	signature:()
+macPlane	drmset.c	/^void macPlane ();$/;"	p	file:
+macPlane	drmset.c	/^void macPlane (){$/;"	f
+main	docs/drm-howto/modeset-double-buffered.c	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
+main	docs/drm-howto/modeset-vsync.c	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
+main	docs/drm-howto/modeset.c	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
+main	line.c	/^int main (int argc, char *argv[]){$/;"	f	signature:(int argc, char *argv[])
+main	main.c	/^int main (){$/;"	f
+main	modeset.c	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
+map	docs/drm-howto/modeset-double-buffered.c	/^	uint8_t *map;$/;"	m	struct:modeset_buf	file:	access:public
+map	docs/drm-howto/modeset-vsync.c	/^	uint8_t *map;$/;"	m	struct:modeset_buf	file:	access:public
+map	docs/drm-howto/modeset.c	/^	uint8_t *map;$/;"	m	struct:modeset_dev	file:	access:public
+map	modeset.c	/^	uint8_t *map;$/;"	m	struct:modeset_dev	file:	access:public
+mapped_vmem	SDL_fbvideo.c	/^char *mapped_vmem[2];$/;"	v
+mappedmem	drmset.h	/^	uint8_t *mappedmem;$/;"	m	struct:drm_videodevice	access:public
+min	SDL_fbvideo.c	89;"	d	file:
+mode	docs/drm-howto/modeset-double-buffered.c	/^	drmModeModeInfo mode;$/;"	m	struct:modeset_dev	file:	access:public
+mode	docs/drm-howto/modeset-vsync.c	/^	drmModeModeInfo mode;$/;"	m	struct:modeset_dev	file:	access:public
+mode	docs/drm-howto/modeset.c	/^	drmModeModeInfo mode;$/;"	m	struct:modeset_dev	file:	access:public
+mode	drmset.h	/^	drmModeModeInfo mode;$/;"	m	struct:drm_videodevice	access:public
+mode	modeset.c	/^	drmModeModeInfo mode;$/;"	m	struct:modeset_dev	file:	access:public
+modes	SDL_fbvideo.c	/^int fd, modes;$/;"	v
+modeset_buf	docs/drm-howto/modeset-double-buffered.c	/^struct modeset_buf {$/;"	s	file:
+modeset_buf	docs/drm-howto/modeset-vsync.c	/^struct modeset_buf {$/;"	s	file:
+modeset_buf::fb	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t fb;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::fb	docs/drm-howto/modeset-vsync.c	/^	uint32_t fb;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::handle	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t handle;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::handle	docs/drm-howto/modeset-vsync.c	/^	uint32_t handle;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::height	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t height;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::height	docs/drm-howto/modeset-vsync.c	/^	uint32_t height;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::map	docs/drm-howto/modeset-double-buffered.c	/^	uint8_t *map;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::map	docs/drm-howto/modeset-vsync.c	/^	uint8_t *map;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::size	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t size;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::size	docs/drm-howto/modeset-vsync.c	/^	uint32_t size;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::stride	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t stride;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::stride	docs/drm-howto/modeset-vsync.c	/^	uint32_t stride;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::width	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t width;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_buf::width	docs/drm-howto/modeset-vsync.c	/^	uint32_t width;$/;"	m	struct:modeset_buf	file:	access:public
+modeset_cleanup	docs/drm-howto/modeset-double-buffered.c	/^static void modeset_cleanup(int fd)$/;"	f	file:	signature:(int fd)
+modeset_cleanup	docs/drm-howto/modeset-double-buffered.c	/^static void modeset_cleanup(int fd);$/;"	p	file:	signature:(int fd)
+modeset_cleanup	docs/drm-howto/modeset-vsync.c	/^static void modeset_cleanup(int fd)$/;"	f	file:	signature:(int fd)
+modeset_cleanup	docs/drm-howto/modeset-vsync.c	/^static void modeset_cleanup(int fd);$/;"	p	file:	signature:(int fd)
+modeset_cleanup	docs/drm-howto/modeset.c	/^static void modeset_cleanup(int fd)$/;"	f	file:	signature:(int fd)
+modeset_cleanup	docs/drm-howto/modeset.c	/^static void modeset_cleanup(int fd);$/;"	p	file:	signature:(int fd)
+modeset_cleanup	modeset.c	/^static void modeset_cleanup(int fd)$/;"	f	file:	signature:(int fd)
+modeset_cleanup	modeset.c	/^static void modeset_cleanup(int fd);$/;"	p	file:	signature:(int fd)
+modeset_create_fb	docs/drm-howto/modeset-double-buffered.c	/^static int modeset_create_fb(int fd, struct modeset_buf *buf)$/;"	f	file:	signature:(int fd, struct modeset_buf *buf)
+modeset_create_fb	docs/drm-howto/modeset-double-buffered.c	/^static int modeset_create_fb(int fd, struct modeset_buf *buf);$/;"	p	file:	signature:(int fd, struct modeset_buf *buf)
+modeset_create_fb	docs/drm-howto/modeset-vsync.c	/^static int modeset_create_fb(int fd, struct modeset_buf *buf)$/;"	f	file:	signature:(int fd, struct modeset_buf *buf)
+modeset_create_fb	docs/drm-howto/modeset-vsync.c	/^static int modeset_create_fb(int fd, struct modeset_buf *buf);$/;"	p	file:	signature:(int fd, struct modeset_buf *buf)
+modeset_create_fb	docs/drm-howto/modeset.c	/^static int modeset_create_fb(int fd, struct modeset_dev *dev)$/;"	f	file:	signature:(int fd, struct modeset_dev *dev)
+modeset_create_fb	docs/drm-howto/modeset.c	/^static int modeset_create_fb(int fd, struct modeset_dev *dev);$/;"	p	file:	signature:(int fd, struct modeset_dev *dev)
+modeset_create_fb	modeset.c	/^static int modeset_create_fb(int fd, struct modeset_dev *dev)$/;"	f	file:	signature:(int fd, struct modeset_dev *dev)
+modeset_create_fb	modeset.c	/^static int modeset_create_fb(int fd, struct modeset_dev *dev);$/;"	p	file:	signature:(int fd, struct modeset_dev *dev)
+modeset_destroy_fb	docs/drm-howto/modeset-double-buffered.c	/^static void modeset_destroy_fb(int fd, struct modeset_buf *buf)$/;"	f	file:	signature:(int fd, struct modeset_buf *buf)
+modeset_destroy_fb	docs/drm-howto/modeset-double-buffered.c	/^static void modeset_destroy_fb(int fd, struct modeset_buf *buf);$/;"	p	file:	signature:(int fd, struct modeset_buf *buf)
+modeset_destroy_fb	docs/drm-howto/modeset-vsync.c	/^static void modeset_destroy_fb(int fd, struct modeset_buf *buf)$/;"	f	file:	signature:(int fd, struct modeset_buf *buf)
+modeset_destroy_fb	docs/drm-howto/modeset-vsync.c	/^static void modeset_destroy_fb(int fd, struct modeset_buf *buf);$/;"	p	file:	signature:(int fd, struct modeset_buf *buf)
+modeset_dev	docs/drm-howto/modeset-double-buffered.c	/^struct modeset_dev {$/;"	s	file:
+modeset_dev	docs/drm-howto/modeset-vsync.c	/^struct modeset_dev {$/;"	s	file:
+modeset_dev	docs/drm-howto/modeset.c	/^struct modeset_dev {$/;"	s	file:
+modeset_dev	modeset.c	/^struct modeset_dev {$/;"	s	file:
+modeset_dev::b	docs/drm-howto/modeset-vsync.c	/^	uint8_t r, g, b;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::b_up	docs/drm-howto/modeset-vsync.c	/^	bool r_up, g_up, b_up;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::bufs	docs/drm-howto/modeset-double-buffered.c	/^	struct modeset_buf bufs[2];$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_buf	file:	access:public
+modeset_dev::bufs	docs/drm-howto/modeset-vsync.c	/^	struct modeset_buf bufs[2];$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_buf	file:	access:public
+modeset_dev::cleanup	docs/drm-howto/modeset-vsync.c	/^	bool cleanup;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::conn	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t conn;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::conn	docs/drm-howto/modeset-vsync.c	/^	uint32_t conn;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::conn	docs/drm-howto/modeset.c	/^	uint32_t conn;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::conn	modeset.c	/^	uint32_t conn;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::crtc	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t crtc;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::crtc	docs/drm-howto/modeset-vsync.c	/^	uint32_t crtc;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::crtc	docs/drm-howto/modeset.c	/^	uint32_t crtc;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::crtc	modeset.c	/^	uint32_t crtc;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::fb	docs/drm-howto/modeset.c	/^	uint32_t fb;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::fb	modeset.c	/^	uint32_t fb;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::front_buf	docs/drm-howto/modeset-double-buffered.c	/^	unsigned int front_buf;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::front_buf	docs/drm-howto/modeset-vsync.c	/^	unsigned int front_buf;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::g	docs/drm-howto/modeset-vsync.c	/^	uint8_t r, g, b;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::g_up	docs/drm-howto/modeset-vsync.c	/^	bool r_up, g_up, b_up;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::handle	docs/drm-howto/modeset.c	/^	uint32_t handle;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::handle	modeset.c	/^	uint32_t handle;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::height	docs/drm-howto/modeset.c	/^	uint32_t height;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::height	modeset.c	/^	uint32_t height;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::map	docs/drm-howto/modeset.c	/^	uint8_t *map;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::map	modeset.c	/^	uint8_t *map;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::mode	docs/drm-howto/modeset-double-buffered.c	/^	drmModeModeInfo mode;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::mode	docs/drm-howto/modeset-vsync.c	/^	drmModeModeInfo mode;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::mode	docs/drm-howto/modeset.c	/^	drmModeModeInfo mode;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::mode	modeset.c	/^	drmModeModeInfo mode;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::next	docs/drm-howto/modeset-double-buffered.c	/^	struct modeset_dev *next;$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_dev	file:	access:public
+modeset_dev::next	docs/drm-howto/modeset-vsync.c	/^	struct modeset_dev *next;$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_dev	file:	access:public
+modeset_dev::next	docs/drm-howto/modeset.c	/^	struct modeset_dev *next;$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_dev	file:	access:public
+modeset_dev::next	modeset.c	/^	struct modeset_dev *next;$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_dev	file:	access:public
+modeset_dev::pflip_pending	docs/drm-howto/modeset-vsync.c	/^	bool pflip_pending;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::r	docs/drm-howto/modeset-vsync.c	/^	uint8_t r, g, b;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::r_up	docs/drm-howto/modeset-vsync.c	/^	bool r_up, g_up, b_up;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::saved_crtc	docs/drm-howto/modeset-double-buffered.c	/^	drmModeCrtc *saved_crtc;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::saved_crtc	docs/drm-howto/modeset-vsync.c	/^	drmModeCrtc *saved_crtc;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::saved_crtc	docs/drm-howto/modeset.c	/^	drmModeCrtc *saved_crtc;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::saved_crtc	modeset.c	/^	drmModeCrtc *saved_crtc;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::size	docs/drm-howto/modeset.c	/^	uint32_t size;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::size	modeset.c	/^	uint32_t size;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::stride	docs/drm-howto/modeset.c	/^	uint32_t stride;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::stride	modeset.c	/^	uint32_t stride;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::width	docs/drm-howto/modeset.c	/^	uint32_t width;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_dev::width	modeset.c	/^	uint32_t width;$/;"	m	struct:modeset_dev	file:	access:public
+modeset_draw	docs/drm-howto/modeset-double-buffered.c	/^static void modeset_draw(int fd)$/;"	f	file:	signature:(int fd)
+modeset_draw	docs/drm-howto/modeset-double-buffered.c	/^static void modeset_draw(int fd);$/;"	p	file:	signature:(int fd)
+modeset_draw	docs/drm-howto/modeset-vsync.c	/^static void modeset_draw(int fd)$/;"	f	file:	signature:(int fd)
+modeset_draw	docs/drm-howto/modeset-vsync.c	/^static void modeset_draw(int fd);$/;"	p	file:	signature:(int fd)
+modeset_draw	docs/drm-howto/modeset.c	/^static void modeset_draw(void)$/;"	f	file:	signature:(void)
+modeset_draw	docs/drm-howto/modeset.c	/^static void modeset_draw(void);$/;"	p	file:	signature:(void)
+modeset_draw	modeset.c	/^static void modeset_draw(void)$/;"	f	file:	signature:(void)
+modeset_draw	modeset.c	/^static void modeset_draw(void);$/;"	p	file:	signature:(void)
+modeset_draw_dev	docs/drm-howto/modeset-vsync.c	/^static void modeset_draw_dev(int fd, struct modeset_dev *dev)$/;"	f	file:	signature:(int fd, struct modeset_dev *dev)
+modeset_draw_dev	docs/drm-howto/modeset-vsync.c	/^static void modeset_draw_dev(int fd, struct modeset_dev *dev);$/;"	p	file:	signature:(int fd, struct modeset_dev *dev)
+modeset_find_crtc	docs/drm-howto/modeset-double-buffered.c	/^static int modeset_find_crtc(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	f	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_find_crtc	docs/drm-howto/modeset-double-buffered.c	/^static int modeset_find_crtc(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	p	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_find_crtc	docs/drm-howto/modeset-vsync.c	/^static int modeset_find_crtc(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	f	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_find_crtc	docs/drm-howto/modeset-vsync.c	/^static int modeset_find_crtc(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	p	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_find_crtc	docs/drm-howto/modeset.c	/^static int modeset_find_crtc(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	f	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_find_crtc	docs/drm-howto/modeset.c	/^static int modeset_find_crtc(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	p	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_find_crtc	modeset.c	/^static int modeset_find_crtc(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	f	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_find_crtc	modeset.c	/^static int modeset_find_crtc(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	p	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_list	docs/drm-howto/modeset-double-buffered.c	/^static struct modeset_dev *modeset_list = NULL;$/;"	v	typeref:struct:modeset_dev	file:
+modeset_list	docs/drm-howto/modeset-vsync.c	/^static struct modeset_dev *modeset_list = NULL;$/;"	v	typeref:struct:modeset_dev	file:
+modeset_list	docs/drm-howto/modeset.c	/^static struct modeset_dev *modeset_list = NULL;$/;"	v	typeref:struct:modeset_dev	file:
+modeset_list	modeset.c	/^static struct modeset_dev *modeset_list = NULL;$/;"	v	typeref:struct:modeset_dev	file:
+modeset_open	docs/drm-howto/modeset-double-buffered.c	/^static int modeset_open(int *out, const char *node)$/;"	f	file:	signature:(int *out, const char *node)
+modeset_open	docs/drm-howto/modeset-double-buffered.c	/^static int modeset_open(int *out, const char *node);$/;"	p	file:	signature:(int *out, const char *node)
+modeset_open	docs/drm-howto/modeset-vsync.c	/^static int modeset_open(int *out, const char *node)$/;"	f	file:	signature:(int *out, const char *node)
+modeset_open	docs/drm-howto/modeset-vsync.c	/^static int modeset_open(int *out, const char *node);$/;"	p	file:	signature:(int *out, const char *node)
+modeset_open	docs/drm-howto/modeset.c	/^static int modeset_open(int *out, const char *node)$/;"	f	file:	signature:(int *out, const char *node)
+modeset_open	docs/drm-howto/modeset.c	/^static int modeset_open(int *out, const char *node);$/;"	p	file:	signature:(int *out, const char *node)
+modeset_open	modeset.c	/^static int modeset_open(int *out, const char *node)$/;"	f	file:	signature:(int *out, const char *node)
+modeset_open	modeset.c	/^static int modeset_open(int *out, const char *node);$/;"	p	file:	signature:(int *out, const char *node)
+modeset_page_flip_event	docs/drm-howto/modeset-vsync.c	/^static void modeset_page_flip_event(int fd, unsigned int frame,$/;"	f	file:	signature:(int fd, unsigned int frame, unsigned int sec, unsigned int usec, void *data)
+modeset_prepare	docs/drm-howto/modeset-double-buffered.c	/^static int modeset_prepare(int fd)$/;"	f	file:	signature:(int fd)
+modeset_prepare	docs/drm-howto/modeset-double-buffered.c	/^static int modeset_prepare(int fd);$/;"	p	file:	signature:(int fd)
+modeset_prepare	docs/drm-howto/modeset-vsync.c	/^static int modeset_prepare(int fd)$/;"	f	file:	signature:(int fd)
+modeset_prepare	docs/drm-howto/modeset-vsync.c	/^static int modeset_prepare(int fd);$/;"	p	file:	signature:(int fd)
+modeset_prepare	docs/drm-howto/modeset.c	/^static int modeset_prepare(int fd)$/;"	f	file:	signature:(int fd)
+modeset_prepare	docs/drm-howto/modeset.c	/^static int modeset_prepare(int fd);$/;"	p	file:	signature:(int fd)
+modeset_prepare	modeset.c	/^static int modeset_prepare(int fd)$/;"	f	file:	signature:(int fd)
+modeset_prepare	modeset.c	/^static int modeset_prepare(int fd);$/;"	p	file:	signature:(int fd)
+modeset_setup_dev	docs/drm-howto/modeset-double-buffered.c	/^static int modeset_setup_dev(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	f	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_setup_dev	docs/drm-howto/modeset-double-buffered.c	/^static int modeset_setup_dev(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	p	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_setup_dev	docs/drm-howto/modeset-vsync.c	/^static int modeset_setup_dev(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	f	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_setup_dev	docs/drm-howto/modeset-vsync.c	/^static int modeset_setup_dev(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	p	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_setup_dev	docs/drm-howto/modeset.c	/^static int modeset_setup_dev(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	f	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_setup_dev	docs/drm-howto/modeset.c	/^static int modeset_setup_dev(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	p	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_setup_dev	modeset.c	/^static int modeset_setup_dev(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	f	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modeset_setup_dev	modeset.c	/^static int modeset_setup_dev(int fd, drmModeRes *res, drmModeConnector *conn,$/;"	p	file:	signature:(int fd, drmModeRes *res, drmModeConnector *conn, struct modeset_dev *dev)
+modinfo	SDL_fbvideo.c	/^drmModeModeInfo modinfo;$/;"	v
+name	SDL_fbvideo.c	/^	char *name;$/;"	m	struct:type_name	file:	access:public
+name	drm_names.h	/^char *name;$/;"	m	struct:type_name	access:public
+next	docs/drm-howto/modeset-double-buffered.c	/^	struct modeset_dev *next;$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_dev	file:	access:public
+next	docs/drm-howto/modeset-vsync.c	/^	struct modeset_dev *next;$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_dev	file:	access:public
+next	docs/drm-howto/modeset.c	/^	struct modeset_dev *next;$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_dev	file:	access:public
+next	modeset.c	/^	struct modeset_dev *next;$/;"	m	struct:modeset_dev	typeref:struct:modeset_dev::modeset_dev	file:	access:public
+next_color	docs/drm-howto/modeset-double-buffered.c	/^static uint8_t next_color(bool *up, uint8_t cur, unsigned int mod)$/;"	f	file:	signature:(bool *up, uint8_t cur, unsigned int mod)
+next_color	docs/drm-howto/modeset-vsync.c	/^static uint8_t next_color(bool *up, uint8_t cur, unsigned int mod)$/;"	f	file:	signature:(bool *up, uint8_t cur, unsigned int mod)
+next_color	docs/drm-howto/modeset.c	/^static uint8_t next_color(bool *up, uint8_t cur, unsigned int mod)$/;"	f	file:	signature:(bool *up, uint8_t cur, unsigned int mod)
+next_color	modeset.c	/^static uint8_t next_color(bool *up, uint8_t cur, unsigned int mod)$/;"	f	file:	signature:(bool *up, uint8_t cur, unsigned int mod)
+ovr	SDL_fbvideo.c	/^drmModePlane *ovr;$/;"	v
+page_flip_handler	SDL_fbvideo.c	/^void page_flip_handler(int fd, unsigned int frame,$/;"	f	signature:(int fd, unsigned int frame, unsigned int sec, unsigned int usec, void *data)
+pflip_pending	docs/drm-howto/modeset-vsync.c	/^	bool pflip_pending;$/;"	m	struct:modeset_dev	file:	access:public
+pixel_format	SDL_fbvideo.c	/^uint32_t pixel_format = 0;$/;"	v
+plane_id	SDL_fbvideo.c	/^uint32_t plane_id = 0;$/;"	v
+plane_resources	SDL_fbvideo.c	/^drmModePlaneRes *plane_resources;$/;"	v
+r	docs/drm-howto/modeset-vsync.c	/^	uint8_t r, g, b;$/;"	m	struct:modeset_dev	file:	access:public
+r_up	docs/drm-howto/modeset-vsync.c	/^	bool r_up, g_up, b_up;$/;"	m	struct:modeset_dev	file:	access:public
+resources	SDL_fbvideo.c	/^drmModeRes *resources;$/;"	v
+resources	drmset.h	/^	drmModeRes *resources;$/;"	m	struct:drm_videodevice	access:public
+saved_crtc	docs/drm-howto/modeset-double-buffered.c	/^	drmModeCrtc *saved_crtc;$/;"	m	struct:modeset_dev	file:	access:public
+saved_crtc	docs/drm-howto/modeset-vsync.c	/^	drmModeCrtc *saved_crtc;$/;"	m	struct:modeset_dev	file:	access:public
+saved_crtc	docs/drm-howto/modeset.c	/^	drmModeCrtc *saved_crtc;$/;"	m	struct:modeset_dev	file:	access:public
+saved_crtc	drmset.h	/^	drmModeCrtc *saved_crtc;$/;"	m	struct:drm_videodevice	access:public
+saved_crtc	modeset.c	/^	drmModeCrtc *saved_crtc;$/;"	m	struct:modeset_dev	file:	access:public
+size	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t size;$/;"	m	struct:modeset_buf	file:	access:public
+size	docs/drm-howto/modeset-vsync.c	/^	uint32_t size;$/;"	m	struct:modeset_buf	file:	access:public
+size	docs/drm-howto/modeset.c	/^	uint32_t size;$/;"	m	struct:modeset_dev	file:	access:public
+size	drmset.h	/^	uint32_t size;$/;"	m	struct:drm_videodevice	access:public
+size	modeset.c	/^	uint32_t size;$/;"	m	struct:modeset_dev	file:	access:public
+src_height	SDL_fbvideo.c	/^uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	v
+src_height	drmset.h	/^	uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	m	struct:drm_videodevice	access:public
+src_offsetx	SDL_fbvideo.c	/^uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	v
+src_offsetx	drmset.h	/^	uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	m	struct:drm_videodevice	access:public
+src_offsety	SDL_fbvideo.c	/^uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	v
+src_offsety	drmset.h	/^	uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	m	struct:drm_videodevice	access:public
+src_width	SDL_fbvideo.c	/^uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	v
+src_width	drmset.h	/^	uint32_t src_width, src_height, src_offsetx, src_offsety;$/;"	m	struct:drm_videodevice	access:public
+stride	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t stride;$/;"	m	struct:modeset_buf	file:	access:public
+stride	docs/drm-howto/modeset-vsync.c	/^	uint32_t stride;$/;"	m	struct:modeset_buf	file:	access:public
+stride	docs/drm-howto/modeset.c	/^	uint32_t stride;$/;"	m	struct:modeset_dev	file:	access:public
+stride	drmset.h	/^	uint32_t stride;$/;"	m	struct:drm_videodevice	access:public
+stride	modeset.c	/^	uint32_t stride;$/;"	m	struct:modeset_dev	file:	access:public
+tlinea	line.c	/^typedef struct tlinea{$/;"	s	file:
+tlinea	line.c	/^} tlinea;$/;"	t	typeref:struct:tlinea	file:
+tlinea::x0	line.c	/^	int	x0, y0, x1, y1;$/;"	m	struct:tlinea	file:	access:public
+tlinea::x1	line.c	/^	int	x0, y0, x1, y1;$/;"	m	struct:tlinea	file:	access:public
+tlinea::y0	line.c	/^	int	x0, y0, x1, y1;$/;"	m	struct:tlinea	file:	access:public
+tlinea::y1	line.c	/^	int	x0, y0, x1, y1;$/;"	m	struct:tlinea	file:	access:public
+triangulo	line.c	/^typedef struct triangulo{$/;"	s	file:
+triangulo	line.c	/^} triangulo;$/;"	t	typeref:struct:triangulo	file:
+triangulo::x0	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+triangulo::x1	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+triangulo::x2	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+triangulo::y0	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+triangulo::y1	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+triangulo::y2	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+type	SDL_fbvideo.c	/^	int type;$/;"	m	struct:type_name	file:	access:public
+type	drm_names.h	/^int type;$/;"	m	struct:type_name	access:public
+type_name	SDL_fbvideo.c	/^struct type_name {$/;"	s	file:
+type_name	drm_names.h	/^struct type_name {$/;"	s
+type_name::name	SDL_fbvideo.c	/^	char *name;$/;"	m	struct:type_name	file:	access:public
+type_name::name	drm_names.h	/^char *name;$/;"	m	struct:type_name	access:public
+type_name::type	SDL_fbvideo.c	/^	int type;$/;"	m	struct:type_name	file:	access:public
+type_name::type	drm_names.h	/^int type;$/;"	m	struct:type_name	access:public
+type_name_fn	SDL_fbvideo.c	44;"	d	file:
+type_name_fn	drm_names.h	3;"	d
+waiting_for_vblank	SDL_fbvideo.c	/^int waiting_for_vblank;$/;"	v
+width	docs/drm-howto/modeset-double-buffered.c	/^	uint32_t width;$/;"	m	struct:modeset_buf	file:	access:public
+width	docs/drm-howto/modeset-vsync.c	/^	uint32_t width;$/;"	m	struct:modeset_buf	file:	access:public
+width	docs/drm-howto/modeset.c	/^	uint32_t width;$/;"	m	struct:modeset_dev	file:	access:public
+width	drmset.h	/^	uint32_t width;$/;"	m	struct:drm_videodevice	access:public
+width	modeset.c	/^	uint32_t width;$/;"	m	struct:modeset_dev	file:	access:public
+x0	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+x0	line.c	/^	int	x0, y0, x1, y1;$/;"	m	struct:tlinea	file:	access:public
+x1	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+x1	line.c	/^	int	x0, y0, x1, y1;$/;"	m	struct:tlinea	file:	access:public
+x2	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+y0	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+y0	line.c	/^	int	x0, y0, x1, y1;$/;"	m	struct:tlinea	file:	access:public
+y1	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public
+y1	line.c	/^	int	x0, y0, x1, y1;$/;"	m	struct:tlinea	file:	access:public
+y2	line.c	/^	int	x0, y0, x1, y1, x2, y2;$/;"	m	struct:triangulo	file:	access:public

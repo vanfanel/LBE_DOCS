@@ -61,8 +61,41 @@ static int init_gl(void)
 		-1.0f, -1.0f, +1.0f, // point blue
 		+1.0f, -1.0f, +1.0f // point magenta*/
 	};
-
+	
 	static const GLfloat vColors[] = {
+		// front
+		1.0f, 0.0f, 0.0f, // blue
+		1.0f, 0.0f, 0.0f, // magenta
+		1.0f, 0.0f, 0.0f, // cyan
+		1.0f, 0.0f, 0.0f, // white
+		// back
+		0.0f, 1.0f, 0.0f, // red
+		0.0f, 1.0f, 0.0f, // black
+		0.0f, 1.0f, 0.0f, // yellow
+		0.0f, 1.0f, 0.0f, // green
+		// right
+		0.0f, 0.0f, 1.0f, // magenta
+		0.0f, 0.0f, 1.0f, // red
+		0.0f, 0.0f, 1.0f, // white
+		0.0f, 0.0f, 1.0f, // yellow
+		// left
+		1.0f, 1.0f, 1.0f, // black
+		1.0f, 1.0f, 1.0f, // blue
+		1.0f, 1.0f, 1.0f, // green
+		1.0f, 1.0f, 1.0f, // cyan
+		// top
+		0.0f, 0.5f, 0.5f, // cyan
+		0.5f, 0.5f, 0.5f, // white
+		0.0f, 0.5f, 0.0f, // green
+		0.5f, 0.5f, 0.0f, // yellow
+		// bottom
+		0.0f, 0.0f, 0.0f, // black
+		0.5f, 0.0f, 0.0f, // red
+		0.0f, 0.0f, 0.5f, // blue
+		0.5f, 0.0f, 0.5f // magenta
+	};
+
+	/*static const GLfloat vColors[] = {
 		// front
 		0.0f, 0.0f, 1.0f, // blue
 		1.0f, 0.0f, 1.0f, // magenta
@@ -93,7 +126,7 @@ static int init_gl(void)
 		1.0f, 0.0f, 0.0f, // red
 		0.0f, 0.0f, 1.0f, // blue
 		1.0f, 0.0f, 1.0f // magenta
-	};
+	};*/
 
 	static const GLfloat vNormals[] = {
 		// front
@@ -129,35 +162,28 @@ static int init_gl(void)
 	};
 
 
-
+	//MAC Recuerda que las matrices están guardadas como column-major porque es lo que GLSL espera,
+	//y que la posición inicial del vértice es columna. Sin embargo, como GLSL va leyendo por columnas
+	//la matriz MVP, se puede premultiplicar a la posición inicial del vértice como es lógico en álgebra.
+	//DEBES desacoplar en tu cabeza el cómo se almacenan las matrices de cuáles siguen siendo las matrices
+	//y de cómo se opera con ellas. Siempre intenta mantener la coherencia del álgebra, donde las transforma
+	//ciones premultiplican a los vértices, y donde cada transformación sucesiva va más a la izquierda.
+	//Y no te lies: esto es ya una vez abstraidos de si estamos en ASSU o en ASL. Eso ya está decidido a 
+	//este nivel y la secuencia de transformaciones es la que es, se decidió antes.
 	static const char *vertex_shader_source =
-			"uniform mat4 modelviewMatrix;      \n"
 			"uniform mat4 modelviewprojectionMatrix;\n"
-			"uniform mat3 normalMatrix;         \n"
-			"                                   \n"
 			"attribute vec4 in_position;        \n"
-			"attribute vec3 in_normal;          \n"
 			"attribute vec4 in_color;           \n"
-			"\n"
-			"vec4 lightSource = vec4(2.0, 2.0, 20.0, 0.0);\n"
-			"                                   \n"
 			"varying vec4 vVaryingColor;        \n"
 			"                                   \n"
 			"void main()                        \n"
 			"{                                  \n"
 			"    gl_Position = modelviewprojectionMatrix * in_position;\n"
-			"    vec3 vEyeNormal = normalMatrix * in_normal;\n"
-			"    vec4 vPosition4 = modelviewMatrix * in_position;\n"
-			"    vec3 vPosition3 = vPosition4.xyz / vPosition4.w;\n"
-			"    vec3 vLightDir = normalize(lightSource.xyz - vPosition3);\n"
-			"    float diff = max(0.0, dot(vEyeNormal, vLightDir));\n"
-			"    vVaryingColor = vec4(diff * in_color.rgb, 1.0);\n"
-			"	 gl_PointSize = 10.0;\n" 
+			"    vVaryingColor = vec4(in_color.rgb, 1.0);\n"
 			"}                                  \n";
 
 	static const char *fragment_shader_source =
 			"precision mediump float;           \n"
-			"                                   \n"
 			"varying vec4 vVaryingColor;        \n"
 			"                                   \n"
 			"void main()                        \n"
@@ -236,7 +262,7 @@ static int init_gl(void)
 
 	glUseProgram(gl.program);
 
-	gl.modelviewmatrix = glGetUniformLocation(gl.program, "modelviewMatrix");
+	//gl.modelviewmatrix = glGetUniformLocation(gl.program, "modelviewMatrix");
 	gl.modelviewprojectionmatrix = glGetUniformLocation(gl.program, "modelviewprojectionMatrix");
 	gl.normalmatrix = glGetUniformLocation(gl.program, "normalMatrix");
 
@@ -273,23 +299,31 @@ static void draw(uint32_t i)
 	
 	ESMatrix modelview;
 	esMatrixLoadIdentity(&modelview);
-	esTranslate(&modelview, 0.0f, 0.0f, -8.0f);
+	esTranslate(&modelview, 0.0f, 0.0f, -15.0f);
 	rAngle = rAngle + rSpeed;
 	esRotate(&modelview, -rAngle*0.1 , 0.0f, 1.0f, 0.0f);
 	GLfloat aspect = (GLfloat)(drm.mode->vdisplay) / (GLfloat)(drm.mode->hdisplay);
 	ESMatrix projection;
 	esMatrixLoadIdentity(&projection);
-	esFrustum(&projection, -2.8f, +2.8f, -2.8f * aspect, +2.8f * aspect, 6.0f, 10.0f);
 	
-	/*ESMatrix modelviewprojection;
-	esMatrixLoadIdentity(&modelviewprojection);
-	memcpy (modelviewprojection.m, projection.m, sizeof (modelviewprojection.m));
-	*/
+	esFrustum(&projection, -2.8f, +2.8f, -2.8f * aspect, +2.8f * aspect, 6.0f, 30.0f);
+	
 	ESMatrix modelviewprojection;
 	esMatrixLoadIdentity(&modelviewprojection);
+
+	//modelview y projection están, desde el punto de vista de cómo está implementada la función
+	//producto esMatrixMultiply(), traspuestas. Por eso se componen en órden contrario.
+	//Y se le pasa tal cual a glUniform() porque los elementos ya están en memoria (NO en la matriz, que es 
+	//la que es en papel) como los espea GLSL para hacer "gl_position = M*v", en ese órden. Si no te parece
+	//matemáticamente coherente, es porque la coherencia matemática tienes que dejarla en el papel. En C
+	// y GLSL simplemente se almacenan acceden los datos de una determinada forma, independientemente 
+	//de las mates: y concretamente GLSL accede a la matriz de tal manera que sus elementos tienen que estar
+	//una columna tras otra en memoria o, lo que es lo mismo, en el vector de 16 elementos equivalente a la
+	//matriz 4x4.
 	esMatrixMultiply(&modelviewprojection, &modelview, &projection);
-	
-	float normal[9];
+
+
+/*	float normal[9];
 	normal[0] = modelview.m[0][0];
 	normal[1] = modelview.m[0][1];
 	normal[2] = modelview.m[0][2];
@@ -299,10 +333,11 @@ static void draw(uint32_t i)
 	normal[6] = modelview.m[2][0];
 	normal[7] = modelview.m[2][1];
 	normal[8] = modelview.m[2][2];
-	
-	glUniformMatrix4fv(gl.modelviewmatrix, 1, GL_FALSE, &modelview.m[0][0]);
+*/	
 	glUniformMatrix4fv(gl.modelviewprojectionmatrix, 1, GL_FALSE, &modelviewprojection.m[0][0]);
-	glUniformMatrix3fv(gl.normalmatrix, 1, GL_FALSE, normal);
+	//glUniformMatrix4fv(gl.modelviewprojectionmatrix, 1, GL_FALSE, &modelview.m[0][0]);
+	
+//	glUniformMatrix3fv(gl.normalmatrix, 1, GL_FALSE, normal);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
