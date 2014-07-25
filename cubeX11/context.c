@@ -1,25 +1,19 @@
-#include <context.h>
-#include <gbm.h>
-#include <errno.h>
+#include "context.h"
+#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <assert.h>
-
-
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
-
-drmEventContext evctx = {
-			.version = DRM_EVENT_CONTEXT_VERSION,
-			.page_flip_handler = page_flip_handler,
-};
-
-size_t buflen = 20;
-char buf[80];
+//#include <string.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/keysym.h>
+#include <GLES2/gl2.h>  /* use OpenGL ES 2.x */
+#include <EGL/egl.h>
 
 /*
  * Create an RGB, double-buffered X window.
  * Return the window and context handles.
  */
+
 static void
 make_x_window(Display *x_dpy, EGLDisplay egl_dpy,
               const char *name,
@@ -100,11 +94,7 @@ make_x_window(Display *x_dpy, EGLDisplay egl_dpy,
                               None, (char **)NULL, 0, &sizehints);
    }
 
-#if USE_FULL_GL /* XXX fix this when eglBindAPI() works */
-   eglBindAPI(EGL_OPENGL_API);
-#else
    eglBindAPI(EGL_OPENGL_ES_API);
-#endif
 
    ctx = eglCreateContext(egl_dpy, config, EGL_NO_CONTEXT, ctx_attribs );
    if (!ctx) {
@@ -142,82 +132,44 @@ make_x_window(Display *x_dpy, EGLDisplay egl_dpy,
    *ctxRet = ctx;
 }
 
+int init_egl (){
+   
+   const int winWidth = 720, winHeight = 576;
 
-int init_egl(void) {
-
-   const int winWidth = 300, winHeight = 300;
-   Display *x_dpy;
-   Window win;
-   EGLSurface egl_surf;
-   EGLContext egl_ctx;
-   EGLDisplay egl_dpy;
    char *dpyName = NULL;
    GLboolean printInfo = GL_FALSE;
    EGLint egl_major, egl_minor;
    int i;
    const char *s;
 
-   for (i = 1; i < argc; i++) {
-      if (strcmp(argv[i], "-display") == 0) {
-         dpyName = argv[i+1];
-         i++;
-      }
-      else if (strcmp(argv[i], "-info") == 0) {
-         printInfo = GL_TRUE;
-      }
-      else {
-         usage();
-         return -1;
-      }
-   }
+   eglInfo.width = winWidth;
+   eglInfo.height = winHeight;
 
-   x_dpy = XOpenDisplay(dpyName);
-   if (!x_dpy) {
-      printf("Error: couldn't open display %s\n",
-         dpyName ? dpyName : getenv("DISPLAY"));
+   xInfo.x_dpy = XOpenDisplay(NULL);
+   if (!xInfo.x_dpy) {
+      printf("Error: couldn't open display %s\n", getenv("DISPLAY"));
       return -1;
    }
 
-   egl_dpy = eglGetDisplay(x_dpy);
-   if (!egl_dpy) {
+   eglInfo.display = eglGetDisplay(xInfo.x_dpy);
+   if (!eglInfo.display) {
       printf("Error: eglGetDisplay() failed\n");
       return -1;
    }
 
-   if (!eglInitialize(egl_dpy, &egl_major, &egl_minor)) {
+   if (!eglInitialize(eglInfo.display, &egl_major, &egl_minor)) {
       printf("Error: eglInitialize() failed\n");
       return -1;
    }
 
-   s = eglQueryString(egl_dpy, EGL_VERSION);
-   printf("EGL_VERSION = %s\n", s);
-
-   s = eglQueryString(egl_dpy, EGL_VENDOR);
-   printf("EGL_VENDOR = %s\n", s);
-
-   s = eglQueryString(egl_dpy, EGL_EXTENSIONS);
-   printf("EGL_EXTENSIONS = %s\n", s);
-
-   s = eglQueryString(egl_dpy, EGL_CLIENT_APIS);
-   printf("EGL_CLIENT_APIS = %s\n", s);
-
-   make_x_window(x_dpy, egl_dpy,
+   make_x_window(xInfo.x_dpy, eglInfo.display,
                  "OpenGL ES 2.x tri", 0, 0, winWidth, winHeight,
-                 &win, &egl_ctx, &egl_surf);
+                 &xInfo.win, &eglInfo.context, &eglInfo.surface);
 
-   XMapWindow(x_dpy, win);
-   if (!eglMakeCurrent(egl_dpy, egl_surf, egl_surf, egl_ctx)) {
+   XMapWindow(xInfo.x_dpy, xInfo.win);
+   if (!eglMakeCurrent(eglInfo.display, eglInfo.surface, eglInfo.surface, eglInfo.context)) {
       printf("Error: eglMakeCurrent() failed\n");
       return -1;
    }
-
-   if (printInfo) {
-      printf("GL_RENDERER   = %s\n", (char *) glGetString(GL_RENDERER));
-      printf("GL_VERSION    = %s\n", (char *) glGetString(GL_VERSION));
-      printf("GL_VENDOR     = %s\n", (char *) glGetString(GL_VENDOR));
-      printf("GL_EXTENSIONS = %s\n", (char *) glGetString(GL_EXTENSIONS));
-   }
-
-	//....
-
+   return 0;
 }

@@ -9,4 +9,4 @@ all:
 
 	$(COMPILER) $(CFLAGS) $(SOURCES) -o $(TARGET) $(LDFLAGS)
 clean:
-	rm triangle
+	rm cube

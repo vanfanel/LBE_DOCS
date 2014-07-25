@@ -160,18 +160,6 @@ struct drm_fb * drm_fb_get_from_bo(struct gbm_bo *bo)
 
 int init_egl(void) {
 
-	int ret = init_drm();
-	if (ret) {
-		printf("failed to initialize DRM\n");
-		return ret;
-	}
-
-	ret = init_gbm();
-	if (ret) {
-		printf("failed to initialize GBM\n");
-		return ret;
-	}
-
 	EGLint major, minor, n;
 	
 	static const EGLint context_attribs[] = {
@@ -231,6 +219,8 @@ int init_egl(void) {
 	eglMakeCurrent(eglInfo.display, eglInfo.surface, eglInfo.surface, eglInfo.context);
 
 	//MAC Sacar esto a otra función
+	int ret;
+
 	eglSwapBuffers(eglInfo.display, eglInfo.surface);
 	bo = gbm_surface_lock_front_buffer(gbm.surface);
 	fb = drm_fb_get_from_bo(bo);
