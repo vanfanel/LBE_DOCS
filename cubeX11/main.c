@@ -330,7 +330,7 @@ void draw (){
 
 void main_loop(){
 	while (1) {
-      			XEvent event;
+      			//XEvent event;
 
       			//XNextEvent(xInfo.x_dpy, &event);
 
