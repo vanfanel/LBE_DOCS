@@ -11,4 +11,5 @@ and of course the slow X11, so these functions allow to easily deploy 2D stuff
 like games or emulators with smooth movement on almost any GNU/Linux-based platform.
 GLES2-X11: the example GLES2-2D program running on X11. 
 GLES2-KMS: the example GLES2-2D program running on KMS. 
-GLES2-DISPMANX: the example GLES2-2D program running on the native Raspberry Pi 2D API. 
+GLES2-DISPMANX: the example GLES2-2D program running on the native Raspberry Pi 2D API.
+2D-KMS: the example program running on DRM/KMS directly. 
