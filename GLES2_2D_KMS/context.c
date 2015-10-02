@@ -186,6 +186,7 @@ void init_egl() {
 		return;
 	}
 
+	// Create the GBM surface, which contains several buffers. A GBM surface is an "abstraction".
 	if (!initGBM()) {
 		printf ("failed to initialize GBM\n");
 		return;
