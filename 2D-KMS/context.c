@@ -3,12 +3,32 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <errno.h>
 #include <assert.h>
 #include <sys/mman.h>
+#include <drm/drm_fourcc.h>
+
+enum fill_pattern {
+	PATTERN_TILES = 0,
+	PATTERN_PLAIN = 1,
+	PATTERN_SMPTE = 2,
+};
 
 drmModePlaneRes *plane_resources;
 struct modeset_buf bufs[2];	
 int flip_page = 0;
+
+/*struct plane_arg {
+	uint32_t crtc_id;  // the id of CRTC to bind to
+	bool has_position;
+	int32_t x, y;
+	uint32_t w, h;
+	double scale;
+	unsigned int fb_id;
+	struct bo *bo;
+	char format_str[5]; // need to leave room for terminating \0
+	unsigned int fourcc;
+};*/
 
 void drmPageFlipHandler(int fd, uint frame, uint sec, uint usec, void *data) {
 	int *waiting_for_flip = (int *)data;
@@ -92,15 +112,15 @@ bool initDRM(void) {
 		return false;
 	}
 
-	drmModeRes *resources = drmModeGetResources(drm.fd);
-	if (!resources) {
+	drm.resources = drmModeGetResources(drm.fd);
+	if (!drm.resources) {
 		printf ("drmModeGetResources failed\n");
 		return false;
 	}
 
 	// find a connected connector
-	for (i = 0; i < (uint)resources->count_connectors; i++) {
-		connector = drmModeGetConnector(drm.fd, resources->connectors[i]);
+	for (i = 0; i < (uint)drm.resources->count_connectors; i++) {
+		connector = drmModeGetConnector(drm.fd, drm.resources->connectors[i]);
 		if (connector->connection == DRM_MODE_CONNECTED) {
 			// it's connected, let's use this!
 			break;
@@ -131,8 +151,8 @@ bool initDRM(void) {
 	}
 
 	// find encoder
-	for (i = 0; i < (uint)resources->count_encoders; i++) {
-		drm.encoder = drmModeGetEncoder(drm.fd, resources->encoders[i]);
+	for (i = 0; i < (uint)drm.resources->count_encoders; i++) {
+		drm.encoder = drmModeGetEncoder(drm.fd, drm.resources->encoders[i]);
 		if (drm.encoder->encoder_id == connector->encoder_id)
 			break;
 		drmModeFreeEncoder(drm.encoder);
@@ -150,15 +170,13 @@ bool initDRM(void) {
 	// backup original crtc so we can restore the original video mode on exit.
 	drm.orig_crtc = drmModeGetCrtc(drm.fd, drm.encoder->crtc_id);
 
-	
-
 	return true;
 }
-
 
 void setup_overlay () {
 	// Overlay stuff: overlays are bound to connectors/encoders.
 	int i;
+	//struct plane_arg p;
 
 	// get plane resources
 	drmModePlane *overlay;	
@@ -167,12 +185,29 @@ void setup_overlay () {
 		printf ("No scaling planes available!\n");
 	}
 
-	// look for a plane/overlay we can use with the original CRTC	
-	printf("NUM PLANES %d\n", plane_resources->count_planes);
+	// look for a plane/overlay we can use with the configured CRTC	
+	// Find a  plane which can be connected to our CRTC. Find the
+	// CRTC index first, then iterate over available planes.
+	// Yes, strangely we need the in-use CRTC index to mask possible_crtc 
+	// during the planes iteration...
+
+	unsigned int crtc_index;
+	//struct crtc *crtc = NULL;
+	for (i = 0; i < (unsigned int)drm.resources->count_crtcs; i++) {
+		if (drm.crtc_id == drm.resources->crtcs[i]) {
+			crtc_index = i;
+			printf ("CRTC index found %d with ID %d\n", crtc_index, drm.crtc_id);
+			break;
+		}
+	}
+	
+
+	printf("NUM PLANES %d, CRTC ID %d\n", plane_resources->count_planes, drm.encoder->crtc_id);
 	for (i = 0; i < plane_resources->count_planes; i++) {
 		overlay = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
-                if (overlay->possible_crtcs & drm.encoder->crtc_id){
+                if (overlay->possible_crtcs & (1 << crtc_index)){
                         drm.plane_id = overlay->plane_id;
+			printf ("using plane ID %d\n", drm.plane_id);
 			break;
 		}
 		drmModeFreePlane(overlay);
@@ -180,23 +215,30 @@ void setup_overlay () {
 
 	if (!drm.plane_id) {
 		printf ("couldn't find an usable overlay for current CRTC\n");
+		deinit_kms();
+		exit (0);
 	}
 
-}
-/*bool initGBM() {
-	gbm.dev = gbm_create_device(drm.fd);
-
-	gbm.surface = gbm_surface_create(gbm.dev,
-			drm.mode->hdisplay, drm.mode->vdisplay,
-			GBM_FORMAT_XRGB8888,
-			GBM_BO_USE_SCANOUT | GBM_BO_USE_RENDERING);
-	if (!gbm.surface) {
-		printf ("failed to create gbm surface\n");
-		return -1;
-	}
+	// note src coords (last 4 args) are in Q16 format
+	// crtc_w and crtc_h are the final size with applied scale/ratio.
+	// pw and ph are the input size: the size of the area we read from the fb.
+	int crtc_x = 0;
+	int crtc_y = 0;
+	uint32_t plane_flags = 0;
 	
-	return true;
-}*/
+	int pw = 320;
+	int ph = 200;
+	int crtc_w = drm.mode->hdisplay;
+	int crtc_h = drm.mode->vdisplay;
+	
+
+	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
+			    plane_flags, /*crtc_x*/0, /*crtc_y*/0, crtc_w, crtc_h,
+			    0, 0, pw << 16, ph << 16)) {
+		fprintf(stderr, "failed to enable plane: %s\n",
+			strerror(errno));	
+	}
+}
 
 static int modeset_create_fb(int fd, struct modeset_buf *buf)
 {
@@ -218,15 +260,84 @@ static int modeset_create_fb(int fd, struct modeset_buf *buf)
 	buf->size = creq.size;
 	buf->handle = creq.handle;
 
-	/* create framebuffer object for the dumb-buffer */
+	/* create framebuffer object for the dumb-buffer. We have the 
+	 * framebuffer and we need an object to work with it. 	*/
 	ret = drmModeAddFB(fd, buf->width, buf->height, 16, 16, buf->stride,
 			   buf->handle, &buf->fb);
 	if (ret) {
-		printf("cannot create framebuffer\n");
+		printf("cannot create framebuffer object\n");
 		goto err_destroy;
 	}
 
 	/* prepare buffer for memory mapping */
+	memset(&mreq, 0, sizeof(mreq));
+	mreq.handle = buf->handle;
+	ret = drmIoctl(fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
+	if (ret) {
+		printf("cannot map dumb buffer\n");
+		goto err_fb;
+	}
+
+	/* perform actual memory mapping */
+	buf->map = mmap(0, buf->size, PROT_READ | PROT_WRITE, MAP_SHARED,
+		        fd, mreq.offset);
+	if (buf->map == MAP_FAILED) {
+		printf("cannot mmap dumb buffer\n");
+		goto err_fb;
+	}
+
+	/* clear the framebuffer to 0 */
+	memset(buf->map, 0, buf->size);
+
+	return 0;
+
+err_fb:
+	drmModeRmFB(fd, buf->fb);
+err_destroy:
+	memset(&dreq, 0, sizeof(dreq));
+	dreq.handle = buf->handle;
+	drmIoctl(fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
+	return ret;
+}
+
+/* Implementation using drmModeAddFB2() */
+static int modeset_create_fb2(int fd, struct modeset_buf *buf)
+{
+	struct drm_mode_create_dumb creq;
+	struct drm_mode_destroy_dumb dreq;
+	struct drm_mode_map_dumb mreq;
+	int ret;
+
+	// create dumb buffer
+	memset(&creq, 0, sizeof(creq));
+	creq.width = buf->width;
+	creq.height = buf->height;
+	creq.bpp = 16;
+	ret = drmIoctl(fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
+	if (ret < 0) {
+		printf("cannot create dumb buffer\n");
+	}
+	buf->stride = creq.pitch;
+	buf->size = creq.size;
+	buf->handle = creq.handle;
+
+	// create framebuffer object for the dumb-buffer. We have the 
+	// framebuffer and we need an object to work with it.
+	//ret = drmModeAddFB(fd, buf->width, buf->height, 16, 16, buf->stride,
+	//	buf->handle, &buf->fb);
+
+	buf->pixel_format = DRM_FORMAT_RGB565;
+	uint32_t offsets[1];
+	offsets[1] = 0;
+	ret = drmModeAddFB2(fd, buf->width, buf->height, 
+		buf->pixel_format, &buf->handle, &buf->stride, offsets, &buf->fb, 0);
+ 
+	if (ret) {
+		printf("cannot create framebuffer object\n");
+		goto err_destroy;
+	}
+
+	// prepare buffer for memory mapping
 	memset(&mreq, 0, sizeof(mreq));
 	mreq.handle = buf->handle;
 	ret = drmIoctl(fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
@@ -263,20 +374,10 @@ void init_kms() {
 		return;
 	}
 	
-	// Create the GBM surface, which contains several buffers. A GBM surface is an "abstraction".
-	/*if (!initGBM()) {
-		printf ("failed to initialize GBM\n");
-		return;
-	}*/
-	
-	//bo = gbm_surface_lock_front_buffer(gbm.surface);
-        //fb = drmFBGetFromBO(bo);
-
 	// BLOCK non-GL starts: in this block we do what we need to do because we don't use a
 	// GBM surface anymore (hence we don't have the framebuffers of the GBM surface anymore) 
 	// because we won't use GLES, but dummy buffers instead.	
 
-	// ALT BLOCK
 	// instead of a gbm bo, we add a dummy framebuffer this time
 	// Structures for fb creation, memory mapping and destruction.
         
@@ -287,21 +388,16 @@ void init_kms() {
 	bufs[1].height = drm.mode->vdisplay;
 
 	/* create framebuffer #1 for this CRTC */
-	int ret = modeset_create_fb(drm.fd, &bufs[0]);	
+	int ret = modeset_create_fb2(drm.fd, &bufs[0]);	
 	if (ret) {
 		printf("no valid crtc for connector\n");
 	}
 
 	/* create framebuffer #2 for this CRTC */
-	ret = modeset_create_fb(drm.fd, &bufs[1]);	
+	ret = modeset_create_fb2(drm.fd, &bufs[1]);	
 	if (ret) {
 		printf("no valid crtc for connector\n");
 	}
-
-	// ALT BLOCK ENDS
-	
-
-	// BLOCK non-GL ends
 
 	// set mode physical video mode. We start scanout-ing on buffer 0.
         if (drmModeSetCrtc(drm.fd, drm.crtc_id, bufs[0].fb, 0, 0, &drm.connector_id, 1, drm.mode)) {

@@ -1,0 +1,74 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CFLAGS	Makefile	/^CFLAGS=-O0 -ggdb -I. -I\/usr\/include\/drm$/;"	m
+COMPILER	Makefile	/^COMPILER=gcc$/;"	m
+LDFLAGS	Makefile	/^LDFLAGS=-lm -ldrm$/;"	m
+PATTERN_PLAIN	context.c	/^	PATTERN_PLAIN = 1,$/;"	e	enum:fill_pattern	file:
+PATTERN_SMPTE	context.c	/^	PATTERN_SMPTE = 2,$/;"	e	enum:fill_pattern	file:
+PATTERN_TILES	context.c	/^	PATTERN_TILES = 0,$/;"	e	enum:fill_pattern	file:
+SOURCES	Makefile	/^SOURCES=*.c$/;"	m
+TARGET	Makefile	/^TARGET=test$/;"	m
+__anon1::dev	context.h	/^	struct gbm_device *dev;$/;"	m	struct:__anon1	typeref:struct:__anon1::gbm_device	access:public
+__anon1::surface	context.h	/^	struct gbm_surface *surface;$/;"	m	struct:__anon1	typeref:struct:__anon1::gbm_surface	access:public
+bufs	context.c	/^struct modeset_buf bufs[2];	$/;"	v	typeref:struct:modeset_buf
+clear_screen	main.c	/^void clear_screen (int width, int height, void* pixels) {$/;"	f	signature:(int width, int height, void* pixels)
+connector_id	context.h	/^	uint32_t connector_id;$/;"	m	struct:drm_struct	access:public
+crtc_id	context.h	/^	uint32_t crtc_id;$/;"	m	struct:drm_struct	access:public
+deinit_kms	context.c	/^void deinit_kms() {$/;"	f
+deinit_kms	context.h	/^void deinit_kms();$/;"	p	signature:()
+dev	context.h	/^	struct gbm_device *dev;$/;"	m	struct:__anon1	typeref:struct:__anon1::gbm_device	access:public
+drm	context.h	/^struct drm_struct drm;$/;"	v	typeref:struct:drm_struct
+drmDraw	context.c	/^void drmDraw(void *pixels) {$/;"	f	signature:(void *pixels)
+drmDraw	context.h	/^void drmDraw(void *pixels);$/;"	p	signature:(void *pixels)
+drmPageFlip	context.c	/^void drmPageFlip(void) {$/;"	f	signature:(void)
+drmPageFlip	context.h	/^void drmPageFlip();$/;"	p	signature:()
+drmPageFlipHandler	context.c	/^void drmPageFlipHandler(int fd, uint frame, uint sec, uint usec, void *data) {$/;"	f	signature:(int fd, uint frame, uint sec, uint usec, void *data)
+drm_struct	context.h	/^struct drm_struct {$/;"	s
+drm_struct::connector_id	context.h	/^	uint32_t connector_id;$/;"	m	struct:drm_struct	access:public
+drm_struct::crtc_id	context.h	/^	uint32_t crtc_id;$/;"	m	struct:drm_struct	access:public
+drm_struct::encoder	context.h	/^	drmModeEncoder *encoder;$/;"	m	struct:drm_struct	access:public
+drm_struct::fd	context.h	/^	int fd;$/;"	m	struct:drm_struct	access:public
+drm_struct::mode	context.h	/^	drmModeModeInfo *mode;$/;"	m	struct:drm_struct	access:public
+drm_struct::orig_crtc	context.h	/^	drmModeCrtcPtr orig_crtc;$/;"	m	struct:drm_struct	access:public
+drm_struct::plane_id	context.h	/^	uint32_t plane_id;	$/;"	m	struct:drm_struct	access:public
+drm_struct::resources	context.h	/^	drmModeRes *resources;$/;"	m	struct:drm_struct	access:public
+encoder	context.h	/^	drmModeEncoder *encoder;$/;"	m	struct:drm_struct	access:public
+eventContext	context.h	/^drmEventContext eventContext;$/;"	v
+fb	context.h	/^	uint32_t fb;$/;"	m	struct:modeset_buf	access:public
+fd	context.h	/^	int fd;$/;"	m	struct:drm_struct	access:public
+fill_pattern	context.c	/^enum fill_pattern {$/;"	g	file:
+flip_page	context.c	/^int flip_page = 0;$/;"	v
+gbm	context.h	/^} gbm;$/;"	v	typeref:struct:__anon1
+handle	context.h	/^	uint32_t handle;$/;"	m	struct:modeset_buf	access:public
+height	context.h	/^	uint32_t height;$/;"	m	struct:modeset_buf	access:public
+initDRM	context.c	/^bool initDRM(void) {$/;"	f	signature:(void)
+init_kms	context.c	/^void init_kms() {$/;"	f
+init_kms	context.h	/^void init_kms();$/;"	p	signature:()
+main	main.c	/^int main () {$/;"	f
+map	context.h	/^	uint8_t *map;$/;"	m	struct:modeset_buf	access:public
+mode	context.h	/^	drmModeModeInfo *mode;$/;"	m	struct:drm_struct	access:public
+modeset_buf	context.h	/^struct modeset_buf {$/;"	s
+modeset_buf::fb	context.h	/^	uint32_t fb;$/;"	m	struct:modeset_buf	access:public
+modeset_buf::handle	context.h	/^	uint32_t handle;$/;"	m	struct:modeset_buf	access:public
+modeset_buf::height	context.h	/^	uint32_t height;$/;"	m	struct:modeset_buf	access:public
+modeset_buf::map	context.h	/^	uint8_t *map;$/;"	m	struct:modeset_buf	access:public
+modeset_buf::pixel_format	context.h	/^	uint32_t pixel_format;$/;"	m	struct:modeset_buf	access:public
+modeset_buf::size	context.h	/^	uint32_t size;$/;"	m	struct:modeset_buf	access:public
+modeset_buf::stride	context.h	/^	uint32_t stride;$/;"	m	struct:modeset_buf	access:public
+modeset_buf::width	context.h	/^	uint32_t width;$/;"	m	struct:modeset_buf	access:public
+modeset_create_fb	context.c	/^static int modeset_create_fb(int fd, struct modeset_buf *buf)$/;"	f	file:	signature:(int fd, struct modeset_buf *buf)
+modeset_create_fb2	context.c	/^static int modeset_create_fb2(int fd, struct modeset_buf *buf)$/;"	f	file:	signature:(int fd, struct modeset_buf *buf)
+orig_crtc	context.h	/^	drmModeCrtcPtr orig_crtc;$/;"	m	struct:drm_struct	access:public
+pixel_format	context.h	/^	uint32_t pixel_format;$/;"	m	struct:modeset_buf	access:public
+plane_id	context.h	/^	uint32_t plane_id;	$/;"	m	struct:drm_struct	access:public
+plane_resources	context.c	/^drmModePlaneRes *plane_resources;$/;"	v
+resources	context.h	/^	drmModeRes *resources;$/;"	m	struct:drm_struct	access:public
+setup_overlay	context.c	/^void setup_overlay () {$/;"	f
+size	context.h	/^	uint32_t size;$/;"	m	struct:modeset_buf	access:public
+stride	context.h	/^	uint32_t stride;$/;"	m	struct:modeset_buf	access:public
+surface	context.h	/^	struct gbm_surface *surface;$/;"	m	struct:__anon1	typeref:struct:__anon1::gbm_surface	access:public
+width	context.h	/^	uint32_t width;$/;"	m	struct:modeset_buf	access:public

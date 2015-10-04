@@ -8,7 +8,7 @@ struct {
 	struct gbm_surface *surface;
 } gbm;
 
-struct {
+struct drm_struct {
 	int fd;
 	drmModeModeInfo *mode;
 	uint32_t crtc_id;
@@ -19,7 +19,8 @@ struct {
 	uint32_t plane_id;	
 
 	drmModeEncoder *encoder;
-} drm;
+	drmModeRes *resources;
+};
 
 struct modeset_buf {
 	uint32_t width;
@@ -29,7 +30,10 @@ struct modeset_buf {
 	uint32_t handle;
 	uint8_t *map;
 	uint32_t fb;
+	uint32_t pixel_format;
 };
+
+struct drm_struct drm;
 
 drmEventContext eventContext;
 
