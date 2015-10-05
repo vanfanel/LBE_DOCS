@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <drm/drm_fourcc.h>
+#include "pixformats.h"
 
 enum fill_pattern {
 	PATTERN_TILES = 0,
@@ -14,7 +15,7 @@ enum fill_pattern {
 	PATTERN_SMPTE = 2,
 };
 
-drmModePlaneRes *plane_resources;
+
 struct modeset_buf bufs[2];	
 int flip_page = 0;
 
@@ -173,13 +174,46 @@ bool initDRM(void) {
 	return true;
 }
 
+// gets fourcc, returns name string.
+void get_format_name(const unsigned int fourcc, char *format_str)
+{
+	unsigned int i;
+	for (i = 0; i < ARRAY_SIZE(format_info); i++) {
+		if (format_info[i].format == fourcc) {
+			strcpy(format_str, format_info[i].name);
+		}
+	}
+}
+
+void dump_planes (int fd) {
+	int i,j;
+	
+	drmModePlaneRes *plane_resources;
+	drmModePlane *overlay;	
+	char format_str[5];
+	
+	plane_resources = drmModeGetPlaneResources(drm.fd);
+	
+	printf ("Total available planes %d\n", plane_resources->count_planes);
+	for (i = 0; i < plane_resources->count_planes; i++) {
+		overlay = drmModeGetPlane(fd, plane_resources->planes[i]);
+		printf ("**Overlay ID %d supported pixel formats:**\n",overlay->plane_id);
+		for (j = 0; j < overlay->count_formats; j++) {
+			get_format_name(overlay->formats[j], format_str);
+			printf ("%s\t", format_str);	
+		}	
+		printf ("\n");
+	}
+}
+
 void setup_overlay () {
 	// Overlay stuff: overlays are bound to connectors/encoders.
-	int i;
+	int i,j;
 	//struct plane_arg p;
 
 	// get plane resources
 	drmModePlane *overlay;	
+	drmModePlaneRes *plane_resources;
 	plane_resources = drmModeGetPlaneResources(drm.fd);
 	if (!plane_resources) {
 		printf ("No scaling planes available!\n");
@@ -207,7 +241,7 @@ void setup_overlay () {
 		overlay = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
                 if (overlay->possible_crtcs & (1 << crtc_index)){
                         drm.plane_id = overlay->plane_id;
-			printf ("using plane ID %d\n", drm.plane_id);
+			printf ("using plane/overlay ID %d\n", drm.plane_id);
 			break;
 		}
 		drmModeFreePlane(overlay);
@@ -218,6 +252,21 @@ void setup_overlay () {
 		deinit_kms();
 		exit (0);
 	}
+
+	// iterate over the supported pixel formats of the overlay
+	// TODO: use an abstract window struct type so we don't have to chose a buffer to compare here, but
+	// look at the pixel format of the window struct. A window has several buffers but all buffers will have
+	// the same pixel format. The pixel format of a buffer is specified at the AddFB2() function call. 
+	char format_str[5];
+	/*printf ("Overlay ID %d supported pixel formats:\n",drm.plane_id);
+	for (i = 0; i < overlay->count_formats; ++i) {
+		get_format_name(overlay->formats[i], format_str);
+		printf ("%s\n", format_str);	
+		if (overlay->formats[i] == bufs[0].pixel_format)
+			printf ("FOUND!\n");
+	}*/
+
+	dump_planes(drm.fd);	
 
 	// note src coords (last 4 args) are in Q16 format
 	// crtc_w and crtc_h are the final size with applied scale/ratio.
@@ -231,7 +280,6 @@ void setup_overlay () {
 	int crtc_w = drm.mode->hdisplay;
 	int crtc_h = drm.mode->vdisplay;
 	
-
 	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
 			    plane_flags, /*crtc_x*/0, /*crtc_y*/0, crtc_w, crtc_h,
 			    0, 0, pw << 16, ph << 16)) {
@@ -312,7 +360,7 @@ static int modeset_create_fb2(int fd, struct modeset_buf *buf)
 	memset(&creq, 0, sizeof(creq));
 	creq.width = buf->width;
 	creq.height = buf->height;
-	creq.bpp = 16;
+	creq.bpp = 32;
 	ret = drmIoctl(fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
 	if (ret < 0) {
 		printf("cannot create dumb buffer\n");
@@ -326,7 +374,9 @@ static int modeset_create_fb2(int fd, struct modeset_buf *buf)
 	//ret = drmModeAddFB(fd, buf->width, buf->height, 16, 16, buf->stride,
 	//	buf->handle, &buf->fb);
 
-	buf->pixel_format = DRM_FORMAT_RGB565;
+	//buf->pixel_format = DRM_FORMAT_RGB565;
+	buf->pixel_format = DRM_FORMAT_XRGB8888;
+	
 	uint32_t offsets[1];
 	offsets[1] = 0;
 	ret = drmModeAddFB2(fd, buf->width, buf->height, 
