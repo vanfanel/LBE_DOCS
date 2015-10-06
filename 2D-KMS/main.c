@@ -11,20 +11,20 @@ void clear_screen (int width, int height, void* pixels) {
 	
 	int i;
 	for (i = 0; i < width * height ; i++)
-		((uint16_t *)pixels)[i] = 0x0000;
+		((uint32_t *)pixels)[i] = 0xFFF5FFFF;
 }
 
 int main () {
 	
 	int i, j, k, m;
-	int total_pitch = 320 * 2; /*2 bpp*/
+	int total_pitch = 320 * 4; /*4 bpp*/
 	
-	uint16_t *pixels = malloc (320 * 200 * sizeof(uint16_t));
+	uint32_t *pixels = malloc (320 * 200 * sizeof(uint32_t));
 	init_kms();
 	
 	clear_screen (320, 200,  pixels);
 
-
+/*
 	for (m = 0; m < 1; m++) {
 		for (j = 0; j < 320 - 50; j++) {
 			
@@ -40,6 +40,10 @@ int main () {
 			drmPageFlip();
 		}
 	}
+*/
+	
+	memcpy (bufs[0].map, (uint8_t*)pixels, 320 * 200 * 4);
+	getchar();
 	free (pixels);
 	deinit_kms();
 	

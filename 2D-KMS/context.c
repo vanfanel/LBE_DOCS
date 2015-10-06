@@ -16,8 +16,11 @@ enum fill_pattern {
 };
 
 
-struct modeset_buf bufs[2];	
+
 int flip_page = 0;
+
+
+void dump_planes (int fd);
 
 /*struct plane_arg {
 	uint32_t crtc_id;  // the id of CRTC to bind to
@@ -113,6 +116,41 @@ bool initDRM(void) {
 		return false;
 	}
 
+	/*
+	// LONG OPEN BLOCK
+	const char *modules[] = { "i915", "radeon", "nouveau", "vmwgfx", "omapdrm", "exynos", "tilcdc", "msm", "sti", "tegra", "imx-drm", "rockchip", "atmel-hlcdc" };
+	char *device = NULL;
+
+	for (i = 0; i < ARRAY_SIZE(modules); i++) {
+			printf("trying to open device '%s'...", modules[i]);
+			drm.fd = drmOpen(modules[i], device);
+			if (drm.fd < 0) {
+				printf("failed.\n");
+			} else {
+				printf("success.\n");
+				break;
+			}
+		}
+
+		if (drm.fd < 0) {
+			fprintf(stderr, "no device found.\n");
+			return 1;
+		}
+	
+
+	
+	drmModePlaneRes *plane_res;
+	plane_res = drmModeGetPlaneResources(drm.fd);
+	printf ("MAC Num planes on FD %d is %d\n", drm.fd, plane_res->count_planes);	
+
+
+	*/
+	// NEW OPEN BLOCK ENDS	
+	
+	// Programmer!! Save your sanity!!
+	// VERY important or we won't get all the available planes on drmGetPlaneResources()!
+	drmSetClientCap(drm.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+
 	drm.resources = drmModeGetResources(drm.fd);
 	if (!drm.resources) {
 		printf ("drmModeGetResources failed\n");
@@ -186,6 +224,11 @@ void get_format_name(const unsigned int fourcc, char *format_str)
 }
 
 void dump_planes (int fd) {
+	// iterate over the supported pixel formats of each overlay.
+	// TODO: use an abstract window struct type so we don't have to chose a buffer to compare here, but
+	// look at the pixel format of the window struct. A window has several buffers but all buffers will have
+	// the same pixel format. The pixel format of a buffer is specified at the AddFB2() function call. 
+
 	int i,j;
 	
 	drmModePlaneRes *plane_resources;
@@ -219,6 +262,9 @@ void setup_overlay () {
 		printf ("No scaling planes available!\n");
 	}
 
+	
+	printf ("MAC Num planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
+
 	// look for a plane/overlay we can use with the configured CRTC	
 	// Find a  plane which can be connected to our CRTC. Find the
 	// CRTC index first, then iterate over available planes.
@@ -235,8 +281,9 @@ void setup_overlay () {
 		}
 	}
 	
-
-	printf("NUM PLANES %d, CRTC ID %d\n", plane_resources->count_planes, drm.encoder->crtc_id);
+	// Programmer!! Save your sanity!! Primary planes have to cover the entire CRTC, and if you
+	// don't do that, you will get dmesg error "Plane must cover entire CRTC".
+	printf("CRTC ID %d, NUM PLANES %d\n", drm.encoder->crtc_id, plane_resources->count_planes);
 	for (i = 0; i < plane_resources->count_planes; i++) {
 		overlay = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
                 if (overlay->possible_crtcs & (1 << crtc_index)){
@@ -253,40 +300,174 @@ void setup_overlay () {
 		exit (0);
 	}
 
-	// iterate over the supported pixel formats of the overlay
-	// TODO: use an abstract window struct type so we don't have to chose a buffer to compare here, but
-	// look at the pixel format of the window struct. A window has several buffers but all buffers will have
-	// the same pixel format. The pixel format of a buffer is specified at the AddFB2() function call. 
-	char format_str[5];
-	/*printf ("Overlay ID %d supported pixel formats:\n",drm.plane_id);
-	for (i = 0; i < overlay->count_formats; ++i) {
-		get_format_name(overlay->formats[i], format_str);
-		printf ("%s\n", format_str);	
-		if (overlay->formats[i] == bufs[0].pixel_format)
-			printf ("FOUND!\n");
+	dump_planes(drm.fd);	
+
+	// note src coords (last 4 args) are in Q16 format
+	// crtc_w and crtc_h are the final size with applied scale/ratio.
+	// crtc_x and crtc_y are the position of the plane
+	// pw and ph are the input size: the size of the area we read from the fb.
+	uint32_t crtc_x = 0;
+	uint32_t crtc_y = 0;
+	uint32_t plane_flags = 0;
+	
+	uint32_t pw = 320;
+	uint32_t ph = 200;
+	uint32_t crtc_w = drm.mode->hdisplay;
+	uint32_t crtc_h = drm.mode->vdisplay;
+
+	uint32_t src_offsetx = 0;
+	uint32_t src_offsety = 0;
+
+	/*extern int drmModeSetPlane(int fd, uint32_t plane_id, uint32_t crtc_id,
+			   uint32_t fb_id, uint32_t flags,
+			   int32_t crtc_x, int32_t crtc_y,
+			   uint32_t crtc_w, uint32_t crtc_h,
+			   uint32_t src_x, uint32_t src_y,
+			   uint32_t src_w, uint32_t src_h);
+	*/
+	/*printf ("Trying to set plane with ID %d\n", drm.plane_id);	
+	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
+			    plane_flags, crtc_x, crtc_y, crtc_w, crtc_h,
+			    src_offsetx<<16, src_offsety<<16, pw<<16, ph<<16)) {
+		fprintf(stderr, "failed to enable plane: %s\n",
+			strerror(errno));	
 	}*/
+
+	printf ("Trying to set plane with ID %d\n", drm.plane_id);	
+	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
+			    plane_flags, 363, 184, crtc_w, crtc_h,
+			    src_offsetx<<16, src_offsety<<16, pw<<16, ph<<16)) {
+		fprintf(stderr, "failed to enable plane: %s\n",
+			strerror(errno));	
+	}
+
+
+	printf ("crtc_x %d, crtc_y %d, crtc_w %d, crtc_h %d, pw %d, ph %d\n", crtc_x, crtc_y, crtc_w, crtc_h, pw, ph);
+
+	/*if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
+			    plane_flags, crtc_x, crtc_y, 320, 200,
+			    0, 0, 320, 200)) {
+		fprintf(stderr, "failed to enable plane: %s\n",
+			strerror(errno));	
+	}*/
+}
+
+static bool format_support(const drmModePlanePtr ovr, uint32_t fmt)
+{
+	unsigned int i;
+
+	for (i = 0; i < ovr->count_formats; ++i) {
+		if (ovr->formats[i] == fmt)
+			return true;
+	}
+
+	return false;
+}
+
+void setup_overlay2 () {
+	int i,j;
+
+	// get plane resources
+	drmModePlane *overlay;	
+	drmModePlaneRes *plane_resources;
+	plane_resources = drmModeGetPlaneResources(drm.fd);
+	if (!plane_resources) {
+		printf ("No scaling planes available!\n");
+	}
+
+	
+	printf ("MAC Num planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
+
+	// look for a plane/overlay we can use with the configured CRTC	
+	// Find a  plane which can be connected to our CRTC. Find the
+	// CRTC index first, then iterate over available planes.
+	// Yes, strangely we need the in-use CRTC index to mask possible_crtc 
+	// during the planes iteration...
+
+	unsigned int crtc_index;
+	//struct crtc *crtc = NULL;
+	for (i = 0; i < (unsigned int)drm.resources->count_crtcs; i++) {
+		if (drm.crtc_id == drm.resources->crtcs[i]) {
+			crtc_index = i;
+			printf ("CRTC index found %d with ID %d\n", crtc_index, drm.crtc_id);
+			break;
+		}
+	}
+	
+	// Programmer!! Save your sanity!! Primary planes have to cover the entire CRTC, and if you
+	// don't do that, you will get dmesg error "Plane must cover entire CRTC".
+	printf("CRTC ID %d, NUM PLANES %d\n", drm.encoder->crtc_id, plane_resources->count_planes);
+	for (i = 0; i < plane_resources->count_planes; i++) {
+		overlay = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
+               	if (!overlay || !format_support(overlay, bufs[0].pixel_format) || overlay->plane_id == 17)
+			continue;
+		if (overlay->possible_crtcs & (1 << crtc_index)){
+                        drm.plane_id = overlay->plane_id;
+			printf ("using plane/overlay ID %d\n", drm.plane_id);
+			break;
+		}
+	
+		drmModeFreePlane(overlay);
+        }
+
+	if (!drm.plane_id) {
+		printf ("couldn't find an usable overlay for current CRTC\n");
+		deinit_kms();
+		exit (0);
+	}
 
 	dump_planes(drm.fd);	
 
 	// note src coords (last 4 args) are in Q16 format
 	// crtc_w and crtc_h are the final size with applied scale/ratio.
+	// crtc_x and crtc_y are the position of the plane
 	// pw and ph are the input size: the size of the area we read from the fb.
-	int crtc_x = 0;
-	int crtc_y = 0;
+	uint32_t crtc_x = 0;
+	uint32_t crtc_y = 0;
 	uint32_t plane_flags = 0;
 	
-	int pw = 320;
-	int ph = 200;
-	int crtc_w = drm.mode->hdisplay;
-	int crtc_h = drm.mode->vdisplay;
-	
+	uint32_t pw = 320;
+	uint32_t ph = 200;
+	uint32_t crtc_w = 640;
+	uint32_t crtc_h = 480;
+
+	uint32_t src_offsetx = 0;
+	uint32_t src_offsety = 0;
+
+	/*extern int drmModeSetPlane(int fd, uint32_t plane_id, uint32_t crtc_id,
+			   uint32_t fb_id, uint32_t flags,
+			   int32_t crtc_x, int32_t crtc_y,
+			   uint32_t crtc_w, uint32_t crtc_h,
+			   uint32_t src_x, uint32_t src_y,
+			   uint32_t src_w, uint32_t src_h);
+	*/
+	/*printf ("Trying to set plane with ID %d\n", drm.plane_id);	
 	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
-			    plane_flags, /*crtc_x*/0, /*crtc_y*/0, crtc_w, crtc_h,
-			    0, 0, pw << 16, ph << 16)) {
+			    plane_flags, crtc_x, crtc_y, crtc_w, crtc_h,
+			    src_offsetx<<16, src_offsety<<16, pw<<16, ph<<16)) {
+		fprintf(stderr, "failed to enable plane: %s\n",
+			strerror(errno));	
+	}*/
+
+	printf ("Trying to set plane with ID %d on CRTC ID %d format %d\n", drm.plane_id, drm.crtc_id, bufs[0].pixel_format);	
+	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
+			    plane_flags, 0, 0, crtc_w, crtc_h,
+			    src_offsetx<<16, src_offsety<<16, pw<<16, ph<<16)) {
 		fprintf(stderr, "failed to enable plane: %s\n",
 			strerror(errno));	
 	}
+
+
+	printf ("crtc_x %d, crtc_y %d, crtc_w %d, crtc_h %d, pw %d, ph %d\n", crtc_x, crtc_y, crtc_w, crtc_h, pw, ph);
+
+	/*if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
+			    plane_flags, crtc_x, crtc_y, 320, 200,
+			    0, 0, 320, 200)) {
+		fprintf(stderr, "failed to enable plane: %s\n",
+			strerror(errno));	
+	}*/
 }
+
 
 static int modeset_create_fb(int fd, struct modeset_buf *buf)
 {
@@ -379,9 +560,10 @@ static int modeset_create_fb2(int fd, struct modeset_buf *buf)
 	
 	uint32_t offsets[1];
 	offsets[1] = 0;
+	
 	ret = drmModeAddFB2(fd, buf->width, buf->height, 
 		buf->pixel_format, &buf->handle, &buf->stride, offsets, &buf->fb, 0);
- 
+
 	if (ret) {
 		printf("cannot create framebuffer object\n");
 		goto err_destroy;
@@ -431,11 +613,17 @@ void init_kms() {
 	// instead of a gbm bo, we add a dummy framebuffer this time
 	// Structures for fb creation, memory mapping and destruction.
         
-	bufs[0].width = drm.mode->hdisplay;
+	/*bufs[0].width = drm.mode->hdisplay;
 	bufs[0].height = drm.mode->vdisplay;
 
 	bufs[1].width = drm.mode->hdisplay;
-	bufs[1].height = drm.mode->vdisplay;
+	bufs[1].height = drm.mode->vdisplay;*/
+
+	bufs[0].width = 320;
+	bufs[0].height = 200;
+
+	bufs[1].width = 320;
+	bufs[1].height = 200;
 
 	/* create framebuffer #1 for this CRTC */
 	int ret = modeset_create_fb2(drm.fd, &bufs[0]);	
@@ -450,12 +638,12 @@ void init_kms() {
 	}
 
 	// set mode physical video mode. We start scanout-ing on buffer 0.
-        if (drmModeSetCrtc(drm.fd, drm.crtc_id, bufs[0].fb, 0, 0, &drm.connector_id, 1, drm.mode)) {
+        /* if (drmModeSetCrtc(drm.fd, drm.crtc_id, bufs[0].fb, 0, 0, &drm.connector_id, 1, drm.mode)) {
                 printf ("failed to set mode\n");
                 return;
-        }
+        }*/
 
-	setup_overlay();
+	setup_overlay2();
 
 	printf ("KMS init succesfull\n");
 }
