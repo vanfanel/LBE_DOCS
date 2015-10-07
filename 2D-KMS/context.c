@@ -6,8 +6,12 @@
 #include <errno.h>
 #include <assert.h>
 #include <sys/mman.h>
-#include <drm/drm_fourcc.h>
+
 #include "pixformats.h"
+
+// This is defined in Robclark's recent xf86drmMode.h but not on current Debian one,
+// so this shouln't be necessary on future GNU/Linux systems.
+#define DRM_MODE_OBJECT_PLANE 0xeeeeeeee
 
 enum fill_pattern {
 	PATTERN_TILES = 0,
@@ -116,37 +120,6 @@ bool initDRM(void) {
 		return false;
 	}
 
-	/*
-	// LONG OPEN BLOCK
-	const char *modules[] = { "i915", "radeon", "nouveau", "vmwgfx", "omapdrm", "exynos", "tilcdc", "msm", "sti", "tegra", "imx-drm", "rockchip", "atmel-hlcdc" };
-	char *device = NULL;
-
-	for (i = 0; i < ARRAY_SIZE(modules); i++) {
-			printf("trying to open device '%s'...", modules[i]);
-			drm.fd = drmOpen(modules[i], device);
-			if (drm.fd < 0) {
-				printf("failed.\n");
-			} else {
-				printf("success.\n");
-				break;
-			}
-		}
-
-		if (drm.fd < 0) {
-			fprintf(stderr, "no device found.\n");
-			return 1;
-		}
-	
-
-	
-	drmModePlaneRes *plane_res;
-	plane_res = drmModeGetPlaneResources(drm.fd);
-	printf ("MAC Num planes on FD %d is %d\n", drm.fd, plane_res->count_planes);	
-
-
-	*/
-	// NEW OPEN BLOCK ENDS	
-	
 	// Programmer!! Save your sanity!!
 	// VERY important or we won't get all the available planes on drmGetPlaneResources()!
 	drmSetClientCap(drm.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
@@ -246,7 +219,24 @@ void dump_planes (int fd) {
 			printf ("%s\t", format_str);	
 		}	
 		printf ("\n");
+		
+		// we get a pointer to all properties of a plane and the store each one in a separately.
+		drmModeObjectPropertiesPtr props;	
+		props = drmModeObjectGetProperties(drm.fd, overlay->plane_id, DRM_MODE_OBJECT_PLANE);
+		drmModePropertyRes **props_info;
+		props_info = calloc(props->count_props, sizeof(*props_info));
+		for (j = 0; j < props->count_props; ++j) {
+			props_info[j] = drmModeGetProperty(drm.fd, props->props[j]);
+		}
+		if (drm_property_type_is(*props_info, DRM_MODE_PROP_ENUM)) {
+			printf("plane enums:\n");
+			for (j = 0; j < (*props_info)->count_enums; j++) {
+				printf(" %s=%llu\t", (*props_info)->enums[j].name, (*props_info)->enums[j].value);
+			}
+			printf("\n");
+		}
 	}
+	
 }
 
 void setup_overlay () {
@@ -283,6 +273,7 @@ void setup_overlay () {
 	
 	// Programmer!! Save your sanity!! Primary planes have to cover the entire CRTC, and if you
 	// don't do that, you will get dmesg error "Plane must cover entire CRTC".
+	// Also, primary planes can not be scaled.
 	printf("CRTC ID %d, NUM PLANES %d\n", drm.encoder->crtc_id, plane_resources->count_planes);
 	for (i = 0; i < plane_resources->count_planes; i++) {
 		overlay = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
@@ -377,6 +368,7 @@ void setup_overlay2 () {
 
 	
 	printf ("MAC Num planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
+	dump_planes(drm.fd);	
 
 	// look for a plane/overlay we can use with the configured CRTC	
 	// Find a  plane which can be connected to our CRTC. Find the
@@ -396,15 +388,23 @@ void setup_overlay2 () {
 	
 	// Programmer!! Save your sanity!! Primary planes have to cover the entire CRTC, and if you
 	// don't do that, you will get dmesg error "Plane must cover entire CRTC".
-	printf("CRTC ID %d, NUM PLANES %d\n", drm.encoder->crtc_id, plane_resources->count_planes);
+	// Look at linux/source/drivers/gpu/drm/drm_plane_helper.c comments for more info.
+	// Primary planes can't be scaled.
+	// printf("CRTC ID %d, NUM PLANES %d\n", drm.encoder->crtc_id, plane_resources->count_planes);
 	for (i = 0; i < plane_resources->count_planes; i++) {
 		overlay = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
-               	if (!overlay || !format_support(overlay, bufs[0].pixel_format) || overlay->plane_id == 17)
+		//if (overlay->plane_id == 17 || overlay->plane_id == 21) continue;
+		if (!format_support(overlay, bufs[0].pixel_format)) {
+			printf ("plane ID %d format not supported\n", overlay->plane_id);
 			continue;
+		}
 		if (overlay->possible_crtcs & (1 << crtc_index)){
                         drm.plane_id = overlay->plane_id;
 			printf ("using plane/overlay ID %d\n", drm.plane_id);
 			break;
+		}
+		else {
+			printf ("plane with ID %d can't use current CRTC\n",overlay->plane_id);
 		}
 	
 		drmModeFreePlane(overlay);
@@ -416,23 +416,22 @@ void setup_overlay2 () {
 		exit (0);
 	}
 
-	dump_planes(drm.fd);	
+
 
 	// note src coords (last 4 args) are in Q16 format
 	// crtc_w and crtc_h are the final size with applied scale/ratio.
 	// crtc_x and crtc_y are the position of the plane
 	// pw and ph are the input size: the size of the area we read from the fb.
-	uint32_t crtc_x = 0;
-	uint32_t crtc_y = 0;
 	uint32_t plane_flags = 0;
+	uint32_t plane_w = 640;
+	uint32_t plane_h = 480;
+	uint32_t plane_x = 0;
+	uint32_t plane_y = 0;
 	
-	uint32_t pw = 320;
-	uint32_t ph = 200;
-	uint32_t crtc_w = 640;
-	uint32_t crtc_h = 480;
-
-	uint32_t src_offsetx = 0;
-	uint32_t src_offsety = 0;
+	uint32_t src_w = 320;
+	uint32_t src_h = 200;
+	uint32_t src_x = 0;
+	uint32_t src_y = 0;
 
 	/*extern int drmModeSetPlane(int fd, uint32_t plane_id, uint32_t crtc_id,
 			   uint32_t fb_id, uint32_t flags,
@@ -451,14 +450,13 @@ void setup_overlay2 () {
 
 	printf ("Trying to set plane with ID %d on CRTC ID %d format %d\n", drm.plane_id, drm.crtc_id, bufs[0].pixel_format);	
 	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
-			    plane_flags, 0, 0, crtc_w, crtc_h,
-			    src_offsetx<<16, src_offsety<<16, pw<<16, ph<<16)) {
+			    plane_flags, plane_x, plane_y, plane_w, plane_h,
+			    src_x<<16, src_y<<16, src_w<<16, src_h<<16)) {
 		fprintf(stderr, "failed to enable plane: %s\n",
 			strerror(errno));	
 	}
 
-
-	printf ("crtc_x %d, crtc_y %d, crtc_w %d, crtc_h %d, pw %d, ph %d\n", crtc_x, crtc_y, crtc_w, crtc_h, pw, ph);
+	printf ("src_w %d, src_h %d, plane_w %d, plane_h %d\n", src_w, src_h, plane_w, plane_h);
 
 	/*if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
 			    plane_flags, crtc_x, crtc_y, 320, 200,
@@ -628,17 +626,17 @@ void init_kms() {
 	/* create framebuffer #1 for this CRTC */
 	int ret = modeset_create_fb2(drm.fd, &bufs[0]);	
 	if (ret) {
-		printf("no valid crtc for connector\n");
+		printf("can't create fb\n");
 	}
 
 	/* create framebuffer #2 for this CRTC */
 	ret = modeset_create_fb2(drm.fd, &bufs[1]);	
 	if (ret) {
-		printf("no valid crtc for connector\n");
+		printf("can't create fb\n");
 	}
 
 	// set mode physical video mode. We start scanout-ing on buffer 0.
-        /* if (drmModeSetCrtc(drm.fd, drm.crtc_id, bufs[0].fb, 0, 0, &drm.connector_id, 1, drm.mode)) {
+        /*if (drmModeSetCrtc(drm.fd, drm.crtc_id, bufs[0].fb, 0, 0, &drm.connector_id, 1, drm.mode)) {
                 printf ("failed to set mode\n");
                 return;
         }*/

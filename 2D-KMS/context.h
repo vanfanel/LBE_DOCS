@@ -1,12 +1,7 @@
 #include <xf86drm.h>
 #include <xf86drmMode.h>
-#include <gbm.h>
+#include <drm/drm_fourcc.h>
 #include <fcntl.h>
-
-struct {
-	struct gbm_device *dev;
-	struct gbm_surface *surface;
-} gbm;
 
 struct drm_struct {
 	int fd;
