@@ -29,49 +29,10 @@ int flip_page = 0;
 
 void dump_planes (int fd);
 
-/*struct plane_arg {
-	uint32_t crtc_id;  // the id of CRTC to bind to
-	bool has_position;
-	int32_t x, y;
-	uint32_t w, h;
-	double scale;
-	unsigned int fb_id;
-	struct bo *bo;
-	char format_str[5]; // need to leave room for terminating \0
-	unsigned int fourcc;
-};*/
-
 void drmPageFlipHandler(int fd, uint frame, uint sec, uint usec, void *data) {
 	int *waiting_for_flip = (int *)data;
 	*waiting_for_flip = 0;
 }
-
-/*struct drm_fb *drmFBGetFromBO(struct gbm_bo *bo) {
-	struct drm_fb *fb = gbm_bo_get_user_data(bo);
-	uint32_t width, height, stride, handle;
-
-	if (fb) {
-		return fb;
-	}
-	
-	fb = calloc(1, sizeof *fb);
-	fb->bo = bo;
-
-	width = gbm_bo_get_width(bo);
-	height = gbm_bo_get_height(bo);
-	stride = gbm_bo_get_stride(bo);
-	handle = gbm_bo_get_handle(bo).u32;
-
-	if (drmModeAddFB(drm.fd, width, height, 24, 32, stride, handle, &fb->fb_id)) {
-		printf("Could not add drm framebuffer\n");
-		free(fb);
-		return NULL;
-	}
-
-	// We used to pass the destroy callback function here. Now it's done manually in deinitEGL()
-	gbm_bo_set_user_data(bo, fb, NULL);
-	return fb;
-}*/
 
 void drmPageFlip(void) {
 	int waiting_for_flip = 1;
@@ -413,19 +374,20 @@ void setup_plane2 () {
 		isOverlay(plane);
 		// we are only interested in overlay planes. No overlay, no fun. 
 		// (no scaling, must cover crtc..etc) so we skip primary planes
-		if (!format_support(plane, bufs[0].pixel_format) || !isOverlay(plane)) {
-			printf ("plane ID %d format not supported\n", plane->plane_id);
+
+		if (!(plane->possible_crtcs & (1 << crtc_index))){
+			printf ("plane with ID %d can't be used with current CRTC\n",plane->plane_id);
 			continue;
 		}
-		if (plane->possible_crtcs & (1 << crtc_index)){
-                        drm.plane_id = plane->plane_id;
-			printf ("using plane/overlay ID %d\n", drm.plane_id);
-			break;
+		if (!format_support(plane, bufs[0].pixel_format)) {
+			printf ("plane with ID %d does not support framebuffer format\n", plane->plane_id);
+			continue;
 		}
-		else {
-			printf ("plane with ID %d can't use current CRTC\n",plane->plane_id);
-		}
-	
+		if (!isOverlay(plane)) {
+			printf ("plane with ID %d is not an overlay: it's primary. Not usable.\n", plane->plane_id);
+			continue;
+		}	
+                drm.plane_id = plane->plane_id;
 		drmModeFreePlane(plane);
         }
 
@@ -434,7 +396,9 @@ void setup_plane2 () {
 		deinit_kms();
 		exit (0);
 	}
-
+	else {
+		printf ("using plane/overlay ID %d\n", drm.plane_id);
+	}
 
 
 	// note src coords (last 4 args) are in Q16 format
@@ -558,7 +522,7 @@ static int modeset_create_fb2(int fd, struct modeset_buf *buf)
 	memset(&creq, 0, sizeof(creq));
 	creq.width = buf->width;
 	creq.height = buf->height;
-	creq.bpp = 32;
+	creq.bpp = 16;
 	ret = drmIoctl(fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
 	if (ret < 0) {
 		printf("cannot create dumb buffer\n");
@@ -572,8 +536,8 @@ static int modeset_create_fb2(int fd, struct modeset_buf *buf)
 	//ret = drmModeAddFB(fd, buf->width, buf->height, 16, 16, buf->stride,
 	//	buf->handle, &buf->fb);
 
-	//buf->pixel_format = DRM_FORMAT_RGB565;
-	buf->pixel_format = DRM_FORMAT_XRGB8888;
+	buf->pixel_format = DRM_FORMAT_RGB565;
+	//buf->pixel_format = DRM_FORMAT_XRGB8888;
 	
 	uint32_t offsets[1];
 	offsets[1] = 0;
