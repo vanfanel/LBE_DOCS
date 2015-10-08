@@ -160,7 +160,7 @@ void get_format_name(const unsigned int fourcc, char *format_str)
 	}
 }
 
-bool isOverlay (drmModePlane *plane) {
+uint64_t getPlaneType (drmModePlane *plane) {
 
 	int i,j;
 	
@@ -174,10 +174,11 @@ bool isOverlay (drmModePlane *plane) {
 	for (j=0; j < props->count_props; j++) {
 		if ( !strcmp(drmModeGetProperty(drm.fd, props->props[j])->name, "type")){
 			// found the type property
-			if (props->prop_values[j] == DRM_PLANE_TYPE_OVERLAY){
+			return (props->prop_values[j]);
+			/*if (props->prop_values[j] == DRM_PLANE_TYPE_OVERLAY){
 				return true;
 			}
-			else return false;
+			else return false;*/
 		}
 	}
 	printf ("\n");
@@ -213,6 +214,10 @@ void dump_planes (int fd) {
 			printf(" %s ",drmModeGetProperty(drm.fd, props->props[j])->name);
 			printf(" %"PRIu64"\t", props->prop_values[j]);
 		}
+		if (getPlaneType(plane) != DRM_PLANE_TYPE_OVERLAY)
+			printf ("\nPlane is NOT an overlay. It may be primary or cursor plane.");
+		else	
+			printf ("\nPlane is an overlay.");
 		printf ("\n");
 	}
 	
@@ -244,8 +249,8 @@ void setup_plane () {
 	}
 
 	
-	printf ("MAC Num planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
-
+	printf ("Number of planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
+	
 	// look for a plane/overlay we can use with the configured CRTC	
 	// Find a  plane which can be connected to our CRTC. Find the
 	// CRTC index first, then iterate over available planes.
@@ -253,7 +258,6 @@ void setup_plane () {
 	// during the planes iteration...
 
 	unsigned int crtc_index;
-	//struct crtc *crtc = NULL;
 	for (i = 0; i < (unsigned int)drm.resources->count_crtcs; i++) {
 		if (drm.crtc_id == drm.resources->crtcs[i]) {
 			crtc_index = i;
@@ -345,8 +349,8 @@ void setup_plane2 () {
 		printf ("No scaling planes available!\n");
 	}
 
-	//printf ("Num planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
-	//dump_planes(drm.fd);	
+	printf ("Number of planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
+	dump_planes(drm.fd);	
 
 	// look for a plane/overlay we can use with the configured CRTC	
 	// Find a  plane which can be connected to our CRTC. Find the
@@ -371,7 +375,7 @@ void setup_plane2 () {
 	// printf("CRTC ID %d, NUM PLANES %d\n", drm.encoder->crtc_id, plane_resources->count_planes);
 	for (i = 0; i < plane_resources->count_planes; i++) {
 		plane = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
-		isOverlay(plane);
+		
 		if (!(plane->possible_crtcs & (1 << crtc_index))){
 			printf ("plane with ID %d can't be used with current CRTC\n",plane->plane_id);
 			continue;
@@ -382,8 +386,8 @@ void setup_plane2 () {
 		}
 		// we are only interested in overlay planes. No overlay, no fun. 
 		// (no scaling, must cover crtc..etc) so we skip primary planes
-		if (!isOverlay(plane)) {
-			printf ("plane with ID %d is not an overlay: it's primary. Not usable.\n", plane->plane_id);
+		if (getPlaneType(plane)!= DRM_PLANE_TYPE_OVERLAY) {
+			printf ("plane with ID %d is not an overlay. May be primary or cursor. Not usable.\n", plane->plane_id);
 			continue;
 		}	
                 drm.plane_id = plane->plane_id;
