@@ -367,14 +367,11 @@ void setup_plane2 () {
 	// Programmer!! Save your sanity!! Primary planes have to cover the entire CRTC, and if you
 	// don't do that, you will get dmesg error "Plane must cover entire CRTC".
 	// Look at linux/source/drivers/gpu/drm/drm_plane_helper.c comments for more info.
-	// Primary planes can't be scaled.
+	// Also, primary planes can't be scaled: we need overlays for that.
 	// printf("CRTC ID %d, NUM PLANES %d\n", drm.encoder->crtc_id, plane_resources->count_planes);
 	for (i = 0; i < plane_resources->count_planes; i++) {
 		plane = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
 		isOverlay(plane);
-		// we are only interested in overlay planes. No overlay, no fun. 
-		// (no scaling, must cover crtc..etc) so we skip primary planes
-
 		if (!(plane->possible_crtcs & (1 << crtc_index))){
 			printf ("plane with ID %d can't be used with current CRTC\n",plane->plane_id);
 			continue;
@@ -383,6 +380,8 @@ void setup_plane2 () {
 			printf ("plane with ID %d does not support framebuffer format\n", plane->plane_id);
 			continue;
 		}
+		// we are only interested in overlay planes. No overlay, no fun. 
+		// (no scaling, must cover crtc..etc) so we skip primary planes
 		if (!isOverlay(plane)) {
 			printf ("plane with ID %d is not an overlay: it's primary. Not usable.\n", plane->plane_id);
 			continue;
@@ -392,7 +391,7 @@ void setup_plane2 () {
         }
 
 	if (!drm.plane_id) {
-		printf ("couldn't find an usable plane for current CRTC\n");
+		printf ("couldn't find an usable overlay plane for current CRTC and framebuffer pixel formal.\n");
 		deinit_kms();
 		exit (0);
 	}
