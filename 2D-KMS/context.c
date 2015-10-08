@@ -7,6 +7,9 @@
 #include <assert.h>
 #include <sys/mman.h>
 
+// for PRIu64 that's neeeded to printf 64-bit unsigned vars.
+#include <inttypes.h>
+
 #include "pixformats.h"
 
 // This is defined in Robclark's recent xf86drmMode.h but not on current Debian one,
@@ -196,51 +199,78 @@ void get_format_name(const unsigned int fourcc, char *format_str)
 	}
 }
 
+bool isOverlay (drmModePlane *plane) {
+
+	int i,j;
+	
+	// the property values and their names are stored in different arrays, so we
+	// access them simultaneously here.
+	// We are interested in OVERLAY planes only, that's type 0 or DRM_PLANE_TYPE_OVERLAY
+	// (see /usr/xf86drmMode.h for definition).
+	drmModeObjectPropertiesPtr props;	
+	props = drmModeObjectGetProperties(drm.fd, plane->plane_id, DRM_MODE_OBJECT_PLANE);
+
+	for (j=0; j < props->count_props; j++) {
+		if ( !strcmp(drmModeGetProperty(drm.fd, props->props[j])->name, "type")){
+			// found the type property
+			if (props->prop_values[j] == DRM_PLANE_TYPE_OVERLAY){
+				return true;
+			}
+			else return false;
+		}
+	}
+	printf ("\n");
+}
+
 void dump_planes (int fd) {
-	// iterate over the supported pixel formats of each overlay.
-	// TODO: use an abstract window struct type so we don't have to chose a buffer to compare here, but
-	// look at the pixel format of the window struct. A window has several buffers but all buffers will have
-	// the same pixel format. The pixel format of a buffer is specified at the AddFB2() function call. 
 
 	int i,j;
 	
 	drmModePlaneRes *plane_resources;
-	drmModePlane *overlay;	
+	drmModePlane *plane;	
 	char format_str[5];
 	
 	plane_resources = drmModeGetPlaneResources(drm.fd);
 	
 	printf ("Total available planes %d\n", plane_resources->count_planes);
 	for (i = 0; i < plane_resources->count_planes; i++) {
-		overlay = drmModeGetPlane(fd, plane_resources->planes[i]);
-		printf ("**Overlay ID %d supported pixel formats:**\n",overlay->plane_id);
-		for (j = 0; j < overlay->count_formats; j++) {
-			get_format_name(overlay->formats[j], format_str);
+		plane = drmModeGetPlane(fd, plane_resources->planes[i]);
+		printf ("**Overlay ID %d supported pixel formats:**\n",plane->plane_id);
+		// iterate over the supported pixel formats of each plane.
+		for (j = 0; j < plane->count_formats; j++) {
+			get_format_name(plane->formats[j], format_str);
 			printf ("%s\t", format_str);	
 		}	
 		printf ("\n");
 		
-		// we get a pointer to all properties of a plane and the store each one in a separately.
+		// the property values and their names are stored in different arrays, so we
+		// access them simultaneously here.
 		drmModeObjectPropertiesPtr props;	
-		props = drmModeObjectGetProperties(drm.fd, overlay->plane_id, DRM_MODE_OBJECT_PLANE);
-		drmModePropertyRes **props_info;
-		props_info = calloc(props->count_props, sizeof(*props_info));
-		for (j = 0; j < props->count_props; ++j) {
-			props_info[j] = drmModeGetProperty(drm.fd, props->props[j]);
+		props = drmModeObjectGetProperties(drm.fd, plane->plane_id, DRM_MODE_OBJECT_PLANE);
+		printf ("Plane properties: ");
+		for (j=0; j < props->count_props; j++) {
+			printf(" %s ",drmModeGetProperty(drm.fd, props->props[j])->name);
+			printf(" %"PRIu64"\t", props->prop_values[j]);
 		}
-		if (drm_property_type_is(*props_info, DRM_MODE_PROP_ENUM)) {
-			printf("plane enums:\n");
-			for (j = 0; j < (*props_info)->count_enums; j++) {
-				printf(" %s=%llu\t", (*props_info)->enums[j].name, (*props_info)->enums[j].value);
-			}
-			printf("\n");
-		}
+		printf ("\n");
 	}
 	
 }
 
-void setup_overlay () {
-	// Overlay stuff: overlays are bound to connectors/encoders.
+static bool format_support(const drmModePlanePtr ovr, uint32_t fmt)
+{
+	unsigned int i;
+
+	for (i = 0; i < ovr->count_formats; ++i) {
+		if (ovr->formats[i] == fmt)
+			return true;
+	}
+
+	return false;
+}
+
+void setup_plane () {
+	// Plane stuff: planes are bound to connectors/encoders.
 	int i,j;
 	//struct plane_arg p;
 
@@ -291,7 +321,7 @@ void setup_overlay () {
 		exit (0);
 	}
 
-	dump_planes(drm.fd);	
+	//dump_planes(drm.fd);	
 
 	// note src coords (last 4 args) are in Q16 format
 	// crtc_w and crtc_h are the final size with applied scale/ratio.
@@ -343,32 +373,19 @@ void setup_overlay () {
 	}*/
 }
 
-static bool format_support(const drmModePlanePtr ovr, uint32_t fmt)
-{
-	unsigned int i;
-
-	for (i = 0; i < ovr->count_formats; ++i) {
-		if (ovr->formats[i] == fmt)
-			return true;
-	}
-
-	return false;
-}
-
-void setup_overlay2 () {
+void setup_plane2 () {
 	int i,j;
 
 	// get plane resources
-	drmModePlane *overlay;	
+	drmModePlane *plane;	
 	drmModePlaneRes *plane_resources;
 	plane_resources = drmModeGetPlaneResources(drm.fd);
 	if (!plane_resources) {
 		printf ("No scaling planes available!\n");
 	}
 
-	
-	printf ("MAC Num planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
-	dump_planes(drm.fd);	
+	//printf ("Num planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
+	//dump_planes(drm.fd);	
 
 	// look for a plane/overlay we can use with the configured CRTC	
 	// Find a  plane which can be connected to our CRTC. Find the
@@ -392,26 +409,28 @@ void setup_overlay2 () {
 	// Primary planes can't be scaled.
 	// printf("CRTC ID %d, NUM PLANES %d\n", drm.encoder->crtc_id, plane_resources->count_planes);
 	for (i = 0; i < plane_resources->count_planes; i++) {
-		overlay = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
-		//if (overlay->plane_id == 17 || overlay->plane_id == 21) continue;
-		if (!format_support(overlay, bufs[0].pixel_format)) {
-			printf ("plane ID %d format not supported\n", overlay->plane_id);
+		plane = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
+		isOverlay(plane);
+		// we are only interested in overlay planes. No overlay, no fun. 
+		// (no scaling, must cover crtc..etc) so we skip primary planes
+		if (!format_support(plane, bufs[0].pixel_format) || !isOverlay(plane)) {
+			printf ("plane ID %d format not supported\n", plane->plane_id);
 			continue;
 		}
-		if (overlay->possible_crtcs & (1 << crtc_index)){
-                        drm.plane_id = overlay->plane_id;
+		if (plane->possible_crtcs & (1 << crtc_index)){
+                        drm.plane_id = plane->plane_id;
 			printf ("using plane/overlay ID %d\n", drm.plane_id);
 			break;
 		}
 		else {
-			printf ("plane with ID %d can't use current CRTC\n",overlay->plane_id);
+			printf ("plane with ID %d can't use current CRTC\n",plane->plane_id);
 		}
 	
-		drmModeFreePlane(overlay);
+		drmModeFreePlane(plane);
         }
 
 	if (!drm.plane_id) {
-		printf ("couldn't find an usable overlay for current CRTC\n");
+		printf ("couldn't find an usable plane for current CRTC\n");
 		deinit_kms();
 		exit (0);
 	}
@@ -641,7 +660,7 @@ void init_kms() {
                 return;
         }*/
 
-	setup_overlay2();
+	setup_plane2();
 
 	printf ("KMS init succesfull\n");
 }
