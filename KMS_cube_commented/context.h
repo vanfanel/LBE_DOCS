@@ -2,6 +2,7 @@
 #define CONTEXT_H
 
 #include <xf86drm.h>
+#include <drm/drm_mode.h>
 #include <xf86drmMode.h>
 
 #include <GLES2/gl2.h>

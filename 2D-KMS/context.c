@@ -22,10 +22,7 @@ enum fill_pattern {
 	PATTERN_SMPTE = 2,
 };
 
-
-
 int flip_page = 0;
-
 
 void dump_planes (int fd);
 
@@ -50,6 +47,34 @@ void drmPageFlip(void) {
 	/*struct gbm_bo *next_bo = gbm_surface_lock_front_buffer(gbm.surface);
 	fb = drmFBGetFromBO(next_bo);*/
 
+	
+	/*uint32_t plane_flags = 0;
+	uint32_t plane_w = drm.mode->hdisplay;
+	uint32_t plane_h = drm.mode->vdisplay;
+	uint32_t plane_x = 0;
+	uint32_t plane_y = 0;
+	
+	uint32_t src_w = bufs[0].width;
+	uint32_t src_h = bufs[0].height;
+	uint32_t src_x = 0;
+	uint32_t src_y = 0;
+
+	printf ("Trying to set plane with ID %d on CRTC ID %d format %d\n", drm.plane_id, drm.crtc_id, bufs[0].pixel_format);	
+	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
+			    plane_flags, plane_x, plane_y, plane_w, plane_h,
+			    src_x<<16, src_y<<16, src_w<<16, src_h<<16)) {
+		fprintf(stderr, "failed to enable plane: %s\n",
+			strerror(errno));	
+	}*/
+
+
+
+
+	// If we haven't connected the scanout buffer to one of the fb's, drmPageFlip() will fail...
+	// So we would need to do a SetCrtc() for this to work and thats no good because it would
+	// force us to read from a hdisplay x vdisplay size buffer, so in turn we would need
+	// to do software blitting since we have a 320x200 source...
+	// We need another solution! "Better call Robclak!".
 	if (drmModePageFlip(drm.fd, drm.crtc_id, bufs[flip_page].fb, DRM_MODE_PAGE_FLIP_EVENT, &waiting_for_flip)) {
 		printf ("Failed to queue pageflip\n");
 		return;
@@ -235,7 +260,7 @@ static bool format_support(const drmModePlanePtr ovr, uint32_t fmt)
 	return false;
 }
 
-void setup_plane () {
+/*void setup_plane () {
 	// Plane stuff: planes are bound to connectors/encoders.
 	int i,j;
 	//struct plane_arg p;
@@ -304,21 +329,6 @@ void setup_plane () {
 	uint32_t src_offsetx = 0;
 	uint32_t src_offsety = 0;
 
-	/*extern int drmModeSetPlane(int fd, uint32_t plane_id, uint32_t crtc_id,
-			   uint32_t fb_id, uint32_t flags,
-			   int32_t crtc_x, int32_t crtc_y,
-			   uint32_t crtc_w, uint32_t crtc_h,
-			   uint32_t src_x, uint32_t src_y,
-			   uint32_t src_w, uint32_t src_h);
-	*/
-	/*printf ("Trying to set plane with ID %d\n", drm.plane_id);	
-	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
-			    plane_flags, crtc_x, crtc_y, crtc_w, crtc_h,
-			    src_offsetx<<16, src_offsety<<16, pw<<16, ph<<16)) {
-		fprintf(stderr, "failed to enable plane: %s\n",
-			strerror(errno));	
-	}*/
-
 	printf ("Trying to set plane with ID %d\n", drm.plane_id);	
 	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
 			    plane_flags, 363, 184, crtc_w, crtc_h,
@@ -329,14 +339,7 @@ void setup_plane () {
 
 
 	printf ("crtc_x %d, crtc_y %d, crtc_w %d, crtc_h %d, pw %d, ph %d\n", crtc_x, crtc_y, crtc_w, crtc_h, pw, ph);
-
-	/*if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
-			    plane_flags, crtc_x, crtc_y, 320, 200,
-			    0, 0, 320, 200)) {
-		fprintf(stderr, "failed to enable plane: %s\n",
-			strerror(errno));	
-	}*/
-}
+}*/
 
 void setup_plane2 () {
 	int i,j;
@@ -409,30 +412,15 @@ void setup_plane2 () {
 	// crtc_x and crtc_y are the position of the plane
 	// pw and ph are the input size: the size of the area we read from the fb.
 	uint32_t plane_flags = 0;
-	uint32_t plane_w = 640;
-	uint32_t plane_h = 480;
+	uint32_t plane_w = drm.mode->hdisplay;
+	uint32_t plane_h = drm.mode->vdisplay;
 	uint32_t plane_x = 0;
 	uint32_t plane_y = 0;
 	
-	uint32_t src_w = 320;
-	uint32_t src_h = 200;
+	uint32_t src_w = bufs[0].width;
+	uint32_t src_h = bufs[0].height;
 	uint32_t src_x = 0;
 	uint32_t src_y = 0;
-
-	/*extern int drmModeSetPlane(int fd, uint32_t plane_id, uint32_t crtc_id,
-			   uint32_t fb_id, uint32_t flags,
-			   int32_t crtc_x, int32_t crtc_y,
-			   uint32_t crtc_w, uint32_t crtc_h,
-			   uint32_t src_x, uint32_t src_y,
-			   uint32_t src_w, uint32_t src_h);
-	*/
-	/*printf ("Trying to set plane with ID %d\n", drm.plane_id);	
-	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
-			    plane_flags, crtc_x, crtc_y, crtc_w, crtc_h,
-			    src_offsetx<<16, src_offsety<<16, pw<<16, ph<<16)) {
-		fprintf(stderr, "failed to enable plane: %s\n",
-			strerror(errno));	
-	}*/
 
 	printf ("Trying to set plane with ID %d on CRTC ID %d format %d\n", drm.plane_id, drm.crtc_id, bufs[0].pixel_format);	
 	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
@@ -443,13 +431,6 @@ void setup_plane2 () {
 	}
 
 	printf ("src_w %d, src_h %d, plane_w %d, plane_h %d\n", src_w, src_h, plane_w, plane_h);
-
-	/*if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
-			    plane_flags, crtc_x, crtc_y, 320, 200,
-			    0, 0, 320, 200)) {
-		fprintf(stderr, "failed to enable plane: %s\n",
-			strerror(errno));	
-	}*/
 }
 
 
@@ -525,7 +506,7 @@ static int modeset_create_fb2(int fd, struct modeset_buf *buf)
 	memset(&creq, 0, sizeof(creq));
 	creq.width = buf->width;
 	creq.height = buf->height;
-	creq.bpp = 16;
+	creq.bpp = 32;
 	ret = drmIoctl(fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
 	if (ret < 0) {
 		printf("cannot create dumb buffer\n");
@@ -539,8 +520,8 @@ static int modeset_create_fb2(int fd, struct modeset_buf *buf)
 	//ret = drmModeAddFB(fd, buf->width, buf->height, 16, 16, buf->stride,
 	//	buf->handle, &buf->fb);
 
-	buf->pixel_format = DRM_FORMAT_RGB565;
-	//buf->pixel_format = DRM_FORMAT_XRGB8888;
+	//buf->pixel_format = DRM_FORMAT_RGB565;
+	buf->pixel_format = DRM_FORMAT_XRGB8888;
 	
 	uint32_t offsets[1];
 	offsets[1] = 0;
@@ -597,12 +578,12 @@ void init_kms() {
 	// instead of a gbm bo, we add a dummy framebuffer this time
 	// Structures for fb creation, memory mapping and destruction.
         
-	/*bufs[0].width = drm.mode->hdisplay;
+/*	bufs[0].width = drm.mode->hdisplay;
 	bufs[0].height = drm.mode->vdisplay;
 
 	bufs[1].width = drm.mode->hdisplay;
-	bufs[1].height = drm.mode->vdisplay;*/
-
+	bufs[1].height = drm.mode->vdisplay;
+*/
 	bufs[0].width = 320;
 	bufs[0].height = 200;
 
@@ -637,8 +618,8 @@ void drmDraw(void *pixels) {
 	int y, src_off, dst_off = 0;
 	for (y = 0; y < 200; y++) {		
 		dst_off = bufs[flip_page].stride * y;		
-		src_off = 320 * 2 * y;
-		memcpy (bufs[flip_page].map + dst_off, (uint8_t*)pixels + src_off, 320 * 2);
+		src_off = 320 * 4 * y;
+		memcpy (bufs[flip_page].map + dst_off, (uint8_t*)pixels + src_off, 320 * 4);
 	}
 }
 
