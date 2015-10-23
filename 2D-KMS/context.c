@@ -34,21 +34,8 @@ void drmPageFlipHandler(int fd, uint frame, uint sec, uint usec, void *data) {
 void drmPageFlip(void) {
 	int waiting_for_flip = 1;
 	fd_set fds;
-	/* PROGRAMMER! SAVE YOUR SANITY with this information! Dark errors will engulf if you ignore this...
-	 * A gbm surface has multiple buffers (a gbm surface is an "abstraction", a "window" backed by
-	 * multiple buffers for double or triple buffering).
-	 * So gbm_surface_lock_front_buffer() locks (forbids) rendering to the buffer that has became 
-	 * the front buffer (visible buffer) AND gives us the next buffer to render into: hence it 
-	 * MUST BE CALLED JUST AFTER eglSwapBuffers(), because we need a new buffer to render into.
-	 * The best source of information for these functions is by Rob Clark himself on github:
-	 * https://github.com/robclark/libgbm/blob/master/gbm.c
-	 */ 
 
-	/*struct gbm_bo *next_bo = gbm_surface_lock_front_buffer(gbm.surface);
-	fb = drmFBGetFromBO(next_bo);*/
-
-	
-	/*uint32_t plane_flags = 0;
+	uint32_t plane_flags = 0;
 	uint32_t plane_w = drm.mode->hdisplay;
 	uint32_t plane_h = drm.mode->vdisplay;
 	uint32_t plane_x = 0;
@@ -59,16 +46,12 @@ void drmPageFlip(void) {
 	uint32_t src_x = 0;
 	uint32_t src_y = 0;
 
-	printf ("Trying to set plane with ID %d on CRTC ID %d format %d\n", drm.plane_id, drm.crtc_id, bufs[0].pixel_format);	
-	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
+	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[flip_page].fb,
 			    plane_flags, plane_x, plane_y, plane_w, plane_h,
 			    src_x<<16, src_y<<16, src_w<<16, src_h<<16)) {
-		fprintf(stderr, "failed to enable plane: %s\n",
+		fprintf(stderr, "failed to set plane so it reads from another fb on pageflip: %s\n",
 			strerror(errno));	
-	}*/
-
-
-
+	}
 
 	// If we haven't connected the scanout buffer to one of the fb's, drmPageFlip() will fail...
 	// So we would need to do a SetCrtc() for this to work and thats no good because it would
@@ -219,7 +202,7 @@ void dump_planes (int fd) {
 	
 	plane_resources = drmModeGetPlaneResources(drm.fd);
 	
-	printf ("Total available planes %d\n", plane_resources->count_planes);
+	printf ("Total available planes: %d\n\n", plane_resources->count_planes);
 	for (i = 0; i < plane_resources->count_planes; i++) {
 		plane = drmModeGetPlane(fd, plane_resources->planes[i]);
 		printf ("**Overlay ID %d supported pixel formats:**\n",plane->plane_id);
@@ -240,9 +223,9 @@ void dump_planes (int fd) {
 			printf(" %"PRIu64"\t", props->prop_values[j]);
 		}
 		if (getPlaneType(plane) != DRM_PLANE_TYPE_OVERLAY)
-			printf ("\nPlane is NOT an overlay. It may be primary or cursor plane.");
+			printf ("\nPlane is NOT an overlay. It may be primary or cursor plane.\n");
 		else	
-			printf ("\nPlane is an overlay.");
+			printf ("\nPlane is an overlay.\n");
 		printf ("\n");
 	}
 	
@@ -353,7 +336,7 @@ void setup_plane2 () {
 	}
 
 	printf ("Number of planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
-	//dump_planes(drm.fd);	
+	dump_planes(drm.fd);	
 
 	// look for a plane/overlay we can use with the configured CRTC	
 	// Find a  plane which can be connected to our CRTC. Find the

@@ -39,7 +39,7 @@ int main () {
 			memcpy (bufs[0].map, (uint8_t*)pixels, 320 * 200 * 4);
 		//	getchar();
 			//drmDraw(pixels);
-			//drmPageFlip();
+			drmPageFlip();
 		}
 	}
 
