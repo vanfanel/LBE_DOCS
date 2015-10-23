@@ -353,7 +353,7 @@ void setup_plane2 () {
 	}
 
 	printf ("Number of planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
-	dump_planes(drm.fd);	
+	//dump_planes(drm.fd);	
 
 	// look for a plane/overlay we can use with the configured CRTC	
 	// Find a  plane which can be connected to our CRTC. Find the
@@ -433,7 +433,7 @@ void setup_plane2 () {
 	printf ("src_w %d, src_h %d, plane_w %d, plane_h %d\n", src_w, src_h, plane_w, plane_h);
 }
 
-
+/* Implementation using drmModeAddFB2() */
 static int modeset_create_fb(int fd, struct modeset_buf *buf)
 {
 	struct drm_mode_create_dumb creq;
@@ -441,68 +441,7 @@ static int modeset_create_fb(int fd, struct modeset_buf *buf)
 	struct drm_mode_map_dumb mreq;
 	int ret;
 
-	/* create dumb buffer */
-	memset(&creq, 0, sizeof(creq));
-	creq.width = buf->width;
-	creq.height = buf->height;
-	creq.bpp = 16;
-	ret = drmIoctl(fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
-	if (ret < 0) {
-		printf("cannot create dumb buffer\n");
-	}
-	buf->stride = creq.pitch;
-	buf->size = creq.size;
-	buf->handle = creq.handle;
-
-	/* create framebuffer object for the dumb-buffer. We have the 
-	 * framebuffer and we need an object to work with it. 	*/
-	ret = drmModeAddFB(fd, buf->width, buf->height, 16, 16, buf->stride,
-			   buf->handle, &buf->fb);
-	if (ret) {
-		printf("cannot create framebuffer object\n");
-		goto err_destroy;
-	}
-
-	/* prepare buffer for memory mapping */
-	memset(&mreq, 0, sizeof(mreq));
-	mreq.handle = buf->handle;
-	ret = drmIoctl(fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
-	if (ret) {
-		printf("cannot map dumb buffer\n");
-		goto err_fb;
-	}
-
-	/* perform actual memory mapping */
-	buf->map = mmap(0, buf->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-		        fd, mreq.offset);
-	if (buf->map == MAP_FAILED) {
-		printf("cannot mmap dumb buffer\n");
-		goto err_fb;
-	}
-
-	/* clear the framebuffer to 0 */
-	memset(buf->map, 0, buf->size);
-
-	return 0;
-
-err_fb:
-	drmModeRmFB(fd, buf->fb);
-err_destroy:
-	memset(&dreq, 0, sizeof(dreq));
-	dreq.handle = buf->handle;
-	drmIoctl(fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
-	return ret;
-}
-
-/* Implementation using drmModeAddFB2() */
-static int modeset_create_fb2(int fd, struct modeset_buf *buf)
-{
-	struct drm_mode_create_dumb creq;
-	struct drm_mode_destroy_dumb dreq;
-	struct drm_mode_map_dumb mreq;
-	int ret;
-
-	// create dumb buffer
+	// create dumb buffer. We pass some params on the creq and get back others.
 	memset(&creq, 0, sizeof(creq));
 	creq.width = buf->width;
 	creq.height = buf->height;
@@ -515,22 +454,26 @@ static int modeset_create_fb2(int fd, struct modeset_buf *buf)
 	buf->size = creq.size;
 	buf->handle = creq.handle;
 
-	// create framebuffer object for the dumb-buffer. We have the 
-	// framebuffer and we need an object to work with it.
-	//ret = drmModeAddFB(fd, buf->width, buf->height, 16, 16, buf->stride,
-	//	buf->handle, &buf->fb);
-
 	//buf->pixel_format = DRM_FORMAT_RGB565;
 	buf->pixel_format = DRM_FORMAT_XRGB8888;
 	
-	uint32_t offsets[1];
-	offsets[1] = 0;
-	
+	uint32_t handles[4] = {buf->handle};
+	uint32_t pitches[4] = {buf->stride};
+	uint32_t offsets[4] = {0};
+
+	// create framebuffer object for the dumb-buffer. We have the 
+	// framebuffer and we need an object to work with it.
+	// drmModeAddFB() allows the driver to select the pixelformat while drmModeAddFB2()
+	// lets us specify what pixel format we want for the framebuffer.
+
 	ret = drmModeAddFB2(fd, buf->width, buf->height, 
-		buf->pixel_format, &buf->handle, &buf->stride, offsets, &buf->fb, 0);
+		buf->pixel_format, handles, pitches, offsets, &buf->fb, 0);
+
+	/*ret = drmModeAddFB(fd, buf->width, buf->height, 24, 32, buf->stride,
+	buf->handle, &buf->fb);*/
 
 	if (ret) {
-		printf("cannot create framebuffer object\n");
+		printf("drmModeAddFB2 failed: %s (%d)\n", strerror(errno), ret);	
 		goto err_destroy;
 	}
 
@@ -591,13 +534,13 @@ void init_kms() {
 	bufs[1].height = 200;
 
 	/* create framebuffer #1 for this CRTC */
-	int ret = modeset_create_fb2(drm.fd, &bufs[0]);	
-	if (ret) {
+	int ret = modeset_create_fb(drm.fd, &bufs[0]);	
+	/*if (ret) {
 		printf("can't create fb\n");
-	}
+	}*/
 
 	/* create framebuffer #2 for this CRTC */
-	ret = modeset_create_fb2(drm.fd, &bufs[1]);	
+	ret = modeset_create_fb(drm.fd, &bufs[1]);	
 	if (ret) {
 		printf("can't create fb\n");
 	}
