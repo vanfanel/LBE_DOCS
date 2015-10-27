@@ -36,9 +36,9 @@ int main () {
 					pixels[i * 320 + j + k] = 0x0000FF00;
 				
 			}
-			memcpy (bufs[0].map, (uint8_t*)pixels, 320 * 200 * 4);
+			//memcpy (bufs[0].map, (uint8_t*)pixels, 320 * 200 * 4);
 		//	getchar();
-			//drmDraw(pixels);
+			drmDraw(pixels);
 			drmPageFlip();
 		}
 	}

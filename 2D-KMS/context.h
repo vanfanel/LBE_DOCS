@@ -24,7 +24,7 @@ struct modeset_buf {
 	uint32_t size;
 	uint32_t handle;
 	uint8_t *map;
-	uint32_t fb;
+	uint32_t fb_id;
 	uint32_t pixel_format;
 };
 
@@ -36,4 +36,5 @@ drmEventContext eventContext;
 void init_kms();
 void deinit_kms();
 void drmDraw(void *pixels);
+void drmDrawSoftBlitting(void *pixels);
 void drmPageFlip();
