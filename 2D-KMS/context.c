@@ -5,6 +5,7 @@
 #include <string.h>
 #include <errno.h>
 #include <assert.h>
+#include <unistd.h>
 #include <sys/mman.h>
 #include <sys/time.h>
 
@@ -87,97 +88,72 @@ struct pipe_arg {
 	int swap_count;
 };
 
-
 void drmPageFlip(void) {
-
-
-	/*
-	extern int drmModeAtomicAddProperty(drmModeAtomicReqPtr req,
-				    uint32_t object_id,
-				    uint32_t property_id,
-				    uint64_t value);
-	*/
 	
-	
-	// Necesitamos el id de la propiedad FB_ID del plano sobre el que vamos a hacer el pageflip.
+	// We need the id of the FB_ID property of the plane on which we are going to do a pageflip. 
 	int ret;
 	struct pipe_arg pipe;
 	uint32_t fb_obj_id = 0;
 	unsigned int other_fb_id;
+
 	fb_obj_id = get_plane_prop_id(drm.plane_id, "FB_ID");
 	if (!fb_obj_id) {
 		fprintf(stderr, "plane(%u) does not exist\n", drm.plane_id);
 		return;
 	}
 
-
 	static drmModeAtomicReqPtr req = NULL;
 	req = drmModeAtomicAlloc();	
-	// Añadimos el buffer a la lista de propiedades que queremos cambiar de manera atómica,
-	// pasando el identificador de la propiedad del plano que queremos cambiar y el valor que
-	// queremos darle.
+
+	// We add the buffer to the plane properties we want to set on an atomically, in a 
+	// single step. We pass the plane id, the property id and the new fb id.
 	ret = drmModeAtomicAddProperty(req, drm.plane_id, fb_obj_id, bufs[flip_page].fb_id);		
 	if (ret < 0) {
 		printf("failed to add atomic property for pageflip\n");
 	}
-	//... y quedaría hacer el commit!
-	gettimeofday(&pipe.start, NULL);
-	ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_PAGE_FLIP_EVENT, &pipe);
+	//... now we just need to do the commit!
+	
+	ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+	//ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_PAGE_FLIP_EVENT, &pipe);
+	//ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_PAGE_FLIP_ASYNC, &pipe);
+	//ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_ATOMIC_NONBLOCK, &pipe);
+	
 	if (ret < 0) {
-		//printf("failed to commit for pageflip\n");	
 		fprintf(stderr, "failed to commit for pageflip: %s\n",
 			strerror(errno));
 		exit (1);
 	}
 
-	/*	
-	int waiting_for_flip = 1;
-	fd_set fds;
+	/*memset(&evctx, 0, sizeof evctx);
+	evctx.version = 2;
+	evctx.vblank_handler = NULL;
+	//evctx.page_flip_handler = atomic_page_flip_handler;
+	evctx.page_flip_handler = NULL;
 
-	uint32_t plane_flags = 0;
-	uint32_t plane_w = drm.mode->hdisplay;
-	uint32_t plane_h = drm.mode->vdisplay;
-	uint32_t plane_x = 0;
-	uint32_t plane_y = 0;
-	
-	uint32_t src_w = bufs[0].width;
-	uint32_t src_h = bufs[0].height;
-	uint32_t src_x = 0;
-	uint32_t src_y = 0;
+	while (1) {
+		struct timeval timeout = { .tv_sec = 3, .tv_usec = 0 };
+		fd_set fds;
 
-	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[flip_page].fb,
-			    plane_flags, plane_x, plane_y, plane_w, plane_h,
-			    src_x<<16, src_y<<16, src_w<<16, src_h<<16)) {
-		fprintf(stderr, "failed to set plane so it reads from another fb on pageflip: %s\n",
-			strerror(errno));	
-	}
-
-	// If we haven't connected the scanout buffer to one of the fb's, drmPageFlip() will fail...
-	// So we would need to do a SetCrtc() for this to work and thats no good because it would
-	// force us to read from a hdisplay x vdisplay size buffer, so in turn we would need
-	// to do software blitting since we have a 320x200 source...
-	// We need another solution! "Better call Robclak!".
-	if (drmModePageFlip(drm.fd, drm.crtc_id, bufs[flip_page].fb, DRM_MODE_PAGE_FLIP_EVENT, &waiting_for_flip)) {
-		printf ("Failed to queue pageflip\n");
-		return;
-	}
-
-	while (waiting_for_flip) {
 		FD_ZERO(&fds);
 		FD_SET(0, &fds);
 		FD_SET(drm.fd, &fds);
-		select(drm.fd+1, &fds, NULL, NULL, NULL);
-		drmHandleEvent(drm.fd, &eventContext);
-	}
-*/
+		ret = select(drm.fd + 1, &fds, NULL, NULL, &timeout);
+
+		if (ret <= 0) {
+			fprintf(stderr, "select timed out or error (ret %d)\n", ret);
+			continue;
+		} else if (FD_ISSET(0, &fds)) {
+			break;
+		}
+
+		drmHandleEvent(drm.fd, &evctx);
+	}*/
 
 	flip_page = !(flip_page);
 }
 
 bool initDRM(void) {
 	int ret;
-	eventContext.version = DRM_EVENT_CONTEXT_VERSION;
-	eventContext.page_flip_handler = drmPageFlipHandler;
 
 	drmModeConnector *connector;
 
@@ -478,6 +454,7 @@ void setup_plane2 () {
 			printf ("plane with ID %d can't be used with current CRTC\n",plane->plane_id);
 			continue;
 		}
+		// TODO: we can't rely on one buffer to determine the format!
 		if (!format_support(plane, bufs[0].pixel_format)) {
 			printf ("plane with ID %d does not support framebuffer format\n", plane->plane_id);
 			continue;
@@ -528,6 +505,8 @@ void setup_plane2 () {
 	printf ("src_w %d, src_h %d, plane_w %d, plane_h %d\n", src_w, src_h, plane_w, plane_h);
 }
 
+
+
 /* Implementation using drmModeAddFB2() */
 static int modeset_create_fb(int fd, struct modeset_buf *buf)
 {
@@ -535,6 +514,9 @@ static int modeset_create_fb(int fd, struct modeset_buf *buf)
 	struct drm_mode_destroy_dumb dreq;
 	struct drm_mode_map_dumb mreq;
 	int ret;
+
+	//buf->pixel_format = DRM_FORMAT_RGB565;
+	buf->pixel_format = DRM_FORMAT_XRGB8888;
 
 	// create dumb buffer. We pass some params on the creq and get back others.
 	memset(&creq, 0, sizeof(creq));
@@ -548,29 +530,6 @@ static int modeset_create_fb(int fd, struct modeset_buf *buf)
 	buf->stride = creq.pitch;
 	buf->size = creq.size;
 	buf->handle = creq.handle;
-
-	//buf->pixel_format = DRM_FORMAT_RGB565;
-	buf->pixel_format = DRM_FORMAT_XRGB8888;
-	
-	uint32_t handles[4] = {buf->handle};
-	uint32_t pitches[4] = {buf->stride};
-	uint32_t offsets[4] = {0};
-
-	// create framebuffer object for the dumb-buffer. We have the 
-	// framebuffer and we need an object to work with it.
-	// drmModeAddFB() allows the driver to select the pixelformat while drmModeAddFB2()
-	// lets us specify what pixel format we want for the framebuffer.
-
-	ret = drmModeAddFB2(fd, buf->width, buf->height, 
-		buf->pixel_format, handles, pitches, offsets, &buf->fb_id, 0);
-
-	/*ret = drmModeAddFB(fd, buf->width, buf->height, 24, 32, buf->stride,
-	buf->handle, &buf->fb);*/
-
-	if (ret) {
-		printf("drmModeAddFB2 failed: %s (%d)\n", strerror(errno), ret);	
-		goto err_destroy;
-	}
 
 	// prepare buffer for memory mapping
 	memset(&mreq, 0, sizeof(mreq));
@@ -589,8 +548,27 @@ static int modeset_create_fb(int fd, struct modeset_buf *buf)
 		goto err_fb;
 	}
 
-	/* clear the framebuffer to 0 */
+	/* clear the framebuffer memory to 0 */
 	memset(buf->map, 0, buf->size);
+
+	// Last but not least, we create framebuffer object for the dumb-buffer. We have the 
+	// framebuffer and we need an object to work with it.
+	// drmModeAddFB() allows the driver to select the pixelformat while drmModeAddFB2()
+	// lets us specify what pixel format we want for the framebuffer.
+	
+	uint32_t handles[4] = {buf->handle};
+	uint32_t pitches[4] = {buf->stride};
+	uint32_t offsets[4] = {0};
+	
+	ret = drmModeAddFB2(drm.fd, buf->width, buf->height, 
+		buf->pixel_format, handles, pitches, offsets, &buf->fb_id, 0);
+	
+	/*ret = drmModeAddFB(drm.fd, buf->width, buf->height, 24, 32, buf->stride,
+	      buf->handle, &buf->fb_id);
+	*/
+	if (ret) {
+		printf("drmModeAddFB2 failed: %s (%d)\n", strerror(errno), ret);	
+	}
 
 	return 0;
 
@@ -602,6 +580,8 @@ err_destroy:
 	drmIoctl(fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
 	return ret;
 }
+
+
 
 void init_kms() {
 	if (!initDRM()) {
@@ -630,9 +610,9 @@ void init_kms() {
 
 	/* create framebuffer #1 for this CRTC */
 	int ret = modeset_create_fb(drm.fd, &bufs[0]);	
-	/*if (ret) {
+	if (ret) {
 		printf("can't create fb\n");
-	}*/
+	}
 
 	/* create framebuffer #2 for this CRTC */
 	ret = modeset_create_fb(drm.fd, &bufs[1]);	

@@ -31,7 +31,7 @@ struct modeset_buf {
 struct drm_struct drm;
 struct modeset_buf bufs[2];	
 
-drmEventContext eventContext;
+drmEventContext evctx;
 
 void init_kms();
 void deinit_kms();
