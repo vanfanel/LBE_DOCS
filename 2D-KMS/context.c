@@ -112,8 +112,11 @@ void drmPageFlip(void) {
 		printf("failed to add atomic property for pageflip\n");
 	}
 	//... now we just need to do the commit!
-	
-	ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+
+	// REMEMBER!!! The DRM_MODE_PAGE_FLIP_EVENT flag asks the kernel to send you an event to the drm.fd once the 
+        // pageflip is complete. If you don't want -12 errors (ENOMEM), namely "Cannot allocate memory", then
+	// you must drain the event queue of that fd. That can be done via internal 
+	ret = drmModeAtomicCommit(drm.fd, req, 0, NULL);
 	//ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_PAGE_FLIP_EVENT, &pipe);
 	//ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_PAGE_FLIP_ASYNC, &pipe);
 	//ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_ATOMIC_NONBLOCK, &pipe);
@@ -124,7 +127,7 @@ void drmPageFlip(void) {
 		exit (1);
 	}
 
-	/*memset(&evctx, 0, sizeof evctx);
+	memset(&evctx, 0, sizeof evctx);
 	evctx.version = 2;
 	evctx.vblank_handler = NULL;
 	//evctx.page_flip_handler = atomic_page_flip_handler;
@@ -147,7 +150,7 @@ void drmPageFlip(void) {
 		}
 
 		drmHandleEvent(drm.fd, &evctx);
-	}*/
+	}
 
 	flip_page = !(flip_page);
 }
