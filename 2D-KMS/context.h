@@ -12,6 +12,7 @@ struct drm_struct {
 	drmModeCrtcPtr orig_crtc;
 
 	uint32_t plane_id;	
+	uint32_t plane_fb_prop_id;
 
 	drmModeEncoder *encoder;
 	drmModeRes *resources;

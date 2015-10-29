@@ -28,11 +28,6 @@ int flip_page = 0;
 
 void dump_planes (int fd);
 
-void drmPageFlipHandler(int fd, uint frame, uint sec, uint usec, void *data) {
-	int *waiting_for_flip = (int *)data;
-	*waiting_for_flip = 0;
-}
-
 static uint32_t get_plane_prop_id(uint32_t obj_id, const char *name) {
 
 	int i,j;
@@ -90,24 +85,18 @@ struct pipe_arg {
 
 void drmPageFlip(void) {
 	
-	// We need the id of the FB_ID property of the plane on which we are going to do a pageflip. 
+	// We alredy have the id of the FB_ID property of the plane on which we are going to do a pageflip:
+	// we got it back in setup_plane() 
+	
 	int ret;
 	struct pipe_arg pipe;
-	uint32_t fb_obj_id = 0;
-	unsigned int other_fb_id;
-
-	fb_obj_id = get_plane_prop_id(drm.plane_id, "FB_ID");
-	if (!fb_obj_id) {
-		fprintf(stderr, "plane(%u) does not exist\n", drm.plane_id);
-		return;
-	}
 
 	static drmModeAtomicReqPtr req = NULL;
 	req = drmModeAtomicAlloc();	
 
 	// We add the buffer to the plane properties we want to set on an atomically, in a 
 	// single step. We pass the plane id, the property id and the new fb id.
-	ret = drmModeAtomicAddProperty(req, drm.plane_id, fb_obj_id, bufs[flip_page].fb_id);		
+	ret = drmModeAtomicAddProperty(req, drm.plane_id, drm.plane_fb_prop_id, bufs[flip_page].fb_id);		
 	if (ret < 0) {
 		printf("failed to add atomic property for pageflip\n");
 	}
@@ -334,88 +323,7 @@ static bool format_support(const drmModePlanePtr ovr, uint32_t fmt)
 	return false;
 }
 
-/*void setup_plane () {
-	// Plane stuff: planes are bound to connectors/encoders.
-	int i,j;
-	//struct plane_arg p;
-
-	// get plane resources
-	drmModePlane *overlay;	
-	drmModePlaneRes *plane_resources;
-	plane_resources = drmModeGetPlaneResources(drm.fd);
-	if (!plane_resources) {
-		printf ("No scaling planes available!\n");
-	}
-
-	
-	printf ("Number of planes on FD %d is %d\n", drm.fd, plane_resources->count_planes);	
-	
-	// look for a plane/overlay we can use with the configured CRTC	
-	// Find a  plane which can be connected to our CRTC. Find the
-	// CRTC index first, then iterate over available planes.
-	// Yes, strangely we need the in-use CRTC index to mask possible_crtc 
-	// during the planes iteration...
-
-	unsigned int crtc_index;
-	for (i = 0; i < (unsigned int)drm.resources->count_crtcs; i++) {
-		if (drm.crtc_id == drm.resources->crtcs[i]) {
-			crtc_index = i;
-			printf ("CRTC index found %d with ID %d\n", crtc_index, drm.crtc_id);
-			break;
-		}
-	}
-	
-	// Programmer!! Save your sanity!! Primary planes have to cover the entire CRTC, and if you
-	// don't do that, you will get dmesg error "Plane must cover entire CRTC".
-	// Also, primary planes can not be scaled.
-	printf("CRTC ID %d, NUM PLANES %d\n", drm.encoder->crtc_id, plane_resources->count_planes);
-	for (i = 0; i < plane_resources->count_planes; i++) {
-		overlay = drmModeGetPlane(drm.fd, plane_resources->planes[i]);
-                if (overlay->possible_crtcs & (1 << crtc_index)){
-                        drm.plane_id = overlay->plane_id;
-			printf ("using plane/overlay ID %d\n", drm.plane_id);
-			break;
-		}
-		drmModeFreePlane(overlay);
-        }
-
-	if (!drm.plane_id) {
-		printf ("couldn't find an usable overlay for current CRTC\n");
-		deinit_kms();
-		exit (0);
-	}
-
-	//dump_planes(drm.fd);	
-
-	// note src coords (last 4 args) are in Q16 format
-	// crtc_w and crtc_h are the final size with applied scale/ratio.
-	// crtc_x and crtc_y are the position of the plane
-	// pw and ph are the input size: the size of the area we read from the fb.
-	uint32_t crtc_x = 0;
-	uint32_t crtc_y = 0;
-	uint32_t plane_flags = 0;
-	
-	uint32_t pw = 320;
-	uint32_t ph = 200;
-	uint32_t crtc_w = drm.mode->hdisplay;
-	uint32_t crtc_h = drm.mode->vdisplay;
-
-	uint32_t src_offsetx = 0;
-	uint32_t src_offsety = 0;
-
-	printf ("Trying to set plane with ID %d\n", drm.plane_id);	
-	if (drmModeSetPlane(drm.fd, drm.plane_id, drm.crtc_id, bufs[0].fb,
-			    plane_flags, 363, 184, crtc_w, crtc_h,
-			    src_offsetx<<16, src_offsety<<16, pw<<16, ph<<16)) {
-		fprintf(stderr, "failed to enable plane: %s\n",
-			strerror(errno));	
-	}
-
-
-	printf ("crtc_x %d, crtc_y %d, crtc_w %d, crtc_h %d, pw %d, ph %d\n", crtc_x, crtc_y, crtc_w, crtc_h, pw, ph);
-}*/
-
-void setup_plane2 () {
+void setup_plane() {
 	int i,j;
 
 	// get plane resources
@@ -481,7 +389,6 @@ void setup_plane2 () {
 		printf ("using plane/overlay ID %d\n", drm.plane_id);
 	}
 
-
 	// note src coords (last 4 args) are in Q16 format
 	// crtc_w and crtc_h are the final size with applied scale/ratio.
 	// crtc_x and crtc_y are the position of the plane
@@ -506,6 +413,13 @@ void setup_plane2 () {
 	}
 
 	printf ("src_w %d, src_h %d, plane_w %d, plane_h %d\n", src_w, src_h, plane_w, plane_h);
+
+	// We are going to be changing the framebuffer ID property of the chosen overlay every time
+	// we do a pageflip, so we get the property ID here to have it handy on the PageFlip function.	
+	drm.plane_fb_prop_id = get_plane_prop_id(drm.plane_id, "FB_ID");
+	if (!drm.plane_fb_prop_id) {
+		fprintf(stderr, "Can't get the FB property ID for plane(%u)\n", drm.plane_id);
+	}
 }
 
 
@@ -584,8 +498,6 @@ err_destroy:
 	return ret;
 }
 
-
-
 void init_kms() {
 	if (!initDRM()) {
 		printf ("failed to initialize DRM\n");
@@ -629,7 +541,7 @@ void init_kms() {
                 return;
         }*/
 
-	setup_plane2();
+	setup_plane();
 
 	printf ("KMS init succesfull\n");
 }
