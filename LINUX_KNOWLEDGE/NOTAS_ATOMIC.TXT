@@ -100,6 +100,11 @@ porque la cola de eventos se llena.
 
 ret = drmModeAtomicCommit(drm.fd, req, 0, NULL);
 
+Tenemos otros flags a parte de DRM_MODE_PAGE_FLIP_EVENT, como DRM_MODE_ATOMIC_NONBLOCK que es para que la función no bloquee hasta vsync,
+y DRM_MODE_PAGE_FLIP_ASYNC que nos deja el evento en el la cola de eventos del descriptor fd al completarse el cambio pero que tampoco bloquea.
+Por ahora, DRM_MODE_PAGE_FLIP_ASYNC no funciona. Ver nota en src/linux/drivers/gpu/drm/i915/intel_display.c, donde dice: 
+"At the moment we can only handle plane-related operations and do not yet support asynchronous commit."
+
 --Liberamos la estructura de petición atómica:
 
 drmModeAtomicFree(req);

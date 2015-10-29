@@ -122,9 +122,7 @@ void drmPageFlip(void) {
 	//ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_ATOMIC_NONBLOCK, &pipe);
 	
 	if (ret < 0) {
-		printf("failed to commit for pageflip: %s\n",
-			strerror(errno));
-		exit (1);
+		printf("failed to commit for pageflip: %s\n", strerror(errno));
 	}
 
 	/*memset(&evctx, 0, sizeof evctx);
@@ -153,6 +151,8 @@ void drmPageFlip(void) {
 	}*/
 
 	flip_page = !(flip_page);
+
+	drmModeAtomicFree(req);
 }
 
 bool initDRM(void) {
