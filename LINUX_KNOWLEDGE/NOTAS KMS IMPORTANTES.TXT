@@ -1,0 +1,72 @@
+-Si vamos a dibujar usando GLES, usaremos una GBM surface. Sus buffers vienen incluidos, y se va dibujando en uno o en otro, mira drmFlip() en el ejemplo
+de GLES2D-KMS para entenderlo. Hay alguna sutileza como lo de eglSwapBuffers() y la función de lock buffer esa, pero está todo comentado en el código.
+A SetCRTC le tendremos que pasar uno de los buffers, claro, ya que un CRTC es un combo de conector+videomode+buffer de scanout, que será el que esté
+de front buffer en ese momento.
+
+-En cambio, si queremos dibujar a piñón pixel a pixel, tenemos que usar DUMB BUFFERS. Lo mismo: a setCRTC habrá que pasarle un buffer, pero este buffer
+lo creamos nosotros a mano con drmIoctl(drm.fd, DRM_IOCTL_MODE_CREATE_DUMB, &fbRequeriments) 
+y con drmModeAddFB(drm.fd, drm.mode->hdisplay, drm.mode->vdisplay, 16, 16,  fbRequeriments.pitch, fbRequeriments.handle, &fb->fb_id), y luego
+se lo pasaremos a setCRTC. (Vamos, uno de los buffers que hayamos creado).
+
+***********************************************************************************************************************************************
+ESTE FICHERO SÓLO CUBRE HASTA LA INICIALIZACIÓN ESTÁTICA DE LOS OVERLAYS. 
+PARA QUE EL OVERLAY VAYA CAMBIANDO DE FRAMEBUFFER, USAMOS ATOMIC PAGEFLIPPING: MIRAR EN NOTAS_ATOMIC.TXT PARA MÁS DETALLES.
+***********************************************************************************************************************************************
+
+--------GRAN BLOQUE DE KMS DIRECTAMENTE SIN USAR GBM SURFACES NI NADA Y USANDO OVERLAYS PARA ESCALAR-----------
+
+-Para ver mensajes de debug de KMS/DRM
+echo 31 > /sys/module/drm/parameters/debug
+Limpiamos dmesg con dmesg -c como root.
+Luego hacemos dmesg >> errors.txt y buscamos "Invalid" o el ioctl que ha fallado, SETPLANE o lo que sea.
+En realidad lo mejor es buscar literalmente DRM_IOCTL_MODE_SETPLANE, y ver debajo qué error ha habido.
+
+Si el programa nos devuelve un "Cannot allocate memory" en una llamada a drmModeAtomicCommit(), lo que tenemos que buscar es ENOMEM, que es el error -12, y nos
+apacerecrá en el dmesg como -12 efectivamente. 
+
+-Si estamos usando un modo de video de 32 bits y queremos que un plano nos escale un buffer de 16, no va a poder ser: los planos disponibles para el CRTC en uso serán todos con
+formatos de 16 bits y por tanto tendremos que hacer un SetCrtc. Sin embargo, para escalar en un overlay un buffer de 32 bits si estamos en un modo de vídeo de 32 bits no hace falta
+hacer un SetCrtc. De hecho, para testar los planos, modetest.c no hace un SetCrtc si le decimos que teste con un XR24 o un XB24, pero si intentamos que escale un RG16 nos dice que no
+hay overlays libres para el CRTC en uso...lógico. Piensa que necesitas un modo de vídeo distinto si el pixel format del overlay es de 16 bits que si es de 32 bits: o sea, los modos de 16 bits son compatibles
+con overlays con formatos de 16 bits (RG16 por ejemplo) y los modos de 32 bits son compatibles con overlays con formatos de 32 bits (XR24, XB24...)..
+
+-Si el plano es primario, necesitamos que cubra todo el CRTC El plano 17 que tiene soporte RG16 es primario. Si nos da un error (en dmesg 
+detallado, mira más arriba) que dice "Plane must cover entire CRTC" (debajo de SETPLANE que habremos buscado en el LOG) pues es eso: estás usando un plano primario y paśandole valores
+crtc_w y crtc_h menores que los del modo físico del CRTC. 
+
+-Cada conector usa un encoder, y cada encoder tiene un CRTC. Conseguido el conector, tenemos su CRTC de forma sencilla: drm.crtc_id = drm.encoder->crtc_id;
+Y ese es el CRTC que usaremos. Así que, aunque podemos cambiar el modo de vídeo que está usando un CRTC, no podemos cambiar de CRTC a no ser que cambiemos de conector.
+Así que si un plano no se puede usar con un CRTC (if (overlay->possible_crtcs & (1 << crtc_index))) entonces olvídate de ese plano si no cambias de conector físico...
+
+-Los planos primarios no se pueden escalar: o sea, que tienen que cubrir el CRTC entero (el tamaño del plano tendrá que ser el del modo físico en uso) y encima no nos sirven para
+escalar un buffer. Los planos que sí se pueden escalar se llaman overlays.
+
+-A un plano primario le tienes que pasar, en drmModeSetPlane() las mismas dimensiones de entrada que de salida. No escala. No puedes coger un trozo de un buffer de 320x200 y que lo
+pinte a pantalla completa. 
+Además, no puedes crear ese plano con dimensiones distintas a las del modo físico del CRTC en uso.
+Todo esto es para la función drmModeSetPlane(). Tú puedes crear los buffers del tamaño que quieras.
+O sea, dicho de otro modo, si el plano es primario, los parámetros según el prototipo de drmModeSetPlane() de /usr/include/xf86drmMode.h tendrán las siguentes LIMITACIONES:
+----uint32_t crtc_w, uint32_t crtc_h tienen que coincidir con el tamaño del modo físico de pantalla en uso, ya que un plano primario tiene que cubrir todo el CRTC, o sea, el modo físico que
+está usando el CRTC ahora mismo.  Nosotros solemos llamar a estos parámetros plane_w y plane_h.
+----uint32_t src_w, uint32_t src_h tienen que coincidir con el tamaño del modo físico de pantalla en uso, ya que un plano primario no se puede escalar, así que hay que usar las dimensiones del 
+modo físico en uso como dimensiones del source.
+
+-El plano primario es el plano primario y controla el CRTC, por eso no se puede escalar ni nada. Los otros planos, los que son escalables, se llaman overlays. Visto en:
+ https://www.kernel.org/doc/htmldocs/drm/drm-kms-init.html
+
+-CUIDADO con modetest.c!!! Para saber si un plano es primario o es un overlay (que puede escalar, que no tiene que cubrir todo el CRTC...) modetest.c nos dice
+ type:
+                flags: immutable enum
+                enums: Overlay=0 Primary=1 Cursor=2
+                value: 1
+PUES BIEN: enums es el nombre y los POSIBLES valores del tipo de plano. value es el valor. Este es un plano de tipo 1.
+
+-A nosotros sólo nos interesan los planos de tipo OVERLAY, que es el tipo definido como 0. Lo puedes ver en /usr/include/xf86drmMode.h
+
+--PARA QUE EL OVERLAY VAYA CAMBIANDO DE FRAMEBUFFER, USAMOS ATOMIC PAGEFLIPPING: MIRAR EN NOTAS_ATOMIC.TXT PARA MÁS DETALLES.
+
+***************************** NO HACE FALTA LLAMAR A drmModeSetCrtc()********************************************
+-¿Cómo dibujo cuando uso overlays? Muy sencillo: creo el framebuffer (drmModeAddFB2()), lo mapeo (mmap) de manera que la puedo escribir en él, y luego se lo paso al
+overlay. NO hay necesidad de hacer drmModeSetCrtc() para ajustar el scanout buffer ni nada de eso.
+Con atomic modesetting (ver notas en otro fichero) vamos cambiando el buffer del cual lee un overlay.
+***********************************************************************************************************************

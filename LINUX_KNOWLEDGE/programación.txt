@@ -1,0 +1,953 @@
+----EL GRAN BLOQUE DE PROBLEMAS DE COMPILACIÓN Y CROSS-COMPILACIÓN----
+
+DIFERENCIA IMPORTANTE entre dos parámetros que PARECE que hacen lo mismo, pero NO: 
+El parametro -L/<ruta> es para pasarle la ruta de los scripts para LD, o sea, el .SO "índice" de cada librería, que dentro tiene en texto los nombres de los ficheros físicos de la librería.
+O sea, -L/<ruta> es para pasarle al linker la ruta de los scripts de TEXTO editables de LD.
+Sin embargo, -Xlinker -rlink-path=... es para pasarle la ruta de los ficheros físicos de la librería, o sea, los SO que son binarios y que tienen número de versión en el nombre.
+
+RECUERDA SIEMPRE que con -v puedes ver qué directorios busca gcc y ld las librerías, headers... y con qué opciones configuré el cross-compilador en tiempo de compilación!.
+
+RECUERDA que si pasas --systoot=<ruta> esto sólo afecta a las librerías, LD scripts .so, crt*.o... pero no a las cabeceras. Así que al pasar --sysroot te dirá que no encuentra cabeceras
+que antes sí encontraba. Está -isysroot para esto pero no sé bien cómo va.
+RECUERDA también que desde el momento en que pases --sysroot, las rutas que pases con -L ya llevan el prefijo que le hayas pasado con sysroot.
+
+*Error can't find main o SDLMain: es un programa que usa las SDL pero no estamos linkando contra las SDL. En el Scummvm eso pasa si le pasamos un --backend, ya que el backen aunque
+usemos dispmanx u OpenGL es el backend SDL.
+
+*Error 
+can't find -lSDL o -lm o -l<nombre librería>. 
+Lo que significa esto de que nos diga que no puede encontrar un parámetro que le hemos pasado, aunque suene un poco raro es que no encuentra el script LD, que es un .so que tiene texto dentro.
+Lo que tienes que hacer es buscarlo a lo largo y ancho del sysroot que esté contemplando el compilador. Por ejemplo, puedes hacer si te dice "can't find -lSDL", algo como
+find /opt/rpi_root -name 'libSDL.so'
+O si te dice "can't find -lm",  
+find /opt/rpi_root -name 'libm.so'
+Ua vez que sabemos dónde está el script LD de texto, le pasamos su ruta al compilador con -L/<ruta>.
+
+*Error
+ld: cannot find /lib/arm-linux-gnueabihf/libc.so.6
+ld: cannot find /usr/lib/arm-linux-gnueabihf/libc_nonshared.a
+ld: cannot find /lib/arm-linux-gnueabihf/ld-linux-armhf.so.3
+etc...
+Aquí lo que vemos es que LO QUE NO ENCUENTRA SON FICHEROS DE LA LIBRERÍA YA DIRECTAMENTE, o unos symlinks, pero NO DEBEMOS CONFUNDIR este caso con el que hemos visto
+antes, el de "can't find -l<nombre_librería>", donde nos decía extrañamente que no encontraba un parámetro y lo que no encontraba realmente era el script para LD, que también es un .so.
+Aquí, digo, NO ENCUENTRA LA LIBRERÍA CONCRETA (DE AHÍ QUE EL NOMBRE DE FICHERO TENGA NÚMEROS DE VERSIÓN), Y NO LA ENCUENTRA PORQUE LAS RUTAS DEL SCRIPT PARA LD, 
+O SEA, EL .SO DE TEXTO DE LA LIBRERíA, TIENE RUTAS INCORRECTAS.
+En el caso que hemos puesto como ejemplo, hacemos
+find /opt/rpi_root -name 'libc.so' y encontramos el script para LD en /opt/rpi_root/usr/lib/arm-linux-gnueabihf/libc.so.
+Lo editamos y vemos que tiene GROUP ( /lib/arm-linux-gnueabihf/libc.so.6 /usr/lib/arm-linux-gnueabihf/libc_nonshared.a  AS_NEEDED ( /lib/arm-linux-gnueabihf/ld-linux-armhf.so.3 ) ),
+o sea, que contiene UNAS RUTAS ABSOLUTAS que hacen que nuestro linker busque las cosas a partir del /usr y del /lib del PC de compilación, lo que no tiene sentido porque tiene que
+buscar en rutas del sysroot de Raspbian que tenemos en /opt/rpi_root, no en rutas que partan de los /usr y /lib del sistema.
+Así que le pongo rutas relativas, que se vaya hacia la raíz del sysroot donde reside /opt/rpi_root/usr/lib/arm-linux-gnueabihf/libc.so y desde ahí ya busque las librerías:
+GROUP ( ../../../lib/arm-linux-gnueabihf/libc.so.6 ../../../usr/lib/arm-linux-gnueabihf/libc_nonshared.a  AS_NEEDED (     ../../../lib/arm-linux-gnueabihf/ld-linux-armhf.so.3 ) )
+
+*Error ENCUENTRA LA LIBRERÍA QUE NO ENCONTRABA PERO LE FALTAN LAS LIBRERíAS USADAS POR ESA LIBRERÍA!!!!
+LOCURÓN!!!
+Antes no encontraba -lSDL (o sea, el script LD) o no encontraba la librería en sí. Ahora la encuentra PERO no encuentra las librerías que usa la librería que antes no encontraba!!!!
+LOCURÓN!!!! 
+ld: warning: libpulse.so.0, needed by /opt/rpi_root/usr/lib/arm-linux-gnueabihf/libSDL.so, not found (try using -rpath or -rpath-link)
+ld: warning: libasound.so.2, needed by /opt/rpi_root/usr/lib/arm-linux-gnueabihf/libSDL.so, not found(try using -rpath or -rpath-link)
+Pero tranquilo. Buscamos las librerías que no encuentra, por ejemplo empezemos con  libasound.so.2:
+manuel@vader:~/src/scummvm$ find /opt/rpi_root -name 'libasound.so.2'
+/opt/rpi_root/usr/lib/arm-linux-gnueabihf/libasound.so.2
+Y le pasamos la ruta  donde reside el fichero físico de la librería libasound.so.2 al linker con:
+-Xlinker -rpath-link=/opt/rpi_root/usr/lib/arm-linux-gnueabihf
+Repetimos lo mismo con los demás ficheros físicos de librerías que faltan.
+
+*Error NO ENCUENTRA crt0.o, crtci.o, crtcn.o...
+Normalmente esto pasa cuando al cross-compilador le pasas un --sysroot=<ruta>, porque si no se lo pasas lo normal es que el cross-compilador lleve sys crts en su propio sysroot
+interno (si haces un find al directorio donde empieza todo lo de la cross-compilación, verás lo qu ete digo).
+Estos suelen estar en /usr/lib, pero en el sysroot de la Pi están en /usr/lib/arm-linux-gnueabihf, así que, si le estamos pasando --sysroot=/opt/rpi_root, el linker lo está buscando en 
+a partir de /opt/rpi_root, pero lo está buscan en /usr/lib y NO en /usr/lib/arm-linux-gnueabihf, ya que el linker está configurado para buscar los objetos binarios en /usr/lib.
+A unas malas podríamos copiar los crtc*.o a /opt/rpi_root/usr/lib o pasarle -B /opt/rpi_root/usr/lib/arm-linux-gnueabihf...
+Pero lo suyo es que el linker busque los crtc*.o donde tiene que buscarlos.
+Si lo pensamos, aquí lo que pasa es que el linker busca los crt*.o en <sysroot>/usr/lib en vez de hacerlo en <sysroot>/usr/lib/arm-linux-gnueabihf que es donde los tenemos nosotros
+en el sysroot de la Pi. Así que tenemos que cambiar ese comportamiento de algún modo..Y ese modo pasa por recompilar el crosscompiler con --enable-multiarch --target=arm-linux-gnueabihf, 
+para que busque en <sysroot>/usr/lib/arm-linux-gnueabihf además de <sysroot>/usr/lib.
+O sea, si tienes los ficheros crt*.o (y otras librerías, como el script para LD libc.so) del sysroot de la raspberry pi en /opt/rpi_root/usr/lib/arm-linux-gnueabihf, 
+ pues probablemente al pasarle --sysroot=/opt/rpi_root al compilador acabe buscando estas cosas en /opt/rpi_root/usr/lib y no las encontrará.
+ESTO ES LO QUE SE LLAMA "BEEN BITTEN BY THE MULTIARCH BUG": o sea, nos ha picado el bicho del multiarch. Quiere decir que Debian Wheezy añade esto del multiarch, (o sea,
+la capacidad de tener en el rootfs librerías a la vez para distintas arquietecturas, a base de meterlas en directorios tipo /usr/lib/<nombre-arquitectura>, /lib<nombre-arquitectura>, etc...)
+y sin embargo nuestro cross-compilador no está preparado para esto porque no lo hemos compilado con --enable-multiarch --target=... y busca las cosas en rutas estándard como
+<sysroot>/usr/lib, <sysroot>/lib, etc.
+Así que intentaríamos añadir a los "gcc extra config" (en la sección "C compiler") esto: --enable-multiarch --target=arm-linux-gnueabihf. 
+Esto de --enable-multiarch --target=arm-linux-gnueabihf significa que <sysroot>/usr/lib/arm-linux-gnueabihf se añade a la lista de búsqueda.
+La mejor explicación para estas cosas viene de aquí: http://muroa.org/?q=node/18
+SIN EMBARGO, NO FUNCIONA Y AL HACER ESTO FALLA EL BUILD SIEMPRE. NO HAY SOPORTE PARA MULTIARCH EN CROSSTOOL-NG!!
+Y lo que es más grave, TAMPOCO HAY SOPORTE PARA MULTIARCH EN EL CROSSCOMPILADOR PREFABRICADO DE LA RASPBERRY EN https://github.com/raspberrypi/tools.
+
+Así que sólo nos queda arreglar las cosas a mano en el sysroot que tenemos en /opt/rpi_root, a base de editar los scripts .so para LD,  o bien dejarlos tal cual 
+y tirar de -Xlinker --rpath-link <rura-librerías-físicas>, que tiene el mismo efecto.
+
+
+*****Empieza la explicación a por qué --sysroot no funciona bien y nos faltan los crt*.so, scripts .so para LD, librerías...**********
+
+Different types of cross toolchains and the "multiarch problem"
+Sysrooted cross toolchain
+
+The "sysroot" is a folder on the host that contains a copy of the target's filesystem. To be more precise, only those target files needed to compile for the target, mainly libraries and their header files, 
+but also .pc files for pkg-config and so on. A sysrooted compiler prepends the sysroot to all paths automatially. If the compiler is asked to look for includes in /usr/include/blah it will actually 
+translate this into /sysroot/usr/include/blah without any further action needed. The advantage of this kind of cross compiler is, that it will work with unmodified build systems. Just imagine a 
+Makefile with hardcoded include- and library paths.
+
+The multiarch problem
+
+The base of the recommended distribution for the RaspberryPi is Debian Wheezy, which introduces the concept of "multiarch". Other distributions like Arch Linux are much less complicated 
+to cross compile for. The "problem" with multiarch is, that libraries that are usually located in the standard locations /lib and /usr/lib have been moved to /lib/<arch-tuple> and /usr/lib/<arch-tuple>. 
+The compiler included in Debian Wheezy has been patched to make these paths standard, too, because no buildsystem will search standard libraries in these places otherwise. 
+So we need to get that patch into the cross compiler, too. Otherwise it would be neccessary to put these additional paths into the build system as library search paths, but that is not what we want. 
+
+I dont't want to patch the build system of a project for cross compiling. I dont't want to do that for my own projects and i can't for the others that I just use. 
+
+*******Fin de la explicación*************
+
+
+------FIN DEL GRAN BLOQUE DE COMPILACIÓN Y CROSS-COMPILACIÓN----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-CUIDADO al hacer un blitting y al usar memcpy(). Normalmente tienes en cuenta que las cantidades de datos que le especificas a memcpy() son en bytes pero se te olvida otra cosa: 
+los incrementos para los offsets los tienes que hacer de byte en byte. O sea que si el puntero de origen o el de destino no son de un tipo de 8bits, necesitas un cast. 
+En este ejemplo:
+
+// soft blitting...
+for (y = 0; y < 200; y++) {             
+	dst_off = fb->pitch * y;                
+	src_off = 320 * 2 * y;
+	memcpy (fb->mappedmem[0] + dst_off, (uint8_t*)pixels + src_off, 320 * 2);
+}
+
+el puntero de destino es de 8 bits (porque hemos guardado el puntero a la memoria mapeada en un uint8_t*, aunque luego sean píxels de 16 bits: es sólo de 8 bits a efectos de incremento), 
+pero el de orígen es de 16 bits, y por eso tenemos que hacerle el cast a uint8_t*. ¿Por qué? Pues porque incrementas usando n bytes, en este caso el pitch de orígen que es 320 * 2 ya que son 2 bytes
+por píxel, y si incrementas usando un número de bytes el puntero tiene que ser de 8bits, de un byte, lógicamente.
+
+********Punteros de 64 bits, variables de 32 bits********************************************************************************************
+Hay ocasiones en las que es necesario llevar la cuenta de una cantidad de memoria, o un offset, usando un entero, para luego pasar con un cast ese entero
+a puntero. ¿¿Un entero a puntero?? Sí: los punteros son, en realidad, enteros sin signo: lo que contiene un puntero es un dato de tipo entero sin signo
+realmente.
+Así que, en mi sistema de 64 bits, ocurre lo siguiente: los punteros, incuídos los punteros a void, son de 64 bits (porque las direcciones de memoria son 
+de 64 bits) pero los enteros sin signo (unsigned, GLuint, etc) son de 32 bits.
+Por eso, cuando declaro un offset como entero sin signo, opero con él (o no) y luego llamo a:
+	glVertexAttribPointer(attColors, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)colorsOffset)
+recibo un warning for la diferencia en el tamaño de los punteros: estoy convirtiendo un entero de 32bits a un puntero del sistema, que es de 64 bits).
+Estos warnings también aparecen en el KMScube original de robclark.
+
+Esto no pasaría en un sistema de 32bits, claro, ya que los punteros de sistema son de 32bits y los enteros sin signo son de 32 bits también.
+
+La solución en sistemas de 64bits es usar como entero para almacenar direcciones u offset un tipo de entero "especial": el uintptr_t.
+NO se trata de un puntero, sino de un entero que NOS GARANTIZA que puede almacenar un puntero de sistema sin truncarlo: o sea, que en mi sistema
+el tipo uintptr_t va a ser un entero sin signo de 64bits, ideal para almacenar un puntero.
+Así que podemos declrara el offset o lo que sea como 
+	uintptr_t colorsOffset;
+Luego operar con él, sumarle valores o lo que sea, y pasárselo haciendo el cast a void*, que ahora no dará ningún warning porque estamos pasando un
+entero sin signo de 64bits a puntero de 64bits, que internamente son lo mismo:
+	glVertexAttribPointer(attColors, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)colorsOffset)
+
+O bien podemos empeñarnos en declarar colorOffset como un entero sin signo corriente y moliente, de 32bits, y hacer un doble cast:
+	GLuint colorsOffset;
+	glVertexAttribPointer(attColors, 3, GL_FLOAT, GL_FALSE, 0,(uintptr_t) (GLvoid*)colorsOffset)
+
+De cualquier modo, la conclusion es que el mejor tipo de datos para almacenar enteros que luego serán casteados a punteros, que es una cosa muy normal
+y lógica si has entendido todo este apartado, es el tipo uintptr_t. Al menos en sistemas donde el tamaño de puntero y de entero sin signo difiere.
+
+********Matrices en C*********************************************************************************************************************
+
+Si queremos que los elementos, en el órden en que los vamos dando, vayan quedando en posiciones adyacentes de memoria, iteramos rápido en el
+segúndo índice y despacio en el pimero. Luego ya, si lo que metemos son los elementos columna a columna en posiciones adyacentes como necesitan
+los shaders de GLES o no, ya es cosa nuestra, depende de lo que vayamos dando.
+
+********Paso de matrices como arrays de punteros******************************************************************************************
+
+Referencia:
+http://stackoverflow.com/questions/546860/passing-arrays-and-matrices-to-functions-as-pointers-and-pointers-to-pointers-in
+
+Un array 1D es un puntero al primer dato, o sea, al primero de todos los datos almacenados en direcciones consecutivas en dicho array.
+Por extensión, una matriz es, internamente, un array de punteros, cada uno de los cuales apunta al primer elemento de un array de elementos almacenados
+en direcciones consecutivas. NO ES un puntero a puntero: es un puntero a un array de punteros. Que parece lo mismo, pero no lo es porque C
+necesita conocer, al menos, el tamaño de cada fila, o sea, hasta dónde llega cada puntero a sub-array 1D.
+Así que, si queremos una matriz de 4 filas y 10 elementos por fila, nos da igual declararla o ponerla como parámetro de una de estas formas, que son 100% equivalentes:
+(Ya sabes que en C, el primer número es el número de filas, y el segundo el número de elementos por fila, o sea, de columnas). 
+
+int mat[4][10] ;
+int mat[][10];
+int (mat*)[10];
+
+Así que podemos pasar una matriz como 
+void imprimr_matriz (int (*mat)[10])
+
+Y luego dentro de la función podemos indexar los contenidos de la matriz simplemente con:
+mat[i][j]
+
+Claro que también podemos pasarla como mat[4][10], indexar igual, normal, y pasar de líos. O si quieres pasar un puntero pues la metes envuelta en un struct.
+
+********Inicialización de una matriz que está dentro de un struct******************************************************************************
+
+Es posible inicializar los miembros de un struct cuando lo declaramos, y las matrices no van a ser menos:
+
+typedef struct {
+	int m[2][2] 
+} lbeMatrix;
+
+foo(){
+...
+	lbeMatrix a = {      
+		{
+			{2,2},{2,2}
+
+		}
+	}
+...
+}
+
+O bien simplemente 
+lbeMatrix a ={ { {2,2},{2,2}  }  }
+
+********Leer de teclado cada cierto tiempo (30 veces por segundo AKA 30Hz, por ejemplo)******************************************************
+
+Supongamos que estamos en el bucle principal, que corre salvaje como el viento...
+
+timeStep = 1000.f / yourUpdateFrequency; //por ejemplo, 30Hz. También podemos hacer, simplemente, timeStep = 32 para leer cada 32ms.
+
+//Esto sólo hace falta llamalo una vez, para pillar el puntero a la dirección donde empieza el estado de TODAS las teclas.
+keystate = SDL_GetKeyState(NULL);
+//Bucle principal...
+while (!exit_status){
+	//Lo primero, miro cuánto tiempo ha pasado desde que entré en el bucle por última vez
+	timeLast = timeCurrent;				
+	timeCurrent = SDL_GetTicks();
+	timeDelta = timeCurrent - timeLast;
+
+	//Sumo ese tiempo al que llevo ya acumulado, para ver si me toca entrar en el while o no (¡para leer input, que no se nos pase hacerlo cada cierto tiempo!).
+	timeAccumulated = timeAccumulated + timeDelta;
+
+	while (timeDelta < timeStep){
+			//Actualizar mundo, procesar físicas, etc...
+			process_input ();
+			//Como ya hemos leído input, restamos para volver a empezar a controlar el tiempo hasta siguiente lectura.
+			timeAccumulated = timeAccumulated - timeStep;
+	}
+}
+
+Y sí, claro que podemos iterar en el bucle principal una o varias veces sin entrar en process_input(), ya que mientras el tiempo transcurrido no sea
+mayor que el tiempo deseado entre lecturas, timerStep, no se va a entrar en el segundo while.
+
+Es FUNDAMENTAL ver cómo es process_input(), porque ya NO usamos polling ni eventos ni nada:
+
+static void process_keyboard (){
+        //Esto se llama para refrescar la matriz de estado de teclado, o sea que lo llamamos cada vez que vayamos a leer de ella.
+	SDL_PumpEvents();
+
+
+	//Los defines entre paréntesis nos permiten acceder a elementos de la matriz de estado, que son el estado de una tecla concreta.
+        if(keystate[SDLK_LEFT])
+        {
+                fprintf (fp, "LeftArrow held down detected\n");
+        }
+        if(keystate[SDLK_RIGHT])
+        {
+                fprintf (fp, "RightArrow held down detected\n");
+        }
+        if(keystate[SDLK_ESCAPE]){
+                exit_condition = 1;
+                fprintf (fp, "ESCAPE stroke detected\n");
+                SDL_Quit();
+        }
+}
+
+
+********Error:  multiple definition of ...*******************************************************************************************************
+
+¿estás, además de declarar una variable, asignándole un valor en un fichero de cabecera? Eso se considera definición. O sea que la estás definiendo dos
+veces en el .h. MAL, muy mal. En el .h sólo la declaramos, y en el .c le asignamos el valor.
+Y si luego quieres acceder a ella desde otra unidad de compilación (otra pareja de un .h + un .c), la declaras como extern en el .c de la segunda unidad de 
+compilación, con lo que ya busca en otra unidad de compilación la declaración+definición y haces desde el .c de la segunda unidad un include al .h de la 
+primera unidad de compilación. O ni eso: con el include vale, se toma como declaración la que haces en el .h de la primera unidad y como definición la 
+que haces en el .c de la primera unidad, y hala, ya puedes usar la variable o lo que sea en la segunda unidad. 
+
+********Funciones static y cabeceras*********************************************************************************************************
+
+Cuando decaramos una función como static, estamos diciendo que esa función sólo se va a usar dentro de la unidad de traducción (translation unit) 
+donde es declarada, y no fuera. O sea que por ejemplo, una función declarada como static en gles2.c sólo se va a usar en gles2.c, y NO en context.c
+Suelen ser funciones "de apoyo", que se usan dentro de otras que sí que se usan desde otras unidades, y que por tando no serán static.
+O sea que por ejemplo tenemos unidadA con las funciones fa1, fa2, fa3 y fa4. De estas, fa1 se usa dentro de fa2 nada más, y fa3 se usa dentro de fa4
+nada más. Luego tenemos la unidadB con fb1 y fb2, que usan fa2 y fa4 indiscriminadamente, y la unidadC que usa fb1 y fb2 indiscriminadamente.
+El esquema sería: en unidadA.h
+
+fa2()
+fa4()
+Nótese que NO declaramos las static, de uso interno, aquí en el unidadA.h
+Ahora, en el unidadA.c
+
+static fa1(){
+...
+}
+
+static fa3(){
+...
+}
+
+Luego, en unidadB.c 
+#include "unidadA.h"
+Y en unidadC.c
+#include "unidadB.h"
+
+********Undefined reference recalcitrante al incluir código de C en CPP*************************************************************************
+
+Se soluciona colocando esto en el .h:
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+....aquí los prototipos del .h 
+
+#ifdef __cplusplus
+ } // End of extern "C"
+#endif
+
+
+********CPP: Declaración de un constructor con mucha información y herencia******************************************************************
+
+OpenGLSdlGraphicsManager::OpenGLSdlGraphicsManager(uint desktopWidth, uint desktopHeight, SdlEventSource *eventSource)
+    : SdlGraphicsManager(eventSource), _lastVideoModeLoad(0), _hwScreen(nullptr), _lastRequestedWidth(0), _lastRequestedHeight(0),
+      _graphicsScale(2), _ignoreLoadVideoMode(false), _gotResize(false), _wantsFullScreen(false), _ignoreResizeEvents(0),
+      _desiredFullscreenWidth(0), _desiredFullscreenHeight(0) {
+
+Obviamente, el ḿetodo de la clase se llama ::<nombre_clase> porque como ya sabemos los constructores se llaman igual que la clase que construyen.
+Los valores entre el primer par de paréntesis son parámetros que recibe el constructor, que no deja de ser una función.
+Lo que se hace tras los dos puntos ( : SdlGraphicsManager(eventSource), _lastVideoModeLoad(0), _hwScreen(nullptr), etc...) es establecer los valores
+de miembros del objeto cuando se crea (o sea, cuando alguien llama al constructor). Esos miembros, lógicamente, se declaran en el .h
+
+Si nos vamos al .h, vemos:
+
+class OpenGLSdlGraphicsManager : public OpenGL::OpenGLGraphicsManager, public SdlGraphicsManager, public Common::EventObserver {
+
+public:
+....
+private:
+....
+}
+
+Pues bien:  lo qu equiere decir es que OpenGLPiGraphicsManager hereda de OpenGL::OpenGLGraphicsManager, de SdlGraphicsManager y de
+Common::EventObserver, y los miembros que hereda de esas clases las hereda como public.
+
+
+*********Regla general para cuando temas de pantalla (I)****************************************************************************
+
+Cuando sólo hay informacón visual en una parte de la pantalla y lo demás está en negro, es que no escribimos en todo el buffer de destino, sino que
+aunque leemos toda la info del buffer de orígen, esta no es suficiente para llenar todas las líneas del buffer de destino.
+
+Por el contrario, cuando la pantalla está llena pero sólo vemos parte de la imágen que deberíamos estar viendo, es que agotamos el buffer de destino 
+sin llegar a volcar todo el búffer de orígen. Esto es típico cuando, aunque coincida el número de pixels ancho x alto en ambos buffers, el de orígen es de,
+digamos, 32bits, y el de destino sólo de 16.
+
+*********ERROR: used but never defined o undefined reference a una función que tenemos en un .h e implementada en un .c**************
+
+Esto puede pasar cuando la función es definida como "static", con lo que sólo será visible desde la unidad de compilación en que está implementada.
+
+*********ERROR: undefined symbols de funciones cuyos headers estamos claramente incluyendo****************************************
+NO BASTA con incluir los headers: hay que dar la órden explícita de compilar los .c
+Si están en otro directorio distinto al directorio en que reside el Makefile, tenemos que especificar algo como esto en dicho Makefile:
+SOURCES=math/*.c *.c
+
+Y luego obviamente usar sources:
+
+$(COMPILER) $(CFLAGS) $(SOURCES) -o $(TARGET) $(LDFLAGS)
+
+Pasa lo mismo con los undefined symbols de librerías: tenemos que pasar los LDFLAGS para que se compile contra esas librerías:
+
+LDFLAGS=-lm -ldl -L/opt/vc/lib -lGLESv2 -lEGL -lbcm_host -lvcos -lvchiq_arm -lpthread
+
+Y lo mismo, luego usar esos LDFLAGS, que ya lo tienes arriba.
+
+**********Evitar incluir headers más de una vez***************************************************************************************
+
+A veces estamos incluyendo headers desde distintos headers o .c que a su vez que inclyen mutuamente, con lo que acabamos teniendo el mismo header
+incluído varias veces desde el mismo código.
+Para evitar eso están los HEADER GUARDS:
+
+#ifndef HELLO_WORLD_H
+#define HELLO_WORLD_H
+
+/* header file contents go here */
+
+#endif /* HELLO_WORLD_H */
+
+Hemos de usarlos SIEMPRE.
+
+**********La mejor guía de Makefiles************************************************************************************************
+
+La mejor guía conocida por el hombre para hacer y entender makefiles está aquí: http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/
+Y tienes una copia local en este mismo directorio. ¡Incluye cómo va realmente lo de las dependencias y los objetos!
+
+**********Guía de conversión de cualqier programa en SDL a GLES2********************************************************************
+-Lo primero es NO METER código de otras funciones en las nuestras: tratamos las funciones como unidades fucionales, a lo cajas negras, 
+y las metemos enteras y lueg las usamos desde nuestras funciones de manera secuencial. Esto ha de ser una metodología de trabajo.
+-Dejamos la llamada a SDL_Init() pero que sólo inicialice INPUT y AUDIO, no vídeo. No hace falta crear el device de vídeo ni nada.
+-Ya la llamada SetVideoMode() la quitamos y que llame a nuestra función. Esta función aglutinará la creción de todo lo de dispmanx y egl. 
+
+
+**********Make en modo verbose****************************************************************************************************
+
+Algunos build systems no muestran lo que está haciendo el compilador, sólo muestran cosas como CC <fichero>.c, etc
+En esos casos, "make V=1" ayuda.
+
+**********Añadiendo código custom de inicialización de EGL a RetroArch***************************************************************
+
+Lo vamos a hacer de tal manera que, si pasamos --enable-mali-egl al script de configuración, debe poner la variable HAVE_MALI_EGL=yes.
+Ya hay scripts que se encangan de todo, así que basta con añadir HAVE_MALI_EGL=no (para que el valor por defecto sea "no") al fichero 
+qb/config.params.sh. Sí, ya sé que esperas que haya que añadir "--enable-mali_egl" en alguna parte, pero no hace falta: uno de los scripts
+en el directorio qb ya se encarga de leer los valores de  config.params.sh y si precede un enable poner los HAVE a "yes".
+Y filtra los valores según estén o no contenidos en config.params.sh, así que por raro que parezca, con añadir HAVE_MALI_EGL=no, ya podemos pasarle
+--enable-mali_egl al script de configuración sin ningún problema.
+
+Ahora añadimos:
+
+if [ "$HAVE_MALI_EGL" = 'yes' ]; then
+        echo "***Activando soporte MALI_EGL y GLES..."
+        HAVE_EGL='yes'
+        HAVE_X11='no'
+        EGL_LIBS=-lEGL
+        GLES_LIBS=-lGLESv2
+        HAVE_GLES='yes'
+        add_define_make GLES_LIBS "-lGLESv2"
+fi
+
+en el fichero qb/config.libs.sh, y luego pásale un --enable-mali al script de configuración para comprobar que, efectivamente, HAVE_MALI_EGL está 
+puesto a "yes".
+Añadimos este bloque bajo el de "if [ "$HAVE_EGL" = "yes" ]; then", ya que ese bloque acaba desactivando GLES si EGL no está antivo, y nosotros
+no queremos EGL activo, sino MALI_EGL.
+También en qb/config.libs.sh, añadimos, en la línea de VARS="RGUI ALSA OSS..." la palabra MALI_EGL. 
+Desactivamos EGL porque podría romper algunas cosas el uso de un supuesto EGL por defecto.
+
+Y tras correr el configure, tenemos que tener  en config.h.
+
+Ahora viene lo gordo: hay que añadir un nuevo backend, que en este caso es el conjunto de llamadas a funciones de EGL. Esto va en gfx/context/ y lo voy
+a llamar gfx/context/mali_egl_ctx.c, ya que va a ser un backend para EGL/GLES de propósito general (el ejemplo que trae el driver MALI es bastante 
+conforme a especificaciones).
+Lo primero es tener en cuenta que en el caso concreto de RetroArch, el buildsystem es un poco raro y siempre hay un Makefile, con lo que para convencer
+al buildsystem de que nos compile el mali_egl_ctx.c en mali_egl_ctx.o, lo especificamos en el Makefile (frente a lo que parecería intuitivo, que sería
+especificarlo en otra parte porque el Makefile se regenera entero al hacer el configure, cosa que aquí no ocurre).
+Para ello, editamos el Makefile y añadimos:
+
+ifeq ($(HAVE_MALI_EGL), 1)
+        OBJ += gfx/context/mali_egl_ctx.o
+ endif
+
+Editamos gfx/gfx_context.c, y al tipo enumerado static const gfx_ctx_driver_t *gfx_ctx_drivers[] le añadimos 
+#if defined(HAVE_MALI_EGL)
+   &gfx_ctx_mali_egl,
+#endif
+
+Añadimos extern const gfx_ctx_driver_t gfx_ctx_mali_egl a gfx/gfx_context.h
+
+Y en el nuevo driver, que está en gfx/context/mali_egl_ctx.c, cambiamos const gfx_ctx_driver_t gfx_ctx_android = {
+por const gfx_ctx_driver_t gfx_ctx_mali_egl = {
+
+
+Por lo demás, el nuevo código de inicialización y gestión de EGL, llamado mali_egl_ctx.c, es muy similar al de Android. Lo único
+es que usa un tipo de dato estructurado donde podemos especificar el tamaño de la ventana EGL donde se dibujará el GLES, usando
+
+struct mali_native_window native_window = {
+         .width = 320,
+         .height = 240,
+};
+
+que luego se le pasa a la llamada eglCreateWindowSurface(g_egl_dpy, g_config, &native_window, 0).
+
+A parte de eso, el código de la función "static void gfx_ctx_input_driver()" lo he sacado del ctx de VC (video_core, o sea, la raspberry pi), y he
+sustituido el código de Android por ese.
+
+**********Ver la ejecución completa de un programa*********************************************************************************
+Podemos ver todas las llamadas a funciones de un programa con strace -f <nombre_programa>
+Esto es muy útil para ver por dónde se sale.
+**********************************************************************************************************************************
+
+**********Problema: no puedo ver el contenido de una direción en la que sé seguro que hay algo: sólo veo ceros***************************
+
+Supongo que tienes las librerías que estás debugeando compiladas con -ggdb y -O0, pero además DEBES tener también compilado con esas opciones
+el programa que estás lanzando. NO TE OLVIDES: No basta con compilar con opciones de debug las librerías, sino también las aplicaciones:
+si sólo compilas con opciones de debug una de las dos cosas, es muy probable que acabes viendo ceros en las variables a debugear. 
+
+**********Endianness*******************************************************************************
+Usando este criterio el sistema big-endian adoptado por Motorola entre otros, consiste en representar los bytes en el orden "natural":
+ así el valor hexadecimal 0x4A3B2C1D se codificaría en memoria en la secuencia {4A, 3B, 2C, 1D}. En el sistema little-endian adoptado por Intel, 
+entre otros, el mismo valor se codificaría como {1D, 2C, 3B, 4A}, de manera que de este modo se hace más intuitivo el acceso a datos, 
+porque se efectúa fácilmente de manera incremental de menos relevante a más relevante (siempre se opera con incrementos de contador en la memoria), 
+en un paralelismo a "lo importante no es como empiezan las cosas, sino como acaban."
+
+No se debe confundir trivialmente el orden de escritura textual en este artículo con el orden de escritura en memoria, por ello establecemos que 
+lo que escribimos primero lleva índices de memoria más bajos, y lo que escribimos a continuación lleva índices más elevados, 
+que lo que lleva índices bajos es previo en memoria, y así sucesivamente, siguiendo la ordenación natural de menor a mayor, 
+por ejemplo la secuencia {0,1,2} indicaría, -algo más allá de la intuición- que 0 es previo y contiguo en el espacio de memoria a 1, etc.
+
+**********Formación de un dato de 32 bits a partir varios datos de 8bits: endianess y problemas de ejempo*******************************
+
+TRAMPA A TENER EN CUENTA LO PRIMERO: Los operadores de shift en C (>> y <<) ***son shifts lógicos, NO shift físicos***. Esto quiere deir que sirven para
+mover los bits de posición, pero siempre desde la perspectiva de la cifra que representan, NO desde la perspectiva de su posición en memoria.
+Así, sea la cifra de 16bits N = 0x007D, que en términos absolutos y no de posiciones de memoria tiene su byte más significativo a 0 . 
+Si hacemos N <<= 8, estamos moviendo todos sus bits 8 posiciones a la izquierda (1 byte a la izquierda), PERO SIEMPRE DESDE LA PERSPECTIVA DE LA CIFRA
+Y NO DESDE LA PERSPECTIVA DE LA POSICIÓN QUE OCUPAN LOS BITS EN MEMORIA, por lo que *el endianess aquí NO influye*.
+Obtendremos N = 0x7D00.
+
+P1) Sea una arquitectura little endian (ARM, X86), donde se han de poner los valores RGB, cada uno de 8 bits, en un píxel de 32 bits, siendo el
+formato de pixel de 32bits de destino XRGB8888, que quiere decir que los 8 bits más significativos están unused y los otros tres tienen los valores
+R G y B en óden de más significativo a menos significtivo. ¿Cómo sería el volcado con sus shifts correspondientes?
+
+int32_t pix;
+
+R =<< 16
+G =<< 8
+B =<< 0 
+
+pix = (0x00000000|R|G|B);
+o lo que es lo mismo
+pix = (0|R|G|B);
+
+P2) El mismo problema pero con una arquirectura big endian.
+
+Da lo mismo, se hace exactamente igual y los shifts son los mismos. Esto es así porque los sifts en C son lógicos y no físicos: se cambia el lugar de los bits
+desde la perspectiva de la cifra y las posiciones de los bits en memoria no tienen nada que ver. No caigas en la pregunta trampa.
+
+**********Escribiendo en un buffer*******************************************************************
+
+Un buffer es normalmente un void* , o sea, un puntero a void, que no se debería deferenciar.
+Puedes hacer algo como:
+
+   *((int16_t*) pixmem) = 0xFF00
+
+con el fin de escribir en el primer elemento, pero no es portable.
+Lo suyo es usar memcpy.
+
+uint8_t *buffer = malloc(2 + sizeof(uint64_t));
+buffer[0] = a;
+buffer[1] = b;
+memcpy(buffer + 2, &c, sizeof(c));
+
+**********Imprimiendo datos a partir de una dirección para examinar lo que hay ahí**********************
+
+Lo prmero a tener en cuenta es de qué tipo es el puntero que apunta a esa dirección: si es de tipo char, pues lo que te imprima lo cogerá a razón de 1byte 
+por elemento, si es de tipo unsigned lo cogerá a razón de 2bytes por elemento, y si es un puntero de tipo int32_t, cogerá 4 bytes por elemento.
+O sea que tendremos más o menos elementos en ese trozo de memoria reservada que empieza desde el susodicho puntero en función de si nosotros
+consideramos esos datos como de 1byte, o de 2bytes o de 4bytes. Ten en cuenta que normalmente para guardar datos a cholón, en plan un buffer de
+vídeo, se suelen usar punteros a void que no se puede deferenciar, así que según consideremos al hacer el cast (necesiario para poder deferenciar) tendremos
+más o menos elementos de esa dirección en adelante. Lógico: si cogemos los bocaos de 4 en 4 bytes, pues tendremos menos bocaos que si los cogemos 1byte
+en 1byte. 
+
+Basta con poner "*<nombre_puntero>@<número_de_elementos>", como por ejemplo en: 
+
+void *array = calloc (1, len * sizeof (int));
+ 
+y luego eb GDB haríamos:
+
+p *(int*)temp@40
+o bien
+p *(char*)temp@40
+
+¿VES? Estamos interpretando los datos del array como nos da la gana a nosotros, usando casts. 
+Claro que podría ser un caso más sencillo, en el que hemos declarado el puntero ya con un tipo que no es void, y no nos haría falta el cast:
+
+int *array = (int *) malloc (len * sizeof (int));
+
+Y en GDB:
+
+p *array@len
+
+*********************Para examinar memoria con GDB**************************************************************************
+
+Con este mismo fin se puede usar x [/n f u] <dirección>
+
+"n" es el número de unidades a mostrar, 
+"f" es el formato (por defecto en hexadecimal, que sería la letra "x", ya sabes, cada dos dígitos son 1 byte), que puede ser de entero
+usando "i"  o "u" para entero sin signo, o "s" si queremos ver este dato como una cadena delimitada por null.
+"u" es el tamaño de unidad, pudiendo especificar "b" para bytes (1byte, 8bits), "h" para halfwords (2bytes, 16 bits) o "w" para words (4 bytes, 32 bits).
+ 
+Por ejemplo, si hago 
+
+x/4xh dispvars->pixmem 
+
+puedo ver cuatro elementos desde la dirección de dispvars->pixmem en adelante, formateados como hex, y a razón de 16bits (2bytes o un halfword)
+por cada uno de ellos, o sea, por cada mordida.
+
+**********Deferenciando punteros a void en GDB******************************************************
+
+En principio, esto no es posible, y si lo intentamos nos da un error con mucho sentido:
+
+(gdb) p *(dispvars->shadowmem)
+Attempt to dereference a generic pointer.
+
+Pero si hacemos un cast del puntero, podemos deferenciarlo!:
+
+(gdb) p *((char*)(dispvars->shadowmem))
+$7 = 0 '\000'
+(gdb) p *((int32_t*)(dispvars->shadowmem))
+$8 = 0
+
+**********Call stack en GDB***************************************************************************
+
+Para ver cómo hemos llegado a un punto en una función, quién ha llamado a quién para llegar hasta ahí y tal, miramos el call stack, o sea, 
+hacemos lo que se llama un "backtrace".
+Al hacer un backtrace, nos saldrán unos números al lado de cada función: esos números son los números de frame de cada una de ellas.
+Cambiamos de frame con el comando "frame" y el número,  y una vez que estamos en un frame podemos ver las variables locales de esa función
+con "info locals" y podemos ver los valores de sus argumentos con "info args".
+
+Si una función es llamada dos veces, una de las dos puede ser por seguridad, como pasa con el Parachute de las SDL que llama a SDL_VideoQuit() 
+además de la llamada que hagamos nosotros. Así que no te líes cuando mires un backtrace cuando una función es llamada dos veces y no sabes por qué.
+
+**********operadores binarios básicos****************************************************************
+
+A & B : operador AND. Se suele usar para comprobar si ciertos bits están activados o no. "Devuelve sólo los bits que estén activos en ambos términos:
+sólo los que estén activos en ambos términos: si todos los bits que se le pasan en B están activos en A, dará 1, y si no, 0".
+Por ejemplo: "if ( screen->flags & SDL_HWPALETTE )" nos dirá si los bits a los que equivale SDL_HWPALETTE están o no activos en el campo "flags".
+
+A | B : operador OR. Se suele usar para activar bits inactivos. "Devuélveme todos los bits que estaban activos ya y activa estos, porque me vas a dar los
+que están activos en A o en B, en uno de los dos: con que una posición esté activa en uno de los dos, me la vas a devolver como activa".
+Por ejemplo: "flags |= SDL_HWPALETTE;" Activa en "flags" los bits que estén activos en SDL_HWPALETTE y deja activos los que ya lo estuviesen.
+
+Operaciones binarias compuestas:
+
+-Desactivar en A los bits activos en B:  Esta sería la operación contraria de A | B, que activa en A los bits activos en B.
+	A = 10010
+	B = 00010
+	Negamos B, con lo que obtenemos todos los bits activos excepto los que estaban activos antes: ~B = 11101
+	Hacemos A & ~B, con lo que quedarán activos en A los bits que antes estaban activos y se desactivarán los bits que están activos en A pero no están
+	activos en ~B, que eran los que estaban activos en B originalmente.
+	Así que: A & ~B, ya que:
+	10010
+&	11101
+	---------
+	10000
+         Un ejemplo de de cómo hacerlo sería: "flags &= ~SDL_DOUBLEBUF", que es lo mismo que hacer "flags = flags & ~SDL_DOUBLEBUF"
+
+-Operadores de shifting lógico: >> y <<.
+Es shifting LÓGICO, lo que mueves son los bits desde el punto de vista de la cifra y NO de la posción en memoria, por lo que olvídate de endianess aquí.
+0x005A << 8 será siempre 0x5A00. Así de simple. Se meten ceros en las posiciones que quedan vacías por la derecha o por la izquierda.
+Ver conversión de modo paleteado de 8bpp a modo de 32bits para entenderlo en más profundidad.
+
+También se puede usar para multiplicar sin salir de los registros de la CPU. Es como multiplicar por 2^n, siendo n el número de bits que movemos a la
+izquierda.
+Eso nos permite además ciertos trucos como hacerle un << 16 a un número de 32 bits, aumentando así su tamaño y usando los bits más a la derecha
+como "decimales" por así decirlo, y luego hacer >> 16 para redondearlo tal cual, quitando los "decimales" (que no son tales), siempre a la baja. 
+
+**********malloc() y memeset(), diferencia básica******************************************************
+
+Estas funciones NO hacen lo mismo en absoluto: malloc es para reservar memoria a partir de una dirección determinada, 
+y memset escribe un bloque de bits a partir de una dirección con un valor determinado.
+Así que MEMSET REQUIERE QUE LA MEMORIA SE HAYA RESERVADO DE ANTEMANO, O PETARÁ por segmentation fault.
+
+************Conversión de 8 a 16 bits*****************************************************************
+
+Si tenemos una variable de 8 bits y la queremos pasar a 16, a poco que pensemos nos daremos cuenta de que el valor de esa variable estará
+entre los primeros 256 (2^8) valores de los 65535 (2^16) que podemos direccionar con 16 bits, o visto de otro modo, entre los 256 primeros
+números de los 65535 hasta los que podemos contar con 16 bits.
+Así que la idea sería declarar un word (16 bits) cuyo valor fuese: el valor del byte (8 bits) pero con los bits del byte "movidos" hacia los 8 lugares
+de menor peso, o sea, hacia la derecha.
+
+En "plain c", si queremos valores de 8 y de 16 bits, como no hay variables simples tipo "byte" y "word" simplemente usamos otros tipos que sabemos que
+son variables de 8 y de 16 bits. 
+--- char* es de 8 bits. No un carácter, no. Un puntero a carácter. Va de 0 a 255.
+--- int16_t es de 16bits. Va de 0 a 65535.
+--- int32_t es de 32 bits. Va de ...
+--- unsigned es de 32 bits. Se trata de un entero sin signo. Va de 0 a la hostia de millones...
+Al asignar entre ellas, hacer un cast o lo que sea, el compilador ya se encarga de que se mantenga el mismo valor tras hacer la conversión, de tal manera que
+si declaramos un char* a = 52 y luego hacemos unsigned b = a, si forzamos la impresión de ambos valores formateándolos como enteros con %d en un
+printf, obtendremos el mismo valor.
+ char *a = 92;
+ unsigned b = (int)a;
+ printf ("\n Valor en 8 bits es %d y valor en 16 bits es %d\n", a, b);
+
+
+En C++ sí que tenemos tipos de variable sencilla WORD y BYTE, así que basta con que hagamos
+
+BYTE a = 52;
+WORD b = a >> 8;
+
+ya que tendrán que ser los 8 bits de menor peso por lo que se exlpicó al principio.
+
+************Multiplicación ultra rápida usando bit shifts********************************************
+
+Dado que nosotros escribimos las cifras de izquierda a derecha tanto en decimal como en binario, y por lo tanto ponemos las cifras de mayor peso a la izquierda
+y las de menor peso a la derecha, tenemos que tener claro intuitivamente que desplazar dígitos binarios hacia la izquierda es multiplicar
+y desplazarlos hacia la derecha es dividir.
+Concretamente, si lo piensas, pasar de 0010 a 0100 es multiplicar por dos. Pues eso: se multiplica por 2^n siendo n el número de posiciones que movemos
+los dígitos. Para dividir, pues lo mismo.
+
+Es muy rápido porque no hay que enviar nada a la RAM: el valor está en un registro de la CPU y ahí se hace el bit shift.
+
+************Compilando libsdl para que instale las librerías en un directorio que no sea /usr/lib************
+
+Aunque lo lógico es que bastase con especificar --libdir=/home/pi/scumm/libs para que luego make install las instalase ahí, 
+si nos fijamos en el makefile resultante, por más que especifiquemos un --prefix o un --libdir distintos, la variable libdir de este Makefile
+siempre acaba apuntando a /usr/lib/armhf-gnueabi, por lo que ignora el valor de --libdir.
+
+Así que especificamos el libdir que queramos editando a pelo el makefile.
+
+*********Escribir en un fichero de texto en C, útil para logs de programas que desconecten la consola*****
+
+FILE *fp = fopen("file.txt", "w");
+const char *text = "Write this to the file";
+fprintf (fp, "Some text: %s\n", text);
+fclose (fp);
+
+Los modos de apertura son:
+r: abrir el archivo para lectura
+w: crear el archivo de nuevo, para escribir en él
+a: abrir el archivo para escribir al final de lo que hay escrito de antes
+Los modos con + (a+, w+, r+) hacen lo mismo pero sin crear el archivo, sino usando el mismo que ya había, actualizando su información.
+!!!!NOTA: Si lo vas a usar para sacar logs de una aplicación, mírate la sección "variables globales y su incialización".
+
+*********Uso de los macro-identificadores #ifdef*****************************************************
+
+#define debug_mode
+.
+.
+.
+#ifdef debug_mode
+                printf("\n[WARNING WARNING] Estamos en modo DEBUG y se escribirá LOG");
+#endif
+
+El #define puede (suele, de hecho) ir fuera de toda función y se comprobará por el preprocesador al compilar el fichero.
+
+********Variables globales y su inicialización***********************************************************
+
+Si declaras por ejemplo FILE *fp con la idea de usarlo a lo largo de varias funciones, se hace así:
+--Se declara FILE* fp en el fichero de cabecera, NO en el .c, y obviamente fuera de cualquier función
+--NO puedes incializar fp inmediatamente, en plan FILE* fp = fopen(...), porque ya estás llamando a una función y obviamente NO se puede poner código
+ejecutable fuera de funciones. Te dará un error de "initializer is not constant" si lo intentas. Algo como FILE* fp = NULL sí funcionaría.
+Así que lo que has de hacer es dejar fp declarado, y luego ya, el .c, en alguna de las funciones que inicializan algo, haces el fp = fopen(...) y en alguna
+de las funciones que cierran algo y liberan cosas, al acabar, haces el fclose (fp).
+¡¡SEspero que lo hayas entendido!!
+
+***********Debugear un programa con GDB al que se le pasan argumentos************************************************************
+
+Se puede hacer 
+gdb --args path/to/executable -every -arg you can=think < of
+
+o se puede hacer ./gdb programa
+y dentro de eso, hacer "run <argumentos>"
+
+*************Debugear programas que corren a pantalla completa********************************************************************
+
+El objetivo es debugear una función de las SDL que es llamada siempre muy al principio por los programas, que además van a pantalla completa, 
+por lo que es imposible debugearlos en la misma máquina en la que corren a no ser que lo hagamos por ssh, y además no nos daría tiempo a lanzar 
+el programa, averiguar su PID y attachar con gdb, ya que cuando quisiésemos hacer el attach y poner el bp ya habríamos pasado de esa función 
+(SDL_SerColors() en este caso, que es llamada por funciones de cambio de paletas en modos de 8bpp, cosa
+que se hace, lógicamente, al principio del programa siempre).
+NO ES POSIBLE parar un programa con GDB y luego entrar desde otro terminal a la misma máquina y con otro GDB hacer un attach al programa
+parado: los del canal #gdb aseguran que NO ES POSIBLE TENER DOS GDBs ACOPLADOS A UN MISMO PROGRAMA. Por eso tenemos que parar 
+el programa de otro modo.
+
+En la Rpi, en el código de las SDL (de manera que no tengamos que hacerlo con cada programa) añadimos la sentencia condicional que sólo se
+activará si definimos debug_mode antes:
+
+#ifdef debug_mode
+                 printf ("\n[DEBUG][DEBUG] Esperando pulsación de tecla para gdb remoto...");
+                 getchar();
+#endif
+
+Ponemos esta sentencia al principio de la función DISPMANX_CreateDevice(), porque sabemos que se ejecuta muy al principio y aún tenemos
+terminal de texto, teclado, etc, al no haber entrado el programa que la llama en modo gráfico aún.
+De esta manera, podremos pulsar la tecla para reanudar el programa y que el programa se entere de que la hemos pulsado. 
+Lo único que nos interesa es tener el programa corriendo, aunque esté pausado esperando la tecla, para tener su PID.
+
+Ahora, en el portátil, en el que tenemos sesión abierta por ssh con la Pi, miramos mediante "ps -a" el PID del programa que usamos para debugear 
+las SDL, tranquilamente iniciamos el gdb, y hacemos "attach <PID del programa>".
+También podemos simplemente ejecutar gdb con el PID directamente como parámetro: "gdb -p <PID>"
+En este momento añadimos el breakpoint a la línea de la función que queremos debugear:
+"b SDL_fbvideo.c : <num línea>" e intro.
+El programa a debugear está parado doblemente: por el attach del gdb y por la pulsación que espera. Así que en el gdb hacemos "c" e intro, para
+reanudar la ejecución, en la Rpi pulsamos una tecla que es lo que está esperando el programa reanudado, y parará en el breakpoint que le hemos puesto.
+
+*************Más apuntes GDB*****************************************************************************************************
+
+Para eliminar un breakpoint, usamos "clear <número de lína>" o "clear <nombre de función>", ya que se pueden definir de ambos modos.
+Para desplazarnos por el código:
+"list" para ver un número de líneas alrededor de donde estamos
+"s" para avanzar, entrando en funciones
+"n" para avanzar de línea en lína, sin entrar el funciones
+"jump", acompañado de fichero:num_línea, para salir de bucles en los que, de otro modo, daríamos vueltas y más vueltas. 
+"display", acompañado del nombre de una variable, para ver cómo va cambiando su valor
+"d" para borrar todos los breakpoints, es abreviatura de "delete". Para borrar sólo uno, usamos "clear" y su localización.
+
+
+************Medir lapsos de tiempo en segundos en C/Unix**************************************************************************
+struct timeval t1, t2;
+gettimeofday (&t1, NULL);
+
+sleep(2);
+
+gettimeofday (&t2, NULL);
+printf ("Time elapsed %d seconds", t2.tv_sec-t1.tv_sec );
+
+También podemos medir milisegundos y microsegundos: por ejemplo, en milisegundos, multiplicaríamos el número de segundos por mil y luego
+restaríamos el campo de los microsegundos, que se resetea al pasar cada segundo, multiplicaríamos esos microsegundos por mil y se lo sumaríamos 
+al número de milisegundos causados por los segundos. Algo así. Lo verás en cuanto busques ejemplos de milisegundos, pero la lógica es esa.
+
+Pasar de microsegundos a milisegundos es sencillo: microsegundos es 10^-6 y milisegundos es 10^-3, por lo que basta multiplicar los microsegundos por mil.
+Lo mejor, por otra parte, es no andar pasando de microsegundos a milisegundos sino simplemente usar un número de 1000 de microsegundos por cada 
+milisegundo para establecer intervalos de tiempo. Por ejemplo:
+
+        Uint32 timeStep = 32000; //Leemos cada 32ms (30 veces por segundo en un display de 60HZ). Como gettimeofday()
+                                 				//sólo nos ofrece segundos y microsegundos, usaremos el campo de los microsegundos
+                                 				//que son 10^-6 y lo multiplicaremos por mil para milisegundos (10^-3).
+
+        struct timeval timeLast, timeCurrent; 
+        Uint32 timeDelta, timeElapsed, timeAccum;
+        gettimeofday (&timeCurrent, NULL);
+
+	//Bucle que corre "as fast as possible"
+	while (1){ 
+		timeLast = timeCurrent;
+                gettimeofday (&timeCurrent, NULL);
+                timeDelta = timeCurrent.tv_usec - timeLast.tv_usec;
+                timeAccum = timeAccum + timeDelta;
+
+                if (timeAccum > timeStep){
+			//Hacer lo que sea que sólo hay que hacer cada cierto tiempo, como leer de teclado, etc...
+			<leer_teclado_o_lo_que_sea>
+			timeAccum = 0;
+			}
+	}
+
+************Crear un fork de un proyecto en github*********************************************************************************
+
+Lo primero es entender que un fork no es un branch: un repo, el que sea, sea un fork de otro o sea "original", puede tener uno o varios branches, 
+para trabajar en distintas cuestiones en cada branch. 
+
+Clonamos el repo:
+
+git clone ...
+			        -----------------
+Sáltate esta sección si simplemente quieres hacer un fork cuyo único branch sea el "master". Esto es para crear y gestionar branches locales.
+Ahora, pongamos que queremos hacer un branch. ESTO NO HACE FALTA PARA HACER UN FORK!!
+Por defecto, estaremos en la rama "master".  Podemos modificar y luego hacer el branch, o hacer el branch y luego modificar, lo que quieras.
+
+Creamos una rama nueva, un branch, y nos situamos en ella, todo a la vez:
+
+git checkout -b feature_x
+
+Si ahora quisiéramos borrar esa rama, nos iríamos a la rama master y borraríamos la rama que habíamos creado:
+
+git checkout master
+git branch -d feature_x
+
+Si queremos borrar un branch en el repo, hacemos
+git push --delete vanfanel <nombre_branch> 
+
+Si queremos ver los branches que tenemos, hacemos:
+git branch
+
+Para cambiar de un branch al otro, usamos 
+git checkout <nombre branch>
+                                   ----------------
+
+Ahora vamos a por el fork en sí: un fork se hace en github, dándole al botón "fork" en el proyecto que quieras, estando logado con tu cuenta de github.
+
+Ahora especificamos la nueva URL del repositorio, que ya no será la del proyecto original, sino la de mi fork. Si mantuviésemos la del proyecto original,
+nos daría el error "error: The requested URL returned error: 403 while accessing". Si te fijas, al hacer el "git push origin master", lo estás haciendo contra
+la URL original, sobre la que no tienes permisos.
+Para evitar esto, como digo, hacemos:
+
+git remote set-url vanfanel https://github.com/vanfanel/RetroArch
+
+Aplicamos los cambios que sean, y al acabar hacemos el 
+git add .
+git commit -m "he hecho algunos cambios"
+Y si estamos en el branch "master" de mi repo local, bastaría con hacer:
+
+git push vanfanel master
+
+Pero podemos encontrar varios problemas, que también voy a documentar:
+--ERROR: Nuestra versión con cambios está basada en una versión más antigua que la que hemos clonado del repo.
+error: failed to push some refs to 'https://github.com/vanfanel/RetroArch'
+hint: Updates were rejected because the tip of your current branch is behind
+--SOLUCIÓN:
+git fetch origin
+git rebase origin/master
+Esto debería traer los cambios más recientes del repo, y fundirlos con nuestros cambios. Si no lo hace, quizá estás en el branch local incorrecto, como cuando
+estaba en "master" y mis cambios estaban en "mali_egl". Entonces, tuve que ponerme en el branch local "mali_egl" y luego traerme los cambios recientes
+y fundirlos. O sea que tuve que hacer:
+git checkout mali_egl
+git fetch origin
+git rebase origin/master
+Recuerda aquí que para ver qué branches hay se usa "git branch" y para ver el log de un branch puedes hacer "git log <nombre_branch>", lo que te permite
+asegurarte de si estás en el brach que te conviene o no.
+Ahora quise subir los cambios del branch mali_egl a mi fork (¡¡¡¡RECUERDA que tras hacer los cambios, tuviste que hacer ya el "git add ." y 
+el "git commit -m <razón>"!!!): 
+git push vanfanel mali_egl
+
+Ahora quise merger mali_egl sobre master, con el fin de tener mis cambios sobre la última versión del código de mi repo (ya que cambiamos el origin antes):
+git merge mali_egl master
+me fui a master y borré el branch mali_egl tanto del repo local como del remoto, primero de uno y luego del otro: 
+git branch -d mali_egl
+git push --delete vanfanel mali_egl
+
+Esta frase de chungy resume cómo es el workflow de crear un fork:
+< chungy> Just do the fork on github, add your github repository as a remote, push mali_egl to it, and done
+
+***********************Actualiar la copia local de un repo sobre la que hemos estado trabajando ya***********************************************
+
+Podemos hacer, más o menos sin miedo, un "git pull", y nos actualizará la copia local a la última versión. Pero ten en cuenta que, al hacerlo:
+-Si hemos añadido código en ficheros nuevos creados por nosostros, nos los deja. Esto bien.
+-Si hemos añadido código a ficheros que ya existían y que no se han actualizado, no lo deja. Esto bien.
+-Si hemos añadido código a ficheros que ya existían y que sí se han actualizado, viene el ciripólen: nos va a decir que no puede hacer el merge. 
+Así que hay que evaluar si estamos en condiciones de hacer el git pull o no: de todos modos podemos hacerlo, y aunque no nos deje completar la mezcla,
+sabremos por qué sin que nuestro código corra peligro.
+
+
+********************Undefined reference a miembro static de una clase**************************************************************************
+
+Los miembros static no sólo hay que declararlos, sino además definirlos, antes de poder usarlos.
+O sea que si tienes en el .h algo como
+class foo (){
+	public:
+	private:
+		static int member_a;		
+		escribir_pantalla();
+}
+
+entonces, en el .c tendrás que tener:
+	foo::member_a = 0;
+y ya podrás hacer cosas del estilo:
+
+foo::escribir_pantalla (){
+	cout << member_a;
+}
+
+Y no olvides que sólo puedes acceder a miembros private static desde métodos miembro de la clase en que se declaran.
+
+En general, en C++, no tiene sentido declarar como static mienbros de una clase que sólo se vaya a instanciar una vez, porque no va a haber más instancias
+con las que compartir esos miembros. 
+En C se suele usar, recuerda, para funciones o variables que se van a usar en el ámbito de la unidad de compilación, mientras que los que se van a usar desde
+otros ámbitos (inculyendo algún .h) no se declaran static.
+Pero lee el siguiente punto para tenerlo aún más claro, porque tiene más sutilezas.
+
+*****************Variables static en C y miembros static en C++**********************************************************************************
+
+En C, una variable se declara static para que, así, ese nombre de variable haga referencia a la misma variable en todas partes desde que es declarada (en el
+scope que sea, claro: si sólo es dentro de una función, pues ahí se queda. O puede abarcar una unidad entera de compilación si es global, etc).
+De ese modo, establecido un valor de esa variable, ese valor será el mismo en todo el scope.
+También implica que, si se declara una variable local static, cuando volvamos a entrar en la misma función, el valor que tenía al salir se conserva. Eso
+no pasa con las variables no static, cuyo valor se pierde.
+Si tenemos una variable static de ámbito global, y definimos otra variable del mismo tipo y nombre de ámbito local, incluso también static (o no, como 
+queramos) se nos permite hacerlo sin problemas. Pero en el scope de esa variable local, es decir, dentro de esa función, cualquier referencia al nombre 
+de la variable se referirá a la variable local, no a la de ámbito global. El ámbito local siempre "puede más" que el global.
+
+En C++, se usa static en un miembro cuando queremos que todas las instancias de una clase compartan el mismo miembro: o sea, que si se cambia
+el valor de ese miembro static en una de las instancias de la clase, queda cambiado en todas las instancias de la clase.
+Lógicamente, si queremos cambiar ese valor desde un método que no es de la clase, deberá ser un miembro public, aunque lo normal será que se cambie
+dentro de un método miembro de la clase actuando sobre una de las instancias.
+
+ 
+

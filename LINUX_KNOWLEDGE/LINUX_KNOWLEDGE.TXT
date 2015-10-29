@@ -1,0 +1,2932 @@
+*******Aplicar parches ips en Linux*****************************************************************************************************************************************
+
+Lo hacemos con el UIPS, un parcheador hecho en C de Neil Corlett (sí, el traductor del Seiken Densetsu 2, la gente es la hostia!) de hace mil años.
+Clonamos este repo: https://github.com/chungy/cmdpack.git
+Compilamos y a correr.
+
+*******Cambiar las fuentes de tamaño en Debian/Lubuntu cuando dpkg-reconfigure console-setup falla************************************************************************
+El problema es que /lib/udev/console-setup-tty está jodido.
+Si hacemos strace /lib/udev/console-setup-tty fbcon, vemos que está buscando un fichero de fuente en /etc/console-setup que no existe, y además lo busca en PSF y nosotros
+los tenemos en .psf.gz. Así que ajustamos cosas en /etc/default/console-setup para que busque una fuente que tengamos en /etc/console-setup y se la ponemos ahí.
+Intercambia la altura y anchura, descomprime la fuente con gzip.. así hasta que la encuentre.
+Fuente: http://unix.stackexchange.com/questions/198791/how-do-i-permanently-change-the-console-tty-font-type-so-it-holds-after-reboot
+
+*******Escritorio Lubuntu sin tearing***************************************************************************************************************************************
+
+Sacado de https://wiki.archlinux.org/index.php/Intel_graphics#Tear-free_video
+
+Creamos /etc/X11/xorg.conf.d/20-intel.conf con el contenido:
+
+Section "Device"
+   Identifier  "Intel Graphics"
+   Driver      "intel"
+   Option      "AccelMethod"  "sna"
+   Option      "TearFree"    "true"
+EndSection
+
+Reiniciamos el servidor gráfico. Magia!
+
+*******Comprimir un PDF****************************************************************************************************************************************
+
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=xenon2-compressed.pdf Downloads/Xenon.2-Manual.pdf
+
+******Arrancar, instalar y arrancar una instalación de Linux en un Toshiba C50-B (o en cualquier cagarro de PC moderno con UEFI)*************************************
+
+Entramos en el menú UEFI manteniendo presionado F2 al encender. Ponemos como primera unidad de arranque el USB.
+Cambiamos el modo de arranque a CSM.
+Instalamos y arrancamos desde el disco duro. Si hemos instalado en modo CSM, debería arrancar.
+Ya que estás, desactiva SECUREBOOT.
+Miseria y muerte a Microsoft y a todos los malnacidos que trabajan en ella.
+
+*******Guardar LOG de una ventana en el IRSSI*******************************************************************************************************************
+
+/lastlog -file <archivo>.log
+
+*******SDL1 en la Raspberry Pi**********************************************************************************************************************************
+
+SDL1 está roto en la Rpi hasta el punto de que con versiones recientes del hardware, a veces tenemos pantallazo negro.
+Para evitarlo, bajamos los dos tar.gz de aquí:
+
+http://malus.exotica.org.uk/~buzz/pi/sdl/sdl1/deb-src/
+
+El más pequeño contiene unos parches que aplicamos con
+
+patch -p1 < nombre_parche.diff
+
+IMPRESCINDIBLE APLICAR EL PARCHE RPI.DIFF!!!! O TENDREMOS PANTALLAZOS NEGROS AL LANZAR PROGRAMAS ALEATORIAMENTE!!!
+
+Configuuramos con mi scrip MAC_ConfigureSDL1.sh que contiene:
+
+CFLAGS="-Ofast -mfpu=vfp -march=armv6j -mfloat-abi=hard" ./configure --disable-video-opengl --disable-video-dispmanx --enable-video-fbcon --disable-video-kms --disable-video-directfb --enable-cdrom --disable-oss --disable-alsatest --disable-pulseaudio --disable-pulseaudio-shared --disable-arts --disable-nas --disable-esd --disable-nas-shared --disable-diskaudio --disable-dummyaudio --disable-mintaudio --disable-video-x11 --prefix="/usr" --disable-input-tslib
+
+make y sudo make install.
+
+El hilo en que se hacía referencia a esto es el siguiente:
+
+https://github.com/raspberrypi/firmware/issues/354
+
+*******DOSBOX en la Raspberry Pi*******************************************************************************************************************************
+
+A parte de aplicar mi parche de GLES2, se configuraría con
+
+CFLAGS="-Ofast -mfpu=vfp -march=armv6j -mfloat-abi=hard" CXXFLAGS="-Ofast -mfpu=vfp -march=armv6j -mfloat-abi=hard" ./configure --disable-opengl --enable-opengles
+
+Hemos encontrado las las instrucciones para dynarec ARM y para UNALIGNED MEMORY ACCESS en estas páginas:
+
+https://www.raspberrypi.org/forums/viewtopic.php?f=78&t=95421
+http://boards.openpandora.org/topic/7544-dosbox-dynrec-update/
+
+Mi parche ya activa estas cosas si detecta el BCM de una Pi1. Puedes confirmar que en config.h están estas cosas así:
+
+#define C_DYNREC 1
+#define C_TARGETCPU ARMV4LE
+#define C_UNALIGNED_MEMORY 1
+
+*******EN RASPBIAN NO PUEDO DEBUGEAR PROGRAMAS EN C++ QUE HAN SIDO COMPILADOS CON DISTCC*********************************************************
+Da todo el rato "no symbol <loquesea> in current context".
+Hay que actualizar gdb...
+
+Desisntalamos nuestro viejo gdb, el que viene con Raspbian. No tiene dependencias graves, sólo debería sel ese paquete y ya:
+
+sudo apt-get purge gdb
+
+Instalamos texinfo y libncurses5-dev:
+
+sudo apt-get install texinfo libncurses5-dev
+
+Bajamos los últimos sources de http://ftp.gnu.org/gnu/gdb/. La versión 7.9.1 va perfectamente.
+Hacemos
+
+./configure --prefix="/usr"
+make -j8
+sudo make install -j8
+
+Y listo. Con el nuevo gdb ya podemos debugear cosas compiladas con el distcc, ya que encuentra los debug simbols sin problemas y podemos ir línea a línea y todo eso.
+
+*******ACTUALIZAR GCC a 4.9 en RASPBIAN**********************************************************************************************************************
+
+Estas instrucciones son cojonudas porque nos permiten actualizar el compilador y librerías asociadas sin pasar todo el sistema a jessie!
+Las he sacado de: http://somewideopenspace.wordpress.com/2014/02/28/gcc-4-8-on-raspberry-pi-wheezy/
+Originalmente eran para actualizar a 4.8, pero naturalmente ahora ya se puede actualizar a 4.9.
+
+Ever needed gcc/g++ 4.9 on your wheezy? Then do
+
+sudo nano /etc/apt/sources.list
+
+Change content to
+
+deb http://mirrordirector.raspbian.org/raspbian/ wheezy main contrib non-free rpi
+deb http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi
+# Source repository to add
+deb-src http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi
+deb http://mirrordirector.raspbian.org/raspbian/ jessie main contrib non-free rpi
+deb http://archive.raspbian.org/raspbian jessie main contrib non-free rpi
+# Source repository to add
+deb-src http://archive.raspbian.org/raspbian jessie main contrib non-free rpi
+
+Add preferences file
+
+sudo nano /etc/apt/preferences
+
+and insert
+
+Package: *
+Pin: release n=wheezy
+Pin-Priority: 900
+Package: *
+Pin: release n=jessie
+Pin-Priority: 300
+Package: *
+Pin: release o=Raspbian
+Pin-Priority: -10
+
+update package list
+
+sudo apt-get update
+
+Install gcc/g++ 4.9 from jessie repositories
+
+sudo apt-get install -t jessie gcc-4.9 g++-4.9
+sudo apt-get install -t jessie gdb
+
+To remove gcc/g++ alternative configuration (if there is any, there is none by default)
+
+sudo update-alternatives --remove-all gcc 
+sudo update-alternatives --remove-all g++
+
+sudo apt-get purge gcc-4.7
+sudo apt-get purge gcc-4.6
+..etc...
+
+Install alternatives
+
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 50
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 50
+sudo update-alternatives --install /usr/bin/cpp cpp /usr/bin/g++-4.9 50
+
+Now 4.9 is your default compiler. You can verify it by
+
+sudo gcc --version
+
+If you want to change it, you can
+
+sudo update-alternatives --config gcc
+sudo update-alternatives --config g++
+
+*******Profiling de programas usando OPROFILE*****************************************************************************************************************
+
+Puede que necesitemos activado el soporte de Oprofile en el kernel: PARA PROGRAMAS NORMALES NO PARECE HACER FALTA ESTO.
+General Options, casi abajo del todo, Profiling y dentro de eso Oprofile.
+
+Hay que bajar los sources y compilarlos. Pide ciertas librerías:
+libiberty está en libiberty-dev. 
+bfd está en binutils-dev.
+Las demás librerías que va pidiendo se ve bien su nombre de paquete.
+
+Lo normal es hacer el profiling según lanzamos el programa:
+
+operf <ejecutable>
+
+Para hacer el profiling de un programa en ejecución, 
+
+operf --pid=<PID_DEL_PROGRAMA>
+
+Luego, cuando acabemos de usar el programa, usaríamos opereport para leer el informe que hemos generado (http://oprofile.sourceforge.net/examples/):
+
+opreport --demangle=smart --symbols `which scummvm`
+
+Si te salen cosas como 
+138941   69.8828  libc-2.19.so             /lib/arm-linux-gnueabihf/libc-2.19.so
+eso quiere decir que el 69% de la CPU se está usando en una función de libc, pero como no tienes los debug symbols de libc instalados, no te la muestra.
+Así que instala libc6-dbg y te saldrán todas las llamadas.
+
+*******Añadir username, hostname  y ruta actual al prompt del bash***********************************************************************************************
+Añade esto a .bash_profile:
+
+PS1="\u@\H\w$ "
+
+******Quitar versión de kernel y lastlogin*************************************************************************************************************
+
+ edita /etc/pam.d/login
+y comenta
+#session optional pam_lastlog.so
+
+*******El comando IP********************************************************************************************************************************
+
+Fuente: http://www.tecmint.com/ip-command-examples/
+
+Añadir una IP fija:
+ip addr add 192.168.5.10/24 dev eth0
+
+Para confirmar:
+ip addr show
+
+Ahora añadimos el gateway:
+ip route add default via 192.168.5.7
+
+Probamos que podemos salir a internet:
+ping 8.8.8.8
+
+Lo único que nos faltaría es poner un servidor DNS en /etc/resolv.conf, para poder hacer ping a google y demás.
+nameserver 8.8.8.8
+
+También es posible desconectar el cable, etc
+
+*******Mantener más o menos en hora sistemas que no tienen reloj interno (Rpi, Cubie2...)***************************************************************
+
+en Debian, instala el paquete "fake-hwclock", pon el sistema en hora y reinicia. Ya guarda la hora del último aparago y más o menos nos vale para evitar clock skews.
+
+*******Cambiar el modo con xrandr*******************************************************************************************************************
+
+Listar modos de vídeo: xrandr -q
+Cambiar el modo de vídeo: 
+xrandr --output LVDS1 --mode 640x480
+
+*******Acceso a piratebay cuando la bloqueen desde europa********************************************************************************************
+
+No hace falta ni TOR
+
+Haced un ping o un nslookup a thepiratebay.se, tendreis la IP, los filtros de las operadoras suelen ser por nombres y no por IPs
+
+Sustituid la IP que os salga por la URL en el navegador y ya ;) muahahahaha... 
+
+*******Imágenes de CD: cambios de formato, etc*******************************************************************************************************
+
+Para pasar de una combinación CUE+WAV+ISO a CUE+BIN, usamos el CDMage en Wine. Es un programa MUY antiguo, pero funciona. 
+Simplemente abrimos el CUE del combo CUE+WAV+ISO, y luego le damos a SAVE AS... y el programa lo guarda como CUE/BIN!!
+
+Para hacer lo contrario, ripear de CUE/BIN a CUE+WAV+ISOS, usamos otro programa de Windows: el BINCHUNK.EXE.
+Viene en el parche del Castlevania Rondo of Blood al inglés.
+
+*******Las tildes de Libreoffice no funcionan tras cambiar entre libreoffice y otro programa**************************************************************
+
+Instala el paquete libreoffice-gtk, y arreglado.
+Recuerda: libreoffice-gtk. Es un paquete de integración.
+
+*******Preparar el portátil como router para salir a internet desde la Raspberry Pi u otra placa conectada a él por ethernet*********************************
+
+Al router (el portátil, por ejemplo, que es el que se conecta a internet) le ponemos una IP fija en el mismo rango que el cliente. En Lubuntu o Debian es tan fácil
+como crear una conexión ehernet nueva en el gestor de redes. NO NECESITAS ponerle un gateway, así que NO LO HAGAS porque NO FUNCIONARÁ SI LO HACES: por si te surge la duda.
+Ahora editamos /etc/sysctl.conf y descomentamos la línea
+#net.ipv4.ip_forward=1
+Añadimos el binding a las IPtables:
+sudo iptables -t nat -A POSTROUTING -o wlo1 -j MASQUERADE
+Donde digo wlo1, me refiero al interface con el que el servidor se conecta a internet. Antes de la 14.04 de Lubuntu, la wifi era eth1, luego fue un tiempo wlan0... así que fíjate bien.
+Si queremos que estas cosas empiezen a funcionar sin reiniciar, hacemos
+echo 1 > /proc/sys/net/ipv4/ip_forward
+Ahora salvamos las IPtables:
+sudo iptables-save | sudo tee /etc/iptables.sav
+Y nos aseguremos de que se carguen al reiniciar, editando /etc/rc.local y añadiendo:
+iptables-restore < /etc/iptables.sav
+Recuerda crear una conexión en el servidor que sea del mismo rango que la IP fija del cliente, y en el cliente poner como gateway la IP del servidor, añadir
+el servidor dns en /etc/resolv.conf si hace falta, etc... Lo típico de /etc/network/interfaces, que tienes más abajo en varios sitios.
+
+*******Averiguar IP externa************************************************************************************************************************
+
+curl ipecho.net/plain ; echo
+
+*******Conocer la IP de un equipo de casa en todo momento desde fuera, mediante un email cada vez que cambia*****************************************
+
+Para linuxeros en general: Recibir un correo con la IP de tu equipo de casa (sólo Linux):
+
+INSTALAR PAQUETES
+sudo apt-get install curl mutt ssmtp
+
+CONFIGURAR SERVICIO DETECTA IP
+sudo nano /root/notify-ip
+######################################
+#!/bin/bash
+email=USERNAME@gmail.com
+if [ ! -e /tmp/ip ]; then
+curl -s ifconfig.me > /tmp/ip
+fi
+curl -s ifconfig.me > /tmp/ip2
+newip=$(diff /tmp/ip /tmp/ip2 | wc -l)
+if [ $newip -gt 0 ]; then
+mv -f /tmp/ip2 /tmp/ip
+cat /tmp/ip | mail -s "CAMBIO DE IP DINAMICA" $email
+else
+rm /tmp/ip2
+fi
+######################################
+sudo chmod +x /root/notify-ip
+
+CONFIGURAR SERVIDOR DE CORREO
+sudo nano /etc/ssmtp/ssmtp.conf
+root=USERNAME@gmail.com
+mailhub=smtp.gmail.com:587
+rewriteDomain=
+hostname=USERNAME@gmail.com
+UseSTARTTLS=YES
+AuthUser=USERNAME
+AuthPass=PASSWORD
+FromLineOverride=YES
+
+CONFIGURAR PLANIFICADOR DE TAREAS (cada 30 mins)
+sudo crontab -e
+30 * * * * /root/notify-ip | date >> /tmp/notify-ip.log
+
+sudo service cron restart 
+
+*******Captura de pantalla en Linux y apertura automática con el PINTA*******************************************************************************
+
+Creamos un script, captura, con permisos de ejecución y el siguiente contenido:
+
+gnome-screenshot --file=captura.png
+pinta captura.png
+
+Lo enviamos a /usr/bin
+
+Ahora editamos ~/.config/openbox/lubuntu-rc.xml (NO editamos /etc/xdg/openbox... porque ESO LO IGNORA), y buscamos Print.
+Vemos que viene la combinación A-Print (Alt+Print screen) para capturar la pantalla. La dejamos sólo como Print, y entre <Command> y </Command>
+ponemos simplemente captura. Listo.
+
+*******Whatsapp en Linux**************************************************************************************************************************
+
+Más fácil que mear en pared.
+Nos bajamos el plugin para pidgin de aquí:  http://davidgf.net/nightly/whatsapp-purple/
+O de github si lo queremos compilar (https://github.com/davidgfnet/whatsapp-purple), pero vamos, que desde la página de binarios va bien.
+Bajamos la última versión del binario y lo mandamos a /usr/lib/purple-2, que es donde todos los programas basados en libpurple, incluído pidgin,
+buscan los plugins.
+
+Pero claro, necesitamos un user y pass. El user será el número de teléfono con el 34 delante. El pass lo tenemos que hacer registrándonos.
+Para ello, usamos yowsup-cli del paquete yowsup: https://github.com/tgalal/yowsup
+Clonamos el repo, instalamos python-dateutil, y damos permisos de ejecución al script yowsup-cli en python que está en src.
+INstalamos esto: sudo apt-get install python-dateutil
+Ahora hacemos:
+
+./yowsup-cli registration --requestcode sms --phone 34620626230 --cc 34
+
+Y nos llegará un mensaje al móvil con un código para registrarnos. Así que hacemos:
+
+./yowsup-cli registration --register 396-299 --phone 34620626230 --cc 34
+
+Sustituimos 396-299 por el código, obviamente.
+Al acabar este último comando, nos dará un password. Ese password lo podemos meter en nuestro fichero config, y/o lo podemos usar ya
+directamente en el plugin de pidgin como password de la cuenta, de tal manera que mi cuenta es:
+
+login: 34620626230
+pw: ymcAunpgwsfsdDFHK4FSHPHJqxM=
+
+Ahora ya podemos agregar contactos de whatsapp con normalidad!
+
+Si tienes problemas de conectividad, edita ~/.purple/accounts.xml y busca el servidor, versión de android, puerto...
+
+*******Compilar el Atari800 para la Raspberry Pi******************************************************************************************************
+
+Si te quieres ahorrar muchos pasos, tienes un parche contra la versión 3.1.0 en el correo, llamado atari800-refreshrate.patch
+Si lo aplicas, sólo te queda cambiar los CFLAGS en el Makefile tras hacer el ./configure --target=rpi --host=arm-linux
+
+¡¡CUIDADO, si usas tu backend dispmanx, has de poner:  ./configure --target=rpi-dispmanx --host=arm-linux
+
+Este parche incluye los arreglos a configure y configure.ac para que no intente cross-compilar.
+Ahora bien: si quieres hacer las cosas por las malas, sigue debajo de esta línea...
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Como queremos ajustar la frecuencia de refresco del emulador, nos toca recompilarlo. Para ello, leemos DOC/BUILD.RPI que hay que hacer:
+./configure --target=rpi --host=arm-linux
+
+PERO ANTES tenemos que retocar el configure.ac, para que no intente cross-compilar. Así que cambiamos la seccion correspondiente dejándola así:
+TAMBIÉN EDITAMOS configure, y cambiamos lo mismo.
+
+if [[ "$a8_target" = "rpi" ]]; then
+     CC="gcc"
+     CFLAGS="$CFLAGS -I/opt/vc/include -I/usr/include/SDL -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads"
+     LDFLAGS="$LDFLAGS -Wl,--unresolved-symbols=ignore-in-shared-libs -L/opt/vc/lib"
+fi
+
+Ahora ya ejecutamos el ./autogen.sh y después, con nuestro nuevo configure, hacemos:
+./configure --target=rpi --host=arm-linux
+Y ya podemos compilar.
+
+Nos dará un error en una línea que llama a SDL_GetPixelFormat(). Comentamos la línea y a correr.
+
+Ajustamos el framerate, editando para ello el atari.h y cambiando 
+#define Atari800_FPS_NTSC 59.9227434
+por
+#define Atari800_FPS_NTSC 60.002399
+
+El nuevo valor de Atari800_FPS_NTSC se ha obtenido de RetroArch.
+
+*********Conexión WIFI lenta con BCM4313********************************************************************************************************************* 
+Para arreglarlo, líbrate de los drivers b43 que son una mierdaca.
+
+sudo apt-get install bcmwl-kernel-source
+sudo modprobe -r b43 ssb wl
+sudo modprobe wl
+
+reboot and ejoy! :)
+
+********Establecer el niceness de un programa siendo usuario******************************************************************************************
+
+Editamos /etc/security/limits.conf y añadimos la fila:
+pi 	-	nice	-20
+
+Ahora podemos lanzar el programa con nice -n -10 <nombre_programa>
+
+********DOSBOX en ARM****************************************************************************************************************************
+
+Nos bajamos el archivo svn de aquí: http://www.dosbox.com/wiki/BuildingDOSBox
+Si queremos el ARM dynarec, tras ejecutar el ./configure tenemos que editar el config.h y añadir:
+#define C_DYNREC 1
+#define C_TARGETCPU ARMV7LE
+#define C_UNALIGNED_MEMORY 1
+Cuidado, que estos valores ya estarán undef en otras partes de fichero o con valores distintos.
+La info de cómo habilitar el dynanrec ARM viene de aquí: http://www.vogons.org/viewtopic.php?f=31&t=37651&p=333227#p333318
+
+Para compilar SDL1.2.15:
+
+Añadimos la llamada a: 
+
+ioctl(console_fd, FBIO_WAITFORVSYNC, 0);
+
+en src/video/fbcon/SDL_fbvideo.c, función FB_WaitVBL().
+
+Configuramos con:
+
+CFLAGS="-Ofast -march=armv7-a -mtune=cortex-a7 -mfloat-abi=hard -mfpu=neon-vfpv4 -ffast-math -funroll-loops" ./configure --disable-video-opengl --enable-video-fbcon --disable-video-kms --disable-video-directfb --disable-oss --disable-alsatest --disable-pulseaudio --disable-pulseaudio-shared --disable-arts --disable-nas --disable-esd --disable-nas-shared --disable-diskaudio --disable-dummyaudio --disable-mintaudio --disable-video-x11
+
+Si se queja el DOSBOX de que falta el ratón, usa la variable de entorno SDL_NOMOUSE=1
+Si se queja de que las SDL no tienen soporte para CDROM, pues te toca recompilar las SDL.
+
+********Hacer que el cursor de la consola deje de parpadear*********************************************************************************************
+
+echo -e '\033[?17;0;0c' > /dev/tty1
+
+********Buscar un fichero a partir de parte de su nombre***************************************************************************************
+find ./ -iname gl*
+find ./ -name gl*
+
+Lo de iname es para ignorar las mayúsculas o minúsculas.
+
+******************Actualizar a de DEBIAN WHEEZY a DEBIAN JESSIE****************************************************************************
+
+Podemos usar el generador de sources.list que está en http://debgen.simplylinux.ch, o directamente dejar el /etc/apt/sources.list así:
+
+deb http://ftp.es.debian.org/debian testing main contrib non-free
+deb-src http://ftp.es.debian.org/debian testing main contrib non-free
+
+deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free
+deb-src http://ftp.debian.org/debian/ jessie-updates main contrib non-free
+
+deb http://security.debian.org/ jessie/updates main contrib non-free
+deb-src http://security.debian.org/ jessie/updates main contrib non-free
+
+Ahora hacemos sudo apt-get update, apt-get --download-only dist-upgrade, apt-get dist-upgrade. Y cruza los dedos ^_^"
+
+********Crear nuestro propio rootfs de Debian ARM********************************************************************************************
+
+Se usa para ello debootstrap. Tenemos una guía aquí: http://linux-sunxi.org/Bootable_SD_card#Using_debootstrap_-_Debian.2FUbuntu_based_distributions
+Y nos hace falta tener instalado qemu-user-static en el sistema que usemos para prepararlo todo.
+
+********Biblioteca de San José****************************************************************************************************************
+
+La base de datos está en un PC con IP fija (ahora mismo, 192.168.1.128) y se comparte mediante SAMBA. El fichero de configuración de SAMBA en 
+el servidor está en /etc/samba/smb.conf
+La entrada para servir el biblio, que está al final del smb.conf, es esta:
+
+[biblio]
+    comment = Biblio Database
+    path = /home/biblioteca/.wine/drive_c/Biblio
+    browsable = yes
+    guest ok = yes
+    read only = no
+
+En los clientes, el directorio compartido se monta mediante un script en el directorio .wine/drive_c/Biblio/bibio.sh, que contiene un directorio "fakebase"
+donde se montará el directorio completo de Biblio del servidor (Biblio por tanto NO se instala en los clientes sino que se ejecuta la misma copia
+del servidor, locamente).
+Dicho script, biblio.sh, tiene el siguiente contenido:
+
+#!/bin/bash
+set -o noclobber
+sudo mount -t cifs -o username=biblioteca,password=giner //192.168.1.128/biblio fakebase/
+cd ~/.wine/drive_c/Biblio/
+wine ./Biblio.exe
+
+El acceso directo del escritorio tiene este contenido:
+
+[Desktop Entry]
+Name=Biblio
+Exec=sh /home/pikar/.wine/drive_c/Biblio/biblio.sh
+Type=Application
+Comment=Biblio
+Path=/home/pikar/.wine/drive_c/Biblio
+Icon=accessories-dictionary
+Terminal=false
+StartupNotify=false 
+
+El usuario/contraseña del servidor es biblioteca/giner, y se puede entrar por ssh.
+
+*********Túnel SSH***************************************************************************************************************************
+
+ssh manuel@108.15.38.135 -L 5900:127.0.0.1:5900 -N
+
+**********Hago un blacklist a un módulo pero sigue cargando************************************************************************************
+
+Tienes que poner "blacklist <nombre_módulo>" en /etc/modprobe.d/blacklist.conf
+
+Y luego, hacer un:
+
+sudo update-initramfs -u
+
+
+**********Cuestiones de modo de vídeo en plataformas con KMS (IFC6413, etc)********************************************************************
+
+
+Miramos cual es el conector activo, mirando en
+/sys/class/drm/card0-*
+cuál tiene "connected" en el status. 
+
+Editamos /etc/default/grub, añadimos lo que nos interese de estas cosas a la linea de los parámetros del kernel, por ejemplos:
+
+video="HDMI-A-1:800x600"  
+
+video=DVI-I-1:1024x768@60
+
+y luego hacemos un update-grub.
+
+
+Información completa en:
+http://nouveau.freedesktop.org/wiki/KernelModeSetting/
+
+Comprobar resolción y movidas:
+/sys/devices/platform/omapdrm.0/drm/card0
+
+Para quitar el salvapantallas a negro:
+consoleblank=0 (en el boot.scr, claro)
+
+**********Deshabilitar el polling de KMS, que causa parpadeos y movidas en ciertos sistemas***************************************************
+
+En :
+/etc/modprobe.d/modprobe.conf:
+Añadimos:
+options drm_kms_helper poll=0
+
+
+**********Notas instalación DEBIAN************************************************************************************************************
+
+--Nos puede pedir firmware para hardware de red cuyo firm es non-free. Nos bajamos el archivo "firmware-ralink_0.28+squeeze1_all.deb" o el que sea que
+necesitemos, pero NO nos bajamos otra ISO para esto, se hace desde un pequeño DEB, lo descomprimimos con:
+
+ar vx mypackage.deb
+tar xvzpf data.tar.gz
+
+y mandamos los .bin al directorio raíz de un pendrive, tal cual, los .bin tirados ahí.
+Y ya lo debería de detectar la instalación cuando nos pide un "removable media" con el firmware que le falta.
+
+--Le ponemos una IP fija editando /etc/networks/interfaces y dejándo exactamente así:
+
+auto lo eth0
+
+iface lo inet loopback
+#iface eth0 inet dhcp
+
+iface eth0 inet static
+address 192.168.5.9
+netmask 255.255.255.0
+gateway 192.168.5.7
+
+Ya deberíamos poder hacer ping al equipo servidor (el portátil).
+Sin embargo, nos faltaría ponerle algunos servidores dns en resolv.conf:
+
+nameserver 208.67.222.222 
+nameserver 8.8.8.8
+
+--Deshabilitamos el MTA (Mail Transport Agent):
+
+insserv -r exim4
+
+---ANTES de poder instalar ningún paquete, tenemos que poner a punto el /etc/sources.list. Si no, nos pedirá el CD ROM de netinstall!
+Tenemos que dejar el sources.list más o menos así:
+
+deb http://http.debian.net/debian wheezy main
+deb-src http://http.debian.net/debian wheezy main
+
+deb http://http.debian.net/debian wheezy-updates main
+deb-src http://http.debian.net/debian wheezy-updates main
+
+deb http://security.debian.org/ wheezy/updates main
+deb-src http://security.debian.org/ wheezy/updates main
+
+y a continuación hacer un apt-get update y si queremos un apt-get upgrade. Tras eso, ya ponemos empezar a instalar paquetes.
+Instalamos sudo, añadimos el usuario a la lista de sudoers. Para ello, como root hacemos:
+
+visudo -f /etc/sudoers
+
+y bajo la línea
+root    ALL=(ALL) ALL
+
+añadimos 
+manuel   ALL=(ALL) ALL
+
+Y abajo del todo del fichero, añadimos:
+
+manuel ALL = NOPASSWD : ALL
+
+Salvamos y listo.
+
+Quitamos el IPV6:
+
+echo 'blacklist ipv6' >> /etc/modprobe.d/blacklist
+
+Instalamos los buil-essential:
+
+sudo apt-get install build-essential
+
+
+Ahora ya sigue la guía rápida de configuración de raspbian, porque es todo igual. 
+
+**********Sustituir todas las ocurrencias de una cadena por otra en un directorio*******************************************************************
+
+find ./ -type f -exec sed -i 's/apple/orange/g' {} \;
+
+Y si simplemente queremos borrar una línea que contenga cierta cadena, sed '/pattern to match/d'
+
+Para aplicarlo sobre un fichero:
+
+sed -i 's/apple/orange/' <nombre_archivo>
+
+**********Formatear FAT32 con tamaño de cluster a 32K******************************************************************************************
+
+sudo mkfs.msdos -s 64 /dev/sdb1
+
+ya que el tamaño de bloque es de 512bytes y -s expresa el tamaño de un sector (cluster) en bloques.
+
+**********Seleccionar columnas en VIM*********************************************************************************************************
+Esto es la hostia. Usa CTRL+V para entrar en VISUAL BLOCK MODE y seleccionar columnas. Ya las puedes borrar o hacer lo que quieras con ellas.
+
+**********Search and replace (buscar y sustituir) en VIM******************************************************************************************
+
+Se hace con el comando:
+:%s/cadena_original/nueva_cadena/g
+
+Y si la cadena que buscas o por la que sustituyes lleva un punto, como es un caracter especial que significa "cualquier caracter", tienes que "escaparlo", o sea,
+poner un backslash antes. Por ejemplo, si quieres sustituir la cadena 1.0f por 0.5f, harías:
+
+:%s/1\.0f/0\.5f/g
+
+Para confirmar cada ocurrencia, usamos gc en lugar de g:
+:%s/cadena_original/nueva_cadena/gc
+
+**********Desactivar números de línea en vim****************************************************************************************************
+
+:set nu!
+
+**********Secuencia de debugeo rápido mediante logs*******************************************************************************************
+FILE *fp;
+fp = fopen("SDL_log.txt","w");
+fprintf (fp,"\nSetColors() Función completada con éxito!!\n");
+fclose (fp);
+
+**********Crear un parche para que la gente pueda aplicar nuestros cambios sobre sources originales************************************************
+
+Lo primero es conseguir el directorio con los sources originales.
+
+diff -rupN original/ modificados/ > parche.patch
+
+Como ves, es muy sencillo!
+
+Si sólo queremos crear un parche para un archivo (que es algo menos común):
+
+diff -u original.c modificado.c > parche.patch
+
+**********Parchear el kernel y el scummvm*******************************************************************************************************
+
+Ponemos el parche en el directorio raiz de los sources, y hacemos
+
+patch -p1 < parche.diff
+
+Y para revertir los cambios, hacemos:
+
+patch -R -p1 < parche.diff
+
+**********Usar FIND correctamente**************************************************************************************************************
+find . -name 'openmsx'
+
+***********GPSP en la Raspberry Pi**************************************************************************************************************
+
+El único fallo que tiene este emulador es que no calcula bien el ratio si usas por ejemplo una resolución de 640x480.
+Así que editamos gles_video.c y dejamos la última parte de la función video_init() tal que así, a partir de la llamada a gles2_create():
+
+        gles2_create();
+
+        float r = ((float)_width / (float)_height);
+        int h = screen_height;
+        int w = screen_height * r;
+        if (w > screen_width)
+                w = screen_width;
+
+        //h y w son las dimensiones de la ventana en que veremos el juego
+        //screen_width y screen_height son las del display físico
+        glViewport((screen_width-w)/2, (screen_height-h)/2, w, h);
+        SetOrtho(proj, -0.5f, +0.5f, +0.5f, -0.5f, -1.0f, 1.0f, 1.0f ,1.0f );
+        video_set_filter(filter);
+
+Luego ponemos los CFLAGS típicos en el Makefile, compilamos y listo.
+
+***********ERRROR: Programa no encuentra librería en tiempo de ejecución, pero sí la encuentra en tiempo de linkado (no hay undefined symbols)******
+
+LO PRIMERO es hacer un ldd al ejecutable y confirmar que dicha librería aparece como NOT FOUND.
+Esto es porque, aunque le pases con -L<ruta> la librería que quieres que encuentre en linkado, para que la encuentre en tiempo de ejecución necesitarías
+pasarle "-Wl,-rpath,<ruta>".
+Aunque lo normal es que no tengas que hacer esto tampoco, sino que la librería esté en una ubicación donde el sistema busque por defecto.
+Para asegurarnos de esto, hacemos "ldconfig --verbose", y se actualizarán los directorios donde se buscan las librerias que usan los programas.
+Así que si has instalado una librería pero no la encuentra un programa en tiempo de ejecuciçon, puedes pasarle el -rpath o hacer un ldconfig y listo.
+
+***********Notas SDL1.2.x en Raspbian****************************************************************************************************
+
+Por defecto, al ejecutar el script de configuración, se nos crea un makefile que especifica que se instalen las librerías en una ubicación que no
+nos conviene, ya que las demás librerías accesorias como SDL_Mixer se instalan en /usr/loca/lib, que es más estándar.
+
+Así que cinfiguramos siempre con la opción 
+--libdir="/usr/local/lib"
+y ANTES de compilar comprobamos que es así como aparece en el Makefile.
+
+Ahora, configurar SDL_mixer ya no tiene ningún problema y no le tenemos que pasar libdir porque por defecto se mete en /usr/local/lib:
+
+CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure --disable-music-mod --disable-music-ogg --disable-music-flac --disable-music-mp3
+
+¿Y todo esto por qué?
+Pues porque algunos programas cuyos scripts de inicio están planteados regular, usan sdl-config (o lo que es lo mismo, pkg-config --libs <librería>) para
+decirle al linker dónde están las librerías: y resulta que sdl-config, si tenemos las SDL1 en /usr/lib/arm-linux-gnueabihf, pues nos va a devolver esa ruta
+mientras que SDL_mixer está en /usr/local/lib, así que luego el programa no encuentra SDL_mixer.
+¿Solución? Pues esta precisamente: que tando SDL_mixer como libSDL1.2.x vayan a parar a /usr/local/lib, y así sdl-config devuelve una ruta válida para
+ambas librerías.
+¡¡¡¡NO TE OLVIDES de hacer "sudo ldconfig -v" tras instalar, o los programas no encontrarán las libSDL1.2.x en tiempo de ejecución!!! Podrías 
+añadir -Wl,-rpath,/usr/local/lib al linker en cada programa, pero no merece la pena, obviamente.
+
+***********Montar un archivo .toast de MAC***********************************************************************************************
+
+mount -o loop -t hfsplus imagename.toast [mount point]
+
+Y si da error prueba con hfs en lugar de hfsplus.
+
+También sirve para montar img de diskettes de mac.
+
+***********Quitar un servicio que no sabemos quién lo lanza********************************************************************************
+
+Has mirado en /etc/init.d y has intentado que no se lance el script de inicio de un servicio: lo has intentado con
+sudo update-rc.d -f <servicio> remove
+Pero ahí sigue si haces un TOP.
+Pues puedes hacer dos cosas: o desinstalas el paquete al que pertenece el servicio, o desactivas el servicio que a su vez lo está lanzando.
+Y esto lo puedes hacer con un grep a todo lo de /etc/init.d, con el nombre del servicio.
+
+***********Guía rápida de configuración de RASPBIAN desde imágen por defecto************************************************************
+
+Cambiar fuente de consola con dpkg-reconfigure console-setup
+
+En raspi-config, ponemos el overclocking en medium. Los valores son de la fundación y son fiables.
+
+Luego los ajustamos a los de la tabla TESTED VALUES de aquí: http://elinux.org/RPiconfig
+A 900MHz debería ser capaz de correr el Gimmick de NES totalmente suave (ver desplazamiento nube en mapa)
+
+En sudo visudo dejamos  la línea del group sudo así:
+%sudo ALL=NOPASSWD: ALL 
+Hacemos que se autologuee en la tty1 editando /etc/inittab y dejando así la línea de tty1:
+
+1:2345:respawn:/bin/login -f pi tty1 </dev/tty1 >/dev/tty1 2>&1
+
+Le ponemos una IP fija editando /etc/networks/interfaces y dejándo exactamente así:
+
+auto lo
+
+iface lo inet loopback
+#iface eth0 inet dhcp
+
+iface eth0 inet static
+address 192.168.5.8
+netmask 255.255.255.0
+gateway 192.168.5.7
+
+Quitamos la swap:
+
+sudo sync
+sudo swapoff -a
+sudo apt-get purge -y dphys-swapfile
+sudo rm /var/swap
+sudo sync
+
+sudo update-rc.d -f dphys-swapfile remove
+(Deberías hacer esto con "insserv -r dphys-swapfile" ya, y dejar de usar update-rc)
+
+y en /etc/fstab quitamos la partición de swap también.
+Añadimos a /boot/cmdline.txt el parámetro "noswap"
+ Comprobar con free.
+
+Añadimos a /boot/cmdline.txt el parámetro "quiet" para acelerar más aún el arranque.
+
+Quitamos servicios chorras: podemos ver cuáles hay con ls /etc/init.d
+
+(RECUERDA que update-rc.d ya NO se debe usar: para quitar estos servicios, mejor usa insserv -r <nombre_servicio>).
+sudo update-rc.d -f ntp remove
+sudo update-rc.d -f lightdm remove
+sudo update-rc.d -f nfs-common remove
+..Lo mismo con rsyslog, cron, dbus, triggerhappy, x11-common, ifplugd, plymouth, plymouth-log y alguno más si lo ves.
+También quitamos los sevicios console-setup y kbd:
+sudo insserv -r console-setup
+sudo insserv -r kbd
+El layout del teclado se conservará de cuando hicimos el "dpkg-reconfigure console-setup", y la fuente de letra la ponemos al inicio
+poniendo 
+setfont Lat15-TerminusBold24x12
+en /etc/init.d/keyboard-setup, justo al principio, antes de nada más.
+
+Editamos /etc/rc.local y quitamos lo de que imprima la IP. Para eso tenemos ifconfig y una IP local puesta, no somos tontos.
+
+Editamos /etc/init.d/switch_cpu_governor para cambiar el governor a performance y dejamos así de simple el bloque importante:
+case "$1" in
+  start)
+      echo "performance" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    ;;
+  *)
+
+Ahora comprobamos con 
+cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+sudo cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+
+o con cpufreq-info -c 0 |grep frequency
+
+Purgamos el sistema de mierda:
+
+sudo apt-get purge cups-common samba-common x11-common xserver-xorg-core squeak-vm cups-client cups-bsd libsmbclient libwbclient0 libcups2 python3-piface* nfs-common rpcbind rsyslog
+sudo apt-get purge consolekit desktop-base* desktop-file-utils* gnome-icon-theme* gnome-themes-standard* hicolor-icon-theme* leafpad* lxde* lxde-core* midori* xserver-common* xserver-xorg* xserver-xorg-core* xserver-xorg-input-all* xserver-xorg-input-evdev* xserver-xorg-input-synaptics* xserver-xorg-video-fbdev* x11-* abiword* blender*
+(Esta segunda línea te dirá que muchas cosas ya no están instaladas)
+sudo apt-get purge ifplugd nfs-common
+sudo apt-get autoremove 
+
+Llegados a este punto, actualizamos:
+sudo apt-get update 
+sudo apt-get upgrade
+sudo rpi-update
+
+Dejamos el script /etc/init.d/networking de tal modo que nos dé la IP estática directamente sin necesidad de ifplugd que es un servicio MUY dañino:
+
+#!/bin/sh -e
+### BEGIN INIT INFO
+# Provides:          networking
+# Required-Start:
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: Raise network interfaces.
+# Description:       puts a static IP on eth0 and thats all
+### END INIT INFO
+
+PATH="/sbin:/bin"
+RUN_DIR="/run/network"
+IFSTATE="$RUN_DIR/ifstate"
+
+[ -x /sbin/ifup ] || exit 0
+[ -x /sbin/ifdown ] || exit 0
+
+. /lib/lsb/init-functions
+
+CONFIGURE_INTERFACES=yes
+EXCLUDE_INTERFACES=
+VERBOSE=no
+
+[ -f /etc/default/networking ] && . /etc/default/networking
+
+[ "$VERBOSE" = yes ] && verbose=-v
+
+case "$1" in
+start)
+        log_action_begin_msg "Configuring network interfaces"
+        ifconfig eth0 192.168.5.8/24 up
+        route add default gw 192.168.5.7
+	log_action_end_msg $?
+        ;;
+
+stop)
+        log_action_begin_msg "Deconfiguring network interfaces"
+        ifconfig eth0 down
+        route add default gw 192.168.5.7
+	log_action_end_msg $?
+        ;;
+
+reload)
+        log_action_begin_msg "Configuring network interfaces"
+        ifconfig eth0 192.168.5.8/24 up
+        route add default gw 192.168.5.7
+	log_action_end_msg $?
+        ;;
+
+force-reload|restart)
+        log_action_begin_msg "Configuring network interfaces"
+        ifconfig eth0 192.168.5.8/24 up
+        route add default gw 192.168.5.7
+	log_action_end_msg $?
+        ;;
+*)
+        echo "Usage: /etc/init.d/networking {start|stop|reload|restart|force-reload}"
+        exit 1
+        ;;
+esac
+exit 0
+
+
+También editamos /lib/udev/net.agent, y ponemos exit 0 como primera línea ejecutable. No hace falta que corra y consume RAM.
+Eliminamos un par de scripts de limpieza de ficheros temporales que no nos hacen falta porque no tenemos TMP en un sistema local montado al inicio 
+ni en un sistema de red, sino que lo tenemos en el rootfs. De esta manera el mensaje "Cleaning up temporary files" sólo aparecerá una vez:
+sudo insserv -r mountall-bootclean.sh
+sudo insserv -r mountnfs-bootclean.sh
+
+Cambiamos el servidor ssh de openssh a dropbear, para ahorrar memoria:
+sudo apt-get install dropbear
+/etc/init.d/ssh stop
+Para que arranque al inicio
+sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
+Mandamos el openssh al carajo y reiniciamos ya con dropbear:
+apt-get purge openssh-server
+
+Cambiamos la shell de bash a dash:
+sudo dpkg-reconfigure dash
+
+Cambiamos el scheduler de ficheros a noop en /boot/cmdline.txt (está en elevator=deadline, lo cambiamos a elevator=noop, que es mejor para discos sólidos).
+También recuerda que tienes que tener puesto "noswap", para evitar los estúpidos mensajes de swap en el inicio y el apagado.
+
+Desactivamos IPV6. Esto hay que hacerlo como root, así que primero establecemos una clave de root, que aún no la tenemos:
+sudo passwd
+su
+echo 'blacklist ipv6' >> /etc/modprobe.d/blacklist
+sed -i '/::/s%^%#%g' /etc/hosts
+
+Ahora instalamos distcc y lo quitamos del inicio:
+sudo apt-get install distcc 
+sudo update-rc.d -f distcc remove
+
+Antes de compilar las SDL, asegúrate de haber instalado libasound-dev
+
+Para poner la salida de audio por el jack, ejecuta
+sudo amixer cset numid=3 1
+Con una vez vale: se queda guardado en la configuración de ALSA.
+Para volver a audio por HDMI, siplemente:
+sudo amixer cset numid=3 0
+o bien
+sudo amixer cset numid=3 2
+Si no te deja hacerlo, cuida que no tengas un asound.conf que desactive el dmix. Lo quitas, haces esto y vuelves a poner el asound.conf que quieras.
+
+--ACTUALIZA gdb a la última versión DESDE SOURCES. No desde apt-get sino desde sources, recuerda. En este mismo fichero hay instrucciones 
+para actualizar gdb desde sources: búscalo porque es lo que hay que hacer cuando no puedes debugear programas compilados con distcc.
+
+Cuando vayas a compilar e instalar SDL1.2.x, mírate los apuntes para que se instale en /usr/local/lib, que es donde se va a instalar SDL_mixer, y
+deben estar en el mismo directorio porque muchos programas buscan SDL_mixer en el directorio devuelto por sdl-config.
+
+***********Montar una partición individual de una imágen completa de disco***************************************************************
+
+Con parted vemos dónde empieza cada partición. Tenemos que verlo en bytes:
+
+manuel@vader:~$ parted rpi_bck.img
+(parted) unit                                                             
+Unit?  [compact]? B                                                       
+(parted) print                                                            
+Model:  (file)
+Disk /home/manuel/rpi_bck.img: 7948206080B
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+
+Number  Start      End          Size         Type     File system  Flags
+ 1      4194304B   62914559B    58720256B    primary  fat16        lba
+ 2      62914560B  6899630079B  6836715520B  primary  ext4
+
+Ya tenemos la información que necesitamos, que es el offset de la segunda partición, que es la que queremos montar. Ahora simplemente hacemos:
+
+sudo mount -o loop,ro,offset=62914560 rpi_bck.img /mnt/hdd
+
+Y listo!!
+
+***********Recortar una imágen de disco (tarjeta) para que no ocupe lo mismo que tiene como capacidad el dispositivo de donde se leyó*******
+
+Lo primero es hacerle un fdisk -l a la imágen:
+
+manuel@vader:~$ fdisk -l raspbian_RetroArch.img 
+
+Disk raspbian_RetroArch.img: 7948 MB, 7948206080 bytes
+255 heads, 63 sectors/track, 966 cylinders, total 15523840 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x0002c262
+
+                 Device Boot      Start         End      Blocks   Id  System
+raspbian_RetroArch.img1            8192      122879       57344    c  W95 FAT32 (LBA)
+raspbian_RetroArch.img2          122880     4218879     2048000   83  Linux
+
+
+
+De aquí sacamos lo siguiente: que cada sector es de 512 bytes, y que la segunda partición acaba en el sector o bloque número 4218879.
+Así que realmente sólo estamos 4218879 + 1 sectores (ya que el sector 0 obviamente existe).
+Hacemos:
+
+manuel@vader:~$ sudo truncate --size=$[(4218879+1)*512] raspbian_RetroArch.img
+
+Y listo!
+
+***********ERROR: DISTCC no distribuye la compilación y no sé por qué, con otros proyectos sí lo hace****************************************
+
+Posiblemente el Makefile está poniendo como compilador el cc.
+Lo que compila con cc siempre puede compilar con gcc.
+Así que la solución es MUY sencilla: nos vamos al directorio donde tenemos los tools del servidor para cross compiling, o sea, los binarios
+(~/raspberrypi/tools.../bin) y hacemos "ln -s gcc cc".
+Arreglado!
+
+***********Compilación distribuida con distcc********************************************************************************************
+
+ESTA PRIMERA OPCIÓN NO ES RECOMENDADA PARA LA PI!! Es más sencillo usar el cross compilador oficial y además tanto uno como otro tienen problemas
+porque no soporta multiarch y no buscan los scripts .so para LD, librerías y haders donde deben, pero al menos al usar el oficial no tengo que pegarme con
+la construcción del crosscompiler, y además ahora el crosscompiler oficial ya no produce binarios más lentos ni nada de eso.
+PARTE 1-OPCIÓN A: CONSTRUYENDO NUESTRO PROPIO CROSS-COMPILER (NO recomendada en Octubre de 2015 porque podemos usar el cross-compilador oficial)
+===============================================================
+Empezamos en el servidor. 
+Lo primero es tener la herramienta que nos permite a su ver crear el compilador cruzado. Para ello, nos bajamos la última versión de aquí:
+http://crosstool-ng.org/download/crosstool-ng/
+
+Instalamos algunas cosas antes: flex, bison, libtool, libtool-bin, gawk, texinfo, libncurses5-dev...
+
+Hacemos: bootstrap, configure, make, sudo make install
+Ya deberíamos tener el comando ct-ng.
+Ahora nos creamos ~/cross-rasp y entramos en él. 
+
+Creamos nuestro propio .config desde cero con "ct-ng menuconfig", para ello, seguimos estas instrucciones:
+http://elinux.org/RPi_Linaro_GCC_Compilation#Build_GCC_Linaro
+Las adaptamos, eso sí, a la versión de EGLIBC y de las BINUTILS que tengamos. Tampoco elijas un compilador muy nuevo... un linaro 4.7 para la Pi1 está bien.
+-Para la versión de BINUTILS, hacemos ld -v
+-Para la versión de EGLIBC, hacemos ldd --version
+-Pon el Number of Parallel jobs a 6 si estás en el PC de 4 cores.
+-Si tienes los ficheros crt*.o (y otras librerías, como el script para LD libc.so) del sysroot de la raspberry pi en /opt/rpi_root/usr/lib/arm-linux-gnueabihf, 
+ pues probablemente al pasarle --sysroot=/opt/rpi_root al compilador acabe buscando estas cosas en /opt/rpi_root/usr/lib y no las encontrará. Así que añade a los
+ "gcc extra config" (en la sección "C compiler") esto: --enable-multiarch --target=arm-linux-gnueabihf. 
+  Esto de --enable-multiarch --target=arm-linux-gnueabihf significa que <sysroot>/usr/lib/arm-linux-gnueabihf se añade a la lista de búsqueda.
+-CUIDADO con no tener instalado svn antes de entrar en menuconfig, o tendrás un aviso de peligro en lo de la librería EGLIB.
+-CUIDADO con EGLIBC, que está mal y trata de detectar versiones viejas del MAKE (la 3.69 o la 3.89, y yo tengo la 4.0), así que dará un error durante la construcción...
+  Es una putada muy seria que se pare la construcción, pero hay solución. Editamos build.log y nos vamos al final. Vemos que nos ha dado un error con la versión de MAKE.
+  Vale: pues editamos .build/src/eglibc-2_13/configure, buscamos donde detecta la versión de MAKE (buscando ac_prog_version sucesivas veces hasta que veamos que se está detectando
+  la versión de MAKE y no de otra cosa), cambiamos para que detecte la nuestra (make --version en el PC) y listo. 
+-SI TIENES ERRORES DE COMPILACIÓN de estos que parece que se ha corrompido la memoria por el calentón, es hora de borrar todo en ~/cross-rasp, menos .config, y volver a empezar.
+Acuérdate de ajustar lo de la versión de make en  .build/src/eglibc-2_13/configure, que no existirá hasta que empiece a instalar las herramientas.
+
+Hacemos "ct-ng build" y si este proceso se para es porque hemos elegido algo mal en el menuconfig.
+Ahora, como en el config que hemos usado se especifica un directorio de destino, ya tenemos el cross compiler ARM en 
+~/x-tools/arm-unknown-linux-gnueabi-gcc.
+
+NOTA: Este proceso es muy dado a errores durante la construcción del compilador, librerías, etc.. Así que tira de leer el build.log, irte al final y pegar
+el error en google, que a la gente también le pasan estas miserias.
+
+NOTA: Para cambiar algo en la configuración, debes borrar totalmente el directorio cross-rasp y empezar de cero, o dará problemas
+absurdos durante el proceso de building.
+
+PARTE 1: OPCIÓN B (Recomendad en Octube de 2015)
+================
+
+Clonamos el repo de https://github.com/raspberrypi/tools.git y nos queda el cross-compiler en tools. Lo demás es igual sólo que la ruta de los ejecutables del compilador es:
+/home/manuel/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin
+Y la tupla (para crosscompilar en local, lo que se llama host_alias en el scummvm que se cross-compila en local) es bcm2708hardfp.
+
+PARTE 2: CONFIGURANDO EL SERVIDOR Y EL CLIENTE CUANDO YA TENEMOS CROSS-COMPILER (Válido también para Rpi)
+===============================================================================================
+
+Tenemos el cross-compiler ya.
+Si estamos en el caso en que estamos usando el cross-compiler oficial, habremos clonado el repo y tendremos las herramientas en 
+~/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin
+
+PERO nos faltan los links simbólicos de nombres cortos a gcc, g++ y otras herramientas, ya que sólo tenemos
+los archivos con nombres completos (o sea que tenemos "arm-unknown-linux-gnueabi-gcc"  o "arm-linux-gnueabihf-gcc" pero no tenemos "gcc" a secas).
+Así que creamos el siguiente script, le damos 755 y lo ejecutamos estando dentro del directorio ~/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin:
+
+#!/bin/bash
+for file in `ls`; do
+        ln -s $file ${file#arm-bcm2708hardfp-linux-gnueabi-}
+done
+
+Y ahora, ya deberíamos tener gcc, g++, etc. Compruébalo.
+
+Ahora instalamos distcc en el cliente y en el servidor. Simplemente, sudo apt-get install distcc en ambos.
+
+En el servidor, editamos /etc/default/distcc y ponemos:
+
+STARTDISTCC="true"
+ALLOWEDNETS="192.168.5.0/24 192.168.5.8"  <-----Esto es la IP de la red del cliente y del propio cliente, separadas por espacio.
+LISTENER="192.168.5.7"
+(quitamos LISTENER="127.0.0.1").
+
+Ahora, también en el servidor, editamos /etc/init.d/distcc y en PATH añadimos delante el path donde tenemos los ejecutables de nuestro cross-compiler.
+La línea en cuestión quedaría así si hemos construido nuestro cross compiler:
+
+PATH=/home/manuel/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+Lanzamos el servidor. Para ello, en un systema con systemd hacemos:
+
+systemctl daemon-reload
+systemctl start distcc
+systemctl status distcc
+
+Tienes que ver que te sale la línea en verde:
+Active: active (running) since ...
+
+Si no va, cambia lo que sea en los ficheros de configuración y a continuación haz:
+systemctl stop distcc
+systemctl daemon-reload
+systemctl start distcc
+
+En cambio, si estamos en un sistema viejo con sysvinit, 
+Lanzamos el servidor con sudo /etc/init.d/distcc start --verbose
+
+Ahora, en el cliente, editamos /etc/distcc/hosts, comentamos la línea de "+zeroconfig" y ponemos sin más la IP del servidor:
+192.168.5.7
+
+Ahora también en el cliente tenemos que exportar el path del compilador, que ya no queremos que sea el gcc local sino un link sombólico gestionado
+por distcc. Así que dejamos así el path en ~/.profile:
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+     PATH="/usr/lib/distcc:$HOME/bin:$PATH"
+fi
+
+...y creamos el directorio ~/.bin, que de todos modos nos va a venir bien.
+
+Ahora comprobamos que todo está bien: 
+-En el servidor, podemos confirmar que distcc escucha en el puerto 3632 de la IP 192.168.5.7, que es la der server. Para ello, haremos
+sudo netstat -apn |grep 3632
+Esto es lo que se llama el "binding" del servidor.
+-También podemos comprobar si el puerto 3632 de server está abierto, de dos maneras: desde el cliente, con telnet 192.168.5.7 3632. Si la pantalla
+sale en negro o con ASCII raros todo va bien, ya que telnet lee datos crudos por ese puerto.
+O bien desde el propio servidor, o desde el cliente, con "nmap -p 3632 192.168.5.7". Nos tiene que salir que el puerto 3632 TCP está abierto. 
+
+***********Actualizar gcc 4.6 a gcc 4.7 en raspbian****************************************************************************************
+
+Tras hacer un apt-get update y un apt-get upgrade, y sin eliminar NADA, o sea, dejando gcc-4.6 ya que tiene muchas dependencias, hacemos
+¡¡¡¡¡¡CUIDADO E INSTALA AMBOS!!!!!!
+sudo apt-get install gcc-4.7
+sudo apt-get install g++-4.7
+
+Creamos el script /usr/bin/gcc-set-default-version con el contenido:
+
+#!/bin/bash 
+usage() {
+        echo 
+        echo Sets the default version of gcc, g++, etc
+        echo Usage:
+        echo 
+        echo "    gcc-set-default-version <VERSION>"
+        echo 
+        exit
+}
+cd /usr/bin
+if [ -z $1 ] ; then 
+        usage;
+fi 
+set_default() {
+        if [ -e "$1-$2" ] ; then 
+                echo $1-$2 is now the default
+                ln -sf $1-$2 $1
+        else 
+                echo $1-$2 is not installed
+        fi
+}
+for i in gcc cpp g++ gcov gccbug ; do 
+        set_default $i $1
+done
+
+Le damos permisos de ejecución (755 sirve), y hacemos:
+
+sudo gcc-set-default-version 4.7
+
+Y ya debería estar. Nos dirá que no tenemos instalado gccbug-4.7, pero eso no es importante.
+
+Instalamos VIM y le ponemos el ~/.vimrc que tienes en la sección de apuntes del VIM...
+Y ahora, para que VIM recuerde la última posición en que estábamos cuando abrimos un fichero dado por última vez, editamos /etc/vim/vimrc
+y descomentamos esto, que viene comentado por defecto:
+
+" Uncomment the following to have Vim jump to the last position when
+" reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+SI ESTO NO FUNCIONA, comprueba los permisos de ~/.viminfo. Debe pertenecer al usuario actual, si no es así, probablemente no vuelva a la última
+posición cuando reabrimos un fichero.
+
+***********Comparar ficheros con VIM***************************************************************************************************
+
+Puedes abrir dos ficheros en modo comparación con 
+
+vim -d fichero1 fichero2
+
+Las líneas de guiones en uno son líneas que el otro tiene pero ese no, y de ese modo líneas iguales aparecen a la misma altura!.
+
+***********La utilidad LOCATE**********************************************************************************************************
+Efectivamente, sirve para buscar archivos en todo el disco, tirando de base de datos en lugar de buscar físicamente.
+Así que lo instalamos con:
+
+apt-get install locate
+
+y antes de usarlo hacemos
+
+sudo updatedb
+
+Y ya se supone que podemos usarlo.
+************Wolf4SDL (Wolfenstein 3D) en la Raspberry Pi*********************************************************************************
+
+Compilaro y hacerlo funcionar me llevó un rato. Editamos "version.h" y nos vamos a los "defines used for different versions", donde dejamos descomentados
+estos solamente:
+#define GOODTIMES
+#define CARMACIZED 
+
+Luego nos bajamos la versión de Activision de emuparadise o donde nos de la gana, y pasamos a minúsculas todos los ficherso WL6 y el EXE.
+Los metemos en el mismo directorio que el ejecutable de wolf4sdl (wolf3d), y ya debería ir (Excepto por temas de las SDL, ya que por defecto
+el juego intenta reutilizar el modo de vídeo actual y eso está mal: editamos el código y lo ponemos a 320x200 en 16bpp).
+
+Otra cosa: los scripts de configuración del juego usan sdl-config --libs (o lo que es lo mismo, pkg-config --libs sdl) para ver dónde están tanto las
+librerías libSDL1.2 como las SDL_mixer. Así que si tienes las SDL1.2.x en /usr/local/lib/armhf-gnueabi, no va a encontrar las SDL_mixer, ya que estas
+están en /usr/local/lib y sdl-config o pkg-config sólo devuelven las rutas de las libSDL1.2.x y se asume que ahí van a estar las SDL_mixer también.
+Así que mírate los apuntes sobre SDL1.2.x que hay más arriba, para instalar SDL y SDL_Mixer ambas en /usr/local/lib, y luego ejecuta ldconfig --verbose, etc.
+
+************MÉTODO STANDARD PARA EJECUTAR PRGRAMAS AL INICIO O LANZAR SERVICIOS: DEPENDENCY BASED BOOTING SEQUENCE*************
+
+Estos son los apuntes para sistemas que cumplen con DDBS de la FFS, como Debian, Raspbian y demás distribuciones "legales".
+
+Si simplemente queremos que algo se ejecute como root al inicio, justo antes de que se lancen las ttys de usuario, pues con ponerlo
+en /etc/rc.local antes del "exit 0", nos vale. 
+Pero si queremos lanzar un SERVICIO que se quedará corriendo de fondo en lugar d un programa que retore y sigamos con una secuencia de comandos 
+(cosa que no se  puede hacer si el servicio no retorna al prompt, cosa que no tiene por qué hacer), así un control más fino sobre en qué cambio de runlevel 
+queremos que se ejecute, lo que es interesante a la hora de lanzar servicios, necesitamos un script de inicio.
+
+Los scrips de inicio están en /etc/init.d, y la utilidad que los coloca en la scuencia de arranque lo que hace es crear links simbólicos a esos scrips en los dirs
+/etc/rcN.d, siendo N un runlevel en que ese servicio estará activo. Así, un servicio que estará activo en los runlevels "normales" de un sistema debian, tendrá 
+links simbólicos a su script de incio en los directorios /etc/rc2.d, /etc/rc3.d, /etc/rc4.d y /etc/rc5.d. Pero esto es algo que gestiona la herramienta que se
+encarga de ponerlos y quitarlos del inicio, que es "insserv", y que ANTIGUAMENTE era update-rc.d, que ya NO SE USA.
+
+El formato de un script de inicio para insserv es este:
+
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          fsynthserv
+# Required-Start:    fluidsynth
+# Required-Stop:     fluidsynth
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: binds MIDI ports
+# Description:       binds MIDI ports
+
+### END INIT INFO
+
+# Cosas que se ejecutan si las pedimos específicamente pasando parámetros al script
+case "$1" in
+  start)
+    #Espero a que esté listo Fluidsynth. Aunque se lance antes su script, el sinte tarda en estar listo.
+    sleep 4
+    echo "Estableciendo conexión del sintetizador con el secuenciador de red"
+    aconnect 128:0 129:0
+    ;;
+  stop)
+    echo "Deshaciendo conexión del sintetizador con el secuenciador de red"
+    aconnect -x
+    ;;
+  *)
+    echo "Usage: /etc/init.d/fsynthserv {start|stop}"
+    exit 1
+    ;;
+esac
+exit 0
+
+La única novedad reseñable pero imprescindible es la cabecera, INIT INFO, que determina cómo colocará insserv este script de inicio. 
+Los campos más importantes a este propósito son:
+
+# Provides:          fsynthserv
+
+¿Qué nombre en el sistema tiene el servicio que activamos? Esto sirve luego para que otros scripts dependan de él y nos podamos referir a él.
+
+# Required-Start:    fluidsynth
+
+¿Qué servicios tienen que estar activos ANTES de lanzar este? Esto es LO MÁS IMPORTANTE, pues es lo que usa insserv para ponerlo después de 
+otros servicios, para establecer el orden de arranque. 
+MUCHO CUIDADO: si este servicio depende de un script que está en /etc/init.d, con poner el nombre del script TAL CUAL no vale. NO hay que poner
+un $ delante del nombre. PERO SI SE TRATA de nombres abstractos de características del sistema, como $time, $local_fs, $network... pues sí se pone.
+Por ejemplo, $time indicaría que se ha establecido la hora de sistema por el método que sea, $network implicaría los niveles inferiores de metworking
+como la tarjeta ethernet, etc.
+PERO TEN MUCHO CUIDADO y si simplemente quieres que se ejecute este script TRAS otro script que está en /etc/init.d, pon simplemente el nombre 
+del otro script sin ninguna $. MUCHO cuidado con poner la $ cuando no hace falta, porque NO FUNCIONARÁ e insserv no establecerá el orden correcto.
+
+# Required-Stop:     fluidsynth
+
+Esto es menos importante: se trataría de los servicios que deben estar activos cuando se desactive este.
+
+El resto de campos se entienden bien, ya sabes de qué van y no los voy a explicar porque no hace falta.
+
+Ahora simplemente haríamos:
+
+sudo insserv fsynthserv
+
+para poner el servicio en el arranque (se supone que el servicio fluidsynth, o sea, el script del mismo nombre, ya está en el arranque puesto).
+O bien 
+
+sudo insserv -r fluidsynth
+
+para quitarlo del arranque. Olvídate de los nombres de los symlinks, que si S99, que si K01... Nada, eso ya NO IMPORTA Y NO SE USA. Ahora todo va con
+dependency based booting sequence.
+
+LA MEJOR guía para esto la tienes en este mismo directorio como "Orden de arranque o inicio de scripts (DBBS)" y procede de la página
+http://www.openredes.com/2011/05/13/orden-de-arranque-o-inicio-de-scripts-de-etcinit-d-en-debian-squeeze-6-0-solucion-a-update-rc-d-using-dependency-based-boot-sequencing/ 
+
+************MÉTODO ANTIGUO para ejecutar programas  o scripts al inicio como root: LUBUNTU (NO DEBIAN)**************************************************************
+
+¡¡¡CUIDADO!!! ESTO SÓLO SIRVE PARA DISTROS BASADAS EN UBUNTU, QUE NO CUMPLE EL "DEPENDENCY BASED BOOTING SEQUENCE" DE LA FSS.
+ASÍ QUE EN RASPBIAN O DEBIAN NO SE USA ESTO. 
+
+Si simplemente queremos que algo se ejecute como root al inicio, justo antes de que se lancen las ttys de usuario, pues con ponerlo
+en /etc/rc.local antes del "exit 0", nos vale. 
+Pero si queremos lanzar un SERVICIO que se quedará corriendo de fondo en lugar d un programa que retore y sigamos con una secuencia de comandos 
+(cosa que no se  puede hacer si el servicio no retorna al prompt, cosa que no tiene por qué hacer), así un control más fino sobre en qué cambio de runlevel 
+queremos que se ejecute, lo que es interesante a la hora de lanzar servicios, pues seguimos estos pasos:
+
+-El formato de un script de inicio de servicio es este:
+
+#! /bin/sh
+# /etc/init.d/blah
+#
+
+# Cosas que se ejecutan siempre
+touch /var/lock/blah
+
+# Cosas que se ejecutan si las pedimos específicamente pasando parámetros al script
+case "$1" in
+  start)
+    echo "Iniciando script blah "
+    echo "Aquí se podrían hacer más cosas"
+    ;;
+  stop)
+    echo "Deteniendo script blah "
+    echo "Aquí se podrían hacer más cosas"
+    ;;
+  *)
+    echo "Usage: /etc/init.d/blah {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
+
+-Creamos nuestro script, lo metemos en /etc/init.d que es el "almacén" de scripts, y le damos permisos de ejecución. Un 755 está bien.
+-Ahora tenemos dos opciones: o le decimos que lo meta en uno o varios runlevels automáticamente usando algo tipo:
+"update-rc.d <nombre_script_en_/etc/init.d> defaults", o creamos nosotros los link simbólicos de cada runlevel siguiendo una nomencleatura:
+por ejemplo, si queremos que se inicie el servicio al entrar en el runlevel 2 y que se pare al entrar en el runlevel 6, que es el de reiniciar el sistema, 
+y en el 0, que es el de haltear el sistema, haremos estos links:
+"ln -s /etc/init.d/blah /etc/rc2.d/S66blah"
+"ln -s /etc/init.d/blah /etc/rc0.d/K66blah"
+"ln -s /etc/init.d/blah /etc/rc6.d/K66blah"
+La "S" es de "start" y la "K" es de "kill", lógicamente. Así, si se cambia a alguno de esos dos runlevels, se hará lo que se tenga que hacer según corresponda.
+El número determina el órden en que se ejecuta el script (iniciando o deteniendo el servicio) dentro del runlevel en cuestión. A mayor número, menor
+prioridad. Así, un link simbólico llamado S99 asegura que se ejecutará el script de inicio del servicio en último lugar respecto a los demás de ese runlevel.
+
+ANEXO:
+-Para saber en qué runlevel estamos, simplemente tenemos el comando "runlevel".
+-Los runlevels importantes son: 0 para haltear el sistema, 1 es el modo single-user para reparaciones, 2 al 5 son los normales o modos multiusuario
+(en raspbian empezamos al logarnos en modo texto en el runlevel 2) y el 6 es reiniciar el sistema.
+
+*************Raspberry Pi y establecimiento de modos de vídeo tras el arranque: tvservice*********************
+
+Para listar los modos de vídeo de una categoría:
+
+tvservice --modes=CEA
+tvservice --modes=CEA
+
+Para cambiar de modo de vídeo:
+
+Apagamos el monitor:
+
+tvservice -o
+
+Lo encendemos con un modo concreto:
+
+/opt/vc/bin/tvservice --explicit="CEA 1 HDMI"
+
+O si quisiéramos encenderlo sin más, 
+
+tvservice -p
+
+Y se nos ve la pantalla en negro. PERO si lanzas un programa, ya se ve :O
+
+Estos scripts, además, permiten que no se quede la pantalla en nego y adaptan el tamaño del framebuffer, con lo que el cambio de
+resolución es perfecto:
+
+/opt/vc/bin/tvservice --explicit="CEA 1 HDMI"
+sudo chvt 3
+sudo chvt 1
+sudo fbset -xres 320 -yres 240
+
+/opt/vc/bin/tvservice --explicit="DMT 39 HDMI"
+sudo chvt 3
+sudo chvt 1
+sudo fbset -xres 1360 -yres 768
+
+*************MIDI remoto con fluidsynth o timidity (MIDI over LAN)*************************************************************
+
+SERVIDOR 
+========
+
+aseqnet  &
+
+fluidsynth --audio-driver=alsa -s merlin_gold.sf2
+o bien
+timidity -iA -Os1 -B 2,3 &
+
+manuel@vader:~$ aseqdump -l
+ Port    Client name                      Port name
+  0:0    System                           Timer
+  0:1    System                           Announce
+ 14:0    Midi Through                     Midi Through Port-0
+128:0    Net Client                       Network
+
+manuel@vader:~$ aplaymidi -l
+ Port    Client name                      Port name
+ 14:0    Midi Through                     Midi Through Port-0
+128:0    Net Client                       Network
+129:0    FLUID Synth (4309)               Synth input port (4309:0)
+
+aconnect 128:0 129:0
+
+CLIENTE
+=======
+
+aseqdump -l
+aseqnet 192.168.5.8 &
+aseqdump -l
+aplay -p 128:0 nombre.mid
+
+Para scummvm, podemos exportar SCUMMVM_PORT="128:0", o bien usar el parámetro de configuración alsa_port.
+
+Para compilar fluidsynth:
+
+CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure --disable-aufile-support --disable-oss-support --disable-dbus-support
+
+Editamos src/Makefile y le quitamos el O2 antes de compilar.
+
+Para automatizar todo esto y hacernos un sinte que automáticamente haga estas cosas:
+-Se lance el aseqnet y escuche en red en la IP 192.168.5.10 o la que nos de la gana.
+-Fluisynth se lance al inicio como servicio
+-Conectamos el aseqnet con fluidsynth para pasarle a fluidsynth los comandos MIDI que le llegan a aseqnet
+
+Esto lo he resuelto con dos scripts de inicio de sistema, ya que fluidsynth es un servidor y no retorna al prompt, lo que tiene bastate sentido.
+Estos dos escripts van en /etc/ini.d y son los siguientes:
+/etc/init.d/fluidsynth:
+
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          fluidsynth
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Required-Start:
+# Required-Stop:
+# Short-Description: Sintetizador midi por software
+# Description:       Un sintetizador MIDI por software
+### END INIT INFO
+
+# Cosas que se ejecutan si las pedimos específicamente pasando parámetros al script
+case "$1" in
+  start)
+    echo "Iniciando fluidsynth"
+    aseqnet &
+    /usr/local/bin/fluidsynth -i -l -s /home/pi/merlin_gold.sf2 &
+    ;;
+  stop)
+    echo "Deteniendo fluidsynth"
+    killall fluidsynth
+    ;;
+  *)
+    echo "Usage: /etc/init.d/fluidsynth {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
+
+
+
+Y /etc/init.d/fsynthserv
+
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          fsynthserv
+# Required-Start:    fluidsynth
+# Required-Stop:     fluidsynth
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: binds MIDI ports
+# Description:       binds MIDI ports
+### END INIT INFO
+
+# Cosas que se ejecutan si las pedimos específicamente pasando parámetros al script
+case "$1" in
+  start)
+    #Espero a que esté listo Fluidsynth. Aunque se lance antes su script, el sinte tarda en estar listo.
+    sleep 4
+    echo "Estableciendo conexión del sintetizador con el secuenciador de red"
+    aconnect 128:0 129:0
+    ;;
+  stop)
+    echo "Deshaciendo conexión del sintetizador con el secuenciador de red"
+    aconnect -x
+    ;;
+  *)
+    echo "Usage: /etc/init.d/fsynthserv {start|stop}"
+    exit 1
+    ;;
+esac
+exit 0
+
+
+
+Como puedes ver, fsynthserv depende para ejecutarse de fluidsynth, por lo que al hacer 
+insserv fluidsynth
+insserv fsynthserv
+el comando insserv los pondrá en el orden correcto. 
+He puesto "Required-Start:    fluidsynth" sin $ en el script de fsynthserv porque fluidsynth es un servicio que está en /etc/init.d y NO un servicio
+virtual del sistema como $time o $network. MUCHO cuidado con poner la $ cuando no hace falta, porque NO FUNCIONARÁ.
+
+
+*************Entendiendo ALSA*******************************************************************************************
+
+Esto es una idea un poco general, ya que no entiendo del todo como va el asunto, pero sirve como una explicación superficial. Tampoco esperes 
+entenderlo bien.
+
+Centrándonos en la estructura de ~/.asoundrc (o /etc/asound.conf, siendo ambos ficheros leídos desde /usr/share/alsa/alsa.conf en la Rpi y ninguno de ellos
+ignorado), podemos entender bastantes cosas de cómo funciona este sistema.
+
+Todo está basado en plugins. Los plugins tienen definidos nombres o aliases en los ficheros de /usr/share/alsa o en la librería, y usando !<alias> podemos
+redefinir el valor que corresponde a un alias.
+
+Las aplicaciones suelen usar el plugin "default", con lo que bastaría redefinir su valor para que usaran una u otra cosa en realidad. SE SUPONE que si no
+configuramos nada, el valor del plugin default debería ser "hw:0,0", o sea, la primera tarjeta, primer dispositivo.
+
+Así, por ejemplo, imagínate que quieres que el plugin "default" sea un enchufe que mande el audio NO directamente al hardware sino a la entrada de
+otro plugin que sería el dmixer, y que a su vez ya se encangará de enviar el audio donde esté definido que lo mande.
+Pues haríamos esto:
+
+pcm.!default {                          //Redefinimos el plugin default
+	type plug                           //Decimos que es de tipo plug, o sea que mandará el sonido a otro sitio
+	slave.pcm "dmix:0,0"   //Y concretamente lo mandará a un slave, cuyo valor será dmix:0,0, o sea dmix que mandará el sonido tras resamplearlo y mezclarlo
+                                                       //a través de la primera tarjeta, primer dispositivo.
+}
+
+Y si quisiésemos redefinir el plugin "default" de tal manera que al usarlo una aplicación se estuviese enviando el sonido directamente al hardware,
+concretamente a la primera tarjeta, primer dispositivo, haríamos:
+
+pcm.!default {				//Redefinimos el plugin default
+	type hw				//Decimos que no es un enchufe como antes, sino directamente acceso hardware  		
+	card 0					//El hardware al que accede es primera tarjeta,
+	device 0				//primer dispositivo.
+}
+
+También es posible que nosotros definamos nuestro propio plugin, y luego lo usemos. Por ejemplo, nos a inventar un plugin llamado "mymixer"
+que en realidad enviará el sonido a través de dmix pero nos sirve de ejemplo. Como el tipo de plugin "dmix" ya está definido, será el tipo que tenga.
+Redefiniremos default de tal modo que envíe el sonido a través de ese nuevo plugin.
+
+pcm.!mymixer {
+	type dmix
+	slave {
+		pcm "hw:1,0"
+		period_size 512
+		buffer_size 4096
+		rate 48000
+	}
+}
+
+pcm.!default {
+	type plug
+	slave.pcm mymixer
+}
+
+Si usamos dmixer y queremos cambiar la frecuencia de muestreo de salida para que coincida con la más común de entrada, editamos
+/usr/share/alsa/alsa.conf y cambiamos "defaults.pcm.dmix.rate 48000" a 44100.
+
+*************Compilar Cannonball (OutRun engine) en Rpi***************************************************************************
+
+Necesitamos libboost1.55-dev, eso lo primero.
+
+Editamos src/main/sdl/renderbase.cpp y dejamos la función sdl_screen_size() así, para que no llame a GetVideoInfo y use la resolución nativa del arcade:
+
+bool RenderBase::sdl_screen_size()
+{
+    //MAC El resto de variables de tamaño de pantalla se configuran a partir de estas.t
+    //Hago que cojan la altura y anchura de la máquina original.n
+    //Estas dimensiones están definidas en S16.WIDTH y S16.HEIGHT en globals.h, aunque aquí no son visibles..es
+    orig_width = 320;   
+    orig_height = 224;   
+ 
+    scn_width  = orig_width;
+    scn_height = orig_height;
+
+    return true;
+}
+
+Editamos cmake/rpi.cmake y le añadimos los flags típicos (-Ofast, etc).
+
+mkdir build
+cd build
+cmake ../cmake -DTARGET=rpi
+
+La eprom que falta es del set B
+Copia el res/config.xml al mismo directorio donde tienes el ejecutable del cannonball
+
+SI al ejecutarlo te sale que no encuentra las SDL, mira con un ldd sobre el ejecutable, y si efectivamente no las encuentra, es que las has instalado
+en una ruta que no está en los path que usa el sistema para buscar libs en tiempo de ejecución.
+Así que ejecuta sudo lddconfig -v y echa un vistazo. Mírate la parte de los apuntes de SDL1.2.x
+
+************Actualizar repositorio github****************************************************************************************
+
+Lo primero es poner la fecha: el formato es
+
+sudo date mes|día|hora|minuto
+
+Actualizamos en la copia local así:
+
+git add .
+git commit -m "made some changes"
+
+Y ahora subimos los cambios:
+
+git remote add origin git@github.com:yourusername/yourreponame.git
+git push origin master
+
+la primera línea sólo es necesaria si es la primera vez que voy a subir algo (??)
+De todos modos, en ~/.gitconfig tengo:
+
+[user]
+          name  = vanfanel
+          email = redwindwanderer@gmail.com
+
+y sólo me pide el nombre de usuario (vanfanel) y el password (Manuel22) al hacer el push, y va sin problemas.
+
+GIT REWIND
+Si queremos modificar cosas de n proyecto de alguien, hacemos un fork a mi git de ese proyecto, clonamos mi fork en local,
+y luego publicamos los cambios en mi fork y hacemos un Pull Request.
+Si metemos la pata y queremos dejar mi fork como cuando lo creé, hacemos
+git reset HEAD^ --hard
+git push -f origin master
+
+************Deshacer un push que hemos hecho mal********************************************************************************
+
+Nos vamos al branch donde queremos corregir el push:
+git checkout dispmanx
+
+Lo ponemos en el último commit bueno:
+git reset --hard cc4b63bebb6
+
+Hacemos un push forzado:
+git push -f origin dispmanx
+
+Y listo. Ya hemos vuelto en local y en el server al último commit/push bueno.
+
+************Actualizar MI FORK con los cambios del repo original del proyecto (upstream)*********************************************
+
+Lo primero añadimos un remote que vamos a llamar upstream como podríamos llamarlo pepito, pero para entendernos:
+
+git remote add upstream https://github.com/libretro/RetroArch.git 
+
+Ahora descargamos todos los branches de upstream:
+
+git fetch upstream
+
+Nos aseguramos de estar en el branch master de nuestro fork. Seguramente ya estaremos ahí de todos modos..
+
+git checkout master
+
+Hacemos que nuestro fork pase a tener todo lo de upstream: lo convertimos en una copia limpia de upstream, vamos.
+
+git reset --hard upstream/master
+
+Hacemos un push forzado a mi repo para que efectivamente quede como el upstream:
+
+git push -f origin master
+
+Hacemos los cambios que tengamos que hacer....
+
+<edit files...>
+
+Hacemos commit de los cambios
+
+git add .
+git commit -m "blah blah blah"
+
+Hacemos un push forzado a nuestro fork:
+
+git push -f origin master
+
+
+Y luego ya haríamos el pull request.
+
+************Arreglar texto de commits en github************************************************************************************
+
+Nos ponemos en el branch donde están los commits que queremos cambiar:
+
+Hacemos lo que se llama un rebase interactivo, que nos sacará un editor para cambiar el texto de los commits.
+
+git rebase -i origin/HEAD
+(o bien git rebase -i origin/HEAD~3 si quisiéramos incluir los 3 commits anteriores por debajo de HEAD, o sea, commits que ya no son de mi fork sino que ya venían. Con HEAD sin más
+debería valernos)
+
+Cambiamos pick por reword en cada mensage que queramos cambiar, pero NO los cambiamos aún.
+
+Cerramos el editor, y nos saltará una edición por cada commit que hayamos marcado con reword. Cambiamos, ahora si, el texto de cada uno.
+
+Hacemos un push forzado:
+
+git push --force origin/dispmanx
+
+https://help.github.com/articles/changing-a-commit-message/
+
+************Renombrar ficheros del directorio actual de mayúsculas a minúsculas*****************************************************
+
+for SRC in `find ./ -depth`
+do
+    DST=`dirname "${SRC}"`/`basename "${SRC}" | tr '[A-Z]' '[a-z]'`
+    if [ "${SRC}" != "${DST}" ]
+    then
+        [ ! -e "${DST}" ] && mv -T "${SRC}" "${DST}" || echo "${SRC} was not renamed"
+    fi
+done
+
+*************MiniVMAC en la Raspberry Pi******************************************************************************************
+
+Para compilar la versión más o menos ideal que usa mi backend de Dispmanx, he usado las siguientes opciones:
+
+-t larm -api sdl -var-fullscreen 0 -fullscreen 1 -speed 1
+
+luego he editado src/MYOSGLUE.c y he cambiado el bpp de SetVideoMode() de 8 a 16.
+Para la velocidad original del Macintosh plus, tendrías que poner "-speed z"
+
+*************Cómo usar pkg-config y dpkg******************************************************************************************
+
+Estas herramientas hacen cosas distintas, pero pueden llegar a ser complementarias.
+pkg-config se usa mucho en los scripts de configuración, para obtener los flags y localizaciones de librerías necesarias para compilar un 
+programa contra una librería determinada. Así, por ejemplo, para compilar un programa que va a usar glib2.0, tendremos que saber contra que librerías 
+por nombre vamos a linkarlo y qué rutas para includes hay que pasarle (parámetros -l<nombre_librería> y -I<ruta_includes>, recuerda, está explicado más abajo.)  
+
+Por ejemplo, si hacemos: 
+manuel@vader:~$ pkg-config --libs glib-2.0
+-lglib-2.0  
+manuel@vader:~$ pkg-config --cflags glib-2.0
+-I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include  
+
+pk-config usa los archivos .pc que instalan los paquetes de programas al ser instalados con dpkg (o indirectamente con apt-get, que a su vez usa dpkg). 
+El nombre que tenemos que pasarle a pkg-config es sin prefijo lib, pero por si acaso, puedes mirar el nombre del .pc del paquete en cuestión.
+Podemos ver mediante locate que tenemos .pc en: 
+/usr/lib/pkgconfig/
+/usr/share/pkgconfig/
+/usr/lib/x86_64-linux-gnu/pkgconfig/
+Se supone que la variable de entorno $PKG_CONFIG_PATH tiene estas rutas pero yo no lo veo, así que mirando estos directorios y tirando de locate
+es como he sacado el nombre exacto que hay que pasarle a pkg-config.
+Al no encontrar el configure el resultado de pkg-config, lo que se nos sugiere es exportar la información de "pkg-config --cflags glib-2.0" y de
+"pkg-config --libs glib-2.0" a variables de entorno que el script leerá, $GLIB_CFLAGS y $GLIB_LIBS. Es fácil saber qué ponemos a cada variable:
+GLIB_CFLAGS="-I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include"
+GLIB_LIBS="-lglib-2.0"
+
+Para saber qué paquetes tenemos instalados, por ejemplo cuando queramos hacer limpieza, hacemos "dpkg -l" que se puede combinar con grep
+para buscar unas y otras cosas.
+
+MUY IMPORTANTE: podemos localizar en qué paquete está un fichero, de manera que podemos eliminar el pquete en cuestión. Se hace con
+"dpkg -S stdio.h" o con "dpkg -S /usr/include/stdio.h".
+ 
+*************Obtener información sobre los paquetes*******************************************************************************
+
+Para conocer la versión, developer, maintainer. etc, de un paquete antes de instalarlo (o instalado), podemos hacer "apt-cache show <nombre_paquete>",
+donde nombre_paquete puede ser una parte del mismo. Es muy útil si tenemos varias versiones del mismo paquete (con distinto maintainer, una libre
+y la otra no, distintas versiones...) y queremos saber cuál instalar.
+ 
+*************Extraer archivos .sit de mac en Linux***********************************************************************************
+
+te bajas esta cosa : http://web.archive.org/web/20060205025441/http://www.stuffit.com/downloads/files/stuffit520.611linux-i386.tar.gz
+y con unstuff lo haces.
+
+*************Crosscompilar scummvm en el PC para la Raspberry Pi***************************************************************************
+
+Las instrucciones están en la wiki del scummvm, en http://wiki.scummvm.org/index.php/Compiling_ScummVM/RPI#Configuring_ScummVM
+
+Para compilación rápida de prueba, sólo con engine SCUMMVM:
+
+/configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur
+
+Sin dispmanx:
+
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur
+
+Acuérdate de exportar RPI_ROOT o ponerlo antes de configure!
+Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
+
+*************Configuración de SCUMMVM con engines selectos**********************************************************************
+Un buen churro de configuración para dejar unos cuantos engines que sueles usar y quitar porquería es este:
+
+CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure --disable-hq-scalers --disable-mt32emu --enable-flac --enable-optimizations --disable-mad --disable-vorbis --disable-tremor \
+--enable-opengl --disable-fluidsynth --disable-taskbar --disable-debug --disable-timidity --disable-scalers \
+--disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,\
+tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,\
+queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise
+
+CON DEBUG
+
+CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure --disable-hq-scalers --disable-mt32emu --enable-flac --disable-optimizations --disable-mad --disable-vorbis --disable-tremor \
+--enable-opengl --disable-fluidsynth --disable-taskbar --enable-debug --disable-timidity --disable-scalers \
+--disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,\
+tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,\
+queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise
+
+No activa fluidsynth. Aciva el sinte de ALSA que luego se usa en otra Rpi por red. Ver el apartado correspondiente.
+
+*************Los parámetros y flags de GCC y del linker******************************************************************************
+Cuando falle una compilación (porque no se encuentra un fichero de cabecera en un include o porque no se encuentra algo que debería estar
+definido en un fichero que cabecera que no se ha incluído)
+
+-l<nombre_librería> : Indica contra qué librería se va a linkar por el nombre de librería, sin el prefijo lib: por ejemplo, -lmath, -lSDL... Los nobres
+los puedes sacar con un simple ls a /usr/lib o a donde esté la librería. Si no está en /usr/lib, acuérdate de darle la ruta de sus includes y de sus
+binarios, parámetros que se explican a continuación.
+
+-I<directorio> : Es una i latina mayúscula. añade el directorio a los paths de búsqueda de los includes para el compilador. A partir de ese momento, ya podemos usar rutas
+relativas para hacer includes de los ficheros de cabecera de ese directorio, en plan #include <GLES/gl.h> en lugar de tener que hacer 
+#include "/opt/vc/include/GLES/gl.h". Como lo normal es que los programas vengan con includes con rutas relativas, esto suele ser necesario.
+
+-L<directorio> : añade el directorio a los de búsquera de librerías dinámicas del linker, o sea que es un parámetro para el linker. Por ejemplo, para
+linkar cualquier programa que use las SDL2, lo que se hace es usar sdl2-config para obtener en qué directorios buscan las SDL2 las librerías que 
+usan sus backends: en el caso de la Raspberry Pi, si compilas un programa que use las SDL2, las SDL2 a su vez usan librerías que están en /opt/vc/lib, 
+por lo que de un modo u otro, al programa que intentas compilar hay que pasarle la ruta de esas librerías para que las encuentre en tiempo de
+linkado. Así que si dicho programa no usa sdl2-config a la hora de configurar el linker, le tienes que pasar la ruta de las librerías nativas de la Rpi a mano.
+Sin ser tan extremos, cualquier programa que use unas librerías dinámicas contra las que se vaya a linkar que no estén en /usr/lib, necesita este 
+parámetro para encontrarlas. 
+
+-D<nombre macro>: define (o sea, activa) una macro del preprocesador. Si por ejemplo hacemos en un programa:
+#ifdef DEBUG
+	fprintf (fp, "...");
+#else
+	....
+#endif
+y luego hacemos "gcc -DDEBUG", estaremos activando esa macro en compilación y se hará en fprintf.
+
+-rpath=<path> (O lo que es lo mismo, -Wl,-rpath,<ruta>    , la explicación de esto es que -Wl nos permite pasar una serie de parámetros y sus valores, separados
+por comas).
+Esto sirve para pasar la ruta de manera que el ejecutable resultante busque una librería en esa ruta en tiempo de ejecución (que es DISTINTO al tiempo de
+linkado: o sea que UN PROGRAMA PUEDE ENCONTRAR UNA LIBRERÍA EN TIEMPO DE EJECUCIÓN PERO NO ENCONTRARLA EN TIEMPO DE LINKADO,
+O VICEVERSA!)
+A veces nos encontraremos con ejecutables que podemos linkar bien contra librerías que luego no encuentrar en tiempo de ejecución.
+LO PRIMERO es hacer un ldd al ejecutable y confirmar que dicha librería aparece como NOT FOUND.
+Esto es porque, aunque le pases con -L<ruta> la librería que quieres que encuentre en linkado, para que la encuentre en tiempo de ejecución necesitarías
+pasarle "-Wl,-rpath,<ruta>".
+Aunque lo normal es que no tengas que hacer esto tampoco, sino que la librería esté en una ubicación donde el sistema busque por defecto.
+Para asegurarnos de esto, hacemos "ldconfig --verbose", y se actualizarán los directorios donde se buscan las librerias que usan los programas.
+Así que si has instalado una librería pero no la encuentra un programa en tiempo de ejecuciçon, puedes pasarle el -rpath o hacer un ldconfig y listo.
+
+
+*************DISTCC se cuelga en el cliente (Rpi) en el punto en que va a reintentar una compilación localmente y no da el error***********
+
+-En el servidor, inicia el servidor distcc como: 
+sudo /etc/init.d/distcc start --verbose
+-En el cliente, si es la Rpi, no te olvides de ponerle un swap con
+sudo swapon /dev/sda1
+
+
+*************Qué librerías usa un ejecutable****************************************************************************************
+
+ldd <nombre_del_ejecutable>
+
+
+*************Commander Genius en la Raspberri Pi**********************************************************************************
+
+clonamos el repo, nos metemos, y creamos un directorio de compilación y entramos en él:
+mkdir build
+cd build
+
+Ahora configuramos:
+cmake  -DUSE_SDL2=yes -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DOGG=no -DTREMOR=NO -DOPENGL=no ..
+
+Usa -DUSE_SDL2=no para compilar contra SDL1.x
+
+Tenemos que tener instalados libsdl_image (versión 2) y libboost-system-dev (libboost1.55-dev).
+
+Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
+
+El resultado queda en src/Build/LINUX/CGeniusExe
+
+Los datos de los juegos deben ir en ~/.CommanderGenius/games/
+Si quieres especificar qué juego cargar, es con 
+./CGeniusExe dir=keen1
+donde keen1 estaría en ~/.CommanderGenius/games/keen1 (el parámetro dir es relativo a ~/.CommanderGenius/games/ siempre).
+
+*************SDL2 en Raspberry Pi*********************************************************************************************
+
+¡¡¡CUIDADO!!! Asegúrate de tener instalado el paquete libudev-dev o en los juegos no irá ni joystick, ni teclado, ni ratón, ni nada.
+
+CONFIGURAMOS CON:
+
+CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-libudev --disable-dbus
+
+lueg make -j8 y a correr.
+
+Para SDL_image y SDL_mixer, hay que correr el autogen.sh o luego no compilará.
+Configuramos con
+
+CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr
+
+Y luego ya es cosa de correr ./configure y make -j8
+
+                        CUIDADO
+
+SDL_IMAGE tiene problemas para compilar porque Debian Wheezy usa versiones antiguas de las herramientas de automake. Así que antes de correr
+su configure, ejecuta su autogen.sh
+
+			CUIDADO
+
+SDL_gfx tiene problemas para compilar en arm si no deshabilitamos el soporte para MMX
+
+./autogen.sh
+CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix="/usr" --disable-mmx
+
+NOTA
+
+Si algún programa para SDL2 falla al compilarlo con soporte para GLES, añade en su Makefile:
+-L/opt/vc/lib/ 
+
+Sacado de aquí, míralo para entender el problema:
+
+http://raspberrypi.stackexchange.com/questions/27523/how-to-use-opengl-via-sdl2
+
+**************SWAP de emergencia*************************************************************************************************
+Algunos sistemas, como la Raspberry Pi, no usan swap normalmente porque nos cargaríamos la SD rápido.
+Así que, si necesitamos un swap de emergencia para algo concreto, como compilar o linkar un programa grande que por razones de falta de 
+RAM no se puede compilar en la Pi ni con distcc (esto suele pasar con el linkado, que siempre se hace de manera local), lo mejor es usar un swap
+de emergencia en un disco duro mecánico, conectado por USB. Es tan simple como esto:
+
+mkswap /dev/sdx
+swapon /dev/sdx
+
+También podemos hacer un archivo de swap si no queremos cargarnos una partición:
+
+dd if=/dev/zero of=/path/to/swapfile bs=1M count=1024 # For 1GB swap file
+swapon /path/to/swapfile
+
+Al acabar con el swap, siempre
+
+swapoff <device>
+
+si no queremos colgar el sistema.
+
+Podemos comprobar cómo se usa la swap con "free" mientras se linka.
+
+**************Tyrian en la Raspberry Pi**********************************************************************************************
+Nos bajamos el branch para SDL2 del OpenTyrian, y MUY IMPORTANTE, compilamos así:
+
+make -j5 release
+
+Si no ponemos lo de release, compilará en modo debug y nos joderemos de lo leeeeeeeento que es.
+
+**************VIM autocompletion**************************************************************************************************
+
+Ya era hora de tener esto pasado a un fichero de texto!
+
+Instalamos exhuberant-ctags, que es el programa que genera paquetes de tags a partir de ficheros de cabecera:
+
+sudo apt-get install exuberant-ctags
+
+Creamos el directorio donde vamos a guardar los paquetes de tags generados a partir de los ficheros de cabecera:
+
+mkdir -p ~/.vim/tags
+
+Nos bajamos el plugin de VIM para autocompletion de aquí:
+(si lo cambian de sitio, busca eso, el plugin de VIM para autocompletion)
+
+http://www.vim.org/scripts/script.php?script_id=1520 
+
+Lo mandamos a ~/.vim, y lo descomprimimos ahí con unzip omnicpp*zip. Nos crea directorios y tal, como un mini-sistema vim.
+
+Nos bajamos también las cabeceras de C++ standard de aquí, para poder generar sus tags:
+
+http://www.vim.org/scripts/script.php?script_id=2358 
+
+Las descomprimimos en ~/.vim también, por ejemplo, con tar xvjpf cpp_src.tar.bz2
+
+..y estando en ~/.vim, empezamos a generar los paquetes de tags:
+
+ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ --sort=1 -f tags/INC /usr/include
+ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ --sort=1 -f tags/STL cpp_src
+ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ --sort=1 -f tags/SDL /usr/include/SDL
+ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ --sort=1 -f tags/BCM /opt/vc/include   
+(Esta de BCM es para la Rpi, dispmanx y tal)
+
+Ahora, dejamos el ~/.vimrc de esta guisa:
+
+=====================================================
+
+syntax on
+set number
+set ls=2
+set sw=1
+
+filetype plugin on
+set tags+=~/.vim/tags/INC
+set tags+=~/.vim/tags/STL
+set tags+=~/.vim/tags/SDL
+set tags+=~/.vim/tags/BCM
+
+" para que se abra y se cierre automáticamente el menú desplegable de preview e info  
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set completeopt=menuone,menu,longest,preview
+
+"para regenerar los tags de nuestro proyecto, los que no incluimos de base, con F12 
+map <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr><cr>
+
+"para desactivar la autoinserción de comentarios, que es lo que nos jode cuando copiamos código desde el navegador
+"Es fundamental que esté colocada esta línea después de la de filetype plugin on, porque esa línea activaría de nuevo la autoinserción.
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+colo desert
+
+set encoding=utf-8                     "Estas líneas son para poder poner tildes, eñes y demás. 
+setglobal fileencoding=utf-8
+
+" Esto es para cambiar entre buffers. Hemos usado w porque se puede hacer con una mano la combinación, pero se cambia de buffer y no de ventana.
+" Es para cuando se tienen dos ficheros abiertos a la vez. La exclamación es para poder cambiar entre buffers sin guardar cambios.
+map <C-w> :bnext!<cr>
+
+" tap indent movement 
+vmap <Tab> >gv
+vmap <S-Tab> <gv
+
+===========================================================
+
+Y ahora, para que VIM recuerde la última posición en que estábamos cuando abrimos un fichero dado por última vez, editamos /etc/vim/vimrc
+y descomentamos esto, que viene comentado por defecto:
+
+" Uncomment the following to have Vim jump to the last position when
+" reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+Y cambiamos el ownership de ~/.viminfo al usuario, ya que viene como propiedad del root y así no funciona lo que pongas en vimrc.
+Y si aún así no funciona, comenta todo lo que has puesto en ~/.vimrc, debería funcionar. Entonces ve descomentando líneas y comprobando qué setting de .vimrc es el que
+impide que funcione. Sí, esto me ha pasado.
+
+**************Traducir en tiempo real la consola desde una codificación distinta de UTF-8 a UTF-8***************************************
+
+Por ejemplo, en este caso nos conectamos por telnet a un servidor que "emite" en ISO-8859-1, y de este modo vemos tildes y todo:
+
+luit -encoding ISO-8859-1 telnet rlmud.org
+
+**************Abrir varias ventanas en VIM y cambiar entre ellas***********************************************************************
+
+Con el comando Sex (ESC, : Sex, Enter) y luego se cambia entre ellas con CTRL+ww
+También podemos partir la ventana en dos con CTRL+ws y luego cambiar entre ellas!
+
+**************Convertir archivos de DOS a UNIX**************************************************************************************
+
+Para procesar todo un árbol de directorios quitando esos ridículos ^M de los documentos que generan los tontos que usan Windows:
+
+find ./ -name '*.cpp' | xargs dos2unix
+
+**************VIM con color en la Raspberry Pi****************************************************************************************
+
+Tan simple como crear .vimrc en mi carpeta de usuario y añadir
+
+syntax on
+set number
+
+**************Compilar un programa que da errores en la fase de linkado porque no encuentra las librerías********************************
+
+Si da errores de que no encuentra los ficheros de cabecera de las librerías, tendremos que añadir -I<ruta de los  .h que necesita> a los CFLAGS 
+y/o a los CXXFLAGS. Esto sería un error de compilación, no un error en el linkado. No te confundas.
+
+Si lo que pasa es no encuentra las liberías en el linkado ("undefined reference"), tendrás que añadir, en teoría, -L<ruta de la librería> a los LDFLAGS.
+
+**************Localizar dónde está instalada una librería******************************************************************************
+
+ldconfig -p
+
+**************Script que procesa varios ficheros, en este caso canciones, y las va reproduciendo******************************************
+#!/bin/bash
+
+PLAYER="omxplayer -o hdmi"
+PLAYLIST="play.pls"
+
+# Play arguments on command line if they exist
+if [ $# -ne 0 ]
+then
+    for file
+    do
+        $PLAYER "$file"
+    done
+    exit
+fi
+
+# Play the playlist if it exists
+if [ -e "$PLAYLIST" ]
+then
+    IFS=$'\012'
+    for file in $(cat "$PLAYLIST")
+    do
+        $PLAYER "$file"
+    done
+
+# Play the directory structure otherwise
+else
+    for file in *
+    do
+       $PLAYER "$file"
+    done
+fi 
+
+
+***************Compilar e instalar un programa que usa unas librerías que están instaladas en una ubicación no estándar******************
+
+Para compilar las librerías, habremos hecho:
+
+./configure --prefix=/home/manuel/sidplay
+make -j5
+make install
+
+...con lo que acabaremos con las librerías en /home/manuel/sidplay/lib
+
+Y para compilar el programa que las usa, en este caso un sid player, lo que le decimos es dónde está el archivo .pc de la librería, NO dónde está
+la propia librería:
+
+PKG_CONFIG_PATH=/home/manuel/sidplay/lib/pkgconfig ./configure --prefix /home/manuel/sidplay/
+
+(En este caso concreto, el player se empeña en compilar con PULSEAUDIO, así que alteramos el script "configure", NO el Makefile, ojo, para cambiar a pkg_failed a yes justo antes
+de la parte de script que lo comprueba, ya que no hay manera de desactivarlo de otra manera).
+Le podríamos anteponer también la variable de entorno LDFLAGS, para decirle al linker dónde están las librerías contra las que tiene que linkad el ejecutable, 
+con lo que quedaría:
+
+LDFLAGS+=-L/home/manuel/sidplay PKG_CONFIG_PATH=/home/manuel/sidplay/lib/pkgconfig ./configure --prefix /home/manuel/sidplay
+
+PERO esto es redundante, ya que dentro del fichero .pc de las librerías que compilamos antes, y que le pasamos mediante PKG_CONFIG_PATH, ya
+sabe el linker dónde están esas librerías.
+No nos sirve LDFLAGS como solución para decirle dónde están las librerías en tiempo de ejecución, ya que LDFLAGS es sólo para indicarlo en
+tiempo de compilación. En tiempo de ejecución no nos quedará más remedio que usar LD_LIBRARY_PATH, como siempre, ya que está definido en el 
+sistema cuáles son las localizaciones donde pueden estar las librerías, y NO es el ejecutable el que las busca.
+
+Ahora: 
+
+make -j5
+Y para ejecutar
+
+LD_LIBRARY_PATH=/home/manuel/sidplay/lib ./sidplayfp <tema>.sid
+ 
+
+***************Rogue en Linux**************************************************************************
+
+Descarga http://www.coredumpcentral.org/files/linrog37.zip y lo compilas. Necesita libncurses5-dev para compilar.
+
+
+***************Borrar un archivo con nombre que contiene caracteres extraños*****************************
+
+Lo primero, buscamos su inode:
+ls -il
+
+(el número largo que aparece a la izquierda del todo es el inode de cada archivo)
+
+Ahora, usamos find para encontrarlo por inode y borrarlo
+
+find . -inum 14071947 -exec rm {} \;
+
+Si el problema es que el archivo lleva un par de guiones al inicio de su nombre, lo que hacemos es:
+
+rm -- --*
+
+ya que el primer -- indica a rm que no se le van a pasar mas parámetros, por lo que ya no interpretaría el nombre del
+archivo como tales.
+
+***************Configurar la salida de audio de la Raspberry para que use el jack*****************************
+sudo amixer cset numid=3 1
+
+Lo pones una vez y ya queda configurado en los valores de ALSA.
+
+***************Sidplay no encuentra /dev/dsp*************************************************************
+
+sudo modprobe snd-pcm-oss 
+
+***************Sacar copia de seguridad del sistema*******************************************************
+
+Del rootfs. Si hay partición de arranque, va a parte.
+
+sudo tar -cvpzf backup.tar.gz --exclude=/backup.tar.gz --one-file-system /
+
+Y para restaurar:
+
+sudo tar -xvpzf backup.tar.gz -C /media/whatever --numeric-owner
+
+***************Bajarse los sources de un programa en Debian***********************************************
+
+Lo primero que necesitamos es una entrada de sources en el /etc/apt/sources.list, del tipo:
+
+deb-src http://mirrordirector.raspbian.org/raspbian/ wheezy main contrib non-free rpi
+
+Hacemos un 
+
+sudo apt-get update
+
+Y luego ya podemos hacer 
+
+apt-get sources timidity
+
+NO HAY que ser root para hacer esto, ya que los sources NO se instalan sino que se descargan en el directorio actual y ya.
+
+****************Bajarse los sources de un kernel en debian/ubuntu******************************************
+
+Pongamos que uname -r te dice que usas el kernel
+
+linux-image-3.4.0-1490-omap4
+
+Entonces, para bajarte los sources de ese kernel, haces:
+
+apt-get source linux-image-3.4.0-1490-omap4
+
+Si estás compilando justo este kernel, al compilar los módulos te dira no sé qué.
+Deactiva CONFIG_BINFMT_AOUT y vuelve a compilar.
+
+-Podemos extraer una configuración de un kernel previo con
+
+./extract-ikconfig ~/panda/boot/uImage > ~/panda/.config
+
+O bien podemos crear una muy básica que arranca, por ejemplo, en todos los OMAP, con
+
+make ARCH=arm omap2plus_defconfig
+
+make ARCH=arm menuconfig 
+
+-Compilamos el kernel
+
+make -j4 ARCH=arm CROSS_COMPILE=~/x-tools/arm-unknown-eabi/bin/arm-unknown-eabi-  uImage
+
+-Compilamos los módulos del kernel:
+
+make -j4 ARCH=arm CROSS_COMPILE=~/x-tools/arm-unknown-eabi/bin/arm-unknown-eabi- modules
+
+-E instalamos los módulos:
+
+sudo make ARCH=arm modules_install INSTALL_MOD_PATH=/media/manuel/LINUX/
+
+-Y lo mismo el kernel:
+
+sudo cp arch/arm/boot/zImage /media/manuel/BOOT/
+
+
+****************Extraer la configuración de un kernel*******************************************************
+
+Para extraer un .config de un kernel que sabemos que funciona, en el directorio scripts de los kernel sources tenemos un script apropiado que funciona así:
+./extract-ikconfig ~/panda/boot/uImage > ~/panda/.config
+
+
+***********Recuperar un archivo corrupto de Abiword u otro procesador de textos que se niega a abrir*********
+
+Nos instalamos ipython 
+
+sudo apt-get install ipython
+
+Y vamos haciendo las siguientes cosas, una por línea:
+
+data = open('current_events.abw', 'r').read()
+
+from lxml import html
+
+doc = html.fromstring(data)
+
+doc
+
+print ''.join(doc.xpath('//text()'))
+
+Listo. Lo copiamos de la consola a un editor en condicioes y arreglado.
+(Sacado de http://stephenmw.wordpress.com/2011/01/18/abiword_recovery/)
+
+
+********Instalar FSV, el navegador de archivos en 3D****************
+
+Clonamos el repo
+https://github.com/mcuelenaere/fsv
+e instalamos: 
+sudo apt-get install libgtk2.0-dev
+Ya sólo queda un -/config y make, y a correr.
+
+*********************Versión que tenemos instalada de un paquete******
+
+dpkg -l |grep libgbm-dev
+
+*********************Buscar un archivo recursivamente a partir de un punto del sistema de ficheros***********
+
+find ./ -name '*gtk*'
+
+************Tabla de permisos de Unix*****************
+
+Esto lo deberías tener en la cabeza, pero se te suele olvidar.
+Las tres posiciones de los números corresponden con OWNER, GROUP (del owner) y OTHER USERS.
+Y los valores de los números son decimales de tres bits. Estos tres bits pueden estar activos o inactivos (¿no me digas?) configurando así el valor.
+Su órden es R, W, X. (Lectura, escritura y ejecución).
+Así, si queremos que el propietario tenga permisos de ejecución y lectura, será un 101 binario, que inmediatamente sabemos que es un 5.
+Si queremos que el grupo tenga permisos de lectura solamente, será un 100, que es un 4.
+Y si queremos que el resto sólo tengan permisos de ejecución, será un 001, que es un 1.
+O sea que haremos chmod 541 nombrearchivo y nos quedaremos tan anchos.
+ 
+
+
+***************Escanear las Ips conectadas en red local (la misma del equipo en que estoy)***********************
+
+nmap -sn 192.168.1.0/24
+
+Esto escanearía las Ips conectadas a la red 192.168.1.x, que es lo que seguramente quieres hacer.
+Fácil y muy, muy útil.
+
+****************Arrancar Lubuntu en modo texto**********************
+
+Editamos /etc/default/grub y añadir “text” a los parámetros de la línea  GRUB_CMDLINE_LINUX_DEFAULT
+
+Ejecutamos sudo update-grub
+
+
+******************El sistema se empeña en que tenemos 0 bytes free en partición EXT4*******
+
+Borramos archivos pero no recuperamos el espacio!
+Esto es porque se reserva un 5% por defecto para el root. Para cambiar esto, simplemente hacemos:
+
+tune2fs -m 1 <device>
+
+y de este modo sólo se reserva el 1%. Solucionado.
+
+******************Cambiar el tamaño del texto y la fuente en la consola**********************
+
+sudo dpkg-reconfigure console-setup
+
+*******************Limpiar Lubuntu de los "procesos malditos", whoopsie y apport**********
+
+Esta pareja de hijos de puta gusanos de la fundación Canonical se tiene que ir de cualquier sistema con Lubuntu que yo instale.
+Así que empieza la fiesta del dpkg...
+
+dpkg -r --force-depends apport-gtk
+dpkg -r --force-depends apport
+dpkg -r --force-depends whoopsie
+
+y por último, aunque te suene raro, desinstalamos lubuntu-desktop porque el paquete queda con sus dependencias rotas y 
+nos estaría avisando el gestor de paquetes en cada arranque si no lo desinstalamos:
+
+dpkg -r --force-depends lubuntu-desktop
+
+Ya veremos qué pasa si intento instalar algo que dependa de lubuntu-desktop.. si empiezan a fallar las cosas, es hora de
+pasar a Debian.
+
+*******************Autologin en modo texto en Lubuntu************************************
+
+Con systemd. 
+Sabemos que el fichero principal de la unit de getty@tty1.service está en:
+
+/lib/systemd/system/getty@.service
+
+Vale. Tenemos varias alternativas. Podemos editar /lib/systemd/system/getty@.service y cambiar lo que necesitemos, o podemos crear un drop-in, que es 
+como un parche para cambiar cosas de la unit sin cambiar la unit. 
+Vamos a hacer esto segundo, a usar un drop-in. Para ello, creamos el fichero (y los directorios precedentes si hiciese falta):
+
+sudo vim /etc/systemd/system/getty@tty1.service.d/autologin.conf
+
+Metemos en ese fichero esto:
+
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin username --noclear %I 38400 linux
+
+Salvamos, recargamos la configuración de los daemons:
+
+systemctl daemon-reload
+
+y reiniciamos el servicio:
+
+systemctl start getty@tty1.service
+
+Para ver que todo va bien, podemos hacer:
+
+systemctl status getty@tty1.service
+
+FALLO GORDO: que la ruta de agetty sea incorrecta. Si no lo es, no puede funcionar el servicio, lógicamente.
+Así que comprueba que tienes /sbin/agetty y que efectivamente este ejecutable existe.
+
+Añadimos una segunta tty que se lance automáticamente (los agetty sobre tty1, tty2, tty3, etc.. se lanzan por activación
+de socket, pero sólo viene que se lance el primero, así que añadimos otra agettty sobre tty2):
+
+-Creamos la UNIT para agetty sobre tty2:
+sudo ln -sf /usr/lib/systemd/system/getty@.service /etc/systemd/system/getty.target.wants/getty@tty2.service
+
+-Creamos eo drop-in override para autologearnos en tty2 también:
+
+sudo vim /etc/systemd/system/getty@tty2.service.d/override.conf
+
+con el contenido:
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin manuel --noclear %I 38400 linux
+
+-Recargamos settings y reiniciamos el servicio:
+systemctl daemon-reload
+systemctl start getty@tty2.service
+
+Fuentes:
+
+https://wiki.archlinux.org/index.php/Automatic_login_to_virtual_console
+https://wiki.archlinux.org/index.php/Systemd_FAQ#How_do_I_change_the_default_number_of_gettys.3F
+
+Para cambiar la fuente de letra, de momento hacemos setfont Lat15-TerminusBold24x12 en .bash_profile y listo.
+
+Ya que estás, puedes quitar más mierdas:
+
+sudo systemctl disable NetworkManager-wait-online
+sudo systemctl disable apparmor
+sudo systemctl disable ModemManager
+sudo systemctl disable whoopsie
+sudo systemctl disable apport
+
+fuente:
+
+http://www.samplerbox.org/article/fastbootrpi
+
+INFO ANTIGUA DE ANTES DE SYSTEMD
+
+Editamos /etc/init/tty1.conf y añadimos -a username a la línea donde se lanza la consola tty1. Quedaría así:
+
+exec /sbin/getty -8 38400 tty1 -a <nombre_usuario>
+
+******************Desactivar tap to click en el synaptics trackpad en Lubuntu*********************************************
+
+Entramos en Preferences->Default Applications for LXSession->Autostart, y añadimos 
+
+synclient MaxTapTime=0
+
+bajo la categoría "Manually Autostarted Applications". Le damos a + y ya.
+
+*****************Gestor de conexiones no aparece************************************************************
+
+Añadir nm-applet en el mismo lugar que cabamos de mencionar, en Preferences->Default Applications for LXSession->Autostart
+
+*******************Desactivar servicio de los que se lanzan en arranque en Lubuntu****************************
+
+Es un poco distinto que en Debian. 
+Modemmanager se quita con un apt-get install purge modemmanager.
+Por ejemplo, para deshabilitar el network manager, movemos /etc/init/network-manager.conf a /etc/init/network-manager.conf-disabled
+
+Para volverlo a habilitar, pues lo movemos donde estaba.
+
+Otra manera es hacer 
+
+sudo update-rc <nombre_servicio> disable
+
+De hecho, lo mejor es hacer ambas.
+
+Ahora tendrás que especificar la configuración de red a piñón en /etc/network/interfaces
+
+iface eth0 inet static
+address 192.168.1.35
+netmask 255.255.255.0
+gateway 192.168.1.1
+
+
+Y NO TE OLVIDES de añadir eth0 a la linea auto, quedando
+
+auto lo eth0
+
+O si no, tendrás que andar haciendo a mano ifup eth0 en cada arranque. 
+Y si ves que tienes salida a internet pero no resuelve nombres, tienes dos opciones:
+
+1)
+
+Añadir en el propio /etc/network/interfaces
+
+dns-nameservers 208.67.222.222 8.8.8.8
+
+El primero es el de OpenDNS, y el segundo el servidor DNS de google, o sea que mejor usar el primero.
+
+2)
+
+Deshabilitar el servicio resolvconf, moviendo /etc/init/resolvconf.conf a /etc/init/resolvconf.conf-disabled, 
+para que /etc/resolv.conf no sea sobreescrito. 
+Ahora ya sólo queda borrar /etc/resolv.conf que es un link duro a un fichero del servicio resolvconf (concretamente, antes de borrarlo vemos 
+que /etc/resolv.conf -> ../run/resolvconf/resolv.conf, por si lo quieres restaurar), editar un nuevo /etc/resolv.conf y añadirle ahí nuestros servidores DNS:
+
+nameserver 208.67.222.222 
+nameserver 8.8.8.8
+
+Mola más este segundo estilo, ya que lo dejamos todo más sencillo y más estándar.
+
+
+
+****************Usar SUDO sin password***************************
+
+Hacemos sudo visudo y la línea del grupo sudo la dejamos así:
+
+%sudo ALL=NOPASSWD: ALL 
+
+
+*****************Desactivar tarjeta gráfica ATI********************
+
+En /etc/rc.local:
+
+echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
+
+
+
+*****************Configurar un servidor SAMBA y un share. Montar el share.********************
+
+En el servidor:
+
+-Instalamos el paquete samba
+
+sudo apt-get install samba
+
+-Editamos /etc/samba/smb.conf
+ En la sección [global] dejamos el workgroup por defecto y descomentamos la línea “security = user”, para que se puedan logar usuarios.
+
+-Al final del fichero, añadimos un share. MUY IMPORTANTE, atento al nombre que le pones al share entre corchetes porque es el nombre que necesitas luego para acceder a él a través de la IP del servidor SAMBA.
+Nosotros lo hemos llamado [biblio], porque contendrá la base de datos de este programa, para que distintas instancias a través de la red accedan a la misma base de datos.
+Nos queda así nuestro primer share:
+
+[biblio] 
+    comment = Biblio Database
+    path = /home/edu/database
+    browsable = yes 
+    guest ok = yes 
+    read only = no 
+
+-En este caso, el directorio del share no tenemos que crearlo porque ya lo crea la instalación del Biblio, pero si no, habría que crearlo.
+Lo que sí tenemos que hacer es cambiarle el propietario y los permisos:
+
+sudo chown nobody.nogroup /home/edu/database
+sudo chmod -R 0777 /home/edu/database
+
+En este caso lo he hecho para .wine y todos sus subdirectorios y funciona. Es un poco radical, pero había que resolver el tema.
+
+Relanzamos el servidor SAMBA:
+
+sudo restart smbd 
+sudo restart nmbd 
+
+
+En el cliente:
+
+-Instalamos las cifs-utils
+sudo apt-get install cifs-utils
+-Ya deberíamos ser capaces de montar el share con
+
+sudo mount -t cifs -o username=edu,password=marta //192.168.1.35/biblio fakebase/
+
+-Habremos creado previamente el directorio fakebase dentro de la instalación local de Biblio (/home/vader/.wine/drive_c/Biblio/fakebase)
+y habremos hecho un link simbólico (soft) al fichero Biblio.mdb de fakebase, de manera que cuando Biblio accede a su Biblio.mdb, en realidad lo hace al Biblio.mdb del share Biblio del servidor de ficheros SAMBA.
+O sea que, estando en home/vader/.wine/drive_c/Biblio, hacemos un
+
+ln -s fakebase/Biblio.mdb Biblio.mdb 
+
+-Ahora podemos automatizar el montaje del share en los clientes, añadiendo a /etc/fstab las líneas:
+
+#El servidor de ficheros con la base de datos de BIBLIO 
+//192.168.1.35/Biblio /home/manuel/.wine/drive_c/Biblio/fakebase cifs username=corchetema,password=enfermera 0 0 
+
+Por supuesto, para esto deberíamos tener una IP fija en el servidor.
+No hace falta acceso sin user/pass ni nada, va bien así y no hay problemas especificando el user/pass en el fstab.
+
+Y ya podemos dar de alta libros desde dos instancias del programa sobre la misma base de datos. Enjoy!
+
+*****************************Error recalcitrante con “sdb write cache” en Lubuntu***************************
+
+Es un problema de los drivers del lector de tarjetas. 
+Ubuntu no hace caso a los parámetros que se le pasan a los módulos en /etc/modules e ignora las entradas en /etc/modprobe.d/blacklist.conf, así que al final tuve que añadir a /etc/rc.local la línea sudo rmmod ums_realtek. 
+
+
+******************************Añadir repositorio en Ubuntu************************************************ 
+
+sudo add-apt-repository <repo_address>
+
+*****************************Cómo instalar pyrit + módulo CUDA (Nvidia) en Lubuntu************************
+
+Lo primero que hay que tener claro que pyrit funciona por defecto usando la CPU, y que para que use la gráfica hay que instalar unas cosas de nvidia (además del driver propietario) y luego un módulo de pyrit para cuda.
+
+Lo primero es instalar el driver propietario de NVIDIA, ya que nouveau NO VALE para esto:
+sudo apt-get install nvidia-current
+
+El siguente paso a lo mejor no es necesario, aunque yo lo hice. Probablemente todo esto se instale al instalar los cachivaches de nvidia:
+
+sudo apt-get install freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev
+
+Instalamos python-dev y otras cosas:
+
+sudo apt-get install python-dev 
+sudo apt-get install libpcap-dev
+sudo apt-get install libssl-dev 
+
+Ahora instalamos las cosas de nvidia:
+
+sudo apt-get install nvidia-cuda-dev
+sudo apt-get install nvidia-cuda-toolkit
+
+Hacemos el siguiente link simbólico, ya que libcuda se instala en una localización por defecto distinta de donde la buscará el módulo cuda de pyrit, y si no lo hacemos, no la encuentra, con el consiguiente error:
+
+ln -s /usr/lib/nvidia-304/libcuda.so /usr/lib/libcuda.so
+
+Nos bajamos el pyrit y los módulos:
+
+wget http://pyrit.googlecode.com/files/cpyrit-cuda-0.4.0.tar.gz
+wget http://pyrit.googlecode.com/files/pyrit-0.4.0.tar.gz
+
+Empezamos instalando el módulo, entrando en el directorio de cpyrit-cuda y poniendo:
+
+python setup.py build
+sudo python setup.py install
+Estas cosas no deberían darme ningún error. Si dice algo de unas cabeceras que hacen falta pero no se encuentran y continuing anyway, pasamos del tema.
+
+Entramos en el directorio de pyrit y hacemos la misma:
+
+python setup.py build
+sudo python setup.py install
+
+El binario de pyrit se instala en /usr/local/bin/pyrit, así que le hacemos un 
+
+ln -s /usr/local/bin/pyrit /usr/bin/pyrit
+
+Y ya debería estar. Lanzamos
+
+pyrit list_cores
+
+y deberíamos ver algo como:
+
+The following cores seem available...
+#1:  'CUDA-Device #1 'GeForce 9400''
+#2:  'CPU-Core (SSE2)
+
+Ahora lanzamos un 
+
+pyrit benchmark
+
+...y vemos si merece la pena o no...A la gente le da 3000 y pico, con máquinas decentes.
+
+Ahora usamos el pyrit para romper una contraseña:
+
+pyrit -r “84:9C:A6:A3:8E:8F-01.cap” -b "84:9C:A6:A3:8E:8F" -e "Orange-8E8D" -i <diccionario.txt> attack_passthrough
+
+
+
+**************************Tirar el servidor gráfico (Xorg) en Lubuntu************************************
+
+sudo service lightdm stop
+
+y para volver, obviamente, start.
+
+
+
+*************************Notas de RetroArch en x86**********************************************
+
+Retroarch es guay porque podemos tirar el servidor gráfico y, si tenemos una tarjeta que soporte KMS+EGL, podemos correrlo sin X, con doble buffer + vsync y sin input lag.
+
+Lo ideal es compilarlo nosotros. Nos instalamos:
+
+sudo apt-get install gcc g++ make libdrm-dev libgbm-dev libgles2-mesa-dev libasound2-dev
+
+(A lo mejor hace falta algo más, ya lo pedirá al configurar o al compilar).
+
+configuramos con:
+
+./configure --disable-x11 --disable-sdl2 --disable-ffmpeg --disable-networking --disable-libretrodb --disable-glui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-cheevos  --enable-kms --enable-egl --enable-gles
+
+Comprobamos en lo que sale que ha detectado las librerías drm y EGL.
+Y procedemos a compilar con make.
+
+PARA que haya input con el driver udev (input_driver = "udev") debemos crear /etc/udev/rules.d/99-evdev.rules con el contenido:
+KERNEL=="event*", NAME="input/%k", MODE="666"
+Y reiniciar.
+
+En lugar de todo esto, podemos instalar desde repo, en forma de binario precompilado, de la siguente manera: añadimos el repo
+
+sudo add-apt-repository ppa:hunter-kaller/ppa
+
+Y ahora podemos instalarlo junto con algunos cores:
+
+sudo apt-get install retroarch
+sudo apt-get install libretro-*
+
+Al intentar ejecutarlo en modo KMS+EGL, nos va a pedir unas librerías. Nos anticipamos y las instalamos antes: 
+
+sudo apt-get install libegl1-mesa
+sudo apt-get install libgbm1 
+sudo apt-get install libEGL
+
+Los cores van a ir a /usr/lib/libretro-*.so
+
+También vamos a necesitar retroarch-phoenix para generar la primera configuración:
+
+sudo apt-get install retroarch-phoenix
+
+El retroarch guarda la configuración general en ~/.config/retroarch.cfg, pero esta configuración sólo admite una entrada del campo “libretro_path =”. Si esta entrada es un directorio, empezaremos a navegar desde ahí una vez entremos en “cores” dentro del menú del retroarch.
+Si es un fichero *.so, pues estará activo ese core por defecto, y para cargar roms o ficheros de otro sistema tendremos que cambiar de core.
+Así que lo ideal es tener un lanzador por cada juego o sistema, tipo:
+
+retroarch -c .config/retroarch/gb.cfg <rom_opcional>
+
+Para configurar los botones para ese sistema en concreto, haremos
+
+retroarch-joyconfig -j 1
+
+(por defecto sería -j 0 si no ponemos nada, pero el portátil detecta un acelerómetro en primer lugar...)
+CUIDADO: la salida de este comando, tras acabar de configurar las teclas, la añadimos al cfg del sistema cuyo mando estemos configurando.
+¡¡NO TE OLVIDES LUEGO DE AÑADIR input_driver = “linuxraw” (RESPETA LOS ESPACIOS) en el retroarch.cfg!! Si no tienes soporte para SDL y no pones esto en el fichero, te va a dar un error bien gordo de input driver “null” al lanzar el retroarch.
+
+Ah, y prboom-libretro guarda su configuración en ~/roms/doom/prboom.cfg, o sea, la crea en el directorio donde metamos los WADs.
+
+Si tienes un error de "unable to open device" por udev, simpemente:
+crea /etc/udev/rules.d/99-evdev.rules con el contenido
+KERNEL=="event*", NAME="input/%k", MODE="666"
+ejecuta 
+sudo udevadm control --reload-rules
+
+y reinicia. Ya deberia ir.
+
+****************************Cómo compilar libmodplug*******************************
+
+Cambia automake-1.13 a automake-1.11 en el Makefile.
+Configura con: 
+CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --enable-static
+
+
+****************************Milkytracker en la Raspberry Pi****************************
+
+Para evitar undefined symbols en tiempo de linkado, hacemos:
+
+CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard -lasound" CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard -lasound" ./configure
+
+
+****************************Retroarch en la Raspberry Pi*******************************
+
+Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
+
+./configure --disable-vg --enable-dispmanx --disable-x11 --disable-sdl2 --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-glui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
+
+Añadimos los flags de CPU en config.mk:
+-mfpu=vfp -mfloat-abi=hard -march=armv6j
+
+Editamos Makefile.common y comentamos la línea del -g
+
+En gfx/drivers/gl.c, dejamos la linea
+if (gl_query_extension(gl, "BGRA8888") && !strstr(renderer, "VideoCore"))
+como
+if (gl_query_extension(gl, "BGRA8888"))
+
+Ahora ya compilamos:
+make -j8 V=1
+El V=1 es para ver las líneas de compilación y comprobar que nuestros flags se están usando, etc
+
+Si da undefineds de las funciones de dispmanx, pásale al make temporalmente:
+make -j8 V=1 HAVE_OPENGL=1
+
+NO instales ninguna librería de mesa, gl NI NADA DE ESO, o luego las SDL2 se liarán. En la Rpi NO HAY MESA y no hay GL, sólo EGL y GLES que ya
+vienen instaladas como libs e includes en /opt/vc.
+(¡CUIDADO, que lo de floathard sólo es para ARM! Si compilas en x86 no uses eso. Las instrucciones para compilar Retroarch para X86 las tienes más arriba.)
+(CUIDADO que si compilas sin las sdl, que es lo recomendado, necesitarás añadir la línea input_driver = “linuxraw” (RESPETA LOS ESPACIOS) en el retroarch.cfg, o te dará un error de input driver “null” desconocido!)
+
+¡¡YA NO HACE FALTA AÑADIR input_driver = “linuxraw” en el retroarch.cfg si compilas sin las SDL!!
+AHORA el dispositivo por defecto para mandos USB es udev, no linuxraw. Genial!
+No hace falta NINGUNA línea de input_driver. Al compilar sin SDL, udev es el device por defecto sin especificar nada.
+
+Si te da un error el distcc en plan "unable to distribute", es porque el Makefile del core que sea está usando CC en vez de GCC.
+
+NO hace falta usar --enable-cg, porque la Rpi NO usa shaders en formato cg o cgp, la rpi usa GLSL, así que tenemos que convertir los shaders si queremos.
+Hay un script en tools (en los sources de RetroArch para hacerlo) y para convertir un directorio entero nos basta con hacer:
+cg2glsl.py common-shaders common-shaders-glsl
+Necesita nvidia-cg-toolkit instalado para que este script funcione.
+Sin embargo, sólo funcionan los shaders sencillos como scanline.glsl.
+Para activarlos, te metes en el cfg del sistema que sea, pones el video_shader_enable="true" y video_shader="scanline.glsl", y listo. 
+
+=====PARA LOS CORES=========
+
+Vamos editando el Makefile.libretro, y añadiendo en la línea donde se ñade sólo -marm (se llega buscand marm un par de veces):
+-mfpu=vfp -mfloat-abi=hard -march=armv6j
+
+Y compilamos con
+
+make -f Makefile.libretro platform="armv6" -j8
+
+Si no, pues directamente en la línea de los Os (como en STELLA):
+
+-Ofast -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
+
+Cuando un core se niegue a compilar con el distcc, si vemos que está intentando usar cc en lugar de gcc, hacemos
+export CC = gcc
+o bien añadimos a su Makefile:
+  CC = gcc 
+  CXX = g++ 
+a la sección de platform unix, si te de problemas el cross compilador al especificar la plataforma. 
+
+
+El core de picodrive igual, NO sirve el zip, clonamos con git:
+
+git clone https://github.com/libretro/picodrive.git
+
+Ahora instalamos unos complementos que hacen falta antes de compilar:
+
+git submodule init && git submodule update
+
+Editamos Makefile (NO Makefile.libretro sino Makefile sin más) y nos libramos de -ggdb y ponemos -O3.
+
+Ahora hacemos 
+
+make -f Makefile.libretro -j8 platform=raspberrypi
+(Envié un parche para que las cosas se compilasen como deben para la Pi con este platform, mira el Makefile.libretro si tienes curiosidad: está basado en el platform de 3Ds
+en cuanto a lo que se debe compilar en assembler y eso, con cosas del plarform de Linux para el formato de la librería de salida).
+
+LISTO!! Picodrive es un core ESPECTACULAR, ya verás.
+
+Para el core de scummvm, clonamos repo y luego entramos en:
+
+backends/platform/libretro/build
+
+SI SE TE OCURRE ACTIVAR O DESACTIVAR CORES, no linkará bien. Y necesitas mucho espacio en disco para que linke, además. Fíjate no sólo en la RAM que queda sino también en el espacio
+en disco.
+
+y hacemos:
+
+make -j4
+
+Para que la autodetección de core funcione, tienes que tener dist/info en el directorio de retroarch. Está en el repo libretro-super.
+
+PARA Dinothawr puede que tengas que mover
+  CC = gcc 
+  CXX = g++ 
+a la sección de platform unix, si te de problemas el cross compilador al especificar la plataforma. 
+
+se compila con 
+make -j8 platform="unix armv6j hardfloat"
+
+En Stella tenemos que poner también platform=unix, y si se empeña en compilar como dll, busca dll en el makefile y manda ese bloque a la mierda.
+
+El core de prboom (doom) requiere configurar las teclas a mano: Las he dejado así las más importantes:
+
+input_player1_b = "alt"
+ input_player1_y = "shift"
+input_player1_a = "space"
+input_player1_x = "ctrl"
+input_player1_l = "z"
+input_player1_r = "x"
+input_player1_l2 = "q"
+input_player1_r2 = "w"
+
+PARA que haya input con el driver udev (input_driver = "udev") debemos crear /etc/udev/rules.d/99-evdev.rules con el contenido:
+KERNEL=="event*", NAME="input/%k", MODE="666"
+Y reiniciar.
+
+Si le pasas algún flag de march o mtune, el ejecutable va a salir mal y no funcionará.
+
+Para FRODO: deshabilita los LEDs en libretro/emu/Display_retro.i y luego busca dónde se colola la pantalla en void C64Display::Update(void) para dejarla en el medio.
+
+Para medir el uso de CPU, usamos PERFORMANCE COUNTERS:
+-En RGUI: en General Options, activamos LOGGING VERBOSITY, PERFOMANCE COUNTERS, y ponemos LOGGING LEVEL a 0. Al salir, deberíamos
+ver los stats. El resampler_proc son los cpu ticks que se zampa el resampler.
+-DSINC_LOWEST_QUALITY para compilar con el SINC resampler de menor calidad. El otro resampler, CC, hay que evitarlo en ARM. Busca DSINC en el Makefile
+de Retroarch.
+
+ERROR DE LANGUAGE DE PERL al acceder por ssh a una máquina
+=====================================================
+
+Esto ocurre porque la máquina desde la que accedemos exporta los settings de lenguaje a la máquina a la que estamos accediendo, y en esa no está instalado el 
+soporte para el lenguaje que sea.
+Para quitar los avisos de mierda de LANGUAGE de perl:
+
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_TYPE=en_US.UTF-8
+
+en el .bashrc y listo. Si persiste, añadimos lo mismo a .bash_profile.
+
+
+SONY walkman y dispositivos MTP que fallan al funcionar en modo MTP en Lubuntu
+======================================================================
+
+El problema es que el PCMANFM los automonta como MTP y no van bien. Para que los monte como MSC, es decir, como pendrives normales y corrientes, simplemente ELIMINA
+o mueve a otro sitio /usr/lib/gvfs/gvfs/gvfs-mtp-volume-monitor
+Y el PCMANFM ya los montará como MSC.
+
+Retroarch en Cubieboard2
+======================
+
+./configure --enable-gles --enable-mali_fbdev --disable-x11 --disable-sdl2 --enable-floathard --disable-ffmpeg --disable-netplay --enable-udev --disable-sdl --disable-pulse\ 
+--disable-oss --disable-freetype --disable-7zip --disable-libxml2
+
+LA PESADILLA SYSTEMD: COMO LIBRARNOS DE ELLA
+=============================================
+
+Podemos simplemente hacer que fncione en modo sysvinit, que es lo bueno:
+apt-get install sysvinit-core systemd-sysv-
+
+Y para saber por qué coño se nos instaló SYSTEMD al actualizar, miramos las dependencias inversas:
+apt-cache rdepends systemd --installed
+
+UN SCRIPT PARA DETECTAR SI ESTAMOS EN UNA RPI
+===========================================
+
+if grep -q BCM2708 /proc/cpuinfo; then
+        echo "Estamos en una Raspberry Pi"
+fi
+
+ZDOOM en la Raspberry Pi
+======================
+
+Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
+
+Nos compilamos nosotros OpenAL desde https://github.com/JogAmp/openal-soft/tree/master porque el de debian tiene dependencias cochinas.
+cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
+make
