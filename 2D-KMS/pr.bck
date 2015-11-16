@@ -1,0 +1,14 @@
+#include <stdio.h>
+#include <stdint.h>
+
+int main (void) {
+	uint32_t src = 0xFF000000; /* 1111 1111 B = 65280 D*/
+	
+	uint32_t dst;
+
+	printf ("src 0x%x : %u\n", src, src);
+
+	dst = src;
+
+	printf ("dst 0x%x : %u\n", dst, dst);
+}

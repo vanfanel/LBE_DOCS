@@ -323,6 +323,24 @@ static bool format_support(const drmModePlanePtr ovr, uint32_t fmt)
 	return false;
 }
 
+static void *rgb565_to_rgba8888 (void *input, uint16_t size) {
+	int i;
+	uint32_t r, g, b, a;
+	uint16_t *src = (uint16_t*)input;
+	uint32_t *dst = malloc (size * sizeof(uint32_t));
+	for (i = 0; i < size; i++) {
+		r = (*(src + i) & 0xF800) >> 11;		
+		g = (*(src + i) & 0x07E0);		
+		b = (*(src + i) & 0x001F);		
+		
+	}
+	/*
+
+	XXXX XXXX XXXX XXXX OOOO OOOO OOOO OOOO OOOO OOOO	
+                            R	      G        	B	
+	*/
+}
+
 void setup_plane() {
 	int i,j;
 

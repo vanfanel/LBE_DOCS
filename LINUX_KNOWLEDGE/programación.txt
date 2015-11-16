@@ -3,7 +3,7 @@
 DIFERENCIA IMPORTANTE entre dos parámetros que PARECE que hacen lo mismo, pero NO: 
 El parametro -L/<ruta> es para pasarle la ruta de los scripts para LD, o sea, el .SO "índice" de cada librería, que dentro tiene en texto los nombres de los ficheros físicos de la librería.
 O sea, -L/<ruta> es para pasarle al linker la ruta de los scripts de TEXTO editables de LD.
-Sin embargo, -Xlinker -rlink-path=... es para pasarle la ruta de los ficheros físicos de la librería, o sea, los SO que son binarios y que tienen número de versión en el nombre.
+Sin embargo, -Xlinker -rpath-link=... es para pasarle la ruta de los ficheros físicos de la librería, o sea, los SO que son binarios y que tienen número de versión en el nombre.
 
 RECUERDA SIEMPRE que con -v puedes ver qué directorios busca gcc y ld las librerías, headers... y con qué opciones configuré el cross-compilador en tiempo de compilación!.
 
@@ -32,7 +32,10 @@ Aquí lo que vemos es que LO QUE NO ENCUENTRA SON FICHEROS DE LA LIBRERÍA YA DI
 antes, el de "can't find -l<nombre_librería>", donde nos decía extrañamente que no encontraba un parámetro y lo que no encontraba realmente era el script para LD, que también es un .so.
 Aquí, digo, NO ENCUENTRA LA LIBRERÍA CONCRETA (DE AHÍ QUE EL NOMBRE DE FICHERO TENGA NÚMEROS DE VERSIÓN), Y NO LA ENCUENTRA PORQUE LAS RUTAS DEL SCRIPT PARA LD, 
 O SEA, EL .SO DE TEXTO DE LA LIBRERíA, TIENE RUTAS INCORRECTAS.
-En el caso que hemos puesto como ejemplo, hacemos
+En el caso que hemos puesto como ejemplo, podemos hacer DOS cosas:
+-La mejor, PARA NO modificar los scripts .SO para LD a mano, le pasaríamos al linker algo como esto (añade más o cambia la ruta tras encontrar la librería física que no encuentra! esto es un ejemplo):
+   -Xlinker -rpath-link=/opt/rpi_root/usr/lib/arm-linux-gnueabihf
+-Modificar los scripts SO para LD. No lo recomiendo, porque mola hacer las cosas sin modificar nada del sysroot, pero bueno...
 find /opt/rpi_root -name 'libc.so' y encontramos el script para LD en /opt/rpi_root/usr/lib/arm-linux-gnueabihf/libc.so.
 Lo editamos y vemos que tiene GROUP ( /lib/arm-linux-gnueabihf/libc.so.6 /usr/lib/arm-linux-gnueabihf/libc_nonshared.a  AS_NEEDED ( /lib/arm-linux-gnueabihf/ld-linux-armhf.so.3 ) ),
 o sea, que contiene UNAS RUTAS ABSOLUTAS que hacen que nuestro linker busque las cosas a partir del /usr y del /lib del PC de compilación, lo que no tiene sentido porque tiene que
@@ -54,6 +57,8 @@ Y le pasamos la ruta  donde reside el fichero físico de la librería libasound.
 Repetimos lo mismo con los demás ficheros físicos de librerías que faltan.
 
 *Error NO ENCUENTRA crt0.o, crtci.o, crtcn.o...
+RESUMEN: esto pasa cuando has pasado un --sysroot al linker. Para arreglarlo puedes pasarte la vida intentando construir un crosscompiler con multiarch, que yo no lo he conseguido,
+o puedes tirar de -B<ruta_a_objeto_binario>, haciendo algo como -B$RPI_ROOT/usr/lib/arm-linux-gnueabihf
 Normalmente esto pasa cuando al cross-compilador le pasas un --sysroot=<ruta>, porque si no se lo pasas lo normal es que el cross-compilador lleve sys crts en su propio sysroot
 interno (si haces un find al directorio donde empieza todo lo de la cross-compilación, verás lo qu ete digo).
 Estos suelen estar en /usr/lib, pero en el sysroot de la Pi están en /usr/lib/arm-linux-gnueabihf, así que, si le estamos pasando --sysroot=/opt/rpi_root, el linker lo está buscando en 
@@ -76,7 +81,7 @@ SIN EMBARGO, NO FUNCIONA Y AL HACER ESTO FALLA EL BUILD SIEMPRE. NO HAY SOPORTE 
 Y lo que es más grave, TAMPOCO HAY SOPORTE PARA MULTIARCH EN EL CROSSCOMPILADOR PREFABRICADO DE LA RASPBERRY EN https://github.com/raspberrypi/tools.
 
 Así que sólo nos queda arreglar las cosas a mano en el sysroot que tenemos en /opt/rpi_root, a base de editar los scripts .so para LD,  o bien dejarlos tal cual 
-y tirar de -Xlinker --rpath-link <rura-librerías-físicas>, que tiene el mismo efecto.
+y tirar de -B$RPI_ROOT/usr/lib/arm-linux-gnueabihf.
 
 
 *****Empieza la explicación a por qué --sysroot no funciona bien y nos faltan los crt*.so, scripts .so para LD, librerías...**********

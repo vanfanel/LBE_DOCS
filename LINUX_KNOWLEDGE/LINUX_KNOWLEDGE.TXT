@@ -1,3 +1,18 @@
+******Grabar WIFISLAX moderno en un pendrive de arranque****************************************************************************************************************
+
+Extraemos los dos directorios de la ISO, wifislax y boot, a nuestro disco duro.
+Formateamos el pen a FAT32. Esto no nos va a dejar ejecutar cosas por temas de permisos de los que carece FAT32, así que ya verás lo que hay que hacer.
+Copiamos boot/bootinst.sh al disco duro. Está pensado para ejecutarse desde el pen, pero como el pen está en FAT32 no podemos, así que lo editamos y dejamos las líneas
+de declaración de ciertas variables así:
+
+TARGET="/dev/sdb1"
+MBR=""
+MYMNT="/media/manuel/WLX"
+
+Comentamos entero el bloque "# Find out which partition or disk are we using": entero.
+Ejecutamos bootinst.sh desde nuestro disco duro, y listo. Si se queja de que no encuentra archivos para instalar el bootloader, lo mandas a la copia local del directorio boot
+de la ISO y lo ejecutas desde allí.
+
 *******Aplicar parches ips en Linux*****************************************************************************************************************************************
 
 Lo hacemos con el UIPS, un parcheador hecho en C de Neil Corlett (sí, el traductor del Seiken Densetsu 2, la gente es la hostia!) de hace mil años.
@@ -1223,6 +1238,41 @@ y antes de usarlo hacemos
 sudo updatedb
 
 Y ya se supone que podemos usarlo.
+
+***********EDUKE32: Duke Nukem 3D en la Raspberry Pi*********************************************************************************************
+
+Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
+
+Clonamos el repo:
+svn checkout http://svn.eduke32.com/eduke32/polymer/ eduke32
+
+Compilamos con:
+make -j8 USE_LIBVPX=0 USE_LIBPNG=0 WITHOUT_GTK=1 NOASM=1 LTO=0 OPTLEVEL=3 OPTOPT="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j"
+(Como ves, tenemos que desactivar tristemente las LTO... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
+
+
+Para CROSS COMPILAR EDUKE32: (para poder tener LTO, Linking Time Optimizations):
+
+export PATH=$PATH:/home/manuel/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin
+
+En Makefile.common, la idea es que en vez de llamar a sdl2-config (que incluso si consiguiésemos que llamase a /opt/rpi_root/usr/bin/sdl2-config estaría dando --cflags y --libs 
+con rutas incorrectas) le pasemos nosotros lo que daría sdl2-config pero alterado para el entorno de cross-compilación (o sea que llamar a sdl2-config, o SDLCONFIG como lo llama
+internamente el script queda prohibido). Para ello hacemos varias cosas:
+
+-Comenta ciertas lineas:
+SDLROOT:=$(strip $(shell $(SDLCONFIG) --prefix))
+LIBS+= -pthread
+
+-Deja las líneas de SDLCONFIG_COMMONFLAGS y SDLCONFIG_LIBS, que es donde se llamaba originalmente a SDLCONFIG (sdl2-config) tal que así
+(esto está basado en mis notas de errores de crosscompilación en "programacion.txt"):
+
+SDLCONFIG_COMMONFLAGS:=$(subst -Dmain=SDL_main,,-I/opt/rpi_root/usr/include/SDL2 -I/opt/rpi_root/opt/vc/include -I/opt/rpi_root/opt/vc/include/interface/vcos/pthreads -I/opt/rpi_root/opt/vc/include/interface/vmcs_host/linux -D_REENTRANT)
+SDLCONFIG_LIBS:=--sysroot=/opt/rpi_root -B/opt/rpi_root/usr/lib/arm-linux-gnueabihf -Xlinker -rpath-link=/opt/rpi_root/usr/lib/arm-linux-gnueabihf -Xlinker -rpath-link=/opt/rpi_root/lib/arm-linux-gnueabihf -L/opt/rpi_root/usr/lib/arm-linux-gnueabihf -L/opt/rpi_root/usr/lib -Wl,-rpath,/opt/rpi_root/usr/lib -L/opt/rpi_root/usr/lib/arm-linux-gnueabihf -L/opt/rpi_root/lib/arm-linux-gnueabihf -L/opt/rpi_root/usr/lib -L/opt/rpi_root/opt/vc/lib -lbcm_host -lvcos -lvchiq_arm
+
+Y ahora ya compila, con nivel de opimización -O3 y flags para la Pi1 quedaría:
+
+make -j8 USE_LIBVPX=0 USE_LIBPNG=0 WITHOUT_GTK=1 USE_OPENGL=0 CROSS=bcm2708hardfp- OPTLEVEL=3 OPTOPT="-marm -mfpu=vfp -mfloat-abi=hard"
+
 ************Wolf4SDL (Wolfenstein 3D) en la Raspberry Pi*********************************************************************************
 
 Compilaro y hacerlo funcionar me llevó un rato. Editamos "version.h" y nos vamos a los "defines used for different versions", donde dejamos descomentados
@@ -1715,6 +1765,40 @@ git push -f origin master
 
 Y luego ya haríamos el pull request.
 
+************Otro caso práctico de git: actualizar mi master branch al master de upstream, luego ponerme en otro branch y merger mi branch master actualizado en el branch secundario*********
+
+O sea, el objetivo es actualizar mi branch secundario de manera que quede con los cambios del branch master de upstream. Mi branch secundario es dispmanx.
+
+-Añado el upstream. Lo llamo upstream como lo podría llamar pepito:
+
+git remote add upstream https://github.com/libretro/RetroArch.git 
+
+Ahora descargamos todos los branches de upstream:
+
+git fetch upstream
+
+Nos aseguramos de estar en el branch master de nuestro fork. Seguramente ya estaremos ahí de todos modos..
+
+git checkout master
+
+Ahora hacemos el merge del master de upstream con nuestro master:
+
+git merge upstream/master
+
+Ahora nos ponemos en el branch que realmente queremos actualizar:
+
+git checkout dispmanx
+
+...Y hacemos el merge de nuestro branch master sobre nuestro branch dispmanx:
+
+git merge master
+
+Ahora ya haríamos el push al branch dispmanx:
+
+git push origin dispmanx
+
+...Y quedaría probar a compilar y ver qué desaguisados se han montado debido al merge!
+
 ************Arreglar texto de commits en github************************************************************************************
 
 Nos ponemos en el branch donde están los commits que queremos cambiar:
@@ -1804,7 +1888,7 @@ Las instrucciones están en la wiki del scummvm, en http://wiki.scummvm.org/inde
 
 Para compilación rápida de prueba, sólo con engine SCUMMVM:
 
-/configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur
 
 Sin dispmanx:
 
@@ -1898,7 +1982,7 @@ cmake  -DUSE_SDL2=yes -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DOGG=no -
 
 Usa -DUSE_SDL2=no para compilar contra SDL1.x
 
-Tenemos que tener instalados libsdl_image (versión 2) y libboost-system-dev (libboost1.55-dev).
+Tenemos que tener instalados libsdl_image (versión 2) y libboost-dev (libboost1.55-dev).
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
@@ -1908,6 +1992,29 @@ Los datos de los juegos deben ir en ~/.CommanderGenius/games/
 Si quieres especificar qué juego cargar, es con 
 ./CGeniusExe dir=keen1
 donde keen1 estaría en ~/.CommanderGenius/games/keen1 (el parámetro dir es relativo a ~/.CommanderGenius/games/ siempre).
+
+*************Chocolate DOOM en la Raspberry Pi con SDL2**********************************************************************
+
+Usamos el branch sdl2-branch, que clonamos con:
+
+git clone --depth 1 -b sdl2-branch https://github.com/chocolate-doom/chocolate-doom.git 
+
+Editamos src/i_video.c y cambiamos 
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest"); 
+por 
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
+Ahora editamos configure.ac ponemos el optimization level a 3 y quitamos y el -g que encontremos.
+Ahora configuramos con 
+CFLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure
+NO LE PASES el -O3 al script de configuración: ya lo has puesto en el configure.ac.
+
+Compilamos con
+make -j8 V=1
+Verificamos que no hay -g, que se compila con -O3 y que los flags de cpu son correctos.
+Listo!
+
+NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da igual.
 
 *************SDL2 en Raspberry Pi*********************************************************************************************
 
@@ -1946,6 +2053,11 @@ Si algún programa para SDL2 falla al compilarlo con soporte para GLES, añade e
 Sacado de aquí, míralo para entender el problema:
 
 http://raspberrypi.stackexchange.com/questions/27523/how-to-use-opengl-via-sdl2
+
+SI LOS JUEGOS 2D SE PIXELAN MUCHO, pues que apliquen filtro bilineal a las texturas de GLES2, que es lo que se usa para 2D.
+Así que mete esta llamada al principio del código del juego, tras SDL_Init() va perfectamente:
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+Busca antes si el juego tiene su propio chorro de llamadas a SDL_SetHint() y mete esta allí, o cambia alguna como en el caso de chocolate-doom.
 
 **************SWAP de emergencia*************************************************************************************************
 Algunos sistemas, como la Raspberry Pi, no usan swap normalmente porque nos cargaríamos la SD rápido.
@@ -2688,7 +2800,10 @@ Y procedemos a compilar con make.
 
 PARA que haya input con el driver udev (input_driver = "udev") debemos crear /etc/udev/rules.d/99-evdev.rules con el contenido:
 KERNEL=="event*", NAME="input/%k", MODE="666"
-Y reiniciar.
+Ahora podemos hacer
+sudo udevadm control --reload-rules
+sudo chmod 666 /dev/input/event*
+o simplemente reiniciar.
 
 En lugar de todo esto, podemos instalar desde repo, en forma de binario precompilado, de la siguente manera: añadimos el repo
 
@@ -2753,7 +2868,7 @@ CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard -lasound" CXXFLAGS="-Ofas
 
 Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
 
-./configure --disable-vg --enable-dispmanx --disable-x11 --disable-sdl2 --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-glui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
+./configure --disable-vg --enable-dispmanx --disable-x11 --disable-sdl2 --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
 
 Añadimos los flags de CPU en config.mk:
 -mfpu=vfp -mfloat-abi=hard -march=armv6j
@@ -2869,7 +2984,12 @@ Y reiniciar.
 
 Si le pasas algún flag de march o mtune, el ejecutable va a salir mal y no funcionará.
 
-Para FRODO: deshabilita los LEDs en libretro/emu/Display_retro.i y luego busca dónde se colola la pantalla en void C64Display::Update(void) para dejarla en el medio.
+Para FRODO: 
+-Compila con
+make -j8 -f Makefile.libretro NOLIBCO=1 EMUTYPE=frodosc
+-Deshabilita los LEDs en libretro/emu/Display_retro.i y luego busca dónde se colola la pantalla en void C64Display::Update(void) para dejarla en el medio.
+-Luego, para el AUTOLOAD de disk images, te vas a libretro/core/core-mapper.cpp b/libretro/core/core-mapper.cpp, y metes el parche que tienes en los foros de RA en
+el hilo del core de C64.
 
 Para medir el uso de CPU, usamos PERFORMANCE COUNTERS:
 -En RGUI: en General Options, activamos LOGGING VERBOSITY, PERFOMANCE COUNTERS, y ponemos LOGGING LEVEL a 0. Al salir, deberíamos
