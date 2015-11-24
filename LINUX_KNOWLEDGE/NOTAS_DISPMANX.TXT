@@ -1,0 +1,54 @@
+-Los tres rectángulos (RECTS) importantes son:
+	-bmp_rect: dimensiones del rectángulo que vamos a copiar a la VRAM con write_data().
+		   Está muy relacionado con el pitch, que es la otra variable que le pasamos
+		   a write_data(). Ahora lo explico.
+	-src_rect y dst_rect:son las dimensiones de entrada y salida para escalar parte del 
+	 contenido de un element o ventana. Es la "lupa": src_rect es el rect que vamos a 
+	 escalar (entrada) y dst_rect a qué tamaño lo queremos dejar (salida).
+	 Podemos transferir un rect de un tamaño y luego sólo escalar un sub-rectángulo de
+	 él, por eso nos hace falta bmp_rect por un lado y src_rect por otro.
+
+-Entonces ¿cuál es la relación entre el bmp_rect y el pitch que le pasamos a 
+	 write_data? Pues el bmp_rect ya sabemos que son las dimensiones del rect a copiar
+	 a VRAM, y el pitch que le pasemos es "hasta dónde he de llegar leyendo cada línea",
+	 en bytes.
+
+	 *******ESTO NOS PERMITE UN TRUCO MUY CHULO Y QUE USAMOS MUCHO:********* 
+	 Imaginemos que tenemos una fuente de imágen, un emulador por ejemplo, en el que cada
+	 frame tiene cosas entre los scanlines: o sea, entre un scanline y el siguiente hay 
+	 pixels que no nos interesa ver, o simplemente cada scanline visible no empieza
+	 inmediatemente después de acabar el anterior. You get the idea. 
+	 En principio, tendríamos que hacer blitting por sftware, recorriendo el frame 
+	 línea a línea y metiendo los píxels visibles de cada línea en un buffer que tenga
+	 por pitch la longitud en bytes de la cantidad de píxels visibles de cada línea.
+	 Una putada para la CPU.
+	 PERO CON DISPMANX, podemos pasarle a wrte_data() un bmp_rect con las dimensiones 
+	 totales del frame, y, aquí viene lo bueno, un picth que le indique los bytes que
+	 queremos ir copiando a la VRAM por cada línea, o sea, un "visible_pitch".
+	 Y ya está: write_data() copiará por cada línea sólo los n bytes visibles que le
+	 indiquemos, y luego pasará a la siquiente tanto en el orígen como en el destino.
+	 Nos hemos ahorrado MUCHA CPU, porque tenemos un blitter. Sí, amigos, la Raspberry
+	 Pi lleva un blitter a bordo, como el Amiga.
+
+         Bien, pues ya tenemos una manera de recortar una imágen de menor pitch desde una
+	 con más pitch deshechando la parte de picth que no nos interesa.
+
+	 Esto tiene una limitación: puedes poner el pitch que quieras y no va a haber 
+	 probllema, pero el width del bmp_rect TIENE QUE SER POTENCIA DE DOS.
+	 Si no lo es, vas a tener deformaciones inexplicables en la imágen bliteada.
+	 Si por ejemplo el width total de un frame no es potencia de dos, NO VALE pasarle
+	 a write_data() un width aproximado y potencia de dos en bmp_rect distinto del width 
+	 TOTAL del frame, y a la vez un pitch que nos permita quedarnos sólo con los bytes 
+	 correspondientes a ese falso width: A WRITE_DATA() SIEMPRE HAY QUE PASARLE 
+	 EN BMP_RECT EL WIDTH TOTAL DEL FRAME, y luego ya eso sí, el pitch que queramos.
+	 
+	 O sea que si tenemos un frame con un width total que no sea potencia de dos,
+	 como no podemos inventarnos otro width para pasárselo a write_data(), no podemos 
+	 hacer nada para arreglarlo: tenemos que lograr que el frame de orígen tenga 
+	 un width que sea potencia de dos. 
+	 Si el width total del frame es potencia de dos, podemos quedarnos con la parte
+	 de cada línea que queramos, usando el truco ya mencionado de pasar un picth
+	 distinto al total, como ya se ha mencionado. 
+	 PERO HAGAS LO QUE HAGAS, INCLUSO SI SÓLO TE VAS A QUEDAR CON UNA PARTE DE CADA LÍNEA, 
+	 A WRITE_DATA HAY QUE PASARLE SIEMPRE EL WIDTH TOTAL PARA UQE FUNCIONE COMO DEBE, 
+	 NO VALE OTRO, Y ESE WIDTH TOTAL DEBE SER POTENCIA DE DOS.

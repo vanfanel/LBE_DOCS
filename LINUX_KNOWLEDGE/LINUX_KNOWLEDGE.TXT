@@ -1,3 +1,21 @@
+******GRAFX2 en la Raspberry Pi*******************************************************************************************************************************************
+
+Si tenemos SDL2 instalado y funcionando, podemos tener este increíble programa de dibujo en 2D que se usa para sprites y gráficos raster!
+Tenemos que tener también SDL2_image con soporte para JPG, PNG y TIFF, así que comprueba que tienes esos formatos soportados al configurar SDL2_image.
+
+svn co svn://pulkomandy.tk/GrafX2/branches/sdl2
+
+Simplemente hay que compilarlo con estas opciones:
+make -j8 NOLUA=1 NOTTF=1
+
+******Compilar VICE en la Raspberry Pi*************************************************************************************************************************************
+Queremos que distcc distribuya, así que march=native no se puede usar, porque no distribuirá. Queremos además que compile contra SDL2.
+También queremos que compile de modo verbose.
+Configuramos con:
+
+./configure --disable-sdlui --enable-sdlui2 -v --enable-arch=arm --disable-debug --disable-debug-code --disable-ethernet --disable-realdevice --disable-shared-ffmpeg --disable-static-ffmpeg --disable-external-ffmpeg --without-oss --without-sdlsound --without-png --without-pulse 
+
+
 ******Grabar WIFISLAX moderno en un pendrive de arranque****************************************************************************************************************
 
 Extraemos los dos directorios de la ISO, wifislax y boot, a nuestro disco duro.
@@ -785,6 +803,131 @@ Pero ahí sigue si haces un TOP.
 Pues puedes hacer dos cosas: o desinstalas el paquete al que pertenece el servicio, o desactivas el servicio que a su vez lo está lanzando.
 Y esto lo puedes hacer con un grep a todo lo de /etc/init.d, con el nombre del servicio.
 
+***********Guía rápida de configuración de RASPBIAN desde imágen por defecto (JESSIE)************************************************************
+
+-Ponemos la fuente de la consola: dpkg-reconfigure console-setup
+-Ponemos el idioma del teclado con raspi-config, y expandimos el filesystem, overclocking y demás movidas. El layout del teclado no se cambia hasta reboot.
+-Ponemos una IP estática. Para ello:
+	-Dejamos /etc/resolv.conf como:
+		nameserver 8.8.8.8
+	-Deshabilitamos los servicios de red que no vamos a usar y que sobreescribirían /etc/resolv.conf:
+		sudo systemctl disable networking
+		sudo systemctl disable ifup
+	...todo lo que veamos relacionado con la red.
+	-Ponemos a capón en /etc/rc.local la configuración de la red:
+		ip addr add 192.168.5.8/24 dev eth0
+		ip route add default via 192.168.5.7	
+	-Ya de paso, ponemos en rc.local el governor a performance:
+		echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+	-Reiniciamos
+
+-Evitamos que se nos ponga la consola en negro poniendo esto en /boot/cmdline.txt:
+consoleblank=0
+-Ya que estamos, también añadimos loglevel=3 para que el kernel sólo nos avise de cosas importantes de verdad.
+
+-Empezamos a eliminar mierda, que se hace en varias fases porque al eliminar libgtk* se instalan más mierdas:
+sudo apt-get purge avahi-daemon triggerhappy dbus plymouth ntp dphys-swapfile rsyslog openresolv libreoffice* webkit* libgtk*
+sudo apt-get purge greenfoot bluej 
+sudo apt-get purge oracle-java7-jdk pinentry-curses x11-common x11-* nfs-common
+
+-Si tras reiniciar no podemos entrar por ssh es porque se han perdido las keys. Lo confirmamos con systemctl status ssh y vemos que no puede leer 
+un archivo de claves. Para solucionarlo, las regeneramos. Hacemos:
+sudo /usr/bin/ssh-keygen -A
+
+-Se nos van a lanzar una pila de ttys. Para que eso no ocurra, tenemos que deshabilitar el servicio getty-static.service.
+	sudo systemctl mask getty-static
+-Lanzamos otra consola en tty2, habilitando el servicio getty@tty2:
+	sudo systemctl enable getty@tty2
+
+-Ponemos autologin en tty1 y tty2:
+	-Creamos los ficheros: 
+	/etc/systemd/system/getty@tty1.service.d/autologin.conf
+	/etc/systemd/system/getty@tty2.service.d/autologin.conf
+	-Metemos ambos ficheros esto:
+		[Service]
+		ExecStart=
+		ExecStart=-/sbin/agetty --autologin pi --noclear --skip-login %I 38400 linux
+	-Salvamos, recargamos la configuración de los daemons:
+		systemctl daemon-reload
+	-y reiniciamos
+
+-Repasamos los servicios activos. Podemos ver tooodas las units y su estado con:
+	systemctl list-unit-files
+
+-Deshabilitamos el servicio que intenta salvar la hora de un reloj físico (que no tenemos) y que causa un FAILED al hacer shutdown:
+	sudo systemctl disable hwclock-save libreoffice*
+
+-Desactivamos IPV6. Esto hay que hacerlo como root, así que primero establecemos una clave de root, que aún no la tenemos:
+sudo passwd
+su
+echo 'blacklist ipv6' >> /etc/modprobe.d/blacklist
+sed -i '/::/s%^%#%g' /etc/hosts
+
+-Cambiamos el servidor ssh de openssh a dropbear, para ahorrar memoria:
+sudo apt-get install dropbear
+/etc/init.d/ssh stop
+Para que arranque al inicio
+sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
+Mandamos el openssh al carajo y reiniciamos ya con dropbear:
+apt-get purge openssh-server
+
+-Como el omxplayer depende de la MIERDA de dbus, nos va a instalar dbus al instalar el omxplayer. Nosotros nos vengamos evitando
+que dbus se lance al inicio, y evitamos que systemd-logind.service nos de errores al no encontrar dbus, porque tampoco lo usamos:
+sudo systemctl mask dbus
+sudo systemctl mask systemd-logind
+
+-Deshabilitamos más servicios que no nos hacen falta. Esto lo hemos hecho analizando con "systemd-analyze blame":
+sudo systemctl mask systemd-logingd
+sudo systemctl mask hdparm
+sudo systemctl mask sys-kernel-debug.mount
+sudo systemctl disable console-setup
+...y metemos a capón en rc.local:
+setfont Lat15-TerminusBold24x12
+sudo systemctl mask systemd-journal-flush
+sudo systemctl mask kmod-static-nodes
+sudo systemctl mask systemd-random-seed
+sudo systemctl mask dev-mqueue.mount
+sudo systemctl mask systemd-user-sessions
+sudo systemctl mask systemd-tmpfiles-setup
+sudo systemctl mask systemd-tmpfiles-setup-dev
+sudo systemctl mask systemd-update-utmp
+sudo systemctl mask systemd-update-utmp-runlevel
+...y como consecuencia, tenemos que añadir dropbear a rc.local:
+/etc/init.d/dropbear start
+...y deshabilitar su lanzamiento por parte de systemd:
+sudo systemctl disable dropbear
+
+sudo systemctl mask systemd-fsck-root
+sudo systemctl mask systemd-fsck@dev-mmcblk0p1
+
+-Comentamos la línea de i2c en /etc/modules-load.d/modules.conf
+-Evitamos que se cargue el módulo de IPV6 añoadiendo esto al principio de /etc/modprobe.d/ipv6.conf :
+install ipv6 /bin/true
+(Si te suena raro, es un fake install: como es un módulo cargado por el kernel, tenemos que hacerle creer que se carga, pero no).
+Y ahora para acabar con IPV6 del todo hacemos : 
+sudo sed -i '/::/s%^%#%g' /etc/hosts
+-Hacemos lo mismo con otro módulo que no usamos, metiendo en /etc/modprobe.d/bcm2835_gpiomem.conf :
+install bcm2835_gpiomem /bin/true
+-Los módulos que necesitamos a parte de los del kernel los cargamos nosotros a mano. Sólo nos hace falta el del chip de audio. Para ello:
+sudo systemctl mask systemd-modules-load
+Y añadimos a rc.local:
+modprobe snd_bcm2835
+
+-Borramos /etc/motd
+-Para quitar el lastlogin, editamos sudo vim /etc/pam.d/login y comentamos la línea:
+session optional pam_lastlog.so
+En este mismo fichero, puedes quitar otros mensajes del login, como la versión del kernel y tal.
+-Para quitar el delay de login editamos /etc/pam.d/common-auth y dejamos la primera línea que viene descomentada así:
+auth        required      pam_unix.so nodelay
+
+-Cambiamos el servidor ssh de openssh a dropbear, para ahorrar memoria:
+sudo apt-get install dropbear
+/etc/init.d/ssh stop
+Para que arranque al inicio
+sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
+Mandamos el openssh al carajo y reiniciamos ya con dropbear:
+apt-get purge openssh-server
+
 ***********Guía rápida de configuración de RASPBIAN desde imágen por defecto************************************************************
 
 Cambiar fuente de consola con dpkg-reconfigure console-setup
@@ -827,7 +970,7 @@ y en /etc/fstab quitamos la partición de swap también.
 Añadimos a /boot/cmdline.txt el parámetro "noswap"
  Comprobar con free.
 
-Añadimos a /boot/cmdline.txt el parámetro "quiet" para acelerar más aún el arranque.
+Añadimos a /boot/cmdline.txt los parámetros "fastboot quiet" para acelerar más aún el arranque.
 
 Quitamos servicios chorras: podemos ver cuáles hay con ls /etc/init.d
 
@@ -964,10 +1107,6 @@ su
 echo 'blacklist ipv6' >> /etc/modprobe.d/blacklist
 sed -i '/::/s%^%#%g' /etc/hosts
 
-Ahora instalamos distcc y lo quitamos del inicio:
-sudo apt-get install distcc 
-sudo update-rc.d -f distcc remove
-
 Antes de compilar las SDL, asegúrate de haber instalado libasound-dev
 
 Para poner la salida de audio por el jack, ejecuta
@@ -986,6 +1125,9 @@ Cuando vayas a compilar e instalar SDL1.2.x, mírate los apuntes para que se ins
 deben estar en el mismo directorio porque muchos programas buscan SDL_mixer en el directorio devuelto por sdl-config.
 
 ***********Montar una partición individual de una imágen completa de disco***************************************************************
+
+RECUERDA: CUANDO SAQUES UNA IMÁGEN DE UNA SD COMPLETA, TODAS SUS PARTICIONES DEBEN ESTAR DESMONTADAS ANTES DE HACER LA IMÁGEN,
+O LUEGO NO PODRÁS MONTAR LAS PARTICIONES DE LA IMÁGEN RESULTANTE.
 
 Con parted vemos dónde empieza cada partición. Tenemos que verlo en bytes:
 
@@ -1051,10 +1193,10 @@ la construcción del crosscompiler, y además ahora el crosscompiler oficial ya 
 PARTE 1-OPCIÓN A: CONSTRUYENDO NUESTRO PROPIO CROSS-COMPILER (NO recomendada en Octubre de 2015 porque podemos usar el cross-compilador oficial)
 ===============================================================
 Empezamos en el servidor. 
-Lo primero es tener la herramienta que nos permite a su ver crear el compilador cruzado. Para ello, nos bajamos la última versión de aquí:
-http://crosstool-ng.org/download/crosstool-ng/
+Lo primero es tener la herramienta que nos permite a su ver crear el compilador cruzado. Para ello, clonamos el repo de github:
+git clone --depth 1 https://github.com/crosstool-ng/crosstool-ng.git
 
-Instalamos algunas cosas antes: flex, bison, libtool, libtool-bin, gawk, texinfo, libncurses5-dev...
+Instalamos algunas cosas antes: gperf, flex, bison, libtool, libtool-bin, gawk, texinfo, libncurses5-dev, help2man...
 
 Hacemos: bootstrap, configure, make, sudo make install
 Ya deberíamos tener el comando ct-ng.
@@ -1154,6 +1296,10 @@ por distcc. Así que dejamos así el path en ~/.profile:
 if [ -d "$HOME/bin" ] ; then
      PATH="/usr/lib/distcc:$HOME/bin:$PATH"
 fi
+
+Ahora en el cliente quitamos el distcc del inicio:
+
+sudo systemctl disable distcc
 
 ...y creamos el directorio ~/.bin, que de todos modos nos va a venir bien.
 
@@ -1272,6 +1418,35 @@ SDLCONFIG_LIBS:=--sysroot=/opt/rpi_root -B/opt/rpi_root/usr/lib/arm-linux-gnueab
 Y ahora ya compila, con nivel de opimización -O3 y flags para la Pi1 quedaría:
 
 make -j8 USE_LIBVPX=0 USE_LIBPNG=0 WITHOUT_GTK=1 USE_OPENGL=0 CROSS=bcm2708hardfp- OPTLEVEL=3 OPTOPT="-marm -mfpu=vfp -mfloat-abi=hard"
+
+************Schismtracker en la Raspberry Pi con SDL2 y escalado de lujo*******************************************************************
+
+Ni que decir tiene que antes de nada tenemos que tener las SDL2 listas.
+Clonamos el repo que tiene el branch de SDL2:
+
+git clone --depth 1 -b sdl2 https://github.com/davvid/schismtracker.git
+
+Ejecutamos: 
+autoreconf -i
+./configure --without-x
+
+Editamos schism/video.c, y movemos la llamada a 
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+al principio de la función en la que está, que se llama void video_init().
+
+Comentamos la línea
+SDL_WM_SetIcon(icon, NULL);
+en ese mismo fichero, schism/video.c
+
+Editamos Makefile y dejamos la línea de CFLAGS así:
+
+CFLAGS = -O3 -marm -ffast-math -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
+
+Quitamos el -O2 y el -g de OBJFLAGS.
+
+Añadimos -lm a LDFLAGS.
+
+Compilamos y listo!
 
 ************Wolf4SDL (Wolfenstein 3D) en la Raspberry Pi*********************************************************************************
 
@@ -1651,25 +1826,7 @@ Si usamos dmixer y queremos cambiar la frecuencia de muestreo de salida para que
 
 *************Compilar Cannonball (OutRun engine) en Rpi***************************************************************************
 
-Necesitamos libboost1.55-dev, eso lo primero.
-
-Editamos src/main/sdl/renderbase.cpp y dejamos la función sdl_screen_size() así, para que no llame a GetVideoInfo y use la resolución nativa del arcade:
-
-bool RenderBase::sdl_screen_size()
-{
-    //MAC El resto de variables de tamaño de pantalla se configuran a partir de estas.t
-    //Hago que cojan la altura y anchura de la máquina original.n
-    //Estas dimensiones están definidas en S16.WIDTH y S16.HEIGHT en globals.h, aunque aquí no son visibles..es
-    orig_width = 320;   
-    orig_height = 224;   
- 
-    scn_width  = orig_width;
-    scn_height = orig_height;
-
-    return true;
-}
-
-Editamos cmake/rpi.cmake y le añadimos los flags típicos (-Ofast, etc).
+Necesitamos libboost, eso lo primero.
 
 mkdir build
 cd build
@@ -1888,14 +2045,24 @@ Las instrucciones están en la wiki del scummvm, en http://wiki.scummvm.org/inde
 
 Para compilación rápida de prueba, sólo con engine SCUMMVM:
 
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock
 
 Sin dispmanx:
 
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock
+
+En local y con los engines que sueles usar:
+
+./configure --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock
+
+Para compilar contra SDL2, editamos configure y cambiamos "_sdlconfig=sdl2-config" por "_sdlconfig=sdl2-config".
 
 Acuérdate de exportar RPI_ROOT o ponerlo antes de configure!
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
+
+POR AHORA, hay que comentar esta linea en configure:
+
+#define_in_config_if_yes yes 'USE_ARM_SOUND_ASM'
 
 *************Configuración de SCUMMVM con engines selectos**********************************************************************
 Un buen churro de configuración para dejar unos cuantos engines que sueles usar y quitar porquería es este:
@@ -2022,7 +2189,7 @@ NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da 
 
 CONFIGURAMOS CON:
 
-CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-libudev --disable-dbus
+CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus
 
 lueg make -j8 y a correr.
 
@@ -2058,6 +2225,7 @@ SI LOS JUEGOS 2D SE PIXELAN MUCHO, pues que apliquen filtro bilineal a las textu
 Así que mete esta llamada al principio del código del juego, tras SDL_Init() va perfectamente:
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 Busca antes si el juego tiene su propio chorro de llamadas a SDL_SetHint() y mete esta allí, o cambia alguna como en el caso de chocolate-doom.
+SI UN JUEGO NO PARECE HACER CASO DE ESTO y se sigue pixelando, puede ser porque se llama a SetHint demasiado tarde. Hazlo justo tras SDL_Init() si es así.
 
 **************SWAP de emergencia*************************************************************************************************
 Algunos sistemas, como la Raspberry Pi, no usan swap normalmente porque nos cargaríamos la SD rápido.
@@ -2282,8 +2450,9 @@ LD_LIBRARY_PATH=/home/manuel/sidplay/lib ./sidplayfp <tema>.sid
 
 ***************Rogue en Linux**************************************************************************
 
-Descarga http://www.coredumpcentral.org/files/linrog37.zip y lo compilas. Necesita libncurses5-dev para compilar.
-
+Descarga los últimos sources de http://rogue.rogueforge.net/rogue-5-4
+Antes de nada, instala las libncurses5-dev, antes de hacer el configure.
+Configurar y compilar. Ayuda de teclas con shift+?
 
 ***************Borrar un archivo con nombre que contiene caracteres extraños*****************************
 
