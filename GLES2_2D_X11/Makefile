@@ -1,6 +1,6 @@
-CFLAGS=-O0 -ggdb -I. -I/usr/include/drm
-##CFLAGS=-O2 -I. -I/usr/include/drm
-LDFLAGS=-lGLESv2 -lEGL -lm -ldrm -lgbm -lX11
+CFLAGS=-O0 -ggdb -I.
+##CFLAGS=-O2 -I.
+LDFLAGS=-lGLESv2 -lEGL -lm -lX11
 TARGET=test
 SOURCES=*.c
 COMPILER=gcc

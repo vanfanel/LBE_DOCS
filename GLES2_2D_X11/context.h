@@ -18,4 +18,6 @@ struct {
 	Display *x_dpy;
 } xInfo;
 
+int init_egl ();
+
 #endif
