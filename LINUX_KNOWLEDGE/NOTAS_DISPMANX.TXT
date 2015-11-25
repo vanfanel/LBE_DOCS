@@ -41,6 +41,12 @@
 	 TOTAL del frame, y a la vez un pitch que nos permita quedarnos sólo con los bytes 
 	 correspondientes a ese falso width: A WRITE_DATA() SIEMPRE HAY QUE PASARLE 
 	 EN BMP_RECT EL WIDTH TOTAL DEL FRAME, y luego ya eso sí, el pitch que queramos.
+
+	 ***¿Y por qué siempre hay que pasarle a write_data() el width total y luego ya el pitch que
+	 quieras para seleccionar lo que quieras de cada línea? PUES PORQUE NECESITA
+	 SABER DÓNDE EMPIEZA CADA NUEVA LÍNEA, Y A PARTIR DE AHÍ YA COGER EL 
+	 PICTH QUE LE DIGAMOS. Si no sabe dónde empieza cada línea, cogerá mal el
+	 principio de línea y luego ya aunque coja el picth que le digas la imágen estará mal.***
 	 
 	 O sea que si tenemos un frame con un width total que no sea potencia de dos,
 	 como no podemos inventarnos otro width para pasárselo a write_data(), no podemos 
