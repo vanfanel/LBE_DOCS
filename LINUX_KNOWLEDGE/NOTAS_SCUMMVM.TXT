@@ -1,0 +1,91 @@
+
+
+BLOQUE DE INSTANCIACIÓN Y BORRADO DE LA CLASE GRAPHICS MANAGER:
+================================================================
+
+-La clase SDL (sdl.cpp) NO es la que instancia el _graphicsManager, aunque luego lo borra. 
+  
+Así es como se instancia el _graphicsManager, que en nuestro caso es de la clase DispmanXSdlGraphicsManager:
+-Lo que se hace es que tenemos NUESTRO PROPIO MAIN() (sí, sí, tal cual) en backends/platform/sdl/raspberrypi/raspberrypi-main.cpp.
+Este MAIN hace:
+g_system = new OSystem_SDL_RaspberryPi();
+con lo que instancia el objeto de la clase OSystem_SDL_RaspberryPi(), que está en backends/platform/sdl/raspberrypi/raspberrypi.cpp
+y luego llama al método init de g_system: 
+((OSystem_SDL_RaspberryPi *)g_system)->init();
+método en el que se hace:
+_graphicsManager = new DispmanXSdlGraphicsManager(_eventSource, _window);
+con lo que el _graphicsManager queda instanciado
+luego se llama al MAIN de scummvm propiamente dicho y el scummvm como tal a rodar.
+
+Así es como se BORRA el _graphicsManager, que en nuestro caso es de la clase DispmanXSdlGraphicsManager:
+En la clase OSystem_SDL
+en su método destructor OSystem_SDL::~OSystem_SDL(), vemos que se hace:
+delete _graphicsManager;
+Y ya más abajo en esa misma función:
+SDL_Quit();
+
+COSAS QUE SE HAN HECHO PARA INTENTAR ELIMINAR EL BLACK SCREEN ON EXIT
+====================================================================
+
+-Poner los flags de SDL_SetVideoMode() a 0, que antes le pasábamos SDL_FULLSCREEN. Sigue blacksreen ocasional.
+-En circunstancias normales, DispmanXSdlGraphicsManager::loadGFXMode() que es donde se llama a SDL_SetVideoMode(), sólo es llamado al principio.
+ SIN EMBARGO, en juegos multi-resolución como DReamweb, se llama con cada cambio de resolución, pero SDL_SerVideoMode() sólo ha de ser
+ llamado una sola vez a pesar de ello.
+
+*************Crosscompilar scummvm en el PC para la Raspberry Pi***************************************************************************
+
+Las instrucciones están en la wiki del scummvm, en http://wiki.scummvm.org/index.php/Compiling_ScummVM/RPI#Configuring_ScummVM
+
+Para compilación rápida de prueba, sólo con engine SCUMMVM:
+
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
+
+Con engines selectos:
+
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,neverhood,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
+
+Sin dispmanx:
+
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
+
+En local y con los engines que sueles usar:
+
+./configure --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
+
+Para compilar contra SDL2, editamos configure y cambiamos "_sdlconfig=sdl2-config" por "_sdlconfig=sdl2-config".
+
+Acuérdate de exportar RPI_ROOT o ponerlo antes de configure!
+Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
+
+POR AHORA, hay que comentar esta linea en configure:
+
+#define_in_config_if_yes yes 'USE_ARM_SOUND_ASM'
+
+POR AHORA hay que forzar std c++11 en configure con: _use_cxx11=yes
+Busca std un par de veces y enseguida verás dónde hacerlo.
+
+*************Compilar contra SDL2*********************************************************************************************************
+
+Hay que cambiar en configure la línea 
+_sdlconfig=sdl-config
+por
+_sdlconfig=sdl2-config
+
+*************Arreglando el soporte para GLES en SDL2 en la Raspberry Pi**********************************************************************
+
+En configure:
+-Comenta eso de que 
+_opengl=no
+_opengl_es=no 
+si host es raspberrypi. Vamos a tener un host raspberry pi, y en ese host va a funcionar GLES.
+
+************Arreglando plain SDL2 rendering en la Pi*****************************************************************************************
+
+De momento intentamos usar aceleración en el renderer de SDL2 sin GLES, ya que esto indirectamente usará GLES.
+En backends/graphics/surfacesdl/surfacesdl-graphics.cpp hemos hecho:
+-Añadidos los flags SDL_HARDWARE_ACCELERATED|SDL_RENDERER_PRESENTVSYNC a los flags de SDL_CreateRenderer(), que vienen puestos a 0.
+-En esa misma función, añadimos la línea:
+        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+antes de createWindow(), justo encima de la llamada a SDL_CreateRenderer()
+Con esto tenemos excelente rendering usando GLES2, sin tearing además.
+

@@ -1,3 +1,13 @@
+******Copiar y pegar usando GNU/Screen**********************************************************************************************************************************
+
+Hacemos CTRL+A y [ , con lo que nos ponemos en modo copia. Ahora nos ponemos donde queramos empezar a copiar, le damos al espacio, seleccionamos el texto a copiar,
+le damos al espacio otra vez cuando acabemos y al intro para acabar. Ya tenemos el texto copiado a un buffer. Lo pegamos con CTRL+A y luego ] . 
+
+******Cosas a borrar después de actualizar el firmware en una Raspberry Pi...************************************************************************************************
+
+/lib/modules.bak
+/boot.bak
+
 ******GRAFX2 en la Raspberry Pi*******************************************************************************************************************************************
 
 Si tenemos SDL2 instalado y funcionando, podemos tener este increíble programa de dibujo en 2D que se usa para sprites y gráficos raster!
@@ -805,7 +815,12 @@ Y esto lo puedes hacer con un grep a todo lo de /etc/init.d, con el nombre del s
 
 ***********Guía rápida de configuración de RASPBIAN desde imágen por defecto (JESSIE)************************************************************
 
+ANTES DE LEER ESTO: Son casi todo pistas, no es para seguirlo paso a paso. CON QUE TE VAYAS A LA "SECCiÓN RESÚMEN" y mires la lista de servicios que
+son necesarios en "systemd-analyze blame" y lo que tienes que gestionar desde rc.local por tu cuenta, es suficiente (excepto los apuntes de DBUS, que
+hay que quitarlo como servicio pero no desinstalarlo del sistema porque OMXplayer lo usa).
+
 -Ponemos la fuente de la consola: dpkg-reconfigure console-setup
+-Ponemos los LOCALES con: dpkg-reconfigure locales. Elegimos que se genere SÓLO en_US.UTF8, y dejamos ese puesto. ESTO nos quita errores de teclado a través de SSH.
 -Ponemos el idioma del teclado con raspi-config, y expandimos el filesystem, overclocking y demás movidas. El layout del teclado no se cambia hasta reboot.
 -Ponemos una IP estática. Para ello:
 	-Dejamos /etc/resolv.conf como:
@@ -826,7 +841,7 @@ consoleblank=0
 -Ya que estamos, también añadimos loglevel=3 para que el kernel sólo nos avise de cosas importantes de verdad.
 
 -Empezamos a eliminar mierda, que se hace en varias fases porque al eliminar libgtk* se instalan más mierdas:
-sudo apt-get purge avahi-daemon triggerhappy dbus plymouth ntp dphys-swapfile rsyslog openresolv libreoffice* webkit* libgtk*
+sudo apt-get purge avahi-daemon triggerhappy dbus plymouth ntp dphys-swapfile rsyslog openresolv libreoffice* webkit* libgtk* libreoffice*
 sudo apt-get purge greenfoot bluej 
 sudo apt-get purge oracle-java7-jdk pinentry-curses x11-common x11-* nfs-common
 
@@ -855,7 +870,7 @@ sudo /usr/bin/ssh-keygen -A
 	systemctl list-unit-files
 
 -Deshabilitamos el servicio que intenta salvar la hora de un reloj físico (que no tenemos) y que causa un FAILED al hacer shutdown:
-	sudo systemctl disable hwclock-save libreoffice*
+	sudo systemctl disable hwclock-save 
 
 -Desactivamos IPV6. Esto hay que hacerlo como root, así que primero establecemos una clave de root, que aún no la tenemos:
 sudo passwd
@@ -875,6 +890,7 @@ apt-get purge openssh-server
 que dbus se lance al inicio, y evitamos que systemd-logind.service nos de errores al no encontrar dbus, porque tampoco lo usamos:
 sudo systemctl mask dbus
 sudo systemctl mask systemd-logind
+sudo systemctl mask dbus.socket
 
 -Deshabilitamos más servicios que no nos hacen falta. Esto lo hemos hecho analizando con "systemd-analyze blame":
 sudo systemctl mask systemd-logingd
@@ -882,7 +898,7 @@ sudo systemctl mask hdparm
 sudo systemctl mask sys-kernel-debug.mount
 sudo systemctl disable console-setup
 ...y metemos a capón en rc.local:
-setfont Lat15-TerminusBold24x12
+setfont Lat15-TerminusBold28x14
 sudo systemctl mask systemd-journal-flush
 sudo systemctl mask kmod-static-nodes
 sudo systemctl mask systemd-random-seed
@@ -917,6 +933,7 @@ modprobe snd_bcm2835
 -Para quitar el lastlogin, editamos sudo vim /etc/pam.d/login y comentamos la línea:
 session optional pam_lastlog.so
 En este mismo fichero, puedes quitar otros mensajes del login, como la versión del kernel y tal.
+Para ello comenta las dos líneas siguientes a esta del lastlogin.
 -Para quitar el delay de login editamos /etc/pam.d/common-auth y dejamos la primera línea que viene descomentada así:
 auth        required      pam_unix.so nodelay
 
@@ -928,201 +945,36 @@ sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 Mandamos el openssh al carajo y reiniciamos ya con dropbear:
 apt-get purge openssh-server
 
-***********Guía rápida de configuración de RASPBIAN desde imágen por defecto************************************************************
+-En config.txt ponemos boot_delay=0, verificamos los valores de overcloking (1Ghz para la Pi 1) y ponemos el modo de vídeo a group 3, mode 39.
 
-Cambiar fuente de consola con dpkg-reconfigure console-setup
+									SECCIÓN RESÚMEN
 
-En raspi-config, ponemos el overclocking en medium. Los valores son de la fundación y son fiables.
+AL FINAL sólo tenemos que tener estos 14 servicios listados en systemd-analyce blame:
 
-Luego los ajustamos a los de la tabla TESTED VALUES de aquí: http://elinux.org/RPiconfig
-A 900MHz debería ser capaz de correr el Gimmick de NES totalmente suave (ver desplazamiento nube en mapa)
+          1.785s keyboard-setup.service
+          1.055s systemd-udev-trigger.service
+           702ms kbd.service
+           434ms fake-hwclock.service
+           353ms sys-kernel-config.mount
+           276ms systemd-modules-load.service
+           263ms rc-local.service
+           231ms udev-finish.service
+           200ms alsa-restore.service
+           188ms systemd-udevd.service
+           180ms systemd-remount-fs.service
+           106ms boot.mount
+SI UN SERVICIO NO ESTÁ EN ESTA LISTA, ES QUE NO ME HACE FALTA.
 
-En sudo visudo dejamos  la línea del group sudo así:
-%sudo ALL=NOPASSWD: ALL 
-Hacemos que se autologuee en la tty1 editando /etc/inittab y dejando así la línea de tty1:
+Y nuestro /etc/rc.local tendrá esto:
 
-1:2345:respawn:/bin/login -f pi tty1 </dev/tty1 >/dev/tty1 2>&1
+echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+setfont Lat15-TerminusBold28x14
+ifconfig eth0 up
+ip addr add 192.168.5.8/24 dev eth0
+ip route add default via 192.168.5.7
+/etc/init.d/dropbear start
 
-Le ponemos una IP fija editando /etc/networks/interfaces y dejándo exactamente así:
-
-auto lo
-
-iface lo inet loopback
-#iface eth0 inet dhcp
-
-iface eth0 inet static
-address 192.168.5.8
-netmask 255.255.255.0
-gateway 192.168.5.7
-
-Quitamos la swap:
-
-sudo sync
-sudo swapoff -a
-sudo apt-get purge -y dphys-swapfile
-sudo rm /var/swap
-sudo sync
-
-sudo update-rc.d -f dphys-swapfile remove
-(Deberías hacer esto con "insserv -r dphys-swapfile" ya, y dejar de usar update-rc)
-
-y en /etc/fstab quitamos la partición de swap también.
-Añadimos a /boot/cmdline.txt el parámetro "noswap"
- Comprobar con free.
-
-Añadimos a /boot/cmdline.txt los parámetros "fastboot quiet" para acelerar más aún el arranque.
-
-Quitamos servicios chorras: podemos ver cuáles hay con ls /etc/init.d
-
-(RECUERDA que update-rc.d ya NO se debe usar: para quitar estos servicios, mejor usa insserv -r <nombre_servicio>).
-sudo update-rc.d -f ntp remove
-sudo update-rc.d -f lightdm remove
-sudo update-rc.d -f nfs-common remove
-..Lo mismo con rsyslog, cron, dbus, triggerhappy, x11-common, ifplugd, plymouth, plymouth-log y alguno más si lo ves.
-También quitamos los sevicios console-setup y kbd:
-sudo insserv -r console-setup
-sudo insserv -r kbd
-El layout del teclado se conservará de cuando hicimos el "dpkg-reconfigure console-setup", y la fuente de letra la ponemos al inicio
-poniendo 
-setfont Lat15-TerminusBold24x12
-en /etc/init.d/keyboard-setup, justo al principio, antes de nada más.
-
-Editamos /etc/rc.local y quitamos lo de que imprima la IP. Para eso tenemos ifconfig y una IP local puesta, no somos tontos.
-
-Editamos /etc/init.d/switch_cpu_governor para cambiar el governor a performance y dejamos así de simple el bloque importante:
-case "$1" in
-  start)
-      echo "performance" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-    ;;
-  *)
-
-Ahora comprobamos con 
-cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-sudo cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
-
-o con cpufreq-info -c 0 |grep frequency
-
-Purgamos el sistema de mierda:
-
-sudo apt-get purge cups-common samba-common x11-common xserver-xorg-core squeak-vm cups-client cups-bsd libsmbclient libwbclient0 libcups2 python3-piface* nfs-common rpcbind rsyslog
-sudo apt-get purge consolekit desktop-base* desktop-file-utils* gnome-icon-theme* gnome-themes-standard* hicolor-icon-theme* leafpad* lxde* lxde-core* midori* xserver-common* xserver-xorg* xserver-xorg-core* xserver-xorg-input-all* xserver-xorg-input-evdev* xserver-xorg-input-synaptics* xserver-xorg-video-fbdev* x11-* abiword* blender*
-(Esta segunda línea te dirá que muchas cosas ya no están instaladas)
-sudo apt-get purge ifplugd nfs-common
-sudo apt-get autoremove 
-
-Llegados a este punto, actualizamos:
-sudo apt-get update 
-sudo apt-get upgrade
-sudo rpi-update
-
-Dejamos el script /etc/init.d/networking de tal modo que nos dé la IP estática directamente sin necesidad de ifplugd que es un servicio MUY dañino:
-
-#!/bin/sh -e
-### BEGIN INIT INFO
-# Provides:          networking
-# Required-Start:
-# Required-Stop:
-# Default-Start:     S
-# Default-Stop:      0 6
-# Short-Description: Raise network interfaces.
-# Description:       puts a static IP on eth0 and thats all
-### END INIT INFO
-
-PATH="/sbin:/bin"
-RUN_DIR="/run/network"
-IFSTATE="$RUN_DIR/ifstate"
-
-[ -x /sbin/ifup ] || exit 0
-[ -x /sbin/ifdown ] || exit 0
-
-. /lib/lsb/init-functions
-
-CONFIGURE_INTERFACES=yes
-EXCLUDE_INTERFACES=
-VERBOSE=no
-
-[ -f /etc/default/networking ] && . /etc/default/networking
-
-[ "$VERBOSE" = yes ] && verbose=-v
-
-case "$1" in
-start)
-        log_action_begin_msg "Configuring network interfaces"
-        ifconfig eth0 192.168.5.8/24 up
-        route add default gw 192.168.5.7
-	log_action_end_msg $?
-        ;;
-
-stop)
-        log_action_begin_msg "Deconfiguring network interfaces"
-        ifconfig eth0 down
-        route add default gw 192.168.5.7
-	log_action_end_msg $?
-        ;;
-
-reload)
-        log_action_begin_msg "Configuring network interfaces"
-        ifconfig eth0 192.168.5.8/24 up
-        route add default gw 192.168.5.7
-	log_action_end_msg $?
-        ;;
-
-force-reload|restart)
-        log_action_begin_msg "Configuring network interfaces"
-        ifconfig eth0 192.168.5.8/24 up
-        route add default gw 192.168.5.7
-	log_action_end_msg $?
-        ;;
-*)
-        echo "Usage: /etc/init.d/networking {start|stop|reload|restart|force-reload}"
-        exit 1
-        ;;
-esac
-exit 0
-
-
-También editamos /lib/udev/net.agent, y ponemos exit 0 como primera línea ejecutable. No hace falta que corra y consume RAM.
-Eliminamos un par de scripts de limpieza de ficheros temporales que no nos hacen falta porque no tenemos TMP en un sistema local montado al inicio 
-ni en un sistema de red, sino que lo tenemos en el rootfs. De esta manera el mensaje "Cleaning up temporary files" sólo aparecerá una vez:
-sudo insserv -r mountall-bootclean.sh
-sudo insserv -r mountnfs-bootclean.sh
-
-Cambiamos el servidor ssh de openssh a dropbear, para ahorrar memoria:
-sudo apt-get install dropbear
-/etc/init.d/ssh stop
-Para que arranque al inicio
-sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-Mandamos el openssh al carajo y reiniciamos ya con dropbear:
-apt-get purge openssh-server
-
-Cambiamos la shell de bash a dash:
-sudo dpkg-reconfigure dash
-
-Cambiamos el scheduler de ficheros a noop en /boot/cmdline.txt (está en elevator=deadline, lo cambiamos a elevator=noop, que es mejor para discos sólidos).
-También recuerda que tienes que tener puesto "noswap", para evitar los estúpidos mensajes de swap en el inicio y el apagado.
-
-Desactivamos IPV6. Esto hay que hacerlo como root, así que primero establecemos una clave de root, que aún no la tenemos:
-sudo passwd
-su
-echo 'blacklist ipv6' >> /etc/modprobe.d/blacklist
-sed -i '/::/s%^%#%g' /etc/hosts
-
-Antes de compilar las SDL, asegúrate de haber instalado libasound-dev
-
-Para poner la salida de audio por el jack, ejecuta
-sudo amixer cset numid=3 1
-Con una vez vale: se queda guardado en la configuración de ALSA.
-Para volver a audio por HDMI, siplemente:
-sudo amixer cset numid=3 0
-o bien
-sudo amixer cset numid=3 2
-Si no te deja hacerlo, cuida que no tengas un asound.conf que desactive el dmix. Lo quitas, haces esto y vuelves a poner el asound.conf que quieras.
-
---ACTUALIZA gdb a la última versión DESDE SOURCES. No desde apt-get sino desde sources, recuerda. En este mismo fichero hay instrucciones 
-para actualizar gdb desde sources: búscalo porque es lo que hay que hacer cuando no puedes debugear programas compilados con distcc.
-
-Cuando vayas a compilar e instalar SDL1.2.x, mírate los apuntes para que se instale en /usr/local/lib, que es donde se va a instalar SDL_mixer, y
-deben estar en el mismo directorio porque muchos programas buscan SDL_mixer en el directorio devuelto por sdl-config.
+Todo lo demás se lo dejamos gestionar a systemd.
 
 ***********Montar una partición individual de una imágen completa de disco***************************************************************
 
@@ -1438,7 +1290,7 @@ Comentamos la línea
 SDL_WM_SetIcon(icon, NULL);
 en ese mismo fichero, schism/video.c
 
-Editamos Makefile y dejamos la línea de CFLAGS así:
+Editamos Makefile y dejamos la línea de CFLAGS así: (el Makefile es un poco lioso porque es de generación automática, busca -g y te lleva al sitio)
 
 CFLAGS = -O3 -marm -ffast-math -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
 
@@ -2039,50 +1891,6 @@ y la otra no, distintas versiones...) y queremos saber cuál instalar.
 te bajas esta cosa : http://web.archive.org/web/20060205025441/http://www.stuffit.com/downloads/files/stuffit520.611linux-i386.tar.gz
 y con unstuff lo haces.
 
-*************Crosscompilar scummvm en el PC para la Raspberry Pi***************************************************************************
-
-Las instrucciones están en la wiki del scummvm, en http://wiki.scummvm.org/index.php/Compiling_ScummVM/RPI#Configuring_ScummVM
-
-Para compilación rápida de prueba, sólo con engine SCUMMVM:
-
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock
-
-Sin dispmanx:
-
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock
-
-En local y con los engines que sueles usar:
-
-./configure --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock
-
-Para compilar contra SDL2, editamos configure y cambiamos "_sdlconfig=sdl2-config" por "_sdlconfig=sdl2-config".
-
-Acuérdate de exportar RPI_ROOT o ponerlo antes de configure!
-Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
-
-POR AHORA, hay que comentar esta linea en configure:
-
-#define_in_config_if_yes yes 'USE_ARM_SOUND_ASM'
-
-*************Configuración de SCUMMVM con engines selectos**********************************************************************
-Un buen churro de configuración para dejar unos cuantos engines que sueles usar y quitar porquería es este:
-
-CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure --disable-hq-scalers --disable-mt32emu --enable-flac --enable-optimizations --disable-mad --disable-vorbis --disable-tremor \
---enable-opengl --disable-fluidsynth --disable-taskbar --disable-debug --disable-timidity --disable-scalers \
---disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,\
-tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,\
-queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise
-
-CON DEBUG
-
-CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure --disable-hq-scalers --disable-mt32emu --enable-flac --disable-optimizations --disable-mad --disable-vorbis --disable-tremor \
---enable-opengl --disable-fluidsynth --disable-taskbar --enable-debug --disable-timidity --disable-scalers \
---disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,\
-tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,\
-queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise
-
-No activa fluidsynth. Aciva el sinte de ALSA que luego se usa en otra Rpi por red. Ver el apartado correspondiente.
-
 *************Los parámetros y flags de GCC y del linker******************************************************************************
 Cuando falle una compilación (porque no se encuentra un fichero de cabecera en un include o porque no se encuentra algo que debería estar
 definido en un fichero que cabecera que no se ha incluído)
@@ -2145,7 +1953,7 @@ mkdir build
 cd build
 
 Ahora configuramos:
-cmake  -DUSE_SDL2=yes -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DOGG=no -DTREMOR=NO -DOPENGL=no ..
+cmake  -DUSE_SDL2=yes -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DOGG=no -DTREMOR=NO -DOPENGL=no -DREFKEEN=no ..
 
 Usa -DUSE_SDL2=no para compilar contra SDL1.x
 
