@@ -38,11 +38,11 @@ Las instrucciones están en la wiki del scummvm, en http://wiki.scummvm.org/inde
 
 Para compilación rápida de prueba, sólo con engine SCUMMVM:
 
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
 
 Con engines selectos:
 
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,neverhood,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,neverhood,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
 
 Sin dispmanx:
 
@@ -52,7 +52,7 @@ En local y con los engines que sueles usar:
 
 ./configure --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
 
-Para compilar contra SDL2, editamos configure y cambiamos "_sdlconfig=sdl2-config" por "_sdlconfig=sdl2-config".
+Al pasarle como host la Raspberry Pi (--host=raspberrypi), compilará contra SDL2 automáticamente, porque se pone _sdl-config a sdl2-config.
 
 Acuérdate de exportar RPI_ROOT o ponerlo antes de configure!
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
@@ -61,8 +61,19 @@ POR AHORA, hay que comentar esta linea en configure:
 
 #define_in_config_if_yes yes 'USE_ARM_SOUND_ASM'
 
-POR AHORA hay que forzar std c++11 en configure con: _use_cxx11=yes
-Busca std un par de veces y enseguida verás dónde hacerlo.
+Ahora sólo me queda arreglar el soporte de SDL2: mira la sección "Arreglando plain SDL2 rendering en la Pi" más abajo.
+
+NO PONGAS el nivel de optimización a 3 (default_optimization_level=-O3) en el configure: fallarán los juegos del engine AGI (King's Quest y Space Quest de Apple IIGS).
+
+Si quieres GLES, pon 
+_opengles=yes
+_opengl=yes
+en el configure, en la sección de host rapberrypi donde pones las cosas.
+
+
+Para quitar el WARNING de los EOB (Eye of the Beholder), editamos
+engines/advancedDetector.cpp
+y ponemos showTestingWarning a false en el ifdef de release.
 
 *************Compilar contra SDL2*********************************************************************************************************
 
@@ -76,16 +87,78 @@ _sdlconfig=sdl2-config
 En configure:
 -Comenta eso de que 
 _opengl=no
-_opengl_es=no 
+_opengles=no 
 si host es raspberrypi. Vamos a tener un host raspberry pi, y en ese host va a funcionar GLES.
+
+-Añado los FLAGS, LIBS y demás de OpenGL_ES si host es raspberrypi. NO dejes el -lGLES_CM ni el -lX11, sólo debe aparecer -lGLESv1_CM en la línea
+que genera el cc_check.
+
+-Añadido el bloque 
+
+# Test the current header for OpenGL ES Raspberry Pi
+                        cat > $TMPC << EOF
+#include <$i>
+int main(void) { return GL_VERSION_ES_CM_1_1; }
+EOF
+                        cc_check $DEFINES $OPENGL_CFLAGS $OPENGL_LIBS && _opengl=yes && _opengles=yes && break
+
+Que empieza en el #Test... y acaba en el cc_check. Verás que hay otros dos bloques parecidos justo antes.
+
+Y PARA COMPILAR EN LOCAL, hay que quitar el if host=raspberry pi del bloque de OPenGL, ajustar las rutas de los includes y añadir la ruta de las librerías
+en local (/opt/vc/lib). A parte de quitar --host=raspberrypi en la línea del configure y demás.
+
+BUENO, y por último hubo que añadir la versión de GLES que queremos que SDL2 inicialize, justo antes de la llamada a SDL_GL_CreateContext()
 
 ************Arreglando plain SDL2 rendering en la Pi*****************************************************************************************
 
 De momento intentamos usar aceleración en el renderer de SDL2 sin GLES, ya que esto indirectamente usará GLES.
 En backends/graphics/surfacesdl/surfacesdl-graphics.cpp hemos hecho:
--Añadidos los flags SDL_HARDWARE_ACCELERATED|SDL_RENDERER_PRESENTVSYNC a los flags de SDL_CreateRenderer(), que vienen puestos a 0.
+-Añadidos los flags SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC a los flags de SDL_CreateRenderer(), que vienen puestos a 0.
 -En esa misma función, añadimos la línea:
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 antes de createWindow(), justo encima de la llamada a SDL_CreateRenderer()
 Con esto tenemos excelente rendering usando GLES2, sin tearing además.
 
+**********Quitar el WARNING de los EOB (Eye of the Beholder)********************************************************************************
+
+Editamos
+engines/advancedDetector.cpp
+y ponemos showTestingWarning a false en el ifdef de release.
+
+*********Compilar contra librerías externas (fluidsynth...)*************************************************************************************
+
+En la versión publicada del scummvm, no he tenido en cuenta esta posibilidad porque, primero, en principio no hacia falta ya que se prefiere el sonido
+original de los juegos, y en segundo lugar, como le pasamos rutas de includes que se necesitan para estas librerías (/usr/include/arm-linux-gnueabihf)
+y que producen un ENORME chorro de warnings si no compilamos según el estándard cxx11, además de que al pasarle las nuevas rutas de includes
+va a encontrtar las librerías de GLES... pues no lo hemos hecho por defecto.
+
+Así que si queremos compilar un scummvm que use libflac, libvorbois (ogg), fluidsynth o cualquier otra librería instalada por nosotros, tenemos que
+añadir estas cosas al configure, donde añades las demás movidas cuando host=raspberrypi:
+
+
+                       # This is so optional installed libraries includes (fluidsynth, flac...) are found.
+                        append_var CXXFLAGS "-I$RPI_ROOT/usr/include"
+                        append_var CXXFLAGS "-I$RPI_ROOT/usr/include/arm-linux-gnueabihf"
+                        _opengl="no"
+
+Además, pondremos arriba lo de:
+_use_cxx11="yes"
+
+Luego configuraríamos con algo como:
+
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,neverhood,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
+
+(Como puedes ver, no hace falta pasarle nada para activar el soporte de fluidsynth: por defecto, si se detectan las cabeceras y libs de fluidsynth, el soporte se activa solo).
+
+TODO:
+=====
+
+Planificar un parámetro SDL2-acceleration o algo así, que active los SetHint() de aceleración, smoothing, vsync... 
+
+
+ARREGLANDO EL SCROLL EN SCUMMVM LIBRETRO
+===========================================
+
+La función relevante es updateScreen en backends/platform/libretro/os.cpp.
+Además, en esa fn se blitea a screen, que luego se sube a retroarch en libretro.cpp usando video_cb aquí:
+video_cb(screen.pixels, screen.w, screen.h, screen.pitch);

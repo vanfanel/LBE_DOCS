@@ -1,3 +1,18 @@
+******Compilando OpenBOR*********************************************************************************************************************************************
+
+Hay que pillar los surces de la última revisión estable. El número lo sacamos de la versión que tengan en la página para descargar.
+svn checkout -r 4153 svn://svn.code.sf.net/p/openbor/engine openbor
+
+Lo primero es que gcc 5.x sepone por defecto en -std=gnu11, y como ha cambiado la manera de declarar las funciones inline, necesitamos ponernos en -std=gnu99, lo cual le
+pasamos en el Makefile, añadiéndolo a CFLAGS.
+También quitamos el -Werror para que no trate los warnings como errores.
+
+Antes de compilarlo, ejecutamos version.sh para que nos cree version.h
+
+En el PC:
+make BUILD_LINUX=1 GCC_TARGET=64 -j8
+
+
 ******Copiar y pegar usando GNU/Screen**********************************************************************************************************************************
 
 Hacemos CTRL+A y [ , con lo que nos ponemos en modo copia. Ahora nos ponemos donde queramos empezar a copiar, le damos al espacio, seleccionamos el texto a copiar,
@@ -389,7 +404,9 @@ ponemos simplemente captura. Listo.
 Más fácil que mear en pared.
 Nos bajamos el plugin para pidgin de aquí:  http://davidgf.net/nightly/whatsapp-purple/
 O de github si lo queremos compilar (https://github.com/davidgfnet/whatsapp-purple), pero vamos, que desde la página de binarios va bien.
-Bajamos la última versión del binario y lo mandamos a /usr/lib/purple-2, que es donde todos los programas basados en libpurple, incluído pidgin,
+PARA COMPILARLO necesitamos tener instalados los paquetes libpurple-dev y libfreeimage-dev, o nos faltarán cabeceras.
+
+Una vez que tenemos el binario, bajado o compilado por nosotros, lo mandamos a /usr/lib/purple-2, que es donde todos los programas basados en libpurple, incluído pidgin,
 buscan los plugins.
 
 Pero claro, necesitamos un user y pass. El user será el número de teléfono con el 34 delante. El pass lo tenemos que hacer registrándonos.
@@ -797,6 +814,24 @@ ambas librerías.
 ¡¡¡¡NO TE OLVIDES de hacer "sudo ldconfig -v" tras instalar, o los programas no encontrarán las libSDL1.2.x en tiempo de ejecución!!! Podrías 
 añadir -Wl,-rpath,/usr/local/lib al linker en cada programa, pero no merece la pena, obviamente.
 
+***********Montar un DSK de Mac antiguo, o un ADF de Amiga******************************************************************************
+
+Para el DSK de MAC antiguo:
+
+sudo mount -o loop disc_image.dsk directorio_montaje
+
+Y para el ADF de Amiga:
+
+sudo mount -t affs -o loop disc_image.adf directorio_montaje
+
+Y para covertir un fichero de texto de MAC antiguo a Linux:
+
+tr '\r' '\n' < macfile.txt > unixfile.txt
+
+Y el proceso contrario:
+
+tr '\n' '\r' < unixfile.txt > macfile.txt
+
 ***********Montar un archivo .toast de MAC***********************************************************************************************
 
 mount -o loop -t hfsplus imagename.toast [mount point]
@@ -993,12 +1028,12 @@ Sector size (logical/physical): 512B/512B
 Partition Table: msdos
 
 Number  Start      End          Size         Type     File system  Flags
- 1      4194304B   62914559B    58720256B    primary  fat16        lba
- 2      62914560B  6899630079B  6836715520B  primary  ext4
+ 1      4194304B   67108863B    62914560B    primary  fat16        lba
+ 2      67108864B  7948206079B  7881097216B  primary  ext4
 
 Ya tenemos la información que necesitamos, que es el offset de la segunda partición, que es la que queremos montar. Ahora simplemente hacemos:
 
-sudo mount -o loop,ro,offset=62914560 rpi_bck.img /mnt/hdd
+sudo mount -o loop,ro,offset=67108864 rpi_bck.img /mnt/hdd
 
 Y listo!!
 
@@ -1531,11 +1566,36 @@ aplay -p 128:0 nombre.mid
 
 Para scummvm, podemos exportar SCUMMVM_PORT="128:0", o bien usar el parámetro de configuración alsa_port.
 
-Para compilar fluidsynth:
+Para compilar fluidsynth podemos hacerlo desde los sources stables antiguos que hay en su página o desde svn:
 
-CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure --disable-aufile-support --disable-oss-support --disable-dbus-support
+-DESDE LOS SOURCES ESTABLES:
 
-Editamos src/Makefile y le quitamos el O2 antes de compilar.
+Editamos configure y quitamos los O2 y los -g que encontremos antes de ejecutar configure.
+Ahora ya ejecutamos configure así:
+
+CFLAGS="-O3 -march=armv6 -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure  --prefix=/usr --disable-aufile-support --disable-oss-support --disable-dbus-support
+
+Y POR ÚLTIMO compilamos.
+
+-DESDE SVN:
+
+Antes de nada necesitamos libtool.
+sudo apt-get install libtool
+
+Clonamos su repo:
+git clone --depth 1 git://git.code.sf.net/p/fluidsynth/code-git
+
+Editamos configure.ac y añadimos:
+m4_pattern_allow([AC_LIB_PROG_LD_GNU])
+
+Ejecutamos autogen.sh
+
+Editamos configure y quitamos los O2 y los -g que encontremos antes de ejecutar configure.
+Ahora ya ejecutamos configure así:
+
+CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr --disable-oss-support --disable-aufile-support  --disable-dbus-support
+
+Y POR ÚLTIMO compilamos.
 
 Para automatizar todo esto y hacernos un sinte que automáticamente haga estas cosas:
 -Se lance el aseqnet y escuche en red en la IP 192.168.5.10 o la que nos de la gana.
@@ -1780,7 +1840,7 @@ O sea, el objetivo es actualizar mi branch secundario de manera que quede con lo
 
 -Añado el upstream. Lo llamo upstream como lo podría llamar pepito:
 
-git remote add upstream https://github.com/libretro/RetroArch.git 
+git remote add upstream https://github.com/scummvm/scummvm.git
 
 Ahora descargamos todos los branches de upstream:
 
@@ -1991,9 +2051,14 @@ Listo!
 
 NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da igual.
 
-*************SDL2 en Raspberry Pi*********************************************************************************************
+*************SDL2 en  la Raspberry Pi*********************************************************************************************
 
 ¡¡¡CUIDADO!!! Asegúrate de tener instalado el paquete libudev-dev o en los juegos no irá ni joystick, ni teclado, ni ratón, ni nada.
+
+¡¡¡CUIDADO!!! La versión mínima que se necesita en la Pi NO ES la 2.0.3, ya que tiene problemas con las coordenadas del ratón,
+así que necesitas como mínimo la 2.0.4 o la versión mercurial (SVN), que puedes clonar yendo a la página de snapshots de código aquí y tirando de zip o de hg clone:
+
+https://www.libsdl.org/hg.php
 
 CONFIGURAMOS CON:
 
@@ -2770,7 +2835,7 @@ sudo apt-get install gcc g++ make libdrm-dev libgbm-dev libgles2-mesa-dev libaso
 
 configuramos con:
 
-./configure --disable-x11 --disable-sdl2 --disable-ffmpeg --disable-networking --disable-libretrodb --disable-glui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-cheevos  --enable-kms --enable-egl --enable-gles
+./configure --disable-x11 --disable-sdl2 --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-cheevos  --enable-kms --enable-egl --enable-gles
 
 Comprobamos en lo que sale que ha detectado las librerías drm y EGL.
 Y procedemos a compilar con make.

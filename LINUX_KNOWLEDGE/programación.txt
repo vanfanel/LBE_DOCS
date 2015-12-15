@@ -954,5 +954,127 @@ el valor de ese miembro static en una de las instancias de la clase, queda cambi
 Lógicamente, si queremos cambiar ese valor desde un método que no es de la clase, deberá ser un miembro public, aunque lo normal será que se cambie
 dentro de un método miembro de la clase actuando sobre una de las instancias.
 
+==============BLOQUE DE CONSEJOS DE C++ QUE DEBES REPASAR ANTES DE PONERTE CON CADA NUEVO PROYECTO===========================
+
+-MUY IMPORTANTE: Nunca abandones el constructor sin haber inicializado los miembros a sus valores correctos!! Si lo haces, luego vas a tener problemas como que en el 
+destructor vayas a usar un miembro y te de un segfault aunque aparentemente tenga el valor correcto.
+Si una clase instancia a otra, que a su vez instancia a otra... lo mismo: no salgas de cada destructor de cada nueva clase instanciada sin inicializar sus miembros.
+
+-MUY IMPORTANTE: si tienes un miembro que es de una clase base, y luego le asignas el valor de un objeto de una clase derivada de la clase base del tipo
+al que pertenece el puntero, el destructor que se ejecutará al hacer el delete será el de la clase BASE, no el de la clase derivada.
+PERO HAY SOLUCIÓN INCLUSO SI QUEREMOS CONSERVAR EL PUNTERO DE LA CLASE BASE: PARA QUE SE EJECUTE EL DESTRUCTOR DE LA CLASE DERIVADA,
+TENEMOS QUE IMPLEMENTAR UN DESTRUCTOR VIRTUAL EN LA CLASE BASE, Y DE ESTE MODO, AUNQUE EL PUNTERO SEA DE LA CLASE BASE, SI EL OBJETO
+QUE INSTANCIAMOS ES DE LA CLASE DERIVADA, AL HACER EL DELETE SE EJECUTARÁ EL DESTRUCTOR DE LA CLASE DERIVADA Y LUEGO EL DE LA BASE. 
+
+O sea, algo como esto:
+
+class A {
+	A();
+	~A();
+}
+
+class B: public A {
+	B();
+	~B();
+}
+
+class C {
+	A* b; 	// b es un puntero a objeto de la clase base A.
+	C();
+	~C(); 
+}
+
+C::C() {		// construtor de la clase C: instancia un objeto de la clase derivada B y lo deja apuntado por la clase base A.
+			// Esto te puede parecer raro, pero piensa esto: a veces tenemos varias clases derivadas de A, y dependiendo
+			// de lo que nos convenga se instanciará un objeto de una de esas clases derivadas, que se pueden apuntar indistintamente
+			// usando el puntero  "genrérico" a la clase base. Un ejemplo de esto sería tener una clase base "renderer" y luego varias
+			// derivadas, según vayamos a renderizar usando OpenGL, o surface SDL, o lo que sea... pero con un solo puntero podemos
+			// apuntar al objeto del tipo que sea, mientras sea de una de las clases derivadas.
+	b = new (B);
+}
+
+~C::C() {	// destructor de la clase C. Borra el puntero a la clase A, así que AUNQUE EL OBJETO "b" es de la clase derivada B,
+			// sólo se ejecuta el destructor de la clase base A, porque el puntero que le pasamos a delete() es un puntero 
+			// de la clase base A. Así que el destructor de la clase derivada B no llega a ejecutarse.
+	delete(b);
+}
+
+OTRA COSA sería que el puntero fuera de la clase derivada: entonces se ejecutaría el destructor de la clase derivada y luego el de la clase base.
+
+PERO HAY SOLUCIÓN INCLUSO SI QUEREMOS CONSERVAR EL PUNTERO DE LA CLASE BASE: PARA QUE SE EJECUTE EL DESTRUCTOR DE LA CLASE DERIVADA,
+TENEMOS QUE IMPLEMENTAR UN DESTRUCTOR VIRTUAL EN LA CLASE BASE, Y DE ESTE MODO, AUNQUE EL PUNTERO SEA DE LA CLASE BASE, SI EL OBJETO
+QUE INSTANCIAMOS ES DE LA CLASE DERIVADA, AL HACER EL DELETE SE EJECUTARÁ EL DESTRUCTOR DE LA CLASE DERIVADA Y LUEGO EL DE LA BASE. 
+
+O sea que bastaría con hacer:
+
+class A {
+	A();
+	virtual ~A();
+}
+
+A:~A(){}
+
+class B: public A {
+	B();
+	~B();
+}
+
+B:~B(){
+	<lo que sea que queremos que se haga en el destructor>
+	//Esto SI se ejecutará al hacer el delete luego!!
+}
+
+class C {
+	A* b; 	// b es un puntero a objeto de la clase base A.
+	C();
+	~C(); 
+}
+
+C::C() {
+	b = new B
+}
+
+~C::C() {
+	delete (b);  //AHORA SÍ: AHORA SE EJECUTARÁ AMBOS DESTRUCTORES, TANTO EL DE LA CLASE BASE A COMO EL DE LA DERIVADA B.
+}
+
+
+****************SEGFAULT cuando se llama a un método que usa una variable que no quedó inicializada en el constructor de la clase de dicho método***
+
+SEGURAMENTE estás llamando a ese método desde el destructor de la clase a la que pertenece, y la variable miembro no queda inicializada hasta 
+después del constructor como se ha dicho.
+SI NO INICIALIZASTE LA VARIABLE MIEMBRO EN EL CONSTRUCTOR, NO ESPERES USARLA CON SEGURIDAD EN EL DESTRUCTOR, NI DIRECTAMENTE NI
+MEDIANTE UN MÉTODO QUE LA USE.
+Al final, mi solución en cannonball pasó por inicializar en el constructor y luego deinicializar en el destructor. Mira en eglcontextkms.cpp.
+
+****************SEGFAULT cuando se llama a un método que viene de una clase padre donde es virtual************************************************
+
+CUIDADO: NUNCA DEBEMOS LLAMAR A UN MÉTODO QUE ES VIRTUAL EN UNA CLASE BASE DESDE EL CONSTRUCTOR O EL DESTRUCTOR DE UNA CLASE 
+DERIVADA DE LA ANTERIOR. LO QUE OCURRIRÁ SI LO HACES ES QUE SE LLAMARÁ AL MÉTODO VIRTUAL DE LA CLASE BASE EN LUGAR
+DE LLAMAR AL MÉTODO DE LA CLASE DERIVADA COMO CABRÍA ESPERAR.
+Esto es así porque C++ llama al método virtual de la clase base por seguridad: imagínate que llamase al método correspondiente implementado 
+en la clase derivada desde el constructor y no tuviésemos cosas inicializadas que usa el método. Sería un desastre y muy difícil de debugear. 
+Lo mismo con llamar al método que es virtual en la clase base desde el destructor de la clase derivada: imagínate que c++ lo permitiese. Podríamos
+tener cosas ya borradas, etc... y ejecutar el método sería desastroso. Así que, por seguridad, ejecuta el método virtual de la clase base y listo.
+
+http://www.artima.com/cppsource/nevercall.html
+
+EN GENERAL, AUNQUE SEA DESDE OTRA TERCERA CLASE QUE NO SEA LA BASE NI LA DERIVADA, NO LLAMES A MÉTODOS VIRTUALES DESDE 
+CONSTRCTORES O DESTRUCTORES DE NINGUNA CLASE.
+
+Y recuerda (http://c.conclase.net/curso/?cap=036b):
+-AL EJECUTARSE EL CONTRUCTOR  DE UNA CLASE DERIVADA, PRIMERO SE EJECUTA EL DE LA CLASE BASE Y LUEGO EL DE LA DERIVADA.
+-AL EJECUTARSE EL DESTRUCTOR  DE UNA CLASE DERIVADA, PRIMERO SE EJECUTA EL DE LA CLASE DERIVADA Y LUEGO EL DE LA CLASE BASE.
+Y si metes en un constructor o un destructor una llamada a un método de otra clase C que es virtual en la clase base de esa clase C,  el método que se
+ejecutará será el de la clase base, no el de la derivada. Ya se ha explicado por qué.
+
+****************USANDO VALGRING: EL GRAN BLOQUE********************************************************************************************
+
+Un ejemplo de uso que nos vuelca a un log y que además nos indicará el momento en que se pusieron direcciones erróneas:
+
+valgrind --log-file=valog.txt --track-origins=yes ./cannonball
+
+
+
  
 

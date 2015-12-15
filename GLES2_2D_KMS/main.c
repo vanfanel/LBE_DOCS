@@ -28,7 +28,7 @@ int main () {
 
 	int ret;	
 	
-	for (m = 0; m < 2; m++) {
+	for (m = 0; m < 1; m++) {
 		for (j = 0; j < 320 - 50; j++) {
 			
 			clear_screen (320, 200,  pixels);

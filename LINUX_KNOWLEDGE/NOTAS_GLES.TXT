@@ -1,0 +1,31 @@
+*********ERRORES de INVALID_ENUM con las funciones glEnable(GL_TEXTURE_2D), glDisable(GL_LIGHTING), glDisable(GL_LIGHTING)...***************
+
+Estas funciones pertenecen al perfil de GLES1, NO de GLES2, así que si te las encuentras en un código de GLES que debería funcionar pero no lo hace
+por los INVALID_ENUM (que es el gl_error número 500), es porque estás inicializando un contexto para GLES1. 
+
+Si lo estás inicializando a mano, o sea, si estás usando EGL y la API 2D que toque para inicializar tú el contexto, un perfil de GLES1 se pide poniendo el
+atributo EGL_CONTEXT_CLIENT_VERSION a 1. Así de simple.
+
+Si, en cambio, estás usando SDL2 para inicializar el contexto, tienes que hacer:
+
+    SDL_Init(SDL_INIT_VIDEO);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);    
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1); 
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+TODO ESTO antes antes de SDL_GL_CreateContext(), pues al igual que en nuestro código de inicialización de contexto usemos el API 2D que usemos siempre
+tenemos que especificar la versión de GLES al crear el contexto, las SDL2 internamente hacen lo mismo en su código de inicialización de contexto.
+Es FUNDAMENTAL que no te olvides de llamar a SDL_Init(), O SI NO AUNQUE ESPECIFIQUEMOS UNA VERSIÓN DE GLES NO NOS HARÁ CASO Y SIEMPRE
+NOS CREARÁ UN CONTEXTO GLES2!!
+EDIT: la primera línea, la del atributo SDL_GL_CONTEXT_PROFILE_MASK, no parece necesaria realmente.
+
+Además, PUEDES COMPROBAR qué versión de perfil de GLES tienes, tanto si has tirado de tu código EGL/API 2D como si has tirado de SDL2, con esto:
+
+    SDL_Log("Vendor     : %s\n", glGetString(GL_VENDOR));
+    SDL_Log("Renderer   : %s\n", glGetString(GL_RENDERER));
+    SDL_Log("Version    : %s\n", glGetString(GL_VERSION));
+    SDL_Log("Extensions : %s\n", glGetString(GL_EXTENSIONS));
+    SDL_Log("\n");
+
+Más información en los tests que traen los sources de SDL2. 

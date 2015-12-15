@@ -1,0 +1,140 @@
+-Tienes unos consejos fabulosos sobre cómo migrar de SDL 1 a SDL2 aquí:
+http://www.cs.umb.edu/~bazz/cms/index.php?id=sdl-sdl2-migration-experience
+A parte de la propia guía de migración oficial, claro.
+
+==========Una rutina típica de dibujado en 2D en pantalla en SDL2=======================================
+
+SDL_Window *window = SDL_CreateWindow(
+        "Cannonball", 0, 0, src_width, src_height,
+        flags);
+
+SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, flags);
+SDL_Texture *texture = SDL_CreateTexture(renderer,
+                               SDL_PIXELFORMAT_ARGB8888,
+                               SDL_TEXTUREACCESS_STREAMING,
+                               src_width, src_height);
+
+Pero claro, necesitamos, o bien una surface de SDL en la que escribir en su array de pixels (surface->pixels) o bien directamente 
+un array de pixels reservado con malloc o similar.
+
+O sea, o hacemos esto y escribimos en sus píxels (luego ya veremos que en la parte del pageflip se vuelcan los píxels a la textura con SDL_UpdateTexture() y el renderer la pinta, etc):
+
+surface = SDL_CreateRGBSurface(0,
+                                  src_width,
+                                  src_height,
+                                  bpp,
+                                  0,
+                                  0,
+                                  0,
+                                  0);
+
+uint32_t *screen_pixels = surface->pixels;
+
+...O bien creamos un array de píxels a manubrio, que luego volcaremos a la textura con SDL_UpdateTexture(), etc...: 
+
+uint32_t *myPixels;
+mypixels = malloc(src_width * src_height * sizeof (uint32_t));
+uint32_t *screen_pixels = mypixels;
+
+... y luego el pageflip constaría de algo como: 
+
+// Volcamos el array de pixels a la textura:
+SDL_UpdateTexture(texture, NULL, screen_pixels, src_width * sizeof (Uint32));
+// Limpiamos el renderer:
+SDL_RenderClear(renderer);
+// Pasamos la textura actualizada al renderer:
+SDL_RenderCopy(renderer, texture, NULL, NULL);
+// Lo sacamos por pantalla. Si se hace o no con vsync, si se usa un renderer por hardware, si se interpola linealmente, etc... depende de los flags
+// que le pasemos a SDL_CreateWindow(), de los SDL_SetHints() y de los flags que le pasemos a SDL_CreateRenderer(). 
+SDL_RenderPresent(renderer);
+
+Y listo!!
+
+===========Cómo funciona el audio en SDL2 comparado con SDL1=================
+
+En SDL1 teníamos SDL_OpenAudio(), que se puede seguir usando, pero lo recomendado es usar SDL_OpenAudioDevice(), que funciona del siguiente modo:
+
+Antes de nada, definimos un par de estructuras de tipo SDL_AudioSpec:
+
+SDL_AudioSpec desired, obtained;
+
+En estas estructuras guardamos los datos del formato de audio exacto que queremos: frecuencia, formato (como el formato de píxel pero en audio), canales, samples...
+No rellenamos obtained, sólo desired, y luego se nos devuelve obtained relleno con lo que se nos ha podido dar.
+
+desired.freq = 48000;
+desired.format = AUDIO_F32;
+desired.channels = 2;
+desired.samples = 4096;
+desired.callback = MyAudioCallback;  // esta función la escribimos nosotros en otro lado, para rellenar el buffer por ejemplo.
+desired.userdata = NULL;
+
+Ahora realmente abrimos el dispositivo de audio con SDL2. Lo primero necesitamos un ID de dispositivo:
+
+SDL_AudioDeviceID dev; 
+
+Al abrir el dispositivo físico, se nos dará el ID de dispositivo, que es lo que usaremos para el resto de operaciones, a modo de handler:
+
+dev = SDL_OpenAudioDevice(NULL, 0, &desired, &obtained, /*SDL_AUDIO_ALLOW_FORMAT_CHANGE*/0);
+
+^^^Nota que el primer parámetro sería una cadena de texto con el nombre del dispositivo, pero le pasamos NULL y SDL2 abre el que cree más conveniente.
+No nos complicamos más con eso.
+ 
+
+Y ahora, si no suena nada, busca TODAS LAS LLAMADAS a SDL_PauseAudio() y las sustituyes por llamadas a SDL_PauseAudioDevice().
+En SDL_PauseAudioDevice() tenemos que pasarle un parámetro más que a SDL_PauseAudio(), que sería el ID de dispositivo que queremos pausar o despausar.
+El segundo parámetro lo dejamos IGUAL en SDL_PauseAudioDevice() que como estuviese en SDL_PauseAudio(): o sea, si teníamos
+SDL_PauseAudio(0) 
+pues dejamos
+SDL_PauseAudioDevice(dev,0);
+Y si teníamos
+SDL_PauseAudio(1);
+pues dejamos
+SDL_PauseAudioDevice(dev,1);
+
+Y por ahora eso es lo que sé. Me ha servido para portar cannonball a SDL2...
+Fuentes: https://wiki.libsdl.org/SDL_OpenAudioDevice
+
+===========Cómo funciona el INPUT en SDL2===================================
+
+Lo primero, tenemos que declarar una variable de tipo puntero a unsigned int de 8 bits, que apunta a un array, el array del estado de las teclas, que serán
+0 o 1. 0 Es que tal o cual tecla no está presionada, y 1 que sí lo está.
+
+const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+O SEA, en este ejemplo, state es un array de n teclas, y en cada posición hay un 0 o un 1, dependiendo de si la tecla ha sido pulsada o no.
+
+Ahora, para saber si una tecla concreta ha sido pulsada, INDEXAMOS a ese array con el define que es el scancode de esa tecla. Haremos esto:
+
+if (state[SDL_SCANCODE_RETURN]) {
+    printf("<RETURN> is pressed.\n");
+}
+
+Y listo!
+
+NOTA: A veces verás que se compara el valor que indexado (state[SDL_SCANCODE_BLAHBLAH]) con SDL_PRESSED. Esto es típico de las SD1, aunque 
+se puede hacer en las SDL2. SDL_PRESSED es un define que vale 1, sin más.
+
+CUIDADO CON ESTAS NOTAS:
+-La función SDL_GetKeyboardState() te da el estado cuando todos los eventos han sido procesados, cosa que hacemos nosotros. Así que si una tecla ha sido pulsada
+y soltada ANTES de que procesemos los eventos, entonces ese estado de "pulsada" no se va a ver en la llamada a SDL_GetKeyboardState().
+-Hay que sacar los eventos de la cola de eventos con  SDL_PumpEvents().
+
+FUENTE: https://wiki.libsdl.org/SDL_GetKeyboardState
+
+============Averiguar qué driver está usando nuestro renderer (PLAIN SDL2)===========================
+
+SDL_GetRendererInfo(SDL_Renderer*     renderer, SDL_RendererInfo* info)
+Y luego miramos el miembro name de info.
+
+Y para elegir/forzar un driver:
+SDL_RENDER_DRIVER="opengles" ./scummvm
+
+===========Resolución física en uso================================================================
+
+SDL_GetCurrentDisplayMode(0, &current_videomode);
+
+y nos interesan los campos...
+
+current_videomode.w
+current_videomode.h
+

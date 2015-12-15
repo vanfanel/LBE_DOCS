@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <unistd.h>
 
 void drmPageFlipHandler(int fd, uint frame, uint sec, uint usec, void *data) {
 	int *waiting_for_flip = (int *)data;
@@ -250,6 +251,13 @@ void deinitEGL() {
 	if (fb->fb_id) {
 		drmModeRmFB(drm.fd, fb->fb_id);
 	}
-	
+
+	// If we want to re-create the context in the same program, we need to de-init
+	// gbm before we init it again.
+	gbm_surface_destroy(gbm.surface);
+	gbm_device_destroy(gbm.dev);
+
 	free(fb);
+	
+	close(drm.fd);
 }
