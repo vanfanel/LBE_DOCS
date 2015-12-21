@@ -57,10 +57,6 @@ Al pasarle como host la Raspberry Pi (--host=raspberrypi), compilará contra SDL
 Acuérdate de exportar RPI_ROOT o ponerlo antes de configure!
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
 
-POR AHORA, hay que comentar esta linea en configure:
-
-#define_in_config_if_yes yes 'USE_ARM_SOUND_ASM'
-
 Ahora sólo me queda arreglar el soporte de SDL2: mira la sección "Arreglando plain SDL2 rendering en la Pi" más abajo.
 
 NO PONGAS el nivel de optimización a 3 (default_optimization_level=-O3) en el configure: fallarán los juegos del engine AGI (King's Quest y Space Quest de Apple IIGS).

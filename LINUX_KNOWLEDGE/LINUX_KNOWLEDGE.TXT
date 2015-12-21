@@ -1908,6 +1908,12 @@ Para compilar la versión más o menos ideal que usa mi backend de Dispmanx, he 
 luego he editado src/MYOSGLUE.c y he cambiado el bpp de SetVideoMode() de 8 a 16.
 Para la velocidad original del Macintosh plus, tendrías que poner "-speed z"
 
+
+************MiniVMAC en X86*****************************************************************************************************
+
+Para generar el tar con los sources para Linux X64 paso estas opciones:
+-t lx64 -api sdl
+
 *************Cómo usar pkg-config y dpkg******************************************************************************************
 
 Estas herramientas hacen cosas distintas, pero pueden llegar a ser complementarias.
@@ -2058,7 +2064,10 @@ NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da 
 ¡¡¡CUIDADO!!! La versión mínima que se necesita en la Pi NO ES la 2.0.3, ya que tiene problemas con las coordenadas del ratón,
 así que necesitas como mínimo la 2.0.4 o la versión mercurial (SVN), que puedes clonar yendo a la página de snapshots de código aquí y tirando de zip o de hg clone:
 
-https://www.libsdl.org/hg.php
+Concretamente:
+hg clone http://hg.libsdl.org/SDL
+
+Lo hemos sacado de aquí: https://www.libsdl.org/hg.php
 
 CONFIGURAMOS CON:
 

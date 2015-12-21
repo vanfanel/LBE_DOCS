@@ -48,6 +48,10 @@ SDL_RenderCopy(renderer, texture, NULL, NULL);
 // que le pasemos a SDL_CreateWindow(), de los SDL_SetHints() y de los flags que le pasemos a SDL_CreateRenderer(). 
 SDL_RenderPresent(renderer);
 
+SI QUISIÉRAMOS escalar manteniendo el aspect ratio, o sea, actualizar una textura pero dibujando sobre un rectángulo de unas dimensiones
+concretas, pues usamos los dos últimos parámetros de SDL_RenderCopy(), que son dos SDL_Rect, orígen y destino.
+ACUÉRDATE de inicializar no sólo los campos de tamaño sino también los de POSICIÓN de estos rects, aunque sea a 0, o no se verá nada.
+
 Y listo!!
 
 ===========Cómo funciona el audio en SDL2 comparado con SDL1=================
@@ -78,7 +82,8 @@ dev = SDL_OpenAudioDevice(NULL, 0, &desired, &obtained, /*SDL_AUDIO_ALLOW_FORMAT
 
 ^^^Nota que el primer parámetro sería una cadena de texto con el nombre del dispositivo, pero le pasamos NULL y SDL2 abre el que cree más conveniente.
 No nos complicamos más con eso.
- 
+
+Al acabar, hay que cerrar con SDL_CloseAudioDevice(dev), en lugar del viejo SDL_CloseAudio(); 
 
 Y ahora, si no suena nada, busca TODAS LAS LLAMADAS a SDL_PauseAudio() y las sustituyes por llamadas a SDL_PauseAudioDevice().
 En SDL_PauseAudioDevice() tenemos que pasarle un parámetro más que a SDL_PauseAudio(), que sería el ID de dispositivo que queremos pausar o despausar.
@@ -95,6 +100,30 @@ Y por ahora eso es lo que sé. Me ha servido para portar cannonball a SDL2...
 Fuentes: https://wiki.libsdl.org/SDL_OpenAudioDevice
 
 ===========Cómo funciona el INPUT en SDL2===================================
+
+CUANDO SE PULSA UNA TECLA, desde las SDL2 nos va a llegar una estructura de tipo SDL_Event.
+Este SDL_Event tiene un campo que es su tipo, el campo type. A partir de su tipo, podemos saber si es de tipo SDL_WINDOWEVENT, SDL_MOUSEMOTION, SDL_KEYDOWN..
+y así un laaargo etcétera de tipos.
+
+Así que normalmente tendremos un primer swicth-case donde se filtrará por tipo. Nos interesa el tipo SDL_KEYDOWN, que es el de los eventos de pulsación de teclas.
+Vale, sabemos que es una pulsación de una tecla.
+HAY DOS TIPOS de códigos que vamos a recibir en el SDL_Event cuando se pulsa una tecla: 
+
+-El SCANCODE, que NO es fiable si queremos reconocer una tecla con un significado concreto, que viene en el campo key.keysym.scancode del SDL_Event.
+Usaremos esto más bien para identificar pulsaciones basándonos EN LA POSICIÓN de una tecla y NO EN EL CARACTER QUE PRODUCE. Así que no nos interesará mucho. 
+Es un número de la tecla física que hemos pulsado pero que no se corresponde con ningún caracter o tecla modificadora específica (así, recibiremos un 123 por 
+ejemplo que puede ser un tab o una letra v, independientemente de lo que haya dibujado en nuestro teclado: sólo nos llega el scancode que no significa un caracter en concreto,
+es algo como: has pulsado la tecla 123, y ya). En la wiki de las SDL2 nos vienen scancodes a lo SDL_SCANCODE_G o SDL_SCANCODE_RALT, pero NO son fiables. Si comprobamos
+contra los valores de tipo SDL_SCANCODE_*, no sabemos realmente qué tecla se ha pulsado.
+
+-El KEYCODE, que viene en el campo key.keysym.sym del SDL_Event. Para comprobar contra los valores de scancode, tenemos que hacer un include de SDL_scancode.h.
+Los valores definidos contra los que podemos comprobar qué tecla se nos ha pulsado tienen el formato SDLK_*. Estos valores SÍ son los de los caracteres, y
+NOS DAN LA SEGURIDAD de que la tecla contra la que comprobamos es la que nuestro SO devuelve al pulsar lo que hemos pulsado. 
+ES LA OPCIÓN que nos interesará mas a menudo: comprobar el KEYCODE.
+
+TANTO PARA los SCANCODES como para los KEYCODES, tienes una tabla (que no es fiable para los SCANCODES por lo que ya se ha explicado) en https://wiki.libsdl.org/SDL_Keycode 
+
+============Un ejemplo de cómo leer algo de teclado usando scancodes================
 
 Lo primero, tenemos que declarar una variable de tipo puntero a unsigned int de 8 bits, que apunta a un array, el array del estado de las teclas, que serán
 0 o 1. 0 Es que tal o cual tecla no está presionada, y 1 que sí lo está.
@@ -138,3 +167,46 @@ y nos interesan los campos...
 current_videomode.w
 current_videomode.h
 
+==========Más sobre el input en SDL2 vs SDL1========================================================
+
+El SDL_EventType SDL_ACTIVEEVENT y sus tipos no existen en SDL2.
+En su lugar, tenemos SDL_WindowEvent y sus tipos.
+Si nos encontramos con los tipos de eventos SDL_ACTIVEEVENT, como ya no existen tenemos que comparar el campo event->type contra el tipo SDL_WINDOWEVENT en SDL2.
+Ahora, una vez que sabemos que el tipo es SDL_WINDOWEVENT, se suele comprobar qué evento de ventana es, o sea, se comprueba el campo event->window.event.
+Ahora, tampoco tenemos los tìpicos SDL_APPINPUTFOCUS y SDL_APPMOUSEFOCUS. En su lugar, usaremos cosas como SDL_WINDOWEVENT_FOCUS_GAINED, SDL_WINDOWEVENT_ENTER, etc.. 
+
+=========Dibujar gráficos de 8 bits, o sea, 8bpp, usando SDL2============================================
+
+Lo mejor es usar este truco tan increíble: no uses NADA de 8bpp, ni surface, ni textura, ni nada. Simplemente. le pasas unas máscaras a SDL_CreateRGBTexture(), creas una textura de 32bits,
+y luego eso lo subes tal como sueles hacer: sin conversiones y sin nada. Es una pasada! Mira, haz así:
+Normalmente, haríamos algo como esto para renderizar una imágen de 32bits:
+
+	my_surface= SDL_CreateRGBSurface(0, NewWindowWidth, NewWindowHeight, 32,
+                0,0,0,0
+                );
+
+Pues ahora, para renderizar una de 8bpp, creamos así la surface:
+	
+	my_surface= SDL_CreateRGBSurface(0, NewWindowWidth, NewWindowHeight, 32,
+		0x00FF0000,
+                0x0000FF00,
+                0x000000FF,
+                0xFF000000
+);
+
+Y lo demás, pues ya normal: creamos la textura como una de 32bpp también:
+
+        texture = SDL_CreateTexture(renderer,
+                               SDL_PIXELFORMAT_ARGB8888,
+                               SDL_TEXTUREACCESS_STREAMING,
+                               vMacScreenWidth, vMacScreenHeight);
+
+y luego la actualizamos, renderizamos, etc...:
+
+        // SDL2 screen update block
+        SDL_UpdateTexture(texture, NULL, my_surface->pixels, vMacScreenWidth * sizeof (Uint32));
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, texture, NULL, NULL/*&src_rect, &dst_rect*/);
+        SDL_RenderPresent(renderer);
+
+ESTE TRUCO TAN INCREÍBLE lo he sacado de stack overflow. Gracias, gracias! --->  http://stackoverflow.com/questions/30599636/8-bit-surfaces-in-sdl-2
