@@ -879,6 +879,8 @@ consoleblank=0
 sudo apt-get purge avahi-daemon triggerhappy dbus plymouth ntp dphys-swapfile rsyslog openresolv libreoffice* webkit* libgtk* libreoffice*
 sudo apt-get purge greenfoot bluej 
 sudo apt-get purge oracle-java7-jdk pinentry-curses x11-common x11-* nfs-common
+sudo apt-get purge cron anacron
+(ponemos anacron también para que elimine cron y NO trate de instalar anacron en su lugar).
 
 -Si tras reiniciar no podemos entrar por ssh es porque se han perdido las keys. Lo confirmamos con systemctl status ssh y vemos que no puede leer 
 un archivo de claves. Para solucionarlo, las regeneramos. Hacemos:
@@ -1783,6 +1785,11 @@ Si metemos la pata y queremos dejar mi fork como cuando lo creé, hacemos
 git reset HEAD^ --hard
 git push -f origin master
 
+************Deshacer un commit que hemos hecho mal*****************************************************************************
+
+Para deshacernos del último commit, suponiendo que no hemos hecho aún un push, sencillamente:
+git reset --soft HEAD~ 
+
 ************Deshacer un push que hemos hecho mal********************************************************************************
 
 Nos vamos al branch donde queremos corregir el push:
@@ -1849,6 +1856,8 @@ git fetch upstream
 Nos aseguramos de estar en el branch master de nuestro fork. Seguramente ya estaremos ahí de todos modos..
 
 git checkout master
+o si dice que no encuentra el archivo:
+git checkout origin/master
 
 Ahora hacemos el merge del master de upstream con nuestro master:
 
@@ -1908,6 +1917,23 @@ Para compilar la versión más o menos ideal que usa mi backend de Dispmanx, he 
 luego he editado src/MYOSGLUE.c y he cambiado el bpp de SetVideoMode() de 8 a 16.
 Para la velocidad original del Macintosh plus, tendrías que poner "-speed z"
 
+Compilar con los flags en el makefile así:
+mk_COptions = -c -Wall -Wmissing-prototypes -Wno-uninitialized -Wundef -Wstrict-prototypes -O3 -marm -mfpu=vfp -mfloat    -abi=hard -march=armv6j
+
+Para hacerte un HFV con juegos y programas, bájate los system disks de la 6.0.8 de aquí:
+http://www.gryphel.com/c/sw/system/sys60/index.html
+Sigue este tutorial de aquí (tienes que extraer los .data antes de conseguir "System Startup" y "System Additions", usando stuffit para Linux):
+http://www.emaculation.com/forum/viewtopic.php?t=6801&mobile=on
+El Stuffit para Linux es una versión vieja precompilada para i386 pero nos vale:
+http://web.archive.org/web/20060205025441/http://www.stuffit.com/downloads/files/stuffit520.611linux-i386.tar.gz
+
+Luego BORRA por completo el disco del Dark Castle, que es como formatearlo. Para ello arranca el MiniVMac con ambos discos de instalación metidos,
+para lo cual le pasas ambos como parámetro, y el disco duro:
+
+./minivmac DC.hfv System\ Startup System\ Additions
+
+Instalas el system 6.0.8 en el disco recién formateado, luego copias el Dark Castle y el Beyond DC, metes los juegos que quieras y listo.
+Pero vamos, lo mejor es que no pierdas la imágen HFV...
 
 ************MiniVMAC en X86*****************************************************************************************************
 
@@ -2108,6 +2134,12 @@ Así que mete esta llamada al principio del código del juego, tras SDL_Init() v
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 Busca antes si el juego tiene su propio chorro de llamadas a SDL_SetHint() y mete esta allí, o cambia alguna como en el caso de chocolate-doom.
 SI UN JUEGO NO PARECE HACER CASO DE ESTO y se sigue pixelando, puede ser porque se llama a SetHint demasiado tarde. Hazlo justo tras SDL_Init() si es así.
+
+**************SDL2 en x86 con Xorg*************************************************************************************************
+
+./configure --prefix=/usr --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-libudev --disable-dbus
+
+Compilar e instalar.
 
 **************SWAP de emergencia*************************************************************************************************
 Algunos sistemas, como la Raspberry Pi, no usan swap normalmente porque nos cargaríamos la SD rápido.
@@ -2919,17 +2951,12 @@ CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard -lasound" CXXFLAGS="-Ofas
 
 Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
 
-./configure --disable-vg --enable-dispmanx --disable-x11 --disable-sdl2 --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
+./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2 --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
 
 Añadimos los flags de CPU en config.mk:
--mfpu=vfp -mfloat-abi=hard -march=armv6j
+-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
 
 Editamos Makefile.common y comentamos la línea del -g
-
-En gfx/drivers/gl.c, dejamos la linea
-if (gl_query_extension(gl, "BGRA8888") && !strstr(renderer, "VideoCore"))
-como
-if (gl_query_extension(gl, "BGRA8888"))
 
 Ahora ya compilamos:
 make -j8 V=1
@@ -2976,6 +3003,7 @@ o bien añadimos a su Makefile:
   CXX = g++ 
 a la sección de platform unix, si te de problemas el cross compilador al especificar la plataforma. 
 
+El core blueMSX trae LOG_PERFORMANCE activado. Desactivalo en el Makefile.libretro al principio.
 
 El core de picodrive igual, NO sirve el zip, clonamos con git:
 
