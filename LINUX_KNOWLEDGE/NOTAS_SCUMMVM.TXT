@@ -34,7 +34,8 @@ COSAS QUE SE HAN HECHO PARA INTENTAR ELIMINAR EL BLACK SCREEN ON EXIT
 
 *************Crosscompilar scummvm en el PC para la Raspberry Pi***************************************************************************
 
-Las instrucciones están en la wiki del scummvm, en http://wiki.scummvm.org/index.php/Compiling_ScummVM/RPI#Configuring_ScummVM
+Las instrucciones para compilar el scummvm para la Pi las he puesto en la wiki del scummvm, en http://wiki.scummvm.org/index.php/Compiling_ScummVM/RPI#Configuring_ScummVM
+Empieza haciendo lo que dice esa guía.
 
 Para compilación rápida de prueba, sólo con engine SCUMMVM:
 

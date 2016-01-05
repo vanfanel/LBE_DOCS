@@ -2087,8 +2087,10 @@ NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da 
 
 ¡¡¡CUIDADO!!! Asegúrate de tener instalado el paquete libudev-dev o en los juegos no irá ni joystick, ni teclado, ni ratón, ni nada.
 
-¡¡¡CUIDADO!!! La versión mínima que se necesita en la Pi NO ES la 2.0.3, ya que tiene problemas con las coordenadas del ratón,
-así que necesitas como mínimo la 2.0.4 o la versión mercurial (SVN), que puedes clonar yendo a la página de snapshots de código aquí y tirando de zip o de hg clone:
+¡¡¡CUIDADO!!! La versión mínima que se necesita en la Pi es la 2.0.4.
+La puedes bajar como zip o tar.gz desde
+https://www.libsdl.org/download-2.0.php
+Si necesitas la versión mercurial (SVN), que puedes clonar yendo a la página de snapshots de código aquí y tirando de zip o de hg clone:
 
 Concretamente:
 hg clone http://hg.libsdl.org/SDL
@@ -2137,7 +2139,7 @@ SI UN JUEGO NO PARECE HACER CASO DE ESTO y se sigue pixelando, puede ser porque 
 
 **************SDL2 en x86 con Xorg*************************************************************************************************
 
-./configure --prefix=/usr --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-libudev --disable-dbus
+./configure --prefix=/usr --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-libudev
 
 Compilar e instalar.
 
