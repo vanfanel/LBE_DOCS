@@ -2,6 +2,14 @@
 
 NOTAS DE INICIALIZACIÓN DE PARÁMETROS DE ALSA
 =============================================
+RECUERDA QUE LA FUNCIÓN snd_pcm_hw_params_set_params() RECIBE UN DELAY, Y CALCULA EL BUFFERSIZE CORRESPONDIENTE USANDO LAS MISMAS FÓRMULAS QUE
+SE EXPLICAN EN ESTE MISMO DOCUMENTO, PERO EL PERIODSIZE Y EL NÚMERO DE PERIODOS LO CALCULA COMO QUIERE (por lo que verás que si compruebas
+el buffersize y elperiosize que se han configurado al final, la relación entre ambos puede ser 2, 3, 4...).
+SI QUIERES UN PERIODSIZE Y UN NÚMERO DE PERIODOS CONCRETO, USA LAS FUNCIONES MANUALES DE CONFIGURACIÓN DE PARÁMETROS (las de tipo snd_pcm_hw_set_*)
+EN LUGAR DE SIMPLEMENTE PASAR UN DELAY A snd_pcm_hw_set_params() Y DEJAR QUE SE ENCARGUE.
+
+Recuerda también que tienes un programa de ejemplo en miniaudio_alsa, con ambos métodos de configuración de parámetros (usando snd_pcm_hw_set_* y usando la
+función simplificadora snd_pcm_hw_set_params()).
 
 The unit of the buffersize depends on the function. Sometimes it is given in bytes, sometimes the number of frames has to be specified. 
 One frame is the sample data vector for all channels. For 16 Bit stereo data, one frame has a length of four bytes. 
@@ -143,6 +151,20 @@ NOTA: en el PC, al comprobar qué periosize y qué buffersize configura realment
 por lo que deduzco que usa cuatro periodos por buffer. Eso, con snd_pcm_set_params() no lo podemos configurar nosotros.
 Si queremos hacerlo manualmente, tenemos que usar la secuencia de paso de parámetros mediante las llamadas a sucesivas funciones snd_pcm_hw_params_set*
 Tienes ejemplo y documentación en: http://users.suse.com/~mana/alsa090_howto.html
+
+MÁS PROBLEMAS (de tipo aleatrio).
+
+1) A 44100Hz, 16 bits, stereo, ¿Qué tamaño de buffer necesito para un delay de 16 ms? ¿Y de periodo? ¿Qué valor le pasaríamos a snd_pcm_hw_params_set_periods() en
+el parámetro "delay"?
+
+Solución: sabemos que consumimos 44100 * 4 bytes por segundo, y sabemos que tenemos 16 ms, que son 0.016 segundos (acostúmbrate a operar con un número de segundos < 1). 
+Así que:
+tamaño_buffer = 0.016 * (44100) * 4 = 2822 bytes
+el tamaño de periodo dependerá del número de periodos que queramos tener. En el PC, usando snd_pcm_set_params() para que ALSA decida por nosotros,
+nos salen cuatro peridos (la relación buffer/tamaño_periodo es de 1 a 4), así que habría que divirdir entre 4 para dar respuesta al problema.
+Si en cambio usamos las funciones para poner los parámetros a mano, al usar snd_pcm_hw_params_set_periods() podemos especificar por ejemplo 2 periodos
+y habría que dividir el tamaño de buffer entre 2.
+A snd_pcm_hw_params_set_periods() habría que pasarle 0.016 * 10^6 = 16000.
 
 =============PARTE DE BÚSQUEDA DE ERRORES EN LIBRERÍAS=================
 
