@@ -1,0 +1,63 @@
+-El planteamiento que trae piFBA es erróneo:
+Lo que hace es configurar el parámetro "latency" de set_hwparams() a 4 veces la duración
+de un fotograma de vídeo, o sea, 4 veces el periodo entre cada dos vsyncs.
+La latencia queda dividida en 4 periodos (4 accesos por cada vaciado completo de buffer ALSA,
+ya que latency es el tiempo de vaciado del buffer ALSA), por lo que el tamaño por periodo
+en bytes será también el tamaño de buffer / 4. Esto lo decide ALSA, (en set_hwparams se decide
+internamente el número de periodos en que queda dividido el buffer) así que quien programó rpi/snd.cpp
+se dio cuenta de que la relación entre el tamaño de buffer de ALSA y cada periodo es de 1 a 4, tanto
+si medimos los tamaños en bytes como si los medimos en samples, así que hizo que
+el emulador escribiese en el FIFO, por cada fotograma, los samples o bytes corresponientes a 
+un periodo de ALSA, esto es, tamaño_buffer / 4.
+Total, que como quien programó snd/rpi.cpp pensó que, por una parte, el tiempo de vaciado de buffer
+es 4 veces el tiempo de fotograma, y además se dio cuenta de que el buffer quedaba dividido en 
+4 periodos por ALSA, entonces ALSA accedería a su ringbuffer una vez por fotograma de vídeo.
+Así que le bastaría con producir y meter en el FIFO, por fotograma de vídeo, tantos samples como se 
+consumen en un periodo. Pensó, claro, que así el buffer FIFO no sufruría underruns u overruns.
+
+PERO RESULTA QUE, aunque el emulador produzca por cada frame de vídeo el mismo número de samples
+que ALSA consume cada vez que accede a su ringbuffer, el periodo, en tiempo, entre accesos de ALSA
+a su propio ringbuffer, es imprevisible en Linux, con lo que eso de que ALSA va a consumir de su
+ringbuffer un periodo de samples por cada tiempo de fotograma de vídeo, es falso. ALSA a veces
+lee dos periodos seguidos (y queda mucho hueco y snd_pcm_writei() retorna inmediatamente varias
+veces seguidas en el worker thread), otras se pasa un rato sin leer ninguno (y snd_pcm_writei() se
+tira un rato largo bloqueando en el worker_thread porque no hay sitio en el buffer de ALSA), etc..
+Esto tampoco sería un gran problema, ya que con un FIFO buffer grande, aunque hubiese vaivenes
+habría márgen para evitar overruns o underruns: 
+PERO ES QUE ADEMÁS, mientras que ALSA consume 44100 samples por segundo de su ringbuffer, a
+base de acceder a él como le de la real gana, EL PRODUCTOR (EL EMU), NO PRODUCE 44100 SAMPLES
+POR SEGUNDO: PRODUCE samples_por_fotograma * fotogramas_por_segundo: O SEA
+736 samples_por_fotograma * 60.016804 = 44172.36774 SAMPLES POR SEGUNDO, Y NO LOS 44100 QUE
+CONSUME ALSA POR SEGUNDO!!
+NO NOS HEMOS DADO CUENTA DE ESTO (ni el que hizo rpi/snd.cpp) PORQUE NOS FIJÁBAMOS SOLO EN
+EL NÚMERO DE SAMPLES POR FOTOGRAMA Y EN EL NÚMERO DE SAMPLES POR PERIODO DE ALSA, QUE SÍ
+COINCIDEN, PERO COMO EL EMU ENTREGA ESE NÚMERO DE SAMPLES POR CADA FOTOGRAMA Y ESA FRECUENCIA
+DE ENTREGA DEPENDE DEL REFRESCO FÍSICO DE PANTALLA, PUES OBVIAMENTE ENTREGA ESE NÚMERO DE
+SAMPLES A UNA VELOCIDAD QUE NO RESULTA EN 44100 SAMPLES POR SEGUNGO, que es lo que consume
+ALSA, SINO EN ALGO COMO LO QUE HEMOS VISTO (44172.xxx corresponde a mi modo físico de vídeo,
+para otro modo saldrá otra cifra).
+Así que quédate con esto:
+***EL NÚMERO DE SAMPLES PRODUCIDO Y CONSUMIDO POR SEGUNDO ES LA MEJOR MEDIDA PARA EQUILIBRAR
+BUFFERS: 
+¡¡¡¡¡¡EL NÚMERO DE SAMPLES POR FOTOGRAMA Y EL NÚMERO DE SAMPLES POR PERIODO NO RECOGEN
+EL FACTOR TIEMPO, SON SÓLO CUANTOS: EL TIEMPO DE FOTOGRAMA ES VARIABLE SEGÚN REFRESCO FÍSICO
+DE PANTALLA Y LA FRECUENCIA DE ACCESO A RINGBUFFER DE ALSA ES IMPREDECIBLE!!!!! SÓLO TE PUEDES
+FIAR DE MEDIDAS QUE RECOJAN EL FACTOR TIEMPO, ADEMÁS DEL CUÁNTO. MÉTETE ESTO EN LA CABEZA.
+ES LO MÁS IMPORTANTE DE TODO ESTO JUNTO CON EL FUNCIONAMIENTO DEL RESAMPLER.*******
+
+POR TODO ESTO, en Linux no deberíamos bajar del nivel de los samples por segundo para equilibrar
+las cosas: el cuándo de los accesos de ALSA a su buffer es imprevisible, y de la parde del 
+emulador nosotros estaremos entregando los samples a una velocidad que dependerá del refresco
+físico de pantalla, así que si el número de samples consumidos por segundo (esto es lo importante,
+que los samples por segundo comprenden el cuánto y el tiempo, mientras que los samples por
+fotograma o por periodo de ALSA sólo comprenden el cuánto, por lo que no sirven para equilibrar
+los accesos a un buffer compartido como el FIFO) no coincide el número de samples producidos por segundo,
+tenemos un problema y necesitamos un resampler enganchado a la salida del productor para compensar esto: 
+NO SE TRATA de cuántos samples produces, sino de cuándo entregas esos samples, ya digo que hay que
+recoger el factor tiempo. Y si eso depende de la frecuencia física de vídeo,
+dado que la mayoría de los emuladores entregan un número de samples por fotograma, pues LO MEJOR
+ES ABSTRAERNOS AL NÚMERO DE SAMPLES POR SEGUNDO (quedándonos en ese nivel de abstracción),
+QUE DEPENDE DEL REFRESCO FÍSICO DE PANTALLA SI ENTREGAMOS UN NúMERO DE SAMPLES POR FOTOGRAMA 
+COMO HEMOS DICHO QUE SUELEN HACER LOS EMULADORES, Y EQUILIBRAR EN FUNCIÓN DE ESOS SAMPLES POR
+SEGUNDO DEL PRODUCTOR (EL EMU) Y LOS CONSUMIDOS POR EL CONSUMIDOR (ALSA).
+

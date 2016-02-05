@@ -1,0 +1,455 @@
+EJEMPLO DE UNA IMPLEMENTACIÓN DE UN SISTEMA DE SONIDO COMPLETO CON ALSA: piFBA
+==============================================================================
+
+Ya sabemos cómo se relacionan matemáticamente los parámetros: latency, frequency,
+bits por muestra, número de canales, bytes por frame, periodsize, numero
+de periodos y buffersize. 
+
+Asi que vamos a ver cómo está organizada la escritura de audio en ALSA, o sea,
+qué hacen las funciones en rpi/snp.cpp
+
+BLOQUE 1: La cola FIFO, notas sobre la implementación
+=====================================================
+No es necesario entender este bloque en profundidad, aunque yo lo he analizado
+como un recordatorio a la implementación de estructuras de datos, siendo
+esta además una implementación circular y espeialmente ineniosa.
+
+ES SUFICIENTE CON SABER QUE SE TRATA DE UNA COLA, FIRST IN FIRST OUT, CON UN
+NÚMERO FIJO DE POSICIONES, QUE LO QUE SE METIÓ ANTES SALE ANTES, Y QUE PUEDE
+NO HABER SITIO EN UN MOMENTO DADO PARA UNA NUEVA ESCRITURA (OVERRUN) O NO 
+HABER ELEMENTOS SUFICIOENTES PARA REALIZAR UNA LECTURA DE UN TAMAÑO DETERMINADO.
+SI ESTÁS LEYENDO ESTE DOCUMENTO PARA UN REPASO, QUÉDATE SÓLO CON ESTO Y PASA AL
+BLOQUE 2. NO TE ENTRETENGAS EN LA IMPLEMENTACIÓN DE UNA COLA, POR INGENIOSA QUE SEA...
+
+Lo primero que vamos a estudiar es el funcionamiento del buffer FIFO.
+Está implementado en fifo_buffer.c
+Se trata de un buffer FIFO: primero en entrar, primero en salir. Una COLA.
+Está implementada con un buffer de valores consecutivos en memoria, cada uno
+de un byte (uint8_t *), y unos enteros que indican el primer elemento en el 
+que hay algo útil (first), el último elemento útil (end), y el tamaño del
+buffer (buffersize).
+El puntero al array de bytes donde se guardan los elementos (o sea, buffer->buffer,
+que como puedes ver es el uint8_t * del que ya hemos hablado) es lógicamente
+la dirección del primero de los elementos.
+Puedes imaginártela como un array de elementos (bytes) de izquierda a derecha:
+se van metiendo elementos nuevos escribiéndolos de izquierda a derecha, de
+manera natural, y luego se sacan leyendo igual, empezando a leer por la izquerda 
+hacia la derecha, tal como se metieron. Así, first in, first out.
+
+Pero no es tan sencillo: el buffer tiene un tamaño limitado, y COMO NO QUEREMOS
+RECOLOCAR SUS ELEMENTOS cada vez que metemos nuevos o sacamos, se ha implementado
+de tal manera (recuerda que la manera en que se implementa el funcionamiento
+de una estructura de datos es a través de sus funciones de escritura y lectura)
+que cuando vamos a escribir escribimos de izquierda a derecha como se ha dicho,
+pero si el número de bytes a escribir hace que se nos "salga" lo que vamos a 
+escribir por la derecha, seguimos escribiendo empezando de nuevo por la posición
+más a la izquierda del buffer. Y para leer igual. Es como si fuera circular:
+cuado nos salimos escribiendo o leyendo por la derecha, seguimos por la
+izquierda.
+Esto se implementa reposicionando inteligentemente first y end cada vez
+que leemos y escribimos: lo vas a ver en el análisis de las funciones del
+buffer FIFO que sigue a continuación:
+
+-void fifo_write(fifo_buffer_t *buffer, const void *in_buf, size_t size)
+Si el tamaño de lo que vamos a escribir es mayor que los espacios que nos
+quedan libres a la derecha de end (o sea, los espacios entre end y buffersize),
+hacemos una primera escritura en las posiciones que van desde end hasta buffersize,
+y una segunda escritura en las posiciones libres que van desde la primera posición
+del buffer hasta first.
+Luego ponemos end en : (end + size) módulo (buffesize). Esto quiere decir que si
+al escribir nos hemos salido por la derecha, el número de lugares que nos hemos
+pasado de buffersize es el resto de ver cuántas veces cabe buffersize en la suma
+de end + size. LO QUE TIENES QUE ENTENDER ES QUE EL RESULTADO DE HACER 
+"END = (END + SIZE) MODULO BUFFERSIZE" SERÁ EL RESTO SI END+SIZE > BUFFERSIZE,
+Y SERÁ SIMPLEMENTE END+SIZE SI NO ES ASÍ, DE TAL MANERA QUE VALE TANTO PARA SI
+NOS SALIMOS ESCRIBIEND POR LA DERECHA (y end acaba a la izquierad de first) COMO SI NO.
+
+-void fifo_read(fifo_buffer_t *buffer, void *in_buf, size_t size)
+La idea es la misma: SI vamos a leer más elementos que los que tenemos entre 
+first y buffersize (si first+size > buffersize, o sea, si nos salimos por la
+derecha leyendo), tenemos que seguir leyendo a partir de la primera posición del buffer.
+En ese caso, la primera lectura se hace desde la posición first a la posición
+buffersize, con tamaño first - biffersize, y el resto de la lectura 
+desde la primera posición del buffer (el puntero uint8_t *bufer) con tamaño
+size - first_read.
+Como hemos quitado los primeros size-elementos de la cola, movemos first a
+first = (first + size) módulo buffersize.
+Esto quiere decir que calculamos el resto de ver cuántas veces cabe first+size
+en buffersize: si nos hemos pasado por la derecha será el número de posiciones
+que nos hemos pasado, y si no, pues sencillamente el resultado es first+size.
+La explicación es la misma que en fifo_write(), vamos.
+
+LO QUE TIENES QUE SACAR EN CLARO DE AQUÍ ES QUE EL MÓDULO SE USA PARA VER
+POR CUÁNTO NOS HEMOS PASADO DEL LÍMITE AL HACER UN INCREMENTO, LO QUE NOS PERMITE,
+POR ASÍ DECIRLO, SALIRNOS POR UN LADO Y REAPARECER POR EL OTRO CON EL VALOR
+INCREMENTADO CORRECTAMENTE SOBRE EL INICIAL. ES UN USO INTUITIVO DEL MÓDULO
+QUE DEBES APRENDER A TENER EN CUENTA.
+
+-size_t fifo_read_avail(fifo_buffer_t *buffer)
+
+Devuelve el número de elementos que hay metidos en la cola en un momento dado.
+Normalmente sería end - first, pero como end puede estar a la izquiera de first,
+lo que se haría en ese caso es restar first - end (con lo que nos quedan los lugares
+vacíos entre ambos) y luego a buffersize se le resta ese resultado.
+
+-size_t fifo_write_avail(fifo_buffer_t *buffer)
+
+Devuelve el número de lugares vacíos, disponibles para ser ocupados por elementos,
+que hay en la cola en un momento dado. Su implementación se basa en el mismo
+algoritmo que fifo_read_avail().
+
+BLOQUE 2: Funcionamiento del sistema de audio
+=============================================
+
+En resúmen:
+
+***El código del emulador actualiza el audio escribe en el bufre FIFO mediante la función
+ alsa_write(void *data, const void *buf, size_t size).
+ La sección de escritura en el buffer FIFO está aislada mediante un lock, ya que se accede
+ al mismo buffer para lectura desde el hilo alsa_worker_thread().
+ Puede no haber espacios libres en el buffer para el número de bytes que se intenta
+ escribir, lo que causa un FIFO OVERRUN.
+ Desde el emulador en sí, ya no se sabe nada más. Se manda el audio de este modo y ya.
+
+***El hilo alsa_worker_thread() vuelca los bytes de audio desde el bufer FIFO al buffer ALSA
+ (el de tamaño buffersize, el que definimos en init mediante set_hwparams()).
+ 
+ Por lo tanto, leemos del buffer FIFO y escribimos en el buffer ALSA. Veamos ambos paso:
+
+ La lectura del buffer FIFO se hace mediante fifo_read(alsa->buffer, buf, fifo_size).
+ Se hace lo siguente:
+ -Se pilla el lock para acceso exclusivo al buffer FIFO (nos puede tocar esperar si esta 
+  pillado el lock porque se está accediendo desde otra parte, ya lo sabes).
+ -Se comprueba cuántos bytes hay listos para ser leidos en el buffer FIFO (avail)
+ -Si el número de bytes disponibles en el FIFO es menor que un periodo, el tamaño
+  de la lectura se pone a cero y se libera el lock: ya no accedemos más al FIFO en ese loop.
+  Esto de poner el tamaño de lectura a cero (fifo_size = 0) es lo que va a causar el
+  FIFO UNDERRUN más adelante, como vamos a ver.
+ -Si el número de bytes disponibles para lectura (avail) es mayor o igual que el tamaño
+  de periodo, el tamaño de lectura va a ser el tamaño de periodo.
+ -Si todo ha ido bien, hacemos la lectura de los bytes de un periodo, del buffer FIFO, con
+     fifo_read(alsa->buffer, buf, fifo_size); (donde fifo_size = period_size_bytes). 
+ -Aún hay algo más que puede fallar: puede que hayamos leido menos bytes que los que
+  corresponden a un periodo en fifo_read(). (En realidad no es que hayamos leido menos, 
+  sino que habremos leido CERO bytes de FIFO, porque no teníamos un periodo COMPLETO
+  disponible). Esta comprobació se hizo más arriba. O sea, que 
+  O LEEMOS TODOS LOS BYTES DE UN PERIODO O NO LEEMOS NADA,
+  porque se puso fifo_size (el tamaño de lectura) a cero cuando se vio que no había 
+  bastantes. Esto es un FIFO_UNDERRUN.
+ 
+ El volcado al buffer ALSA se hace usando la función snd_pcm_writei(), 
+ que INTENTA escribir los bytes de UN PERIODO:
+ snd_pcm_sframes_t frames = snd_pcm_writei(alsa->pcm, buf, alsa->period_size_frames);
+ Si no puede, o sea, si los bytes escritos como resultado son inferiores a un periodo
+ completo, tenemos un SND UNDERRUN. 
+
+ alsa_worket_thread() corre en loop, no es despertado porque nunca duerme. Se para si 
+ tiene que esperar por el lock de acceso al FIFO, ya que como se dijo antes, desde 
+ alsa_wrire() se accede para escritura y desde alsa_worker_thread() se accede para lectura.
+
+BLOQUE 3: El gran esquema de las cosas
+======================================
+
+FUNCIONAMIENTO DE TODOS LOS ENGRANAJES EN CONJUNTO
+
+Se trata de un sistema de productores/consumidores: el thread principal produce 
+bytes de audio, a razón de un periodo de bytes cada fotograma de vídeo del emulador,
+y el worker_thread consume esos periodos.
+EL MECANISMO PARA INTERCAMBIAR DATOS ENTRE AMBOS HILOS ES UN MECANISMO MUY TÍPICO: UN
+BUFFER. En este caso, un buffer FIFO. Allí escribe el hilo productor y de allí lee el
+hilo consumidor. USAR UN BUFFER PARA COMUNICAR THREADS EN ESQUEMAS PRODUCTOR/CONSUMIDOR
+ES MUY COMÚN.
+Entonces, hay tres "engranajes" cuyo timming y "sincronización" (no hay un mecanismo de 
+sincronización entre ellos realmente, quiero decir los tiempos que manejan y lo que 
+tienen o no tienen disponible en cada momento) debemos entender: la escritura por 
+parte del emulador en el buffer FIFO, la copia del buffer FIFO al buffer ALSA, 
+y el acceso de ALSA a su propio buffer para coger periodos y reproducirlos uno a uno,
+cosa que hará cuando le de la gana y que no decicimos ni tenemos que conocer nosotros.
+
+***En Linux, nosotros NO SABEMOS cuándo va a acceder ALSA a su propio buffer en busca de
+ un periodo de samples. Sólo podemos contar con que se van a consumir los samples 
+ por segundo que le hayamos pasado a la función set_hwparams() y ya. A parte del parámetro
+ de latencia, que determina el tamaño en bytes del buffer, no controlamos nada más.***
+
+->>> Una vez que le pasamos los parámetros de frecuencia, bytes por frame de audio,
+ formato y latencia, ALSA empieza a leer de su propio buffer,una y otra vez, sin parar,
+ periodo tras periodo, sacando esos bytes periodo a periodo por los altavoces, 
+ agotando el buffer en el tiempo que hemos elegido como latencia. 
+ ES FUNDAMENTAL entender que, tras la llamada a snd_pcm_set_params(), ALSA va a estar
+ en modo playback ya todo el rato, consumiendo su buffer (lo consumirá en el tiempo de
+ latencia que le hemos especificado y su tamaño es función de ese tiempo, bytes por
+ muestra y la frecuencia que son los samples que consumirá por segundo) y reproduciendo audio.
+ SIN EMBARGO, REPITO, DENTRO DE CADA SEGUNDO NOSOTROS NO SABEMOS CUÁNDO ACCEDE ALSA A
+ SU PROPIO BUFFER A POR PERIODOS DE SAMPLES, así que el calibrado que hace FBA es erróneo.
+ DEBEMOS TENER PRESENTE que, como ALSA está en modo playback todo el rato accediendo al
+ buffer ALSA y sacando bytes periodo a periodo para reproducirlos, en cualquier momento
+ puede haber un buffer underrun (lo llamamos ALSA UNDERRUN para distinguirlo de otro
+ tipo de buffer underruns, como en el buffer FIFO al leer, etc) debido a esto. O SEA QUE
+ LOS UNDERRUNS NO SE PRODUCEN PORQUE LLAMES A snd_pcm_writei() Y NO HAYA SITIO EN EL
+ BUFFER ALSA: SE PRODUCEN PORQUE ALSA VA A PILLAR UN PERIODO DEL BUFFER Y NO HAY SUFICIENTES
+ BYTES.
+
+->>> El emulador escribe en el buffer FIFO cada vez que completa un fotograma,
+ usando alsa_write(). Esto es seguro. Ver llamada a update_audio_stream() en fba_player.cpp. 
+ Se ha comprobado que escribe un periodo cada vez: 2960 bytes en este caso. O sea que
+ el emulador está escribiendo un periodo en el buffre FIFO cada fotograma.
+ ESTA ES LA CAUSA de que en el paso de parámetros de ALSA eligiésemos una latencia
+ y una frecuencia concretas: al tratarse de un emulador o un juego, va a actualizar
+ el audio un periodo de bytes CADA FOTOGRAMA. Así que quien sea que programó el FBA,
+ lo que hizo fue que, como sabía que iba a tener un periodo por cada fotograma, eligió
+ una combinación de frecuancia y latencia que disese 4 periodos por buffersize.
+ El 4 sólo aparece ahí, 4 periodos por buffersize, con lo que el buffer ALSA se vacía
+ en 4 accesos de ALSA. Lo que hizo fue calibrar la latencia para que el buffer ALSA fuese
+ n veces el periodo, de manera que COINCIDA LA PROPORCIÓN BUFFERSIZE/PERIODSIZE
+ CON LA PROPORCIÓN ENTRE LATENCIA Y TIEMPO DE FOTOGRAMA. En este caso, 4 a 1.
+ LA IDEA ES QUE EL TIEMPO DE LATENCIA SEA PROPORCIONAL AL TIEMPO DE FOTOGRAMA, DE MANERA
+ QUE SEPAMOS CON PRECISIÓN CADA CUÁNTO TIEMPO VA ALSA A ACCEDER A SU BUFFER (DESDE EL LADO
+ DEL JUEGO SABEMOS CADA CUÁNTO VA EL JUEGO A PRODUCIR UN PERIODO, Y LISTO). ASI QUEDAN
+ UNIDOS AMBOS LADOS: LA PRODUCCIÓN DE AUDIO DEL JUEGO POR UNA PARTE Y EL CONSUMO DE
+ ESE AUDIO POR PARTE DE ALSA POR LA OTRA.
+ Dicho de otro modo, tenemos que saber cuántos bytes escribimos en el buffer ALSA 
+ usando snd_pcm_writei(), y esos bytes han de ir en función de cuánto audio produce el 
+ juego o emulador por fotograma (los juegos y emus suelen producir un "trozo" de audio
+ de tamaño fijo en cada fotograma: en cada loop completo, actualizan el vídeo 
+ y luego el audio, produciendo una cantidad fija de bytes por fotograma de vídeo: 
+ así que una buena idea es usar esa cantidad de bytes como periodo de ALSA, de manera
+ que ALSA accede a su buffer una vez por cada fotograma en busca de un periodo para 
+ reproducirlo, lo que es, para un jueg o emulador, una solución muy elegante 
+ y que intentaremos buscar cuando calibremos el playback de audio de un juego o emu).
+
+->>> El alsa_worker_thread va copiando del buffer FIFO al buffer ALSA todo el rato así:
+ -Intentamos leer un periodo completo del buffer FIFO con fifo_read()
+ -Intentamos escribir un periodo completo en el buffer ALSA con snd_pcm_writei().
+  SI NO HAY SUFICIENTE ESPACIO LIBRE EN EL BUFFER ALSA, snd_pcm_write() BLOQUEA HASTA QUE
+  LOS HAYA Y ENTONCES LOS ESCRIBE Y RETORNA (por esa razón, si mides el tiempo que "tarda"
+  esta función, verás que es muy variable, desde bloquear 0ms porque había espacio hasta 
+  bloquear 15ms porque ha tenido que esperar algo, o 27ms porque ha tenido que esperar más
+  ya que estaba el buffer muy lleno). SI MIENTRAS snd_pcm_writei() ESTÁ BLOQUEANDO O 
+  ESCRIBIENDO SE PRODUCE UN BUFFER UNDERRUN (recordemos que esto se puede producir en
+  cualquier momento ya que ALSA está todo el rato cogiendo periodos de bytes y 
+  reproduciéndolos), ENTONCES LA FUNCIÓN RETORNA UN -EPIPE ESTO ES, NOS INFORMA DE QUE
+  HUBO UN ALSA BUFFER UNDERRUN.
+
+¿Por qué nos lo planteamos como un sistema productor/consumidor?
+Pues porque no podemos bloquear en el emulador hasta que se pueda hacer la escritura
+(recordemos que snd_pcm_writei() bloquea hasta que hay sitio en en buffer de ALSA)
+El sistema prod/cons llevará siempre aparejado un buffer donde acceden ambos para dejar lo
+que produce un thread, y para coger lo que consume el otro thread. El sentido de ese buffer
+es bien sencillo: en algún sitio tenemos que guardar lo que produce el productor gasta que
+el consumidor (que no está sincronizado con él) lo consume.
+Este buffer es el buffer FIFO en este caso. 
+
+
+LA CALIBRACIÓN
+==============
+
+El "número de samples" sin más no es suficiente: necesitaremos a ambos lados conocer el
+número de samples por segundo (HZ).
+La calibración no se puede ver de manera estática: se trata de que, en un lapso de tiempo,
+el productor produzca más o menos el mismo número de samples que consume el consumidor 
+en un lapso de tiempo equivalente, para que así no se vacíe el buffer o se desborde.
+Esta relación entre número de samples y tiempo viene dada por la frecuencia.
+Nosotros configuramos en ALSA la frecuencia, pasándosela a set_hwparams(): si le decimos
+que sean 44100Hz, va a consumir 44100 samples por segundo. Con qué frecuencia va a acceder
+a su propio ringbuffer ALSA interno, no debemos pensar que lo sabemos. ESO NOS DA IGUAL:
+nosotros tenemos que cuidar de que nuestro buffer FIFO no se vacíe ni se desborde y ya.
+Y para eso tenemos que producir 44100 samples por segundo desde el emulador.
+Pero el emulador no produce 44100 samples por segundo: el emulador va a producir, por ejemplo
+en el caso que nos ocupa, 736 samples por fotograma, a 60.016804 fotogramas por segundo:
+44172.36774 samples por segundo. O sea, demasiados: el buffer FIFO se acaba desbordando (overrun).
+
+LO MEJOR PARA CALIBRAR ES PENSAR EN SAMPLES POR SEGUNDO DEL PRODUCTOR Y DEL CONSUMIDOR
+(QUE SERÁN NÚMEROS CERCANOS A 44100 o 48000), EN LUGAR DE HACERLO EN BYTES, YA QUE SI TENEMOS
+UN NÚMERO DE SAMPLES POR FOTOGRAMA Y CONOCEMOS LA FRECUENCIA DE REFRESCO EXACTA,
+CONOCEMOS EL NÚMERO EXACTO DE SAMPLES PO SEGUNDO DEL PRODUCTOR, Y DEL LADO DEL CONSUMIDOR
+ES LO QUE LE PASEMOS NOSOTROS A ALSA (PARÁMETRO DE FRECUENCIA). 
+DATE CUENTA también de que el número de frames por acceso a cada buffer no es función del
+tiempo, así que una medida incompleta para calibrar el acceso simultáneo a buffers,
+mientras que la frecuencia sí lo es, sí que tiene en cuenta no sólo el número de frames
+por acceso sino cada cuánto tiene lugar cada acceso. PUEDE QUE COINCIDA EL NÚMERO DE 
+FRAMES POR ACCESO por parte de productor y consumidor pero QUE NO COINCIDA la frecuencia,
+con lo que estamos jodidos porque los periodos de acceso de ambos son distintos y habrá
+overrun o underrun del buffer al que acceden ambos.
+Una vez que sabemos que el emulador produce por ejemplo 44172.36774 samples por segundo 
+y que ALSA consume 44100 samples por segundo,
+ya podemos plantearnos una solución. 
+Fíjate que si bajas de los samples por segundo al número de samples que produce el 
+productor (el emulador) y que consume el consumidor (ALSA), puede que como pasa en el FBA
+te encuentres con el mismo número. Pero lógicamente no tardan lo mismo entre periodo y 
+periodo el productor y el consumidor, así que, al subir a "samples por segundo" de nuevo,
+no nos sale lo mismo: en el caso de FBA nos sale que el productor produce 
+736 samples_por_fotograma * 60.016804 fotogramas_por_segundo = 44172.36774 samples_por_seg
+mientras que el consumidor, por los parámetros que le hemos pasado a ALSA, suponemos que
+consume 44100 samples por segundo.
+YA DIGO: para calibrar el acceso al FIFO entre ambos, es mejor pensar en samples por segundo,
+en lugar de número de samples por acceso en escritura o lectura, porque este número de 
+samples por acceso puede coincidir pero no hacerlo la frecuencia (samples por segundo), 
+ya que la frecuencia sí que es función del tiempo pero los frames por acceso NO LO SON, 
+por lo que no son una referencia válida para calibración de accesos a lo largo del tiempo. 
+
+Veamos cómo se pueden calcular estas cosas...
+
+Sabemos una cosa fija, y sólo una. El emulador corre a 60.016804 HZ de vídeo.
+Pongamos el valor que pongamos en los FPS, eso no va a variar: se va a renderizar
+un frame de vídeo cada 1/60.016804.
+
+En teoría, la frecuencia de audio del emulador, es decir, los samples por segundo
+del productor, son 44100. Pero luego vemos en update_audio_stream() que por cada
+fotograma nos da 736 samples (nBurnSoundLen) que mete en el FIFO.
+Si hacemos nosotrs la cuenta de samples por frame de vídeo, nos saldría
+44100 / 60.016804 = 734.7942 samples por frame.
+SIN EMBARGO, nosotros estamos recibiendo 736 exactos frames por frame de vídeo.
+Así que, como sabemos SEGURO que el framerate es 60.016804, si aceptamos que
+ciertamente estamos recibiendo 736 samples por frame, en realidad la frecuencia a la que
+está produciendo sonido el emulador es 736 * 60.016804 = 44172.36774
+
+Como nosotros vamos a configurar ALSA para consumor 44100 muestras por segundo,
+el ratio entre muestras pruducidas realmente por el emu y las consumidas por ALSA
+es 44100 / 44172.36774 = 0.998361
+Este ratio es el mismo para samples por segundo que para samples por fotograma, así
+que aparece en los samples por fotograma también:
+734.7942 / 736 = 0.998361
+
+Recapitulando: de un lado, tenemos el productor, que aunque le decimos en SndInit()
+que produzca 44100 samples por segundo, produce realmente 44172.36774 (ya que produce
+736 muestras por fotograma y el emulador corre, debido a mi modo de pantalla, a 60.016804 
+fotogramas por segundo).
+Del otro lado, tenemos el consumidor, ALSA, que consume efectivamente los 44100 samples
+por segundo que le hemos configurado, que toma las muestras de 736 en 736 (igual que las
+produce el productor), pero que no las toma a intervalos regulares: es decir, ALSA no
+consume esas 44100 muestras de cada segundo en 4 periodos exactos sino CUANDO LE VIENE BIEN,
+o sea que a veces lee dos periodos de 736 frames seguidos, otras veces lo hace de otra
+manera... Ahí ya entraríamos en el tema de las interrupciones y el scheduler del SO.
+Sin embargo, el buffer FIFO "amortigua" este camino de baches irregular del consumidor, y
+al final lo que nos cuenta es que consume 44100 samples por segundo, y que lea los periodos
+de 736 samples cuando quiera: al cabo de cada segundo, habrá sacado 44100 muestras del FIFO
+y eso es lo que cuenta de cara a compensar los accesos. (El buffer FIFO de un determinado
+tamaño también "amortigua" las esperas en bloqueo por acceso simultáneo desde ambos hilos,
+así que en general es necesario cuando se tiene dos thread como prod/cons siempre).
+DENTRO DE CADA SEGUNDO, EL PRODUCTOR SÍ ES REGULAR ACCEDIENDO AL FIFO PARA ESCRITURA,
+PERO ALSA NO ES REGULAR ACCEDIENDO AL FIFO PARA LECTURA. Eso da igual si conseguimos que el
+productor produzca 44100 muestras por segundo exactamente. Aquí entra el resampler. 
+
+BLOQUE 1 SOBRE EL RESAMPLER
+===========================
+
+-El valor del campo ratio es asignado en audio_driver_flush(), en audio/audio_driver.c. 
+Queda perfectamente claro que ratio es frecuencia_de_salida / frecuencia_de_entrada.
+En esta línea:
+src_data.ratio = audio_driver_data.src_ratio;
+
+-El cálculo de se hizo también en audio/audio_driver.c, de este modo: 
+audio_driver_data.orig_src_ratio = audio_driver_data.src_ratio =
+      (double)settings->audio.out_rate / audio_driver_data.in_rate;
+Como ya se ha dicho, ratio es frecuencia_de_salida / frecuencia_de_entrada.
+Esta asignación se hace una vez al lanzar un core y listo.
+Los valores (frecuencias) que se manejan para hallar el ratio usando el core 
+de fceumm son estos en la Pi:
+(gdb) p settings->audio.out_rate
+$1 = 48000
+(gdb) p audio_driver_data.in_rate
+$2 = 31996.2383
+Para el gambatte, el output rate es igual, pero el input rate es:
+$2 = 32926.7188
+ESTO VA A SER IGUAL PARA TODOS LOS RESAMPLERS, ya que este código de cálculo y asignación
+del ratio para el resampler es igual usemos el que usemos.
+
+-La pila de llamada a la función resampler_nearest_process() es fácil de ver si es necesario.
+
+-Fraction NO RECIBE NINGÚN VALOR FUERA DE nearest.c, PERO ACUMULA VALOR DE UNA LLAMADA A OTRA
+ DE resampler_nearest_process(), en plan "cuántos samples me debes" entre fotogramas.
+
+EL FUNCIONAMIENTO DE LA FUNCIÓN resampler_nearest_process()
+Es la única función importante del resampler, las demás son de inicialización o cierre.
+
+DOS nociones matemáticas previas FUNDAMENTALES en audio: 
+
+-Si tenemos que resamplear de una frecuencia a otra, lo primero que tenemos que tener
+ en cuenta es que hablemos de samples POR SEGUNDO en la parte del productor y del
+ consumidor. NADA DE SAMPLES POR FOTOGRAMA, o de samples por periodo de ALSA, SÓLO NOS
+ VALEN SAMPLES POR SEGUNDO A AMBOS LADOS para la comparación y el ajuste.
+
+-A veces necesitaremos hacer algo un número no entero de veces: eso en principio es imposible
+ ya que no podemos iterar en un bucle un número no entero de veces ni podemos desplazar un
+ puntero un número no entero de veces. Pero sí podemos hacer eso un número no entero de
+ veces "de media", moviéndonos alrededor de ese número no entero de veces, es decir, pasánodos
+ algunas de las veces que entramos en el bucle, y quedándonos cortos en otras. Es necesario,
+ obviamente, que haya un bucle externo para reentrar en el interno ese número variable de veces.
+ El fundamento es similar al del algorirmo de la recta de Bresenham: se fija un valor de 
+ threshold que nos "avisa" de que, o bien debemos seguir en el bucle porque no nos hemos aproximado
+ suficiente al número no entero de iteraciones deseado, o bien debemos salir de él por el momento
+ porque nos hemos pasado. Y así, a lo largo del tiempo, como "media", conseguiremos que parezca
+ que hemos iterado ese número no entero de veces que deseamos.
+ El valor que usemos como threshold NO es el número no entero de iteraciones que deseamos.
+ De hecho, puede ser cualquier número con tal de que lo usemos correctamente, esto es, que
+ sumemos este valor de threshold al acumulador que usamos para evaluar el bucle interno cada 
+ vez que salimos de él.
+ Para elegirlo, simplemente tenemos que dividir el número que queramos como threshold entre el
+ número de iteraciones deseado. Así obtenemos un número de partes iguales (no necesariamente enteras
+ tampoco), número de partes iguales (no necesariamente entero) que se corresponde con el número
+ de iteraciones deseado. Así que digamos que cada parte, repetida tantas veces como iteraciones
+ deseamos, nos daría el valor que usamos como threshold. LO QUE PASA es que ese número de
+ iteraciones que deseamos no es entero, por lo que al evaluar el threshold todo lo que sabemos es
+ que estamos por encima o por debajo del valor deseado. Si estamos por debajo continuamos en
+ el bucle y si estamos por encima nos salimos, sumamos el threshold al acumulador y 
+ volvemos a entrar.
+ Hay que estar por encima del valor de threshold para entrar en el bucle interno, así que,
+ como sobre el acumulador sólo podemos sumar thresold, la primera vez que entramos en el
+ bucle interno el acumulador lleva ya encima dos veces el valor de threshold. 
+ ES MUY COMÚN ELEGIR 1 COMO VALOR DE THRESHOLD, así que por eso hacemos 
+ ratio = 1 / (output_rate / input_rate), porque ahora ya sabemos que si sumamos más de 1 en
+ el acumulador (fraction) es que nos hemos pasado copiando samples de ese input en sucesivas
+ posiciones de output y si no llegamos a 1 es que aún tenemos que seguir copiando de la posición
+ de input actual a sucesivas posiciones de output.
+
+-El razonamiento concreto es este: 
+ ¿cúantas veces tengo que avanzar en output por cada avance en input?
+ Pues eso es el ratio que nos llega: ratio es output_rate / input_rate. 
+ Para ayudarte a verlo, puedes imaginar que output_rate es 48000 y que input_rate es 32000.
+ Entonces la proporción es de 1.5 samples de output por cada uno de input (recuerda
+ que el término "por cada uno de..." siempre es el de abajo en una fracción).
+ Sin embargo, no podemos iterar en el bucle que copia el mismo sample de input a varias
+ posiciones de output 1.5 veces, ni podemos copiar 1.x samples: sólo podemos avanzar sample
+ a sample con los punteros, siempre un número ENTERO de samples.
+
+ Entonces la solución es usar un valor de threshold: 
+
+ Lo que hacemos, siguiendo el ejemplo, es que esos 1.5 samples en output por sample 
+ en input "emanarán" de que a veces copiaremos 2 y otras veces 1. Por ejemplo, imagínate
+ lo que ocurre en cuatro posiciones de input distintas, o sea, cogiendo como ejemlo cuatro 
+ samples de input diferentes:
+ evaluando el valor fraction respecto al threshold, una vez escribimos 2, otra 1, otra 2 
+ y otra 1. Pues si te fijas, (1+2+1+2)/4 = 1.5. Ciñéndonos a esos cuatro samples, 
+ Esto NO TIENE POR QUÉ SALIR EXACTO, ES SOLO UNA CASUALIDAD. NO SE TRATA DE UNA MEDIA,
+ sino de que al ir evaluando ratio respecto al threshold, a lo largo del tiempo vamos a
+
+ ...Imagínate la "exactitud" que se puede conseguir con los samples de un fotograma,
+ y más aún, dado que queremos producir el mismo número de samples por segundo que
+ consume ALSA, la "exactitud" que podemos conseguir con los samples de un segundo,
+ con sus 60.016804 fotogramas.
+ 
+ FUNDAMENTAL HACER ESTO CON LA CALCULADORA PARA VERLO.
+-Si seguimos la ejecución del algoritmo, vemos que como media tendemos a meter 1.5 samples
+ en output por cada sample de input. Lo podemos ir viendo con la calculadora: a cada iteración
+ de bucle externo, miramos si tenemos fraction > 1, si es así entramos en el bucle interno,
+ en cada iter del bucle interno restamos ratio (= 1 / 1.5) y cuando estemos por debajo de 1,
+ salimos del bucle interno, incrementamos input, le sumamos el threshold al acumulador (fraction)
+ y evaluamos si entrar en el bucle de nuevo.
+ Tienes que empiezar desde un valor de 2 para el fraction o acumulador (ya que sólo se entra 
+ en el bucle de copia con fraction > 1 y sólo podemos incrementarlo desde el bucle externo sumando 
+ de 1 en 1 que es el valor del threshold). 
+
+-La función es llamada UNA VEZ POR FOTOGRAMA DE VÍDEO, por lo que procesa los 
+ samples por fotograma, pero como el valor de fraction se conserva entre llamadas, la
+ compensación (siguendo con el ejemplo, "debemos samples en output así que vamos a escribir 
+ dos frames", o por el contrario "con que escribamos un sample durante esta
+ posición de input es suficiente") sigue operando de un fotograma a otro.
+
+-Nuestro resamplen en FBA entrará una vez por cada fotograma de vídeo, y no se trata de que
+ por cada 736 frames de entrada produzca los que sean de salida, sino que como fraction
+ se conserva entre llamadas al resampler, el número de samples que se produzcan a la
+ salida del resampler en un fotograma y los que se produzcan a la salida del resampler
+ en el siguiente fotograma serán y pueden ser, con toooda la lógica del mundo, distintos.
+ Y TODO ELLO, debes entender y ver que, en un periodo de tiempo mayor, nos va a acercar
+ a los samples por segundo deseados, los que consume el consumidor, que en este caso 
+ son 44100.

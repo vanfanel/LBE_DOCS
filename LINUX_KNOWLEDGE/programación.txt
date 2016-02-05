@@ -787,6 +787,9 @@ Para desplazarnos por el código:
 
 
 ************Medir lapsos de tiempo en segundos en C/Unix**************************************************************************
+
+#include <sys/time.h>
+
 struct timeval t1, t2;
 gettimeofday (&t1, NULL);
 
@@ -799,7 +802,7 @@ También podemos medir milisegundos y microsegundos: por ejemplo, en milisegundo
 restaríamos el campo de los microsegundos, que se resetea al pasar cada segundo, multiplicaríamos esos microsegundos por mil y se lo sumaríamos 
 al número de milisegundos causados por los segundos. Algo así. Lo verás en cuanto busques ejemplos de milisegundos, pero la lógica es esa.
 
-Pasar de microsegundos a milisegundos es sencillo: microsegundos es 10^-6 y milisegundos es 10^-3, por lo que basta multiplicar los microsegundos por mil.
+Pasar de microsegundos a milisegundos es sencillo: microsegundos es 10^-6 y milisegundos es 10^-3, por lo que basta con dividir los microsegundos por mil.
 Lo mejor, por otra parte, es no andar pasando de microsegundos a milisegundos sino simplemente usar un número de 1000 de microsegundos por cada 
 milisegundo para establecer intervalos de tiempo. Por ejemplo:
 

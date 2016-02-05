@@ -147,12 +147,6 @@ Luego configuraríamos con algo como:
 
 (Como puedes ver, no hace falta pasarle nada para activar el soporte de fluidsynth: por defecto, si se detectan las cabeceras y libs de fluidsynth, el soporte se activa solo).
 
-TODO:
-=====
-
-Planificar un parámetro SDL2-acceleration o algo así, que active los SetHint() de aceleración, smoothing, vsync... 
-
-
 ARREGLANDO EL SCROLL EN SCUMMVM LIBRETRO
 ===========================================
 

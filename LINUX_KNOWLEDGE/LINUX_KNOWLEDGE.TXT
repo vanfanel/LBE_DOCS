@@ -12,6 +12,20 @@ Antes de compilarlo, ejecutamos version.sh para que nos cree version.h
 En el PC:
 make BUILD_LINUX=1 GCC_TARGET=64 -j8
 
+********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)**********************************************************************************************************
+
+Los archivos que necesitamos están en este hilo:
+http://forums.rockbox.org/index.php/topic,43630.0.html
+
+Y las instrucciones confusas aquí
+http://www.rockbox.org/wiki/SonyNWZE370Port
+
+PERO para que no tengas ue volver a perder tiempo, la solución es esta: 
+El bootloader es el mismo para todos los NZW 37x y los 38x. El ROCKBOX en sí, igual: el mismo para todos los modelos.
+-Bájate el bootloader, que es el archivo que se llama sonynwze370_rb_firmware.sb. Lo metes en la raíz del dispositivo RENOMBRÁNDOLO a firmware.sb
+-Bájate el Rockbox en sí, que es el archivo que se llama rockbox-sonynwze370.zip, y lo descomprimes en la raiz del dispositivo. Te creará el directorio .rockbox
+-Resetea el dispositivo, si hace falta a base de meter algo en el agujero de reset que tiene detrás (a mi no me hizo falta pero tuve que conectarlo por USB para que se "despertara"
+porque no se encendía tras meter el bootloader y el ROCKBOX en la raíz), y se iniciará en ROCKBOX, o deberia.
 
 ******Copiar y pegar usando GNU/Screen**********************************************************************************************************************************
 
