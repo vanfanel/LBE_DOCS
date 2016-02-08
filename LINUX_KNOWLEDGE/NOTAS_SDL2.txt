@@ -52,6 +52,10 @@ SI QUISIÉRAMOS escalar manteniendo el aspect ratio, o sea, actualizar una textu
 concretas, pues usamos los dos últimos parámetros de SDL_RenderCopy(), que son dos SDL_Rect, orígen y destino.
 ACUÉRDATE de inicializar no sólo los campos de tamaño sino también los de POSICIÓN de estos rects, aunque sea a 0, o no se verá nada.
 
+OTRA MANERA, MUCHO MÁS SIMPLE, DE MANTENER EL ASPECT RATIO, es simplemente hacer algo como esto para mantener el aspect ratio:
+Lo que hace es sencillamente cambiar las proporciones lógicas del renderer, pero no el tamaño de las rects de entrada y salida:
+SDL_RenderSetLogicalSize(_renderer, 320*5, 200*6);
+
 Y listo!!
 
 ===========Cómo funciona el audio en SDL2 comparado con SDL1=================

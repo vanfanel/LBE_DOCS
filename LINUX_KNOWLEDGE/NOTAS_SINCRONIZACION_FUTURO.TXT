@@ -1,0 +1,24 @@
+-Cuando quieras sincronizar el audio y vídeo de un emulador, dentro de un tiempo, no sabrás por dónde
+empezar, así que estas notas son para eso.
+-Empieza considerando que SABES cuántos samples por segundo consume ALSA: los 44100 HZ o 48000 HZ que
+ le pasas como parámetro a set_hwparams() o a las SDL cuando inicializas el audio.
+ Si le pasas 44100, ALSA consumirá 44100 samples por segundo de su propio buffer.
+ En este punto puedes pensar si quieres que normalmente cada sample serán 4 bytes: 16 bits por muestra
+ y dos canales (sonido stereo), nos dan 32 bits = 4 bytes por sample.
+-Sobre el productor, el emulador, tienes que saber CUÁNTOS SAMPLES entrega por cada fotograma de vídeo.
+ Una vez que conozcas este número de samples por fotograma, necesitas saber a CUÁNTOS FOTOGRAMAS POR
+ SEGUNDO corre exactamente. Si el vídeo está bien programado, correrá exactamente a los HZ de refresco
+ del modo físico de pantalla. Pongamos que son 60.016804 HZ o FPS.
+ Una vez que sabemos esto, podemos AVERIGUAR CUÁNTOS SAMPLES POR SEGUNDO PRODUCE EL PRODUCTOR:
+ pongamos que entrega 736 samples por fotograma, y que corre a esos 60.016804 FPS, pues
+ 736 * 60.0186804 = 44172.36774.
+-Piensa ahora que lo que produce el productor va a un buffer (un buffer FIFO por ejemplo) al que
+ también accede un thread que copia al bufer del consumidor (ALSA). O sea que hace falta implementar
+ aislamiento de acceso con locks y tal. Muy sencillo. Mira cómo se hace en FBA si quieres.
+-El ratio entre las dos frecuencias, los 44100 del consumidor (ALSA) y los 44172.36774 del productor
+ (emulador) se usará luego en el resampler. 
+ El resampler ENTRARÁ COMO ES LÓGICO UNA VEZ POR CADA FOTOGRAMA, y "escalará" los samples de esa
+ "entrega". En RetroArch va así.
+ El funcionamiento del resampler se explica a parte en los
+ documentos que te has hecho dentro del directorio AUDIO_ALSA. No tengo claro si hace falta arrastrar
+ el valor de fraction entre llamadas al resampler.

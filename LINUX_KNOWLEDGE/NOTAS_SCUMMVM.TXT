@@ -45,6 +45,10 @@ Con engines selectos:
 
 ./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,neverhood,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
 
+Con engines selectos Y música .OGG (Simon the Sorcerer, Inherit the Earth):
+
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --enable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,neverhood,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
+
 Sin dispmanx:
 
 ./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
@@ -136,7 +140,8 @@ añadir estas cosas al configure, donde añades las demás movidas cuando host=r
                        # This is so optional installed libraries includes (fluidsynth, flac...) are found.
                         append_var CXXFLAGS "-I$RPI_ROOT/usr/include"
                         append_var CXXFLAGS "-I$RPI_ROOT/usr/include/arm-linux-gnueabihf"
-                        _opengl="no"
+                        
+SEA LA LIBRERíA QUE SEA, AÑADE EXACTAMENTE ESAS LÍNEAS, y nada más.
 
 Además, pondremos arriba lo de:
 _use_cxx11="yes"

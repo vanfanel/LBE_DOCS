@@ -1,3 +1,19 @@
+******Notas SDLPop : el clon open source y libre de Prince of Persia *****************************************************************************************************************************************************
+
+Para adaptar los controles a tu gusto, ve a SDL_JOYBUTTONDOWN  y a SDL_JOYBUTTONUP, y en ambos casos verás que los CASE de los botones están en secuencia: 0 1 2 3
+Pues ponlos en 0 1 3 2, EN AMBOS, tanto en el SDL_JOYBUTTONDOWN como en el SDL_JOYBUTTONUP
+Ahora, para que abajo en el pad funcione como debe, ve a SDL_JOYAXISMOTION y añade este bloque justo antes del break:
+
+if (event.jaxis.axis == 1) { 
+
+	if (event.jaxis.value > 8000)
+		gamepad_states[1] = 1; // down 
+	else 
+        	gamepad_states[1] = 0; 
+}
+
+A parte de eso, añade los flags del renderer (también en seg009.c como todo lo de los controles que hemos dicho hasta ahora) y los del gcc en el Makefile, y a compilar.
+
 ******Compilando OpenBOR*********************************************************************************************************************************************
 
 Hay que pillar los surces de la última revisión estable. El número lo sacamos de la versión que tengan en la página para descargar.
@@ -11,6 +27,13 @@ Antes de compilarlo, ejecutamos version.sh para que nos cree version.h
 
 En el PC:
 make BUILD_LINUX=1 GCC_TARGET=64 -j8
+
+******Another World en la Raspberry Pi***********************************************************************************************************************************
+Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
+
+-En el Makefile: quitar -lGLde los SDL_LIBS y graphics_gc.cpp de SRCS
+-En graphics.h quitamos todo lo que lleve GL
+-En main.cpp quitamos todo lo que lleve GL, y cambiamos el tipo de gráficos por defecto a GRAPHICS_ORIGINAL, y ya de paso si quieres el lenguaje por defecto a LANGUAGE_US
 
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)**********************************************************************************************************
 
@@ -2117,7 +2140,7 @@ CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -m
 
 lueg make -j8 y a correr.
 
-Para SDL_image y SDL_mixer, hay que correr el autogen.sh o luego no compilará.
+Para SDL_image y SDL_mixer, si no compilan (suelen compilar sin problemas), corre el autogen.sh antes del configure, PERO NO SUELE HACER FALTA.
 Configuramos con
 
 CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr
@@ -2135,6 +2158,10 @@ SDL_gfx tiene problemas para compilar en arm si no deshabilitamos el soporte par
 
 ./autogen.sh
 CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix="/usr" --disable-mmx
+
+			CUIDADO
+
+SDL2_ttf tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
 
 NOTA
 
