@@ -1385,6 +1385,9 @@ Luego nos bajamos la versión de Activision de emuparadise o donde nos de la gan
 Los metemos en el mismo directorio que el ejecutable de wolf4sdl (wolf3d), y ya debería ir (Excepto por temas de las SDL, ya que por defecto
 el juego intenta reutilizar el modo de vídeo actual y eso está mal: editamos el código y lo ponemos a 320x200 en 16bpp).
 
+Si aún así no tira, edita Makefile y cambia el DATADIR a ./, de tal manera que desde ahora simplemente metes los ficheros de datos del juego en el mismo
+directorio que el ejecutable que acabas de compilar y los encuentra.
+
 Otra cosa: los scripts de configuración del juego usan sdl-config --libs (o lo que es lo mismo, pkg-config --libs sdl) para ver dónde están tanto las
 librerías libSDL1.2 como las SDL_mixer. Así que si tienes las SDL1.2.x en /usr/local/lib/armhf-gnueabi, no va a encontrar las SDL_mixer, ya que estas
 están en /usr/local/lib y sdl-config o pkg-config sólo devuelven las rutas de las libSDL1.2.x y se asume que ahí van a estar las SDL_mixer también.
