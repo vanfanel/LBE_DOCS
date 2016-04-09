@@ -35,42 +35,75 @@ COSAS QUE SE HAN HECHO PARA INTENTAR ELIMINAR EL BLACK SCREEN ON EXIT
 *************Crosscompilar scummvm en el PC para la Raspberry Pi***************************************************************************
 
 Las instrucciones para compilar el scummvm para la Pi las he puesto en la wiki del scummvm, en http://wiki.scummvm.org/index.php/Compiling_ScummVM/RPI#Configuring_ScummVM
-Empieza haciendo lo que dice esa guía.
+Empieza haciendo lo que dice esa guía, o sea:
 
-Para compilación rápida de prueba, sólo con engine SCUMMVM:
-
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
-
-Con engines selectos:
-
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,neverhood,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
-
-Con engines selectos Y música .OGG (Simon the Sorcerer, Inherit the Earth):
-
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --enable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,neverhood,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
-
-Sin dispmanx:
-
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr  --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
-
-En local y con los engines que sueles usar:
-
-./configure --enable-dispmanx --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
+export RPI_ROOT=/opt/rpi_root
+PATH=$PATH:$HOME/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin
 
 Al pasarle como host la Raspberry Pi (--host=raspberrypi), compilará contra SDL2 automáticamente, porque se pone _sdl-config a sdl2-config.
 
-Acuérdate de exportar RPI_ROOT o ponerlo antes de configure!
+Para compilación rápida de prueba, sólo con engine SCUMMVM:
+
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab
+
+Con engines selectos:
+
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,neverhood,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab
+
+Con engines selectos Y música .OGG (Simon the Sorcerer, Inherit the Earth):
+
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --enable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-png --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,neverhood,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,mohawk,lab
+
+Lo mismo pero para Raspberry Pi 2 específicamente con sus flags (cambia el optimization level a 3 a mano en el cofigure):
+
+CFLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --enable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-png --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,neverhood,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,mohawk,lab
+
+Lo mismo pero para Raspberry Pi 1 específicamente con sus flags (cambia el optimization level a 3 a mano en el cofigure):
+
+CFLAGS="-marm -march=armv6j -mfpu=vfp -mfloat-abi=hard -ffast-math" CXXFLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --enable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-png --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,neverhood,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,mohawk,lab
+
+Con engines selectos, con soporte para MYST y música OGG. NECESITA que actives el soporte para librerías externas. Mira más abajo!:
+
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --enable-vorbis --disable-png --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,neverhood,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab --enable-engine=myst
+
+Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
+
+
+
+*********COMPILAR SCUMMVM EN LOCAL EN LA PI O LA PI2*********************************************************************************************************************************
+
+===EN LOCAL: Cambia sdl-config a sdl2-config en configure.===
+
+En local y con los engines que sueles usar:
+
+./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab
+
+En local de pueba con scumm solo:
+
+./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab,agi,agos,dreamweb,kyra,neverhood,saga,sci
+
+==PARA RELEASE, CON PLUGINS DINÁMICOS==
+
+Para hacer una release (engines como plugins dinámicos, todos los que vienen activados por defecto estarán activados, necesitarás libjpeg-dev, libpng-dev y libvorbis-dev, aunque estos no tienen por qué ser sus nombres exatctos, para engines como Sword 2.5 o Wintermute):
+
+./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --enable-plugins --default-dynamic
+
+En local, con plugins dinámicos y mis engines selectos, y con ogg (vorbis):
+
+./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --enable-plugins --enable-vorbis --disable-jpeg --disable-png --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab
+
+En local, con plugins dinámicos y mis engines selectos, y con ogg (vorbis), y optimizado para Raspberry Pi 2, cambia optimization_level a 3 en configure :
+
+CFLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --enable-plugins --enable-vorbis --disable-jpeg --disable-png --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,mohawk,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab
+
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
 
 Ahora sólo me queda arreglar el soporte de SDL2: mira la sección "Arreglando plain SDL2 rendering en la Pi" más abajo.
-
-NO PONGAS el nivel de optimización a 3 (default_optimization_level=-O3) en el configure: fallarán los juegos del engine AGI (King's Quest y Space Quest de Apple IIGS).
 
 Si quieres GLES, pon 
 _opengles=yes
 _opengl=yes
 en el configure, en la sección de host rapberrypi donde pones las cosas.
-
 
 Para quitar el WARNING de los EOB (Eye of the Beholder), editamos
 engines/advancedDetector.cpp
@@ -126,7 +159,7 @@ Editamos
 engines/advancedDetector.cpp
 y ponemos showTestingWarning a false en el ifdef de release.
 
-*********Compilar contra librerías externas (fluidsynth...)*************************************************************************************
+*********Compilar contra librerías externas (libfluidsynth, libjpeg...)*************************************************************************************
 
 En la versión publicada del scummvm, no he tenido en cuenta esta posibilidad porque, primero, en principio no hacia falta ya que se prefiere el sonido
 original de los juegos, y en segundo lugar, como le pasamos rutas de includes que se necesitan para estas librerías (/usr/include/arm-linux-gnueabihf)

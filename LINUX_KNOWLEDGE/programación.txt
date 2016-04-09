@@ -21,7 +21,7 @@ Lo que tienes que hacer es buscarlo a lo largo y ancho del sysroot que esté con
 find /opt/rpi_root -name 'libSDL.so'
 O si te dice "can't find -lm",  
 find /opt/rpi_root -name 'libm.so'
-Ua vez que sabemos dónde está el script LD de texto, le pasamos su ruta al compilador con -L/<ruta>.
+Una vez que sabemos dónde está el script LD de texto, le pasamos su ruta al compilador con -L/<ruta>.
 
 *Error
 ld: cannot find /lib/arm-linux-gnueabihf/libc.so.6

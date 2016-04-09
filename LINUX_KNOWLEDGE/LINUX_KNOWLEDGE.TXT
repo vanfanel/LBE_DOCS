@@ -1,3 +1,38 @@
+******Descargar contenidos de ITunes desde Linux sin ITunes*********************************************************************************************************************************
+
+El programa se llama tunesviewer.
+Si te da un error y no te deja buscar, dale a view y desactiva Request HTM5 Mode.
+Cambia la búsqueda a Podcast Search.
+
+******Medir la temperatura en Raspberry Pi*************************************************************************************************************************************************
+
+vcgencmd measure_temp
+
+******Medir velocidad de la CPU en Raspberry pi**********************************************************************************************************************************************
+
+sudo cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+vcgencmd get_config arm_freq
+
+******SDL2 en la Raspberry Pi 2***************************************************************************************************************************************************************
+
+Instalamos libudev-dev y libasound2-dev, lo primero.
+
+Bajamos los sources estables de http://libsdl.org/download-2.0.php
+
+Configuramos con:
+
+CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -funsafe-math-optimizations" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -funsafe-math-optimizations" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus
+
+Compilamos e instalamos.
+
+Para SDL mixer, y SDL_image, primero instalamos libvorbis-dev, libpng12-dev
+
+Configuramos con:
+
+CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -funsafe-math-optimizations" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -funsafe-math-optimizations" ./configure --prefix=/usr
+
+SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
+
 ******Notas SDLPop : el clon open source y libre de Prince of Persia *****************************************************************************************************************************************************
 
 Para adaptar los controles a tu gusto, ve a SDL_JOYBUTTONDOWN  y a SDL_JOYBUTTONUP, y en ambos casos verás que los CASE de los botones están en secuencia: 0 1 2 3
@@ -13,6 +48,17 @@ if (event.jaxis.axis == 1) {
 }
 
 A parte de eso, añade los flags del renderer (también en seg009.c como todo lo de los controles que hemos dicho hasta ahora) y los del gcc en el Makefile, y a compilar.
+
+******Cambiar la región de un juego de Mega Drive y Master System************************************************************************************************************************
+
+Editamos el juego con el hexedit. Nos vamos a la dirección $1F0. Pulsamos TAB para ir al texto. Cambiamos la E por una U, o por una J, como queramos.
+Salimos y salvamos con CTRL+X.
+Si el juego así alterado nos da un pantallazo rojo o negro, es que nos hemos cargado el checksum, pero sería muy raro. Hay programas para repararlo, anyway.
+
+Para juegos de Master System, buscamos $7FFF, que ya sé que está muy avanzada, pero es esa, y cambiamos el valor correspondiente a los primeros 4 bits de esa dirección , 
+si es PAL vendrá un 4, pones un 3 donde el 4 SIN CAMBIAR al texto con TAB, sino directamente en los valores en HEX, y ya.
+y ya tienes JAP.
+Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHeader#ProductCode7ffc25Bytes
 
 ******Compilando OpenBOR*********************************************************************************************************************************************
 
@@ -31,9 +77,10 @@ make BUILD_LINUX=1 GCC_TARGET=64 -j8
 ******Another World en la Raspberry Pi***********************************************************************************************************************************
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
--En el Makefile: quitar -lGLde los SDL_LIBS y graphics_gc.cpp de SRCS
+-En el Makefile: quitar -lGLde los SDL_LIBS y graphics_gl.cpp de SRCS
 -En graphics.h quitamos todo lo que lleve GL
 -En main.cpp quitamos todo lo que lleve GL, y cambiamos el tipo de gráficos por defecto a GRAPHICS_ORIGINAL, y ya de paso si quieres el lenguaje por defecto a LANGUAGE_US
+En la línea de stub->init, pasa false en el parámetro de OPENGL.
 
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)**********************************************************************************************************
 
@@ -162,20 +209,135 @@ https://github.com/raspberrypi/firmware/issues/354
 
 *******DOSBOX en la Raspberry Pi*******************************************************************************************************************************
 
-A parte de aplicar mi parche de GLES2, se configuraría con
+Lo primero es parchear para SDL2, tienes el parche en este hilo de vogons:
 
-CFLAGS="-Ofast -mfpu=vfp -march=armv6j -mfloat-abi=hard" CXXFLAGS="-Ofast -mfpu=vfp -march=armv6j -mfloat-abi=hard" ./configure --disable-opengl --enable-opengles
+http://www.vogons.org/viewtopic.php?f=32&t=34770&p=478345#p478345
+
+La última versión del parche, que es de ny0023, es para la release 3924.
+Nos la bajamos:
+
+svn checkout --revision 3924 svn://svn.code.sf.net/p/dosbox/code-0/dosbox/trunk dosbox-code-0
+
+Entramos en dosbox-code-0, y si por ejemplo tenemos el parche en el directorio inmediatamente anterior, parcheamos así:
+
+patch -p0 < ../dosbox_sdl2_20150713.diff
+
+Configuraríamos para SDL2.  Para Pi1 con:
+
+CXXFLAGS="-O3 -marm -mfpu=vfp -march=armv6j -mfloat-abi=hard"  ./configure --with-sdl=sdl2 --disable-opengl
+
+Para Pi2 con
+
+CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer -ffast-math"  ./configure --with-sdl=sdl2 --disable-opengl
+
+Luego en el conf nos interesará tener la opción output=texture o texturenb. Luego ya SDL2 usa por debajo GLES en la Pi o lo que sea, para esa textura..
 
 Hemos encontrado las las instrucciones para dynarec ARM y para UNALIGNED MEMORY ACCESS en estas páginas:
 
 https://www.raspberrypi.org/forums/viewtopic.php?f=78&t=95421
 http://boards.openpandora.org/topic/7544-dosbox-dynrec-update/
 
-Mi parche ya activa estas cosas si detecta el BCM de una Pi1. Puedes confirmar que en config.h están estas cosas así:
+El asunto se reduce a dejar config.h con estas cosas así para Pi1:
 
 #define C_DYNREC 1
 #define C_TARGETCPU ARMV4LE
 #define C_UNALIGNED_MEMORY 1
+
+Así para Pi2:
+
+#define C_DYNREC 1
+#define C_TARGETCPU ARMV7LE
+#define C_UNALIGNED_MEMORY 1
+
+Ahora sólo queda parchear el refresco de pantalla...Mira a continuación cómo añadir un control de refresco!
+
+AÑADIR CONTROL DE REFRESCO DE PANTALLA DESDE FICHERO DE CONFIGURACIÓN
+=======================================================================
+
+Empezamos con src/gui/sdlmain.cpp
+Busca la línea donde recupera el valor de "display" del fichero de configuración. Es así esa línea que buscas:
+
+sdl.displayNumber=section->Get_int("display");
+
+Vale, pues justo encima,o debajo, pero por ahí, nosotros vamos a recuperar el valor de "refresh":
+
+        vga.refreshRate=(double)section->Get_int("refresh") / 1000000.0;
+        LOG_MSG("Physical refrest rate %f \n", vga.refreshRate);
+
+Ahora tenemos que añadir ese nuevo valor a los valores del fichero. Busca donde se añade el valor "renderer", por ejemplo, que es una sección que tiene esta pinta
+
+        Pstring = sdl_sec->Add_string("renderer",Property::Changeable::Always,"auto");
+        Pstring->Set_help("Choose a renderer driver if output=texture or output=texturenb. Use output=auto for an automatic choice.");
+        Pstring->Set_values(renderers);
+
+Pues debajo o así añadimos nosotros refresh, de una forma parecida:
+
+        // Add refresh
+        Pint = sdl_sec->Add_int("refresh",Property::Changeable::Always,60000000);
+        Pint->SetMinMax(50000000,70000000);
+        Pint->Set_help("Screen refresh rate.");
+
+Ahora, si te fijas, el valor de refresh ya dividido y tal para que en vez de un entero sea un double, lo estamos guardando en vga.refreshRate, así que nos vamos al
+fichero include/vga.h, que lo ven tanto vga_draw.cpp como sdl_main.cpp, y en la estructura VGA_Type, al final, añadimos 
+double refreshRate;
+
+Ahora ya lo tenemos: sólo queda irse a src/hardware/vga_draw.cpp y cambiar esto:
+fps=(double)clock/(vtotal*htotal);
+..por esto otro:
+fps=vga.refreshRate;
+
+Por último, a nuestro .conf le añadimos algo como:
+refresh=60016804;
+Eso debería darnos un refresco de 60.016804 HZ
+
+CAMBIA BOTONES O TECLAS
+========================
+
+Sacamos el mapper con CTRL+F1. Hacemos los cambios que queramos, y luego el fichero .map lo especificamos en el campo mapperfile del .conf que vayamos a usar.
+
+CORE DOSBOX RETROARCH: ACTIVAR DYNREC
+=======================================
+
+Hay que pasarle los flags de dynrec, unaligned memory y tal en el Makefile.libretro. Las platform definitions para la Pi2 están así:
+
+# Raspberry Pi 2
+else ifeq ($(platform), rpi2)
+   TARGET := $(TARGET_NAME)_libretro.so
+   LDFLAGS += -shared -Wl,--version-script=libretro/link.T
+   fpic = -fPIC
+
+   ENDIANNESS_DEFINES := -DLSB_FIRST
+   COMMONFLAGS += -DARM
+   COMMONFLAGS += -mfloat-abi=hard
+   COMMONFLAGS += -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer -fstrict-aliasing -ffast-math
+   COMMONFLAGS += -DDISABLE_EXCEPTIONS
+   COMMONFLAGS += -DC_DYNREC -DC_TARGETCPU="ARMV7LE" -DC_UNALIGNED_MEMORY
+   IS_X86 := 0
+   NEED_BPP := 16
+
+
+Luego nos vamos a
+
+libretro/dosbox.cpp
+
+Buscamos el bloque:
+
+const char* cores[] = { "auto",
+#if (C_DYNAMIC_X86) || (C_DYNREC)
+		"dynamic",
+#endif
+		"normal", "simple",0 };
+Pstring = secprop->Add_string("core",Property::Changeable::WhenIdle,"auto");
+
+Y lo dejamos así:
+
+const char* cores[] = { 
+                "dynamic"};
+Pstring = secprop->Add_string("core",Property::Changeable::WhenIdle,"dynamic");
+
+Compilamos con:
+
+make -f Makefile.libretro -j8 platform=rpi2
 
 *******EN RASPBIAN NO PUEDO DEBUGEAR PROGRAMAS EN C++ QUE HAN SIDO COMPILADOS CON DISTCC*********************************************************
 Da todo el rato "no symbol <loquesea> in current context".
@@ -895,13 +1057,16 @@ hay que quitarlo como servicio pero no desinstalarlo del sistema porque OMXplaye
 -Ponemos los LOCALES con: dpkg-reconfigure locales. Elegimos que se genere SÓLO en_US.UTF8, y dejamos ese puesto. ESTO nos quita errores de teclado a través de SSH.
 -Ponemos el idioma del teclado con raspi-config, y expandimos el filesystem, overclocking y demás movidas. El layout del teclado no se cambia hasta reboot.
 -Ponemos una IP estática. Para ello:
+	-Eliminamos del sistema estas cosas para que no se sobreescriba resolv.conf en cada arranque:
+		sudo apt-get purge dhcpcd5 openresolv
 	-Dejamos /etc/resolv.conf como:
 		nameserver 8.8.8.8
 	-Deshabilitamos los servicios de red que no vamos a usar y que sobreescribirían /etc/resolv.conf:
 		sudo systemctl disable networking
 		sudo systemctl disable ifup
 	...todo lo que veamos relacionado con la red.
-	-Ponemos a capón en /etc/rc.local la configuración de la red:
+	-Levantamos la red y ponemos a capón en /etc/rc.local la configuración de la red:
+		ifconfig eth0 up
 		ip addr add 192.168.5.8/24 dev eth0
 		ip route add default via 192.168.5.7	
 	-Ya de paso, ponemos en rc.local el governor a performance:
@@ -913,7 +1078,7 @@ consoleblank=0
 -Ya que estamos, también añadimos loglevel=3 para que el kernel sólo nos avise de cosas importantes de verdad.
 
 -Empezamos a eliminar mierda, que se hace en varias fases porque al eliminar libgtk* se instalan más mierdas:
-sudo apt-get purge avahi-daemon triggerhappy dbus plymouth ntp dphys-swapfile rsyslog openresolv libreoffice* webkit* libgtk* libreoffice*
+sudo apt-get purge avahi-daemon triggerhappy dbus plymouth ntp dphys-swapfile rsyslog openresolv dhcpcd5 libreoffice* webkit* libgtk* libreoffice*
 sudo apt-get purge greenfoot bluej 
 sudo apt-get purge oracle-java7-jdk pinentry-curses x11-common x11-* nfs-common
 sudo apt-get purge cron anacron
@@ -1003,6 +1168,15 @@ sudo systemctl mask systemd-modules-load
 Y añadimos a rc.local:
 modprobe snd_bcm2835
 
+-Si queremos dejar que systemd gestione la carga de módulos (es lo último que suelo venir haciendo) pero queremos quitar el módulo uio y el uio_noséqué, creamos el fichero:
+/etc/modprobe.d/uio_pdrv_genirq.conf
+Con el contenido
+blacklist uio_pdrv_genirq
+Y hacemos
+depmod -ae
+update-initramfs -u
+Reiniciamos y ya no debería estar.
+
 -Borramos /etc/motd
 -Para quitar el lastlogin, editamos sudo vim /etc/pam.d/login y comentamos la línea:
 session optional pam_lastlog.so
@@ -1019,7 +1193,13 @@ sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 Mandamos el openssh al carajo y reiniciamos ya con dropbear:
 apt-get purge openssh-server
 
--En config.txt ponemos boot_delay=0, verificamos los valores de overcloking (1Ghz para la Pi 1) y ponemos el modo de vídeo a group 3, mode 39.
+-En config.txt ponemos boot_delay=0, verificamos los valores de overcloking (1Ghz para la Pi 1) y ponemos el modo de vídeo a group 2, mode 39.
+  Además, añadimos:
+
+# Disable undervoltage and overheat warnings
+avoid_warnings=2
+
+...porque el warning de undervoltage salta sin sentido cada vez que conecto el pad USB, y no queremos eso.
 
 									SECCIÓN RESÚMEN
 
@@ -1160,15 +1340,15 @@ PARTE 1: OPCIÓN B (Recomendad en Octube de 2015)
 ================
 
 Clonamos el repo de https://github.com/raspberrypi/tools.git y nos queda el cross-compiler en tools. Lo demás es igual sólo que la ruta de los ejecutables del compilador es:
-/home/manuel/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin
-Y la tupla (para crosscompilar en local, lo que se llama host_alias en el scummvm que se cross-compila en local) es bcm2708hardfp.
+/home/manuel/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin
+Y la tupla (para crosscompilar en local, lo que se llama host_alias en el scummvm que se cross-compila en local) es arm-linux-gnueabihf.
 
 PARTE 2: CONFIGURANDO EL SERVIDOR Y EL CLIENTE CUANDO YA TENEMOS CROSS-COMPILER (Válido también para Rpi)
 ===============================================================================================
 
 Tenemos el cross-compiler ya.
-Si estamos en el caso en que estamos usando el cross-compiler oficial, habremos clonado el repo y tendremos las herramientas en 
-~/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin
+Si estamos en el caso en que estamos usando el cross-compiler oficial, habremos clonado el repo y tendremos el compilador para la Pi en:
+~/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin
 
 PERO nos faltan los links simbólicos de nombres cortos a gcc, g++ y otras herramientas, ya que sólo tenemos
 los archivos con nombres completos (o sea que tenemos "arm-unknown-linux-gnueabi-gcc"  o "arm-linux-gnueabihf-gcc" pero no tenemos "gcc" a secas).
@@ -1176,7 +1356,7 @@ Así que creamos el siguiente script, le damos 755 y lo ejecutamos estando dentr
 
 #!/bin/bash
 for file in `ls`; do
-        ln -s $file ${file#arm-bcm2708hardfp-linux-gnueabi-}
+        ln -s $file ${file#arm-linux-gnueabihf-}
 done
 
 Y ahora, ya deberíamos tener gcc, g++, etc. Compruébalo.
@@ -1319,8 +1499,11 @@ Clonamos el repo:
 svn checkout http://svn.eduke32.com/eduke32/polymer/ eduke32
 
 Compilamos con:
-make -j8 USE_LIBVPX=0 USE_LIBPNG=0 WITHOUT_GTK=1 NOASM=1 LTO=0 OPTLEVEL=3 OPTOPT="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j"
-(Como ves, tenemos que desactivar tristemente las LTO... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
+Para pi1:
+make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_OPENGL=0 WITHOUT_GTK=1 NOASM=1 LTO=0 OPTLEVEL=3 OPTOPT="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j"
+Para pi2:
+make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_OPENGL=0 WITHOUT_GTK=1 NOASM=1 LTO=0 OPTLEVEL=3 OPTOPT="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"
+(Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
 
 
 Para CROSS COMPILAR EDUKE32: (para poder tener LTO, Linking Time Optimizations):
@@ -1345,12 +1528,18 @@ Y ahora ya compila, con nivel de opimización -O3 y flags para la Pi1 quedaría:
 
 make -j8 USE_LIBVPX=0 USE_LIBPNG=0 WITHOUT_GTK=1 USE_OPENGL=0 CROSS=bcm2708hardfp- OPTLEVEL=3 OPTOPT="-marm -mfpu=vfp -mfloat-abi=hard"
 
+Para usar por ejemplo una banda sonora custom, le puedes pasar /x <ruta al archivo .def>
+
 ************Schismtracker en la Raspberry Pi con SDL2 y escalado de lujo*******************************************************************
 
 Ni que decir tiene que antes de nada tenemos que tener las SDL2 listas.
 Clonamos el repo que tiene el branch de SDL2:
 
 git clone --depth 1 -b sdl2 https://github.com/davvid/schismtracker.git
+
+Instala autoconf:
+
+sudo apt-get install autoconf
 
 Ejecutamos: 
 autoreconf -i
@@ -1373,6 +1562,52 @@ Quitamos el -O2 y el -g de OBJFLAGS.
 Añadimos -lm a LDFLAGS.
 
 Compilamos y listo!
+
+************ECWOLF, el mejor port del Wolfenstein 3D, en la Pi*****************************************************************************
+
+Clonamos el repo:
+
+hg clone https://bitbucket.org/Blzut3/ecwolf
+
+mkdir build
+cd build
+
+Para compilar contra SDL2 y SDL2_mixer, y ya pasándole los flags de la Pi2 a cmake:
+
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"  \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" -DGPL=ON \
+-DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ ..
+
+Te tiene que funcionar, si no es que no encuentra las librerías o las cabeceras que le pasas, comprueba que están donde le estás diciendo.
+Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
+
+Sólo hace falta tener el ejecutable en el mismo directorio que los datos del wolfenstein, y funcionará sin más.
+
+¡¡¡¡¡NO TE OLVIDES de editar el cfg (~/.config/ecwolf/ecwolf.cf) y poner así estos valores:
+
+FullScreenWidth = 320;
+FullScreenHeight = 200;
+WindowedScreenWidth = 320;
+WindowedScreenHeight = 200;
+
+O la CPU se usará al 100%!!!!!
+
+Puedes añadir en src/sdlvideo.cpp el típico
+
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
+justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
+
+También puedes poner en src/sdlvideo.cpp, fmt = SDL_PIXELFORMAT_ARGB8888; justo debajo del switch(vid_displaybits), porque estará detectando 16 bits que es lo que usa
+la Pi en el modo de vídeo por defecto, pero nos interesan más 32bits porque desde los modos de DOS es más rápido convertir los píxels. PERO esto no parece influir, la verdad.
+
+NO soporta el Rise Of The Triad, sólo el Wolfenstein y el Spear of Destiny.
+
+PARA compilar en modo verbose, haz make VERBOSE=1
+
+El problema del segfault era en src/gamemap.cpp, función GameMap::PropagateMark(), en la llamada:
+GC::Mark(plane.map[i].thinker);
+Si lo da, comenta esa línea y el for donde está metida, por ahora.
 
 ************Wolf4SDL (Wolfenstein 3D) en la Raspberry Pi*********************************************************************************
 
@@ -1778,13 +2013,46 @@ pcm.!default {
 Si usamos dmixer y queremos cambiar la frecuencia de muestreo de salida para que coincida con la más común de entrada, editamos
 /usr/share/alsa/alsa.conf y cambiamos "defaults.pcm.dmix.rate 48000" a 44100.
 
+*************GEMRB : Engine para Baldur's Gate 1 & 2*******************************************************************************
+
+Hay que leer el INSTALL para saber cómo se compila, pero esencialmente:
+mkdir build
+cd build
+
+Para OPENGL_ES:
+
+cmake .. -DUSE_OPENGL=2 -DUSE_SDL2=1 -DDISABLE_WERROR=1
+
+O bien sin GLES ni OPENGL:
+
+cmake .. -DUSE_OPENGL=0 -DUSE_SDL2=1 -DDISABLE_WERROR=1
+
+make -j8
+
+Si usas gles, dará un error porque tiene mal el nombre de GLES2/gl2.h en OpenGLEnv.h, lo corriges y ya.
+
+No hace falta tener instalado libopenal-dev ni mucho menos. Es opcional y tira de SDL2 para el audio si no lo tienes.
+
+Ahora te creas un directorio para instalarlo, por ejemplo ~/baldurs, y creas dentro el directorio plugins.
+Ahora copias build/gemrb/plugins/*.so a ~/baldurs/plugins, y el ejecutable build/gemrb/gembr a ~/baldurs también.
+Ahora te copias el cfg de ejemplo, que viene en build/gemrb, a ~/baldurs también, lo editas y le pasas la ruta de los plugins y de los datos
+del juego, relativa a ~/baldurs, o sea, donde vive el ejecutable gemrb al que le vas a pasar el cfg.
+Le puedes pasar un cfg con -c, en plan gemrb -c game.cfg
+
+Si no se te oye mira a ver qué plugin está cargando. Si está cargando NullSound, y compruebas que tienes SDLAudio.so en la ruta de los plugins,
+es que te falta pasarle la ruta de los plugins en el cfg.
+
 *************Compilar Cannonball (OutRun engine) en Rpi***************************************************************************
 
-Necesitamos libboost, eso lo primero.
+Necesitamos libboost, eso lo primero. Concretamente, te vale con libboost1.55-dev
 
 mkdir build
 cd build
-cmake ../cmake -DTARGET=rpi
+cmake ../cmake -DTARGET=sdl2_rpi  -DCMAKE_BUILD_TYPE=Release
+
+o bien
+
+cmake ../cmake -DTARGET=sdl2_rpi2  -DCMAKE_BUILD_TYPE=Release
 
 La eprom que falta es del set B
 Copia el res/config.xml al mismo directorio donde tienes el ejecutable del cannonball
@@ -2995,21 +3263,37 @@ CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard -lasound" CXXFLAGS="-Ofas
 
 ****************************Retroarch en la Raspberry Pi*******************************
 
+Cuando tenas dudas sobre los flags para que funcionen las operaciones en coma flotante por hardware en la Pi y Pi 2, mírate esto:
+https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
+En concreto, la sección de -mfpu=name.
+Sacarás en conclusión que como NEON no cumple IEEE, tienes que desactivar el cumplimiento con estándar IEEE, para lo cual puedes parsar -funsafe-math-optimizations,
+o con -ffast-math, que hace lo mismo que -funsafe-math-optimizations y más cosas (lee la segunda respuesta buena aquí: http://stackoverflow.com/questions/7420665/what-does-gccs-ffast-math-actually-do)
+
 Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
+
+Para la Pi 1:
 
 ./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2 --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
 
+Para la Pi 2 (la diferencia es que se activa el uso de las instrucciones NEON):
+
+./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2 --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
+
 Añadimos los flags de CPU en config.mk:
+
+Para la Pi 1:
+
 -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
+
+Para la Pi2 (no hace falta pasarle el -funsafe-math-optimizations para que se desactive es estándard IEEE, ya que se le pasa desde otro sitio -ffast-math, que como sabes include eso) :
+
+-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard
 
 Editamos Makefile.common y comentamos la línea del -g
 
 Ahora ya compilamos:
 make -j8 V=1
 El V=1 es para ver las líneas de compilación y comprobar que nuestros flags se están usando, etc
-
-Si da undefineds de las funciones de dispmanx, pásale al make temporalmente:
-make -j8 V=1 HAVE_OPENGL=1
 
 NO instales ninguna librería de mesa, gl NI NADA DE ESO, o luego las SDL2 se liarán. En la Rpi NO HAY MESA y no hay GL, sólo EGL y GLES que ya
 vienen instaladas como libs e includes en /opt/vc.
@@ -3032,15 +3316,24 @@ Para activarlos, te metes en el cfg del sistema que sea, pones el video_shader_e
 =====PARA LOS CORES=========
 
 Vamos editando el Makefile.libretro, y añadiendo en la línea donde se ñade sólo -marm (se llega buscand marm un par de veces):
--mfpu=vfp -mfloat-abi=hard -march=armv6j
+
+Para la Pi 1:
+
+-marm -march=armv6j -mfpu=vfp -mfloat-abi=hard -ffast-math
+
+Para la Pi 2:
+
+-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math
 
 Y compilamos con
 
-make -f Makefile.libretro platform="armv6" -j8
+make -f Makefile.libretro platform="armv" -j8
+
+(La idea es pasarle armv pero sin un número, para que coja la línea en la que antes sólo había -marm y ahora están los flags que hemos añadido nosotros a mano).
 
 Si no, pues directamente en la línea de los Os (como en STELLA):
 
--Ofast -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
+-O3 -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
 
 Cuando un core se niegue a compilar con el distcc, si vemos que está intentando usar cc en lugar de gcc, hacemos
 export CC = gcc
@@ -3051,7 +3344,7 @@ a la sección de platform unix, si te de problemas el cross compilador al especi
 
 El core blueMSX trae LOG_PERFORMANCE activado. Desactivalo en el Makefile.libretro al principio.
 
-El core de picodrive igual, NO sirve el zip, clonamos con git:
+Para el core de picodrive, NO sirve el zip, clonamos con git:
 
 git clone https://github.com/libretro/picodrive.git
 
@@ -3137,11 +3430,11 @@ export LC_TYPE=en_US.UTF-8
 en el .bashrc y listo. Si persiste, añadimos lo mismo a .bash_profile.
 
 
-SONY walkman y dispositivos MTP que fallan al funcionar en modo MTP en Lubuntu
-======================================================================
+SONY walkman y dispositivos MTP que fallan al funcionar en modo MTP en Lubuntu como cámaras
+==================================================================================
 
 El problema es que el PCMANFM los automonta como MTP y no van bien. Para que los monte como MSC, es decir, como pendrives normales y corrientes, simplemente ELIMINA
-o mueve a otro sitio /usr/lib/gvfs/gvfs/gvfs-mtp-volume-monitor
+o mueve a otro sitio /usr/lib/gvfs/gvfs-mtp-volume-monitor
 Y el PCMANFM ya los montará como MSC.
 
 Retroarch en Cubieboard2
@@ -3171,7 +3464,38 @@ ZDOOM en la Raspberry Pi
 
 Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
 
-Nos compilamos nosotros OpenAL desde https://github.com/JogAmp/openal-soft/tree/master porque el de debian tiene dependencias cochinas.
+Nos compilamos nosotros OpenAL desde https://github.com/kcat/openal-soft porque el de debian tiene dependencias cochinas.
 cd build
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
+
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"  \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" -DALSOFT_REQUIRE_NEON=ON \
+-DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DHAVE_ARM_NEON_H=YES -DCMAKE_BUILD_TYPE=Release ..
+
 make
+sudo make install
+
+Si quisiéramos desinstalar el OpenAL, sólo tenemos que leer el fichero install_manifest.txt y borrar a mano esos archivos.
+
+Y ahora vamos a por el ZDOOM en sí:
+Si quisiéramos música en mp3, tendríamos que instalar libmpg123-dev antes de configurar, pero no va bien, así que tiramos de música tracker.
+
+git clone --depth 1 https://github.com/rheit/zdoom
+
+mkdir build
+cd build
+
+Puedes añadir 
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+SDL_ShowCursor(SDL_DISABLE);
+en
+../src/posix/sdl/sdlvideo.cpp
+justo antes de SDL_CreateWindow(), como siempre.
+
+Ahora configuramos
+
+cmake -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"  \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" -DCMAKE_BUILD_TYPE=Release ..
+
+Y compilamos con make -j8
+
+Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
