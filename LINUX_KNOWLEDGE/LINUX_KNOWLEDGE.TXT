@@ -4,6 +4,24 @@ El programa se llama tunesviewer.
 Si te da un error y no te deja buscar, dale a view y desactiva Request HTM5 Mode.
 Cambia la búsqueda a Podcast Search.
 
+******Llaves en LibreOffice*****************************************************************************************************************************************************************
+
+Antes de esto, aprende a trabajar con marcos de texto, de manera que puedas luego moverlos dentro de las laves y tal sin andar jugando con tabulaciones.
+Los marcos de texto se crean con Insert->Text Box. Así de fácil.
+Ahora ya, lo de las llaves va así:
+
+1)Abrimos el programa de open office
+2)Clickeamos en barra de herramientas opción "ver".
+3)Luego de entrar en la opción "ver" continuamos clickeando en "barra de herramientas"
+4)Después ingresamos a la opción dibujo para lograr aparecer "la tabla de dibujo".
+5)Tocamos en las formas de símbolos (una carita sonriente).
+6)Clickeamos en la llave de apertura.
+7)Para darle color, forma y espesor clickeamos en la llave con el botón derecho en la opción línea.
+8)Cada cual elige como desea su llave.
+9)Para rotarla se debe tocar con el botón derecho, posición y tamaño y en el mismo rotación.
+10)Y luego cada uno elige la predeterminación que desea.
+11)Llave finalizada.
+
 ******Medir la temperatura en Raspberry Pi*************************************************************************************************************************************************
 
 vcgencmd measure_temp
@@ -63,7 +81,7 @@ Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHead
 ******Compilando OpenBOR*********************************************************************************************************************************************
 
 Hay que pillar los surces de la última revisión estable. El número lo sacamos de la versión que tengan en la página para descargar.
-svn checkout -r 4153 svn://svn.code.sf.net/p/openbor/engine openbor
+svn checkout -r 4165 svn://svn.code.sf.net/p/openbor/engine openbor
 
 Lo primero es que gcc 5.x sepone por defecto en -std=gnu11, y como ha cambiado la manera de declarar las funciones inline, necesitamos ponernos en -std=gnu99, lo cual le
 pasamos en el Makefile, añadiéndolo a CFLAGS.
@@ -90,7 +108,7 @@ http://forums.rockbox.org/index.php/topic,43630.0.html
 Y las instrucciones confusas aquí
 http://www.rockbox.org/wiki/SonyNWZE370Port
 
-PERO para que no tengas ue volver a perder tiempo, la solución es esta: 
+PERO para que no tengas que volver a perder tiempo, la solución es esta: 
 El bootloader es el mismo para todos los NZW 37x y los 38x. El ROCKBOX en sí, igual: el mismo para todos los modelos.
 -Bájate el bootloader, que es el archivo que se llama sonynwze370_rb_firmware.sb. Lo metes en la raíz del dispositivo RENOMBRÁNDOLO a firmware.sb
 -Bájate el Rockbox en sí, que es el archivo que se llama rockbox-sonynwze370.zip, y lo descomprimes en la raiz del dispositivo. Te creará el directorio .rockbox
@@ -1076,6 +1094,8 @@ hay que quitarlo como servicio pero no desinstalarlo del sistema porque OMXplaye
 -Evitamos que se nos ponga la consola en negro poniendo esto en /boot/cmdline.txt:
 consoleblank=0
 -Ya que estamos, también añadimos loglevel=3 para que el kernel sólo nos avise de cosas importantes de verdad.
+RECUERDA que tienes que poder PRIMERO quiet, y luego loglevel: EN ESE PRECISO ÓRDEN, o el valor de loglevel será IGNORADO. Tengo cmdline.txt así:
+dwc_otg.lpm_enable=0 console=tty1 consoleblank=0 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait quiet loglevel=3 fastboot logo.nologo
 
 -Empezamos a eliminar mierda, que se hace en varias fases porque al eliminar libgtk* se instalan más mierdas:
 sudo apt-get purge avahi-daemon triggerhappy dbus plymouth ntp dphys-swapfile rsyslog openresolv dhcpcd5 libreoffice* webkit* libgtk* libreoffice*
@@ -1147,6 +1167,9 @@ sudo systemctl mask systemd-tmpfiles-setup
 sudo systemctl mask systemd-tmpfiles-setup-dev
 sudo systemctl mask systemd-update-utmp
 sudo systemctl mask systemd-update-utmp-runlevel
+sudo systemctl mask systemd-journald.service
+sudo systemctl mask systemd-journald.socket
+sudo systemctl mask systemd-journald-dev-log.socket
 ...y como consecuencia, tenemos que añadir dropbear a rc.local:
 /etc/init.d/dropbear start
 ...y deshabilitar su lanzamiento por parte de systemd:
@@ -1177,6 +1200,13 @@ depmod -ae
 update-initramfs -u
 Reiniciamos y ya no debería estar.
 
+También creamos /etc/modprobe.d/bcm2835_wdt.conf con el contenido:
+blacklist bcm2835_wdt
+Y hacemos
+depmod -ae
+update-initramfs -u
+Reiniciamos y ya no debería estar.
+
 -Borramos /etc/motd
 -Para quitar el lastlogin, editamos sudo vim /etc/pam.d/login y comentamos la línea:
 session optional pam_lastlog.so
@@ -1200,6 +1230,10 @@ apt-get purge openssh-server
 avoid_warnings=2
 
 ...porque el warning de undervoltage salta sin sentido cada vez que conecto el pad USB, y no queremos eso.
+
+-Si te aparecen errores de EVIOCSKEYCODE, son del dmesg pero no deberían estarse viendo en la consola.. y no son importantes.
+Simplemente verifica que tienes cmdline.txt esto, y EN ESTE ÓRDEN PRECISO:  quiet loglevel=3
+Y ya no se te debería colar eso en la consola.
 
 									SECCIÓN RESÚMEN
 
@@ -3273,11 +3307,11 @@ Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
 
 Para la Pi 1:
 
-./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2 --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
+./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2--disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
 
 Para la Pi 2 (la diferencia es que se activa el uso de las instrucciones NEON):
 
-./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2 --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
+./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
 
 Añadimos los flags de CPU en config.mk:
 
@@ -3452,6 +3486,98 @@ apt-get install sysvinit-core systemd-sysv-
 Y para saber por qué coño se nos instaló SYSTEMD al actualizar, miramos las dependencias inversas:
 apt-cache rdepends systemd --installed
 
+COMPILAR UN KERNEL CON FULL PREEMPTION Y BFS PARA LA RASPBERRY PI
+=================================================================
+
+INFO DE https://www.raspberrypi.org/documentation/linux/kernel/building.md COMPLETADA POR MÍ PARA EL TEMA DEL SCHEDULER
+
+Clonamos el kernel, para la rama 4.4 he hecho:
+git clone --depth=1 https://github.com/raspberrypi/linux -b rpi-4.4.y
+
+Yo estaba en ~/src/pi, así que lo tengo en ~/src/pi/linux
+Sigo en ~/src/pi
+
+Me bajaré los parches a ~/src/pi
+
+Nos bajamos el parche BFS correspontiente para nuestro kernel de
+http://ck.kolivas.org/patches/bfs
+
+Nos bajamos el parche RT correspontiente para nuestro kernel de
+https://www.kernel.org/pub/linux/kernel/projects/rt
+
+Ahora aplico ambos parches. Entro en ~/src/pi/linux y hago:
+patch -p1 < ../patch-4.4.9-rt17.patch
+patch -p1 < ../4.4-sched-bfs-467.patch
+
+Ahora ponemos en el path la ruta del crosscompilador:
+PATH=$PATH:$HOME/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin 
+Ya deberíamos tener accesibles los binarios arm-linux-gnueabihf-
+
+Ahora pillo la config por defecto para Pi2 (estos pasos son de https://www.raspberrypi.org/documentation/linux/kernel/building.md):
+KERNEL=kernel7
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
+
+Ahora, miramos http://ck.kolivas.org/patches/bfs/bfs-configuration-faq.txt y tratamos de cumplir las condiciones para mobile/netbook, o sea:
+300 Hz
+Tickless
+Full preemption
+CPU frequency scaling, ondemand default
+
+Para ello entramos en menuconfig:
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig
+Y vamos punto por punto:
+-Lo de los HZ está en  KERNEL FEATURES->TIMER FREQUENCY
+-Lo de Full Preemption está en KERNEL FEATURES->PREEMPTION MODEL
+-Lo de Tickless está en GENERAL SETUP->TIMERS SUBSYSTEM->Timer tick handling
+-Lo de CPU frequency scaling está en CPU POWER MANAGEMENT->CPU FREQUENCY SCALING
+-Verifica que tienes activo el BFS en GENERAL SETUP, justo la PRIMERA opción que sale tras aplicar el parche.
+ Una vez que ha arrancado el kernel, puedes comprobarlo del todo haciendo dmesg | grep scheduler y debería salir el BFS
+
+-En menuconfig podemos quitar muchas cosas. Para saber cuáles son las mínimas mínimas para que funcione lo básico, mírate esto:
+http://raspberrypi.stackexchange.com/questions/24092/kernel-config-necessary-options
+EL DRIVER OTG (Synopsis DWC host support en DEVICE DRIVERS->USB SUPPORT) tiene que ir INCLUIDO, NO COMO MÓDULO, o el kernel no compilará.
+EN FILESYSTEMS, deja tranquilo el AUTOMOUNT ese o systemd se quejará.
+
+Ahora compilamos:
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs -j8
+
+Para instalar kernel, módulos y demás, sigue ya con: https://www.raspberrypi.org/documentation/linux/kernel/building.md
+
+INSTALAR JACKD2 EN LA RASPBERRY PI
+=================================
+FUENTES: http://jrigg.co.uk/linuxaudio/jack2debian7.html
+		       http://jackaudio.org/faq/linux_rt_config.html
+
+NO debes usar el gestor de paquetes para esto, porque la versión de libjack, jackd2, etc.. que trae Debian está compilada con soporte para basuras varias
+como X11 o DBUS.
+Así que toda compilar a instalar la nuestra:
+git clone --depth git://github.com/jackaudio/jack2.git
+cd jack
+./waf configure --alsa --prefix=/usr
+./waf -j8
+sudo ./waf install
+Instala tanto las librerías, como los las headers para desarrollo, como jackd.
+
+Ahora añadimos mi usuario al grupo audio (probablemente ya esté):
+
+sudo adduser pi audio
+
+Y editamos /etc/security/limits.conf, añadiendo unas cosillas para quitar ciertas limitaciones a los miembros de ese grupo:
+@audio   -  rtprio     99
+@audio   -  memlock    unlimited
+
+Comprobamos que tenemos quitados esos límites con:
+ulimit -r -l
+Nos tiene que salir algo como:
+real-time priority (-r) 99
+max locked memory (kbytes, -l) unlimited
+¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
+En el caso de DROPBEAR, que es el servidor SSH que usamos nosotros, NO ESTÁ LINKADO con libpam, así que 
+LOS SETTINGS DE limits.conf son directamente IGNORADOS SI NOS CONECTAMOS POR SSH si usas dropbear.
+
+Puedes lanzar jackd a mano para que empieze a escuchar con:
+jackd -R -P 70 -d alsa -r 48000 -n 2 -p 1024
+
 UN SCRIPT PARA DETECTAR SI ESTAMOS EN UNA RPI
 ===========================================
 
@@ -3461,7 +3587,6 @@ fi
 
 ZDOOM en la Raspberry Pi
 ======================
-
 Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
 
 Nos compilamos nosotros OpenAL desde https://github.com/kcat/openal-soft porque el de debian tiene dependencias cochinas.
@@ -3491,10 +3616,13 @@ en
 ../src/posix/sdl/sdlvideo.cpp
 justo antes de SDL_CreateWindow(), como siempre.
 
-Ahora configuramos
+Ahora configuramos (no pases más flags de optimización que estas, o petará de la peor manera):
 
-cmake -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
+
+cmake -DCMAKE_C_FLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Debug ..
 
 Y compilamos con make -j8
 
