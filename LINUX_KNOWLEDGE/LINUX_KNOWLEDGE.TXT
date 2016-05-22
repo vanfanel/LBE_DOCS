@@ -1237,7 +1237,7 @@ Y ya no se te debería colar eso en la consola.
 
 									SECCIÓN RESÚMEN
 
-AL FINAL sólo tenemos que tener estos 14 servicios listados en systemd-analyce blame:
+AL FINAL sólo tenemos que tener estos 14 servicios listados en systemd-analyze blame:
 
           1.785s keyboard-setup.service
           1.055s systemd-udev-trigger.service
@@ -1877,7 +1877,7 @@ aplay -p 128:0 nombre.mid
 
 Para scummvm, podemos exportar SCUMMVM_PORT="128:0", o bien usar el parámetro de configuración alsa_port.
 
-Para compilar fluidsynth podemos hacerlo desde los sources stables antiguos que hay en su página o desde svn:
+Para compilar fluidsynth podemos hacerlo desde los sources estables antiguos que hay en su página o desde svn:
 
 -DESDE LOS SOURCES ESTABLES:
 
@@ -2387,7 +2387,7 @@ mkdir build
 cd build
 
 Ahora configuramos:
-cmake  -DUSE_SDL2=yes -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DOGG=no -DTREMOR=NO -DOPENGL=no -DREFKEEN=no ..
+cmake  -DUSE_SDL2=yes -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DDBFUSION=no -DTREMOR=NO -DOPENGL=no -DREFKEEN=no -DDOWNLOADER=no ..
 
 Usa -DUSE_SDL2=no para compilar contra SDL1.x
 
@@ -3543,6 +3543,49 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs -j8
 
 Para instalar kernel, módulos y demás, sigue ya con: https://www.raspberrypi.org/documentation/linux/kernel/building.md
 
+NUVIE (Ultima VI) en la Raspberry Pi
+==============================
+
+Clonamos:
+
+git clone --depth 1 https://github.com/nuvie/nuvie.git
+
+Ejecutamos el autogen.sh
+Añadimos 
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+en screen/Screen.cpp, justo antes de SDL_CreateWindowAndRenderer()
+
+Configuramos así:
+
+CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure
+
+Compilamos:
+
+make -j8
+
+Creamos el directorio ~/ultima6 donde meteremos el ejecutable "nuvie" resulante, y allí dentro copiamos el directorio data que viene con los surces, 
+y creamos otro directorio ultima6 donde metemos todos los datos del juego.
+O sea que nos tiene que quedar:
+~/ultima6/nuvie  <---Este es el ejecutable que hemos generado
+~/ultima6/data/<aquí los contenidos originales del directorio data de los sources>
+~/ultima6/ultima6/<aquí los datos originales del juego>
+
+Si queremos ajustar cosas, en ~/.nuvierc
+
+LÖVE2D en la Raspberry Pi
+======================
+
+Las instrucciones básicas están aquí: https://love2d.org/wiki/Building_L%C3%96VE
+
+Clonamos:
+hg clone https://bitbucket.org/rude/love
+
+Tras satisfacer las dependencias, ejecuta:
+./platform/unix/automagic
+
+Luego configuramos para Pi2 con:
+CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr
+
 INSTALAR JACKD2 EN LA RASPBERRY PI
 =================================
 FUENTES: http://jrigg.co.uk/linuxaudio/jack2debian7.html
@@ -3627,3 +3670,72 @@ cmake -DCMAKE_C_FLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard"  \
 Y compilamos con make -j8
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
+
+NOTAS TIMIDITY
+==============
+
+Para inicializarlo y que suenen a ritmo las percusiones, necesitamos los buffers más pequeños posibles, para lo que hacemos:
+
+timidity -iA -B 4,8
+
+Su fichero de configuración, donde le especificamos el soundfont, está en /etc/timidity++/timidity.cfg
+Ahí le podemos pasar, o bien un cfg y una ruta:
+
+dir /usr/share/timidity/freepats
+source /etc/timidity++/freepats/freepats.cfg
+
+...O bien un sounfont:
+
+soundfont /usr/share/soundfonts/FluidR3_GM2-2.sf2
+
+Para fluidsynth haríamos algo como:
+
+sudo fluidsynth --audio-driver=alsa -s Downloads/WeedsGM3.sf2
+
+INSTALAR VARIOS SISTEMAS OPERATIVOS EN LA RASPBERRY PI SIN DHCP, USANDO IP ESTÁTICA
+================================================================================
+
+Usamos NOOBS (nos vale tanto la version light esa como la completa) pero hacemos algunas modificaciones a capón.
+Arrancamos el NOOBS este y nos vamos a la consola TTY2 con CTRL+ALT+F2
+Nos logueamos con root/raspberry
+
+killall recovery
+
+Tendremos disponible el vi, no el vim, pero nos vale.
+Hacemos
+		ip addr add 192.168.5.8/24 dev eth0
+		ip route add default via 192.168.5.7	
+Dejamos /etc/resolv.conf como:
+		nameserver 8.8.8.8
+Pingamos a google a ver si va.
+Si tira, hacemos:
+
+/usr/bin/recovery –qws
+
+Listo! Nos dirá no sé qué de un sistema de settings corruptos: ni puto caso.
+
+Para modificar el cmdline.txt o el config.txt, tienes que usar shift en el menú de arranque NOOBS, y te saldrán opciones para modificar
+los ficheros de configuración de cada SO instalado. Así es como se overclockea la CPU y tal.
+
+Para modificar el órden en que aparecen los OSes en el menú de arranque, editamos  installed_os.json que está en la partición SETTINGS, 
+que en mi caso es /dev/mmcblk0p5
+
+Para modificar el SO que arranca por defecto, editamos noobs.conf que está en una de las particiones, la llamada SETTINGS. En mi caso es /dev/mmcblk0p5
+La monto desde la Pi por ssh:
+sudo mount /dev/mmcblk0p5 /mnt/hdd
+Y hago lo que tengo que hacer. ¡¡OJO: DESDE EL PC NO DEJA GUARDAR ESTE ARCHIVO CON SUS CAMBIOS!!
+Podemos ver qué sistema arranca de qué partición consultando installed_os.json en ese misma partición. 
+
+COPIA DE SEGURIDAD DE UN ROOTFS, COMO EN TIEMPOS DE GENTOO!
+===========================================================
+
+Un poco de revival del 2004... Para sacar un tar del rootfs, estando en él y dejando fuera algunos directorios grandes:
+
+sudo tar -cvpf ~/pi/cea0b7ae-2fbc-4f01-8884-3cb5884c8bb7.tar * --exclude=proc/* --exclude=sys/* --exclude=dev/pts/* --exclude=home/pi/scummvm/* --exclude=home/pi/retro/* --exclude=home/pi/src/*
+
+Ahora, para descomprimirlo en una partición de una SD:
+
+sudo tar -xvf cea0b7ae-2fbc-4f01-8884-3cb5884c8bb7.tar -C /media/manuel/root/
+
+
+
