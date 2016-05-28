@@ -39,17 +39,44 @@ Bajamos los sources estables de http://libsdl.org/download-2.0.php
 
 Configuramos con:
 
-CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -funsafe-math-optimizations" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -funsafe-math-optimizations" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus
+CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus
 
 Compilamos e instalamos.
 
 Para SDL mixer, y SDL_image, primero instalamos libvorbis-dev, libpng12-dev
+Y también
+sudo apt-get install autotools-dev
+sudo apt-get install automake
 
 Configuramos con:
 
-CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -funsafe-math-optimizations" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -funsafe-math-optimizations" ./configure --prefix=/usr
+CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr
 
 SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
+
+******SDL2 en la Raspberry Pi 3***************************************************************************************************************************************************************
+
+Instalamos libudev-dev y libasound2-dev, lo primero.
+
+Bajamos los sources estables de http://libsdl.org/download-2.0.php
+
+Configuramos con:
+
+CFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus
+
+Compilamos e instalamos.
+
+Para SDL mixer, y SDL_image, primero instalamos libvorbis-dev, libpng12-dev
+Y también
+sudo apt-get install autotools-dev
+sudo apt-get install automake
+
+Configuramos con:
+
+CFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr
+
+SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
+
 
 ******Notas SDLPop : el clon open source y libre de Prince of Persia *****************************************************************************************************************************************************
 
@@ -136,12 +163,25 @@ Simplemente hay que compilarlo con estas opciones:
 make -j8 NOLUA=1 NOTTF=1
 
 ******Compilar VICE en la Raspberry Pi*************************************************************************************************************************************
-Queremos que distcc distribuya, así que march=native no se puede usar, porque no distribuirá. Queremos además que compile contra SDL2.
-También queremos que compile de modo verbose.
+Necesitaremos tener instalados los paquetes flex y bison durante la configuración.
 Configuramos con:
 
-./configure --disable-sdlui --enable-sdlui2 -v --enable-arch=arm --disable-debug --disable-debug-code --disable-ethernet --disable-realdevice --disable-shared-ffmpeg --disable-static-ffmpeg --disable-external-ffmpeg --without-oss --without-sdlsound --without-png --without-pulse 
+./configure --disable-sdlui --enable-sdlui2 -v --enable-arch=arm --disable-debug --disable-debug-code --disable-ipv6 --disable-ethernet --disable-rs232 --disable-realdevice --disable-shared-ffmpeg \
+--disable-static-ffmpeg --disable-external-ffmpeg --without-oss --without-sdlsound --disable-midi --without-png --without-pulse 
 
+(El -v es porque queremos que compile de modo verbose.)
+
+Nos copiamos el directorio data, que viene con los fuentes, a donde tengamos instalado el ejecutable, x64
+
+Luego le podemos indicar los parámetros de las roms que necesita así:
+
+./x64 -kernal data/C64/kernal -sounddev alsa -basic data/C64/basic -chargen data/C64/chargen -dos1541 data/DRIVES/dos1541
+
+O simplemente pasándole el directorio donde están las ROMs de ese sistema:
+
+./x64 -directory data/C64 -sounddev alsa
+
+Se entra en el menú con F12
 
 ******Grabar WIFISLAX moderno en un pendrive de arranque****************************************************************************************************************
 
@@ -248,6 +288,10 @@ Para Pi2 con
 
 CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer -ffast-math"  ./configure --with-sdl=sdl2 --disable-opengl
 
+Para Pi3 con
+
+CXXFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -fomit-frame-pointer -ffast-math"  ./configure --with-sdl=sdl2 --disable-opengl
+
 Luego en el conf nos interesará tener la opción output=texture o texturenb. Luego ya SDL2 usa por debajo GLES en la Pi o lo que sea, para esa textura..
 
 Hemos encontrado las las instrucciones para dynarec ARM y para UNALIGNED MEMORY ACCESS en estas páginas:
@@ -261,7 +305,7 @@ El asunto se reduce a dejar config.h con estas cosas así para Pi1:
 #define C_TARGETCPU ARMV4LE
 #define C_UNALIGNED_MEMORY 1
 
-Así para Pi2:
+Así para Pi2 y Pi3:
 
 #define C_DYNREC 1
 #define C_TARGETCPU ARMV7LE
@@ -1143,7 +1187,7 @@ sudo apt-get install dropbear
 Para que arranque al inicio
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 Mandamos el openssh al carajo y reiniciamos ya con dropbear:
-apt-get purge openssh-server
+sudo apt-get purge openssh-server
 
 -Como el omxplayer depende de la MIERDA de dbus, nos va a instalar dbus al instalar el omxplayer. Nosotros nos vengamos evitando
 que dbus se lance al inicio, y evitamos que systemd-logind.service nos de errores al no encontrar dbus, porque tampoco lo usamos:
@@ -1177,6 +1221,10 @@ sudo systemctl disable dropbear
 
 sudo systemctl mask systemd-fsck-root
 sudo systemctl mask systemd-fsck@dev-mmcblk0p1
+sudo systemctl mask swap.target
+sudo systemctl mask urandom.service
+sudo systemctl mask cryptsetup.target
+sudo systemctl mask cryptsetup-pre.target
 
 -Comentamos la línea de i2c en /etc/modules-load.d/modules.conf
 -Evitamos que se cargue el módulo de IPV6 añoadiendo esto al principio de /etc/modprobe.d/ipv6.conf :
@@ -1237,9 +1285,8 @@ Y ya no se te debería colar eso en la consola.
 
 									SECCIÓN RESÚMEN
 
-AL FINAL sólo tenemos que tener estos 14 servicios listados en systemd-analyze blame:
+AL FINAL sólo tenemos que tener estos 11 servicios listados en systemd-analyze blame:
 
-          1.785s keyboard-setup.service
           1.055s systemd-udev-trigger.service
            702ms kbd.service
            434ms fake-hwclock.service
@@ -1251,7 +1298,16 @@ AL FINAL sólo tenemos que tener estos 14 servicios listados en systemd-analyze 
            188ms systemd-udevd.service
            180ms systemd-remount-fs.service
            106ms boot.mount
+
 SI UN SERVICIO NO ESTÁ EN ESTA LISTA, ES QUE NO ME HACE FALTA.
+
+ES POSIBLE LIBRARSE DE keyboard-setup.service!!!
+PARA ELLO:
+1) Arranca con el servicio activo y el teclado correctamente configurado en castellano.
+2) Haz dumpkeys > es.map y manda es.map a /etc
+3) Añade loadkeys /etc/es.map en /etc/rc.local
+4) Ya puedes hacer tranquilamente:
+	sudo systemctl mask keyboard-setup.service
 
 Y nuestro /etc/rc.local tendrá esto:
 
@@ -1263,6 +1319,23 @@ ip route add default via 192.168.5.7
 /etc/init.d/dropbear start
 
 Todo lo demás se lo dejamos gestionar a systemd.
+
+TENEMOS QUE QUITAR LOS RLIMITS, o los emuladores se empezarán a quejar al llegar al 80% de uso de la CPU!
+Para ello, editamos /etc/security/limits.conf, añadiendo unas cosillas para quitar ciertas limitaciones a los miembros de ese grupo:
+
+@audio   -  rtprio     99
+@audio   -  memlock    unlimited
+pi   -  rtprio     99
+pi   -  memlock    unlimited
+
+De este modo, no hay límites para el usuario Pi ni para nadie del grupo audio, como jackd.
+
+Comprobamos que tenemos quitados esos límites con:
+ulimit -r -l
+Nos tiene que salir algo como:
+real-time priority (-r) 99
+max locked memory (kbytes, -l) unlimited
+¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
 ***********Montar una partición individual de una imágen completa de disco***************************************************************
 
@@ -1610,6 +1683,12 @@ Para compilar contra SDL2 y SDL2_mixer, y ya pasándole los flags de la Pi2 a cm
 
 cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"  \
 -DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" -DGPL=ON \
+-DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ ..
+
+Para la Pi 3:
+
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math"  \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" -DGPL=ON \
 -DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ ..
 
 Te tiene que funcionar, si no es que no encuentra las librerías o las cabeceras que le pasas, comprueba que están donde le estás diciendo.
@@ -3309,7 +3388,7 @@ Para la Pi 1:
 
 ./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2--disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
 
-Para la Pi 2 (la diferencia es que se activa el uso de las instrucciones NEON):
+Para la Pi 2 y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
 
 ./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
 
@@ -3322,6 +3401,10 @@ Para la Pi 1:
 Para la Pi2 (no hace falta pasarle el -funsafe-math-optimizations para que se desactive es estándard IEEE, ya que se le pasa desde otro sitio -ffast-math, que como sabes include eso) :
 
 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard
+
+Para la Pi3
+
+-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 
 Editamos Makefile.common y comentamos la línea del -g
 
@@ -3358,6 +3441,10 @@ Para la Pi 1:
 Para la Pi 2:
 
 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math
+
+Para la Pi 3:
+
+-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math
 
 Y compilamos con
 
@@ -3635,8 +3722,16 @@ Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
 Nos compilamos nosotros OpenAL desde https://github.com/kcat/openal-soft porque el de debian tiene dependencias cochinas.
 cd build
 
+Para Pi2:
+
 cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"  \
 -DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" -DALSOFT_REQUIRE_NEON=ON \
+-DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DHAVE_ARM_NEON_H=YES -DCMAKE_BUILD_TYPE=Release ..
+
+Para Pi3:
+
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math"  \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" -DALSOFT_REQUIRE_NEON=ON \
 -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DHAVE_ARM_NEON_H=YES -DCMAKE_BUILD_TYPE=Release ..
 
 make
@@ -3661,11 +3756,15 @@ justo antes de SDL_CreateWindow(), como siempre.
 
 Ahora configuramos (no pases más flags de optimización que estas, o petará de la peor manera):
 
+Para Pi2:
+
 cmake -DCMAKE_C_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard"  \
 -DCMAKE_CXX_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
 
-cmake -DCMAKE_C_FLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Debug ..
+Para Pi3 (OJO, por ahora SE SUPONE que necesita un FLAG especial para -munaligned-access, y nada de ffast-math hasta que se arreglen las cosas...):
+
+cmake -DCMAKE_C_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j8
 
