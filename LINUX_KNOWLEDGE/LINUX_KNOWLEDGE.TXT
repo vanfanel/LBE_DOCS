@@ -3536,6 +3536,14 @@ ver los stats. El resampler_proc son los cpu ticks que se zampa el resampler.
 -DSINC_LOWEST_QUALITY para compilar con el SINC resampler de menor calidad. El otro resampler, CC, hay que evitarlo en ARM. Busca DSINC en el Makefile
 de Retroarch.
 
+Para PGO (profile guided optimization) agregamos esto al Makefile:
+FLAGS += -fprofile-generate
+LDFLAGS += -lgcov
+...y tras las ejecuciones para que recabe datos, tenemos que tener unos .gcda por todo el código. Los usamos con:
+FLAGS += -fprofile-use
+LDFLAGS += -lgcov
+NOTA: NO FUNCIONA el PGO con el DISTCC, ya que al correr no genera los .gcda, así que tienes que compilar en local (saca la ruta del distcc del ~/.profile temporalmente y ya).
+
 ERROR DE LANGUAGE DE PERL al acceder por ssh a una máquina
 =====================================================
 
