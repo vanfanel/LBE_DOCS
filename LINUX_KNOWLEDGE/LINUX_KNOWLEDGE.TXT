@@ -311,6 +311,13 @@ Así para Pi2 y Pi3:
 #define C_TARGETCPU ARMV7LE
 #define C_UNALIGNED_MEMORY 1
 
+Yo esto lo pongo más o menos en la línea 99, debajo de 
+/* Define to 1 to use a unaligned memory access */
+/* #undef C_UNALIGNED_MEMORY */
+...habiendo comentado antes el #define C_TARGETCPU UNKNOWN que hay justo encima. No parece necesario porque lo redefinimos nosotros, pero por si acaso.
+
+Meto el bloque entero y así funciona.
+
 Ahora sólo queda parchear el refresco de pantalla...Mira a continuación cómo añadir un control de refresco!
 
 AÑADIR CONTROL DE REFRESCO DE PANTALLA DESDE FICHERO DE CONFIGURACIÓN
@@ -3844,5 +3851,12 @@ Ahora, para descomprimirlo en una partición de una SD:
 
 sudo tar -xvf cea0b7ae-2fbc-4f01-8884-3cb5884c8bb7.tar -C /media/manuel/root/
 
+ARRANCAR LA RASPBERRY PI CON VÍDEO KMS
+=======================================
 
+Simplemente añadimos esta línea a config.txt:
 
+dtoverlay=vc4-kms-v3d
+
+Luego, instalamos libdrm-dev, y copiamos /usr/include/libdrm a /usr/include/drm, para que las cabeceras las encuentren bien los ejemplos (no se arregla pasando -I<ruta> ya
+que depende de cabeceras que no son nuestras y en las que vienen mal las rutas), y la podemos hacer funcionar mi ejemplo 2D-KMS de atomix pageflipping.
