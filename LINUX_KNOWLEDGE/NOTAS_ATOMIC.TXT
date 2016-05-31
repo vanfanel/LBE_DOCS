@@ -153,6 +153,10 @@ Las soluciones pasan por:
 	-De manera implícita con una llamada a drmHandleEvent(), que internamente llama a read() y consume el evento.
 	-De manera explícita con algo como read(drm.fd, buf, 4096); con lo que le decimos que queremos deshechar la cola de eventos.
 
+-Para que se nos genere un evento en el fd y ADEMÁS el atomic pageflip se haga de manera atómica, hacemos "or" de ambos flags en el commit del request:
+ret = drmModeAtomicCommit(drm.fd, req, DRM_MODE_PAGE_FLIP_EVENT|DRM_MODE_PAGE_FLIP_ASYNC, &pipe);
+Esto es necesario porque tenemos que escuchar en el fd para detectar cuándo se ha completado el atomic pageflip.
+
 
 
 

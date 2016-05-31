@@ -1,0 +1,42 @@
+SCANLINES CON GIMP
+===================
+
+-Un buen vídeo es este: 
+https://www.youtube.com/watch?v=L9AiuMaE1iY
+"How to make scanlines with GIMP"
+
+-De aquí, el post número 22: 
+http://libretro.com/forums/showthread.php?t=2778&page=3
+
+PASOS
+
+-Lo primero es poner el GIMP a punto para trabajar.
+Activamos Windows->Single window mode
+Activamos un Dockable Dialog de entre los disponibles en Windows->Dockable Dialogs: Tool Options. Esto es para cambiar cosas del tool que estemos usando.
+Por ejemplo, si estamos usando un Drawing Tool llamado Pencil, pues este diálogo nos permitirá ajustar cosas de ese Pencil.
+Ya podemos empezar a trabajar, al menos para lo que queremos hacer.
+
+-Vamos a File->New, creamos una imágen de 4 píxels de ALTO y de ancho pues los que quieras, yo he puesto 5. Lo importante es el alto, de cara a las scanlines.
+En el mismo menú de creción de la nueva imágen, en Advanced Options, en Fill With, elegimos "background color".
+La imágen es muy pequeña, por lo que la vemos como un punto sobre el enorme fondo gris.
+
+-Ahora nos vamos a Tools->Zoom (o elegimos la lupa en el menú que nos aparece a la izquierda tras elegir el modo Single Window) y jugamos haciendo click sobre  
+la imágen y zonas aledañas para ampliarla y centrarla. Es ir haciendo zoom hacia adelante y hacia atrás (con CTRL pulsado mientras haces click) hasta tenerla
+a un buen tamaño, centrada y que se vea entera.
+
+-Ahora nos vamos a Tools->Pain Tools y elegimos el Pencil. En Tool Options (que es el Dockable Dialog que tienes abierto a la derecha) bajamos su size a 1 pixel,
+para lo cual previamente habremos elegido Pixel para su forma, en el cuadradito que hay al lado donde se elige la forma. Ya podemos dibujar píxel a píxel.
+
+-Ahora ya sabes: línea en negro, línea en blanco, línea en negro y línea en blanco, de arriba a abajo.
+
+-Ahora nos vamos a Edit->Copy, y luego a Edit->Paste As, y elegimos New Pattern. Yo he puesto en file name y en pattern name "scanli1", en ambos igual.
+
+-Ahora creamos otra imágen nueva, en File->New, del tamaño de nuestra pantalla de destino, como 1360x768. La centramos que se vea entera y tal con Tools->Zoom, ya sabes.
+
+-Ahora vamos a Tools->Paint Tools->Bucket Fill. En el panel de Tool Options (el Dockable Dialog de tu derecha, recuerda...) tenemos ahora las opciones del Bucket Fill. Pues bien:
+En Fill Type nos vamos a Pattern Fill, y nos debería salir elegido "scanli1" que es el pattern que acabamos de crear antes. Si no, pues lo elegimos con el cuadradito.
+Pinchamos en la imágen grande y... voilá! Ahí está nuestro patrón de scanlines!
+
+
+
+

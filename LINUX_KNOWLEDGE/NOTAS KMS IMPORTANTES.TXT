@@ -70,3 +70,8 @@ PUES BIEN: enums es el nombre y los POSIBLES valores del tipo de plano. value es
 overlay. NO hay necesidad de hacer drmModeSetCrtc() para ajustar el scanout buffer ni nada de eso.
 Con atomic modesetting (ver notas en otro fichero) vamos cambiando el buffer del cual lee un overlay.
 ***********************************************************************************************************************
+
+Para cambiar el BPP, lo que hacemos es cambiar el bpp y el píxel format de los dumb buffers que creamos en modeset_create_fb(), y luego, al llamar a drmModeSetPlane(),
+el plano toma el bpp y el píxel format del buffer del que va a leer.
+
+En 2D-KMS, también habrá que hacer cambios en drmDraw() y en varios puntos de main.c para que pasemos a considerar 2 bytes por píxel en lugar de 4, pero funciona.
