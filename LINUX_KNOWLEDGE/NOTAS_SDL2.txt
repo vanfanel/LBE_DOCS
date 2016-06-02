@@ -58,6 +58,22 @@ SDL_RenderSetLogicalSize(_renderer, 320*5, 200*6);
 
 Y listo!!
 
+===========ACTUALIZACIONES PARCIALES de una textura de SDL2================
+
+Por fin sabemos cómo hacer esto!
+
+int SDL_LockTexture(SDL_Texture*    texture,
+                    const SDL_Rect* rect,
+                    void**          pixels,
+                    int*            pitch)
+
+Nos devuelve un puntero ("pixels") al área de posición y tamaño que especificamos en rect. Ya podemos hacer un memcpy directamente sobre esa área usando píxels!
+Y de paso, ya sabemos para qué sirven las funcines de LOCK y UNLOCK, tanto de texturas como de surfaces: ya no nos tienen que sonar raro nunca más.
+Lo de "Lock" no es para "candar" la textura o la superficie, sino para "apuntar" a una zona de la textura o superficie y acceder a sus píxels directamente. Como
+en los juegos de aviones con un "lock on" ^_^
+
+Tienes un ejemplo en el código fuente del CSBWin donde tú mismo arreglaste los valores del rect para actualización parcial de la textura, aunque seguro que es algo muy común.
+
 ===========Cómo funciona el audio en SDL2 comparado con SDL1=================
 
 En SDL1 teníamos SDL_OpenAudio(), que se puede seguir usando, pero lo recomendado es usar SDL_OpenAudioDevice(), que funciona del siguiente modo:

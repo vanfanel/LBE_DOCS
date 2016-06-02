@@ -474,6 +474,44 @@ que luego se le pasa a la llamada eglCreateWindowSurface(g_egl_dpy, g_config, &n
 A parte de eso, el código de la función "static void gfx_ctx_input_driver()" lo he sacado del ctx de VC (video_core, o sea, la raspberry pi), y he
 sustituido el código de Android por ese.
 
+AÑADIR NUEVOS PARÁMETROS DE TIEMPO DE CONFIGURACIÓN A RETROARCH
+==================================================================
+
+Añadimos a qb/config.params.sh algo como:
+
+HAVE_PLAINKMS=no           # Plain KMS/DRM video support
+
+Y ya podemos hacer ./configure --help | grep plainkms, y veremos que el parámetro ya existe y lo podemos pasar!
+
+Ahora queda añadir los flags (librerías) y los objetos del backend que ese parámetro activa o desactiva.
+
+AÑADIR NUEVOS FLAGS Y OBJETOS DE CARA A NUEVOS BACKENDS EN RETROARCH
+======================================================================
+
+PARA AÑADIR NUEVOS FLAGS para el compilador y el linker, se supone que los añadimos en "qb/config.libs.sh" y que luego aparecen en
+Makefile.common. 
+O sea, tú dices por ejemplo en qb/config.libs.sh:
+
+if [ "$HAVE_PLAINKMS" != "no" ]; then
+   PLAINKMS_LIBS=-ldrm
+fi
+
+..y luego en Makefile.common, la variable PLAINKMS_LIBS debería contener "-ldrm", con lo que la usaríamos así:
+
+ifeq ($(HAVE_PLAINKMS), 1)
+   OBJ += gfx/drivers/plainkms_gfx.o
+   LIBS += $(PLAINKMS_LIBS)
+endif
+
+El caso es que "OBJ += gfx/drivers/plainkms_gfx.o" sí es tenido en cuenta, pero LIBS no...
+
+Así que por ahora hacemos esto en Makefile.common directamente:
+
+ifeq ($(HAVE_PLAINKMS), 1)
+   OBJ += gfx/drivers/plainkms_gfx.o
+   LIBS += -ldrm
+endif
+
 **********Ver la ejecución completa de un programa*********************************************************************************
 Podemos ver todas las llamadas a funciones de un programa con strace -f <nombre_programa>
 Esto es muy útil para ver por dónde se sale.
