@@ -94,7 +94,7 @@ if (event.jaxis.axis == 1) {
 
 A parte de eso, añade los flags del renderer (también en seg009.c como todo lo de los controles que hemos dicho hasta ahora) y los del gcc en el Makefile, y a compilar.
 
-******Cambiar la región de un juego de Mega Drive y Master System************************************************************************************************************************
+******Cambiar la región de un juego de MegaDrive y Master System************************************************************************************************************************
 
 Editamos el juego con el hexedit. Nos vamos a la dirección $1F0. Pulsamos TAB para ir al texto. Cambiamos la E por una U, o por una J, como queramos.
 Salimos y salvamos con CTRL+X.
@@ -122,7 +122,7 @@ make BUILD_LINUX=1 GCC_TARGET=64 -j8
 ******Another World en la Raspberry Pi***********************************************************************************************************************************
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
--En el Makefile: quitar -lGLde los SDL_LIBS y graphics_gl.cpp de SRCS
+-En el Makefile: quitar -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
 -En graphics.h quitamos todo lo que lleve GL
 -En main.cpp quitamos todo lo que lleve GL, y cambiamos el tipo de gráficos por defecto a GRAPHICS_ORIGINAL, y ya de paso si quieres el lenguaje por defecto a LANGUAGE_US
 En la línea de stub->init, pasa false en el parámetro de OPENGL.
@@ -1466,7 +1466,7 @@ Si estamos en el caso en que estamos usando el cross-compiler oficial, habremos 
 
 PERO nos faltan los links simbólicos de nombres cortos a gcc, g++ y otras herramientas, ya que sólo tenemos
 los archivos con nombres completos (o sea que tenemos "arm-unknown-linux-gnueabi-gcc"  o "arm-linux-gnueabihf-gcc" pero no tenemos "gcc" a secas).
-Así que creamos el siguiente script, le damos 755 y lo ejecutamos estando dentro del directorio ~/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin:
+Así que creamos el siguiente script, le damos 755 y lo ejecutamos estando dentro del directorio ~/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:
 
 #!/bin/bash
 for file in `ls`; do
@@ -1487,7 +1487,7 @@ LISTENER="192.168.5.7"
 Ahora, también en el servidor, editamos /etc/init.d/distcc y en PATH añadimos delante el path donde tenemos los ejecutables de nuestro cross-compiler.
 La línea en cuestión quedaría así si hemos construido nuestro cross compiler:
 
-PATH=/home/manuel/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+PATH=/home/manuel/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 Lanzamos el servidor. Para ello, en un systema con systemd hacemos:
 
@@ -3393,11 +3393,11 @@ Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
 
 Para la Pi 1:
 
-./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2--disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
+./configure --disable-vg --enable-dispmanx --disable-x11 --disable-sdl2--disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2  --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
 
 Para la Pi 2 y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
 
-./configure --disable-vg --disable-dispmanx --disable-x11 --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 
+./configure --disable-vg --enable-dispmanx --disable-x11 --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
 
 Añadimos los flags de CPU en config.mk:
 
@@ -3436,6 +3436,10 @@ cg2glsl.py common-shaders common-shaders-glsl
 Necesita nvidia-cg-toolkit instalado para que este script funcione.
 Sin embargo, sólo funcionan los shaders sencillos como scanline.glsl.
 Para activarlos, te metes en el cfg del sistema que sea, pones el video_shader_enable="true" y video_shader="scanline.glsl", y listo. 
+
+Si quieres HID, instala libusb-1.0-0-dev y luego...
+Para el adaptador greenasia, en input/connect/joypad_connection.c añade esta entrada con sus VID/PID correctos:
+{ "PS2/PSX Controller Adapter",  4607,  13121,      &pad_connection_ps2adapter },
 
 =====PARA LOS CORES=========
 
