@@ -187,6 +187,7 @@ Se entra en el menú con F12
 
 Extraemos los dos directorios de la ISO, wifislax y boot, a nuestro disco duro.
 Formateamos el pen a FAT32. Esto no nos va a dejar ejecutar cosas por temas de permisos de los que carece FAT32, así que ya verás lo que hay que hacer.
+Copiamos ambos directorios al pen en FAT32 (el script de instalación, bootinst.sh, va a buscar el LILO en el pendrive, no en la copia de nuestro disco duro).
 Copiamos boot/bootinst.sh al disco duro. Está pensado para ejecutarse desde el pen, pero como el pen está en FAT32 no podemos, así que lo editamos y dejamos las líneas
 de declaración de ciertas variables así:
 
@@ -215,7 +216,7 @@ Fuente: http://unix.stackexchange.com/questions/198791/how-do-i-permanently-chan
 
 Sacado de https://wiki.archlinux.org/index.php/Intel_graphics#Tear-free_video
 
-Creamos /etc/X11/xorg.conf.d/20-intel.conf con el contenido:
+Creamos /usr/share/X11/xorg.conf.d/20-intel.conf con el contenido:
 
 Section "Device"
    Identifier  "Intel Graphics"
@@ -596,8 +597,8 @@ como crear una conexión ehernet nueva en el gestor de redes. NO NECESITAS poner
 Ahora editamos /etc/sysctl.conf y descomentamos la línea
 #net.ipv4.ip_forward=1
 Añadimos el binding a las IPtables:
-sudo iptables -t nat -A POSTROUTING -o wlo1 -j MASQUERADE
-Donde digo wlo1, me refiero al interface con el que el servidor se conecta a internet. Antes de la 14.04 de Lubuntu, la wifi era eth1, luego fue un tiempo wlan0... así que fíjate bien.
+sudo iptables -t nat -A POSTROUTING -o wlp9s0b1 -j MASQUERADE
+Donde digo wlp9s0b1, me refiero al interface con el que el servidor se conecta a internet. Antes de la 14.04 de Lubuntu, la wifi era eth1, luego fue un tiempo wlan0... así que fíjate bien.
 Si queremos que estas cosas empiezen a funcionar sin reiniciar, hacemos
 echo 1 > /proc/sys/net/ipv4/ip_forward
 Ahora salvamos las IPtables:
@@ -2468,7 +2469,9 @@ ldd <nombre_del_ejecutable>
 
 *************Commander Genius en la Raspberri Pi**********************************************************************************
 
-clonamos el repo, nos metemos, y creamos un directorio de compilación y entramos en él:
+clonamos el repo, cambiamos O3 por O2 en todas las ocurrencias, o no compilará.
+
+creamos un directorio de compilación y entramos en él:
 mkdir build
 cd build
 
@@ -2574,6 +2577,14 @@ SI UN JUEGO NO PARECE HACER CASO DE ESTO y se sigue pixelando, puede ser porque 
 ./configure --prefix=/usr --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-libudev
 
 Compilar e instalar.
+
+**************SDL2 en x86 o donde sea con KMS/DRM + GLES*************************************************************************
+
+En este caso va con cmake en lugar de configure, así que creamos el directorio build, nos metemos en él y hacemos:
+
+cmake ../ -DVIDEO_X11=OFF -DVIDEO_WAYLAND=OFF -DOSS=OFF -DDISKAUDIO=OFF -DVIDEO_DUMMY=OFF -DCMAKE_INSTALL_PREFIX=/usr
+
+Compilar, e instalar.
 
 **************SWAP de emergencia*************************************************************************************************
 Algunos sistemas, como la Raspberry Pi, no usan swap normalmente porque nos cargaríamos la SD rápido.
@@ -3380,8 +3391,43 @@ Para evitar undefined symbols en tiempo de linkado, hacemos:
 
 CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard -lasound" CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard -lasound" ./configure
 
+***************************Menú XBM en RetroArch con carátulas, autolanzado de cores, etc...**********************************
+
+OJO: Para tener el menú XMB funcionando con sus fuentes, mostrando iconos en lugar de cuadros negros. etc...
+
+-Tienes que habilitar el soporte para PNG (rpng) al configurar
+
+-Necesitas los assets de aquí: https://github.com/libretro/retroarch-assets
+De ese repo, necesitas solamente el directorio xmb en el directorio de assets. El directorio de assets se cambia en el menú o en el cfg. Yo los tengo en ~/retro/assets,
+de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/xmb
+
+-Para poder tener las opciones de escanear directorios y tal, tienes que activar libretrodb.
+ Además, tienes que tener las databases de libretro, de manera que pueda comparar tus roms contra las de las databases.
+ Así que te bajas las databases de este repo: https://github.com/libretro/libretro-database
+ De ese repo sólo necesitas en realidad el directorio rdb.
+ Ahora tienes que configurar el setting "content_database_path" de tal manera que apunte al directorio rdb. Si tengo todo el contenido del repo
+ en ~/home/pi/retro/db, pues pongo content_database_path apuntando a ~/home/pi/retro/db.
+Lo puedes hacer desde el propio XMB en Settings > Directory
+ Ahora ya debería escanear las ROMS y sacártelas ordenadas por icono de sistema en la parte de arriba, pero si intentas lanzar una te dirá que "not cores found".
+ Pues vale, nos vamos a settings > playlist, y ahí podemos asociar los playlists con cores, de tal manera que el playlist de NES cargue el nestopia, etc...
+ Por CADA directorio de ROMs escaneado, XMB te va a crear una playlist, donde todas las ROMs de esa playlist se van a abrir con un determinado core. 
+ Estas playlist son archivos.lpl que los crea al principio en ~/.config/RetroArch/playlists, pero tenemos el setting playlist_directory.
+ Yo lo que he hecho ha sido configurar playlist_directory para que apunte a ~/retro/db/playlists, y ahí he metido las playlists que ya tenía, y ahí meterá XMB las nuevas
+ que vaya creando.
+
+-Si además quieres fotos de las carátulas, etc.. en las playlist, pues te bajas los thumbnails de aquí: http://thumbnailpacks.libretro.com/
+ Los mandas a donde quieras, hay que descomprimir el zip. y luego apuntas el setting thumbnails_directory a ese directorio. Por ejemplo, yo me creé ~/home/pi/retro/db/thumbnails,
+o sea, mandé los thumbnails a un directorio bajo retro/db, y ahí dentro tengo Atari\ -\ 7800, etc...
+Pues  pongo thumbnails_directory apuntando a ~/home/pi/retro/db/thumbnails. Así de sencillo. Lo puedes hacer desde el propio XMB en Settings > Directory
+
+Si ves que al cargar varios juegos tienes errores de EGL, pon gpu_mem=256 en el config.txt
+
 
 ****************************Retroarch en la Raspberry Pi*******************************
+
+Pillamos la última versión estable de:
+
+https://github.com/libretro/RetroArch/releases
 
 Cuando tenas dudas sobre los flags para que funcionen las operaciones en coma flotante por hardware en la Pi y Pi 2, mírate esto:
 https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
@@ -3393,11 +3439,21 @@ Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
 
 Para la Pi 1:
 
-./configure --disable-vg --enable-dispmanx --disable-x11 --disable-sdl2--disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2  --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+./configure --disable-vg  --disable-wayland --enable-dispmanx --disable-x11 --disable-sdl2--disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2  --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
 
 Para la Pi 2 y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
 
-./configure --disable-vg --enable-dispmanx --disable-x11 --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+./configure --disable-vg --disable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+
+Para Pi 2 y 3 con KMS/DRM: LO PRIMERO MUEVE /opt/vc A /opt/BCK PARA QUE RETROARCH NO DETECTE BCMHOST Y COMPILE CONTRA EL EGL/GLES DE BROADCOM!!!
+Que luego eso causa un error en eglGetDisplay() Y NO HAY MANERA DE DEBUGEARLO!!!
+
+./configure --enable-neon --enable-floathard --enable-kms --enable-gles --disable-vg  --disable-wayland  --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+
+Para PC:
+LO PRIMERO TEN INSTALADO PKGCONFIG, O NO DETECTARÁ ALGUNAS LIBRERÍAS ESENCIALES!!!
+
+./configure --enable-kms --enable-gles --disable-vg --disable-wayland --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
 
 Añadimos los flags de CPU en config.mk:
 
@@ -3570,12 +3626,14 @@ export LC_TYPE=en_US.UTF-8
 en el .bashrc y listo. Si persiste, añadimos lo mismo a .bash_profile.
 
 
-SONY walkman y dispositivos MTP que fallan al funcionar en modo MTP en Lubuntu como cámaras
-==================================================================================
+Móviles Android, SONY walkman y dispositivos MTP que fallan al funcionar en modo MTP en Lubuntu como cámaras, etc
+======================================================================================================
 
 El problema es que el PCMANFM los automonta como MTP y no van bien. Para que los monte como MSC, es decir, como pendrives normales y corrientes, simplemente ELIMINA
 o mueve a otro sitio /usr/lib/gvfs/gvfs-mtp-volume-monitor
-Y el PCMANFM ya los montará como MSC.
+Y el PCMANFM ya no toca los huevos.
+Ahora usa jmtpfs para montarlos a mano desde la línea de comandos. Es muy fácil. Creas un punto de montaje, y se lo pasas a jmtpfs, sin nodo ni nada. Él sabe qué hacer.
+jmtpfs ~/mnt
 
 Retroarch en Cubieboard2
 ======================
@@ -3864,3 +3922,14 @@ dtoverlay=vc4-kms-v3d
 
 Luego, instalamos libdrm-dev, y copiamos /usr/include/libdrm a /usr/include/drm, para que las cabeceras las encuentren bien los ejemplos (no se arregla pasando -I<ruta> ya
 que depende de cabeceras que no son nuestras y en las que vienen mal las rutas), y la podemos hacer funcionar mi ejemplo 2D-KMS de atomix pageflipping.
+
+Tenemos que instalar:
+libgl1-mesa-dev
+libdrm-dev
+libgbm-dev
+libgles2-mesa-dev
+
+..y el KMSCUBE original de robclark, tras añadir VC4 a la lista de drivers, tira perfectamente.
+
+
+
