@@ -3401,7 +3401,8 @@ OJO: Para tener el menú XMB funcionando con sus fuentes, mostrando iconos en lu
 De ese repo, necesitas solamente el directorio xmb en el directorio de assets. El directorio de assets se cambia en el menú o en el cfg. Yo los tengo en ~/retro/assets,
 de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/xmb
 
--Para poder tener las opciones de escanear directorios y tal, tienes que activar libretrodb.
+-Para poder tener las opciones de escanear directorios y tal, de modo que se nos creen las playlists que es lo que permite que al cargar una ROM
+ se cargue automáticamente su core, tienes que activar libretrodb.
  Además, tienes que tener las databases de libretro, de manera que pueda comparar tus roms contra las de las databases.
  Así que te bajas las databases de este repo: https://github.com/libretro/libretro-database
  De ese repo sólo necesitas en realidad el directorio rdb.
@@ -3419,6 +3420,9 @@ Lo puedes hacer desde el propio XMB en Settings > Directory
  Los mandas a donde quieras, hay que descomprimir el zip. y luego apuntas el setting thumbnails_directory a ese directorio. Por ejemplo, yo me creé ~/home/pi/retro/db/thumbnails,
 o sea, mandé los thumbnails a un directorio bajo retro/db, y ahí dentro tengo Atari\ -\ 7800, etc...
 Pues  pongo thumbnails_directory apuntando a ~/home/pi/retro/db/thumbnails. Así de sencillo. Lo puedes hacer desde el propio XMB en Settings > Directory
+
+-Si quieres poner RA en autoarranque, ~/.profile es una buena opción.. PERO desactiva el autologin en la segunda TTY, o estarás lanzando dos instancias de RA
+ y las cosas irán LENTAS.
 
 Si ves que al cargar varios juegos tienes errores de EGL, pon gpu_mem=256 en el config.txt
 
