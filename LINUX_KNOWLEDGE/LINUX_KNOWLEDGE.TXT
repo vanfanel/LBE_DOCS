@@ -597,8 +597,8 @@ como crear una conexión ehernet nueva en el gestor de redes. NO NECESITAS poner
 Ahora editamos /etc/sysctl.conf y descomentamos la línea
 #net.ipv4.ip_forward=1
 Añadimos el binding a las IPtables:
-sudo iptables -t nat -A POSTROUTING -o wlp9s0b1 -j MASQUERADE
-Donde digo wlp9s0b1, me refiero al interface con el que el servidor se conecta a internet. Antes de la 14.04 de Lubuntu, la wifi era eth1, luego fue un tiempo wlan0... así que fíjate bien.
+sudo iptables -t nat -A POSTROUTING -o wlo1 -j MASQUERADE
+Donde digo wlo1, me refiero al interface con el que el servidor se conecta a internet. Antes de la 14.04 de Lubuntu, la wifi era eth1, luego fue un tiempo wlan0... así que fíjate bien.
 Si queremos que estas cosas empiezen a funcionar sin reiniciar, hacemos
 echo 1 > /proc/sys/net/ipv4/ip_forward
 Ahora salvamos las IPtables:
@@ -3424,7 +3424,14 @@ Pues  pongo thumbnails_directory apuntando a ~/home/pi/retro/db/thumbnails. Así
 -Si quieres poner RA en autoarranque, ~/.profile es una buena opción.. PERO desactiva el autologin en la segunda TTY, o estarás lanzando dos instancias de RA
  y las cosas irán LENTAS.
 
-Si ves que al cargar varios juegos tienes errores de EGL, pon gpu_mem=256 en el config.txt
+-Para que se autoarranque, pero no se intente lanzar cuando entres por ssh, pon esto en .profile:
+
+if [ -z "$SSH_TTY" ] ; then  
+    cd retro
+    ./retroarch-xmb -c cfg/xmb.cfg &> /dev/null && sudo poweroff
+fi
+
+-Si ves que al cargar varios juegos tienes errores de EGL, pon gpu_mem=256 en el config.txt
 
 
 ****************************Retroarch en la Raspberry Pi*******************************
@@ -3654,7 +3661,7 @@ apt-get install sysvinit-core systemd-sysv-
 Y para saber por qué coño se nos instaló SYSTEMD al actualizar, miramos las dependencias inversas:
 apt-cache rdepends systemd --installed
 
-COMPILAR UN KERNEL CON FULL PREEMPTION Y BFS PARA LA RASPBERRY PI
+COMPILAR EL KERNEL CON FULL PREEMPTION Y BFS PARA LA RASPBERRY PI
 =================================================================
 
 INFO DE https://www.raspberrypi.org/documentation/linux/kernel/building.md COMPLETADA POR MÍ PARA EL TEMA DEL SCHEDULER
