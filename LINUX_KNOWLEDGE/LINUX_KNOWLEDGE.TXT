@@ -2476,7 +2476,8 @@ mkdir build
 cd build
 
 Ahora configuramos:
-cmake  -DUSE_SDL2=yes -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DDBFUSION=no -DTREMOR=NO -DOPENGL=no -DREFKEEN=no -DDOWNLOADER=no ..
+
+cmake  -DUSE_SDL2=ON -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DDBFUSION=OFF -DTREMOR=OFF -DOPENGL=OFF -DDOWNLOADER=OFF ..
 
 Usa -DUSE_SDL2=no para compilar contra SDL1.x
 
@@ -3645,6 +3646,13 @@ o mueve a otro sitio /usr/lib/gvfs/gvfs-mtp-volume-monitor
 Y el PCMANFM ya no toca los huevos.
 Ahora usa jmtpfs para montarlos a mano desde la línea de comandos. Es muy fácil. Creas un punto de montaje, y se lo pasas a jmtpfs, sin nodo ni nada. Él sabe qué hacer.
 jmtpfs ~/mnt
+
+Instalar la versión que queramos de IOS desde Linux en Ipad/Ipod/la basura para retrasados que sea
+=====================================================================================
+
+Se usa un opensource que se llama idevicerestore. Tiene dependencias y mierdas varias, pero cuando lo instales puedes hacer estas cosas tan... estúpidas.
+
+sudo idevicerestore iPad2\,5_9.3.3_13G34_Restore.ipsw
 
 Retroarch en Cubieboard2
 ======================
