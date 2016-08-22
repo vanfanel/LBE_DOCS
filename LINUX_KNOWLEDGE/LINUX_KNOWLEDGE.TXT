@@ -1367,9 +1367,31 @@ Number  Start      End          Size         Type     File system  Flags
 
 Ya tenemos la información que necesitamos, que es el offset de la segunda partición, que es la que queremos montar. Ahora simplemente hacemos:
 
-sudo mount -o loop,ro,offset=67108864 rpi_bck.img /mnt/hdd
+sudo mount -o loop,rw,offset=67108864 rpi_bck.img /mnt/hdd
 
 Y listo!!
+
+Para raspbian más reciente:
+
+sudo mount -o loop,rw,offset=70254592 raspbian_AUG2016.img /mnt/hdd
+
+***********Encoger una partición de una imágen de disco***********************************************************************************
+
+No es simplemente acceder con parted: se tiene que operar sobre un loop para esa imágen.
+
+Pedimos el loop (siempre que loop0 esté libre, sino tenemos que pedir uno libre antes con sudo losetup -f o usar otro de los de /dev. Mira con df 
+cuáles no aparecen y por tanto están libres):
+
+sudo losetup /dev/loop0 myimage.img
+sudo partprobe /dev/loop0
+
+Ahora mira que tengas /dev/loop0p1, /dev/loop0p2, etc...
+
+Y ya puedes hacer: 
+
+sudo gparted /dev/loop0
+
+...y te dejará encoger particiones EXT4 y demás.
 
 ***********Recortar una imágen de disco (tarjeta) para que no ocupe lo mismo que tiene como capacidad el dispositivo de donde se leyó*******
 
@@ -3862,9 +3884,14 @@ Para Pi3 (OJO, por ahora SE SUPONE que necesita un FLAG especial para -munaligne
 cmake -DCMAKE_C_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
 -DCMAKE_CXX_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
 
+Ahora sustituimos el O3 de todos los ficheros por O2:
+
+find ./ -type f -exec sed -i 's/O3/O2/g' {} \;
+
 Y compilamos con make -j8
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
+
 
 NOTAS TIMIDITY
 ==============
