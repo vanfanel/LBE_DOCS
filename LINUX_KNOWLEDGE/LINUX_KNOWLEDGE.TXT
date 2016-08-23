@@ -3884,7 +3884,7 @@ Para Pi3 (OJO, por ahora SE SUPONE que necesita un FLAG especial para -munaligne
 cmake -DCMAKE_C_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
 -DCMAKE_CXX_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
 
-Ahora sustituimos el O3 de todos los ficheros por O2:
+CAMBIAMOS todos los O3 por O2 dentro del directorio de compilación, o sea, donde estamos:
 
 find ./ -type f -exec sed -i 's/O3/O2/g' {} \;
 
@@ -3947,6 +3947,8 @@ La monto desde la Pi por ssh:
 sudo mount /dev/mmcblk0p5 /mnt/hdd
 Y hago lo que tengo que hacer. ¡¡OJO: DESDE EL PC NO DEJA GUARDAR ESTE ARCHIVO CON SUS CAMBIOS!!
 Podemos ver qué sistema arranca de qué partición consultando installed_os.json en ese misma partición. 
+
+PARA PASAR un rootfs de Linux desde otra tarjeta, usa "rsync -a <dir_orígen>/* <dir_destino>", NO USES CP -R QUE LA LIAS CON LOS PROPIETARIOS!!
 
 COPIA DE SEGURIDAD DE UN ROOTFS, COMO EN TIEMPOS DE GENTOO!
 ===========================================================
