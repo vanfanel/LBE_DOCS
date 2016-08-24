@@ -1678,8 +1678,10 @@ Instala autoconf:
 
 sudo apt-get install autoconf
 
+Editamos configure.ac y borramos la línea de AM_PATH_SDL
+
 Ejecutamos: 
-autoreconf -i
+autoreconf -vif
 ./configure --without-x
 
 Editamos schism/video.c, y movemos la llamada a 
@@ -1692,7 +1694,7 @@ en ese mismo fichero, schism/video.c
 
 Editamos Makefile y dejamos la línea de CFLAGS así: (el Makefile es un poco lioso porque es de generación automática, busca -g y te lleva al sitio)
 
-CFLAGS = -O3 -marm -ffast-math -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
+CFLAGS = -O3 -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math
 
 Quitamos el -O2 y el -g de OBJFLAGS.
 
@@ -1719,6 +1721,12 @@ Para la Pi 3:
 
 cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math"  \
 -DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" -DGPL=ON \
+-DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ ..
+
+Para la Pi 1:
+
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -ffast-math -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j"  \
+-DCMAKE_CXX_FLAGS="-marm -ffast-math -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j" -DGPL=ON \
 -DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ ..
 
 Te tiene que funcionar, si no es que no encuentra las librerías o las cabeceras que le pasas, comprueba que están donde le estás diciendo.
@@ -2553,14 +2561,14 @@ Lo hemos sacado de aquí: https://www.libsdl.org/hg.php
 
 CONFIGURAMOS CON:
 
-CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus
+CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus
 
 lueg make -j8 y a correr.
 
 Para SDL_image y SDL_mixer, si no compilan (suelen compilar sin problemas), corre el autogen.sh antes del configure, PERO NO SUELE HACER FALTA.
 Configuramos con
 
-CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr
+CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" ./configure --prefix=/usr
 
 Y luego ya es cosa de correr ./configure y make -j8
 
@@ -2574,7 +2582,7 @@ su configure, ejecuta su autogen.sh
 SDL_gfx tiene problemas para compilar en arm si no deshabilitamos el soporte para MMX
 
 ./autogen.sh
-CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix="/usr" --disable-mmx
+CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" ./configure --prefix="/usr" --disable-mmx
 
 			CUIDADO
 
@@ -3839,6 +3847,12 @@ Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
 
 Nos compilamos nosotros OpenAL desde https://github.com/kcat/openal-soft porque el de debian tiene dependencias cochinas.
 cd build
+
+Para Pi1:
+
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math"  \
+-DCMAKE_CXX_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math"  \
+-DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DCMAKE_BUILD_TYPE=Release ..
 
 Para Pi2:
 
