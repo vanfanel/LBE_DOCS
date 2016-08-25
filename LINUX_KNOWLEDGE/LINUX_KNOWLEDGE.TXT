@@ -1375,6 +1375,34 @@ Para raspbian más reciente:
 
 sudo mount -o loop,rw,offset=70254592 raspbian_AUG2016.img /mnt/hdd
 
+***********Montar una partición AMIGA dentro de una imágen RDB, o sea, un disco completo con cabecera RDB y una o varias particiones*****
+
+Este es el tipo de HDF que se usa, por ejemplo, en el Minimig y demás implementaciones en FPGA. Es lo mismo casi que montar cualquier otra
+partición que está dentro de una imágen completa de disco.
+Recurrimos a parted para pillar el offset (primer valor) y el size (último valor):
+
+manuel@vader:~$ parted /media/manuel/MINIMIG_V1/hdf_sys31.hdf 
+WARNING: You are not superuser.  Watch out for permissions.
+GNU Parted 3.2
+Using /media/manuel/MINIMIG_V1/hdf_sys31.hdf
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+(parted) unit
+Unit?  [compact]? B                                                       
+(parted) print                                                            
+Pralloc = 0, Reserved = 2, blocksize = 1, root block at 737478
+Model:  (file)
+Disk /media/manuel/MINIMIG_V1/hdf_sys31.hdf: 754974720B
+Sector size (logical/physical): 512B/512B
+Partition Table: amiga
+Disk Flags: 
+
+Number  Start    End         Size        File system  Name  Flags
+ 1      258048B  754919423B  754661376B  affs1        DH0   boot
+
+Ahora simplemente montamos con ambos parámetros y ¡funciona!
+
+sudo mount -t affs -o loop,rw,offset=258048,sizelimit=754661376 /media/manuel/MINIMIG_V1/hdf_sys31.hdf /mnt/hdd/
+
 ***********Encoger una partición de una imágen de disco***********************************************************************************
 
 No es simplemente acceder con parted: se tiene que operar sobre un loop para esa imágen.
@@ -1711,23 +1739,26 @@ hg clone https://bitbucket.org/Blzut3/ecwolf
 mkdir build
 cd build
 
-Para compilar contra SDL2 y SDL2_mixer, y ya pasándole los flags de la Pi2 a cmake:
+Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi2 a cmake:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" -DGPL=ON \
--DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ ..
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -munaligned-access"  \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -munaligned-access" -DGPL=ON \
+-DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
+-DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
 
 Para la Pi 3:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" -DGPL=ON \
--DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ ..
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -munaligned-access"  \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -munaligned-access" -DGPL=ON \
+-DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
+-DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
 
 Para la Pi 1:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -ffast-math -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j"  \
--DCMAKE_CXX_FLAGS="-marm -ffast-math -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j" -DGPL=ON \
--DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ ..
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -munaligned-access"  \
+-DCMAKE_CXX_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -munaligned-access" -DGPL=ON \
+-DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
+-DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
 
 Te tiene que funcionar, si no es que no encuentra las librerías o las cabeceras que le pasas, comprueba que están donde le estás diciendo.
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
@@ -2545,7 +2576,7 @@ Listo!
 
 NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da igual.
 
-*************SDL2 en  la Raspberry Pi*********************************************************************************************
+*************SDL2 en la Raspberry Pi*********************************************************************************************
 
 ¡¡¡CUIDADO!!! Asegúrate de tener instalado el paquete libudev-dev o en los juegos no irá ni joystick, ni teclado, ni ratón, ni nada.
 
@@ -3481,7 +3512,7 @@ Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
 
 Para la Pi 1:
 
-./configure --disable-vg  --disable-wayland --enable-dispmanx --disable-x11 --disable-sdl2--disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2  --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+./configure --disable-vg --disable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
 
 Para la Pi 2 y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
 
@@ -3850,7 +3881,7 @@ cd build
 
 Para Pi1:
 
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math"  \
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j"  \
 -DCMAKE_CXX_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math"  \
 -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DCMAKE_BUILD_TYPE=Release ..
 
@@ -3887,16 +3918,22 @@ en
 justo antes de SDL_CreateWindow(), como siempre.
 
 Ahora configuramos (no pases más flags de optimización que estas, o petará de la peor manera):
+(OJO, por ahora SE SUPONE que necesita un FLAG especial para -munaligned-access, y nada de ffast-math hasta que se arreglen las cosas...):
+
+Para Pi1:
+
+cmake -DCMAKE_C_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j -munaligned-access"  \
+-DCMAKE_CXX_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j -munaligned-access" -DCMAKE_BUILD_TYPE=Release ..
 
 Para Pi2:
 
-cmake -DCMAKE_C_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard -munaligned-access"  \
+-DCMAKE_CXX_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard -munaligned-access" -DCMAKE_BUILD_TYPE=Release ..
 
-Para Pi3 (OJO, por ahora SE SUPONE que necesita un FLAG especial para -munaligned-access, y nada de ffast-math hasta que se arreglen las cosas...):
+Para Pi3
 
-cmake -DCMAKE_C_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard -munaligned-access"  \
+-DCMAKE_CXX_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard -munaligned-access" -DCMAKE_BUILD_TYPE=Release ..
 
 CAMBIAMOS todos los O3 por O2 dentro del directorio de compilación, o sea, donde estamos:
 
