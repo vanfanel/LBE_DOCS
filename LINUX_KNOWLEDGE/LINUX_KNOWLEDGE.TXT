@@ -3520,6 +3520,8 @@ Para la Pi 2 y la 3 (la diferencia es que se activa el uso de las instrucciones 
 
 Para Pi 2 y 3 con KMS/DRM: LO PRIMERO MUEVE /opt/vc A /opt/BCK PARA QUE RETROARCH NO DETECTE BCMHOST Y COMPILE CONTRA EL EGL/GLES DE BROADCOM!!!
 Que luego eso causa un error en eglGetDisplay() Y NO HAY MANERA DE DEBUGEARLO!!!
+Luego instala estas:
+sudo apt-get install libgl1-mesa-dev libdrm-dev libgbm-dev libgles2-mesa-dev
 
 ./configure --enable-neon --enable-floathard --enable-kms --enable-gles --disable-vg  --disable-wayland  --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
 
@@ -3816,19 +3818,24 @@ O sea que nos tiene que quedar:
 
 Si queremos ajustar cosas, en ~/.nuvierc
 
-LÖVE2D en la Raspberry Pi
-======================
+LÖVE2D en la Raspberry Pi (love)
+============================
 
 Las instrucciones básicas están aquí: https://love2d.org/wiki/Building_L%C3%96VE
 
 Clonamos:
 hg clone https://bitbucket.org/rude/love
 
-Tras satisfacer las dependencias, ejecuta:
-./platform/unix/automagic
+Satisfacemos las dependencias con:
+ sudo apt-get install libmodplug-dev libphysfs-dev libluajit-5.1-dev libtheora-dev libmpg123-dev
 
 Luego configuramos para Pi2 con:
 CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr
+
+Para Pi3:
+CFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr
+
+make y sudo make install
 
 INSTALAR JACKD2 EN LA RASPBERRY PI
 =================================
@@ -3872,16 +3879,48 @@ if grep -q BCM2708 /proc/cpuinfo; then
         echo "Estamos en una Raspberry Pi"
 fi
 
+GCC 6.1.0 en la Raspberry Pi
+=======================
+
+Es necesario para tener una versión estable de OpenAL que no de segfaults.
+Info aquí:
+
+https://bitbucket.org/sol_prog/raspberry-pi-gcc-6.1.0-binary
+
+Nos clonamos el repo de los binarios, descomprimimos el .7z en el PC y subimos a la Pi el .tar resultante.
+Movemos gcc-6.1.0 a /usr/local/gcc-6.1.0 
+Nos metemos en  /usr/local/gcc-6.1.0/bin  y hacemos:
+cp c++-6.1.0 c++
+cp cpp-6.1.0 cpp
+cp g++-6.1.0 g++
+cp gcc-6.1.0 gcc
+cp gcc-ar-6.1.0 gcc-ar
+cp gcc-nm-6.1.0 gcc-nm
+cp gcc-ranlib-6.1.0 gcc-ranlib
+cp gcov-6.1.0 gcov
+cp gcov-tool-6.1.0 gcov
+cp gcc cc
+
+Ahora en .profile dejamos la línea del path así (nótese que sacamos el distcc del path y metemos el 6.1.0):
+PATH="/usr/local/gcc-6.1.0/bin:$HOME/bin:$PATH"
+
+Ahora arreglamos la librería stdc++, que el gcc 6.1.0 necesita una versión más moderna. Para ello hacemos:
+sudo cp /usr/local/gcc-6.1.0/lib/libstdc* /usr/lib/arm-linux-gnueabihf/
+
+Listo. Ahora ya puedes compilar una versión de OpenAL que no de segfaults.
+
 ZDOOM en la Raspberry Pi
 ======================
 Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
+
+PARA COMPILAR OpenAL NECESITAS GCC 6.1.0 O POSTERIOR instalado en la Pi. Mira las instrucciones para instalarlo.
 
 Nos compilamos nosotros OpenAL desde https://github.com/kcat/openal-soft porque el de debian tiene dependencias cochinas.
 cd build
 
 Para Pi1:
 
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j"  \
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math"  \
 -DCMAKE_CXX_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math"  \
 -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DCMAKE_BUILD_TYPE=Release ..
 
@@ -3894,7 +3933,7 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -m
 Para Pi3:
 
 cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" -DALSOFT_REQUIRE_NEON=ON \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard  -ffast-math" -DALSOFT_REQUIRE_NEON=ON \
 -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DHAVE_ARM_NEON_H=YES -DCMAKE_BUILD_TYPE=Release ..
 
 make
@@ -3917,27 +3956,22 @@ en
 ../src/posix/sdl/sdlvideo.cpp
 justo antes de SDL_CreateWindow(), como siempre.
 
-Ahora configuramos (no pases más flags de optimización que estas, o petará de la peor manera):
-(OJO, por ahora SE SUPONE que necesita un FLAG especial para -munaligned-access, y nada de ffast-math hasta que se arreglen las cosas...):
+Ahora configuramos (SI OBTIENES UN EJECUTABLE QUE PROVOCA SEGFAULTS, ES QUE NO HAS COMPILADO OPENAL Y ZDOOM CON GCC > 6.1.0):
 
 Para Pi1:
 
-cmake -DCMAKE_C_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j -munaligned-access"  \
--DCMAKE_CXX_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j -munaligned-access" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j"  \
+-DCMAKE_CXX_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" -DCMAKE_BUILD_TYPE=Release ..
 
 Para Pi2:
 
-cmake -DCMAKE_C_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard -munaligned-access"  \
--DCMAKE_CXX_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard -munaligned-access" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
 
 Para Pi3
 
-cmake -DCMAKE_C_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard -munaligned-access"  \
--DCMAKE_CXX_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard -munaligned-access" -DCMAKE_BUILD_TYPE=Release ..
-
-CAMBIAMOS todos los O3 por O2 dentro del directorio de compilación, o sea, donde estamos:
-
-find ./ -type f -exec sed -i 's/O3/O2/g' {} \;
+cmake -DCMAKE_C_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j8
 
@@ -4027,6 +4061,8 @@ libgl1-mesa-dev
 libdrm-dev
 libgbm-dev
 libgles2-mesa-dev
+
+sudo apt-get install libgl1-mesa-dev libdrm-dev libgbm-dev libgles2-mesa-dev
 
 ..y el KMSCUBE original de robclark, tras añadir VC4 a la lista de drivers, tira perfectamente.
 
