@@ -3907,6 +3907,13 @@ PATH="/usr/local/gcc-6.1.0/bin:$HOME/bin:$PATH"
 Ahora arreglamos la librería stdc++, que el gcc 6.1.0 necesita una versión más moderna. Para ello hacemos:
 sudo cp /usr/local/gcc-6.1.0/lib/libstdc* /usr/lib/arm-linux-gnueabihf/
 
+Deshabilitamos gcc 4.9.x:
+
+sudo mkdir /usr/bin/disabled
+sudo mv /usr/bin/gcc* /usr/bin/disabled
+sudo mv /usr/bin/g++* /usr/bin/disabled
+sudo mv /usr/bin/cc /usr/bin/disabled
+
 Listo. Ahora ya puedes compilar una versión de OpenAL que no de segfaults.
 
 ZDOOM en la Raspberry Pi
