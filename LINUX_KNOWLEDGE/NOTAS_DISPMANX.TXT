@@ -27,8 +27,10 @@
 	 queremos ir copiando a la VRAM por cada línea, o sea, un "visible_pitch".
 	 Y ya está: write_data() copiará por cada línea sólo los n bytes visibles que le
 	 indiquemos, y luego pasará a la siquiente tanto en el orígen como en el destino.
-	 Nos hemos ahorrado MUCHA CPU, porque tenemos un blitter. Sí, amigos, la Raspberry
-	 Pi lleva un blitter a bordo, como el Amiga.
+	 Necesita tanto el pitch que nos interesa (o sea, hasta dónde queremos llegar en cada línea)
+	 como el bmp_rect, para saber cuándo tiene que saltar de línea y cuántas líneas hay.	
+	 Nos hemos ahorrado MUCHA CPU, porque tenemos un blitter. 
+	 Sí, amigos, la Raspberry Pi lleva un blitter a bordo, como el Amiga.
 
          Bien, pues ya tenemos una manera de recortar una imágen de menor pitch desde una
 	 con más pitch deshechando la parte de picth que no nos interesa.
