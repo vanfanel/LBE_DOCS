@@ -4,13 +4,23 @@ El programa se llama tunesviewer.
 Si te da un error y no te deja buscar, dale a view y desactiva Request HTM5 Mode.
 Cambia la búsqueda a Podcast Search.
 
+******Error tonto: ACLOCAL is missing on your system**************************************************************************************************************
+
+No te falta nada realmente. Sencillamente, hazle un touch a:
+aclocal.m4
+configure
+Makefile.am
+Makefile.in
+
+Y ya debería solucionarse. Sin instalar nada.
+
 ******Llaves en LibreOffice*****************************************************************************************************************************************************************
 
 Antes de esto, aprende a trabajar con marcos de texto, de manera que puedas luego moverlos dentro de las laves y tal sin andar jugando con tabulaciones.
 Los marcos de texto se crean con Insert->Text Box. Así de fácil.
 Ahora ya, lo de las llaves va así:
 
-1)Abrimos el programa de open office
+1)Abrimos el programa de libreoffice
 2)Clickeamos en barra de herramientas opción "ver".
 3)Luego de entrar en la opción "ver" continuamos clickeando en "barra de herramientas"
 4)Después ingresamos a la opción dibujo para lograr aparecer "la tabla de dibujo".
@@ -76,7 +86,7 @@ Configuramos con:
 CFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr
 
 SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
-
+Le puedes pasar también --without-x si tienes los headers de las X11 instalados.
 
 ******Notas SDLPop : el clon open source y libre de Prince of Persia *****************************************************************************************************************************************************
 
@@ -1333,8 +1343,11 @@ Para ello, editamos /etc/security/limits.conf, añadiendo unas cosillas para qui
 
 @audio   -  rtprio     99
 @audio   -  memlock    unlimited
+@audio   -  nice    -20
 pi   -  rtprio     99
 pi   -  memlock    unlimited
+pi   -  nice       -20
+
 
 De este modo, no hay límites para el usuario Pi ni para nadie del grupo audio, como jackd.
 
@@ -1663,13 +1676,21 @@ Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
 Clonamos el repo:
 svn checkout http://svn.eduke32.com/eduke32/polymer/ eduke32
 
+Añadimos 
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+en build/src/sdlayer.c, antes de SDL_CreateWindow()
+
 Compilamos con:
 Para pi1:
 make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_OPENGL=0 WITHOUT_GTK=1 NOASM=1 LTO=0 OPTLEVEL=3 OPTOPT="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j"
 Para pi2:
 make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_OPENGL=0 WITHOUT_GTK=1 NOASM=1 LTO=0 OPTLEVEL=3 OPTOPT="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
+Para una Pi3:
+make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_LIBFLAC=0 WITHOUT_GTK=1 USE_OPENGL=0 OPTLEVEL=3 OPTOPT="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"
 
+Si te da problemas porque, a pesar de que estamos deshabilitando libflac, la busca en tiempo de linkado, borra la referencia de libfrac de la plataforma LINUX
+en el Makefile, y fuera.
 
 Para CROSS COMPILAR EDUKE32: (para poder tener LTO, Linking Time Optimizations):
 
@@ -1732,31 +1753,37 @@ Compilamos y listo!
 
 ************ECWOLF, el mejor port del Wolfenstein 3D, en la Pi*****************************************************************************
 
-Clonamos el repo:
+Pillamos la última versión estable de:
+http://maniacsvault.net/ecwolf/download.php
 
-hg clone https://bitbucket.org/Blzut3/ecwolf
+Hacemos un pequeño cambio o si no da errores al compilar (estos errores están solventados en las versiones svn pero las svn tienen otros peores).
+Para ello, editamos ../src/id_sd.cpp y añadimos el parámetro true a las llamadas a Mix_LoadMUS_RW(), de tal manera que quedan:
+
+music = Mix_LoadMUS_RW(mus_cunk, true);
+
+Hay un par de llamadas de estas. Las cambias y ya.
 
 mkdir build
 cd build
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi2 a cmake:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -munaligned-access"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -munaligned-access" -DGPL=ON \
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"  \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" -DGPL=ON \
 -DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
 -DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
 
 Para la Pi 3:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -munaligned-access"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -munaligned-access" -DGPL=ON \
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math"  \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard  -ffast-math" -DGPL=ON \
 -DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
 -DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
 
 Para la Pi 1:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -munaligned-access"  \
--DCMAKE_CXX_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -munaligned-access" -DGPL=ON \
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math"  \
+-DCMAKE_CXX_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" -DGPL=ON \
 -DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
 -DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
 
@@ -2386,6 +2413,13 @@ Hacemos un push forzado:
 git push --force origin/dispmanx
 
 https://help.github.com/articles/changing-a-commit-message/
+
+************Probar un pull request (PR) que no ha sido mergido en mainline aún******************************************************
+
+git fetch origin pull/213/head:pr-213
+git checkout pr-213
+
+...donde 213 es el número de PR, obviamente.
 
 ************Renombrar ficheros del directorio actual de mayúsculas a minúsculas*****************************************************
 
@@ -3512,11 +3546,11 @@ Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
 
 Para la Pi 1:
 
-./configure --disable-vg --disable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+./configure --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
 
 Para la Pi 2 y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
 
-./configure --disable-vg --disable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+./configure --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
 
 Para Pi 2 y 3 con KMS/DRM: LO PRIMERO MUEVE /opt/vc A /opt/BCK PARA QUE RETROARCH NO DETECTE BCMHOST Y COMPILE CONTRA EL EGL/GLES DE BROADCOM!!!
 Que luego eso causa un error en eglGetDisplay() Y NO HAY MANERA DE DEBUGEARLO!!!
@@ -3737,7 +3771,7 @@ COMPILAR EL KERNEL CON FULL PREEMPTION Y BFS PARA LA RASPBERRY PI
 
 INFO DE https://www.raspberrypi.org/documentation/linux/kernel/building.md COMPLETADA POR MÍ PARA EL TEMA DEL SCHEDULER
 
-Clonamos el kernel, para la rama 4.4 he hecho:
+Clonamos el kernel, para la rama 4.4:
 git clone --depth=1 https://github.com/raspberrypi/linux -b rpi-4.4.y
 
 Yo estaba en ~/src/pi, así que lo tengo en ~/src/pi/linux
@@ -3801,9 +3835,15 @@ Añadimos
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 en screen/Screen.cpp, justo antes de SDL_CreateWindowAndRenderer()
 
-Configuramos así:
+Editamos el script configure y quitamos toda mención a -O2 y -g. 
 
-CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure
+Configuramos así para Pi2:
+
+CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --disable-debug
+
+Para Pi3:
+
+CFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard  -ffast-math" ./configure --disable-debug
 
 Compilamos:
 
@@ -3817,6 +3857,69 @@ O sea que nos tiene que quedar:
 ~/ultima6/ultima6/<aquí los datos originales del juego>
 
 Si queremos ajustar cosas, en ~/.nuvierc
+
+EXULT, Ultima VII en la Raspberry Pi
+==============================
+
+Clonamos
+
+git clone --depth 1 https://github.com/exult/exult.git
+
+Ejecutamos el autogen.sh
+Configuramos con:
+
+./configure --disable-all-hq-scalers --disable-nxbr
+
+Editamos imagewin/imagewin.cc y añadimos
+
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+Y dejamos las líneas de CreateRenderer con estos flags:
+screen_renderer = SDL_CreateRenderer(screen_window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
+
+Editamos exult.cc y dejamos la función  WrappedConnectionNumber() así:
+
+static inline int WrappedConnectionNumber() {
+        return 0;
+}
+
+Copiamos el directorio data que viene con los sources a ~/ultima7/data
+Copiamos el ejecutable exult resultante a ~/ultima7
+Copiamos los datos de STATIC del juego a ~/ultima7/blackgate_static
+Creamos ~/ultima7/blackgate_gamedat
+Creamos ~/ultima7/blackgate_savegame
+
+Ahora copiamos ~/.exult.cfg a ~/ultima7/exult.cfg. Si no tenemos ~/.exult.cfg, ejecutamos el exult por primera vez y lo creará.
+Ahora editamos  ~/ultima7/exult.cfg y le añadimos, bajo <disk>:
+
+ <game>
+   <blackgate>
+    <path>
+    </path>
+    <static_path>
+    ./blackgate_static
+    </static_path>
+    <gamedat_path>
+    ./blackgate_gamedat
+    </gamedat_path>
+    </savegame_path>
+    ./blackgate_savegame
+    </savegame_path>
+</game>
+
+A exult le pasamos el cfg así:
+./exult -c exult.cfg
+
+La pantalla lo mejor es dejarla así:
+Full Screen: Enabled
+Display Mode: 640x400
+Scaler: Bilinear
+Scaling: 2x
+Game Area: Auto
+Fill Quality: Point
+Fill Mode: Fit
+AR Correction: Disabled
+
+Y listo!
 
 LÖVE2D en la Raspberry Pi (love)
 ============================
@@ -3916,7 +4019,7 @@ sudo mv /usr/bin/cc /usr/bin/disabled
 
 Listo. Ahora ya puedes compilar una versión de OpenAL que no de segfaults.
 
-ZDOOM en la Raspberry Pi
+GZDOOM en la Raspberry Pi
 ======================
 Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
 
@@ -3964,6 +4067,11 @@ en
 justo antes de SDL_CreateWindow(), como siempre.
 
 Ahora configuramos (SI OBTIENES UN EJECUTABLE QUE PROVOCA SEGFAULTS, ES QUE NO HAS COMPILADO OPENAL Y ZDOOM CON GCC > 6.1.0):
+LO PRIMERO, agregamos esto en CMakelists.txt para que se compile con O2 y no con O3, que falla en ARM.
+LO TENEMOS QUE PONER bajo las líneas iniciales, justo tras: project(GZDoom)
+
+string(REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+string(REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
 
 Para Pi1:
 
@@ -4073,5 +4181,15 @@ sudo apt-get install libgl1-mesa-dev libdrm-dev libgbm-dev libgles2-mesa-dev
 
 ..y el KMSCUBE original de robclark, tras añadir VC4 a la lista de drivers, tira perfectamente.
 
+CARGAR TAP DE SPECTRUM DESDE LINUX
+====================================
 
+Lo primero cargamos el OSS:
 
+sudo modprobe snd-pcm-oss
+sudo modprobe snd_hda_intel
+
+Ahora buscamos los sources del "playtap", tal cual, compilamos con el Makefile.linux, y hacemos
+./playtap juego.tap 
+
+Justo cuando empiece a sonar bajamos el sonido con el control de volúmen normal, como a 3/4 que si no suena muy alto y falla.
