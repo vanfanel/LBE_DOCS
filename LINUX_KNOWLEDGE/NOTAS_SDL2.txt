@@ -230,3 +230,9 @@ y luego la actualizamos, renderizamos, etc...:
         SDL_RenderPresent(renderer);
 
 ESTE TRUCO TAN INCREÍBLE lo he sacado de stack overflow. Gracias, gracias! --->  http://stackoverflow.com/questions/30599636/8-bit-surfaces-in-sdl-2
+
+==========SDL2 KMSDRM=========================================================
+
+Configurar con el CMAKE para desactivar X11 y activar KMSDRM:
+
+cmake -DVIDEO_KMSDRM=ON -DVIDEO_X11=OFF ..

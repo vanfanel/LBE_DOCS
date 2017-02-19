@@ -2259,16 +2259,15 @@ mkdir build
 cd build
 cmake ../cmake -DTARGET=sdl2_rpi  -DCMAKE_BUILD_TYPE=Release
 
-o bien
-
-cmake ../cmake -DTARGET=sdl2_rpi2  -DCMAKE_BUILD_TYPE=Release
-
 La eprom que falta es del set B
 Copia el res/config.xml al mismo directorio donde tienes el ejecutable del cannonball
 
 SI al ejecutarlo te sale que no encuentra las SDL, mira con un ldd sobre el ejecutable, y si efectivamente no las encuentra, es que las has instalado
 en una ruta que no está en los path que usa el sistema para buscar libs en tiempo de ejecución.
 Así que ejecuta sudo lddconfig -v y echa un vistazo. Mírate la parte de los apuntes de SDL1.2.x
+
+Si te da un segfault al salir, pon  la llamada video.disable() en  quit_func(), que está en src/main/main.cpp, y quitas la llamada a  video.disable()
+de Video::~Video(void) en src/main/video.cpp , ya que no pinta nada en un destructor...
 
 ************Actualizar repositorio github****************************************************************************************
 
@@ -3720,6 +3719,24 @@ FLAGS += -fprofile-use
 LDFLAGS += -lgcov
 NOTA: NO FUNCIONA el PGO con el DISTCC, ya que al correr no genera los .gcda, así que tienes que compilar en local (saca la ruta del distcc del ~/.profile temporalmente y ya).
 
+COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
+===========================================================================
+
+buscamos en makefile.libretro la parte de generate-files, y dejamos sólo las entradas de capcom, neogeo y tal.
+La línea queda tal que así, pero vamos, hazlo a mano:
+        $(PERL) $(FBA_SCRIPTS_DIR)/gamelist.pl -o $(FBA_GENERATED_DIR)/driverlist.h -l gamelist.txt $(FB    A_BURN_DRIVERS_DIR) $(FBA_BURN_DRIVERS_DIR)/capcom $(FBA_BURN_DRIVERS_DIR)/cps3 $(FBA_BURN_DRIVERS_DIR)/    neogeo
+
+Ahora, también en makefile.libretro, quitamos los directorios de la parte de FBA_BURN_DIRS := $(FBA_BURN_DIR) en adelante.
+No hace falta que quites los directorios de los includes, esos dan igual.
+
+Ahora hacemos un 
+make -f makefile.libretro platform=rpi3 generate-files
+de manera que nos genere los headers sólo con los drivers que hemos dejado en el makefile.libretro,
+y luego ya el 
+make -f makefile.libretro platform=rpi3 -j6
+y listo. 
+
+
 ERROR DE LANGUAGE DE PERL al acceder por ssh a una máquina
 =====================================================
 
@@ -3982,8 +3999,31 @@ if grep -q BCM2708 /proc/cpuinfo; then
         echo "Estamos en una Raspberry Pi"
 fi
 
-GCC 6.1.0 en la Raspberry Pi
-=======================
+INSTALAR GCC 6.3 USANDO LOS REPOS DE STRETCH EN JESSIE (RASPBIAN)
+================================================================
+
+Actualizamos la lista de paquetes y los paquetes, estando aún en jessie:
+sudo apt-get update
+sudo apt-get upgrade
+
+Cambiamos jessie por stretch en 
+sudo vim /etc/apt/sources.list
+
+Actualizamos la lista de paquetes a la de stretch:
+sudo apt-get update
+
+Instalamos gcc 6:
+sudo apt-get install gcc-6 g++-6
+
+Desisntalamos gcc 4.x:
+sudo apt-get purge 4.9
+
+Volvemos a poner jessie donde estaba stretch, y actualizamos a los índices de jessie:
+sudo vim /etc/apt/sources.list
+sudo apt-get update
+
+INSTALAR GCC 6.1.0 MANUALMENTE en la Raspberry Pi
+===============================================
 
 Es necesario para tener una versión estable de OpenAL que no de segfaults.
 Info aquí:
