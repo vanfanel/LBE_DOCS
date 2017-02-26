@@ -160,15 +160,10 @@ bool initDRM(void) {
 		printf ("no connected connector found\n");
 		return false;
 	}
-	// find highest resolution mode
-	for (i = 0, area = 0; i < (uint)connector->count_modes; i++) {
-		drmModeModeInfo *current_mode = &connector->modes[i];
-		uint current_area = current_mode->hdisplay * current_mode->vdisplay;
-		if (current_area > area) {
-			drm.mode = current_mode;
-			area = current_area;
-		}
-	}
+	
+	// Current video mode is the first on the list of modes of the connector
+	drm.mode = &connector->modes[0];
+	printf ("Current video mode %d x %d\n", drm.mode->hdisplay, drm.mode->vdisplay);
 
 	if (!drm.mode) {
 		printf ("could not find mode\n");
@@ -398,7 +393,7 @@ void setup_plane() {
 
 }
 
-/* Implementation using drmModeAddFB2() */
+/* Implementation using drmModeAddFB2()
 static int modeset_create_fb(int fd, struct modeset_buf *buf)
 {
 	struct drm_mode_create_dumb creq;
@@ -470,9 +465,8 @@ err_destroy:
 	dreq.handle = buf->handle;
 	drmIoctl(fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
 	return ret;
-}
+}*/
 
-/*
 static int modeset_create_fb(int fd, struct modeset_buf *buf)
 {
 	struct drm_mode_create_dumb creq;
@@ -538,7 +532,7 @@ err_destroy:
 	dreq.handle = buf->handle;
 	drmIoctl(fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
 	return ret;
-}*/
+}
 
 void init_kms() {
 	if (!initDRM()) {
@@ -553,17 +547,11 @@ void init_kms() {
 	// instead of a gbm bo, we add a dummy framebuffer this time
 	// Structures for fb creation, memory mapping and destruction.
         
-/*	bufs[0].width = drm.mode->hdisplay;
+	bufs[0].width = drm.mode->hdisplay;
 	bufs[0].height = drm.mode->vdisplay;
 
 	bufs[1].width = drm.mode->hdisplay;
 	bufs[1].height = drm.mode->vdisplay;
-*/
-	bufs[0].width = 320;
-	bufs[0].height = 200;
-
-	bufs[1].width = 320;
-	bufs[1].height = 200;
 
 	/* create framebuffer #1 for this CRTC */
 	int ret = modeset_create_fb(drm.fd, &bufs[0]);	
@@ -581,8 +569,9 @@ void init_kms() {
         if (drmModeSetCrtc(drm.fd, drm.crtc_id,
 		bufs[0].fb, 0, 0, 
 		&drm.connector_id, 1, drm.mode)) {
-                	printf ("ERROR: failed to set mode: %s\n", strerror(errno));
-        		return;
+                	
+		printf ("ERROR: failed to set mode %d x %d \n", drm.mode->hdisplay, drm.mode->vdisplay);
+        	return;
 	}
 
 	setup_plane();
