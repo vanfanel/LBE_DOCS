@@ -4233,3 +4233,37 @@ Ahora buscamos los sources del "playtap", tal cual, compilamos con el Makefile.l
 ./playtap juego.tap 
 
 Justo cuando empiece a sonar bajamos el sonido con el control de volúmen normal, como a 3/4 que si no suena muy alto y falla.
+
+ROOTEAR MÓVIL SAMSUNG
+========================
+
+En el ejemplo se ha usado el samsung Grand Prime, cuyo número de modelo es G531F.
+Así mismo, en este ejemplo lo que se hace es flashear la partición SYSTEM por otra que ya viene rooteada.
+
+Necesitamos el Heimdall. Para compilarlo, necesitamos los siguientes paquetes instalados:
+build-essential cmake zlib1g-dev qt5-default libusb-1.0-0-dev
+
+Ahora clonamos desde:
+https://github.com/Benjamin-Dobell/Heimdall.git
+
+Creamos el directorio de compilación y configuramos con:
+cmake -DCMAKE_BUILD_TYPE=Release ..
+
+Luego make -j8 y listo. Copiamos heimdall y heimdall-frontend a /usr/bin
+Ya lo tenemos listo...
+
+Ahora conectamos el teléfono por USB, y lanzamos heimdall-frontend como root:
+sudo heimdall-frontend
+
+Ahora vamos a la pestaña Utilities y le damos a Detect. Nos tiene que decir que lo ha detectado. Listo.
+Ahora necesitamos el PIT del teléfono, o sea, la tabla de particiones de su flash interna. La descargamos y la guardamos en un
+fichero .PIT, ahí  mismo en la pestaña Utilities.
+Ahora, nos vamos a la pestaña Flash, y cargamos el .PIT que conseguimos antes.
+Tras eso, en Flash también, le damos a Add, y elegimos, en "Partition details", SYSTEM.
+Como vemos, eso hará que el botón BROWSE busque un .IMG, que debería llamarse SYSTEM.IMG. Se lo damos, si es
+que es esa la partición que vamos a reflashear.
+Le damos a "Flash", esperamos, y listo. Si al reiniciarse tenemos el SuperSU instalado, todo ha ido bien.
+NOTA: Puede ser que la partición que vayamos a sustituir en la flash del teléfono sea otra. O sea, que en vez de system sea
+otra diferente. Pues elegimos el tipo de partición correspondiente tras darle a ADD, en PARTITION NAME, elegimos el
+archivo correspondiente en BROWSE, y flasheamos. Es muy fácil una vez que entiendes esto de "qué tipo de partición es la
+que vamos a flashear".
