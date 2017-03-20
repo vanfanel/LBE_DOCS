@@ -4252,7 +4252,8 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 Luego make -j8 y listo. Copiamos heimdall y heimdall-frontend a /usr/bin
 Ya lo tenemos listo...
 
-Ahora conectamos el teléfono por USB, y lanzamos heimdall-frontend como root:
+Ahora conectamos el teléfono por USB, reiniciamos el teléfono en modo DOWNLOAD (botón de encendido + botón central + bajar volúmen) 
+y lanzamos heimdall-frontend como root:
 sudo heimdall-frontend
 
 Ahora vamos a la pestaña Utilities y le damos a Detect. Nos tiene que decir que lo ha detectado. Listo.
@@ -4263,7 +4264,12 @@ Tras eso, en Flash también, le damos a Add, y elegimos, en "Partition details",
 Como vemos, eso hará que el botón BROWSE busque un .IMG, que debería llamarse SYSTEM.IMG. Se lo damos, si es
 que es esa la partición que vamos a reflashear.
 Le damos a "Flash", esperamos, y listo. Si al reiniciarse tenemos el SuperSU instalado, todo ha ido bien.
+
 NOTA: Puede ser que la partición que vayamos a sustituir en la flash del teléfono sea otra. O sea, que en vez de system sea
 otra diferente. Pues elegimos el tipo de partición correspondiente tras darle a ADD, en PARTITION NAME, elegimos el
 archivo correspondiente en BROWSE, y flasheamos. Es muy fácil una vez que entiendes esto de "qué tipo de partición es la
 que vamos a flashear".
+
+NOTA2: Si falla algo, podemos dejar el teléfono de fábrica con el modo recovery (reiniciar teniendo pulsado: 
+botón de encendido + botón central + bajar volúmen) y luego allí "delete data / factory reset". En ese menú nos movemos
+usando los botones de volúmen y el de encendido para confirmar. Perderemos el rooteo, eso sí. 
