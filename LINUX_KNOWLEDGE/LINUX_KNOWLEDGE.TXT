@@ -603,7 +603,8 @@ Recuerda: libreoffice-gtk. Es un paquete de integración.
 *******Preparar el portátil como router para salir a internet desde la Raspberry Pi u otra placa conectada a él por ethernet*********************************
 
 Al router (el portátil, por ejemplo, que es el que se conecta a internet) le ponemos una IP fija en el mismo rango que el cliente. En Lubuntu o Debian es tan fácil
-como crear una conexión ehernet nueva en el gestor de redes. NO NECESITAS ponerle un gateway, así que NO LO HAGAS porque NO FUNCIONARÁ SI LO HACES: por si te surge la duda.
+como crear una conexión ehernet nueva en el gestor de redes. 
+CUIDADO!!! CUIDADO!!! NO LE PONGAS un gateway o puerta de enlace, porque LA CONEXIÓN WIFI DEJARÁ DE FUNCIONAR AL PONER EL CABLE SI LO HACES.
 Ahora editamos /etc/sysctl.conf y descomentamos la línea
 #net.ipv4.ip_forward=1
 Añadimos el binding a las IPtables:

@@ -1,0 +1,79 @@
+COMPARTIR RED WIFI POR ETHERNET
+===============================
+
+Creamos un nuevo perfil para la conexión de red cableada en Configuración->Red->Cableado
+En ese perfil, le ponemos una IP estática y la máscara de red 255.255.255.0
+CUIDADO!!! CUIDADO!!! NO le ponemos una puerta de enlace o gateway. NO LO HAGAS O 
+LA CONEXIÓN WIFI DEJARÁ DE FUNCIONAR EN CUANTO CONECTES LA RED CABLEADA.
+
+Creamos el fichero
+vim /etc/sysctl.d/30-ipforward.conf
+
+con el contenido:
+net.ipv4.ip_forward=1
+
+Ahora añadimos el binding de las IPTABLES:
+sudo iptables -t nat -A POSTROUTING -o wlo1 -j MASQUERADE
+
+CUIDADO: usa ifconfig para confirmar que la wifi es wlo1 como en el ejemplo. Por ahora, lo es.
+Ahora salvamos las IPtables:
+sudo iptables-save | sudo tee /etc/iptables/iptables.rules
+
+Y para que carguen dichas IPTABLES al iniciar el sistema, activamos el servicio iptables:
+systemctl enable iptables.service
+
+CORREGIR WIFI LENTA CON CHIP RTL8723BE
+======================================
+
+La idea es seleccionar otra antena al cargar el módulo del kernel, ya que por defecto 
+tira de la 0 que es MUY lenta.
+Para ello, creamos:
+vim /etc/modprobe.d/rtl8723be.conf
+Con el contenido:
+options rtl8723be fwlps=N ips=N swlps=N swenc=Y disable_watchdog=1 ant_sel=1
+Y ya debería estar listo.
+
+CAMBIAR TEMA DE GNOME SHELL, QUITAR COSAS RARAS....
+===================================================
+
+La herramienta es gnome-tweak-tool.
+En "Extensiones", puedes desactivar todo menos "Applications Menu".
+En "Escritorio" pon la carpeta personal, la papelera, etc..
+
+DESHABILITAR SCREEN LOCKING
+===========================
+gsettings set org.gnome.desktop.lockdown disable-lock-screen true
+
+DESHABILITAR EL SYSTEMD JOURNAL QUE ACCEDE TODO EL RATO AL DISCO DURO
+=====================================================================
+Si queremos ver qué servicios están accediendo al disco duro, usamos iotop.
+Iotop nos delata que systemd-journal está accediendo cada poco al disco.
+Podemos hace que no guarde nada (poniendo storage=none en su fichero de configuración),
+o podemos simplemente maskear el systemd-journal y compañía:
+sudo systemctl mask systemd-journald.service
+sudo systemctl mask systemd-journald-dev-log.socket
+sudo systemctl mask systemd-journal-flush.service
+
+...Y adiós a los accesos a disco cutres todo el rato! Yay!
+
+CREAR PARTICIONES CON PARTED (GPARTED NO FUNCIONA)
+==================================================
+
+sudo parted /dev/sdb
+Y ahora en parted:
+
+Para crear la tabla de particiones del dispositivo, de tipo msdos (MBR, lo típico):
+mklabel msdos
+
+Ahora creamos la partición:
+mkpart
+primary
+start? 0%
+end? -1s
+(cualquier número negativo de sectores o bytes o lo que quieras nos vale para que
+pille hasta el final del disco)
+Si nos da problemas porque no puede alinear la partición, en start? ponemos 2048s
+Imprimimos para comprobar con print, y vemos que está ahí la partición.
+
+Ahora salimos de parted y formateamos:
+sudo mkfs.msdos -F 32 /dev/sdb1
