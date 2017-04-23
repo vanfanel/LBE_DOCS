@@ -1,3 +1,14 @@
+SOLUCIONAR PROBLEMAS DE VÍDEO
+=============================
+
+Cuando acabamos de instalar un sistema RISC OS nuevo, los juegos de ADFFS y los nativos no va
+a ir ninguno aunque preparemos bien el config/txt
+Necesitamos un cmdline/txt con el contenido:
+disable_mode_changes
+
+Y ya podemos seleccionar un modo de 50Hz en el config/txt, y un monitor GENERIC a 1280x720 a 16M
+y 50HZ en la configuración de pantalla de RISC OS.
+
 COMANDOS DEL SISTEMA
 =======================
 
