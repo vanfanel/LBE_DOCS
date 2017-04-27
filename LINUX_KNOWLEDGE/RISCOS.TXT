@@ -9,6 +9,10 @@ disable_mode_changes
 Y ya podemos seleccionar un modo de 50Hz en el config/txt, y un monitor GENERIC a 1280x720 a 16M
 y 50HZ en la configuración de pantalla de RISC OS.
 
+No te olvides de añadir al !Run del ADFFS:
+set ADFFS$50Hz true
+...para que no se ponga a contar fotogramas ni movidas raras.
+
 COMANDOS DEL SISTEMA
 =======================
 
