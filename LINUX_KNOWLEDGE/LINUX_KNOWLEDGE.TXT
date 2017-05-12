@@ -614,10 +614,48 @@ Si queremos que estas cosas empiezen a funcionar sin reiniciar, hacemos
 echo 1 > /proc/sys/net/ipv4/ip_forward
 Ahora salvamos las IPtables:
 sudo iptables-save | sudo tee /etc/iptables.sav
-Y nos aseguremos de que se carguen al reiniciar, editando /etc/rc.local y añadiendo:
+Y nos aseguremos de que se carguen al reiniciar, editando /etc/rc.local (OJO, SI NO TIENES /etc/rc.local mira más abajo!!) y añadiendo:
 iptables-restore < /etc/iptables.sav
 Recuerda crear una conexión en el servidor que sea del mismo rango que la IP fija del cliente, y en el cliente poner como gateway la IP del servidor, añadir
 el servidor dns en /etc/resolv.conf si hace falta, etc... Lo típico de /etc/network/interfaces, que tienes más abajo en varios sitios.
+
+*******No tengo rc.local! Dónde añado cosas al inicio??*********************************************************************************************
+
+En las nuevas versiones de Lubuntu, systemd no trae el servicio rc.local ya, así que tenemos que crearlo:
+sudo vim /etc/systemd/system/rc-local.service
+..con el contenido:
+[Unit]
+Description=/etc/rc.local Compatibility
+ConditionPathExists=/etc/rc.local
+
+[Service]
+Type=forking
+ExecStart=/etc/rc.local start
+TimeoutSec=0
+StandardOutput=tty
+RemainAfterExit=yes
+SysVStartPriority=99
+
+[Install]
+WantedBy=multi-user.target
+
+Ahora creamos rc.local con este contenido:
+#!/bin/sh -e
+#
+# rc.local
+
+exit 0
+
+Ahora lo hacemos ejecutable:
+sudo chmod +x /etc/rc.local
+
+Ahora metemos en él lo que necesitemos, antes del exit 0, lógicamente. Habilitamos el servicio, lo lanzamos, y comprobamos su status:
+sudo systemctl enable rc-local
+
+sudo systemctl start rc-local.service
+sudo systemctl status rc-local.service
+
+... y ya debería ejecutarse lo que hayamos puesto en /etc/rc.local
 
 *******Averiguar IP externa************************************************************************************************************************
 
