@@ -1,3 +1,41 @@
+******Conectar a una red WIFI desde la Raspberry PI 3 usando el WIFI interno******************************************************************************************************************
+
+Lo primero es cargar el mçodulo del kernel que hace falta:
+sudo modprobe brcmfmac
+
+Ahora levantamos el interface wlan0
+sudo ifconfig wlan0 up
+
+Ahora tenemos que dejar /etc/wpa_supplican/wpa_supplican.conf así:
+
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+        ssid="MOVISTAR_7A40"
+        psk="E3UHR3Ca3FYgJ4e7elee"
+}
+
+Ahora conectamos con la base, pasándole al wpa_supplicant nuestra configuración:
+sudo wpa_supplicant -d -Dnl80211 -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -B
+(El parámetro -B es para que corra en modo daemon, de fondo, retornando al prompt inmediatamente... ¡sin eso, se queda esa consola para él solo!)
+
+OPCION 1 (recomendada)
+Nos damos nosotros mismos una IP del rango del router y un gateway:
+sudo ip addr add 192.168.1.12/24 dev wlan0
+sudo ip route add default via 192.168.1.1
+
+OPCIÓN 2
+Obtenemos una IP para wlan0:
+sudo dhclient wlan0
+Ahora nos damos un gateway, que es la dirección del router en la red a la que acabamos de conectarnos:
+sudo ip route add default via 192.168.1.1
+
+...Comprobamos que en /etc/resolv.conf tenemos:
+nameserver 8.8.8.8
+
+Y ya deberíamos ser capaces de hacer ping al router en la 192.168.1.1, a la dns de google en 8.8.8.8, y a google.com si nos da la gana.
+
 ******Descargar contenidos de ITunes desde Linux sin ITunes*********************************************************************************************************************************
 
 El programa se llama tunesviewer.
@@ -3763,7 +3801,7 @@ COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
 
 buscamos en makefile.libretro la parte de generate-files, y dejamos sólo las entradas de capcom, neogeo y tal.
 La línea queda tal que así, pero vamos, hazlo a mano:
-        $(PERL) $(FBA_SCRIPTS_DIR)/gamelist.pl -o $(FBA_GENERATED_DIR)/driverlist.h -l gamelist.txt $(FB    A_BURN_DRIVERS_DIR) $(FBA_BURN_DRIVERS_DIR)/capcom $(FBA_BURN_DRIVERS_DIR)/cps3 $(FBA_BURN_DRIVERS_DIR)/    neogeo
+        $(PERL) $(FBA_SCRIPTS_DIR)/gamelist.pl -o $(FBA_GENERATED_DIR)/driverlist.h -l gamelist.txt $(FB    A_BURN_DRIVERS_DIR) $(FBA_BURN_DRIVERS_DIR)/capcom $(FBA_BURN_DRIVERS_DIR)/cps3 $(FBA_BURN_DRIVERS_DIR)/neogeo
 
 Ahora, también en makefile.libretro, quitamos los directorios de la parte de FBA_BURN_DIRS := $(FBA_BURN_DIR) en adelante.
 No hace falta que quites los directorios de los includes, esos dan igual.
