@@ -30,7 +30,8 @@ tira de la 0 que es MUY lenta.
 Para ello, creamos:
 vim /etc/modprobe.d/rtl8723be.conf
 Con el contenido:
-options rtl8723be fwlps=N ips=N swlps=N swenc=Y disable_watchdog=1 ant_sel=1
+options rtl8723be fwlps=N ips=N swlps=N swenc=Y disable_watchdog=1 ant_sel=1 ips=0
+Muy importante lo del ips=0 o se va la conexión a veces.
 Y ya debería estar listo.
 
 CAMBIAR TEMA DE GNOME SHELL, QUITAR COSAS RARAS....

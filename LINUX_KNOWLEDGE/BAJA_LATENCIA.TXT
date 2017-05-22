@@ -1,0 +1,60 @@
+https://www.kernel.org/doc/Documentation/kernel-per-CPU-kthreads.txt
+https://www.kernel.org/doc/Documentation/timers/NO_HZ.txt
+https://access.redhat.com/sites/default/files/attachments/201501-perf-brief-low-latency-tuning-rhel7-v1.1.pdf
+
+Se trata de dejar todos los threads del kernel que podamos en UNA sola CPU, que llamaremos "housekeeping CPU", y el resto de CPUs quedarán libres de jittering ya que estos hilos
+no corren en ellas.
+
+Los kthreads de RCU podrian no existir si compilamos con CONFIG_PREEMPT=n, pero claro, eso NO interesa para tiempo real, lo dice uno de los docs.
+
+PARTE 1: Los TICKS de sistema
+==========================
+
+Esto es para que no se le manden a todos los cores ticks de manera contínua. Esto es bueno para tener cores donde sólo se ejecuta UN y sólo UN programa, y un core de housekeeping
+donde mandamos todos los theads del kernel. 
+
+En GENERAL SETUP->TIMERS SUBSYSTEM, elegimos
+Full dynticks system (tickless)
+y también 
+Full dynticks system on all CPUs by default (except CPU 0)
+
+Eso ya nos condiciona a que la única CPU que va a tener TICKS periódicos (que son para proporcionar hora del sistema y cosas así) es sólo la 0.
+Las demás serán con ticks dinámicos o DYNTICS, que es mejor para realtime.
+
+(sacado de https://www.kernel.org/doc/Documentation/timers/NO_HZ.txt)
+"The CONFIG_NO_HZ_FULL=y Kconfig option causes the kernel to avoid
+sending scheduling-clock interrupts to CPUs with a single runnable task,
+and such CPUs are said to be "adaptive-ticks CPUs".  This is important
+for applications with aggressive real-time response constraints because
+it allows them to improve their worst-case response times by the maximum
+duration of a scheduling-clock interrupt."
+
+PARTE 2: Los RCU
+===============
+
+En GENERAL SETUP->RCU SUBSYSTEM, elegimos
+Offload RCU callback processing from boot-selected CPUs,
+de manera que el procesado de callbacks del kernel se mande a hilos tipo rcu* que podemos mover a la CPU de housekeeping.
+
+No build_forced no-CBs CPUs, 
+de  manera que no haya una CPU libre de threads rcu* sino que luego movamos nosotros esos hilos a la CPU de housekeeping,
+y también
+
+Pulsa "?" sobre "Offload RCU callback processing from boot-selected CPUs" y lee sobre los nombres de los threads de control que se van a crear
+a partir de ahora, y que puedes mover a la CPU que quieras.
+Se puede usar el parámetro del kernel rcu_nocbs=... para especificar qué CPUs descargar de callbacks en tiempo de arranque, o se
+pueden mover los threads RCU después de arrancar a una CPU concreta como vamos a ver a continuación, en este caso la 0, con:
+
+for i in `pgrep rcuo` ; do taskset -pc 0 $i ; done
+
+OTRAS COSAS
+============
+
+En GENERAL SETUP, deshabilitamos el PROFILING SUPPORT (lo que se lleva por delante el oprofile).
+Quedaría mirar lo de compilar sin governor, en CPU POWER MANAGEMENT -> CPU FREQUENCY SCALING, y luego poner la velocidad de la CPU a mano.
+
+CÓMO COMPROBAR EN QUÉ CPU CORRE CADA PROCESO
+==================================================
+
+En TOP, pulsamos F mientras estamos ejecutándolo. En el menú que nos sale, podemos pulsar D sobre lo que queramos que se vea / que no se vea, elegimos que se vea
+el campo "P       = Last Used Cpu (SMP)", y le damos a ESCAPE, de manera que podemos ver en qué CPU corre cada cosa.

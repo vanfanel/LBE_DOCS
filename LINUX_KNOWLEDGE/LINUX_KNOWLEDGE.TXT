@@ -87,7 +87,7 @@ Bajamos los sources estables de http://libsdl.org/download-2.0.php
 
 Configuramos con:
 
-CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus
+CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus  --disable-ime
 
 Compilamos e instalamos.
 
@@ -110,7 +110,7 @@ Bajamos los sources estables de http://libsdl.org/download-2.0.php
 
 Configuramos con:
 
-CFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus
+CFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
 
 Compilamos e instalamos.
 
@@ -1551,6 +1551,7 @@ Arreglado!
 ESTA PRIMERA OPCIÓN NO ES RECOMENDADA PARA LA PI!! Es más sencillo usar el cross compilador oficial y además tanto uno como otro tienen problemas
 porque no soporta multiarch y no buscan los scripts .so para LD, librerías y haders donde deben, pero al menos al usar el oficial no tengo que pegarme con
 la construcción del crosscompiler, y además ahora el crosscompiler oficial ya no produce binarios más lentos ni nada de eso.
+
 PARTE 1-OPCIÓN A: CONSTRUYENDO NUESTRO PROPIO CROSS-COMPILER (NO recomendada en Octubre de 2015 porque podemos usar el cross-compilador oficial)
 ===============================================================
 Empezamos en el servidor. 
@@ -3865,8 +3866,8 @@ COMPILAR EL KERNEL CON FULL PREEMPTION Y BFS PARA LA RASPBERRY PI
 
 INFO DE https://www.raspberrypi.org/documentation/linux/kernel/building.md COMPLETADA POR MÍ PARA EL TEMA DEL SCHEDULER
 
-Clonamos el kernel, para la rama 4.4:
-git clone --depth=1 https://github.com/raspberrypi/linux -b rpi-4.4.y
+Clonamos el kernel, rama por defecto que ahora mismo es la 4.9:
+git clone --depth=1 https://github.com/raspberrypi/linux
 
 Yo estaba en ~/src/pi, así que lo tengo en ~/src/pi/linux
 Sigo en ~/src/pi
@@ -3887,7 +3888,7 @@ Ahora ponemos en el path la ruta del crosscompilador:
 PATH=$PATH:$HOME/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin 
 Ya deberíamos tener accesibles los binarios arm-linux-gnueabihf-
 
-Ahora pillo la config por defecto para Pi2 (estos pasos son de https://www.raspberrypi.org/documentation/linux/kernel/building.md):
+Ahora pillo la config por defecto para Pi2 y Pi3, que es la misma (estos pasos son de https://www.raspberrypi.org/documentation/linux/kernel/building.md):
 KERNEL=kernel7
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
 
