@@ -4043,12 +4043,16 @@ FUENTES: http://jrigg.co.uk/linuxaudio/jack2debian7.html
 NO debes usar el gestor de paquetes para esto, porque la versión de libjack, jackd2, etc.. que trae Debian está compilada con soporte para basuras varias
 como X11 o DBUS.
 Así que toda compilar a instalar la nuestra:
-git clone --depth git://github.com/jackaudio/jack2.git
-cd jack
+git clone --depth 1 git://github.com/jackaudio/jack2.git
+cd jack2
 ./waf configure --alsa --prefix=/usr
 ./waf -j8
 sudo ./waf install
 Instala tanto las librerías, como los las headers para desarrollo, como jackd.
+
+Ahora añadimos el overlay que permite que el audio i2s funcione con mmap de verdad:
+dtoverlay=i2s-mmap
+(Esto es si estás usando una tarjeta de audio conectada por i2s, como la hifiberry)
 
 Ahora añadimos mi usuario al grupo audio (probablemente ya esté):
 
@@ -4069,6 +4073,12 @@ LOS SETTINGS DE limits.conf son directamente IGNORADOS SI NOS CONECTAMOS POR SSH
 
 Puedes lanzar jackd a mano para que empieze a escuchar con:
 jackd -R -P 70 -d alsa -r 48000 -n 2 -p 1024
+
+También puedes lanzar retroarch compilado con soporte para jack y funciona muy bien, con una latencia por defecto de 21ms
+que hasta donde yo sé no se puede cambiar porque la opción de la latencia de audio no hace nada, siempre son 21ms (lo dice retroarch al iniciarse
+si no has silenciado todos los mensajes).
+Y aunque la pudieras bajar da igual porque la latencia de audio que tienes viene dada por dispmanx, o sea, viene del vídeo, no se puede bajar más.
+Con esos 21ms hay algo de cracking, así que mejor nos quedamos con el driver ALSA y ya.
 
 UN SCRIPT PARA DETECTAR SI ESTAMOS EN UNA RPI
 ===========================================
