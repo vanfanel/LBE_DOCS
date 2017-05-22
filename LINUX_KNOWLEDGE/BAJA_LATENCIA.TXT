@@ -1,3 +1,16 @@
+LO MÁS BÁSICO
+==============
+
+Si no te quieres meter en mucho berenjenal, no quieres recompilar el kernel y tal, simplemente añade a los parámetros del kernel:
+isolcpus=1,2,3
+..para que el scheduler no elija esas CPUs para cosas del kermel si es posible.
+
+Y luego cargas el programa con taskset -c 2 <mombre_programa> para que se ejecute en la CPU 2, que está "aislada" de procesos del kernel, y listo.
+O con taskset -c 1,2,3, si quieres elegir varias (si el proceso es multithread) y ya.
+
+PREFACIO
+=========
+
 https://www.kernel.org/doc/Documentation/kernel-per-CPU-kthreads.txt
 https://www.kernel.org/doc/Documentation/timers/NO_HZ.txt
 https://access.redhat.com/sites/default/files/attachments/201501-perf-brief-low-latency-tuning-rhel7-v1.1.pdf
@@ -37,21 +50,44 @@ Offload RCU callback processing from boot-selected CPUs,
 de manera que el procesado de callbacks del kernel se mande a hilos tipo rcu* que podemos mover a la CPU de housekeeping.
 
 No build_forced no-CBs CPUs, 
-de  manera que no haya una CPU libre de threads rcu* sino que luego movamos nosotros esos hilos a la CPU de housekeeping,
-y también
+de  manera que no haya una CPU libre de threads rcu* sino que luego movamos nosotros esos hilos a la CPU de housekeeping.
 
 Pulsa "?" sobre "Offload RCU callback processing from boot-selected CPUs" y lee sobre los nombres de los threads de control que se van a crear
 a partir de ahora, y que puedes mover a la CPU que quieras.
-Se puede usar el parámetro del kernel rcu_nocbs=... para especificar qué CPUs descargar de callbacks en tiempo de arranque, o se
-pueden mover los threads RCU después de arrancar a una CPU concreta como vamos a ver a continuación, en este caso la 0, con:
+Se puede usar el parámetro del kernel rcu_nocbs=... para especificar qué CPUs descargar de callbacks en tiempo de arranque, por ejemplo con rcu_nocbs=1,2,3
+se dejan las CPUs 1, 2 y 3 sin RCU callbacks y todas irán en la 1. 
+También se pueden mover los threads RCU después de arrancar a una CPU concreta, como vamos a ver a continuación, en este caso la 0, con:
 
 for i in `pgrep rcuo` ; do taskset -pc 0 $i ; done
+
+Si lo has hecho bien (con que le pases rcu_nocbs=1,2,3 vale, si tienes las opciones correctas en el kernel), en TOP tienes que ver que, por ejemplo, los threads
+rcuop/2
+rcuob/2
+rcuos/2
+rcuop/3
+rcuob/3
+rcuos/3
+...tienen que estar en la CPU 0, a pesar de que son de la 2 y la 3 (para mirarlo, ahí abajo tienes apuntes de TOP de cómo se mira en qué CPU corrió el thread por última vez).
+
+PARTE 3: ISOLCPUS
+================
+
+Vamos a decirle al scheduler que no elija ciertos cores para ejecutar cosas. Le pasamos al kernel el parámetro:
+isolcpus=1,2,3
+para que sólo elija el core 0 a la hora de pasarle "trabajo".
+
+Además, en combinacion, cogemos y lanzamos nuestro programa "delicado" pegado a una CPU concreta, de las que tenemos aisladas, así:
+taskset -c 3 <nombre_programa>
+
+Puede ser una lista de cpus:
+taskset -c 1,2,3 <nombre_programa>
 
 OTRAS COSAS
 ============
 
 En GENERAL SETUP, deshabilitamos el PROFILING SUPPORT (lo que se lleva por delante el oprofile).
 Quedaría mirar lo de compilar sin governor, en CPU POWER MANAGEMENT -> CPU FREQUENCY SCALING, y luego poner la velocidad de la CPU a mano.
+Mírate "man 2 sched_setaffinity" si quieres controlar que un thread determinado tenga afinidad a una CPU.
 
 CÓMO COMPROBAR EN QUÉ CPU CORRE CADA PROCESO
 ==================================================
