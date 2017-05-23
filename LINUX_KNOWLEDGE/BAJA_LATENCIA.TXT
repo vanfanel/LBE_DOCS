@@ -18,6 +18,9 @@ chrt -r 99 tasksel -c 1,2,3 make -j4
 Lo mejor es dejar aislada sólo una CPU (los emuladores no son multithread de todos modos), mandar los emuladores a esa CPU con taskset, y luego no tener que andar con estas cosas
 a la hora de compilar y demás.
 
+Para ver mejor estas cosas en TOP, a parte de activar que se vea la CPU (F y luego darle a D sobre la opción), puedes poner un periodo más pequeño pusaldo D directamente y
+metiendo algo como 0.1.
+
 PREFACIO
 =========
 
