@@ -2,11 +2,21 @@ LO MÁS BÁSICO
 ==============
 
 Si no te quieres meter en mucho berenjenal, no quieres recompilar el kernel y tal, simplemente añade a los parámetros del kernel:
-isolcpus=1,2,3
-..para que el scheduler no elija esas CPUs para cosas del kermel si es posible.
+isolcpus=2,3
+..para que el scheduler no elija esas CPUs para cosas del kernel ni para ninguna otra tarea multithread (como compilar con -jn), excepto que yo le diga específicamente que las use
+mediante taskset.
 
-Y luego cargas el programa con taskset -c 2 <mombre_programa> para que se ejecute en la CPU 2, que está "aislada" de procesos del kernel, y listo.
-O con taskset -c 1,2,3, si quieres elegir varias (si el proceso es multithread) y ya.
+Y luego cargas el programa, por ejemplo, con taskset -c 2 <mombre_programa> para que se ejecute en la CPU 2, que está "aislada" de procesos del kernel, y listo.
+O con taskset -c 2,3, si quieres elegir varias (si el proceso es multithread) y ya.
+NOTA: PARA QUE EL PROGRAMA REALMENTE USE LAS CPUs DE LA LISTA QUE LE PASAS A TASKSEL, TIENES QUE CAMBIAR LA POLÍTICA DE SCHEDULING DEL PROCESO, O SI NO
+SÓLO ELEGIRÁ LA PRIMERA DE LA LISTA (esto es porque la política de scheduling por defecto, SCHED_OTHER, sólo elige la primera CPU, así que usamos SCHED_RR) . Así que haríamos:
+chrt -r 99 taskset -c 2,3 <programa>
+
+Por ejemplo: pogamos que tenemos aisladas las CPUs 1,2 y 3, y queremos compilar un programa usando esas tres CPUs: pues haríamos
+chrt -r 99 tasksel -c 1,2,3 make -j4
+
+Lo mejor es dejar aislada sólo una CPU (los emuladores no son multithread de todos modos), mandar los emuladores a esa CPU con taskset, y luego no tener que andar con estas cosas
+a la hora de compilar y demás.
 
 PREFACIO
 =========
