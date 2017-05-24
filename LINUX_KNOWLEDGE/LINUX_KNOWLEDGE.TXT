@@ -1239,6 +1239,7 @@ consoleblank=0
 -Desactivamos el modo turbo para la tarjeta de red, que como cuelga del USB da problemas, con smsc95xx.turbo_mode=N
 -Desactivamos el powerlink de USB con dwc_otg.lpm_enable=0, pero vamos, que creo que viene desactivado por defecto.
 -En el futuro, a partir del kernel 4.12, se podrá especificar el polling rate de los joysticks, para quitar latencia, con usbhid.jspoll=<polling rate>. Míratelo para entonces y añádelo.
+ usbhid.jspoll=2 es un buen valor, resultando en 500Hz de polling rate... lo que ya está muy bien.
 RECUERDA que tienes que poder PRIMERO quiet, y luego loglevel: EN ESE PRECISO ÓRDEN, o el valor de loglevel será IGNORADO. Tengo cmdline.txt así:
 dwc_otg.lpm_enable=0 smsc95xx.turbo_mode=N console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=noop rootwait consoleblank=0 quiet loglevel=3 fastboot logo.nologo
 
