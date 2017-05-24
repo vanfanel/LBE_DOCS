@@ -1373,12 +1373,13 @@ Mandamos el openssh al carajo y reiniciamos ya con dropbear:
 apt-get purge openssh-server
 
 -En config.txt ponemos boot_delay=0, verificamos los valores de overcloking (1Ghz para la Pi 1) y ponemos el modo de vídeo a group 2, mode 39.
-  Además, añadimos:
-
+  Podríamos añadir:
 # Disable undervoltage and overheat warnings
 avoid_warnings=2
+...porque el warning de undervoltage salta a veces si la powersupply es mala, pero NO lo añadimos, usamos una oficial que da 2.5A, y no habrá esos errores.
 
-...porque el warning de undervoltage salta sin sentido cada vez que conecto el pad USB, y no queremos eso.
+-En config.txt desactivamos el watchdog:
+dtparam=watchdog=off
 
 -Si te aparecen errores de EVIOCSKEYCODE, son del dmesg pero no deberían estarse viendo en la consola.. y no son importantes.
 Simplemente verifica que tienes cmdline.txt esto, y EN ESTE ÓRDEN PRECISO:  quiet loglevel=3
