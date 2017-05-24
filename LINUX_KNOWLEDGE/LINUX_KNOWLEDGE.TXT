@@ -1222,19 +1222,25 @@ hay que quitarlo como servicio pero no desinstalarlo del sistema porque OMXplaye
 		sudo systemctl disable networking
 		sudo systemctl disable ifup
 	...todo lo que veamos relacionado con la red.
-	-Levantamos la red y ponemos a capón en /etc/rc.local la configuración de la red:
+	-Ponemos en rc.local el governor a performance:
+		echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+	-SI QUEREMOS levantar la red ethernet al inicio, ponemos a capón en /etc/rc.local la configuración de la red:
 		ifconfig eth0 up
 		ip addr add 192.168.5.8/24 dev eth0
-		ip route add default via 192.168.5.7	
-	-Ya de paso, ponemos en rc.local el governor a performance:
-		echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+		ip route add default via 192.168.5.7
+	EN CAMBIO, si lo vamos a hacer cuando lo necesitemos (que es lo que hago ahora), lo mejor es arrancar sin el chip de red activado, así que tendremos esto en lugar
+	de los comandos ifconfig, ip, etc...
+		echo 1-1.1:1.0 > /sys/bus/usb/drivers/smsc95xx/unbind
 	-Reiniciamos
 
 -Evitamos que se nos ponga la consola en negro poniendo esto en /boot/cmdline.txt:
 consoleblank=0
 -Ya que estamos, también añadimos loglevel=3 para que el kernel sólo nos avise de cosas importantes de verdad.
+-Desactivamos el modo turbo para la tarjeta de red, que como cuelga del USB da problemas, con smsc95xx.turbo_mode=N
+-Desactivamos el powerlink de USB con dwc_otg.lpm_enable=0, pero vamos, que creo que viene desactivado por defecto.
+-En el futuro, a partir del kernel 4.12, se podrá especificar el polling rate de los joysticks, para quitar latencia, con usbhid.jspoll=<polling rate>. Míratelo para entonces y añádelo.
 RECUERDA que tienes que poder PRIMERO quiet, y luego loglevel: EN ESE PRECISO ÓRDEN, o el valor de loglevel será IGNORADO. Tengo cmdline.txt así:
-dwc_otg.lpm_enable=0 console=tty1 consoleblank=0 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait quiet loglevel=3 fastboot logo.nologo
+dwc_otg.lpm_enable=0 smsc95xx.turbo_mode=N console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=noop rootwait consoleblank=0 quiet loglevel=3 fastboot logo.nologo
 
 -Empezamos a eliminar mierda, que se hace en varias fases porque al eliminar libgtk* se instalan más mierdas:
 sudo apt-get purge avahi-daemon triggerhappy dbus plymouth ntp dphys-swapfile rsyslog openresolv dhcpcd5 libreoffice* webkit* libgtk* libreoffice*
@@ -1434,6 +1440,51 @@ Nos tiene que salir algo como:
 real-time priority (-r) 99
 max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
+
+***********Scrips para levantar la red ETHERNET y la red WIFI manualmente****************************************************************
+
+Ya no "se lleva" levantar la red ethernet desde rc.local, se hace cuando se va a usar:
+En rc.local tendrás:
+
+echo 1-1.1:1.0 > /sys/bus/usb/drivers/smsc95xx/unbind
+
+...para que el sistema arranque con la ethernet desasctivada.
+
+===bin/eth0-on===
+
+sudo sh -c 'echo 1-1.1:1.0 > /sys/bus/usb/drivers/smsc95xx/bind'
+sudo ifconfig eth0 up
+sudo ip addr add 192.168.5.8/24 dev eth0
+sudo ip route add default via 192.168.5.7
+sudo /etc/init.d/dropbear start
+
+===bin/eth0-off===
+
+sudo /etc/init.d/dropbear stop
+sudo ifconfig eth0 down
+sudo sh -c 'echo 1-1.1:1.0 > /sys/bus/usb/drivers/smsc95xx/unbind'
+
+===bin/wifi-on===
+
+sudo ifconfig eth0 down
+sudo modprobe brcmfmac
+sudo ifconfig wlan0 up
+
+sudo wpa_supplicant -d -Dnl80211 -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -B
+
+sudo ip addr add 192.168.1.12/24 dev wlan0
+sudo ip route add default via 192.168.1.1
+sudo /etc/init.d/dropbear start
+
+(Los detalles sobre el fichero wpa_supplican.conf están en otra sección de este mismo documento donde explico cómo
+gestionar la wifi a mano)
+
+===bin/wifi-off===
+
+sudo killall wpa_supplicant
+sudo ifconfig wlan0 down
+sudo rmmod brcmfmac
+sudo /etc/init.d/dropbear stop
 
 ***********Montar una partición individual de una imágen completa de disco***************************************************************
 
