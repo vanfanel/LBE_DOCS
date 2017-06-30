@@ -87,7 +87,7 @@ Bajamos los sources estables de http://libsdl.org/download-2.0.php
 
 Configuramos con:
 
-CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus  --disable-ime
+CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus  --disable-ime
 
 Compilamos e instalamos.
 
@@ -110,7 +110,7 @@ Bajamos los sources estables de http://libsdl.org/download-2.0.php
 
 Configuramos con:
 
-CFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
+CFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
 
 Compilamos e instalamos.
 
@@ -125,6 +125,10 @@ CFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-m
 
 SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
 Le puedes pasar también --without-x si tienes los headers de las X11 instalados.
+
+*****SDL2 en hardware genérico con mi driver KMSDRM*******************************************************************************************************************************************
+
+ ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
 
 ******Notas SDLPop : el clon open source y libre de Prince of Persia *****************************************************************************************************************************************************
 
@@ -1097,11 +1101,22 @@ fclose (fp);
 
 Lo primero es conseguir el directorio con los sources originales.
 
-diff -rupN original/ modificados/ > parche.patch
+Ahora, comprobamos qué ficheros están solo en los sources modificados, y qué ficheros, estando en ambos, han cambiado. Para ello hacemos:
+
+diff -rq originales modificados
+
+Ahora, sabiendo eso, es muy fácil saber qué ficheros borrar, es decir, los que no nos interesa que se incluyan en el parche,
+tales como los generados por los buildsystems, ya que habremos estado haciendo pruebas y compilando mientras desarrollábamos.
+Una vez eliminado lo que sobra, ya sí, sacamos el parche:
+
+diff -rupN originales modificados > parche.patch
 
 Como ves, es muy sencillo!
 
-Si sólo queremos crear un parche para un archivo (que es algo menos común):
+El parche que hemos generado, se debería poder aplicar simplemente copiándolo en el raíz de los sources originales y haciendo un
+patch -p1 < parche.patch
+
+APÉNDICE: Si sólo queremos crear un parche para un archivo (que es algo menos común):
 
 diff -u original.c modificado.c > parche.patch
 
@@ -1240,6 +1255,7 @@ consoleblank=0
 -Desactivamos el powerlink de USB con dwc_otg.lpm_enable=0, pero vamos, que creo que viene desactivado por defecto.
 -En el futuro, a partir del kernel 4.12, se podrá especificar el polling rate de los joysticks, para quitar latencia, con usbhid.jspoll=<polling rate>. Míratelo para entonces y añádelo.
  usbhid.jspoll=2 es un buen valor, resultando en 500Hz de polling rate... lo que ya está muy bien.
+ Se puede comprobar una vez arrancado el sistema con evhz, un programa que se baja de aquí: git clone --depth 1 https://gitlab.com/iankelling/evhz
 RECUERDA que tienes que poder PRIMERO quiet, y luego loglevel: EN ESE PRECISO ÓRDEN, o el valor de loglevel será IGNORADO. Tengo cmdline.txt así:
 dwc_otg.lpm_enable=0 smsc95xx.turbo_mode=N console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=noop rootwait consoleblank=0 quiet loglevel=3 fastboot logo.nologo
 
@@ -4374,3 +4390,13 @@ Ahora buscamos los sources del "playtap", tal cual, compilamos con el Makefile.l
 ./playtap juego.tap 
 
 Justo cuando empiece a sonar bajamos el sonido con el control de volúmen normal, como a 3/4 que si no suena muy alto y falla.
+
+CÓMO LOGUEARSE AL SVN DE RETROGURU Y CLONAR REPOS
+=====================================================
+
+Lo primero es autentificarse, sólo hay que hacerlo la primera vez:
+(El password es uno de los típicos que usas, tiene letras y números)
+cvs -d:pserver:vanfanel@sun.hasenbraten.de:/usr/src/cvs login
+
+Y luego ya clonar el proyecto giana, por ejemplo:
+cvs -d:pserver:vanfanel@sun.hasenbraten.de:/usr/src/cvs checkout giana

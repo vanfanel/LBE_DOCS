@@ -25,3 +25,6 @@ back: para volver atrás
 wipe: borrar
 delete: borrar
 cdir: crear directorio
+
+Para ver la ayuda de un comando, *help comando.
+Por ejemplo, para hacer un copy sin confirmación, es copy origen destino ~C

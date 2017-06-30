@@ -1,0 +1,13 @@
+-Lo primero, FILE-> DOCUMENT PROPERTIES, y especificamos que queremos un A3.
+-Ahora, EDIT->CREATE GUIDES AROUND THE PAGE, para que las cosas queden ajustadas a la página de trabajo. Asegúrate de que, además de estar creadas las guías,
+estas estén activadas en el panel derecho: haz click sobre la flecha de abajo del todo a la derecha, y deberían estar marcadas las opciones [v]GRIDS y [v]GUIDES
+-Para meter imágenes, FILE->IMPORT
+-Escalamos con el CTRL pulsado, para que se mantengan las proporciones.
+-Con + y - hacemos zoom para trabajar.
+-Lo de meter cajas de texto está A LA IZQUIERDA y casi abajo, en el panel vertical ese.
+-Para alinear con el marco de fondo, o con otro elemento, o lo que sea, te vas a la FLECHA INFERIOR IZQUIERDA del PANEL DERECHO, y seleccionas ALIGN AND DTISTRIBUTE.
+Seleccionamos RELATIVE TO PAGE, el elemento que queremos alinear, y al darle al tipo de alineamiento (esos iconos esquemáticos de barras), vemos cómo se va ajustando
+al márgen de un lado, del otro, se centra... lo que queramos.
+-Para establecer qué va delante y qué va detrás, usa los controles del panel de arriba, que son unas flechas apuntando hacia arriba y hacia abajo con unas barras, con el elemento
+cuya prioridad desees cambiar seleccionado.
+-Para mover cosas juntas (por ejemplo, un fondo degradado con el texto que va sobre él), podemos usar CRTL+G para agruparlos, y CTRL+SHIFT+G para desagruparlos.

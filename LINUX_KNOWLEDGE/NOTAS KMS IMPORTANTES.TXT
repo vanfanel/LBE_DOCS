@@ -8,6 +8,44 @@ lo creamos nosotros a mano con drmIoctl(drm.fd, DRM_IOCTL_MODE_CREATE_DUMB, &fbR
 y con drmModeAddFB(drm.fd, drm.mode->hdisplay, drm.mode->vdisplay, 16, 16,  fbRequeriments.pitch, fbRequeriments.handle, &fb->fb_id), y luego
 se lo pasaremos a setCRTC. (Vamos, uno de los buffers que hayamos creado).
 
+*******OJO A ESTA PREGUNTA: NECESITAMOS HACER SETCRTC() PARA QUE EL PAGEFLIP FUNCIONE? TANTO SI USAMOS GLES COMO SI NO.
+
+-¿Necesitamos llamar a drmModeSetCrtc() antes de poder hacer drmModePageFlip()? Porque el pageflip falla con error -22 si no
+hemos llamado a SetCrtc antes...
+EL ERROR -22 SIGNIFICA EINVAL, SIEMPRE. Si ves -22, es EINVAL, invalid argument.
+Pues robert clark dice que, si no estamos SEGUROS de que el modo de vídeo actual es compatible con los buffers de la gbm surface sobre los que vamos a
+hacer el pageflip, pues que sí, que necesitamos hacer el SetCrtc(): al hacerlo, ponemos como scanout buffer uno de los buffers que vamos a usar, con su
+resolución, formato de color, etc, con lo que el modo físico cambia a uno compatible con los buffers en los que vamos a dibujar (usando GLES o no usando GLES)
+y ya estamos SEGUROS de que el pageflip va a funcionar. Si lo queremos hacer SIN SetCrtc(), pues tenemos que asegurarnos de que nuestro modo de vídeo actual
+es compatible con los buffers que vamos a usar, lo que puede ser complicado.
+
+18:32 <robclark> well, if that is not enough to figure out, then you might need to add debug prints on kernel side to track down 
+                 where it is returning -EINVAL..
+18:33 <robclark> short version, *something* about the buffer you are trying to flip to is incompatible with buffer being scanned out, 
+                 and so a full modeset is required instead of just a pageflip
+18:33 <robclark> ie, do a setcrtc
+18:34 <Vanfanel> hmmmmm... now I get it. I must change the scanout buffer because it's not compatible somehow with the GBM buffers I 
+                 am trying to pageflip to, right?
+18:34 <Vanfanel> I mean... the phisical video mode is not compatible with these buffers
+18:34 <robclark> yes.. color format is likely problem, but isn't the only one
+18:35 <Vanfanel> this is the kind of explanation I needed, Rob
+18:35 <robclark> pageflip is *only* meant to flip between different buffers that have otherwise all same parameters
+18:35 <robclark> (which is why everything does setcrtc first ;-))
+
+Al fin de que coincidan los parámetros del modo actual (CRTC actual sin llamar a SetCrtc()) y los de los buffers de la GBM surface que vamos a usar,
+vigila la llamada a gbm_surface_create() para ver qué le estás pasando a la creación de la superficie GBM, y si quieres también la creación de nuevos buffers
+en drmModeAddFB(), que se crean a partir de los gbm_bo (gbm buffer objects), así:
+locked_bo = gbm_surface_lock_front_buffer(gbm.surface); 		<---Aquí sacamos un BO de la surface
+fb = drmFBGetFromBO(locked_bo);								<---Y aquí ya sacamos un fb que podemos usar, a partir del BO. No te compliques.
+
+Para comprobar que coinciden el CRTC actual y los parámetros de gbm_surface_create(), fíjate en el CRTC que devuelve drmModeGetCrtc() (sin haber llamado a SetCrtc, obviamente)
+y compáralo con los parámetros de gbm_surface_create().
+
+Pero vamos, que lo más importante es que coincidan los parámetros del CRTC actual con los de  gbm_surface_create(), y drmModePageFlip() a un buffer
+de la gbm surface debería funcionar.
+Si no encuentras manera de que coincida, pues llama a SetCrtc(), no te de complejo, que no pasa nada y es como se hacen las cosas, y debería ir.
+
+
 ***********************************************************************************************************************************************
 ESTE FICHERO SÓLO CUBRE HASTA LA INICIALIZACIÓN ESTÁTICA DE LOS OVERLAYS. 
 PARA QUE EL OVERLAY VAYA CAMBIANDO DE FRAMEBUFFER, USAMOS ATOMIC PAGEFLIPPING: MIRAR EN NOTAS_ATOMIC.TXT PARA MÁS DETALLES.

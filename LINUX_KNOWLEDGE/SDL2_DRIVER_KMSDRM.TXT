@@ -1,0 +1,86 @@
+Interface con clase kmsdrm video en:
+
+src/video/SDL_sysvideo.h
+src/video/SDL_video.c
+
+En ambos casos, es mediante el bootstrap, la función de entrada el vídeo kmsdrm:
+#if SDL_VIDEO_DRIVER_KMSDRM
+    &KMSDRM_bootstrap,
+
+#if SDL_VIDEO_DRIVER_KMSDRM
+extern VideoBootStrap KMSDRM_bootstrap;
+
+PARA BUILDSYSTEM tradicional
+===========================
+
+En configure.in se incluyen los directorios de los sources nuevos. Busca KMSDRM y copia los dos bloques (el primero sólo de una línea) donde aparece.
+También hay mierdas en
+../SDL-mirror-SIG/include/SDL_config.h.cmake
+../SDL-mirror-SIG/include/SDL_config.h.in
+
+PARA CONFIGURAR:
+
+./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-mir --enable-video-kmsdrm
+
+
+NECESITO LLAMAR A drmModeSetCrtc() desde KMSDRM_CreateWindow pero eglSwapBuffers() falla...
+========================================================================================
+
+Para empezar, antes de llamar a SetCrtc(), tienes que obtener un buffer que colocar como scanout (que es lo que hace SetCrtc()), y para obtener ese buffer tienes que hacer un eglSwapBuffers()
+antes.
+O sea que tienes que:
+-eglSwapBuffers()
+-para obtener el buffer que poner de scanout: gbm_surface_lock_front_buffer() y a continuación KMSDRM_FBFromBO() para obtener el buffer a partir del BO
+-...Ya podemos llamar a SetCrtc() con el buffer.
+
+AHORA BIEN: ANTES de poder hacer eglSwapBuffers(), tienes que haber llamado a eglCreateContext() y eglMakeCurrent(). Esto se hace, internamente en las SDL2, 
+en la función SDL_EGL_CreateContext() de SDL_egl.c, QUE AÚN NO SE HA LLAMADO cuando llegamos a KMSDRM_CreateWindow, 
+así que tengo que forzar esta llamada antes de poder llamar a eglSwapBuffers():
+
+SDL_EGL_CreateContext(_this, wdata->egl_surface);
+
+AUNQUE VEAS que los parámetros de eglSwapBuffers() son correctos, NO BASTA CON ESO: se tiene que llamar antes a eglCreateContext() y eglMakeCurrent().
+RECUERDA ESO O TE VOLVERÁS MUY LOCO.
+
+=====NOTAS SOBRE EL PROBLEMA: ARQUITECTURA INTERNA, LLAMADAS A FUNCIONES IMPLICADAS=====================================================================
+
+Lo primero, se llama a EGL_SDL_GL_ResetAttributes() para establecer los atributos del EGLConfig que vayamos a usar. 
+Se guardan en la estructura de SDL llamada gl_config, así:
+gl_config.red_size
+gl_config.blue_size... etc
+La idea es que, una vez que los tenemos guardados en esa estructura, que no es de EGL en sí sino de SDL, usamos la función eglChooseConfig(), ya de EGL, para
+elegir una configuración, de entre todas las que tiene EGL, que se ajuste a lo que nosotros necesitamos. O sea que a eglChooseConfig() le pasamos una tabla de atributos
+que no es más que un array de enteros tipo EGLint en plan EGL_RED_SIZE, 1, EGL_GREEN_SIZE, 1, etc... y nos devuelve una configuración (tiene muchas guardadas) que se
+ajusta a esos atributos.
+
+O sea, que los atributos se recojen en EGL_SDL_GL_ResetAttributes(), se guardan en el array en SDL_EGL_ChooseConfig() y se le pasan a eglChooseConfig()
+también en SDL_EGL_ChooseConfig().
+
+O dicho de otro modo, primero se llama a EGL SDL_GL_ResetAttributes() para recoger los atributos, cuando sea, y luego, cuando se llama a SDL_EGL_CreateSurface(),
+esta a su vez llama a SDL_EGL_ChooseConfig() donde se guardan en el array de EGLint en el array de EGLint y se los pasa a eglChooseConfig(). 
+ 
+A SDL_EGL_ChooseConfig() se la llama desde SDL_EGL_CreateSurface()
+A SDL_EGL_CreateSurface() la llamo yo desde KMSDRM_CreateWindow()... así que la solución pasa por implementar KMSDRM_GLES_CreateSurface(), y llamarla en 
+KMSDRM_CreateWindow() en lugar de llamar a SDL_EGL_CreateSurface().
+
+Otra opción sería tirar de #ifdef para que, si estamos usando el driver KMSDRM, pillemos el primer config en eglChooseConfig() de SDL_EGL_ChooseConfig(), y a correr.
+Si se retorna justo antes de acabar el #ifdef, no debería haber problema (no haría falta un #elif invadiendo el resto del código). 
+
+
+============LA SOLUCIÓN AL ÚLTIMO BUG (COLORES INCORRECTOS EN KMSDRM SOBRE INTEL)============================================================
+
+El problema es que eglChooseConfig(), que como ya debes saber recibe un array de attribs (EGLint) y devuelve un array de configs válidos para esos atributos,
+está retornando configs en ese array que no son válidos, pero que lo parecen, por lo que al final es como no tener ningún atributo establecido (se puede duplicar el
+error simplemente comentando los attribs en cualquier ejemplo de GLES sobre KMSDRM, pasándole un attribs[] vacío a eglChooseConfig()).
+Pues bueno, lo que nos interesa es *quedarnos con el primer config y punto*, no andar recorriendo la lista de configs devuelta por eglChooseConfig() sino pillar
+el primero y pista.
+Para ello, lo más sencillo y lo que menos cambios requiere en unidades de código internas de SDL2 que no son mias, es hacer esto en SDL_EGL_ChooseConfig(), que
+es la función que envuelve la llamada a eglChooseConfig, en SDL_egl.c:
+
+#ifdef SDL_VIDEO_DRIVER_KMSDRM
+    EGLConfig configs[1];
+#else
+    EGLConfig configs[128];
+#endif
+
+Meter un #ifdef en SDL_egl.c no me gusta mucho, pero no es el primer driver que lo hace: SDL_VIDEO_DRIVER_ANDROID lo hace también, así que no debe ser tan descabellado.
