@@ -4400,3 +4400,58 @@ cvs -d:pserver:vanfanel@sun.hasenbraten.de:/usr/src/cvs login
 
 Y luego ya clonar el proyecto giana, por ejemplo:
 cvs -d:pserver:vanfanel@sun.hasenbraten.de:/usr/src/cvs checkout giana
+
+COMPILAR GIANA SISTERS RETURN
+==============================
+
+Lo primero es compilar libmodplug:
+git clone --depth 1 https://github.com/Konstanty/libmodplug.git
+autoreconf -i
+ ./configure --enable-static
+
+Buscamos libmodplug.a
+find ./ -name 'libmodplug.a'
+Y lo copiamos a la raiz de los sources del giana.
+
+Ahora, si vamos a compilar en Linux de 64 bits, tenemos que usar estos flags en nuestro Makefile, que son de Makefile_ubuntu64:
+CFLAGS = $(INCLUDES) -DMODPLUG -DLINUX $(OPTIM) -Wall -DFADEINOUT -DLINUX64 -DHOME_DIR
+...de lo contrario, el ejecutable resultante nos medio peta el sistema y da errores raros.
+
+Si nos da errores de "undefined symbol" con funciones como initFPS() en main.c, añadimos fpshelper.o a nuestro Makefile en la sección de OBJS 
+
+MPV, ALTERNATIVA A OMXPLAYER EN LA PI
+=====================================
+
+El MPV tiene video output a KMS/DRM con --vo drm, y a la vez, por otra parte, decoding de vídeo por hardware usando mmal con -vd=lavc:h264_mmal
+El decoding usando mmal se hace mediante una versión de ffmpeg que tenga habilitada aceleración de mmal para Raspberry Pi.
+O sea, que lo primero es conseguir una versión de ffmpeg con aceleración mmal para Rpi.
+
+Ahora vamos a por ffmpeg:
+
+git clone --depth 1 https://github.com/FFmpeg/FFmpeg.git
+Y luego configurando con:
+./configure --prefix=/usr --enable-mmal --disable-debug --enable-memalign-hack --enable-shared
+
+Para comprobar que nuestro ffmpeg tiene aceleración mmal para Rpi, haz:
+ffmpeg -codecs
+
+Antes de compilar mpv, tenemos que compilar e instalar libass. La versión de libass que hace falta no viene en Raspbian, así que clonamos, compilamos e instalamos esto:
+git clone --depth 1 https://github.com/libass/libass.git
+
+Otras librerías que nos hacen falta son: libavutil libavcodec libavformat libswscale libavfilter y bien:
+libswresample o bien libavresample (son la misma librería y se instalan al instalar ffmpeg, creo)
+
+Ahora compilamos mpv con soporte para egl/drm:
+./bootstrap.py
+./waf configure --help
+./waf configure --enable-egl-drm --disable-x11 --disable-oss
+./waf
+./waf install
+
+Si tenemos todo, se debería poder hacer algo como:
+mpv --vd=lavc:h264_mmal --vo=drm somefile.mp4
+...y debería ir genial.
+Debemos tener
+lavc:h264_mmal
+en la lista de decoders si hacemos:
+mpv --vd=help

@@ -231,6 +231,37 @@ y luego la actualizamos, renderizamos, etc...:
 
 ESTE TRUCO TAN INCREÍBLE lo he sacado de stack overflow. Gracias, gracias! --->  http://stackoverflow.com/questions/30599636/8-bit-surfaces-in-sdl-2
 
+==========TRANSPARENCIAS EN SDL2===============================================
+
+Las transparencias se hacen bliteando una surface sobre otra, en función del parámetro alpha de la superficie de orígen.
+Para empezar, en SDL2, tras crear la superfice que queremos copiar sobre otra con cierta transparencia, cosa que hacemos con SDL_CreateRGBSurface(),
+a continuación TENEMOS QUE ESPECIFICAR que queremos que, cuando se blitee sobre otra, se haga con ALPHA BLENDING, o si no, no habrá transparencias.
+EN SDL1 NO HACÍA FALTA ESTO, PERO EN SDL2 SÍ HACE FALTA. 
+Por ejemplo, así:
+
+    black = SDL_CreateRGBSurface(0,screen->w,screen->h,
+                                 screen->format->BitsPerPixel,
+                                 screen->format->Rmask,screen->format->Gmask,
+                                 screen->format->Bmask,screen->format->Amask);
+    SDL_SetSurfaceBlendMode(black, SDL_BLENDMODE_BLEND);
+
+SI NO LLAMAMOS A SDL_SetSurfaceBlendMode(), AL BLITEAR black NO SE HARÁ ALPHA BLENDING EN ABSOLUTO, ASÍ QUE NO HABRÁ TRANSPARENCIAS QUE VALGAN.
+
+OTRA COSA MUY IMPORTANTE AL CONVERTIR PROGRAMAS DE SDL1 a SDL2: EL VALOR ALPHA DE SDL_SetSurfaceBlendMode() está INVERTIDO en SDL2 respecto a SDL1,
+ASI QUE EN SDL2 un alpha de 255 es "totalmente opaco" y en SDL2 es "totalmente transparente" y con alpha valiendo 0 pasa lo mismo pero al revés.
+NO TE OLVIDES DE ESO, PORQUE VAS A VER FALLOS DE TRANSPARENCIA AL PASAR DE SDL1 a SDL2 debido a esto, y tendrás que arreglarlo.
+
+OTRA COSA ES QUE AL HACER UN BLITEO DE UNA SUPERFICIE CON TODOS SUS PÍXELS EN NEGRO sobre otra en las SDL2, CON UN ALPHA = 0, EL RESULTADO tiene colores
+rojizos. Esto se soluciona pasando en su lugar un alpha = 4 en lugar de 0. Ni idea de por qué ocurre. Si todos los píxels de la superficie a blitear son R o G o B, no pasa, sólo con
+negro total.
+
+Por redondear, naturalmente el alpha blending se aplica cuando se hace el bliteo en si, es decir, cuando se llama a SDL_BlitSurface(). Esta función no ha variado de SDL1 a SDL2, así
+que tú tranqui.
+
+Y OJO!!! NO CONFUNDAS todo esto con SDL_SetColorKey(), que es para establecer la color key de una superficie, cosa que sirve para considerar "transparentes totalmente" píxels
+de la misma a fin de blitear, por ejemplo, sprites contra un fondo. ¡¡¡NO TIENE NADA QUE VER CON EL ALPHA BLENDING!!!
+Y sí, estoy hablando de blitear con SDL_BlitSurface() también, pero el color key y el alpha blending ya sabes de sobra que son cosas muy diferentes.
+
 ==========SDL2 KMSDRM=========================================================
 
 Configurar con el CMAKE para desactivar X11 y activar KMSDRM:
