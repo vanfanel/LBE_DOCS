@@ -79,7 +79,7 @@ vcgencmd measure_temp
 sudo cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
 vcgencmd get_config arm_freq
 
-******SDL2 en la Raspberry Pi 2***************************************************************************************************************************************************************
+******SDL2 en la Raspberry Pi***************************************************************************************************************************************************************
 
 Instalamos libudev-dev y libasound2-dev, lo primero.
 
@@ -87,7 +87,13 @@ Bajamos los sources estables de http://libsdl.org/download-2.0.php
 
 Configuramos con:
 
-CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus  --disable-ime
+Para la Pi 2 y 3:
+
+CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
+
+Para la Pi1:
+
+CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
 
 Compilamos e instalamos.
 
@@ -98,30 +104,13 @@ sudo apt-get install automake
 
 Configuramos con:
 
-CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr
+Para la Pi 2 y 3:
 
-SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
+CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr --without-x
 
-******SDL2 en la Raspberry Pi 3***************************************************************************************************************************************************************
+Para la Pi1:
 
-Instalamos libudev-dev y libasound2-dev, lo primero.
-
-Bajamos los sources estables de http://libsdl.org/download-2.0.php
-
-Configuramos con:
-
-CFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
-
-Compilamos e instalamos.
-
-Para SDL mixer, y SDL_image, primero instalamos libvorbis-dev, libpng12-dev
-Y también
-sudo apt-get install autotools-dev
-sudo apt-get install automake
-
-Configuramos con:
-
-CFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53  -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --prefix=/usr
+CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" ./configure --prefix=/usr --without-x
 
 SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
 Le puedes pasar también --without-x si tienes los headers de las X11 instalados.
@@ -335,15 +324,11 @@ patch -p0 < ../dosbox_sdl2_20150713.diff
 
 Configuraríamos para SDL2.  Para Pi1 con:
 
-CXXFLAGS="-O3 -marm -mfpu=vfp -march=armv6j -mfloat-abi=hard"  ./configure --with-sdl=sdl2 --disable-opengl
+CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard -fomit-frame-pointer"  ./configure --with-sdl=sdl2 --disable-opengl
 
-Para Pi2 con
+Para Pi 2 y 3 con
 
-CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer -ffast-math"  ./configure --with-sdl=sdl2 --disable-opengl
-
-Para Pi3 con
-
-CXXFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -fomit-frame-pointer -ffast-math"  ./configure --with-sdl=sdl2 --disable-opengl
+CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer"  ./configure --with-sdl=sdl2 --disable-opengl
 
 Luego en el conf nos interesará tener la opción output=texture o texturenb. Luego ya SDL2 usa por debajo GLES en la Pi o lo que sea, para esa textura..
 
@@ -1828,13 +1813,13 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 en build/src/sdlayer.c, antes de SDL_CreateWindow()
 
 Compilamos con:
-Para pi1:
-make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_OPENGL=0 WITHOUT_GTK=1 NOASM=1 LTO=0 OPTLEVEL=3 OPTOPT="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j"
-Para pi2:
-make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_OPENGL=0 WITHOUT_GTK=1 NOASM=1 LTO=0 OPTLEVEL=3 OPTOPT="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
 Para una Pi3:
-make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_LIBFLAC=0 WITHOUT_GTK=1 USE_OPENGL=0 OPTLEVEL=3 OPTOPT="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"
+
+Para pi1:
+make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_OPENGL=0 WITHOUT_GTK=1 NOASM=1 LTO=0 OPTLEVEL=3 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
+Para pi 2 y 3:
+make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_LIBFLAC=0 WITHOUT_GTK=1 USE_OPENGL=0 OPTLEVEL=3 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
 
 Si te da problemas porque, a pesar de que estamos deshabilitando libflac, la busca en tiempo de linkado, borra la referencia de libfrac de la plataforma LINUX
 en el Makefile, y fuera.
@@ -1915,22 +1900,17 @@ cd build
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi2 a cmake:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" -DGPL=ON \
--DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
--DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
+Para la Pi 2 y 3:
 
-Para la Pi 3:
-
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard  -ffast-math" -DGPL=ON \
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DGPL=ON \
 -DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
 -DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
 
 Para la Pi 1:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math"  \
--DCMAKE_CXX_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" -DGPL=ON \
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=armv6j -mfpu=vfp -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-march=armv6j -mfpu=vfp -mfloat-abi=hard" -DGPL=ON \
 -DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
 -DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
 
@@ -2755,64 +2735,6 @@ Verificamos que no hay -g, que se compila con -O3 y que los flags de cpu son cor
 Listo!
 
 NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da igual.
-
-*************SDL2 en la Raspberry Pi*********************************************************************************************
-
-¡¡¡CUIDADO!!! Asegúrate de tener instalado el paquete libudev-dev o en los juegos no irá ni joystick, ni teclado, ni ratón, ni nada.
-
-¡¡¡CUIDADO!!! La versión mínima que se necesita en la Pi es la 2.0.4.
-La puedes bajar como zip o tar.gz desde
-https://www.libsdl.org/download-2.0.php
-Si necesitas la versión mercurial (SVN), que puedes clonar yendo a la página de snapshots de código aquí y tirando de zip o de hg clone:
-
-Concretamente:
-hg clone http://hg.libsdl.org/SDL
-
-Lo hemos sacado de aquí: https://www.libsdl.org/hg.php
-
-CONFIGURAMOS CON:
-
-CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus
-
-lueg make -j8 y a correr.
-
-Para SDL_image y SDL_mixer, si no compilan (suelen compilar sin problemas), corre el autogen.sh antes del configure, PERO NO SUELE HACER FALTA.
-Configuramos con
-
-CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" ./configure --prefix=/usr
-
-Y luego ya es cosa de correr ./configure y make -j8
-
-                        CUIDADO
-
-SDL_IMAGE tiene problemas para compilar porque Debian Wheezy usa versiones antiguas de las herramientas de automake. Así que antes de correr
-su configure, ejecuta su autogen.sh
-
-			CUIDADO
-
-SDL_gfx tiene problemas para compilar en arm si no deshabilitamos el soporte para MMX
-
-./autogen.sh
-CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" ./configure --prefix="/usr" --disable-mmx
-
-			CUIDADO
-
-SDL2_ttf tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
-
-NOTA
-
-Si algún programa para SDL2 falla al compilarlo con soporte para GLES, añade en su Makefile:
--L/opt/vc/lib/ 
-
-Sacado de aquí, míralo para entender el problema:
-
-http://raspberrypi.stackexchange.com/questions/27523/how-to-use-opengl-via-sdl2
-
-SI LOS JUEGOS 2D SE PIXELAN MUCHO, pues que apliquen filtro bilineal a las texturas de GLES2, que es lo que se usa para 2D.
-Así que mete esta llamada al principio del código del juego, tras SDL_Init() va perfectamente:
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-Busca antes si el juego tiene su propio chorro de llamadas a SDL_SetHint() y mete esta allí, o cambia alguna como en el caso de chocolate-doom.
-SI UN JUEGO NO PARECE HACER CASO DE ESTO y se sigue pixelando, puede ser porque se llama a SetHint demasiado tarde. Hazlo justo tras SDL_Init() si es así.
 
 **************SDL2 en x86 con Xorg*************************************************************************************************
 
@@ -3714,15 +3636,11 @@ Añadimos los flags de CPU en config.mk:
 
 Para la Pi 1:
 
--marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
+-march=armv6j -mfpu=vfp -mfloat-abi=hard
 
-Para la Pi2 (no hace falta pasarle el -funsafe-math-optimizations para que se desactive es estándard IEEE, ya que se le pasa desde otro sitio -ffast-math, que como sabes include eso) :
+Para la Pi 2 y 3
 
--marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard
-
-Para la Pi3
-
--marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
+-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard
 
 Editamos Makefile.common y comentamos la línea del -g
 
@@ -3758,15 +3676,11 @@ Vamos editando el Makefile.libretro, y añadiendo en la línea donde se ñade s�
 
 Para la Pi 1:
 
--marm -march=armv6j -mfpu=vfp -mfloat-abi=hard -ffast-math
+-march=armv6j -mfpu=vfp -mfloat-abi=hard
 
-Para la Pi 2:
+Para la Pi 2 y 3:
 
--marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math
-
-Para la Pi 3:
-
--marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math
+-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard
 
 Y compilamos con
 
@@ -4001,13 +3915,9 @@ en screen/Screen.cpp, justo antes de SDL_CreateWindowAndRenderer()
 
 Editamos el script configure y quitamos toda mención a -O2 y -g. 
 
-Configuramos así para Pi2:
+Configuramos así para Pi2 y 3:
 
-CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --disable-debug
-
-Para Pi3:
-
-CFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard  -ffast-math" ./configure --disable-debug
+CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --disable-debug
 
 Compilamos:
 
@@ -4096,11 +4006,8 @@ hg clone https://bitbucket.org/rude/love
 Satisfacemos las dependencias con:
  sudo apt-get install libmodplug-dev libphysfs-dev libluajit-5.1-dev libtheora-dev libmpg123-dev
 
-Luego configuramos para Pi2 con:
-CFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr
-
-Para Pi3:
-CFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr
+Luego configuramos para Pi 2 y 3 con:
+CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr
 
 make y sudo make install
 
@@ -4216,8 +4123,8 @@ sudo mv /usr/bin/cc /usr/bin/disabled
 
 Listo. Ahora ya puedes compilar una versión de OpenAL que no de segfaults.
 
-GZDOOM en la Raspberry Pi
-======================
+(G)ZDOOM en la Raspberry Pi
+=========================
 Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
 
 PARA COMPILAR OpenAL NECESITAS GCC 6.1.0 O POSTERIOR instalado en la Pi. Mira las instrucciones para instalarlo.
@@ -4227,20 +4134,14 @@ cd build
 
 Para Pi1:
 
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math"  \
--DCMAKE_CXX_FLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math"  \
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-march=armv6j -mfpu=vfp -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-march=armv6j -mfpu=vfp -mfloat-abi=hard"  \
 -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DCMAKE_BUILD_TYPE=Release ..
-
-Para Pi2:
-
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" -DALSOFT_REQUIRE_NEON=ON \
--DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DHAVE_ARM_NEON_H=YES -DCMAKE_BUILD_TYPE=Release ..
 
 Para Pi3:
 
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard  -ffast-math" -DALSOFT_REQUIRE_NEON=ON \
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DALSOFT_REQUIRE_NEON=ON \
 -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DHAVE_ARM_NEON_H=YES -DCMAKE_BUILD_TYPE=Release ..
 
 make
@@ -4391,8 +4292,8 @@ Ahora buscamos los sources del "playtap", tal cual, compilamos con el Makefile.l
 
 Justo cuando empiece a sonar bajamos el sonido con el control de volúmen normal, como a 3/4 que si no suena muy alto y falla.
 
-CÓMO LOGUEARSE AL SVN DE RETROGURU Y CLONAR REPOS
-=====================================================
+CÓMO LOGUEARSE AL SVN DE RETROGURU Y CLONAR REPOS, Y LUEGO GUARDAR LOS CAMBIOS QUE HAGAS
+==============================================================================================
 
 Lo primero es autentificarse, sólo hay que hacerlo la primera vez:
 (El password es uno de los típicos que usas, tiene letras y números)
@@ -4400,6 +4301,12 @@ cvs -d:pserver:vanfanel@sun.hasenbraten.de:/usr/src/cvs login
 
 Y luego ya clonar el proyecto giana, por ejemplo:
 cvs -d:pserver:vanfanel@sun.hasenbraten.de:/usr/src/cvs checkout giana
+
+Una vez hechos los cambios, metemos los nuevos ficheros con
+cvs add <nombre_ficher>
+
+Y guardamos los cambios en el server con
+cvs commit
 
 COMPILAR GIANA SISTERS RETURN
 ==============================

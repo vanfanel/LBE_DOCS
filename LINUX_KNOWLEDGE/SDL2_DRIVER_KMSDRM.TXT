@@ -18,7 +18,7 @@ También hay mierdas en
 ../SDL-mirror-SIG/include/SDL_config.h.cmake
 ../SDL-mirror-SIG/include/SDL_config.h.in
 
-PARA CONFIGURAR:
+PARA CONFIGURAR (y NO TE OLVIDES de ejecutar autogen.sh antes!!!):
 
 ./configure --prefix=/usr --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-mir --enable-video-kmsdrm
 

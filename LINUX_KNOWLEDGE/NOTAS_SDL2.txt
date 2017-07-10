@@ -119,6 +119,36 @@ SDL_PauseAudioDevice(dev,1);
 Y por ahora eso es lo que sé. Me ha servido para portar cannonball a SDL2...
 Fuentes: https://wiki.libsdl.org/SDL_OpenAudioDevice
 
+===========PASAR EL INPUT DE SDL1 a SDL2===================================
+
+Sobre todo es el tema del teclado. Para el tema del joystick y demás queda todo igual.
+
+-De igual modo, en ambos casos se usan las estructuras SDL_Event para evaluar de qué tipo es el evento que nos ha llegado.
+También se sigue usando SDL_KEYDOWN y SDL_KEYUP para el tipo de evento.  Esas cosas no cambian.
+
+-Lo que si cambia es la función para leer los eventos: ya no es SDL_GetKeyState(), sino  SDL_GetKeyboardState(), pero sólo cambia el nombre.
+Lo cambias y ya.
+
+-SDL2 usa SCANCODES y no SYMCODES, así que en lugar de evaluar el campo evento.key.keysym.scancode, vamos a evaluar el campo evento.key.keysym.scancode,
+y en vez de evaluar dicho campo contra valores tipo SDLK_*, lo evaluamos contra valores de tipo SDL_SCANCODE_*.
+
+Qué pasos hay que hacer:
+-Lo primero cambia nombre de la función.
+-Ahora te buscas SDL_KEYDOWN en el código, que es el tipo de evento que nos interesa, mira que no estés evaluando evento.key.keysym.sym, sino evento.key.keysym.scancode
+y contra SDL_SCANCODE_* en lugar de hacerlo contra SDLK_*. 
+-También tendrás que hacer lo mismo con SDL_KEYUP.
+-Y también, como es muy típico que los programas definan teclas por defecto, búscate dónde lo hace ese programa en concreto y que las defina usando SDL_SCANCODE_*
+en lugar de usar SDLK_*.
+
+La lógica la tienes que tener clara: el juego define unas teclas por defecto, o las lee de un cfg, y la cosa queda como:
+JUMP_KEY = SDL_SCANCODE_SPACE;
+Luego llega el evento, y se comprueba qué tecla es la que se ha pulsado:
+
+case SDL_KEYDOWN...
+	if (evento.key.keysym.scancode ==) JUMP_KEY
+
+...Y ya la procesa el juego internamente o lo que sea.
+
 ===========Cómo funciona el INPUT en SDL2===================================
 
 CUANDO SE PULSA UNA TECLA, desde las SDL2 nos va a llegar una estructura de tipo SDL_Event.
@@ -129,21 +159,27 @@ Así que normalmente tendremos un primer swicth-case donde se filtrará por tipo
 Vale, sabemos que es una pulsación de una tecla.
 HAY DOS TIPOS de códigos que vamos a recibir en el SDL_Event cuando se pulsa una tecla: 
 
--El SCANCODE, que NO es fiable si queremos reconocer una tecla con un significado concreto, que viene en el campo key.keysym.scancode del SDL_Event.
-Usaremos esto más bien para identificar pulsaciones basándonos EN LA POSICIÓN de una tecla y NO EN EL CARACTER QUE PRODUCE. Así que no nos interesará mucho. 
+-El SCANCODE, que es lo que DEBEMOS USAR EN SDL2, aunque no es fiable si queremos reconocer una tecla con un significado concreto, 
+ y que viene en el campo evt.key.keysym.scancode del SDL_Event.
+Usaremos esto más bien para identificar pulsaciones basándonos EN LA POSICIÓN de una tecla y NO EN EL CARACTER QUE PRODUCE. REPITO: ES LO QUE SE USA EN LAS SDL2. 
 Es un número de la tecla física que hemos pulsado pero que no se corresponde con ningún caracter o tecla modificadora específica (así, recibiremos un 123 por 
 ejemplo que puede ser un tab o una letra v, independientemente de lo que haya dibujado en nuestro teclado: sólo nos llega el scancode que no significa un caracter en concreto,
 es algo como: has pulsado la tecla 123, y ya). En la wiki de las SDL2 nos vienen scancodes a lo SDL_SCANCODE_G o SDL_SCANCODE_RALT, pero NO son fiables. Si comprobamos
 contra los valores de tipo SDL_SCANCODE_*, no sabemos realmente qué tecla se ha pulsado.
 
 -El KEYCODE, que viene en el campo key.keysym.sym del SDL_Event. Para comprobar contra los valores de scancode, tenemos que hacer un include de SDL_scancode.h.
+ESTO ES LO QUE SE USABA EN LAS SDL1.
 Los valores definidos contra los que podemos comprobar qué tecla se nos ha pulsado tienen el formato SDLK_*. Estos valores SÍ son los de los caracteres, y
 NOS DAN LA SEGURIDAD de que la tecla contra la que comprobamos es la que nuestro SO devuelve al pulsar lo que hemos pulsado. 
-ES LA OPCIÓN que nos interesará mas a menudo: comprobar el KEYCODE.
 
 TANTO PARA los SCANCODES como para los KEYCODES, tienes una tabla (que no es fiable para los SCANCODES por lo que ya se ha explicado) en https://wiki.libsdl.org/SDL_Keycode 
 
-============Un ejemplo de cómo leer algo de teclado usando scancodes================
+AHORA BIEN: Lo que nos interesa en SDL2 es usar SCANCODES, o sea que acabaremos comprobando el valor del campo correspondiente, evt.key.keysym.scancode
+
+============Un ejemplo de cómo leer algo de teclado usando scancodes usando índices a la matriz de estado del teclado================
+
+Así es como se debería leer en las SDL2, aunque normalmente, como los programas de SDL1 lo que hacen es comprobar evt.key.keysym.sym, nosotros
+comprobamos evt.key.keysym.scancode, y no usamos este método, pero SERÍA LA MANERA MÁS CORRECTA DE HACERLO.
 
 Lo primero, tenemos que declarar una variable de tipo puntero a unsigned int de 8 bits, que apunta a un array, el array del estado de las teclas, que serán
 0 o 1. 0 Es que tal o cual tecla no está presionada, y 1 que sí lo está.
