@@ -1817,9 +1817,11 @@ Compilamos con:
 Para una Pi3:
 
 Para pi1:
-make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_OPENGL=0 WITHOUT_GTK=1 NOASM=1 LTO=0 OPTLEVEL=3 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
+make -j8 make WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
 Para pi 2 y 3:
-make -j8 USE_LIBVPX=0 USE_LIBPNG=0 USE_LIBFLAC=0 WITHOUT_GTK=1 USE_OPENGL=0 OPTLEVEL=3 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
+make -j8 make WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
+
+Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
 Si te da problemas porque, a pesar de que estamos deshabilitando libflac, la busca en tiempo de linkado, borra la referencia de libfrac de la plataforma LINUX
 en el Makefile, y fuera.
@@ -4304,6 +4306,10 @@ cvs -d:pserver:vanfanel@sun.hasenbraten.de:/usr/src/cvs checkout giana
 
 Una vez hechos los cambios, metemos los nuevos ficheros con
 cvs add <nombre_ficher>
+
+Si tenemos nuevos ficheros, directorios, etc, hacemos estos dos pasos porque CVS es muy espartano con esto, no hay equivalente a "git add ."
+find . -type d \! -name CVS -exec cvs add '{}' \;
+find . \( -type d -name CVS -prune \) -o \( -type f -exec cvs add '{}' \; \)
 
 Y guardamos los cambios en el server con
 cvs commit
