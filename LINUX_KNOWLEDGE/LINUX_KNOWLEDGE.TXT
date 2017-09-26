@@ -1817,9 +1817,9 @@ Compilamos con:
 Para una Pi3:
 
 Para pi1:
-make -j8 make WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
+make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
 Para pi 2 y 3:
-make -j8 make WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
+make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
@@ -4318,9 +4318,15 @@ COMPILAR GIANA SISTERS RETURN
 ==============================
 
 Lo primero es compilar libmodplug:
+
+O bien clonamos la última versión...
 git clone --depth 1 https://github.com/Konstanty/libmodplug.git
 autoreconf -i
  ./configure --enable-static
+
+O bien usamos la 0.87 que traen los sources de los juegos, ya que en algunos casos la última versión no es compatible
+CXXFLAGS="-fpermissive" ./configure --enable-static
+make -j8
 
 Buscamos libmodplug.a
 find ./ -name 'libmodplug.a'
@@ -4331,6 +4337,30 @@ CFLAGS = $(INCLUDES) -DMODPLUG -DLINUX $(OPTIM) -Wall -DFADEINOUT -DLINUX64 -DHO
 ...de lo contrario, el ejecutable resultante nos medio peta el sistema y da errores raros.
 
 Si nos da errores de "undefined symbol" con funciones como initFPS() en main.c, añadimos fpshelper.o a nuestro Makefile en la sección de OBJS 
+
+AUDIO POR I2C: EL PI TOP SPEAKER
+==============================
+
+Lo primero es saber que el pi top speaker (pts de ahora en adelante) va por i2c pillando el sonido del hdmi.
+Para que el i2c funcione, tenemos que tener estos módulos cargados:
+
+snd_bcm2835
+i2c_bcm2835
+i2c_dev
+
+Para ello, en config.txt añade:
+
+dtparam=i2c1=on
+dtparam=i2c_arm=on
+
+Y luego a parte en /etc/modules añade:
+i2c_dev
+
+Reiniciamos, y probamos que detecta el dispositivo en el i2c:
+
+sudo i2cdetect -y 1
+
+Si el i2cdetect no encuentra /dev/i2c-1, es que nos falta algo de los módulos. El pts debería estar en el 73 en la tabla que nos sale.
 
 MPV, ALTERNATIVA A OMXPLAYER EN LA PI
 =====================================

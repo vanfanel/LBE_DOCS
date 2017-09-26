@@ -1,0 +1,62 @@
+NOTAS BÁSICAS
+==============
+
+El problema no es crear hilos, que eso en cuanto te mires un ejemplo lo ves, sino el acceso simultáneo a un mismo recurso desde diferentes hilos.
+Eso incluye consultar la misma variable desde un hilo, y escribir en ella desde otro (cambiar su valor, etc).
+
+O sea, que yo te recomiendo que pienses de la siguiente manera: 
+-Simplemente, crea un hilo asociado a cada recurso desde el que se vaya a acceder simultaneamente desde distintos hilos. Por ejempor, si tenemos un buffer de pixels
+que se va a escribir desde un hilo y luego se va a leer desde otro para componer una escena completa cuando corresponda, llama al mutex algo como
+screen_buffer_mutex.
+-Simplemente es meter entre un "lock_mutex" y un "unlock_mutex" las partes de código en ambos hilos en las que se va a acceder a ese recurso: hay que hacerlo
+EN AMBOS o no funciona en absoluto, porque esto se basa en que, el primero que llega a su "lock_mutex", pilla el lock y se lo queda, y cuando llega el otro no
+puede cogerlo y se tiene que esperar, con lo que no acceden simultaneamente y todo guay.
+
+POR EJEMPLO:
+
+Hilo1:
+...
+lock_mutex (screen_buffer_mutex)
+<escribir en screen_buffer>
+unlock_mutex (screen_buffer_mutex)
+...
+
+Hilo 2:
+...
+lock_mutex (screen_buffer_mutex)
+<leer de screen_buffer>
+unlock_mutex (screen_buffer_mutex)
+...
+
+RECUERDA que incluso consultar un bool de esos que se suelen usar a modo de flag para indicar que algo se ha actualizado (y que se debe copiar el contenido
+de un buffer a la memoria gráfica en consecuencia, por ejemplo, porque ha habido cambios) requiere que el poner ese bool a true o false y consultar cómo está
+desde otro hilo esté "protegido" dentro de un lock/unlock mutex.
+
+NOTAS SOBRE WAIT/SIGNALS
+=========================
+
+Esto se usa sobre todo para hilos "consumidores", que están esperando hasta que tienen más para consumir, y que si no tienen nada, se esperan. Cosas de ese estilo
+se usan en vídeo para sistemas de varios buffers, etc. El consumidor es un hilo que está todo el rato en bucle ahí esperando a que se le DESPIERTE, haga algo, Y OTRA
+VEZ A DORMIR en un wait.
+
+***Para entenderlo bien, PIENSA que cuando el hilo entra en espera, LIBERA el lock mutex que protege el acceso al COND por el que esperará, de manera que el hilo que debe
+despertar a este primero, pueda hacerlo.***
+
+Ejemplo:
+
+Hilo1: Este hilo va a estar "parado" esperando en mitad de un bucle (el bucle NO corre, claro) a que el Hilo2 le despierte, para hacer algo, iterar y caer en la espera otra vez:
+
+while (keep_alive) {
+    lock_mutex (cond_mutex)			<--Aquí PROTEJO el acceso al cond
+    cond_wait (cond, cond_mutex)      <--Aquí me pongo a esperar y, a la vez, "LEVANTO EL CANDADO" del cond para que se me pueda despertar desde otro hilo.
+    unlock_mutex(cond_mutex)
+   <hago lo que sea que tenga que hacer este hilo, como consumir un buffer o algo así>
+}
+
+Hilo2: Este hilo va a despertar al primero de vez en cuando:
+...
+lock_mutex (cond_mutex)			<--Protejo el acceso al cond...
+cond_signal(cond)                                      <--Aviso al otro hilo para despertarle...
+unlock_mutex(cond_mutex)		<--Quito el candao al cond
+
+SI TIENES CLARAS ESTAS COSAS, LO TIENES TODO CLARO Y REFRESCADO.

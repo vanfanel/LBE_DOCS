@@ -1,0 +1,27 @@
+=================VISUALIZAR EL CONTENIDO DE UNA DIRECCIÓN DE MEMORIA=============================
+
+NO es lo mismo que visualizar el valor de una variable o el valor contenido en esa dirección: lo que vamos a visualizar son los bits, cómo están puestos
+esos bits, si a 0 o a 1. Es muy útil para visualizar colores, o sea, valores RGBA de píxels guardados en un array!!! Así que lo uso todo el rato y ya va siendo hora
+de documentarlo.
+Se usa el comando x, seguido de /, seguido del formato en que lo queremos ver (x = hexadecimal, t = binario, d = decimal...), seguido del tamaño que queremos visualizar
+(b = byte, 8bits, h = half word, 16 bits, w = word, 32 bits) 
+-Para visualizar en hexadecimal un valor que vamos a considerar de 32 bits (word), haré:
+x/xw ((uint32_t*)g_screen_blitter->pixels)+<loquesea>
+-Para visualizar en binario un valor de 32 bits:
+x/tw ((uint32_t*)g_screen_blitter->pixels)+<loquesea>
+
+OJO: ACUÉRDATE SIEMPRE de que hay que hacerle el cast al tamaño adecuado al puntero, para que al sumar <loquesea> incremente en el número de bits adecuado,
+que en este caso son 32, por lo que cada unidad de <loquesea> va a significar un incremento de 32 bits.
+
+Y si queremos ver varios elementos a partir de esa posición, ponemos un número después de la barra.
+Así, para ver 100 elementos, en formato hexadecimal, y considerándolos un word (32bits), haríamos:
+x/100xw ((uint32_t*)g_screen_blitter->pixels)
+
+===============VISUALIZAR EL VALOR ALMACENADO EN VARIAS POSICIONES DE MEMORIA A PARTIR DE UNA DADA====
+
+No es lo mismo que lo anterior: con esto no vas a ver cómo están los bits, sino el valor abstracto de esos bits, esto es, si es un entero cuánto vale ese entero, si
+es un carácter o una cadena qué texto contienen, etc...
+Para ello, basta con decirle la dirección@número de elementos.
+Supongamos que "letras" es un array unidimensional de letras:
+p letras@128
+Esto nos mostraría los 128 primeros elementos de ese array.

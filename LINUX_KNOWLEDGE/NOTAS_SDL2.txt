@@ -121,6 +121,9 @@ Fuentes: https://wiki.libsdl.org/SDL_OpenAudioDevice
 
 ===========PASAR EL INPUT DE SDL1 a SDL2===================================
 
+***OJO!!!! Al final no es que los KEYCODES (key.keysym.sym) sean legacy, es que nos conviene más leer y usar los keycodes cuando vayamos a recoger una cadena de texto,
+y los SCANCODES para controlar el input del juego en sí (moverse, disparar)...***
+
 Sobre todo es el tema del teclado. Para el tema del joystick y demás queda todo igual.
 
 -De igual modo, en ambos casos se usan las estructuras SDL_Event para evaluar de qué tipo es el evento que nos ha llegado.
@@ -175,6 +178,9 @@ NOS DAN LA SEGURIDAD de que la tecla contra la que comprobamos es la que nuestro
 TANTO PARA los SCANCODES como para los KEYCODES, tienes una tabla (que no es fiable para los SCANCODES por lo que ya se ha explicado) en https://wiki.libsdl.org/SDL_Keycode 
 
 AHORA BIEN: Lo que nos interesa en SDL2 es usar SCANCODES, o sea que acabaremos comprobando el valor del campo correspondiente, evt.key.keysym.scancode
+
+OJO!!!! Al final no es que los KEYCODES (key.keysym.sym) sean legacy, es que nos conviene más leer y usar los keycodes cuando vayamos a recoger una cadena de texto,
+y los SCANCODES para controlar el input del juego en sí (moverse, disparar)...
 
 ============Un ejemplo de cómo leer algo de teclado usando scancodes usando índices a la matriz de estado del teclado================
 
