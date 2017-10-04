@@ -89,11 +89,11 @@ Configuramos con:
 
 Para la Pi 2 y 3:
 
-CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
+CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 Para la Pi1:
 
-CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
+CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 Compilamos e instalamos.
 
@@ -197,11 +197,23 @@ le damos al espacio otra vez cuando acabemos y al intro para acabar. Ya tenemos 
 
 Si tenemos SDL2 instalado y funcionando, podemos tener este increíble programa de dibujo en 2D que se usa para sprites y gráficos raster!
 Tenemos que tener también SDL2_image con soporte para JPG, PNG y TIFF, así que comprueba que tienes esos formatos soportados al configurar SDL2_image.
+Tendrás que instalar para ello libtiff-dev.
 
 svn co svn://pulkomandy.tk/GrafX2/branches/sdl2
 
 Simplemente hay que compilarlo con estas opciones:
 make -j8 NOLUA=1 NOTTF=1
+
+Si queremos que busque los init, skin y demás en el mismo directorio donde tengamos el ejecutable, editamos src/setup.c y tocamos las funciones:
+Set_data_directory() : Dejamos sólo la primera línea, "strcpy(data_dir,program_dir);" Comentamos lo demás.
+Set_config_directory() : Deejamos sólo una línea que diga: "strcpy(config_dir,program_dir);" Comentamos todo lo demás.
+
+...Y ahora copiamos. al mismo directorio que el ejecutable:
+gfx2def.ini
+skings
+...tienes ambas cosas en share
+..Y ahora, editamos gfx2def.ini y cambiamos  el Skin_file, para evitar el error "Error in skin file: Was looking right from 254,139 for a 'mouse cursor', and reached the edge of the image":
+Skin_file = skin_modern.png
 
 ******Compilar VICE en la Raspberry Pi*************************************************************************************************************************************
 Necesitaremos tener instalados los paquetes flex y bison durante la configuración.
@@ -1330,7 +1342,7 @@ sudo systemctl mask cryptsetup.target
 sudo systemctl mask cryptsetup-pre.target
 
 -Comentamos la línea de i2c en /etc/modules-load.d/modules.conf
--Evitamos que se cargue el módulo de IPV6 añoadiendo esto al principio de /etc/modprobe.d/ipv6.conf :
+-Evitamos que se cargue el módulo de IPV6 añadiendo esto al principio de /etc/modprobe.d/ipv6.conf :
 install ipv6 /bin/true
 (Si te suena raro, es un fake install: como es un módulo cargado por el kernel, tenemos que hacerle creer que se carga, pero no).
 Y ahora para acabar con IPV6 del todo hacemos : 
@@ -2975,7 +2987,8 @@ LD_LIBRARY_PATH=/home/manuel/sidplay/lib ./sidplayfp <tema>.sid
 
 ***************Rogue en Linux**************************************************************************
 
-Descarga los últimos sources de http://rogue.rogueforge.net/rogue-5-4
+Descarga los últimos sources de
+git clone --depth 1 https://github.com/Davidslv/rogue.git
 Antes de nada, instala las libncurses5-dev, antes de hacer el configure.
 Configurar y compilar. Ayuda de teclas con shift+?
 
@@ -3789,7 +3802,7 @@ buscamos en makefile.libretro la parte de generate-files, y dejamos sólo las en
 La línea queda tal que así, pero vamos, hazlo a mano:
         $(PERL) $(FBA_SCRIPTS_DIR)/gamelist.pl -o $(FBA_GENERATED_DIR)/driverlist.h -l gamelist.txt $(FB    A_BURN_DRIVERS_DIR) $(FBA_BURN_DRIVERS_DIR)/capcom $(FBA_BURN_DRIVERS_DIR)/cps3 $(FBA_BURN_DRIVERS_DIR)/neogeo
 
-Ahora, también en makefile.libretro, quitamos los directorios de la parte de FBA_BURN_DIRS := $(FBA_BURN_DIR) en adelante.
+Ahora, en makefile.libretro_common, quitamos los directorios de la parte de FBA_BURN_DIRS := $(FBA_BURN_DIR) en adelante.
 No hace falta que quites los directorios de los includes, esos dan igual.
 
 Ahora hacemos un 
@@ -4006,7 +4019,7 @@ Clonamos:
 hg clone https://bitbucket.org/rude/love
 
 Satisfacemos las dependencias con:
- sudo apt-get install libmodplug-dev libphysfs-dev libluajit-5.1-dev libtheora-dev libmpg123-dev
+ sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libluajit-5.1-dev libtheora-dev libmpg123-dev
 
 Luego configuramos para Pi 2 y 3 con:
 CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr
@@ -4305,7 +4318,7 @@ Y luego ya clonar el proyecto giana, por ejemplo:
 cvs -d:pserver:vanfanel@sun.hasenbraten.de:/usr/src/cvs checkout giana
 
 Una vez hechos los cambios, metemos los nuevos ficheros con
-cvs add <nombre_ficher>
+cvs add <nombre_fichero>
 
 Si tenemos nuevos ficheros, directorios, etc, hacemos estos dos pasos porque CVS es muy espartano con esto, no hay equivalente a "git add ."
 find . -type d \! -name CVS -exec cvs add '{}' \;
@@ -4398,3 +4411,47 @@ Debemos tener
 lavc:h264_mmal
 en la lista de decoders si hacemos:
 mpv --vd=help
+
+NOTAS HIFIBERRY
+===============
+
+En Debian Stretch, las cosas se han complicado ligeramente para poner a funcionar bien la HIFIBERRY DAC+, así que aquí voy a poner algunas notas.
+Para que funcione perfectamente:
+****En config.txt, mira que tengas estas cosas:***
+-Comentada la línea
+#dtparam=audio=on
+
+-Añadidas las líneas:
+dtoverlay=i2s-mmap
+dtoverlay=hifiberry-dacplus
+
+(!!!!!!!!!!!)Ahora, asegúrate de que, además de los módulos típicos, tengas, según lsmod, un módulo llamado "fixed". Si no, ve y quítalo de blacklist.conf...
+
+Ahora, deberías poder ver la tarjeta con "aplay -L" y ver los controles de volúmen y ajustes de la hifiberry con "alsamixer".
+Pero puede que alsamixer no guarde los cambios entre reinicios: esto es porque el servicio "alsa-restore.service" falla, lo que puedes comprobar
+con "sudo systemctl status alsa-restore.service".
+Y falla porque no se cumple la condición de que exista "/dev/snd/control*" cuando se intenta cargar alsa-restore.service
+Si editamos completamente el unit del servicio alsa-restore.service ("sudo systemctl edit --full alsa-restore.service"), vemos que tiene la condición:
+ConditionPathExistsGlob=/dev/snd/control*
+...que es la que está fallando.
+Pues bien: vamos a quitar esa condición. Para ello, editamos un "override" del unit, no el unit en sí (ya que esto se perdería al actualizar el sistema...).
+Lo editamos con:
+sudo systemctl edit alsa-restore.service
+Y simplemente añadimos esa condition pero "en blanco":
+
+[Unit]
+ConditionPathExistsGlob=
+
+Salvamos, reiniciamos, y alsamixer debería restaurar los niveles sin problemas. Comprueba que "systemctl status alsa-restore.service" se ha iniciado correctamente ahora.
+
+COMPILAR HYPSEUS (Daphne)
+==========================
+
+Clonamos el repo de btlab:
+git clone --depth 1 https://github.com/btolab/hypseus.git
+
+Ahora, creamos directorio de compilación y usamos cmake y luego make:
+mkdir b3
+cd b3
+cmake ../src
+make -j6
