@@ -4186,6 +4186,13 @@ LO TENEMOS QUE PONER bajo las líneas iniciales, justo tras: project(GZDoom)
 string(REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
 string(REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
 
+AHORA editamos src/CMakeLists.txt (CUIDADO, que es otro makelist distinto!) y desactivamos la carga dinámica de fluidsynth y libmpg123, dejando a OFF
+este par de líneas:
+option( DYN_MPG123 "Dynamically load libmpg123" OFF )
+option( DYN_FLUIDSYNTH "Dynamically load fluidsynth" OFF ) 
+(Para que esto funcione, los paquetes de desarrollo de mpg123 y de fluidsynth NO deben estar instalados, o en vez de cargarlas dinámicamente 
+linkará el ejecutable contra las librerías normalmente, lo que TAMPOCO queremos: queremos que NO haga nada con estas librerías y punto).
+
 Para Pi1:
 
 cmake -DCMAKE_C_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j"  \
