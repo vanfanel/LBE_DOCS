@@ -25,3 +25,10 @@ Para ello, basta con decirle la dirección@número de elementos.
 Supongamos que "letras" es un array unidimensional de letras:
 p letras@128
 Esto nos mostraría los 128 primeros elementos de ese array.
+
+=============ACTIVAR EL LOGGING A ARCHIVO===============================================================
+
+Sólo guarda el output, no nuestros comandos:
+
+set logging file <nombrearchivo>
+set logging on

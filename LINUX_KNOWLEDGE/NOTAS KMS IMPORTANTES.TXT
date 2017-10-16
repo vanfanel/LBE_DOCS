@@ -113,3 +113,40 @@ Para cambiar el BPP, lo que hacemos es cambiar el bpp y el píxel format de los 
 el plano toma el bpp y el píxel format del buffer del que va a leer.
 
 En 2D-KMS, también habrá que hacer cambios en drmDraw() y en varios puntos de main.c para que pasemos a considerar 2 bytes por píxel en lugar de 4, pero funciona.
+
+*************GLES SOBRE KMS/DRM: CÓMO CONSEGUIR BLOQUEAR HASTA QUE SE HAGA EL BUFFER SWAP PENDIENTE, PARA ASÍ TENER EL MINIMO INPUT LAG POSIBLE************
+
+O sea, cómo entender e implementar max_swapchain = 2 en todas partes. NO TIENE SENTIDO PENSARLO COMO SISTEMA DE DOBLE BUFFER, PERO EL RESULTADO ES EL QUE ESPERAS,
+ES DECIR, TENER EL MENOR INPUT LAG POSIBLE
+CUANDO LO LEAS HASTA EL FINAL LO ENTENDERÁS.
+
+Lo primero es tener separado en la cabeza el buffer swap de EGL (llamada a eglSwapBuffers()) del buffer swap de KMS/DRM (que se hace inmediatamente después, ya que la
+implementación de eglSwapBuffers() sobre KMS/DRM no hace el swap buffers sobre la gbm surface internamente, y por eso lo tenemos que hacer nosotros a mano).
+
+Si te fijas en RetroArch, en gfx/drivers_context/drm_ctx.c se hace esto en gfx_ctx_drm_swap_buffers(), que es UNA FUNCIÓN MUY INTERESANTE:
+
+egl_swap_buffers(&drm->egl);								<---Pide el swapbuffers de EGL para empezar, pero el buffer que se esté usando en la GBM surface no cambia por hacer esto sólo.
+
+waiting_for_flip = gfx_ctx_drm_queue_flip();				<---Ahí dentro es donde se llama a drmModePageFlip() para issue un flip, que se hará en el siguiente vsync.
+
+// Triple-buffered page flips?
+if (video_info->max_swapchain_images >= 3 &&			<---Si tenemos un max_swapchain igual o mayor que 3, Y ADEMÁS quedan buffers libres en la superficie GBM, se retorna y
+    gbm_surface_has_free_buffers(g_gbm_surface))			se permite al programa principal loopear otra vez, renderizando otro fotograma y llegando aquí de nuevo... añadiendo
+    return;															de este modo un fotograma de input lag.
+
+gfx_ctx_drm_wait_flip(true);								<--Aquí hemos llegado si teníamos un max_swapchain menor que tres (2, por ejemplo) o si ya no quedaban buffers libres en
+																     la surface GBM.  Esperamos a que se produzca el swap realmente, es decir, esperamos al vsync. De este modo, queda libre un
+																     buffer de la surface GBM si ese era el problema, o en todo caso impedimos que el programa loopee otra vez, con lo que no metemos
+																     ese frame extra de input lag. Esta función usa por dentro drm_wait_flip() y gbm_surface_release_buffer(), para esperar a vsync
+																     y liberar el buffer respectivamente.
+
+Así que siempre, EN CUALQUIER MIDDLEWARE QUE USE GLES SOBRE KMS/DRM, vamos a poder esperar a vsync tras hacer drmModePageFlip() y asegurarnos así de que no se usa un
+"triple buffer". Quédate con la idea de que NOSOTROS NO CONTROLAMOS EL NÚMERO DE BUFFERS QUE SE CREAN PARA UNA GBM SURFACE, PERO SÍ PODEMOS CONTROLAR QUE
+SE ESPERE TRAS ISSUAR UN FLIP, Y DE ESE MODO EL PROGRAMA NO LOOPEA HASTA QUE SE PRESENTA EL ÚLTIMO FRAME EN PANTALLA Y NOS AHORRAMOS UN FRAME
+O LOS QUE SEAN (dependiendo del número de buffers que tenga la GBM SURFACE y por tanto las veces que se pueda retornar inmediatamente tras comprobar gbm_has_free_buffers())
+DE INPUT LAG.
+
+ADDENDUM: ¿Es esto extrapolable a EGL sobre Dispmanx? Debería serlo si se espera de algún modo tras eglSwapBuffers() hasta que se haga el buffer swap en el lado de dispmanx.
+Quizá una secuencia "vc_dispmanx_update_start(), vc_dispmanx_update_submit()", dado que update_submit es síncrona, podría ayudar... pero no se sabe aún. La idea, en todo caso,
+sería la misma.
+

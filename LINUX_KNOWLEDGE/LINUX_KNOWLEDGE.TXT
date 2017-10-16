@@ -115,6 +115,11 @@ CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6
 SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
 Le puedes pasar también --without-x si tienes los headers de las X11 instalados.
 
+SI un gamepad o joystick no te lo detecta como gamecontroller (SDL_IsGameController() retorna false), lo puedes agregar a src/joystick/SDL_gamecontrollerdb.h.
+La configuración de botones (que es lo que lleva cada línea de ahí, a parte del ID y del nombre) la puedes sacar del "SDL2 gamepad tool", en http://www.generalarcade.com/gamepadtool/
+El nombre lo puedes sacar de dmesg, y el ID, pues te lo da la "SDL2 gamepad tool" esa.
+Aún así, debería funcionar como SDL_joystick al menos.
+
 *****SDL2 en hardware genérico con mi driver KMSDRM*******************************************************************************************************************************************
 
  ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
@@ -1818,7 +1823,7 @@ Y ya se supone que podemos usarlo.
 Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
 
 Clonamos el repo:
-svn checkout http://svn.eduke32.com/eduke32/polymer/ eduke32
+svn checkout http://svn.eduke32.com/eduke32 eduke32
 
 Añadimos 
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
@@ -1829,13 +1834,13 @@ Compilamos con:
 Para una Pi3:
 
 Para pi1:
-make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
+make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 LTO=0 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
 Para pi 2 y 3:
-make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
+make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 LTO=0 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CUSTOMOPT="-DEDUKE32_GLES"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
-Si te da problemas porque, a pesar de que estamos deshabilitando libflac, la busca en tiempo de linkado, borra la referencia de libfrac de la plataforma LINUX
+Si te da problemas porque, a pesar de que estamos deshabilitando libflac, la busca en tiempo de linkado, borra la referencia de libflac de la plataforma LINUX
 en el Makefile, y fuera.
 
 Para CROSS COMPILAR EDUKE32: (para poder tener LTO, Linking Time Optimizations):
@@ -4195,22 +4200,27 @@ linkará el ejecutable contra las librerías normalmente, lo que TAMPOCO queremo
 
 Para Pi1:
 
-cmake -DCMAKE_C_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j"  \
--DCMAKE_CXX_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" -DCMAKE_CXX_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" -DCMAKE_BUILD_TYPE=Release ..
 
-Para Pi2:
+Para Pi2 y Pi3:
 
-cmake -DCMAKE_C_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
-
-Para Pi3
-
-cmake -DCMAKE_C_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS=" -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_CXX_FLAGS=" -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j8
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
+
+XASH3D, ENGINE DE HALF LIFE EN LA RASPBERRY PI
+=============================================
+
+Clonamos el repo de:
+git clone --depth 1 https://github.com/FWGS/xash3d.git
+
+cd source
+Editamos el Makefile.linux y ponemos la línea XASH_X11 ?= 1 a 0, así:
+XASH_X11 ?= 0
+Ahora compilamos:
+make -f Makefile.linux NANO_GL=1 XASH_VGUI=0 -j4
 
 
 NOTAS TIMIDITY
