@@ -157,5 +157,6 @@ use ese timeout cuando drm_wait_flip() ha de ser bloqueante.
 
 ADDENDUM: ¿Es esto extrapolable a EGL sobre Dispmanx? Debería serlo si se espera de algún modo tras eglSwapBuffers() hasta que se haga el buffer swap en el lado de dispmanx.
 Quizá una secuencia "vc_dispmanx_update_start(), vc_dispmanx_update_submit()", dado que update_submit es síncrona, podría ayudar... pero no se sabe aún. La idea, en todo caso,
-sería la misma.
+sería la misma. Si eso no funciona, sería cuestión de hacer que eglSwapBuffers() retornase inmediatamente, y luego esperar en la secuencia update_start - update_submit...
+Puedes hacer que eglSwapBuffers() retorne inmediatamente llamando antes una vez a eglSwapInterval(), pasándole 0 en el segundo parámetro.
 
