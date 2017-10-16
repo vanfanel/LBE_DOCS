@@ -140,7 +140,9 @@ gfx_ctx_drm_wait_flip(true);								<--Aquí hemos llegado si teníamos un max_s
 																     ese frame extra de input lag. Esta función usa por dentro drm_wait_flip() y gbm_surface_release_buffer(), para esperar a vsync
 																     y liberar el buffer respectivamente.
 																     drm_wait_flip() es una funciónde RetroArch, pero todo lo que hace es esperar el evento en el file descriptor, la tienes en
-																     gfx/common/drm_common.h. Es una buena implementación, poco complicada y clara.
+																     gfx/common/drm_common.h. Es una buena implementación, poco complicada y clara. Usa drmHandleEvent() para consumir
+																     el evento de la cola de eventos del file descriptor, así que puedes usar drmHandleEvent() como guía para buscar dónde espera
+																     por vsync el código KMS/DRM que estés toqueteando.
 
 Así que siempre, EN CUALQUIER MIDDLEWARE QUE USE GLES SOBRE KMS/DRM, vamos a poder esperar a vsync tras hacer drmModePageFlip() y asegurarnos así de que no se usa un
 "triple buffer". Quédate con la idea de que NOSOTROS NO CONTROLAMOS EL NÚMERO DE BUFFERS QUE SE CREAN PARA UNA GBM SURFACE, PERO SÍ PODEMOS CONTROLAR QUE
