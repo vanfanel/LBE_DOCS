@@ -150,6 +150,11 @@ SE ESPERE TRAS ISSUAR UN FLIP, Y DE ESE MODO EL PROGRAMA NO LOOPEA HASTA QUE SE 
 O LOS QUE SEAN (dependiendo del número de buffers que tenga la GBM SURFACE y por tanto las veces que se pueda retornar inmediatamente tras comprobar gbm_has_free_buffers())
 DE INPUT LAG.
 
+En las SDL2, creo que bastaría con añadir KMSDRM_WaitPageFlip(_this, wdata, -1) a KMSDRM_GLES_SwapWindow() justo al final de la función (que está en 
+src/video/kmsdrm/SDL_kmsdrmopengles.c)
+El -1 es porque, si te fijas en cómo lo hace RetroArch, en gfx_ctx_drm_wait_flip dentro de gfx/drivers_context/drm_ctx.c, le pasa -1 a drm_wait_flip() para que luego
+use ese timeout cuando drm_wait_flip() ha de ser bloqueante.
+
 ADDENDUM: ¿Es esto extrapolable a EGL sobre Dispmanx? Debería serlo si se espera de algún modo tras eglSwapBuffers() hasta que se haga el buffer swap en el lado de dispmanx.
 Quizá una secuencia "vc_dispmanx_update_start(), vc_dispmanx_update_submit()", dado que update_submit es síncrona, podría ayudar... pero no se sabe aún. La idea, en todo caso,
 sería la misma.
