@@ -139,6 +139,8 @@ gfx_ctx_drm_wait_flip(true);								<--Aquí hemos llegado si teníamos un max_s
 																     buffer de la surface GBM si ese era el problema, o en todo caso impedimos que el programa loopee otra vez, con lo que no metemos
 																     ese frame extra de input lag. Esta función usa por dentro drm_wait_flip() y gbm_surface_release_buffer(), para esperar a vsync
 																     y liberar el buffer respectivamente.
+																     drm_wait_flip() es una funciónde RetroArch, pero todo lo que hace es esperar el evento en el file descriptor, la tienes en
+																     gfx/common/drm_common.h. Es una buena implementación, poco complicada y clara.
 
 Así que siempre, EN CUALQUIER MIDDLEWARE QUE USE GLES SOBRE KMS/DRM, vamos a poder esperar a vsync tras hacer drmModePageFlip() y asegurarnos así de que no se usa un
 "triple buffer". Quédate con la idea de que NOSOTROS NO CONTROLAMOS EL NÚMERO DE BUFFERS QUE SE CREAN PARA UNA GBM SURFACE, PERO SÍ PODEMOS CONTROLAR QUE
