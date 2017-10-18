@@ -95,6 +95,18 @@ Para la Pi1:
 
 CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
+SÓLO SI ESTAMOS EN LA RASPBERRY PI USANDO LOS DRIVERS DE BROADCOM, ahora editamos 
+src/video/raspberry/SDL_rpivideo.c
+y justo antes de la llamada a vc_dispmanx_update_start de la línea 269 en la función RPI_CreateWindow, metemos:
+
+/* Make eglSwapBuffers() wait on vsync with a double-buffered scheme instead of triple. */
+setenv("V3D_DOUBLE_BUFFER", "1", 1); 
+
+SI NO ESTÁS EN LA RASPBERRY O YA NO USAS EL DRIVER DE BROADCOM, para hacer esto mismo en KMS/DRM, leete  el apartado "GLES SOBRE KMS/DRM: CÓMO CONSEGUIR BLOQUEAR
+HASTA QUE SE HAGA EL BUFFER SWAP PENDIENTE, PARA ASÍ TENER EL MINIMO INPUT LAG POSIBLE" el fichero "NOTAS KMS IMPORTANTES.TXT", donde dice que:
+bastaría con añadir KMSDRM_WaitPageFlip(_this, wdata, -1) a KMSDRM_GLES_SwapWindow() justo al final de la función, en src/video/kmsdrm/SDL_kmsdrmopengles.c.
+Pero repasa bien la teoría antes de hacerlo. La idea está sacada de cómo implementa RetroArch el max_swapchan < 3 en su driver KMS/DRM+GLES
+
 Compilamos e instalamos.
 
 Para SDL mixer, y SDL_image, primero instalamos libvorbis-dev, libpng12-dev
@@ -2742,6 +2754,8 @@ Editamos src/i_video.c y cambiamos
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest"); 
 por 
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
+Y si estamos usando los gráficos de broadcom en la Pi, añadimos:
 
 Ahora editamos configure.ac ponemos el optimization level a 3 y quitamos y el -g que encontremos.
 Ahora configuramos con 
