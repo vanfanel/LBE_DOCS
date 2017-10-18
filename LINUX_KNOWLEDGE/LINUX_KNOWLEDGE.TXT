@@ -3634,11 +3634,11 @@ Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
 
 Para la Pi 1:
 
-./configure --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+./configure --disable-ibxm --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
 
 Para la Pi 2 y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
 
-./configure --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+./configure --disable-ibxm --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
 
 Para Pi 2 y 3 con KMS/DRM: LO PRIMERO MUEVE /opt/vc A /opt/BCK PARA QUE RETROARCH NO DETECTE BCMHOST Y COMPILE CONTRA EL EGL/GLES DE BROADCOM!!!
 Que luego eso causa un error en eglGetDisplay() Y NO HAY MANERA DE DEBUGEARLO!!!
@@ -3667,6 +3667,10 @@ Editamos Makefile.common y comentamos la línea del -g
 Ahora ya compilamos:
 make -j8 V=1
 El V=1 es para ver las líneas de compilación y comprobar que nuestros flags se están usando, etc
+
+Si quieres compilar en modo debug, haz:
+make -j6 DEBUG=1 V=1
+y se le pasará -O0 -g al compilador, y nada de -O2 ni -O3
 
 NO instales ninguna librería de mesa, gl NI NADA DE ESO, o luego las SDL2 se liarán. En la Rpi NO HAY MESA y no hay GL, sólo EGL y GLES que ya
 vienen instaladas como libs e includes en /opt/vc.
