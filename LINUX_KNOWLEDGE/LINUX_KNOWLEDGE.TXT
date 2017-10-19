@@ -1839,7 +1839,7 @@ svn checkout http://svn.eduke32.com/eduke32 eduke32
 
 Añadimos 
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-en build/src/sdlayer.c, antes de SDL_CreateWindow()
+en source/build/src/sdlayer.cpp, antes de SDL_CreateWindow()
 
 Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
@@ -1848,7 +1848,9 @@ Para una Pi3:
 Para pi1:
 make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 LTO=0 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
 Para pi 2 y 3:
-make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 LTO=0 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CUSTOMOPT="-DEDUKE32_GLES"
+make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 LTO=0 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
+Añade para Polymost:
+CUSTOMOPT="-DEDUKE32_GLES"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
