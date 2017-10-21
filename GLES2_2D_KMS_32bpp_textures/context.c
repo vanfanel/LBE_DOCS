@@ -223,7 +223,12 @@ void init_egl() {
 	if (eglSwapBuffers(eglInfo.display, eglInfo.surface) != EGL_TRUE) {
 		printf("eglSwapBuffers() failed\n");
 	}
-	bo = gbm_surface_lock_front_buffer(gbm.surface);
+	
+	// NEVER call this without having called eglSwapBuffers before: it will segfault badly.
+        // THIS is why you need to call eglSwapBuffers before calling drmModeSetCrtc: because you need
+	// to call eglSwapBuffers so you can call gbm_surface_lock_front_buffer so you can call
+        // drmModeSetCrtc on the buffer you get.
+        bo = gbm_surface_lock_front_buffer(gbm.surface);
         fb = drmFBGetFromBO(bo);
 
         // set mode physical video mode
