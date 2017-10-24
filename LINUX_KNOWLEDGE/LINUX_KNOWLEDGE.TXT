@@ -1,3 +1,11 @@
+******Establecer una variable de entorno globalmente en el arranque************************************************************************************************************************
+
+Aunque hasta ahora lo has hecho de las más peregrinas maneras, el modo "correcto" es en /etc/profile
+Basta con poner "export, el nombre de la variable y el valor. Si no pones "export", aparece con echo pero no funciona.
+export SDL_RPI_DOUBLE_BUFFER=1
+Luego puedes comprobarlo con echo $<nombre_variable>, en plan:
+echo $SDL_RPI_DOUBLE_BUFFER
+
 ******Conectar a una red WIFI desde la Raspberry PI 3 usando el WIFI interno******************************************************************************************************************
 
 Lo primero es cargar el mçodulo del kernel que hace falta:
@@ -134,7 +142,7 @@ Aún así, debería funcionar como SDL_joystick al menos.
 
 *****SDL2 en hardware genérico con mi driver KMSDRM*******************************************************************************************************************************************
 
- ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
+ ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
 
 ******Notas SDLPop : el clon open source y libre de Prince of Persia *****************************************************************************************************************************************************
 
@@ -4040,11 +4048,14 @@ LÖVE2D en la Raspberry Pi (love)
 
 Las instrucciones básicas están aquí: https://love2d.org/wiki/Building_L%C3%96VE
 
-Clonamos:
-hg clone https://bitbucket.org/rude/love
+Bajamos los últimos source estables de:
+https://love2d.org/
 
 Satisfacemos las dependencias con:
- sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libluajit-5.1-dev libtheora-dev libmpg123-dev
+sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libluajit-5.1-dev libtheora-dev libmpg123-dev
+
+Ejecutamos, desde el directorio love:
+./platform/unix/automagic
 
 Luego configuramos para Pi 2 y 3 con:
 CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr
