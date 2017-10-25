@@ -416,7 +416,7 @@ Ahora tenemos que añadir ese nuevo valor a los valores del fichero. Busca donde
 
 Pues debajo o así añadimos nosotros refresh, de una forma parecida:
 
-        // Add refresh
+        // Add refreshrate
         Pint = sdl_sec->Add_int("refresh",Property::Changeable::Always,60000000);
         Pint->SetMinMax(50000000,70000000);
         Pint->Set_help("Screen refresh rate.");

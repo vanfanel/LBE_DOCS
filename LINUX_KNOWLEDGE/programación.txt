@@ -1116,6 +1116,13 @@ Un ejemplo de uso que nos vuelca a un log y que además nos indicará el momento
 valgrind --log-file=valog.txt --track-origins=yes ./cannonball
 
 
+***************DEBUGEAR EL ACCESO A FICHEROS DE UNA APLICACIÓN****************************************************************************
+
+Lo podemos hacer con strace, pero haciendo que sólo nos saque la syscall llamada "open", así:
+
+strace -f -e open <ejecutable>
+
+
 
  
 
