@@ -191,7 +191,7 @@ Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de 
 -En el Makefile: quitar -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
 -En graphics.h quitamos todo lo que lleve GL
 -En main.cpp quitamos todo lo que lleve GL, y cambiamos el tipo de gráficos por defecto a GRAPHICS_ORIGINAL, y ya de paso si quieres el lenguaje por defecto a LANGUAGE_US
-En la línea de stub->init, pasa false en el parámetro de OPENGL.
+En la línea de stub->init, pasa false en el parámetro de OPENGL (esto último ya no hace falta).
 
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)**********************************************************************************************************
 
@@ -346,28 +346,20 @@ https://github.com/raspberrypi/firmware/issues/354
 
 *******DOSBOX en la Raspberry Pi*******************************************************************************************************************************
 
-Lo primero es parchear para SDL2, tienes el parche en este hilo de vogons:
+Clonamos el repo de dugan:
 
-http://www.vogons.org/viewtopic.php?f=32&t=34770&p=478345#p478345
-
-La última versión del parche, que es de ny0023, es para la release 3924.
-Nos la bajamos:
-
-svn checkout --revision 3924 svn://svn.code.sf.net/p/dosbox/code-0/dosbox/trunk dosbox-code-0
-
-Entramos en dosbox-code-0, y si por ejemplo tenemos el parche en el directorio inmediatamente anterior, parcheamos así:
-
-patch -p0 < ../dosbox_sdl2_20150713.diff
+git clone --depth 1 https://github.com/duganchen/dosbox.git
 
 Configuraríamos para SDL2.  Para Pi1 con:
 
-CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard -fomit-frame-pointer"  ./configure --with-sdl=sdl2 --disable-opengl
+CXXFLAGS="-O2 -march=armv6j -mfpu=vfp -mfloat-abi=hard -fomit-frame-pointer"  ./configure
 
 Para Pi 2 y 3 con
 
-CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer"  ./configure --with-sdl=sdl2 --disable-opengl
+CXXFLAGS="-O2 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer"  ./configure
 
-Luego en el conf nos interesará tener la opción output=texture o texturenb. Luego ya SDL2 usa por debajo GLES en la Pi o lo que sea, para esa textura..
+Luego en el conf nos interesará tener la opción output=texture o texturenb. Pasa que texturenb a veces falla, usa texture que se ve mejor.
+Luego ya SDL2 usa por debajo GLES en la Pi o lo que sea, para esa textura..
 
 Hemos encontrado las las instrucciones para dynarec ARM y para UNALIGNED MEMORY ACCESS en estas páginas:
 
@@ -393,6 +385,10 @@ Yo esto lo pongo más o menos en la línea 99, debajo de
 
 Meto el bloque entero y así funciona.
 
+NO TE OLVIDES de usar core=dynamic en el .conf: deberías tener ~35-37% de uso de CPU en TOP.
+
+PUEDES QUITAR el splash screen comentando la parte donde se crea y se usa splash_surf en src/gui/sdlmain.cpp
+
 Ahora sólo queda parchear el refresco de pantalla...Mira a continuación cómo añadir un control de refresco!
 
 AÑADIR CONTROL DE REFRESCO DE PANTALLA DESDE FICHERO DE CONFIGURACIÓN
@@ -406,13 +402,12 @@ sdl.displayNumber=section->Get_int("display");
 Vale, pues justo encima,o debajo, pero por ahí, nosotros vamos a recuperar el valor de "refresh":
 
         vga.refreshRate=(double)section->Get_int("refresh") / 1000000.0;
-        LOG_MSG("Physical refrest rate %f \n", vga.refreshRate);
+        LOG_MSG("Physical refresh rate %f \n", vga.refreshRate);
 
-Ahora tenemos que añadir ese nuevo valor a los valores del fichero. Busca donde se añade el valor "renderer", por ejemplo, que es una sección que tiene esta pinta
+Ahora tenemos que añadir ese nuevo valor a los valores del fichero. Busca donde se añade el valor "fullscreen", por ejemplo, que es una sección que tiene esta pinta
 
-        Pstring = sdl_sec->Add_string("renderer",Property::Changeable::Always,"auto");
-        Pstring->Set_help("Choose a renderer driver if output=texture or output=texturenb. Use output=auto for an automatic choice.");
-        Pstring->Set_values(renderers);
+        Pbool = sdl_sec->Add_bool("fullscreen",Property::Changeable::Always,false);
+        Pbool->Set_help("Start dosbox directly in fullscreen. (Press ALT-Enter to go back)");
 
 Pues debajo o así añadimos nosotros refresh, de una forma parecida:
 
@@ -1854,9 +1849,9 @@ Compilamos con:
 Para una Pi3:
 
 Para pi1:
-make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 LTO=0 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
+make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
 Para pi 2 y 3:
-make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 LTO=0 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
+make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
 Añade para Polymost:
 CUSTOMOPT="-DEDUKE32_GLES"
 
@@ -2731,7 +2726,15 @@ ldd <nombre_del_ejecutable>
 
 *************Commander Genius en la Raspberri Pi**********************************************************************************
 
-clonamos el repo, cambiamos O3 por O2 en todas las ocurrencias, o no compilará.
+Clonamos el repo, se requieren tres pasos:
+
+git clone --depth 1 https://github.com/gerstrong/Commander-Genius.git
+git submodule init
+git submodule update
+
+Editamos el CMakefiles.txt y añadimos debajo de la línea de Project:
+string(REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+string(REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
 
 creamos un directorio de compilación y entramos en él:
 mkdir build
@@ -2739,7 +2742,7 @@ cd build
 
 Ahora configuramos:
 
-cmake  -DUSE_SDL2=ON -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DDBFUSION=OFF -DTREMOR=OFF -DOPENGL=OFF -DDOWNLOADER=OFF ..
+cmake  -DUSE_SDL2=ON -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DTREMOR=OFF -DOPENGL=OFF -DDOWNLOADER=OFF ..
 
 Usa -DUSE_SDL2=no para compilar contra SDL1.x
 
@@ -4228,6 +4231,7 @@ option( DYN_MPG123 "Dynamically load libmpg123" OFF )
 option( DYN_FLUIDSYNTH "Dynamically load fluidsynth" OFF ) 
 (Para que esto funcione, los paquetes de desarrollo de mpg123 y de fluidsynth NO deben estar instalados, o en vez de cargarlas dinámicamente 
 linkará el ejecutable contra las librerías normalmente, lo que TAMPOCO queremos: queremos que NO haga nada con estas librerías y punto).
+-Proteger el acceso a la YUV surface en su destrucción... No la quieres destruir justo cuando el VLDP está accediendo, creeme.
 
 Para Pi1:
 
@@ -4503,3 +4507,13 @@ mkdir b3
 cd b3
 cmake ../src
 make -j6
+
+Los detalles sobre los dip switches están en dle21.txt, que acompaña a las roms del Dragon's Lair Enhanced 2.1
+Recuerda que ahí se cuentan los switches del 0 al 7 y que 0 es ON y 1 OFF, al contrario de lo que podrías pensar.
+Por lo demás, el banco A es el 0, y el B es el 1.
+
+FLASHEAR EL CONTROLADOR ARDUINO DEL ZXUNO QUE SE USA PARA EL TECLADO DEL GO+
+================================================================================
+Instalamos el paquete del arduino desde synaptic, que incluye el avrdude, y hacemos:
+
+avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -v -v -v -v -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -D -Uflash:w:/home/manuel/Downloads/zxunops2-01112017-go.hex:i
