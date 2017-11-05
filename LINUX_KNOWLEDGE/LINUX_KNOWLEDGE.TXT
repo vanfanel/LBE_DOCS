@@ -4509,7 +4509,7 @@ cmake ../src
 make -j6
 
 Los detalles sobre los dip switches están en dle21.txt, que acompaña a las roms del Dragon's Lair Enhanced 2.1
-Recuerda que ahí se cuentan los switches del 0 al 7 y que 0 es ON y 1 OFF, al contrario de lo que podrías pensar.
+Recuerda que ahí se cuentan los switches del 0 al 7. Se empieza de derecha a izquierda a contar.
 Por lo demás, el banco A es el 0, y el B es el 1.
 
 FLASHEAR EL CONTROLADOR ARDUINO DEL ZXUNO QUE SE USA PARA EL TECLADO DEL GO+
