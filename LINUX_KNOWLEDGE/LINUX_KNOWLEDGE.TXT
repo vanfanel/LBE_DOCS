@@ -1256,6 +1256,8 @@ hay que quitarlo como servicio pero no desinstalarlo del sistema porque OMXplaye
 	...todo lo que veamos relacionado con la red.
 	-Ponemos en rc.local el governor a performance:
 		echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+        -Desactivamos el swappiness:
+                 echo 0 > /proc/sys/vm/swappiness
 	-SI QUEREMOS levantar la red ethernet al inicio, ponemos a capón en /etc/rc.local la configuración de la red:
 		ifconfig eth0 up
 		ip addr add 192.168.5.8/24 dev eth0
@@ -1448,6 +1450,7 @@ PARA ELLO:
 Y nuestro /etc/rc.local tendrá esto:
 
 echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+echo 0 > /proc/sys/vm/swappiness
 setfont Lat15-TerminusBold28x14
 ifconfig eth0 up
 ip addr add 192.168.5.8/24 dev eth0
@@ -1475,6 +1478,32 @@ Nos tiene que salir algo como:
 real-time priority (-r) 99
 max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
+
+************VALORES DE OVERCLOCKING PARA RASPBERRY PI 3***************************************************************************
+
+force_turbo=1
+
+arm_freq=1350
+over_voltage=4
+
+Valores más conservadores serían:
+arm_freq=1300
+over_voltage=2
+
+O incluso:
+arm_freq=1300
+over_voltage=2
+
+No tiene sentido overclockear la RAM, ni el video core tampoco ya que aunque leas por ahí que la caché de nivel 2 es compartida con el video core,
+eso era en la Pi1 solamente.
+
+Y para overclockear la SD (OJO! Requiere que la tarjeta sea UHS):
+dtparam=sd_overclock=100
+
+Puedes medir la temperatura con:
+vcgencmd measure_temp
+
+Por defecto, al llegar a los 79-80º, se downclockeará, así que si con overclocking alcanza los 75, olvídate.
 
 ***********Scrips para levantar la red ETHERNET y la red WIFI manualmente****************************************************************
 
@@ -2888,6 +2917,9 @@ colo desert
 
 set encoding=utf-8                     "Estas líneas son para poder poner tildes, eñes y demás. 
 setglobal fileencoding=utf-8
+
+" Esto es para que no entremos en modo VISUAL al usar un ratón desde SSH
+set mouse-=a
 
 " Esto es para cambiar entre buffers. Hemos usado w porque se puede hacer con una mano la combinación, pero se cambia de buffer y no de ventana.
 " Es para cuando se tienen dos ficheros abiertos a la vez. La exclamación es para poder cambiar entre buffers sin guardar cambios.

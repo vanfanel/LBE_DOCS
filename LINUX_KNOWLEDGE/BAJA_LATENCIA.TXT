@@ -1,6 +1,27 @@
 LO MÁS BÁSICO
 ==============
 
+ANTES DE METERTE EN ESTO OTRA VEZ: Lo más efectivo es simplemente lanzar los programas con "chrt -r 99 <nombre_programa>". De este modo,
+ni siquiera un "ls / -R" lo interrumpe al quitarle CPU, y no hace falta aislar CPUs ni usar tasksel ni nada.
+Eso sí, para que funcione, tienes que tener en /etc/security/limits.conf:
+@audio   -  rtprio     99
+@audio   -  memlock    unlimited
+@audio   -  nice    -20
+pi   -  rtprio     99
+pi   -  memlock    unlimited
+pi   -  nice       -20
+
+Puedes comprobar que tienes los límites quitados haciendo:
+ulimit -r -l
+Nos tiene que salir algo como:
+real-time priority (-r) 99
+max locked memory (kbytes, -l) unlimited
+¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
+
+
+
+....Y AHORA, A METERSE EN HARINA SI QUIERES (pero NO hace falta para sistemas domésticos!!!):
+
 Si no te quieres meter en mucho berenjenal, no quieres recompilar el kernel y tal, simplemente añade a los parámetros del kernel:
 isolcpus=2,3
 ..para que el scheduler no elija esas CPUs para cosas del kernel ni para ninguna otra tarea multithread (como compilar con -jn), excepto que yo le diga específicamente que las use
@@ -20,6 +41,18 @@ a la hora de compilar y demás.
 
 Para ver mejor estas cosas en TOP, a parte de activar que se vea la CPU (F y luego darle a D sobre la opción), puedes poner un periodo más pequeño pusaldo D directamente y
 metiendo algo como 0.1.
+
+TODO ESTO no hace falta hacerlo en una Pi3, no se gana nada que se pueda notar: si no aislas ninguna CPU ni nada, en un sistema multi-core el scheduler mandaría
+un ls / -R a algún core libre, sin más. No se interrumpe ningún emulador ni nada.
+
+Luego hay cosillas para disminuir el jittering sin recompilar el kernel. Las pistas las he sacado de aquí:
+http://highscalability.com/blog/2015/4/8/the-black-magic-of-systematically-reducing-linux-os-jitter.html
+Un resúmen con instrucciones específicas:
+-De las Transparent Huge Pages me olvido, porque al hacer "sudo sysctl -a | grep hugepage" veo que no hay de eso en mi sistema. En caso de haberlas, mira esto:
+ https://unix.stackexchange.com/questions/99154/disable-transparent-hugepages
+-Desactivamos el swappiness poniendo en el /etc/rc.local:
+echo 0 > /proc/sys/vm/swappiness
+
 
 PREFACIO
 =========
