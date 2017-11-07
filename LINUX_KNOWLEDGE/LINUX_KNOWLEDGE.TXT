@@ -1481,20 +1481,21 @@ max locked memory (kbytes, -l) unlimited
 
 ************VALORES DE OVERCLOCKING PARA RASPBERRY PI 3***************************************************************************
 
-force_turbo=1
-
 arm_freq=1350
 over_voltage=4
+sdram_freq=500
+sdram_schmoo=0x02000020
+sdram_over_voltage=2
 
-Valores más conservadores serían:
+Valores más conservadores para la CPU serían:
 arm_freq=1300
 over_voltage=2
 
 O incluso:
 arm_freq=1300
-over_voltage=2
+over_voltage=1
 
-No tiene sentido overclockear la RAM, ni el video core tampoco ya que aunque leas por ahí que la caché de nivel 2 es compartida con el video core,
+No tiene sentido overclockear el video core ya que aunque leas por ahí que la caché de nivel 2 es compartida con el video core,
 eso era en la Pi1 solamente.
 
 Y para overclockear la SD (OJO! Requiere que la tarjeta sea UHS):
