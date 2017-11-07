@@ -1495,6 +1495,8 @@ O incluso:
 arm_freq=1300
 over_voltage=1
 
+Si usas 1350, DESACTIVA AL MENOS UNO DE LOS CORES (en cmdline.txt, maxcores=3), o el sistema se volverá inestable en carga máxima,
+como por ejemplo compilando con todos los cores (make -j6, etc)
 No tiene sentido overclockear el video core ya que aunque leas por ahí que la caché de nivel 2 es compartida con el video core,
 eso era en la Pi1 solamente.
 
@@ -3551,7 +3553,20 @@ sudo service lightdm stop
 
 y para volver, obviamente, start.
 
+*************************Instalar driver VC4 en la Raspberry PI, paso a paso***********************
 
+Instalamos estos paquetes antes de empezar:
+sudo apt-get install flex bison python-mako gettext xutils-dev x11proto-gl-dev x11proto-dri2-dev libpthread-stubs0-dev automake autoconf libtool --no-install-recommends
+
+Empezamos instalando libdrm:
+git clone --depth 1 git://anongit.freedesktop.org/mesa/drm
+./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --disable-vmwgfx --disable-radeon --disable-amdgpu --disable-nouveau --disable-freedreno
+make -j4
+sudo make install
+
+Ahora vamos a por MESA:
+git clone --depth 1 git://anongit.freedesktop.org/mesa/mesa
+./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm
 
 *************************Notas de RetroArch en x86**********************************************
 
