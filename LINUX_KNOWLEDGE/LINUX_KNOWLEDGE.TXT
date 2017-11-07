@@ -2,9 +2,9 @@
 
 Aunque hasta ahora lo has hecho de las más peregrinas maneras, el modo "correcto" es en /etc/profile
 Basta con poner "export, el nombre de la variable y el valor. Si no pones "export", aparece con echo pero no funciona.
-export SDL_RPI_DOUBLE_BUFFER=1
+export SDL_VIDEO_DOUBLE_BUFFER=1
 Luego puedes comprobarlo con echo $<nombre_variable>, en plan:
-echo $SDL_RPI_DOUBLE_BUFFER
+echo $SDL_VIDEO_DOUBLE_BUFFER
 
 ******Conectar a una red WIFI desde la Raspberry PI 3 usando el WIFI interno******************************************************************************************************************
 
@@ -103,19 +103,9 @@ Para la Pi1:
 
 CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
-SÓLO SI ESTAMOS EN LA RASPBERRY PI USANDO LOS DRIVERS DE BROADCOM, ahora editamos 
-src/video/raspberry/SDL_rpivideo.c
-y justo antes de la llamada a vc_dispmanx_update_start de la línea 269 en la función RPI_CreateWindow, metemos:
-
-/* Make eglSwapBuffers() wait on vsync with a double-buffered scheme instead of triple. */
-setenv("V3D_DOUBLE_BUFFER", "1", 1); 
-
-SI NO ESTÁS EN LA RASPBERRY O YA NO USAS EL DRIVER DE BROADCOM, para hacer esto mismo en KMS/DRM, leete  el apartado "GLES SOBRE KMS/DRM: CÓMO CONSEGUIR BLOQUEAR
-HASTA QUE SE HAGA EL BUFFER SWAP PENDIENTE, PARA ASÍ TENER EL MINIMO INPUT LAG POSIBLE" el fichero "NOTAS KMS IMPORTANTES.TXT", donde dice que:
-bastaría con añadir KMSDRM_WaitPageFlip(_this, wdata, -1) a KMSDRM_GLES_SwapWindow() justo al final de la función, en src/video/kmsdrm/SDL_kmsdrmopengles.c.
-Pero repasa bien la teoría antes de hacerlo. La idea está sacada de cómo implementa RetroArch el max_swapchan < 3 en su driver KMS/DRM+GLES
-
 Compilamos e instalamos.
+Añadimos a /etc/profile:
+export SDL_VIDEO_DOUBLE_BUFFER=1
 
 Para SDL mixer, y SDL_image, primero instalamos libvorbis-dev, libpng12-dev
 Y también
@@ -3709,33 +3699,26 @@ Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
 
 Para la Pi 1:
 
-./configure --disable-ibxm --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+./configure --disable-ibxm --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga --disable-opengl --enable-opengles --disable-flac
 
 Para la Pi 2 y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
 
-./configure --disable-ibxm --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
-
-Para Pi 2 y 3 con KMS/DRM: LO PRIMERO MUEVE /opt/vc A /opt/BCK PARA QUE RETROARCH NO DETECTE BCMHOST Y COMPILE CONTRA EL EGL/GLES DE BROADCOM!!!
-Que luego eso causa un error en eglGetDisplay() Y NO HAY MANERA DE DEBUGEARLO!!!
-Luego instala estas:
-sudo apt-get install libgl1-mesa-dev libdrm-dev libgbm-dev libgles2-mesa-dev
-
-./configure --enable-neon --enable-floathard --enable-kms --enable-gles --disable-vg  --disable-wayland  --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+./configure --disable-ibxm --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac
 
 Para PC:
 LO PRIMERO TEN INSTALADO PKGCONFIG, O NO DETECTARÁ ALGUNAS LIBRERÍAS ESENCIALES!!!
 
-./configure --enable-kms --enable-gles --disable-vg --disable-wayland --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga
+./configure --enable-kms --disable-vg --disable-wayland --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac
 
 Añadimos los flags de CPU en config.mk:
 
 Para la Pi 1:
 
--march=armv6j -mfpu=vfp -mfloat-abi=hard
+-marm -march=armv6j -mfpu=vfp -mfloat-abi=hard
 
 Para la Pi 2 y 3
 
--march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard
+-marm -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard
 
 Editamos Makefile.common y comentamos la línea del -g
 
@@ -3768,6 +3751,41 @@ Para activarlos, te metes en el cfg del sistema que sea, pones el video_shader_e
 Si quieres HID, instala libusb-1.0-0-dev y luego...
 Para el adaptador greenasia, en input/connect/joypad_connection.c añade esta entrada con sus VID/PID correctos:
 { "PS2/PSX Controller Adapter",  4607,  13121,      &pad_connection_ps2adapter },
+
+*****************RETROARCH EN LA RASPBERRY PI CON DRIVER VC4***************************************************************
+
+Para Pi 2 y 3 con KMS/DRM: LO PRIMERO MUEVE /opt/vc A /opt/BCK PARA QUE RETROARCH NO DETECTE BCMHOST Y COMPILE CONTRA EL EGL/GLES DE BROADCOM!!!
+Que luego eso causa un error en eglGetDisplay() Y NO HAY MANERA DE DEBUGEARLO!!!
+Luego instala estas:
+sudo apt-get install libgl1-mesa-dev libdrm-dev libgbm-dev libgles2-mesa-dev
+Si te da error al linkar porque no encuentra libdrm.so.2, instala libdrm desde los sources:
+git clone --depth 1 git://anongit.freedesktop.org/mesa/drm
+./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --disable-vmwgfx --disable-radeon --disable-amdgpu --disable-nouveau --disable-freedreno
+make -j4
+sudo make install
+Al meter el overlay de vc4 en config.txt, se te habrá activado también el sonido de VC4 por HDMI.
+Confirma qué dispositivos tienes con:
+cat /proc/asound/cards
+Elige la hifiberry como dispositivo de sonido por defecto, para lo cual
+puedes ver su número de dispositivo con:
+aplay -l | awk -F \: '/,/{print $2}' | awk '{print $1}' | uniq
+Y si por ejemplo es el 1, crea un /etc/asound.conf así:
+pcm.!default {
+    type hw
+    card 1
+}
+
+ctl.!default {
+    type hw           
+    card 1
+}
+
+Ahora ya configuramos:
+./configure --disable-ibxm --enable-neon --enable-floathard --enable-kms --disable-vg  --disable-wayland  --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac
+
+Añadimos lo que tenemos que añadir a config.mk y quitamos el -g de Makefile.common, y compilamos.
+
+*********************************************************************************************************************************************
 
 =====PARA LOS CORES=========
 
