@@ -3748,6 +3748,17 @@ Necesita nvidia-cg-toolkit instalado para que este script funcione.
 Sin embargo, sólo funcionan los shaders sencillos como scanline.glsl.
 Para activarlos, te metes en el cfg del sistema que sea, pones el video_shader_enable="true" y video_shader="scanline.glsl", y listo. 
 
+PARA TENER EL AUDIO/VIDEO BIEN SINCRONIZADOS:
+-Vsync ON
+-Hardsync ON
+-Max_swapchain = 2
+-Audio sync ON
+-Driver de audio: Alsathread
+-Audio latency: 64
+SI USAS ALSATHREAD, DEBES TENER AUDIO SYNC ACTIVADO, O SE OIRÁ FATAL.
+Puedes desactivar el audio sync si usas el driver ALSA normal.
+Es mejor usar ALSATHREAD QUE ALSA porque al lanzar los juegos no hace doble cracking!!
+
 Si quieres HID, instala libusb-1.0-0-dev y luego...
 Para el adaptador greenasia, en input/connect/joypad_connection.c añade esta entrada con sus VID/PID correctos:
 { "PS2/PSX Controller Adapter",  4607,  13121,      &pad_connection_ps2adapter },
@@ -3960,6 +3971,49 @@ apt-get install sysvinit-core systemd-sysv-
 
 Y para saber por qué coño se nos instaló SYSTEMD al actualizar, miramos las dependencias inversas:
 apt-cache rdepends systemd --installed
+
+GUÍA RÁPIDA PARA COMPILAR UN KERNEL REALTIME (TIEMPO REAL) EN LA RASPBERRY PI  (INSTRUCCIONES DE NOVIEMBRE DE 2017)
+==================================================================================================================
+
+git clone --depth 1 https://github.com/raspberrypi/tools ~/tools
+
+export KERNEL=kernel7
+export ARCH=arm
+echo PATH=\$PATH:~/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin >> ~/.bashrc
+source ~/.bashrc
+export CROSS_COMPILE=~/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin
+
+git clone --depth=1 https://github.com/raspberrypi/linux
+
+make bcm2709_defconfig
+
+Necesitamos parchear dos cosas: lo del RT del kernel, y una movida de los USB que hace que si no el kernel RT se cuelgue aleatoriamente.
+Pillamos los dos parches y los dejamos en el directorio previo al de los surces del kernel (CUIDADO: pilla el parche de RT que empieza por patch.*,
+NO el que empieza por patches.*, porque fallará):
+
+wget https://raw.githubusercontent.com/fedberry/kernel/master/usb-dwc_otg-fix-system-lockup-when-interrupts-are-threaded.patch
+wget https://www.kernel.org/pub/linux/kernel/projects/rt/4.9/patch-4.9.47-rt37.patch.xz
+
+Aplicamos ambos parches:
+xzcat ../patch-4.9.33-rt23.patch.xz | patch -p1
+patch -i ../usb-dwc_otg-fix-system-lockup-when-interrupts-are-threaded.patch -p1 --dry-run
+patch -i ../usb-dwc_otg-fix-system-lockup-when-interrupts-are-threaded.patch -p1
+
+KERNEL=kernel7
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
+
+Si quieres ajustar algo del kernel, ahora es el momento de hacer:
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig
+Tenemos al menos que cambiar:
+Kernel features->Preemption model->Fully preemptible kernel (RT)
+Kernel features->Timer frequency->1000Hz
+
+make -j8 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs
+
+La instalación ya te la miras en la guía de compilación oficial:
+https://www.raspberrypi.org/documentation/linux/kernel/building.md
+PERO ESO SÍ: RECOMIENDO COPIAR EL NUEVO KERNEL COMO "kernel7_rt.img" Y ARRANCAR OPCIONALMENTE DESDE ÉL PONIENDO
+kernel=kernel-myconfig.img EN CONFIG.TXT, POR SI NO ARRANCA NUESTRO KERNEL RT.
 
 COMPILAR EL KERNEL CON FULL PREEMPTION Y BFS PARA LA RASPBERRY PI
 =================================================================
@@ -4583,3 +4637,12 @@ FLASHEAR EL CONTROLADOR ARDUINO DEL ZXUNO QUE SE USA PARA EL TECLADO DEL GO+
 Instalamos el paquete del arduino desde synaptic, que incluye el avrdude, y hacemos:
 
 avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -v -v -v -v -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -D -Uflash:w:/home/manuel/Downloads/zxunops2-01112017-go.hex:i
+
+FORMATEAR LA TARJETA DEL ZXUNO PARA QUE VAYAN LOS CORES DE ZX SPECTRUM, BBC MICRO, ATARI800, MSX
+=================================================================================================
+
+Hay que crear una partición de un tamaño máximo de 1024M con fdisk, y luego usar mkdosfs con un tamaño de cluster de 64 sectores por cluster.
+O sea, que creamos la partición con fdisk de tipo FAT16 normal (tipo número 6) de 1024M, y luego formateamos con:
+sudo mkdosfs -s 64 -F 16 /dev/sdb1
+
+Y funciona! De tal manera que ahora puedo usar la misma SD para los cores de ZX Spectrum. BBC Micro, Atari 800XL y MSX.
