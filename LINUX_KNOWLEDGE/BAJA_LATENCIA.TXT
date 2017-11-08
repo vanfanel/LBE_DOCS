@@ -18,7 +18,9 @@ real-time priority (-r) 99
 max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
-
+Para aprovechar esto, usa "chrt -r 99", que le da prioridad realtime y no suelta la CPU
+porque no hay otra aplicación a la que dársela con la misma prioridad (ROUND ROBBIN de máxima prioridad). Hay FIFO de máxima prioridad también, con lo cual
+no suelta la CPU jamás, por ninguna otra aplicación, tenga la prioridad que tenga, hasta que acabe. Esto se haría con "chrt -f 99". Prueba!
 
 ....Y AHORA, A METERSE EN HARINA SI QUIERES (pero NO hace falta para sistemas domésticos!!!):
 

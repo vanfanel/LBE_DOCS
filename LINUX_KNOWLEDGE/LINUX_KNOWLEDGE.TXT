@@ -3993,7 +3993,9 @@ cosa en nuestro caso.
 
 Al final, lo más equilibrado es un kernel con CONFIG_PREEMPT y 250HZ es lo más equilibrado para emulación de baja latencia.
 Si luego te quieres meter con CPU isolation (lo que te llevaría a CPUs que sean tickless, ya que las CPUs aisladas no tienen que ejecutar ticks del scheduler)
-ya es cosa tuya, y no hay ningún beneficio evidente.
+ya es cosa tuya, y no hay ningún beneficio evidente: te sale más a cuenta ejecutar las aplicaciones con "chrt -r 99", que le da prioridad realtime y no suelta la CPU
+porque no hay otra aplicación a la que dársela con la misma prioridad (ROUND ROBBIN de máxima prioridad). Hay FIFO de máxima prioridad también, con lo cual
+no suelta la CPU jamás, por ninguna otra aplicación, tenga la prioridad que tenga, hasta que acabe. Esto se haría con "chrt -f 99".
 
 EL MEJOR hilo donde se habla de estas cosas es este:
 https://github.com/raspberrypi/linux/issues/1216
