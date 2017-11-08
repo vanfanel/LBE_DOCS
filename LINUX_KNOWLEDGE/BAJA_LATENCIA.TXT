@@ -24,6 +24,8 @@ max locked memory (kbytes, -l) unlimited
 
 Si no te quieres meter en mucho berenjenal, no quieres recompilar el kernel y tal, simplemente añade a los parámetros del kernel:
 isolcpus=2,3
+Se le puede pasar un rango de CPUs separado por un guión, tal que: isolcpus=1-3 aislaría las CPUs del 1 al 3 y dejaría la 0 para housekeeping. A las 1,2 y 3, si no les pasamos nada
+con taskset no se ejecuta nada en ellas.
 ..para que el scheduler no elija esas CPUs para cosas del kernel ni para ninguna otra tarea multithread (como compilar con -jn), excepto que yo le diga específicamente que las use
 mediante taskset.
 

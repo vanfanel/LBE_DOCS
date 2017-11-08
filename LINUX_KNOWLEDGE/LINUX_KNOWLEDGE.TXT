@@ -3975,6 +3975,31 @@ apt-cache rdepends systemd --installed
 GUÍA RÁPIDA PARA COMPILAR UN KERNEL REALTIME (TIEMPO REAL) EN LA RASPBERRY PI  (INSTRUCCIONES DE NOVIEMBRE DE 2017)
 ==================================================================================================================
 
+NOTA: NO TIENE SENTIDO compilarte un kernel realtime si puedes aislar CPUs y ejecutar tareas en ellas (aunque sí sería interesante que esas CPUs
+fueran además tickless: de ese modo tienes un desempeño similar a baremetal). Es mejor esa alternativa para asegurarte de que nada va a interrumpir
+tu tarea.
+Por otra parte, aumentar mucho los ticks del scheduler (Kernel features->Timer frequency) tampoco tiene sentido subirlos a 1000Hz
+en un sistema para emuladores: eso es para escritorios, que NO ES LO MISMO! En un escritorio quieres responsividad y hay muchas tareas
+a la vez que dan soporte a los programas (un navegador, correo electrónico, mensajería instantánea, programa de diseño, reproductor de música...
+lo tienes TODO a la vez y quieres que todo tenga una respuesta buena).
+EN UN SISTEMA EMULADOR ese no es el caso: tienes un proceso y se acabó. NO TIENE SENTIDO un scheduler repartiendo la CPU 1000 veces por segundo,
+con 100 va que chuta. Si quieres elige 250 por aquello de la frecuencia de polling de los USBs, que con usbhid.jspoll=2 puedes leerlos a 500 Hz, 
+o porque para audio es algo mejor, pero nada más. 
+
+Tampoco te compliques con el modelo de preemption: el modelo CONFIG_PREEMPT es para escritorios de baja latencia, una vez más son muchos procesos
+a la vez y quieres responsividad en todos ellos, que NO es nuestro caso. Así que CONFIG_PREEMPT_VOLUNTARY va bien, que es el valor por defecto.
+Puedes usar si quieres el CONFIG_PREEMPT, que es el siguiente, y que pone que es para sistemas embedidos de baja latencia. Bueno, no nos va a aportar gran
+cosa en nuestro caso.
+
+Al final, lo más equilibrado es un kernel con CONFIG_PREEMPT y 250HZ es lo más equilibrado para emulación de baja latencia.
+
+EL MEJOR hilo donde se habla de estas cosas es este:
+https://github.com/raspberrypi/linux/issues/1216
+Yo no he encontrado mejor convensación sobre este tema en internet jamás.
+
+PERO SI AÚN ASÍ QUIERES UN KERNEL REALTIME (para emuladores fuera de las X como único proceso de usuario no tiene sentido, pero bueno), ESTOS SON
+LOS PASOS (que te pueden venir bien para compilar un kernel sin más):
+
 git clone --depth 1 https://github.com/raspberrypi/tools ~/tools
 
 export KERNEL=kernel7
@@ -4006,7 +4031,8 @@ Si quieres ajustar algo del kernel, ahora es el momento de hacer:
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig
 Tenemos al menos que cambiar:
 Kernel features->Preemption model->Fully preemptible kernel (RT)
-Kernel features->Timer frequency->1000Hz
+Kernel features->Timer frequency->(lee las notas más arriba: depende de lo que necesites, 1000Hz para un sistema casi mono-proceso no tiene
+ningún sentido).
 
 make -j8 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs
 
