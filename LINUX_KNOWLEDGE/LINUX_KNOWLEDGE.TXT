@@ -3992,6 +3992,8 @@ Puedes usar si quieres el CONFIG_PREEMPT, que es el siguiente, y que pone que es
 cosa en nuestro caso.
 
 Al final, lo más equilibrado es un kernel con CONFIG_PREEMPT y 250HZ es lo más equilibrado para emulación de baja latencia.
+Si luego te quieres meter con CPU isolation (lo que te llevaría a CPUs que sean tickless, ya que las CPUs aisladas no tienen que ejecutar ticks del scheduler)
+ya es cosa tuya, y no hay ningún beneficio evidente.
 
 EL MEJOR hilo donde se habla de estas cosas es este:
 https://github.com/raspberrypi/linux/issues/1216
