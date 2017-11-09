@@ -3741,12 +3741,18 @@ No hace falta NINGUNA línea de input_driver. Al compilar sin SDL, udev es el de
 
 Si te da un error el distcc en plan "unable to distribute", es porque el Makefile del core que sea está usando CC en vez de GCC.
 
-NO hace falta usar --enable-cg, porque la Rpi NO usa shaders en formato cg o cgp, la rpi usa GLSL, así que tenemos que convertir los shaders si queremos.
-Hay un script en tools (en los sources de RetroArch para hacerlo) y para convertir un directorio entero nos basta con hacer:
-cg2glsl.py common-shaders common-shaders-glsl
-Necesita nvidia-cg-toolkit instalado para que este script funcione.
-Sin embargo, sólo funcionan los shaders sencillos como scanline.glsl.
-Para activarlos, te metes en el cfg del sistema que sea, pones el video_shader_enable="true" y video_shader="scanline.glsl", y listo. 
+Para los shaders, clona el repo glsl-shaders. Te interesan sólo los del subdir crt, mételos en retro/shaders.
+El ÚNICO SHADER 100% seguro que no va a producir bajadas de rendimiento es el misc/scanline.glsl. Úsalo como shader de un sólo paso, y para no ver NADA de pattern NUNCA,
+ponle los parámetros así:
+Scanline base brightness 0.80
+Scanline Sine Comp A 0.00
+Scanline Sine Comp B 0.05
+
+Otro shader interesante es fakelotte, que trae curvatura y mask, PERO no es fullspeed en la PI3 NI SIQUIERA QUITÁNDOLE LA CURVATURA Y EL MASK.
+Antes de poder usarlo en la Raspberry, edita el fakelottes.glsl y comenta lo relacionado con curvatura y masks (puedes dejar lo de curvatura si quitas todo lo de masks).
+Los parámetros que he cambiado para que no haya patterns en mi monitor, usando uneven scaling:
+Scanline intensity: 0.10 Scanline Base Brightness: 0.95 Monitor gamma: 2.50
+Puedes bajar el Scanline Intensity a 0.05 si aún crees que ves algo de pattern, subir el Scanline Base Brightness a 98... Pero así está bien.
 
 PARA TENER EL AUDIO/VIDEO BIEN SINCRONIZADOS:
 -Vsync ON
@@ -3983,8 +3989,13 @@ en un sistema para emuladores: eso es para escritorios, que NO ES LO MISMO! En u
 a la vez que dan soporte a los programas (un navegador, correo electrónico, mensajería instantánea, programa de diseño, reproductor de música...
 lo tienes TODO a la vez y quieres que todo tenga una respuesta buena).
 EN UN SISTEMA EMULADOR ese no es el caso: tienes un proceso y se acabó. NO TIENE SENTIDO un scheduler repartiendo la CPU 1000 veces por segundo,
-con 100 va que chuta. Si quieres elige 250 por aquello de la frecuencia de polling de los USBs, que con usbhid.jspoll=2 puedes leerlos a 500 Hz, 
-o porque para audio es algo mejor, pero nada más. 
+con 100 va que chuta. 
+Si quieres elige 250 por aquello de la frecuencia de polling de los USBs, que con usbhid.jspoll=2 puedes leerlos a 500 Hz, 
+o porque para audio es algo mejor, PUES OLVÍDATE: NO TIENE SENTIDO: EL KERNEL CORRE SOBRE HRTIMERS, QUE SON TIMERS INTERNOS DE ALTA RESOLUCIÓN.
+O sea que EL KERNEL NO CORRE SOBRE EL VALOR DE LOS HZ DEL SCHEDULER: ESTE VALOR SÓLO INFLUYE EN PROGRAMAS MULTITHREAD DONDE LOS THREADS
+ESTÁN "ATADOS" A TIEMPO DE COMPUTACIÓN.
+Así que, SÍ, PUEDES TENER UN KERNEL CON HZ_100 Y QUE A LA VER HAGA EL POLING DE LOS USBS A 200HZ (EL VALOR POR DEFECTO ES 120HZ, así que ni te molestes
+con lo del polling rate de todos modos).
 
 Tampoco te compliques con el modelo de preemption: el modelo CONFIG_PREEMPT es para escritorios de baja latencia, una vez más son muchos procesos
 a la vez y quieres responsividad en todos ellos, que NO es nuestro caso. Así que CONFIG_PREEMPT_VOLUNTARY va bien, que es el valor por defecto.
