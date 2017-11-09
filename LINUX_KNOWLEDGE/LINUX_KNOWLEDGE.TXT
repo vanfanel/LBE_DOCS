@@ -3744,7 +3744,7 @@ Si te da un error el distcc en plan "unable to distribute", es porque el Makefil
 Para los shaders, clona el repo glsl-shaders. Te interesan sólo los del subdir crt, mételos en retro/shaders.
 El ÚNICO SHADER 100% seguro que no va a producir bajadas de rendimiento es el misc/scanline.glsl. Úsalo como shader de un sólo paso, y para no ver NADA de pattern NUNCA,
 ponle los parámetros así:
-Scanline base brightness 0.80
+Scanline base brightness 0.90 (Puedes poner 80, pero para mi que se ve un poco oscuro...)
 Scanline Sine Comp A 0.00
 Scanline Sine Comp B 0.05
 
