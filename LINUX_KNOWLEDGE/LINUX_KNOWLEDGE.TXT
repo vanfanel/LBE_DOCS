@@ -1,3 +1,11 @@
+******LANZAR programas en sus propias CPUs (realtime, nada más puede ejecutarse ahí: garantia total probada con uso masivo de CPU de housekeeping simultáneo)************************** 
+HABIENDO AISLADO LAS CPUs DEL 1 al 3 CON "isolcpus=1-3" EN CMDLINE.TXT: 
+-Para lanzar algo como un emulador que no son multithread:
+taskset -c 3 ./retroarch
+-Para lanzar algo MUY multithread (y que por tanto puede aprovechar varios cores) como el GZDOOM:
+chrt -r 99 taskset -c 1-3 ./gzdoom
+CUIDADO con el -r 99: si se te cuelgan cosas bájalo a 80.
+
 ******Establecer una variable de entorno globalmente en el arranque************************************************************************************************************************
 
 Aunque hasta ahora lo has hecho de las más peregrinas maneras, el modo "correcto" es en /etc/profile
