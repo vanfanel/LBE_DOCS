@@ -71,15 +71,19 @@ CUIDADO con el -r 99: se producen cuelgues.
 SOBRE EL PARÁMETRO DEL KERNEL nohz_full, LAS CPUs TICKLESS, ETC... (OJO!! PASA DE ÉL: EXPLICACIÓN AL FINAL DE ESTA SECCIÓN)
 Para comprobar las interrupciones que han sufrido las CPUs desde el inicio del sistema:
 watch -n1 -d 'cat /proc/interrupts'
-Lo de -n1 es para que lo haga cada segundo, y -d para que marque los cambios.
+Lo de -n1 es para que lo muestre actualizado a cada segundo, y -d para que marque los cambios.
 Se supone que nohz_full=<grupo de cpus> hace que no reciban su dosis de interrupciones por los ticks del kernel, pero NO HACE FALTA QUE USES ESO PORQUE:
 1- Es para situaciones donde, en la CPU totalmente tickless, sólo tienes un proceso que sólo tiene un thread, y ningún emulador o juego nativo es así.
 2- Habría que compilar el kernel con opciones especiales, porque si lo usas con un kernel normal no sale en DMESG lo de NO_HZ: Full dynticks CPUs: 2-3 (o el rango que sea).
 3- De todos modos, si miras watch -n1 -d 'cat /proc/interrupts', verás que las CPUs aisladas no van recibiendo interrupciones: se quedan en 11 o así, paradas, hasta que
-     ejecutamos algo en ellas y sólo entonces se incrementa el número de interrupciones que les llegan. 
-LAS CPUs AISLADAS NO RECIBEN INTERRUPCIONES DEL SCHEDULER CUANDO NO SE LAS USA, Y CUANDO SE LAS USA SÍ RECIBEN TICKS PERO ES NORMAL PORQUE
-LOS PROGRAMAS QUE TÚ EJECUTAS SON MULTITHREAD, ASÍ QUE EL SCHEDULER TIENE QUE REPARTIR ESOS THREADS ENTRE LAS DISTINTAS CPUs DEL GRUPO DE CPUs AISLADAS,
-ASÍ QUE NO TE RAYES CON ESTO, PASA DE nohz_full.
+     ejecutamos algo en ellas y sólo entonces se incrementa el número de interrupciones que les llegan. Te interesa la fila de REESCHEDULING INTERRUPTS, que verás
+     que no se mueve hasta que ejecutas algo en las CPUs aisladas.
+LAS CPUs AISLADAS NO RECIBEN INTERRUPCIONES DEL SCHEDULER CUANDO NO SE LAS USA, Y CUANDO SE LAS USA SÍ RECIBEN INTERRUPCIONES DE REESCHEDULING
+(a parte de montones de interrupciones por la propia ejecución del programa!!), PERO ES NORMAL QUE RECIBAN INTERRUPCIONES DE REESCHEDULING PORQUE LOS 
+PROGRAMAS QUE TÚ EJECUTAS SON MULTITHREAD, ASÍ QUE EL SCHEDULER TIENE QUE REPARTIR ESOS THREADS ENTRE LAS DISTINTASCPUs DEL GRUPO DE CPUs AISLADAS.
+SÓLO PODRÍAS ESPERAR QUE UNA CPU NO RECIBIERA INTERRUPCIONES DE REESCHEDULING SI SÓLO EJECUTASES UN PROGRAMA CON UN SÓLO THREAD EN ÉL, Y ESO NO
+PASA CON NADA DE LO QUE EJECUTAS. 
+ASÍ QUE NO TE RAYES CON ESTO, PASA DE nohz_full. Que te sirva para entender mejor el scheduler y ya.
 
 Luego hay cosillas para disminuir el jittering sin recompilar el kernel. Las pistas las he sacado de aquí:
 http://highscalability.com/blog/2015/4/8/the-black-magic-of-systematically-reducing-linux-os-jitter.html
