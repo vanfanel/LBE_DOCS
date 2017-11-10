@@ -19,14 +19,18 @@ max locked memory (kbytes, -l) unlimited
 
 Para aprovechar esto,  usaremos una de las dos políticas de REALTIME de LINUX:
 
--SCHED_FIFO: Usa "chrt -f 99", que le da prioridad realtime y no suelta la CPU porque no hay otra aplicación con la misma o superior prioridad que la pida
-(o sea, es FIFO de máxima prioridad), asi que MIENTRAS NO ACABE, COMO LLEGÓ ANTES, NO SUELTA LA CPU ni a palos.
+-SCHED_FIFO: Usa "chrt -f 80" (le puedes dar hasta 99, pero no se recomienda porque puede causar starvation en algo que tenga que ejecutar ahí el kernel), 
+que le da prioridad realtime y no suelta la CPU porque no hay otra aplicación con la misma o superior prioridad que la pida (o sea, es FIFO de máxima prioridad),
+asi que MIENTRAS NO ACABE, COMO LLEGÓ ANTES, NO SUELTA LA CPU ni a palos.
 
 -SCHED_RR: Hay ROUND ROBBIN de máxima prioridad también, con lo cual se reparten rodajas de tiempo de un tamaño determinado continuamente. Esto se haría 
-con "chrt -r 99". 
+con "chrt -r 80". Lo mismo, el 80 es orientativo y 99 no se recomienda.
 CUIDADO: ROUND ROBBIN produce más interrupciones del scheduler, por lo que -f es más estable, los programas bailan menos entre una CPU y otra, y claro, al generarse
 menos interrupciones del scheduler, las cosas que yo suelo ejecutar van mejor. Cuidado, porque un RR 99 produce cuelgues incluso si estás ejecutando lo que sea con esa
 prioridad en CPUs aisladas.
+
+Cuando mires en el TOP, si algo tiene prioridad negativa es que es de tiempo real. Y si tiene prioridad máxima (-f 99 o -r 99) saldrá como RT, que es prioridad de tiempo real
+máxima.
 
 PARA TENER TAREAS CON GARANTÍAS DE TIEMPO REAL, ESTO ES, QUE NO SERÁN INTERRUMPIDAS Y SACADAS DE UNA CPU POR OTRAS TAREAS,
 NO HACE FALTA RECOMPILAR EL KERNEL, YA QUE LO QUE PERMITE CONFIGURAR EL KERNEL ES SI EL PROPIO KERNEL ES PREEMTIBLE (MÁS PREEMPTIBLE EN FULL RT QUE EN VOLUNTARY, 
@@ -45,11 +49,11 @@ Y luego cargas el programa, por ejemplo, con taskset -c 2 <mombre_programa> para
 O con taskset -c 2,3, si quieres elegir varias (si el proceso es multithread) y ya.
 ¡¡¡¡MUCHO OJO!!!!: PARA QUE EL PROGRAMA REALMENTE USE LAS CPUs DE LA LISTA QUE LE PASAS A TASKSEL, TIENES QUE CAMBIAR LA POLÍTICA DE SCHEDULING DEL PROCESO, O SI NO
 SÓLO ELEGIRÁ LA PRIMERA DE LA LISTA (esto es porque la política de scheduling por defecto, SCHED_OTHER, sólo elige la primera CPU, así que usamos SCHED_RR) . Así que haríamos:
-chrt -f 99 taskset -c 1-3 <programa>
+chrt -f 80 taskset -c 1-3 <programa>
 
 Por ejemplo: pogamos que tenemos aisladas las CPUs 1,2 y 3, y queremos compilar un programa usando esas tres CPUs: pues haríamos
-chrt -f 99 tasksel -c 1,2,3 make -j4
-(o bien chrt -f 99 tasksel -c 1-3 make -j4, que es lo mismo sólo que pasando la lista de CPUs separaga por un guión)
+chrt -f 80 tasksel -c 1,2,3 make -j4
+(o bien chrt -f 80 tasksel -c 1-3 make -j4, que es lo mismo sólo que pasando la lista de CPUs separada por un guión)
 
 Los emuladores, como no suelen usar varios threads, con mandarlos a una CPU aislada basta, en plan:
 taskset -c 3 <emulador>
@@ -65,8 +69,8 @@ EN RESÚMEN: HABIENDO AISLADO LAS CPUs DEL 1 al 3 CON "isolcpus=1-3" EN CMDLINE.
 -Para lanzar algo como un emulador que no son multithread:
 taskset -c 3 ./retroarch
 -Para lanzar algo MUY multithread (y que por tanto puede aprovechar varios cores) como el GZDOOM:
-chrt -f 99 taskset -c 1-3 ./gzdoom
-Yo uso -f 50, o -f 99..., que es SCHED_FIFO: los programas pillan la CPU y no la sueltan hasta que no acaban. La alternativa, -r, es SCHED_RR, que reparte rodajas de un tamaño
+chrt -f 80 taskset -c 1-3 ./gzdoom
+Yo uso -f 80, o -f 99..., que es SCHED_FIFO: los programas pillan la CPU y no la sueltan hasta que no acaban. La alternativa, -r, es SCHED_RR, que reparte rodajas de un tamaño
 determinado toooodo el rato, con lo que se generan más interrupciones de scheduling y no nos interesa tanto. ASÍ QUE USA -f mejor.
 CUIDADO con el -r 99: se producen cuelgues.
 -Añade a .bashrc:
@@ -92,6 +96,8 @@ PROGRAMAS QUE TÚ EJECUTAS SON MULTITHREAD, ASÍ QUE EL SCHEDULER TIENE QUE REPA
 SÓLO PODRÍAS ESPERAR QUE UNA CPU NO RECIBIERA INTERRUPCIONES DE REESCHEDULING SI SÓLO EJECUTASES UN PROGRAMA CON UN SÓLO THREAD EN ÉL, Y ESO NO
 PASA CON NADA DE LO QUE EJECUTAS. 
 ASÍ QUE NO TE RAYES CON ESTO, PASA DE nohz_full. Que te sirva para entender mejor el scheduler y ya.
+TAMPOCO PIERDAS EL TIEMPO CON LOS RCU THREADS, SACÁNDOLOS DE LA CPU, PASANDO rcu_nocbs=... NO SIRVE PARA NADA.
+UN KERNEL DE 250Hz TAMPOCO ARREGLA NADA.
 
 Luego hay cosillas para disminuir el jittering sin recompilar el kernel. Las pistas las he sacado de aquí:
 http://highscalability.com/blog/2015/4/8/the-black-magic-of-systematically-reducing-linux-os-jitter.html
