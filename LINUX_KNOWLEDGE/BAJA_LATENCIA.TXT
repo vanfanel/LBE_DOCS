@@ -58,6 +58,17 @@ chrt -f 80 tasksel -c 1,2,3 make -j4
 Los emuladores, como no suelen usar varios threads, con mandarlos a una CPU aislada basta, en plan:
 taskset -c 3 <emulador>
 
+Antes de lanzar el emulador, juego o lo que sea, podrías mover el thread de interface GPU<->CPU a una de las 3 CPUs aisladas o privilegiadas:
+sudo sh -c 'for i in `pgrep VCHIQ` ; do taskset -pc 1 $i ; done' > /dev/null
+
+O bien, dejar que se reparta entre las 3 si es un programa multithread:
+for i in `pgrep VCHIQ` ; do chrt -f -p 80 taskset -pc 1-3 $i ; done
+
+O bien mandarlos a una de las tres CPUs aisladas, y dejar el programa mutithread en las otras dos:
+for i in `pgrep VCHIQ` ; do taskset -pc 1 $i ; done
+chrt -f 80 tasksel -c 2-3 <programa>
+Pero suelo considerar el VCHIQ como "housekeeping", por lo que en la 0 está bien.
+
 Para ver mejor estas cosas en TOP, a parte de activar que se vea la CPU (F y luego darle a D sobre la opción), puedes poner un periodo más pequeño pusaldo D directamente y
 metiendo algo como 0.1.
 ¡¡¡¡OJO!!!! : Un proceso con prioridad -80 tiene prioridad de tiempo real: LAS PRIORIDADES NEGATIVAS SON DE TIEMPO REAL, ES DECIR, LAS MÁS ALTAS QUE EL KERNEL PUEDE
@@ -193,3 +204,11 @@ CÓMO COMPROBAR EN QUÉ CPU CORRE CADA PROCESO
 
 En TOP, pulsamos F mientras estamos ejecutándolo. En el menú que nos sale, podemos pulsar D sobre lo que queramos que se vea / que no se vea, elegimos que se vea
 el campo "P       = Last Used Cpu (SMP)", y le damos a ESCAPE, de manera que podemos ver en qué CPU corre cada cosa.
+
+DUDA: SI USO UN KERNEL CON EL SCHEDULER PUESTO A 100HZ, ¿PUEDO ESPECIFICAR usbhid.jspoll=2 QUE HACE QUE LOS USB SE LEAN A 500HZ?
+=============================================================================================================================
+
+Sí. El kernel corre sobre HRTIMERS, lo de los 100HZ es la velocidad del sheduler, es decir, cuántas veces por segundo mira a ver qué se ejecuta dónde.
+Son cosas distintas e independientes, la granularidad del kernel es mucho mayor que 100HZ... eso es sólo el scheduler.
+Y el scheduler, en tus sistemas de no-escritorio, va de sobra a 100Hz para una cosa que ejecutas a la vez (mas el housekeeping del kernel fuera de las CPUs aisladas).
+Así que sí, se puede.

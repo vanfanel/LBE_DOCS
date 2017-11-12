@@ -4715,3 +4715,11 @@ then
     echo "Montando unidad mpeg..."
     sudo mount /dev/sda1 mnt
 fi
+
+DUDA: SI USO UN KERNEL CON EL SCHEDULER PUESTO A 100HZ, ¿PUEDO ESPECIFICAR usbhid.jspoll=2 QUE HACE QUE LOS USB SE LEAN A 500HZ?
+=============================================================================================================================
+
+Sí. El kernel corre sobre HRTIMERS, lo de los 100HZ es la velocidad del sheduler, es decir, cuántas veces por segundo mira a ver qué se ejecuta dónde.
+Son cosas distintas e independientes, la granularidad del kernel es mucho mayor que 100HZ... eso es sólo el scheduler.
+Y el scheduler, en tus sistemas de no-escritorio, va de sobra a 100Hz para una cosa que ejecutas a la vez (mas el housekeeping del kernel fuera de las CPUs aisladas).
+Así que sí, se puede.
