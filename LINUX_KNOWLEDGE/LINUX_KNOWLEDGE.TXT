@@ -18,7 +18,16 @@ echo $SDL_VIDEO_DOUBLE_BUFFER
 
 ******Conectar a una red WIFI desde la Raspberry PI 3 usando el WIFI interno******************************************************************************************************************
 
-Lo primero es cargar el mçodulo del kernel que hace falta:
+PUEDE QUE NECESITES BAJAR MANUALMENTE EL FIRMWARE DEL WIFI SI AL HACER MODPROBE AL brcmfmac NO TE CREA EL INTERFACE WLAN0.
+Si es así, tienes que bajarte los archivos:
+brcmfmac43430-sdio.bin
+brcmfmac43430-sdio.txt
+Que están en:
+https://github.com/RPi-Distro/firmware-nonfree/tree/master/brcm80211/brcm
+Y meterlos en:
+/lib/firmware/brcm/
+
+Lo primero es cargar el módulo del kernel que hace falta:
 sudo modprobe brcmfmac
 
 Ahora levantamos el interface wlan0
@@ -105,9 +114,13 @@ Bajamos los sources estables de http://libsdl.org/download-2.0.php
 
 Configuramos con:
 
-Para la Pi 2 y 3:
+Para la Pi 2:
 
 CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+
+Para la Pi 3:
+
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 Para la Pi1:
 
@@ -124,9 +137,13 @@ sudo apt-get install automake
 
 Configuramos con:
 
-Para la Pi 2 y 3:
+Para la Pi 2:
 
 CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr --without-x
+
+Para la Pi 3:
+
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --without-x
 
 Para la Pi1:
 
@@ -1882,8 +1899,11 @@ Para una Pi3:
 
 Para pi1:
 make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
-Para pi 2 y 3:
+Para pi 2:
 make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
+Para pi 3:
+make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"
+
 Añade para Polymost:
 CUSTOMOPT="-DEDUKE32_GLES"
 
@@ -1968,7 +1988,14 @@ cd build
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi2 a cmake:
 
-Para la Pi 2 y 3:
+Para la Pi 3:
+
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DGPL=ON \
+-DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
+-DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
+
+Para la Pi 2:
 
 cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"  \
 -DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DGPL=ON \
@@ -3057,7 +3084,11 @@ LD_LIBRARY_PATH=/home/manuel/sidplay/lib ./sidplayfp <tema>.sid
 Descarga los últimos sources de
 git clone --depth 1 https://github.com/Davidslv/rogue.git
 Antes de nada, instala las libncurses5-dev, antes de hacer el configure.
-Configurar y compilar. Ayuda de teclas con shift+?
+Configurar y compilar:
+CFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure
+make -j4
+
+Ayuda de teclas con shift+?
 
 ***************Borrar un archivo con nombre que contiene caracteres extraños*****************************
 
@@ -3726,9 +3757,13 @@ Para la Pi 1:
 
 -marm -march=armv6j -mfpu=vfp -mfloat-abi=hard
 
-Para la Pi 2 y 3
+Para la Pi 2:
 
 -marm -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard
+
+Para la Pi 3:
+
+-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 
 Editamos Makefile.common y comentamos la línea del -g
 
@@ -3919,7 +3954,9 @@ de Retroarch.
 Para PGO (profile guided optimization) agregamos esto al Makefile:
 FLAGS += -fprofile-generate
 LDFLAGS += -lgcov
-...y tras las ejecuciones para que recabe datos, tenemos que tener unos .gcda por todo el código. Los usamos con:
+...y tras las ejecuciones para que recabe datos, tenemos que tener unos .gcda por todo el código.
+Ahora hacemos "make clean", y tranquilo, que no borra los .gcda.
+Ahora compilamos usando los .gcda con:
 FLAGS += -fprofile-use
 LDFLAGS += -lgcov
 NOTA: NO FUNCIONA el PGO con el DISTCC, ya que al correr no genera los .gcda, así que tienes que compilar en local (saca la ruta del distcc del ~/.profile temporalmente y ya).
@@ -4137,7 +4174,11 @@ en screen/Screen.cpp, justo antes de SDL_CreateWindowAndRenderer()
 
 Editamos el script configure y quitamos toda mención a -O2 y -g. 
 
-Configuramos así para Pi2 y 3:
+Configuramos así para Pi3:
+
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --disable-debug
+
+Configuramos así para Pi2:
 
 CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --disable-debug
 
@@ -4365,8 +4406,8 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-march=armv6j -mfpu=vfp 
 
 Para Pi3:
 
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DALSOFT_REQUIRE_NEON=ON \
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DALSOFT_REQUIRE_NEON=ON \
 -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DHAVE_ARM_NEON_H=YES -DCMAKE_BUILD_TYPE=Release ..
 
 make
@@ -4408,9 +4449,13 @@ Para Pi1:
 
 cmake -DCMAKE_C_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" -DCMAKE_CXX_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" -DCMAKE_BUILD_TYPE=Release ..
 
-Para Pi2 y Pi3:
+Para Pi2:
 
 cmake -DCMAKE_C_FLAGS=" -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_CXX_FLAGS=" -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
+
+Para Pi3:
+
+cmake -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j8
 
@@ -4677,6 +4722,9 @@ Ahora, creamos directorio de compilación y usamos cmake y luego make:
 mkdir b3
 cd b3
 cmake ../src
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" \
+ -DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ../src
+
 make -j6
 
 Los detalles sobre los dip switches están en dle21.txt, que acompaña a las roms del Dragon's Lair Enhanced 2.1
