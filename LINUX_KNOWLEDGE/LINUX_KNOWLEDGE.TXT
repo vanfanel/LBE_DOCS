@@ -210,6 +210,27 @@ Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de 
 -En main.cpp quitamos todo lo que lleve GL, y cambiamos el tipo de gráficos por defecto a GRAPHICS_ORIGINAL, y ya de paso si quieres el lenguaje por defecto a LANGUAGE_US
 En la línea de stub->init, pasa false en el parámetro de OPENGL (esto último ya no hace falta).
 
+******FLASHBACK en la Rasberry Pi***************************************************************************************************************************************
+
+Bajamos los sources de:
+http://cyxdown.free.fr/reminiscence/
+
+Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
+ #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
+CXXFLAGS += -O3 -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
+
+Para arreglar la música y efectos, que van a la frecuencia equivocada en la Raspberry, ditamos
+sdl_systemstub.cpp y cambiamos:
+if (SDL_OpenAudio(&desired, &obtained) == 0) {
+por
+if (SDL_OpenAudio(&desired, NULL) == 0) {
+Y también:
+desired.samples = 2048;
+por
+desired.samples = 512;
+
+Así mismo, en el mismo fichero, añade SDL_INIT_GAMECONTROLLER a SDL_Init() si quieres joystick.
+
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)**********************************************************************************************************
 
 Los archivos que necesitamos están en este hilo:
@@ -4648,6 +4669,14 @@ CFLAGS = $(INCLUDES) -DMODPLUG -DLINUX $(OPTIM) -Wall -DFADEINOUT -DLINUX64 -DHO
 ...de lo contrario, el ejecutable resultante nos medio peta el sistema y da errores raros.
 
 Si nos da errores de "undefined symbol" con funciones como initFPS() en main.c, añadimos fpshelper.o a nuestro Makefile en la sección de OBJS 
+
+PARA ARREGLAR lo de la transparencia de la estrella cuando cogemos un powerup, añade:
+    SDL_SetSurfaceBlendMode(scrback, SDL_BLENDMODE_BLEND);
+    SDL_SetSurfaceBlendMode(star, SDL_BLENDMODE_BLEND);
+justo antes de donde sea que hagas:
+    SDL_SetSurfaceAlphaMod(scrback,192);
+    SDL_SetSurfaceAlphaMod(star,128);
+...porque estás estableciendo un nivel de transparencia sin haber dicho que quieres que esa surface sea transparente en el proceso de blitting para empezar.
 
 AUDIO POR I2C: EL PI TOP SPEAKER
 ==============================

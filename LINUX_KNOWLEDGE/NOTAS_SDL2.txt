@@ -289,8 +289,9 @@ Por ejemplo, así:
 
 SI NO LLAMAMOS A SDL_SetSurfaceBlendMode(), AL BLITEAR black NO SE HARÁ ALPHA BLENDING EN ABSOLUTO, ASÍ QUE NO HABRÁ TRANSPARENCIAS QUE VALGAN.
 
-OTRA COSA MUY IMPORTANTE AL CONVERTIR PROGRAMAS DE SDL1 a SDL2: EL VALOR ALPHA DE SDL_SetSurfaceBlendMode() está INVERTIDO en SDL2 respecto a SDL1,
-ASI QUE EN SDL2 un alpha de 255 es "totalmente opaco" y en SDL2 es "totalmente transparente" y con alpha valiendo 0 pasa lo mismo pero al revés.
+OTRA COSA MUY IMPORTANTE AL CONVERTIR PROGRAMAS DE SDL1 a SDL2: EL VALOR ALPHA DE SDL_SetSurfaceAlphaMod() está INVERTIDO en SDL2 respecto a SDL1,
+ASI QUE EN SDL2 un alpha de 255 es "totalmente opaco" y en SDL2 es "totalmente transparente" y con alpha valiendo 0 pasa lo mismo pero al revés. PERO SIEMPRE RECUERDA
+ASEGURARTE DE QUE HAS HECHO ANTES LO DE SDL_SetSurfaceBlendMode(), o pongas lo que pongas no habrá transparencia.
 NO TE OLVIDES DE ESO, PORQUE VAS A VER FALLOS DE TRANSPARENCIA AL PASAR DE SDL1 a SDL2 debido a esto, y tendrás que arreglarlo.
 
 OTRA COSA ES QUE AL HACER UN BLITEO DE UNA SUPERFICIE CON TODOS SUS PÍXELS EN NEGRO sobre otra en las SDL2, CON UN ALPHA = 0, EL RESULTADO tiene colores
