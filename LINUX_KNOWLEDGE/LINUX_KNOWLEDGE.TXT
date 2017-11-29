@@ -2517,12 +2517,12 @@ es que te falta pasarle la ruta de los plugins en el cfg.
 
 Necesitamos libboost, eso lo primero. Concretamente, te vale con libboost1.55-dev
 
-mkdir build
-cd build
-cmake ../cmake -DTARGET=sdl2_rpi  -DCMAKE_BUILD_TYPE=Release
+Comenta la línea del delay de SDL para control de framerate, que sobra porque nosotros sincronizamos en vsync. Está en src/main/main.cpp
+y tiene esta pinta:
 
-La eprom que falta es del set B
-Copia el res/config.xml al mismo directorio donde tienes el ejecutable del cannonball
+SDL_Delay((Uint32) (deltatime - t));
+
+Comenta todo ese bloque, el if y todo si quieres, no nos hace falta.
 
 Para que no ande bajando el volúmen de los WAVs, usa los que tienes que ya tienen el volúmen bajado, y vete a Audio::load_wav en
 src/main/sdl2/audio.cpp y deja entre el LockAudio y el UnlockAudio sólo esto:
@@ -2536,6 +2536,15 @@ src/main/sdl2/audio.cpp y deja entre el LockAudio y el UnlockAudio sólo esto:
 
         resume_audio();
         SDL_UnlockAudio();
+
+
+mkdir build
+cd build
+cmake ../cmake -DTARGET=sdl2gles_rpi  -DCMAKE_BUILD_TYPE=Release
+
+La eprom que falta es del set B
+Copia el res/config.xml al mismo directorio donde tienes el ejecutable del cannonball
+
 
 SI al ejecutarlo te sale que no encuentra las SDL, mira con un ldd sobre el ejecutable, y si efectivamente no las encuentra, es que las has instalado
 en una ruta que no está en los path que usa el sistema para buscar libs en tiempo de ejecución.
@@ -4659,6 +4668,8 @@ autoreconf -i
 O bien usamos la 0.87 que traen los sources de los juegos, ya que en algunos casos la última versión no es compatible
 CXXFLAGS="-fpermissive" ./configure --enable-static
 make -j8
+
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --enable-static
 
 Buscamos libmodplug.a
 find ./ -name 'libmodplug.a'
