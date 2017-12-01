@@ -392,7 +392,11 @@ Configuraríamos para SDL2.  Para Pi1 con:
 
 CXXFLAGS="-O2 -march=armv6j -mfpu=vfp -mfloat-abi=hard -fomit-frame-pointer"  ./configure
 
-Para Pi 2 y 3 con
+Para Pi3:
+
+CXXFLAGS="-O2 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure
+
+Para Pi 2:
 
 CXXFLAGS="-O2 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer"  ./configure
 
@@ -432,39 +436,40 @@ Ahora sólo queda parchear el refresco de pantalla...Mira a continuación cómo 
 AÑADIR CONTROL DE REFRESCO DE PANTALLA DESDE FICHERO DE CONFIGURACIÓN
 =======================================================================
 
+La info actualizada la he sacado de esta versión de dosbox:
+https://github.com/joncampbell123/dosbox-x
+mirando en su vga_draw.cpp.
+
 Empezamos con src/gui/sdlmain.cpp
 Busca la línea donde recupera el valor de "display" del fichero de configuración. Es así esa línea que buscas:
 
 sdl.displayNumber=section->Get_int("display");
 
-Vale, pues justo encima,o debajo, pero por ahí, nosotros vamos a recuperar el valor de "refresh":
+Vale, pues justo encima,o debajo, pero por ahí, nosotros vamos a recuperar el valor de "refresh", de este modo:
+      vga.refreshRate=atof(section->Get_string("refresh"));
+      LOG_MSG("Physical refresh rate %f \n", vga.refreshRate);
 
-        vga.refreshRate=(double)section->Get_int("refresh") / 1000000.0;
-        LOG_MSG("Physical refresh rate %f \n", vga.refreshRate);
-
-Ahora tenemos que añadir ese nuevo valor a los valores del fichero. Busca donde se añade el valor "fullscreen", por ejemplo, que es una sección que tiene esta pinta
-
+Ahora tenemos que añadir ese nuevo valor a los valores del fichero. Busca donde se añade el valor "fullscreen", por ejemplo, que es una sección que tiene esta pinta:
         Pbool = sdl_sec->Add_bool("fullscreen",Property::Changeable::Always,false);
         Pbool->Set_help("Start dosbox directly in fullscreen. (Press ALT-Enter to go back)");
 
 Pues debajo o así añadimos nosotros refresh, de una forma parecida:
+       // Add refreshrate
+        Pstring = sdl_sec->Add_string("refresh",Property::Changeable::Always,"60.0000");
+        Pstring->Set_help("Screen refresh rate.");
 
-        // Add refreshrate
-        Pint = sdl_sec->Add_int("refresh",Property::Changeable::Always,60000000);
-        Pint->SetMinMax(50000000,70000000);
-        Pint->Set_help("Screen refresh rate.");
-
-Ahora, si te fijas, el valor de refresh ya dividido y tal para que en vez de un entero sea un double, lo estamos guardando en vga.refreshRate, así que nos vamos al
-fichero include/vga.h, que lo ven tanto vga_draw.cpp como sdl_main.cpp, y en la estructura VGA_Type, al final, añadimos 
+Ahora, nos vamos al fichero include/vga.h, que lo ven tanto vga_draw.cpp como sdl_main.cpp, y en la estructura VGA_Type, al final, añadimos:
 double refreshRate;
 
 Ahora ya lo tenemos: sólo queda irse a src/hardware/vga_draw.cpp y cambiar esto:
 fps=(double)clock/(vtotal*htotal);
 ..por esto otro:
-fps=vga.refreshRate;
+       /* force the VGA refresh rate by setting fps and bending the clock to our will */
+        fps=vga.refreshRate;
+        clock=((double)(vtotal*htotal))*fps;
 
 Por último, a nuestro .conf le añadimos algo como:
-refresh=60016804;
+refresh=60.016804;
 Eso debería darnos un refresco de 60.016804 HZ
 
 CAMBIA BOTONES O TECLAS
