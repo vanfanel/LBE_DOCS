@@ -142,6 +142,8 @@ porque no encontrará las funciones de las librerías de las que depende libSDL2
 ...Y naturalmente, la ruta de la librería estática libSDL2.a tendrá que ser la que tenga en ese sistema en concreto.
 Ya sólo es ejecutar el configure como lo hagas normalmente, make, y debería funcionar.
 
+Si le haces un ldd al ejecutable de scummvm resultante, verás que ya no depende de ninguna librería externa de las SDL2.
+
 *************Compilar contra SDL2*********************************************************************************************************
 
 Hay que cambiar en configure la línea 
