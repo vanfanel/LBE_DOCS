@@ -2726,6 +2726,10 @@ Para compilar la versión más o menos ideal que usa mi backend de Dispmanx, he 
 
 -t larm -api sdl -var-fullscreen 0 -fullscreen 1 -speed 1
 
+Para SDL2:
+
+-t larm -api sd2 -var-fullscreen 0 -fullscreen 1 -speed 1
+
 luego he editado src/MYOSGLUE.c y he cambiado el bpp de SetVideoMode() de 8 a 16.
 Para la velocidad original del Macintosh plus, tendrías que poner "-speed z"
 

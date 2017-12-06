@@ -76,11 +76,11 @@ Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece.
 
 En local y con los engines que sueles usar:
 
-./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,gnap,adl,gob,mohawk,lab,titanic,fullpipe
+./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,gnap,adl,gob,mohawk,lab,titanic,fullpipe,plumbers
 
 En local de pueba con scumm solo:
 
-./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab,agi,agos,dreamweb,kyra,neverhood,saga,sci,titanic,fullpipe,adl,gnap,gob,mohawk
+./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-fluidsynth --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab,agi,agos,dreamweb,kyra,neverhood,saga,sci,titanic,fullpipe,plumbers,adl,gnap,gob,mohawk,plumbers
 
 ==PARA RELEASE, CON PLUGINS DINÁMICOS==
 
@@ -90,19 +90,19 @@ Para hacer una release (engines como plugins dinámicos, todos los que vienen ac
 
 En local, con plugins dinámicos y mis engines selectos, y con ogg (vorbis):
 
-./configure --disable-debug --enable-release --enable-optimizations --disable-eventrecorder --enable-jpeg --disable-mt32emu --disable-savegame-timestamp --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab,titanic,fullpipe
+./configure --disable-debug --enable-release --enable-optimizations --disable-eventrecorder --enable-jpeg --disable-mt32emu --disable-savegame-timestamp --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab,titanic,fullpipe,plumbers
 
 En local, con plugins dinámicos y mis engines selectos, y con ogg (vorbis), y optimizado para Raspberry Pi 2, cambia optimization_level a 3 en configure :
 
-CFLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --disable-debug --enable-release --enable-optimizations --enable-jpeg --disable-eventrecorder --disable-savegame-timestamp --disable-mt32emu --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,gnap,sherlock,access,lab,titanic,fullpipe
+CFLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" CXXFLAGS="-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math" ./configure --disable-debug --enable-release --enable-optimizations --enable-jpeg --disable-eventrecorder --disable-savegame-timestamp --disable-mt32emu --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,gnap,sherlock,access,lab,titanic,fullpipe,plumbers
 
 En local, con plugins dinámicos y mis engines selectos, y con ogg (vorbis), y optimizado para Raspberry Pi 3, cambia optimization_level a 3 en configure :
 
-CFLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --disable-debug --enable-release --enable-optimizations --disable-eventrecorder --disable-savegame-timestamp --disable-mt32emu --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,gnap,mads,bbvs,sherlock,access,lab,titanic,fullpipe
+CFLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" CXXFLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ffast-math" ./configure --disable-debug --enable-release --enable-optimizations --disable-eventrecorder --disable-savegame-timestamp --disable-mt32emu --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,gnap,mads,bbvs,sherlock,access,lab,titanic,fullpipe,plumbers
 
 En local, con plugins dinámicos y mis engines selectos, y con ogg (vorbis), y optimizado para Raspberry Pi 1, cambia optimization_level a 3 en configure :
 
-CFLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" CXXFLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" ./configure --disable-debug --enable-release --enable-optimizations --disable-eventrecorder --enable-jpeg --disable-mt32emu --disable-savegame-timestamp --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,gnap,sherlock,access,lab,titanic,fullpipe
+CFLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" CXXFLAGS="-marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math" ./configure --disable-debug --enable-release --enable-optimizations --disable-eventrecorder --enable-jpeg --disable-mt32emu --disable-savegame-timestamp --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,gnap,sherlock,access,lab,titanic,fullpipe,plumbers
 
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
 
@@ -116,6 +116,27 @@ en el configure, en la sección de host rapberrypi donde pones las cosas.
 Para quitar el WARNING de los EOB (Eye of the Beholder), editamos
 engines/advancedDetector.cpp
 y ponemos showTestingWarning a false en el ifdef de release.
+
+*************Compilar con SDL2 estáticas en lugar de dinámicas*****************************************************************************
+
+En el script configure, busca dónde se le pasan las libs de SDL2. Es en esta sección:
+
+#
+# Setup SDL specifics for SDL based backends
+#
+case $_backend in
+        androidsdl | dingux | gph | linuxmoto | maemo | openpandora | samsungtv | sdl) 
+                find_sdlconfig
+                append_var INCLUDES "`$_sdlconfig --prefix="$_sdlpath" --cflags`"
+                append_var LIBS "`$_sdlconfig --prefix="$_sdlpath" --libs`"
+
+
+Pues bien: la línea de "append_var LIBS" la dejamos así:
+
+append_var LIBS "-L/usr/lib -Wl,-rpath,/usr/lib -Wl,--enable-new-dtags /usr/lib/libSDL2.a -ldl -lpthread"
+
+...Naturalmente, la ruta de la librería estática libSDL2.a tendrá que ser la que tenga en ese sistema en concreto.
+Ya sólo es ejecutar el configure como lo hagas normalmente, make, y debería funcionar.
 
 *************Compilar contra SDL2*********************************************************************************************************
 
