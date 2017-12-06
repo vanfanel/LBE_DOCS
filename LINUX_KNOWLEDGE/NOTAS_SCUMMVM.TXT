@@ -119,6 +119,7 @@ y ponemos showTestingWarning a false en el ifdef de release.
 
 *************Compilar con SDL2 estáticas en lugar de dinámicas*****************************************************************************
 
+La cosa es como siempre compilar contra el .a en lugar de compilar contra el .so de las librerías.
 En el script configure, busca dónde se le pasan las libs de SDL2. Es en esta sección:
 
 #
@@ -135,7 +136,10 @@ Pues bien: la línea de "append_var LIBS" la dejamos así:
 
 append_var LIBS "-L/usr/lib -Wl,-rpath,/usr/lib -Wl,--enable-new-dtags /usr/lib/libSDL2.a -ldl -lpthread"
 
-...Naturalmente, la ruta de la librería estática libSDL2.a tendrá que ser la que tenga en ese sistema en concreto.
+OJO que EL ÓRDEN IMPORTA: tienes que poner antes libSDL2.a que las librerías de las que depende.
+Has de pasar esas librerías (y pasarlas como digo DESPUÉS de pasar el .a) o si no de dará errores estilo "undefined reference to symbol 'sem_getvalue", etc
+porque no encontrará las funciones de las librerías de las que depende libSDL2.a
+...Y naturalmente, la ruta de la librería estática libSDL2.a tendrá que ser la que tenga en ese sistema en concreto.
 Ya sólo es ejecutar el configure como lo hagas normalmente, make, y debería funcionar.
 
 *************Compilar contra SDL2*********************************************************************************************************
