@@ -2873,7 +2873,7 @@ cd build
 
 Ahora configuramos:
 
-cmake  -DUSE_SDL2=ON -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DTREMOR=OFF -DOPENGL=OFF -DDOWNLOADER=OFF ..
+cmake  -DUSE_SDL2=ON -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DTREMOR=OFF -DOPENGL=OFF -DDOWNLOADER=OFF -DUSE_PYTHON3=OFF ..
 
 Tenemos que tener instalados libsdl_image (versión 2) y libboost-dev (libboost1.55-dev).
 

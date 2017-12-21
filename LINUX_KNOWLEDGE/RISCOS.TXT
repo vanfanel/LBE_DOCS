@@ -13,6 +13,10 @@ No te olvides de añadir al !Run del ADFFS:
 set ADFFS$50Hz true
 ...para que no se ponga a contar fotogramas ni movidas raras.
 
+Y entra en la consola de comandos con F12 y pon:
+unplug bootfx
+....para quitar los adornos chorras del inicio.
+
 COMANDOS DEL SISTEMA
 =======================
 
