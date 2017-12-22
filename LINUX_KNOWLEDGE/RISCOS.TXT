@@ -17,6 +17,12 @@ Y entra en la consola de comandos con F12 y pon:
 unplug bootfx
 ....para quitar los adornos chorras del inicio.
 
+Y también en la consola de F12 puedes hacer:
+configure mode 28
+...para que se vean las letras del inicio a un tamaño legible.
+Puedes ver la lista de modos aquí:
+https://www.riscosopen.org/zipfiles/platform/common/UserGuide.pdf
+
 COMANDOS DEL SISTEMA
 =======================
 
