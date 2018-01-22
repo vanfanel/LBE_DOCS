@@ -2987,7 +2987,7 @@ ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ --sort=1 -
 ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ --sort=1 -f tags/BCM /opt/vc/include   
 (Esta de BCM es para la Rpi, dispmanx y tal)
 
-Ahora, dejamos el ~/.vimrc de esta guisa:
+Ahora, dejamos el /etc/vim/vimrc.local de esta guisa:
 
 =====================================================
 
@@ -3661,13 +3661,54 @@ sudo apt-get install flex bison python-mako gettext xutils-dev x11proto-gl-dev x
 
 Empezamos instalando libdrm:
 git clone --depth 1 git://anongit.freedesktop.org/mesa/drm
-./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --disable-vmwgfx --disable-radeon --disable-amdgpu --disable-nouveau --disable-freedreno
+./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
 make -j4
 sudo make install
 
+
+
 Ahora vamos a por MESA:
+
+sudo apt-get purge --no-install-recommends \
+    flex bison python-mako \
+    libxcb-dri3-dev libxcb-dri2-0-dev \
+    libxcb-glx0-dev libx11-xcb-dev \
+    libxcb-present-dev libxcb-sync-dev \
+    libxshmfence-dev \
+    libxdamage-dev libxext-dev libxfixes-dev \
+    x11proto-dri2-dev x11proto-dri3-dev \
+    x11proto-present-dev x11proto-gl-dev \
+    libexpat1-dev libudev-dev gettext
+
 git clone --depth 1 git://anongit.freedesktop.org/mesa/mesa
-./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm
+./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf
+
+Editamos el script configure y donde pone O2 ponemos:
+-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
+(OJO, que es en VARIOS SITIOS!!!!)
+
+Y ahora ejecutamos
+./configure --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
+
+make -j4
+sudo make install
+
+Ahora añadimos a config.txt:
+dtoverlay=vc4-kms-v3d
+
+Y si queremos la hifiberry:
+dtoverlay=i2s-mmap
+dtoverlay=hifiberry-dacplus
+
+Y en /etc/asound.conf, si queremos la hifiberry:
+
+pcm.!default{
+ type hw card 1
+}
+
+ctl.!default {
+ type hw card 1
+}
 
 *************************Notas de RetroArch en x86**********************************************
 
@@ -4511,9 +4552,7 @@ AHORA editamos src/CMakeLists.txt (CUIDADO, que es otro makelist distinto!) y de
 este par de líneas:
 option( DYN_MPG123 "Dynamically load libmpg123" OFF )
 option( DYN_FLUIDSYNTH "Dynamically load fluidsynth" OFF ) 
-(Para que esto funcione, los paquetes de desarrollo de mpg123 y de fluidsynth NO deben estar instalados, o en vez de cargarlas dinámicamente 
-linkará el ejecutable contra las librerías normalmente, lo que TAMPOCO queremos: queremos que NO haga nada con estas librerías y punto).
--Proteger el acceso a la YUV surface en su destrucción... No la quieres destruir justo cuando el VLDP está accediendo, creeme.
+Además, comenta las líneas de FLUIDSYNTH_FOUND, MPG123_FOUND, toda esa sección entera.
 
 Para Pi1:
 
