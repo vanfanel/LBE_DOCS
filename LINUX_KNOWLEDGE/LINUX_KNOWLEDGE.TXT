@@ -116,15 +116,15 @@ Configuramos con:
 
 Para la Pi 2:
 
-CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 Para la Pi 3:
 
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 Para la Pi1:
 
-CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" ./configure --prefix=/usr --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 Compilamos e instalamos.
 Añadimos a /etc/profile:
@@ -2003,6 +2003,10 @@ Compilamos y listo!
 Pillamos la última versión estable de:
 http://maniacsvault.net/ecwolf/download.php
 
+Metemos esto al principio de CMakeLists.txt, para evitar segfaults por la optimización del compilador en O3:
+string(REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+string(REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+
 Hacemos un pequeño cambio o si no da errores al compilar (estos errores están solventados en las versiones svn pero las svn tienen otros peores).
 Para ello, editamos ../src/id_sd.cpp y añadimos el parámetro true a las llamadas a Mix_LoadMUS_RW(), de tal manera que quedan:
 
@@ -2013,7 +2017,7 @@ Hay un par de llamadas de estas. Las cambias y ya.
 mkdir build
 cd build
 
-Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi2 a cmake:
+Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
 Para la Pi 3:
 
@@ -2021,6 +2025,10 @@ cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-f
 -DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DGPL=ON \
 -DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
 -DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
+
+cmake -DCMAKE_BUILD_TYPE=Debug -DGPL=ON \
+-DSDL_LIBRARY=/usr/lib/x86_64-linux-gnu/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/x86_64-linux-gnu/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
+-DSDL_NET_LIBRARY=/usr/lib/x86_64-linux-gnu/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
 
 Para la Pi 2:
 
@@ -2062,10 +2070,6 @@ la Pi en el modo de vídeo por defecto, pero nos interesan más 32bits porque de
 NO soporta el Rise Of The Triad, sólo el Wolfenstein y el Spear of Destiny.
 
 PARA compilar en modo verbose, haz make VERBOSE=1
-
-El problema del segfault era en src/gamemap.cpp, función GameMap::PropagateMark(), en la llamada:
-GC::Mark(plane.map[i].thinker);
-Si lo da, comenta esa línea y el for donde está metida, por ahora.
 
 ************Wolf4SDL (Wolfenstein 3D) en la Raspberry Pi*********************************************************************************
 
@@ -2897,8 +2901,6 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 por 
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
-Y si estamos usando los gráficos de broadcom en la Pi, añadimos:
-
 Ahora editamos configure.ac ponemos el optimization level a 3 y quitamos y el -g que encontremos.
 Ahora configuramos con 
 CFLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure
@@ -3680,7 +3682,12 @@ sudo apt-get purge --no-install-recommends \
     x11proto-present-dev x11proto-gl-dev \
     libexpat1-dev libudev-dev gettext
 
+Ahora, para los sources de MESA, lo mejor es bajar los últimos estables desde:
+https://mesa.freedesktop.org/archive/
+O si queremos los últimos sources de GIT:
 git clone --depth 1 git://anongit.freedesktop.org/mesa/mesa
+
+Y ahora seguimos con:
 ./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf
 
 Editamos el script configure y donde pone O2 ponemos:
@@ -3697,8 +3704,9 @@ Ahora añadimos a config.txt:
 dtoverlay=vc4-kms-v3d
 
 Y si queremos la hifiberry:
-dtoverlay=i2s-mmap
 dtoverlay=hifiberry-dacplus
+
+Lo de dtoverlay=i2s-mmap no hace falta para la hifiberry.
 
 Y en /etc/asound.conf, si queremos la hifiberry:
 
@@ -3851,16 +3859,16 @@ Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
 
 Para la Pi 1:
 
-./configure --disable-ibxm --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga --disable-opengl --enable-opengles --disable-flac
+./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --enable-opengl --enable-opengles --disable-flac
 
 Para la Pi 2 y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
 
-./configure --disable-ibxm --disable-vg --enable-dispmanx --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac
+./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac
 
 Para PC:
 LO PRIMERO TEN INSTALADO PKGCONFIG, O NO DETECTARÁ ALGUNAS LIBRERÍAS ESENCIALES!!!
 
-./configure --enable-kms --disable-vg --disable-wayland --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac
+./configure --enable-kms --disable-vg --disable-wayland --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac
 
 Añadimos los flags de CPU en config.mk:
 
@@ -3954,7 +3962,7 @@ ctl.!default {
 }
 
 Ahora ya configuramos:
-./configure --disable-ibxm --enable-neon --enable-floathard --enable-kms --disable-vg  --disable-wayland  --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rpng --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac
+./configure --disable-ibxm --enable-neon --enable-floathard --enable-kms --disable-vg  --disable-wayland  --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac
 
 Añadimos lo que tenemos que añadir a config.mk y quitamos el -g de Makefile.common, y compilamos.
 
@@ -4266,6 +4274,10 @@ http://raspberrypi.stackexchange.com/questions/24092/kernel-config-necessary-opt
 EL DRIVER OTG (Synopsis DWC host support en DEVICE DRIVERS->USB SUPPORT) tiene que ir INCLUIDO, NO COMO MÓDULO, o el kernel no compilará.
 EN FILESYSTEMS, deja tranquilo el AUTOMOUNT ese o systemd se quejará.
 
+-Si quieres quitar el DEBUG_KERNEL, primero desactiva "Embedded system" en General Setup, y luego desactiva "Configure standard kernel features (expert users)"
+que está un poco más arriba.
+Ahora ya te puedes ir a "Kernel Hacking" y desactivar "Kernel debugging". Listo! 
+
 Ahora compilamos:
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs -j8
 
@@ -4500,7 +4512,7 @@ sudo mv /usr/bin/cc /usr/bin/disabled
 
 Listo. Ahora ya puedes compilar una versión de OpenAL que no de segfaults.
 
-(G)ZDOOM en la Raspberry Pi
+GZDOOM en la Raspberry Pi
 =========================
 Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
 
@@ -4564,11 +4576,33 @@ cmake -DCMAKE_C_FLAGS=" -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAK
 
 Para Pi3:
 
-cmake -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DUSE_ARMV8=1 -DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j8
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
+
+CRISPY DOOM
+============
+
+Vamos a centrarnos en CrispyDoom primero:
+Clonamos el repo de:
+https://github.com/fabiangreffrath/crispy-doom.git
+
+En src/i_video.h, ponemos "#define hires" a 0
+Ahora en src/i_video.c ponemos "SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");" donde viene puesto a "nearest" (sólo sale una vez, cambias nearest por linear y ya).
+Borramos el config viejo:
+sudo rm -R ~/.local/share/crispy-doom
+
+Ahora ya:
+./autogen.sh
+./configure
+make -j6
+
+Ejecutamos el juego con normalidad.
+Ahora editamos sudo rm -R ~/.local/share/crispy-doom/crispy-doom.cfg
+Y activamos si queremos el uncapped.
+
 
 XASH3D, ENGINE DE HALF LIFE EN LA RASPBERRY PI
 =============================================
