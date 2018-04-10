@@ -114,17 +114,7 @@ Bajamos los sources estables de http://libsdl.org/download-2.0.php
 
 Configuramos con:
 
-Para la Pi 2:
-
-CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
-
-Para la Pi 3:
-
 CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
-
-Para la Pi1:
-
-CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 Compilamos e instalamos.
 Añadimos a /etc/profile:
@@ -137,17 +127,7 @@ sudo apt-get install automake
 
 Configuramos con:
 
-Para la Pi 2:
-
-CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr --without-x
-
-Para la Pi 3:
-
 CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --without-x
-
-Para la Pi1:
-
-CFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6j -mfpu=vfp -mfloat-abi=hard" ./configure --prefix=/usr --without-x
 
 SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
 Le puedes pasar también --without-x si tienes los headers de las X11 instalados.
@@ -218,7 +198,7 @@ http://cyxdown.free.fr/reminiscence/
 
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
-CXXFLAGS += -O3 -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
+CXXFLAGS += -O3 -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -march=native
 
 Para arreglar la música y efectos, que van a la frecuencia equivocada en la Raspberry, ditamos
 sdl_systemstub.cpp y cambiamos:
@@ -389,17 +369,9 @@ Clonamos el repo de dugan:
 
 git clone --depth 1 https://github.com/duganchen/dosbox.git
 
-Configuraríamos para SDL2.  Para Pi1 con:
+Configuraríamos para SDL2. 
 
-CXXFLAGS="-O2 -march=armv6j -mfpu=vfp -mfloat-abi=hard -fomit-frame-pointer"  ./configure
-
-Para Pi3:
-
-CXXFLAGS="-O2 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure
-
-Para Pi 2:
-
-CXXFLAGS="-O2 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer"  ./configure
+CXXFLAGS="-O2 -march=native"  ./configure
 
 Luego en el conf nos interesará tener la opción output=texture o texturenb. Pasa que texturenb a veces falla, usa texture que se ve mejor.
 Luego ya SDL2 usa por debajo GLES en la Pi o lo que sea, para esa textura..
@@ -1922,14 +1894,8 @@ en source/build/src/sdlayer.cpp, antes de SDL_CreateWindow()
 
 Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
-Para una Pi3:
 
-Para pi1:
-make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-march=armv6j -mfpu=vfp -mfloat-abi=hard"
-Para pi 2:
-make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
-Para pi 3:
-make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"
+make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-march=native"
 
 Añade para Polymost:
 CUSTOMOPT="-DEDUKE32_GLES"
@@ -2019,30 +1985,10 @@ cd build
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
-Para la Pi 3:
-
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DGPL=ON \
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=native" -DGPL=ON \
 -DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
 -DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
-
-cmake -DCMAKE_BUILD_TYPE=Debug -DGPL=ON \
--DSDL_LIBRARY=/usr/lib/x86_64-linux-gnu/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/x86_64-linux-gnu/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
--DSDL_NET_LIBRARY=/usr/lib/x86_64-linux-gnu/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
-
-Para la Pi 2:
-
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DGPL=ON \
--DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
--DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
-
-Para la Pi 1:
-
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=armv6j -mfpu=vfp -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-march=armv6j -mfpu=vfp -mfloat-abi=hard" -DGPL=ON \
--DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
--DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
+include/SDL2/ ..
 
 Te tiene que funcionar, si no es que no encuentra las librerías o las cabeceras que le pasas, comprueba que están donde le estás diciendo.
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
@@ -2283,7 +2229,7 @@ cd b3
 
 Y configuramos desde un directorio de build que creamos nosotros:
 
-CFLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0
+CFLAGS="-march=native" CXXFLAGS="-march=native" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0
 
 Y compilamos con make -j4, e instalamos con:
 sudo make install
@@ -3157,7 +3103,7 @@ Descarga los últimos sources de
 git clone --depth 1 https://github.com/Davidslv/rogue.git
 Antes de nada, instala las libncurses5-dev, antes de hacer el configure.
 Configurar y compilar:
-CFLAGS="-O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure
+CFLAGS="-O3 -march=native" ./configure
 make -j4
 
 Ayuda de teclas con shift+?
@@ -3663,11 +3609,14 @@ sudo apt-get install flex bison python-mako gettext xutils-dev x11proto-gl-dev x
 
 Empezamos instalando libdrm:
 git clone --depth 1 git://anongit.freedesktop.org/mesa/drm
-./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
-make -j4
+./autogen.sh
+
+Editamos el configure, y donde pone "-O2 -g" pon "-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"
+Configuramos:
+./configure --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
+Y compilamos:
+make -j6
 sudo make install
-
-
 
 Ahora vamos a por MESA:
 
@@ -3691,13 +3640,13 @@ Y ahora seguimos con:
 ./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf
 
 Editamos el script configure y donde pone O2 ponemos:
--O3 -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
-(OJO, que es en VARIOS SITIOS!!!!)
+-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 
-Y ahora ejecutamos
+Configuramos:
 ./configure --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
 
-make -j4
+Y compilamos:
+make -j6
 sudo make install
 
 Ahora añadimos a config.txt:
@@ -3710,13 +3659,10 @@ Lo de dtoverlay=i2s-mmap no hace falta para la hifiberry.
 
 Y en /etc/asound.conf, si queremos la hifiberry:
 
-pcm.!default{
- type hw card 1
-}
+defaults.pcm.!card $sndrpihifiberry
+defaults.ctl.!card $sndrpihifiberry
 
-ctl.!default {
- type hw card 1
-}
+Si funciona alsamixer, ya tienes lo del audio arreglado.
 
 *************************Notas de RetroArch en x86**********************************************
 
@@ -3872,17 +3818,7 @@ LO PRIMERO TEN INSTALADO PKGCONFIG, O NO DETECTARÁ ALGUNAS LIBRERÍAS ESENCIALE
 
 Añadimos los flags de CPU en config.mk:
 
-Para la Pi 1:
-
--marm -march=armv6j -mfpu=vfp -mfloat-abi=hard
-
-Para la Pi 2:
-
--marm -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard
-
-Para la Pi 3:
-
--marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
+-march=native
 
 Editamos Makefile.common y comentamos la línea del -g
 
@@ -4297,13 +4233,9 @@ en screen/Screen.cpp, justo antes de SDL_CreateWindowAndRenderer()
 
 Editamos el script configure y quitamos toda mención a -O2 y -g. 
 
-Configuramos así para Pi3:
+Configuramos así:
 
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --disable-debug
-
-Configuramos así para Pi2:
-
-CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --disable-debug
+CFLAGS="-O3 -march=native" CXXFLAGS="-O3 -march=native" ./configure --disable-debug
 
 Compilamos:
 
@@ -4475,63 +4407,20 @@ Volvemos a poner jessie donde estaba stretch, y actualizamos a los índices de j
 sudo vim /etc/apt/sources.list
 sudo apt-get update
 
-INSTALAR GCC 6.1.0 MANUALMENTE en la Raspberry Pi
-===============================================
-
-Es necesario para tener una versión estable de OpenAL que no de segfaults.
-Info aquí:
-
-https://bitbucket.org/sol_prog/raspberry-pi-gcc-6.1.0-binary
-
-Nos clonamos el repo de los binarios, descomprimimos el .7z en el PC y subimos a la Pi el .tar resultante.
-Movemos gcc-6.1.0 a /usr/local/gcc-6.1.0 
-Nos metemos en  /usr/local/gcc-6.1.0/bin  y hacemos:
-cp c++-6.1.0 c++
-cp cpp-6.1.0 cpp
-cp g++-6.1.0 g++
-cp gcc-6.1.0 gcc
-cp gcc-ar-6.1.0 gcc-ar
-cp gcc-nm-6.1.0 gcc-nm
-cp gcc-ranlib-6.1.0 gcc-ranlib
-cp gcov-6.1.0 gcov
-cp gcov-tool-6.1.0 gcov
-cp gcc cc
-
-Ahora en .profile dejamos la línea del path así (nótese que sacamos el distcc del path y metemos el 6.1.0):
-PATH="/usr/local/gcc-6.1.0/bin:$HOME/bin:$PATH"
-
-Ahora arreglamos la librería stdc++, que el gcc 6.1.0 necesita una versión más moderna. Para ello hacemos:
-sudo cp /usr/local/gcc-6.1.0/lib/libstdc* /usr/lib/arm-linux-gnueabihf/
-
-Deshabilitamos gcc 4.9.x:
-
-sudo mkdir /usr/bin/disabled
-sudo mv /usr/bin/gcc* /usr/bin/disabled
-sudo mv /usr/bin/g++* /usr/bin/disabled
-sudo mv /usr/bin/cc /usr/bin/disabled
-
-Listo. Ahora ya puedes compilar una versión de OpenAL que no de segfaults.
-
 GZDOOM en la Raspberry Pi
 =========================
 Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
 
-PARA COMPILAR OpenAL NECESITAS GCC 6.1.0 O POSTERIOR instalado en la Pi. Mira las instrucciones para instalarlo.
+PARA COMPILAR OpenAL NECESITAS GCC 6.1.0 O POSTERIOR
 
-Nos compilamos nosotros OpenAL desde https://github.com/kcat/openal-soft porque el de debian tiene dependencias cochinas.
+Nos compilamos nosotros OpenAL bajando la última versión del código estable, porque el de debian tiene dependencias cochinas.
+
+mkdir build
 cd build
 
-Para Pi1:
-
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-march=armv6j -mfpu=vfp -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-march=armv6j -mfpu=vfp -mfloat-abi=hard"  \
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
+-DCMAKE_CXX_FLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
 -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DCMAKE_BUILD_TYPE=Release ..
-
-Para Pi3:
-
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DALSOFT_REQUIRE_NEON=ON \
--DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DHAVE_ARM_NEON_H=YES -DCMAKE_BUILD_TYPE=Release ..
 
 make
 sudo make install
@@ -4553,7 +4442,6 @@ en
 ../src/posix/sdl/sdlvideo.cpp
 justo antes de SDL_CreateWindow(), como siempre.
 
-Ahora configuramos (SI OBTIENES UN EJECUTABLE QUE PROVOCA SEGFAULTS, ES QUE NO HAS COMPILADO OPENAL Y ZDOOM CON GCC > 6.1.0):
 LO PRIMERO, agregamos esto en CMakelists.txt para que se compile con O2 y no con O3, que falla en ARM.
 LO TENEMOS QUE PONER bajo las líneas iniciales, justo tras: project(GZDoom)
 
@@ -4566,19 +4454,9 @@ option( DYN_MPG123 "Dynamically load libmpg123" OFF )
 option( DYN_FLUIDSYNTH "Dynamically load fluidsynth" OFF ) 
 Además, comenta las líneas de FLUIDSYNTH_FOUND, MPG123_FOUND, toda esa sección entera.
 
-Para Pi1:
+cmake -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  -DCMAKE_BUILD_TYPE=Release ..
 
-cmake -DCMAKE_C_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" -DCMAKE_CXX_FLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" -DCMAKE_BUILD_TYPE=Release ..
-
-Para Pi2:
-
-cmake -DCMAKE_C_FLAGS=" -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_CXX_FLAGS=" -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" -DCMAKE_BUILD_TYPE=Release ..
-
-Para Pi3:
-
-cmake -DUSE_ARMV8=1 -DCMAKE_BUILD_TYPE=Release ..
-
-Y compilamos con make -j8
+Y compilamos con make -j6
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
 
@@ -4594,6 +4472,9 @@ Ahora en src/i_video.c ponemos "SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "line
 Borramos el config viejo:
 sudo rm -R ~/.local/share/crispy-doom
 
+Editamos configure.ac, cambiamos el OPT_LEVEL a 3,
+y más abajo donde se usa el OPT_LEVEL añadimos:  -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
+
 Ahora ya:
 ./autogen.sh
 ./configure
@@ -4603,6 +4484,8 @@ Ejecutamos el juego con normalidad.
 Ahora editamos sudo rm -R ~/.local/share/crispy-doom/crispy-doom.cfg
 Y activamos si queremos el uncapped.
 
+Para que la música vaya bien, en el crispy-setup le ponemos "native MIDI" y seleccionamos el timidity.cfg del pack de instrumentos de:
+https://www.doomworld.com/idgames/music/dgguspat
 
 XASH3D, ENGINE DE HALF LIFE EN LA RASPBERRY PI
 =============================================
@@ -4752,7 +4635,7 @@ O bien usamos la 0.87 que traen los sources de los juegos, ya que en algunos cas
 CXXFLAGS="-fpermissive" ./configure --enable-static
 make -j8
 
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --enable-static
+CFLAGS="-O3 -march=native" CXXFLAGS="-O3 -march=native" ./configure --enable-static
 
 Buscamos libmodplug.a
 find ./ -name 'libmodplug.a'
@@ -4875,8 +4758,8 @@ Ahora, creamos directorio de compilación y usamos cmake y luego make:
 mkdir b3
 cd b3
 cmake ../src
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" \
- -DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ../src
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=native" \
+ -DCMAKE_CXX_FLAGS="-march=native" ../src
 
 make -j6
 
