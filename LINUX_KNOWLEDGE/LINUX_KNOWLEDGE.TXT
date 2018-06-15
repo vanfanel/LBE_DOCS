@@ -114,7 +114,7 @@ Bajamos los sources estables de http://libsdl.org/download-2.0.php
 
 Configuramos con:
 
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 Compilamos e instalamos.
 Añadimos a /etc/profile:
@@ -189,7 +189,6 @@ Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de 
 -En el Makefile: quitar -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
 -En graphics.h quitamos todo lo que lleve GL
 -En main.cpp quitamos todo lo que lleve GL, y cambiamos el tipo de gráficos por defecto a GRAPHICS_ORIGINAL, y ya de paso si quieres el lenguaje por defecto a LANGUAGE_US
-En la línea de stub->init, pasa false en el parámetro de OPENGL (esto último ya no hace falta).
 
 ******FLASHBACK en la Rasberry Pi***************************************************************************************************************************************
 
@@ -198,7 +197,7 @@ http://cyxdown.free.fr/reminiscence/
 
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
-CXXFLAGS += -O3 -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -march=native
+CXXFLAGS += -O3 -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 
 Para arreglar la música y efectos, que van a la frecuencia equivocada en la Raspberry, ditamos
 sdl_systemstub.cpp y cambiamos:
@@ -371,7 +370,7 @@ git clone --depth 1 https://github.com/duganchen/dosbox.git
 
 Configuraríamos para SDL2. 
 
-CXXFLAGS="-O2 -march=native"  ./configure
+CXXFLAGS="-O2 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  ./configure
 
 Luego en el conf nos interesará tener la opción output=texture o texturenb. Pasa que texturenb a veces falla, usa texture que se ve mejor.
 Luego ya SDL2 usa por debajo GLES en la Pi o lo que sea, para esa textura..
@@ -1895,7 +1894,7 @@ en source/build/src/sdlayer.cpp, antes de SDL_CreateWindow()
 Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
 
-make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-march=native"
+make -j8 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"
 
 Añade para Polymost:
 CUSTOMOPT="-DEDUKE32_GLES"
@@ -1985,7 +1984,7 @@ cd build
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=native" -DGPL=ON \
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DGPL=ON \
 -DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
 -DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
 include/SDL2/ ..
@@ -2229,7 +2228,7 @@ cd b3
 
 Y configuramos desde un directorio de build que creamos nosotros:
 
-CFLAGS="-march=native" CXXFLAGS="-march=native" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0
+CFLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0
 
 Y compilamos con make -j4, e instalamos con:
 sudo make install
@@ -3103,7 +3102,7 @@ Descarga los últimos sources de
 git clone --depth 1 https://github.com/Davidslv/rogue.git
 Antes de nada, instala las libncurses5-dev, antes de hacer el configure.
 Configurar y compilar:
-CFLAGS="-O3 -march=native" ./configure
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure
 make -j4
 
 Ayuda de teclas con shift+?
@@ -3602,7 +3601,7 @@ sudo service lightdm stop
 
 y para volver, obviamente, start.
 
-*************************Instalar driver VC4 en la Raspberry PI, paso a paso***********************
+*************************Instalar driver VC4 en la Raspberry PI, paso a paso, para arrancar en modo KMS y usarla así***********************
 
 Instalamos estos paquetes antes de empezar:
 sudo apt-get install flex bison python-mako gettext xutils-dev x11proto-gl-dev x11proto-dri2-dev libpthread-stubs0-dev automake autoconf libtool --no-install-recommends
@@ -3620,7 +3619,7 @@ sudo make install
 
 Ahora vamos a por MESA:
 
-sudo apt-get purge --no-install-recommends \
+sudo apt-get install --no-install-recommends \
     flex bison python-mako \
     libxcb-dri3-dev libxcb-dri2-0-dev \
     libxcb-glx0-dev libx11-xcb-dev \
@@ -3637,7 +3636,7 @@ O si queremos los últimos sources de GIT:
 git clone --depth 1 git://anongit.freedesktop.org/mesa/mesa
 
 Y ahora seguimos con:
-./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf
+./autogen.sh
 
 Editamos el script configure y donde pone O2 ponemos:
 -O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
@@ -3648,6 +3647,8 @@ Configuramos:
 Y compilamos:
 make -j6
 sudo make install
+
+NO HACE FALTA que instales libgbm1 ni libgbm-dev ni nada de eso: forma parte de MESA y se instala al instalar MESA, y la última versión siempre viene dentro de MESA.
 
 Ahora añadimos a config.txt:
 dtoverlay=vc4-kms-v3d
@@ -3818,7 +3819,7 @@ LO PRIMERO TEN INSTALADO PKGCONFIG, O NO DETECTARÁ ALGUNAS LIBRERÍAS ESENCIALE
 
 Añadimos los flags de CPU en config.mk:
 
--march=native
+-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 
 Editamos Makefile.common y comentamos la línea del -g
 
@@ -4235,7 +4236,7 @@ Editamos el script configure y quitamos toda mención a -O2 y -g.
 
 Configuramos así:
 
-CFLAGS="-O3 -march=native" CXXFLAGS="-O3 -march=native" ./configure --disable-debug
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --disable-debug
 
 Compilamos:
 
@@ -4481,11 +4482,21 @@ Ahora ya:
 make -j6
 
 Ejecutamos el juego con normalidad.
-Ahora editamos sudo rm -R ~/.local/share/crispy-doom/crispy-doom.cfg
+Ahora editamos ~/.local/share/crispy-doom/crispy-doom.cfg
 Y activamos si queremos el uncapped.
 
 Para que la música vaya bien, en el crispy-setup le ponemos "native MIDI" y seleccionamos el timidity.cfg del pack de instrumentos de:
 https://www.doomworld.com/idgames/music/dgguspat
+
+MONITORIZAR ACCESO A FICHEROS EN GNU/LINUX
+===========================================
+
+Instalamos inotify-tools si no las tienes:
+
+sudo apt-get install inotify-tools
+
+Y ahora, si queremos ver todos los accesos a archivos de $HOME, por ejemplo...:
+inotifywait -r -m $HOME
 
 XASH3D, ENGINE DE HALF LIFE EN LA RASPBERRY PI
 =============================================
@@ -4635,7 +4646,7 @@ O bien usamos la 0.87 que traen los sources de los juegos, ya que en algunos cas
 CXXFLAGS="-fpermissive" ./configure --enable-static
 make -j8
 
-CFLAGS="-O3 -march=native" CXXFLAGS="-O3 -march=native" ./configure --enable-static
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --enable-static
 
 Buscamos libmodplug.a
 find ./ -name 'libmodplug.a'
@@ -4758,8 +4769,8 @@ Ahora, creamos directorio de compilación y usamos cmake y luego make:
 mkdir b3
 cd b3
 cmake ../src
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=native" \
- -DCMAKE_CXX_FLAGS="-march=native" ../src
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" \
+ -DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ../src
 
 make -j6
 

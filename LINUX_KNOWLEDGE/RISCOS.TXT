@@ -38,3 +38,13 @@ cdir: crear directorio
 
 Para ver la ayuda de un comando, *help comando.
 Por ejemplo, para hacer un copy sin confirmación, es copy origen destino ~C
+
+MONTAR LA PARTICIÓN ADFS DE UNA MICROSD DE UN SISTEMA ANTERIOR
+===============================================================
+
+El único problema es que detecta la partición FAT32 y es la que monta. Así que:
+1) Le damos a dismount
+2) Nos vamos a la consola de comandos F12 y metemos
+*rmkill fat32fs
+*rmkill dosfs
+3) Le damos al icono del pen para que re-monte, y ya tenemos la partición ADFS donde tenemos todo lo del sistema antiguo. 
