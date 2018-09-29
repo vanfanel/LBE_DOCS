@@ -1,0 +1,125 @@
+-Fuente de letra para las consolas TTY: lo primero instalamos las fuentes terminus (tienes que estar conectado por WIFI, así que haz esto lo primero!):
+
+sudo emerge terminus-fonts
+
+-Configuramos el idioma del teclado en:
+
+/etc/conf.d/keymaps
+
+Lo ponemos en "es"
+
+-Configuramos la fuente en:
+
+/etc/conf.d/consolefont
+
+Como has instalado las fuentes terminus, usa la "ter-v32b". Puedes ver la lista en /usr/share/consolefonts. Las terminus empiezan por ter-*.
+
+Ahora tienes que añadir el servicio consolefont al inicio, en el runlevel boot:
+rc-update add consolefont boot
+
+-Desactivamos las X con:
+
+sudo rc-update del xdm default
+sudo rc-update del cronie default
+
+-Autologin poniendo en /etc/inittab, en donde los TERMINALS:
+
+c1:12345:respawn:/sbin/agetty -a demouser --noclear 38400 tty1 linux
+
+(Esto para el TTY1, para los demás lo mismo)
+
+-Si tienes que poner algo al inicio, puedes hacerlo creando uno o varios scripts en /etc/local.d
+Estos scripts los ejecuta el servicio "local". Deben tener permisos de ejecución (sudo +x) y deben acabar en .start
+Puede servir para configurar la red manualmente y el governor.
+
+-Ahora puedes ir quitando servicios del inicio. Para ver qué servicios tienes en los diferentes niveles (boot, default, sysinit...):
+rc-update -v show
+...Y luego para ir quitando servicios:
+sudo rc-update del nombre_servicio
+
+-Eliminamos todo lo relacionado con las X con:
+emerge --unmerge $(qlist -IC x11-*) 
+
+-Ponemos el governor en performance. Para ello, copiamos el script /etc/init.d/rpi3-ondemand a /etc/init.d/rpi3-performance,
+y cambiamos todo lo de ondemand a performance, sobre todo el echo a $(SCPU_GOV). Quitamos las líneas del threshold y todo eso,
+con el echo vale.
+Ahora quitamos el servicio de ondemad y ponemos el de performance:
+rc-update del rpi3-ondemand sysinit
+rc-update add rpi3-performance sysinit
+Podemos comprobar haciendo un cat a 
+sudo cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+
+-Ponemos en /etc/local.d/<nombre_que_queramos>.start, al que además daremos permisos de ejecución (chmod +x):
+
+sudo ip link set eth0 up
+sudo ip addr add 192.168.5.8/24 dev eth0
+sudo ip route add default via 192.168.5.7
+sudo /etc/init.d/dropbear start > /dev/null 2>&1
+
+-Ponemos en /etc/resolv.conf
+nameserver 8.8.8.8
+
+-Una vez que tengamos red y salida a internet, lo primero es hacer un:
+sudo emerge --sync
+emerge --update
+
+-Recuerda que para poner o quitar un servicio, simplemente su script de inicio debe estar en /etc/init.d, y se quita o se pone con 
+rc-update add|del nombre_del_script_del_servicio runlevel 
+
+--Corregimos los errores con los locales. Para ello, lo primero editamos /etc/csh.env y dejamos la línea de setenv LANG así:
+setenv LANG 'en_US.utf8'
+--Ponemos en .bashrc:
+export LC_ALL='C'
+--Dejamos /etc/locale.gen sólo con estas dos líneas descomentadas:
+en_US ISO-8859-1
+en_US.UTF-8 UTF-8
+--Ejecutamos
+sudo locale-regen
+--Dejamos /etc/env.d/locale así:
+LANG="en_US.UTF-8"
+LC_COLLATE="C"
+LC_CTYPE="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_PAPER="en_US.UTF-8"
+LC_NAME="en_US.UTF-8"
+LC_ADDRESS="en_US.UTF-8"
+LC_TELEPHONE="en_US.UTF-8"
+LC_MEASUREMENT="en_US.UTF-8"
+LC_IDENTIFICATION="en_US.UTF-8"
+LANG="en_US.UTF-8"
+LANGUAGE="en_US:en"
+LC_ALL="C"
+--...Y ya deberíamos ser capaces de ejecutar 'locale -a' sin errores, y 'sudo emerge' por ssh sin errores tampoco.
+
+
+
+FLAGS DE COMPILACIÓN
+=====================
+
+Para arm64 se usa:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -fomit-frame-pointer"
+NO SE NECESITA nada de NEON, tal como dice sakaki en el Readme.MD de su Gentoo de 64 bits para la Pi:
+"As the SIMD FPU features are standard in ARMv8, there is no need for -mfpu=neon mfloat-abi=hard etc., as you would have had on e.g. the 32-bit ARMv7a architecture."
+
+
+INSTALAR MESA
+==============
+
+Bajamos los últimos sources o el último estable que sea.
+Instalamos estas cosas antes:
+sudo emerge dev-python/mako x11-libs/libXfixes x11-libs/libxcb x11-libs/libXxf86vm x11-libs/libXext x11-libs/libXdamage x11-libs/libxshmfence x11-libs/libX11
+
+Instalamos libdrm. Si te pide algo de las Xorg al hacer el autogen.sh, comenta esa parte del configure.ac y listo.
+Edita su configure y cambia donde pone O2 por:
+-O3 -march=armv8-a+crc -mtune=cortex-a53
+Configura con:
+./configure --prefix=/usr --libdir=/usr/lib64 --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
+
+Vamos con MESA. 
+Edita su configure y cambia donde pone O2 por:
+-O3 -march=armv8-a+crc -mtune=cortex-a53
+MESA lo tienes que configurar con:
+./configure --prefix=/usr --libdir=/usr/lib64 --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx

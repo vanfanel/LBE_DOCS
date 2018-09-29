@@ -1,0 +1,97 @@
+NOTAS PREVIAS
+==============
+
+En GNU/LInux en general, la arquitectura ARM de 64 bits se llama aarch64, con doble a. Sin embargo, en Debian se suele llamar arm64: así se refleja en el parámetro de
+arquitectura objetivo que se le pasa a debootstrap, por ejemplo. Sin embargo, el ejecutable de qemu-static lleva el subfijo aarch64, porque no es algo propio de Debian.
+
+PARTE 1: EL KERNEL AARCH64
+=========================
+
+Seguimos estos dos tutoriales:
+http://www.tal.org/tutorials/raspberry-pi3-build-64-bit-kernel
+http://www.tal.org/tutorials/booting-64-bit-kernel-raspberry-pi-3
+Al final el kernel, los módilos, los dtb y demás quedan en kernel-out, como en el tutorial.
+
+Cosas que hacemos distintas para instalar el kernel, módulos y dtbs: 
+-Instalamos los módulos del kernel así:
+Primero, ponemos el crosscompilador de aarch64 en el path:
+export PATH=$PATH:/opt/aarch64/bin/
+Y ahora instalamos los módulos:
+sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/mnt/LINUX/ modules_install
+(kernel_out es nuestro directorio de salida del kernel, los módulos, los dtbs y tal. Así va en esos tutoriales que usamos: mandando los resultados a un directorio a parte).
+
+-Instalamos el kernel con:
+cp ../kernel-out/arch/arm64/boot/Image /mnt/BOOT/kernel8.img
+
+-Nosotros no instalamos los módulos del kernel hasta el final, después de instalar el rootfs (que es la segunda parte de este documento
+que estás leyendo). De momento instala el kernel (kernel8.img) y los dtb, y los overlays.
+Los DTBs están en arch/arm64/boot/dts/broadcom/*.dtb y los tienes que pasar al directorio raiz de la partición de boot (FAT32) de la SD.
+Los overlays están en arch/arm64/boot/dts/overlays/*.dtb* y los tienes que pasar a overlays, un directorio que cuelga directamente del raiz de la partición de boot (FAT32) de la SD.
+(Vamos, como en Raspbian más o menos).
+
+-En config.txt nosotros ponemos (a consecuencia de cómo tenemos las cosas instaladas):
+device_tree=bcm2710-rpi-3-b-plus.dtb
+overlay_prefix=overlays/
+kernel=kernel8.img
+arm_control=0x200
+
+PARTE 2: EL ROOTFS
+=================
+
+Seguimos el tutorial de:
+https://www.debian.org/releases/stable/arm64/apds03.html.en#idm3828
+
+Lo primero formateamos la partición EXT4:
+sudo mkfs.ext4 /dev/sdb2
+Lo montamos como /mnt/LINUX
+sudo mount /dev/sdb2 /mnt/LINUX
+
+La línea para hacer el debootstrap a un directorio llamado arm64 es:
+sudo debootstrap --foreign --arch arm64 stretch  /mnt/LINUX http://ftp.es.debian.org/debian
+
+Ahora copiamos el quemu-static al nuevo sistema:
+sudo cp /usr/bin/qemu-aarch64-static /mnt/LINUX/usr/bin/
+
+Ahora chrooteamos al nuevo sistema:
+LANG=C.UTF-8 sudo chroot /mnt/LINUX qemu-aarch64-static /bin/bash
+
+Exportamos el modelo de terminal del host:
+export TERM=xterm-color
+
+Y ahora empezamos con el 2nd stage del nuevo sistema! (Recuerda que para tener debootstrap/debootstrap has tenido que pasar la opción "--foreing" ahí arriba,
+cuando ejecutaste debootstrap en el host al principio para empezar):
+/debootstrap/debootstrap --second-stage
+
+Aprovecha para:
+-Instalar el VIM, sudo, net-tools... (sí, ¡funciona con la red del host!):
+apt install vim sudo net-tools alsa-utils 
+-Para que sudo no de el error (unable to resolve hos), en /etc/hosts, añade la línea:
+127.0.1.1    pi
+-Cambiar el password de root  mientras estás chrooteado
+-Ajustar el hostname, en /etc/hostname.
+-Editar /lib/udev/rules.d/73-usb-net-by-mac.rules y dejar así la línea de IMPORT, para que el interface ethernet se llame eth0 y no un churro basado en la MAC address:
+IMPORT{builtin}="net_id", NAME="eth0"
+
+Si te dejas algo que no se pueda hacer en la máquina objetivo, puedes volver a chrootearte en la partición EXT4 de la SD después de haber transferido el rootfs,
+y lo puedes hacer tantas veces como sea necesario, pero pasándole a chroot la ruta del raiz del EXT4 de la SD:
+LANG=C.UTF-8 sudo chroot /mnt/LINUX qemu-aarch64-static /bin/bash
+
+¡¡¡Sólo si hemos hecho el rootfs en un disco y lo transferimos a otro!!!
+Transferimos el rootfs desde el disco duro del host a la partición EXT4 de la tarjeta con:
+sudo rsync -avP --numeric-ids debian_arm64/ /mnt/LINUX/
+
+Ahora instalamos los módulos del kernel:
+sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/mnt/LINUX/ modules_install
+
+OJO A ESTO QUE SIGUE: SI NO VES NADA EN LA PANTALLA HASTA EL LOGIN, NO ES QUE TE FALTE NADA EN /dev. SI TIENES console=tty1 EN CMDLINE.TXT SE TIENE QUE
+VER. EL PROBLEMA ES QUE SYSTEMD LIMPIA LA CONSOLA TAN RÁPIDO ANTES DEL LOGIN, QUE PARECE QUE NO SALE NADA EN PANTALLA PERO ES MENTIRA.
+¡¡NO NECESITAS FICHEROS PERMANENTES EN /dev PARA VER LOS MENSAJES DEL KERNEL Y DE SYSTEMD EN EL INICIO!!! NO TE RAYES. ¡¡¡NO NECESITAS NINGÚN FICHERO
+PERMANENTE EN /dev, CON LOS QUE CREA UDEV EN EL ARRANQUE ES SUFICIENTE!!! (QUE SON INVISIBLES SI HACES UN CHROOT AL ROOTFS EN VEZ DE ARRANCAR 
+EN ÉL DE VERDAD) 
+Ahora hacemos que systemd deje de borrarnos la consola en el incio, o no veremos nada del arranque (ni del kernel ni de los procesos que va levantando systemd):
+mkdir /etc/systemd/system/getty@.service.d
+cat >/etc/systemd/system/getty@.service.d/noclear.conf <<EOF
+[Service]
+TTYVTDisallocate=no
+EOF
+

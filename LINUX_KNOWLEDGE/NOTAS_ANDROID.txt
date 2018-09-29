@@ -59,3 +59,16 @@ en el TWRP, y luego sobreescribir los archivos del backup que hemos hecho por lo
 Luego le damos a RESTORE y ya debería encontrarnos el backup para restaurarlo.
 
 Para reiniciar en modo TWRP (recovery mode) en el G531F es VOLUME UP + BOTÓN CENTRAL + POWER ON
+
+NOTA: UNLOCK BOOTLOADER
+=========================
+
+En algunos teléfonos, al instalar un custom recovery (TWRP) luego no arranca ese recovery sino el de fábrica. Eso es porque antes de flashearlo tienes 
+que unlockear el bootloader. Es en opciones de desarrollador, OEM UNLOCK. Lo activas y flasheas con el HEIMDALL, como root (con SUDO) y ya irá.
+
+NOTA: ERROR STATUS 7 AL INSTALAR UN ZIP DESDE UN CUSTOM RECOVERY
+================================================================
+
+Básicamente es porque el ZIP tiene un script de instalación que checkea el modelo de móvil y si no coincide no se instala. A la mierda con eso.
+Nosotros lo queremos instalar y que se joda.
+Abrimos el ZIP, nos vamos a ANDROID en META_INF – COM – GOOGLE, y eliminamos las líneas del ASSERT que comprueba el nombre del movil. Y ya.

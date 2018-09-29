@@ -114,7 +114,7 @@ Bajamos los sources estables de http://libsdl.org/download-2.0.php
 
 Configuramos con:
 
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 Compilamos e instalamos.
 Añadimos a /etc/profile:
@@ -125,7 +125,11 @@ Y también
 sudo apt-get install autotools-dev
 sudo apt-get install automake
 
-Configuramos con:
+Para SDL2_mixer, configuramos con:
+
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
+
+Para SDL2_image u SDL2_ttf, configuramos con:
 
 CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --without-x
 
@@ -364,16 +368,26 @@ https://github.com/raspberrypi/firmware/issues/354
 
 *******DOSBOX en la Raspberry Pi*******************************************************************************************************************************
 
-Clonamos el repo de dugan:
+Clonamos el repo principal, que sigue estando en SF:
 
-git clone --depth 1 https://github.com/duganchen/dosbox.git
+svn checkout https://svn.code.sf.net/p/dosbox/code-0/dosbox/trunk dosbox-code-0
+
+Bajamos el último parche de este hilo y lo aplicamos:
+
+https://www.vogons.org/viewtopic.php?f=41&t=34770&start=120
+
+patch -p0 < parche.patch
+
+Editamos configure y ponemos a "no" todos los have... relacionados con opengl y x11.
 
 Configuraríamos para SDL2. 
 
-CXXFLAGS="-O2 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  ./configure
+CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  ./configure
 
 Luego en el conf nos interesará tener la opción output=texture o texturenb. Pasa que texturenb a veces falla, usa texture que se ve mejor.
-Luego ya SDL2 usa por debajo GLES en la Pi o lo que sea, para esa textura..
+En renderer pon renderer=auto y fullscreen=true, o no se verá nada. SDL2 luego ya usa el renderer "opengles2" por debajo... Pero dosbox no admite este valor.
+El caso es que no dejes puesto renderer=opengl porque ese no se ve.
+Pon el scaler a none también.
 
 Hemos encontrado las las instrucciones para dynarec ARM y para UNALIGNED MEMORY ACCESS en estas páginas:
 
@@ -436,9 +450,9 @@ double refreshRate;
 Ahora ya lo tenemos: sólo queda irse a src/hardware/vga_draw.cpp y cambiar esto:
 fps=(double)clock/(vtotal*htotal);
 ..por esto otro:
-       /* force the VGA refresh rate by setting fps and bending the clock to our will */
+       // Force the VGA refresh rate by setting fps and bending the clock to our will
         fps=vga.refreshRate;
-        clock=((double)(vtotal*htotal))*fps;
+        //clock=((double)(vtotal*htotal))*fps;
 
 Por último, a nuestro .conf le añadimos algo como:
 refresh=60.016804;
@@ -492,6 +506,23 @@ Pstring = secprop->Add_string("core",Property::Changeable::WhenIdle,"dynamic");
 Compilamos con:
 
 make -f Makefile.libretro -j8 platform=rpi2
+
+*******Core TYRQUAKE, que no salva la configuración interna del QUAKE cuando salimos***************************************************************************
+
+Los datos del juego (los .PAK) van en un subir llamado id1, así en minúsculas. La música, en ogg, va en id1/music.
+Y para cambiar cosas del juego y que se conserven los cambios, mételos en id1/autoexec.cfg. Por ejemplo, con esto queda muy a mi gusto el tamaño de pantalla, escalado
+de texturas, animaciones suaves, volúmen...
+
+viewsize 120 
+r_lerpmodels 1.00
+r_lerpmove 1.00
+dither_filter 1.00
+gamma 0.90
+bgmvolume "0.500000"
+volume "0.200000"
+bind F1 ""
+
+Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake te mande al menú de RA.
 
 *******EN RASPBIAN NO PUEDO DEBUGEAR PROGRAMAS EN C++ QUE HAN SIDO COMPILADOS CON DISTCC*********************************************************
 Da todo el rato "no symbol <loquesea> in current context".
@@ -3633,7 +3664,7 @@ sudo apt-get install --no-install-recommends \
 Ahora, para los sources de MESA, lo mejor es bajar los últimos estables desde:
 https://mesa.freedesktop.org/archive/
 O si queremos los últimos sources de GIT:
-git clone --depth 1 git://anongit.freedesktop.org/mesa/mesa
+git clone --depth 1 https://gitlab.freedesktop.org/mesa/mesa.git
 
 Y ahora seguimos con:
 ./autogen.sh
@@ -4818,3 +4849,79 @@ Sí. El kernel corre sobre HRTIMERS, lo de los 100HZ es la velocidad del shedule
 Son cosas distintas e independientes, la granularidad del kernel es mucho mayor que 100HZ... eso es sólo el scheduler.
 Y el scheduler, en tus sistemas de no-escritorio, va de sobra a 100Hz para una cosa que ejecutas a la vez (mas el housekeeping del kernel fuera de las CPUs aisladas).
 Así que sí, se puede.
+
+COMPILAR FROTZ VERSIÓN SDL, QUE SOPORTA ACENTOS, SIN INSTALAR LIBJPEG EN EL SISTEMA
+=================================================================================
+
+Empezamos compilando libjpeg-turbo, que nos va a hacer falta la versión estática de las librerías. Pillamos la última versión estable de su repo:
+https://github.com/libjpeg-turbo/libjpeg-turbo/releases
+
+Ahora creamos directorio de compilación, entramos, y configuramos con CMAKE así:
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" cmake -DCMAKE_BUILD_TYPE=Release ..
+
+Ahora, clonamos el repo del FROTZ:
+git clone --depth 1 https://github.com/DavidGriffith/frotz.git
+
+Ahora, en el directorio de los sources del FROTZ, nos creamos un directorio llamado jpeg, donde vamos a meter las librerías estáticas y los headers de libjpeg. 
+Vamos a necesitar tener en nuestro directorio jpeg dentro de los sources del FROTZ estos archivos (unos del diretorio raiz de los sources de libjpeg y otros de nuestro
+directorio de compilación de libjpeg, b3 o como lo llames):
+jconfig.h 
+jmorecfg.h 
+jpeglib.h 
+libjpeg.a
+
+Ahora, editamos el Makefile del FROTZ, y a los CFLAGS le añadimos, para que encuentre los headers de SDL2, de freetype2, de la libjpeg que hemos compilado, etc, 
+quedando así la línea de CFLAGS:
+CFLAGS += -I$(INCLUDEDIR) -I/usr/include/SDL2 -I/usr/include/freetype2 -I/home/pi/src/frotz/jpeg
+
+Y la línea de LDFLAGS quedará así:
+jpeg/libjpeg.a -lSDL2 -lSDL2_mixer -lz -lfreetype -lpng
+(Como ves, no le pasamos -ljpeg, sino que directamente le pasamos la librería estática al linker y listo).
+
+CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN LA RASPBERRY PI
+=================================================================================
+
+Instalamos los paquetes requeridos para usar hcitools y todo eso:
+
+sudo apt-get install bluez
+
+Insertamos los módulos necesarios del kernel y conectamos el sistema de gestión hci a nuestro hardware bluetooth:
+
+sudo modprobe hci_uart
+sudo modprobe btbcm
+sudo hciattach /dev/ttyAMA0 bcm43xx 921600 noflow -
+
+Ahora deberíamos poder ver qué dispositivos bluetooth tiene nuestro microordenador:
+
+sudo hciconfig -a
+
+Ahora levantamos nuestro dispositivo hci:
+
+sudo hciconfig hci0 up
+
+Podemos ver más información con esto:
+
+sudo hciconfig dev
+
+Escaneamos dispositivos bluetooth al alcance:
+
+sudo hcitool scan
+
+Si aparece el nuestro, nos podemos conectar con:
+
+hcitool cc E4:17:D8:15:0D:79
+hcitool lecc E4:17:D8:15:0D:79
+
+Listamos las conexiones hechas con:
+
+hcitool con
+
+Para quitar el LAG:
+
+sudo iwconfig wlan0 txpower off
+O bien deshabilitar el WIFI en el inicio con:
+dtoverlay=pi3-disable-wifi
+
+hcitool con (para verificar que está conectado!)
+sudo hcitool enc E4:17:D8:15:0D:79 off
+sudo hcitool sr E4:17:D8:15:0D:79 slave
