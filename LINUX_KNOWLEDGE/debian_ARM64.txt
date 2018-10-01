@@ -12,16 +12,16 @@ http://www.tal.org/tutorials/raspberry-pi3-build-64-bit-kernel
 http://www.tal.org/tutorials/booting-64-bit-kernel-raspberry-pi-3
 Al final el kernel, los módilos, los dtb y demás quedan en kernel-out, como en el tutorial.
 
+Antes de empezar, siempre ponemos el crosscompilador de 64bits en el path:
+export PATH=$PATH:/opt/aarch64/bin/
+
 Cosas que hacemos distintas para instalar el kernel, módulos y dtbs: 
 -Instalamos los módulos del kernel así:
-Primero, ponemos el crosscompilador de aarch64 en el path:
-export PATH=$PATH:/opt/aarch64/bin/
-Y ahora instalamos los módulos:
 sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/mnt/LINUX/ modules_install
 (kernel_out es nuestro directorio de salida del kernel, los módulos, los dtbs y tal. Así va en esos tutoriales que usamos: mandando los resultados a un directorio a parte).
 
 -Instalamos el kernel con:
-cp ../kernel-out/arch/arm64/boot/Image /mnt/BOOT/kernel8.img
+sudo cp ../kernel-out/arch/arm64/boot/Image /mnt/BOOT/kernel8.img
 
 -Nosotros no instalamos los módulos del kernel hasta el final, después de instalar el rootfs (que es la segunda parte de este documento
 que estás leyendo). De momento instala el kernel (kernel8.img) y los dtb, y los overlays.
@@ -63,10 +63,10 @@ cuando ejecutaste debootstrap en el host al principio para empezar):
 /debootstrap/debootstrap --second-stage
 
 Aprovecha para:
--Instalar el VIM, sudo, net-tools... (sí, ¡funciona con la red del host!):
+-Instalar el VIM, sudo, net-tools, sshd... (sí, ¡funciona con la red del host!):
 apt install vim sudo net-tools alsa-utils 
 -Para que sudo no de el error (unable to resolve hos), en /etc/hosts, añade la línea:
-127.0.1.1    pi
+127.0.1.1    raspberrypi
 -Cambiar el password de root  mientras estás chrooteado
 -Ajustar el hostname, en /etc/hostname.
 -Editar /lib/udev/rules.d/73-usb-net-by-mac.rules y dejar así la línea de IMPORT, para que el interface ethernet se llame eth0 y no un churro basado en la MAC address:
@@ -95,3 +95,83 @@ cat >/etc/systemd/system/getty@.service.d/noclear.conf <<EOF
 TTYVTDisallocate=no
 EOF
 
+PARTE 3: FINETUNING THE SYSTEM
+=============================
+
+Una vez que hemos arrancado nativamente, tenemos mucho que hacer.
+
+-Crear el usuario pi:
+sudo adduser pi
+sudo adduser pi sudo
+
+-Crear el /usr/bin/netup con:
+sudo ifconfig eth0 up
+sudo ip addr add 192.168.5.8/24 dev eth0
+sudo ip route add default via 192.168.5.7
+sudo systemctl start dropbear
+(OJO: dropbear ya no arranca a mano con '/etc/init.d/dropbear start')
+
+-Instalar SSH y luego quitarlo, en dos pasos, uno en chroot y otro en nativo: Esto además instala fuentes, setup de la consola y todo eso, que nos va a hacer falta:
+apt install sshd (en entorno chroot. No podrá configurar, lo hacemos en nativo con dpkg --configure -a)
+apt-get purge ssh-server (en nativo)
+
+-Instalar dropbear, generar sus claves y quitarlo del arranque sin maskearlo, porque si no luego no arranca desde mi script netup:
+apt-get install dropbear
+dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
+sudo systemctl disable dropbear
+(CUIDADO QUE SIN LAS CLAVES NO FUNCIONA!!!)
+
+-Reconfiguramos la consola, el teclado y los locales:
+sudo apt-get install locales console-setup keyboard-configuration
+sudo dpkg-reconfigure console-setup
+sudo dpkg-reconfigure keyboard-configuration
+sudo dpkg-reconfigure locales
+(generamos sólo en_US.UTF-8)
+Trase reiniciar, ya tendría que ir la Ñ, los acentos y todo eso.
+
+-Vamos quitando los servicios con:
+sudo systemctl mask <sevcio> 
+-Al final, de acuerdo con systemd-analyze blame, sólo quedan iniciados estos:
+
+-Para quitar el error: "brcmfmac: brcmf_sdio_htclk: HT Avail timeout (1000000): clkctl 0x50"
+Puedes instalar el firmware de la wifi, o simplemente deshabilitarla poniendo en config.txt:
+dtoverlay=pi3-disable-wifi
+
+-Para ocultar los mensajes de systemd en el inicio, pon en cmdline.txt:
+systemd.show_status=auto
+Así sólo salen los mensajes de error. Si no quieres ni esos, ponlo a false.
+
+INSTALAR MESA
+==============
+
+Los CFLAGS van a ser: 
+-O3 -march=armv8-a+crc -mtune=cortex-a53
+
+Empezamos con DRM:
+git clone --depth 1 git://anongit.freedesktop.org/mesa/dr
+sudo apt-get install xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
+./autogen.sh
+Editamos configure y donde pone O2 ponemos:
+-O3 -march=armv8-a+crc -mtune=cortex-a53
+Configuramos y compilamos:
+./configure --prefix=/usr --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
+
+Ahora vamos a por MESA. Instalamos estos paquetes previos:
+sudo apt-get install --no-install-recommends \
+    flex bison python-mako \
+    libxcb-dri3-dev libxcb-dri2-0-dev \
+    libxcb-glx0-dev libx11-xcb-dev \
+    libxcb-present-dev libxcb-sync-dev \
+    libxshmfence-dev \
+    libxdamage-dev libxext-dev libxfixes-dev \
+    x11proto-dri2-dev x11proto-dri3-dev \
+    x11proto-present-dev x11proto-gl-dev \
+    libexpat1-dev libudev-dev gettext \
+    ca-certificates \
+    zlib1g-dev
+
+Bajamos los últimos estables de:
+https://mesa.freedesktop.org/archive/
+configuramos con:
+./autogen.sh
+./configure --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
