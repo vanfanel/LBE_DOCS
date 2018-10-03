@@ -16,6 +16,13 @@ Antes de empezar, siempre ponemos el crosscompilador de 64bits en el path:
 export PATH=$PATH:/opt/aarch64/bin/
 
 Cosas que hacemos distintas para instalar el kernel, módulos y dtbs: 
+-Configuramos el kernel con:
+make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
+Ajustes al kernel:
+-Pon el I/O Scheduler a BFQ por defecto y quita los demás
+-Quita todo en kernel hacking (debugeo.. todo!)
+-Pon el timer a 300Hz, es mejor para multimedia
+
 -Instalamos los módulos del kernel así:
 sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/mnt/LINUX/ modules_install
 (kernel_out es nuestro directorio de salida del kernel, los módulos, los dtbs y tal. Así va en esos tutoriales que usamos: mandando los resultados a un directorio a parte).
@@ -103,6 +110,14 @@ Una vez que hemos arrancado nativamente, tenemos mucho que hacer.
 -Crear el usuario pi:
 sudo adduser pi
 sudo adduser pi sudo
+sudo adduser pi audio
+sudo adduser pi video
+(Esto último es importante, porque has estado dando vueltas y el kernel sí reconocía el audio interno y la hifiberry (cat /proc/asound/cards)
+pero aplay -L no listaba los dispositivos...¡porque no estabas en el grupo audio!)
+-Si usas la hifiberry, acuérdate que en config.txt tienes que tener para que funcione sin poner nada en /etc/asound.conf:
+dtoverlay=hifiberry-dacplus
+Y la línea del audio interno comentada, para que el kernel sólo cargue la hifiberry:
+#dtparam=audio=on
 
 -Crear el /usr/bin/netup con:
 sudo ifconfig eth0 up
@@ -132,6 +147,10 @@ Trase reiniciar, ya tendría que ir la Ñ, los acentos y todo eso.
 -Vamos quitando los servicios con:
 sudo systemctl mask <sevcio> 
 -Al final, de acuerdo con systemd-analyze blame, sólo quedan iniciados estos:
+
+-Para que funcione el teclado, ratón y joystick con las SDL2, creamos /etc/udev/rules.d/99-evdev.rules con el contenido:
+KERNEL=="event*", NAME="input/%k", MODE="666"
+Y reiniciamos.
 
 -Para quitar el error: "brcmfmac: brcmf_sdio_htclk: HT Avail timeout (1000000): clkctl 0x50"
 Puedes instalar el firmware de la wifi, o simplemente deshabilitarla poniendo en config.txt:
@@ -174,4 +193,27 @@ Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
 configuramos con:
 ./autogen.sh
-./configure --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
+./configure --prefix=/usr --libdir=/usr/lib --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
+
+COPIAR ARCHIVOS DESDE UN SISTEMA ANTIGUO
+=========================================
+
+Lo puedes hacer con rsync -av <origen> <destino>
+Ambos sistemos deben tener instalado rsync, y se puede usar por red como scp.
+
+INSTALAR SDL2
+=============
+
+Lo primero es instalar estos:
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev
+
+Se configura con:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+
+Compilar e instalar.
+
+Para SDL2_Mixer:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
+
+Para SDL2_Image o SDL2_ttf:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --without-x

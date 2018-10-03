@@ -129,7 +129,7 @@ Para SDL2_mixer, configuramos con:
 
 CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
-Para SDL2_image u SDL2_ttf, configuramos con:
+Para SDL2_image o SDL2_ttf, configuramos con:
 
 CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --without-x
 
