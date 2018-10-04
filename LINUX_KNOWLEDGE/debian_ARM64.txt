@@ -217,3 +217,15 @@ CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+c
 
 Para SDL2_Image o SDL2_ttf:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --without-x
+
+INSTALAR RETROARCH
+===================
+
+Se configura con:
+./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac
+(No le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
+
+Ponemos en config.mk, en CFLAGS y CXXFLAGS:
+ -march=armv8-a+crc -mtune=cortex-a53
+
+Compilar y listo.
