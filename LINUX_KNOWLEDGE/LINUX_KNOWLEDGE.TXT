@@ -2499,9 +2499,16 @@ Le puedes pasar un cfg con -c, en plan gemrb -c game.cfg
 Si no se te oye mira a ver qué plugin está cargando. Si está cargando NullSound, y compruebas que tienes SDLAudio.so en la ruta de los plugins,
 es que te falta pasarle la ruta de los plugins en el cfg.
 
+*************Compilar openadventure*********************************************************************************************
+
+Instalar cosas:
+sudo apt-get install libedit-dev pyhton-yaml
+editar el makefile para añadir los cflags. Compilar y listo.
+
 *************Compilar Cannonball (OutRun engine) en Rpi***************************************************************************
 
-Necesitamos libboost, eso lo primero. Concretamente, te vale con libboost1.55-dev
+Necesitamos libboost, eso lo primero. Concretamente, te vale con libboost-dev
+sudo apt-get install libboost-dev --no-install-recommends
 
 Comenta la línea del delay de SDL para control de framerate, que sobra porque nosotros sincronizamos en vsync. Está en src/main/main.cpp
 y tiene esta pinta:
@@ -2526,7 +2533,7 @@ src/main/sdl2/audio.cpp y deja entre el LockAudio y el UnlockAudio sólo esto:
 
 mkdir build
 cd build
-cmake ../cmake -DTARGET=sdl2gles_rpi  -DCMAKE_BUILD_TYPE=Release
+cmake ../cmake -DTARGET=sdl2_rpi  -DCMAKE_BUILD_TYPE=Release
 
 La eprom que falta es del set B
 Copia el res/config.xml al mismo directorio donde tienes el ejecutable del cannonball
@@ -2865,6 +2872,15 @@ Los datos de los juegos deben ir en ~/.CommanderGenius/games/
 Si quieres especificar qué juego cargar, es con 
 ./CGeniusExe dir=keen1
 donde keen1 estaría en ~/.CommanderGenius/games/keen1 (el parámetro dir es relativo a ~/.CommanderGenius/games/ siempre).
+
+*************Doomretro en la Raspberry Pi*************************************************************************************
+
+Bajamos la última stable.
+Entramos en src, editamos doomdef.h y ponemos SCREENSCALE a 1.
+Editamos el Makefile y ponemos los CFLAGs que sean, y quitamos el -g.
+Editamos i_video.c y antes de SDL_CreateWindow() ponemos
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+Compilar y listo.
 
 *************Chocolate DOOM en la Raspberry Pi con SDL2**********************************************************************
 
@@ -4051,7 +4067,7 @@ NOTA: NO FUNCIONA el PGO con el DISTCC, ya que al correr no genera los .gcda, as
 COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
 ===========================================================================
 
-buscamos en makefile.libretro la parte de generate-files, y dejamos sólo las entradas de capcom, neogeo y tal.
+Buscamos en makefile.libretro la parte de generate-files, y dejamos sólo las entradas de capcom, neogeo y tal.
 La línea queda tal que así, pero vamos, hazlo a mano:
         $(PERL) $(FBA_SCRIPTS_DIR)/gamelist.pl -o $(FBA_GENERATED_DIR)/driverlist.h -l gamelist.txt $(FB    A_BURN_DRIVERS_DIR) $(FBA_BURN_DRIVERS_DIR)/capcom $(FBA_BURN_DRIVERS_DIR)/cps3 $(FBA_BURN_DRIVERS_DIR)/neogeo
 

@@ -78,6 +78,8 @@ apt install vim sudo net-tools alsa-utils
 -Ajustar el hostname, en /etc/hostname.
 -Editar /lib/udev/rules.d/73-usb-net-by-mac.rules y dejar así la línea de IMPORT, para que el interface ethernet se llame eth0 y no un churro basado en la MAC address:
 IMPORT{builtin}="net_id", NAME="eth0"
+-Instala bash-completion si quieres que funcione autocompletar cuando usas sudo:
+sudo apt-get install bash-completion
 
 Si te dejas algo que no se pueda hacer en la máquina objetivo, puedes volver a chrootearte en la partición EXT4 de la SD después de haber transferido el rootfs,
 y lo puedes hacer tantas veces como sea necesario, pero pasándole a chroot la ruta del raiz del EXT4 de la SD:
@@ -157,14 +159,31 @@ Puedes instalar el firmware de la wifi, o simplemente deshabilitarla poniendo en
 dtoverlay=pi3-disable-wifi
 
 -Para ocultar los mensajes de systemd en el inicio, pon en cmdline.txt:
-systemd.show_status=auto
-Así sólo salen los mensajes de error. Si no quieres ni esos, ponlo a false.
+systemd.show_status=false
+
+-TENEMOS QUE QUITAR LOS RLIMITS, o los emuladores se empezarán a quejar al llegar al 80% de uso de la CPU!
+Para ello, editamos /etc/security/limits.conf, añadiendo unas cosillas para quitar ciertas limitaciones a los miembros de ese grupo:
+
+@audio   -  rtprio     99
+@audio   -  memlock    unlimited
+@audio   -  nice    -20
+pi   -  rtprio     99
+pi   -  memlock    unlimited
+pi   -  nice       -20
+
+De este modo, no hay límites para el usuario Pi ni para nadie del grupo audio, como jackd.
+Comprobamos que tenemos quitados esos límites con:
+ulimit -r -l
+Nos tiene que salir algo como:
+real-time priority (-r) 99
+max locked memory (kbytes, -l) unlimited
+¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
 INSTALAR MESA
 ==============
 
 Los CFLAGS van a ser: 
--O3 -march=armv8-a+crc -mtune=cortex-a53
+-march=armv8-a+crc -mtune=cortex-a53
 
 Empezamos con DRM:
 git clone --depth 1 git://anongit.freedesktop.org/mesa/dr
@@ -205,7 +224,7 @@ INSTALAR SDL2
 =============
 
 Lo primero es instalar estos:
-sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 
 Se configura con:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
