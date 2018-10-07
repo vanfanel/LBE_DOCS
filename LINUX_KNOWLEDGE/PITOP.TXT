@@ -16,18 +16,18 @@ Tienes que tener el spi activo en config.txt
 https://github.com/pi-top/pi-topSPEAKER/blob/master/manual-install/manual-configuration-speaker-v1.md
 
 -Lo primero instala pyhton3:
-sudo apt-get install pyhton3 no-install-recommends
+sudo apt-get install pyhton3 pyhton3-systemd pyhton3-smbus no-install-recommends
 
--El script que ejecurás, que lo puedes llamar topspeak, es implemente este:
+-Crea este script y guárdalo en /usr/bin/topspeak:
 
 #! /usr/bin/python3
 import configuration as speakercfg
-
 host_device_type = 1 
-
 speakercfg.initialise(host_device_type, "pi-topSPEAKER-v1")
+speakercfg.enable_device()
 
--Tienes que tener configuration.py en el mismo directorio que el script, y él lo carga como configuration simplemente, ya sabe que acaba en .py
+(Tienes que tener configuration.py en el mismo directorio que el script, y él lo carga como configuration simplemente, ya sabe que acaba en .py. Para eso lo mandamos a
+/usr/bin más abajo, junto con los .py necesarios)
 
 -Instalamos las herramientas i2c:
 sudo apt-get install i2c-tools
@@ -37,9 +37,23 @@ Si no lo detecta, sudo modprobe i2c_dev
 (Tienes que tener cargado el módulo i2c_bcm2835 también)
 -Tienes que tener dtparam=audio=on en el config.txt, para que se cargue el módulo bcm2835 que permite el audio por HDMI.
 
+-Pon que se arranque el módulo i2c_dev en el inicio, añadiéndolo para ello a /etc/modules
+(si no lo haces dará un error writting el script, pero funciona igual en realidad)
+
 -Clona el repo:
 https://github.com/pi-top/Device-Management.git
 
 -Clona el repo:
 https://github.com/pi-top/pi-topSPEAKER.git
 
+-Copia todo lo de pi-topSPEAKER/library a /usr/bin, para que así esté junto con el script topspeak
+
+-Copia los módulos de Device-Management/library/ptcommon a /usr/local/lib/pthon3.5/dist-packages/ptcommon
+(crea manualmente /usr/local/lib/pthon3.5/dist-packages/ptcommon antes)
+
+-Al ejecutar topspeak, mi script de ahí arriba, ahora te dará un errorazo de python que si te fijas es porque no tiene raspi-config para verificar cómo tienes el i2c.
+Pues nada, editamos vim /usr/local/lib/python3.5/dist-packages/ptcommon/sys_config.py, que es donde da el error (ahora mismo es en la línea 69, pero eso puede cambiar),
+y simplemente hacemos que 
+i2c_output = 0;
+La cosa es que no intente llamar a str(_SystemCalls._get_cmd_resp(_SystemCalls.GET_I2C_CMD_ARR)).rstrip(), que por debajo llama a raspi-config.
+Y listo.
