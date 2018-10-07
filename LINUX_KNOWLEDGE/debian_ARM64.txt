@@ -80,6 +80,8 @@ apt install vim sudo net-tools alsa-utils
 IMPORT{builtin}="net_id", NAME="eth0"
 -Instala bash-completion si quieres que funcione autocompletar cuando usas sudo:
 sudo apt-get install bash-completion
+-Instala psmisc para tener killall:
+sudo apt-get install psmisc
 
 Si te dejas algo que no se pueda hacer en la máquina objetivo, puedes volver a chrootearte en la partición EXT4 de la SD después de haber transferido el rootfs,
 y lo puedes hacer tantas veces como sea necesario, pero pasándole a chroot la ruta del raiz del EXT4 de la SD:

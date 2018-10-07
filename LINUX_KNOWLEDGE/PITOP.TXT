@@ -1,0 +1,45 @@
+-Que poweroff apague el ordenador:
+Clona el repo de wiringpi y lo instalas:
+git clone git://git.drogon.net/wiringPi
+./build
+(Al ejecutar build se compila y se instala)
+
+Clona este repo:
+https://github.com/rricharz/pi-top-install
+Haz make, y luego sudo install_poweroff
+
+Tienes que tener el spi activo en config.txt
+
+==========PITOP-SPEAKER=====================
+
+-Las instrucciones están en:
+https://github.com/pi-top/pi-topSPEAKER/blob/master/manual-install/manual-configuration-speaker-v1.md
+
+-Lo primero instala pyhton3:
+sudo apt-get install pyhton3 no-install-recommends
+
+-El script que ejecurás, que lo puedes llamar topspeak, es implemente este:
+
+#! /usr/bin/python3
+import configuration as speakercfg
+
+host_device_type = 1 
+
+speakercfg.initialise(host_device_type, "pi-topSPEAKER-v1")
+
+-Tienes que tener configuration.py en el mismo directorio que el script, y él lo carga como configuration simplemente, ya sabe que acaba en .py
+
+-Instalamos las herramientas i2c:
+sudo apt-get install i2c-tools
+Vemos que lo detecta bien:
+sudo i2cdetect -y 1
+Si no lo detecta, sudo modprobe i2c_dev
+(Tienes que tener cargado el módulo i2c_bcm2835 también)
+-Tienes que tener dtparam=audio=on en el config.txt, para que se cargue el módulo bcm2835 que permite el audio por HDMI.
+
+-Clona el repo:
+https://github.com/pi-top/Device-Management.git
+
+-Clona el repo:
+https://github.com/pi-top/pi-topSPEAKER.git
+
