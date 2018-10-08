@@ -4290,12 +4290,13 @@ Compilamos:
 make -j8
 
 Creamos el directorio ~/ultima6 donde meteremos el ejecutable "nuvie" resulante, y allí dentro copiamos el directorio data que viene con los surces, 
-y creamos otro directorio ultima6 donde metemos todos los datos del juego.
+y creamos otro directorio ultima6data donde metemos todos los datos del juego.
 O sea que nos tiene que quedar:
 ~/ultima6/nuvie  <---Este es el ejecutable que hemos generado
 ~/ultima6/data/<aquí los contenidos originales del directorio data de los sources>
-~/ultima6/ultima6/<aquí los datos originales del juego>
+~/ultima6/ultima6data/<aquí los datos originales del juego>
 
+En ~/.nuvierc tenemos que poner el gamedir apuntando a ./ultima6data
 Si queremos ajustar cosas, en ~/.nuvierc
 
 EXULT, Ultima VII en la Raspberry Pi
@@ -4941,3 +4942,19 @@ dtoverlay=pi3-disable-wifi
 hcitool con (para verificar que está conectado!)
 sudo hcitool enc E4:17:D8:15:0D:79 off
 sudo hcitool sr E4:17:D8:15:0D:79 slave
+
+ADVENTURE ORIGINAL EN LA PI USANDO SIMH
+=======================================
+
+Clonamos el repo de simh:
+git clone --depth 1 https://github.com/simh/simh.git
+
+Editamos el makefile y comentamos toda la sección donde detecta libpng (busca png y comenta ese bloque)
+También le puedes añadir los flags de la arquitectura donde se añade el -fipa-cp-clone, por ejemplo.
+
+Compilamos sólo el simulador de pdp8 que es el que vamos a usar
+make pdp8
+El ejecutable queda en BIN/pdp8
+
+Ahora necesitamos el adventure y un .ini que irá en el mismo directorio que el ejecutable pdp8. Todo eso viene en un blog:
+https://raymii.org/s/articles/Running_ADVENT-on-the-PDP-8-with-SIMH.html

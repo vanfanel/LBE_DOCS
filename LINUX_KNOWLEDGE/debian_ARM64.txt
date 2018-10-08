@@ -181,6 +181,31 @@ real-time priority (-r) 99
 max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
+-El guardado y restauración de los valores de alsamixer falla a veces.
+Deshabilita el servicio que lo lleva, y pon en .profile:
+sudo alsactl restore 0
+Esto restaura los valores de alsamixer para la primera tarjeta. Dichos valores están en /var/lib/alsa/asound.state
+Si quieres puedes proteger /var/lib/alsa/asound.state contra escritura tras configurar el sonido con alsamixer, luego añades eso al .profile, y fin del problema.
+
+-Al final, sólo necesitas estos servicios de los que salen con systemd-analyze blame:
+pi@raspberrypi:~$ sudo systemd-analyze blame
+           542ms dev-mmcblk0p2.device
+           382ms keyboard-setup.service
+           266ms systemd-udevd.service
+           238ms systemd-remount-fs.service
+           128ms fake-hwclock.service
+           124ms systemd-udev-trigger.service
+            54ms console-setup.service
+            28ms systemd-modules-load.service
+            24ms systemd-user-sessions.service
+            15ms boot.mount
+            10ms kmod-static-nodes.service
+Recuerda mirar las mierdas que lanza systemd en el arranque antes de ocultarlo, y mira los targets con
+sudo systemctl | grep <loquesea>
+Luego los vas quitando, al igual que los services, con systemctl mask <monbre service o target>
+Si metes la pata y el sistema no arranca más, elimina cosas de /etc/systemd/system, que es donde pone los links a /dev/null correspondientes a los services o targets que hayas eliminado
+sin deber hacerlo...
+
 INSTALAR MESA
 ==============
 
