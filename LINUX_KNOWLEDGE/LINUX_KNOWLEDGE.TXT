@@ -899,6 +899,8 @@ sudo modprobe wl
 
 reboot and ejoy! :)
 
+Si no tienes wifi en absoluto, instala el paquete b43-fwcutter y reinicia, a ver si hay suerte.
+
 ********Establecer el niceness de un programa siendo usuario******************************************************************************************
 
 Editamos /etc/security/limits.conf y añadimos la fila:
@@ -1599,6 +1601,31 @@ sudo ifconfig wlan0 down
 sudo rmmod brcmfmac
 sudo /etc/init.d/dropbear stop
 
+***********Extraer una partición de un IMG que contiene la imágen de un disco completo****************************************************
+
+Fácil. Con fdisk vemos dónde empieza y cuánto mide la partición que queremos (en sectores nos lo da directamente, que es lo que nos interesa):
+sudo fdisk -l Downloads/MSX3_sd.img
+
+Device               			                   Start    End            Sectors       Size      Id Type
+Downloads/MSX3_sd.img          2048     1982463 1980416      967M  e W95 FAT16 (LBA)
+
+Vemos que sólo tiene una partición, que empieza en el sector 2048 y ocupa 1982563 sectores. Con eso ya ponemos hacer:
+dd if=Downloads/MSX3_sd.img of=fat16_partition.img skip=2048 count=1980416
+
+Puedes montar el resultado para ver si te deja y está todo bien:
+sudo mount -o loop fat16_partition.img /mn/hdd
+
+Ahora, podrías volcar esa partición a otro disco, empezando en el sector 2048 como en el disco original, con:
+sudo dd if=fat16_partition.img of=/dev/sdb seek=2048
+
+PERO TEN EN CUENTA QUE TIENES QUE CREAR LA PARTICIÓN ANTES, PARA QUE SE GUARDE EN LA TABLA DE PARTICIONES, YA QUE AL VOLCAR
+LA PARTICIÓN SOLAMENTE NO QUEDA GUARDADA EN LA TABLA Y ES INVISIBLE!
+
+Efectivamente, seek sirve para posicionarse en un sector del disco de salida, igual que skip nos sirvió para lo mismo en el disco de entrada.
+Se podría haber hecho todo en el mismo comando combinando seek y skip, ambos a 2048 en el ejemplo:
+
+dd if=Downloads/MSX3_sd.img of=/dev/sdb skip=2048 seek=2048 count=1980416
+
 ***********Montar una partición individual de una imágen completa de disco***************************************************************
 
 RECUERDA: CUANDO SAQUES UNA IMÁGEN DE UNA SD COMPLETA, TODAS SUS PARTICIONES DEBEN ESTAR DESMONTADAS ANTES DE HACER LA IMÁGEN,
@@ -1650,8 +1677,8 @@ Sector size (logical/physical): 512B/512B
 Partition Table: amiga
 Disk Flags: 
 
-Number  Start    End         Size        File system  Name  Flags
- 1      258048B  754919423B  754661376B  affs1        DH0   boot
+Number  Start            End                        Size                       File system        Name           Flags
+ 1                 258048B    754919423B     754661376B     affs1                      DH0               boot
 
 Ahora simplemente montamos con ambos parámetros y ¡funciona!
 
@@ -1688,11 +1715,9 @@ Sector size (logical/physical): 512 bytes / 512 bytes
 I/O size (minimum/optimal): 512 bytes / 512 bytes
 Disk identifier: 0x0002c262
 
-                 Device Boot      Start         End      Blocks   Id  System
-raspbian_RetroArch.img1            8192      122879       57344    c  W95 FAT32 (LBA)
-raspbian_RetroArch.img2          122880     4218879     2048000   83  Linux
-
-
+Device                                                   Boot                          Start         End              Blocks          Id            System
+raspbian_RetroArch.img1                                             8192         122879       57344            c              W95 FAT32 (LBA)
+raspbian_RetroArch.img2                                            122880     4218879     2048000     83            Linux
 
 De aquí sacamos lo siguiente: que cada sector es de 512 bytes, y que la segunda partición acaba en el sector o bloque número 4218879.
 Así que realmente sólo estamos 4218879 + 1 sectores (ya que el sector 0 obviamente existe).
@@ -4069,7 +4094,7 @@ COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
 
 Buscamos en makefile.libretro la parte de generate-files, y dejamos sólo las entradas de capcom, neogeo y tal.
 La línea queda tal que así, pero vamos, hazlo a mano:
-        $(PERL) $(FBA_SCRIPTS_DIR)/gamelist.pl -o $(FBA_GENERATED_DIR)/driverlist.h -l gamelist.txt $(FB    A_BURN_DRIVERS_DIR) $(FBA_BURN_DRIVERS_DIR)/capcom $(FBA_BURN_DRIVERS_DIR)/cps3 $(FBA_BURN_DRIVERS_DIR)/neogeo
+        $(PERL) $(FBA_SCRIPTS_DIR)/gamelist.pl -o $(FBA_GENERATED_DIR)/driverlist.h -l gamelist.txt $(FBA_BURN_DRIVERS_DIR) $(FBA_BURN_DRIVERS_DIR)/capcom $(FBA_BURN_DRIVERS_DIR)/cps3 $(FBA_BURN_DRIVERS_DIR)/neogeo
 
 Ahora, en makefile.libretro_common, quitamos los directorios de la parte de FBA_BURN_DIRS := $(FBA_BURN_DIR) en adelante.
 No hace falta que quites los directorios de los includes, esos dan igual.

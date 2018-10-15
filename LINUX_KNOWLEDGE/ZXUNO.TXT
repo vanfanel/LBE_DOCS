@@ -1,0 +1,45 @@
+CARGAR DISCOS DE C64
+====================
+
+Sin los atajos del Jiffydos:
+Cargamos el listado de archivos del disco:
+LOAD "$",8 
+LIST.
+
+Cargamos el primer archivo del disco:
+LOAD "*",8 
+RUN
+
+MONTAR PARTICIÓN FAT16 desde DOSBOX
+====================================
+
+imgmount d MSX3.IMG -size 512,32,64,30528
+
+Son los valores: sectorsbytesize, sectorsperhead, heads, cylinders
+
+Lo sacamos todo de fdisk, con: 
+fdisk -l -u=cylinders
+
+Para el segundo campo, sectorsperhead, debes usar los "sectors/track".
+Lo demás te lo da todo fdisk -u=cylinders tal cual
+
+
+APUNTES 1CHIPMSX
+=================
+
+-Cargar el BUBBLE BOBBLE:
+romload bubble.rom /A /S
+-Cargar el SWORD OF IANNA:
+mgload ianna.rom /S02
+reset
+
+-Los programas en BASIC que fallen los puedes arreglar con POKE -1,0
+Para cargar el .BAS y editarlo, desde MSX-DOS entra en BASIC:
+BASIC
+Ahora carga el archivo:
+LOAD "archivo.bas" (tienes las comillas al lado derecho de la ñ, si no tienes el teclado en español)
+Puedes ver su contenido con LIST
+Añade el poke en la primera línea, la 10 por ejemplo:
+10 POKE -1,0
+Confirma que está con LIST, y salva con SAVE "archivo.bas" 
+
