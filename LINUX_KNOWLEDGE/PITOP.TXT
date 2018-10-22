@@ -10,7 +10,78 @@ Haz make, y luego sudo install_poweroff
 
 Tienes que tener el spi activo en config.txt
 
-==========PITOP-SPEAKER=====================
+==========PITOP-SPEAKER VERSIÓN 2=====================
+
+-Las instrucciones están en:
+https://github.com/pi-top/pi-topSPEAKER/blob/master/manual-install/manual-configuration-speaker-v2.md
+
+-En config.txt tendremos:
+
+hdmi_drive=2
+
+dtparam=i2c_arm=on
+dtparam=i2s=on
+
+dtoverlay=vc4-kms-v3d
+dtoverlay=hifiberry-dac
+dtoverlay=i2s-mmap
+
+NO tienes que tener dtparam=audio=on ni nada de eso.
+Con estas cosas correctamente en /boot/config.txt, ya tiene que sonar speaker-test PERO NO LO PRUEBES SIN EL CONTROL DE VOLÚMEN, que te quema el altavoz.
+
+Para el control de volúmen, tenemos que tener /etc/asound.conf así:
+
+pcm.real {
+        type hw
+        card 0
+        device 0
+}
+
+pcm.dmixer {
+        type dmix
+        ipc_key 1024
+        ipc_perm 0666
+        slave.pcm "real"
+        slave {
+                period_time 0
+                period_size 1024
+                buffer_size 8192
+                rate 44100
+        }
+        bindings {
+                0 0
+                1 1
+        }
+}
+
+ctl.dmixer {
+        type hw
+        card 0
+}
+
+pcm.softvol {
+        type softvol
+        slave.pcm "dmixer"
+        control {
+                name "PCM"
+                card 0
+        }
+}
+
+pcm.!default {
+        type plug
+        slave.pcm "softvol"
+}
+
+Y poner en ~/.profile:
+sudo alsactl -f /etc/hifiberry-alsactl.restore restore 0
+
+El fichero hifiberry-alsactl.restore lo tienes en:
+https://github.com/pi-top/Device-Management/blob/master/assets/hifiberry-alsactl.restore
+
+El volúmen se ajusta en /etc/hifiberry-alsactl.restore, poniendo value.1 y value.2 a un valor entre 0 y 255.
+
+==========PITOP-SPEAKER VERSIÓN 1 (NO MERECE LA PENA: ÚSALO SÓLO EN RISC OS. PARA LINUX USA EL V2)=====================
 
 -Las instrucciones están en:
 https://github.com/pi-top/pi-topSPEAKER/blob/master/manual-install/manual-configuration-speaker-v1.md

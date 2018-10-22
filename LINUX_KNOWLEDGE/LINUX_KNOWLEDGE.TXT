@@ -1727,6 +1727,29 @@ manuel@vader:~$ sudo truncate --size=$[(4218879+1)*512] raspbian_RetroArch.img
 
 Y listo!
 
+***********Extraer la pista de datos (ISO) y las pistas de audio de una imágen de CD en formato CloneCD (CCD+IMG+SUB)*********************
+
+-Convierte el ccd a un CUE:
+ccd2cue -i foo.img -o foo.cue foo.ccd
+
+-Extrae las pistas de datos y audio con bchunck:
+bchunk -w tomb.img tomb.cue track
+(ojo que en el tomb raider las pistas de audio empiezan por track_, no por track, así que tendrías que poner track_ para que se llamasen como deben)
+
+-La ISO de la primera pista la puedes montar y extraer sus archivos sin problemas
+
+-Y ahora, puedes convertir todos los WAV del directorio a OGG y a MP3 con esto:
+for f in *.wav; do ffmpeg -i "$f" -c:a libmp3lame -q:a 2 "${f/%wav/mp3}" -c:a libvorbis -q:a 4 "${f/%wav/ogg}"; done
+
+-O sólo a OGG:
+for f in *.wav; do ffmpeg -i "$f" -c:a libvorbis -q:a 4 "${f/%wav/ogg}"; done
+
+***********OpenLara, versión opensource del Tomb Raider********************************************************************************
+
+-Para extraer los archivos del juego, usa ISOBUSTER y extraelos en modo RAW!! (Esto es muy importante o los vídeos sonarán mal)
+-Copia los directorios PSXDATA, DELDATA y FMV al directorio donde tengas el ejecutable.
+-Las pistas de audio van en audio/1/_track*.ogg
+
 ***********ERROR: DISTCC no distribuye la compilación y no sé por qué, con otros proyectos sí lo hace****************************************
 
 Posiblemente el Makefile está poniendo como compilador el cc.
