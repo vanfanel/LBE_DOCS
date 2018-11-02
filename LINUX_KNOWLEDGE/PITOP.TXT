@@ -1,11 +1,12 @@
--Que poweroff apague el ordenador:
+==============QUE POWEROFF APAGUE EL ORDENADOR======
+
 Clona el repo de wiringpi y lo instalas:
-git clone git://git.drogon.net/wiringPi
+git clone --depth 1 git://git.drogon.net/wiringPi
 ./build
 (Al ejecutar build se compila y se instala)
 
 Clona este repo:
-https://github.com/rricharz/pi-top-install
+git clone --depth 1 https://github.com/rricharz/pi-top-install
 Haz make, y luego sudo install_poweroff
 
 Tienes que tener el spi activo en config.txt
@@ -80,6 +81,7 @@ El fichero hifiberry-alsactl.restore lo tienes en:
 https://github.com/pi-top/Device-Management/blob/master/assets/hifiberry-alsactl.restore
 
 El volúmen se ajusta en /etc/hifiberry-alsactl.restore, poniendo value.1 y value.2 a un valor entre 0 y 255.
+La latencia se ajusta en /etc/asound.conf, en buffer size y period size.
 
 ==========PITOP-SPEAKER VERSIÓN 1 (NO MERECE LA PENA: ÚSALO SÓLO EN RISC OS. PARA LINUX USA EL V2)=====================
 
