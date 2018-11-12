@@ -1122,6 +1122,11 @@ Lo podemos hacer con strace, pero haciendo que sólo nos saque la syscall llamad
 
 strace -f -e open <ejecutable>
 
+**************Error: /usr/include/xf86drm.h:40:17: fatal error: drm.h: No such file or directory********************************************************
+
+Es porque no basta con hacer un -ldrm, sino que hay que hacerlo así en su lugar:
+`pkg-config --cflags --libs libdrm`
+
 
 
  

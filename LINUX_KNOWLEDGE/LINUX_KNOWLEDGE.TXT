@@ -2935,6 +2935,11 @@ Editamos el Makefile y ponemos los CFLAGs que sean, y quitamos el -g.
 Compilar y listo.
 
 En doomretro.cfg, ponemos vid_scalefilter a "linear", y gp_thumbsticks 1.
+Para el 8Bitdo receiver, los botones son:
+bind gamepad4 +fire
+bind gamepad3 +use
+bind leftshoulder +tun
+Cuidado particularmente con no tener ya puesto leftshoulder a alguna otra función!
 
 *************Problemas 8BITDO SN30******************************************************************************************
 
@@ -5030,3 +5035,15 @@ El ejecutable queda en BIN/pdp8
 
 Ahora necesitamos el adventure y un .ini que irá en el mismo directorio que el ejecutable pdp8. Todo eso viene en un blog:
 https://raymii.org/s/articles/Running_ADVENT-on-the-PDP-8-with-SIMH.html
+
+DESCARGAR LIBROS DE GOOGLE BOOKS EN PDF
+========================================
+
+sudo apt-get install python-glade2
+
+git clone https://github.com/tokland/pysheng
+cd pysheng
+sudo python setup.py install
+
+Y para que guarde en PDF:
+pip install reportlab
