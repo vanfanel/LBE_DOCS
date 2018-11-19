@@ -5047,3 +5047,10 @@ sudo python setup.py install
 
 Y para que guarde en PDF:
 pip install reportlab
+
+DESHABILITAR SCREEN LOCK (BLOQUEO DE PANTALLA) TRAS SUSPENDER
+=============================================================
+
+No es cosa de xscreensaver, aunque se usa para bloquear.
+El setting está en: 
+preferences->LXQT Settings->Session settings->Lock screen before suspending
