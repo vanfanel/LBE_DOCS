@@ -10,7 +10,9 @@ PARTE 1: EL KERNEL AARCH64
 Seguimos estos dos tutoriales:
 http://www.tal.org/tutorials/raspberry-pi3-build-64-bit-kernel
 http://www.tal.org/tutorials/booting-64-bit-kernel-raspberry-pi-3
-Al final el kernel, los módilos, los dtb y demás quedan en kernel-out, como en el tutorial.
+Al final el kernel, los módulos, los dtb y demás quedan en kernel-out, como en el tutorial.
+
+Si te da error al compilar el gcc, modifica gcc/graphite.h y ponte includes para isl/id.h y isl/space.h
 
 Antes de empezar, siempre ponemos el crosscompilador de 64bits en el path:
 export PATH=$PATH:/opt/aarch64/bin/
@@ -76,8 +78,12 @@ apt install vim sudo net-tools alsa-utils
 127.0.1.1    raspberrypi
 -Cambiar el password de root  mientras estás chrooteado
 -Ajustar el hostname, en /etc/hostname.
--Editar /lib/udev/rules.d/73-usb-net-by-mac.rules y dejar así la línea de IMPORT, para que el interface ethernet se llame eth0 y no un churro basado en la MAC address:
+-Arreglar el nombre del interface de red, que aparece como enx..., para que aparezca como eth0:
+Editar /lib/udev/rules.d/73-usb-net-by-mac.rules y dejar así la línea de IMPORT, para que el interface ethernet se llame eth0 y no un churro basado en la MAC address:
 IMPORT{builtin}="net_id", NAME="eth0"
+Y para que futuras actualizaciones no nos jodan el arreglo, haz:
+cp /lib/udev/rules.d/73-usb-net-by-mac.rules /etc/udev/rules.d/
+
 -Instala bash-completion si quieres que funcione autocompletar cuando usas sudo:
 sudo apt-get install bash-completion
 -Instala psmisc para tener killall:
