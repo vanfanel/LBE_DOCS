@@ -5087,3 +5087,16 @@ Ahora, para que mps-yt te busque vídeos y no sólo audio, haz:
 set search_music false
 Y para que se vea el vídeo, ya que por defecto sólo reproduce el audio, haz:
 set show_video true
+
+RESTAURAR (UNDELETE) ARCHIVOS BORRADOS EN UN FILESYSTEM EXT4
+============================================================
+
+Se hace con extundelete. Desmonta la partición en la que estaba el archivo antes de pasarte extundelete.
+Si no te sabes el nombre del archivo, extundelete te lo sugerirá, así que tranquilo.
+
+sudo extundelete /dev/sdb5 --restore-file installed_os.json
+
+Te lo va a guardar en RESTORED_FILES, en el directorio donde estés cuando ejecutes extundelete. Así que lo tienes que copiar a mano a donde estaba originalmente.
+
+Si fuese en un fat32, usa testdisk.
+Keep calm and... undelete!
