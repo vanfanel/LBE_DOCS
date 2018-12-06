@@ -5054,3 +5054,36 @@ DESHABILITAR SCREEN LOCK (BLOQUEO DE PANTALLA) TRAS SUSPENDER
 No es cosa de xscreensaver, aunque se usa para bloquear.
 El setting está en: 
 preferences->LXQT Settings->Session settings->Lock screen before suspending
+
+MPS-YOUTUBE: CÓMO HACER QUE FUNCIONE EN RASPBIAN (Y EN GENERAL)
+===============================================================
+
+Lo primero, NO INSTALES MPS-YOUTUBE O YOUTUBE-DL DESDE APT-GET o el gestor de paquetes que sea: instálalo siempre desde pip,
+pero NO hagas una instalación tipo user como dicen las instrucciones, sino exactamente así:
+
+sudo pip3 install -U git+https://github.com/mps-youtube/mps-youtube.git
+
+O así, si quieres la versión estable:
+
+sudo pip3 install mps-youtube
+
+NO OLVIDES instalar youtube-dl desde pip también, ya que es una versión de youtube-dl que se instala entre las extensiones de phyton:
+
+pip3 install youtube-dl
+
+Al lanzarlo puede que te diga que no encuentra mplayer, porque no puedes especificarle otro player ya que aún no lo haz lanzado. Vale, pues instala mplayer:
+sudo apt-get install --no-install-recommends mplayer
+
+Ahora entras en mps-yt y haces:
+set player omxplayer
+o bien
+set player vlc
+
+Y a continuación desinstala mplayer y sus dependencias:
+sudo apt-get purge mplayer
+sudo apt-get autoremove
+
+Ahora, para que mps-yt te busque vídeos y no sólo audio, haz:
+set search_music false
+Y para que se vea el vídeo, ya que por defecto sólo reproduce el audio, haz:
+set show_video true
