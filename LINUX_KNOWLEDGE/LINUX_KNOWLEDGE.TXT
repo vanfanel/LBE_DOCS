@@ -5100,3 +5100,41 @@ Te lo va a guardar en RESTORED_FILES, en el directorio donde estés cuando ejecu
 
 Si fuese en un fat32, usa testdisk.
 Keep calm and... undelete!
+
+INSTALANDO UN SISTEMA CUSTOM EN NOOBS
+=====================================
+
+Normalmente no es posible instalar un nuevo SO después de instalar NOOBS en una SD, pero bueno, yo lo he hecho y no es para tanto.
+-Creamos las particiones. Necesitamos dos: una en FAT32, y otra en EXT4 (si vas a instalar un GNU/Linux propio "from scratch" por ejemplo, como un sistema de 64 bits, etc)
+	Vamos a suponer que quedan como sdb8 (fat32) y sdb9 (ext4) desde el PC. Una es la partición de boot y otra la de rootfs, obviamente. Les puedes poner de nombre CUSTOM_BOOT
+	y CUSTOM_ROOT, por ejemplo. Se cambia el nombre de las particiones con fatlabel para la fat32 y e2label para la ext4.
+	Apunta también sus PARTUUID, que puedes averiguar con blkid /dev/sdb8 y blkid /dev/sdb9
+
+-En la partición boot copia todo lo que se necesita (kernel, dbts, overlays, ficheros de configuración, firmware, etc...). Con cp -R vale.
+-En la partición del rootfs copia el rootfs del sistema a instalar, pero recuerda hacerlo con rsync -a origen/* destino/ , NO con cp que la lías con los permisos.
+-Crea una entrada nueva para el sistema en el fichero installed_os.json de la partición SETTINGS de NOOBS, es decir, en SETTINGS/installed_os.json. Por ejemplo así:
+{ 
+  "bootable" : true,
+  "description" : "Sistema GNU/Linux de 64bits para juegos",
+  "folder" : "/settings/os/debian64",
+  "icon" : "/settings/os/linux64/icon.png",
+  "name" : "Debian 64 bits",
+  "partitions" : [
+"/dev/mmcblk0p8",
+"/dev/mmcblk0p9"
+  ],
+  "release_date" : "2018-11-13",
+  "supported_models" : [
+"Pi 3"
+  ]
+ },
+
+^^^Como ves, ahí se le especifican las particiones que tiene. El directorio SETTINGS/os/linux64 lo creamos nosotros también y metemos ahí el icono que queramos que
+se muestre en el arranque. Con el icono vale, no hace falta tener nada más en ese directorio.
+El icono tendrá un tamaño de 48 pixels para no desentonar con el tamaño de los demás. Aqui tienes un ejemplo:
+http://www.iconarchive.com/show/super-mario-icons-by-ph03nyx/Retro-Block-Question-icon.html 
+
+-Ahora edita el cmdline.txt del sistema custom que acabas de instalar, y ajusta el parámetro root= con el PARTUUID de la partición de rootfs.
+-Ahora edita el /etc/fstab del sistema custom que acabas de instalar, y lo mismo, ajusta los dos PARTUUID a los de la partición boot y rootfs.
+...Y ya debería arrancar sin ningún problema.
+Si te sale sólo la pantalla en negro, es que el kernel necesita los módulos instalados en el rootfs para poder mostrar algo por pantalla.
