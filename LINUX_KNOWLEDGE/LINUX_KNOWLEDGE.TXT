@@ -3253,6 +3253,10 @@ sudo amixer cset numid=3 1
 
 Lo pones una vez y ya queda configurado en los valores de ALSA.
 
+Y para el audio por HDMI otra vez:
+
+amixer cset numid=3 2
+
 ***************Sidplay no encuentra /dev/dsp*************************************************************
 
 sudo modprobe snd-pcm-oss 
@@ -3931,18 +3935,24 @@ Para la Pi 1:
 
 ./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --enable-opengl --enable-opengles --disable-flac
 
-Para la Pi 2 y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
+Para la Pi 2: y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
 
-./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac
+./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac --disable-qt
+
+Para la Pi 3 (Aquí NO le pasamos --enable-hardfloat ni --enable-neon, porque cuando le pasemos en los CFLAGS y los CXXFLAGS "-march=armv8-a+crc -mtune=cortex-a53" eso se da por hecho
+debido a la aquitectura armv8):
+
+./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac --disable-qt
+
 
 Para PC:
 LO PRIMERO TEN INSTALADO PKGCONFIG, O NO DETECTARÁ ALGUNAS LIBRERÍAS ESENCIALES!!!
 
-./configure --enable-kms --disable-vg --disable-wayland --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac
+./configure --enable-kms --disable-vg --disable-wayland --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac --disable-qt
 
-Añadimos los flags de CPU en config.mk:
-
--mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
+Añadimos los flags de CPU en config.mk. Para Pi3 en modo 64 bits serían los CFLAGS y CXXFLAGS:
+-march=armv8-a+crc -mtune=cortex-a53
+Y ponemos manualmente HAVE_NEON=1
 
 Editamos Makefile.common y comentamos la línea del -g
 
@@ -3962,6 +3972,9 @@ vienen instaladas como libs e includes en /opt/vc.
 ¡¡YA NO HACE FALTA AÑADIR input_driver = “linuxraw” en el retroarch.cfg si compilas sin las SDL!!
 AHORA el dispositivo por defecto para mandos USB es udev, no linuxraw. Genial!
 No hace falta NINGUNA línea de input_driver. Al compilar sin SDL, udev es el device por defecto sin especificar nada.
+
+SI TE DA EL ERROR: Error: Dynamic loading of libretro is enabled, but your platform does not appear to have dlopen()
+....es por algo que le estás pasando a configure y que hace que fallen los tests de compilación, como por ejemplo --enable-neon o así.
 
 Si te da un error el distcc en plan "unable to distribute", es porque el Makefile del core que sea está usando CC en vez de GCC.
 

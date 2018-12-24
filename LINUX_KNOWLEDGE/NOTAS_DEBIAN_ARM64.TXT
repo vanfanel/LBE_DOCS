@@ -12,25 +12,31 @@ http://www.tal.org/tutorials/raspberry-pi3-build-64-bit-kernel
 http://www.tal.org/tutorials/booting-64-bit-kernel-raspberry-pi-3
 Al final el kernel, los módulos, los dtb y demás quedan en kernel-out, como en el tutorial.
 
-Si te da error al compilar el gcc, modifica gcc/graphite.h y ponte includes para isl/id.h y isl/space.h
+Si te da error al compilar el gcc, modifica gcc/graphite.h y ponle includes para isl/id.h y isl/space.h
 
 Antes de empezar, siempre ponemos el crosscompilador de 64bits en el path:
 export PATH=$PATH:/opt/aarch64/bin/
 
-Cosas que hacemos distintas para instalar el kernel, módulos y dtbs: 
+Cosas que hacemos distintas para instalar el kernel, módulos y dtbs:
+-Para empezar, nosotros usamos el branch realtime del kernel, que clonamos con:
+	git clone --depth 1 https://github.com/raspberrypi/linux.git -b rpi-4.14.y-rt
+	(Puede que la versión sea más actual, busca el branch que lleve lo de -rt en el repo del kernel para la Raspberry, y ahí ves qué versión es ahora).
 -Configuramos el kernel con:
 make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 Ajustes al kernel:
--Pon el I/O Scheduler a BFQ por defecto y quita los demás
--Quita todo en kernel hacking (debugeo.. todo!)
--Pon el timer a 300Hz, es mejor para multimedia
+-Asegúrate de que el scheduler está a 1000HZ y que estás en FULL PREEMPTIBLE KERNEL.
+-Quita todo en kernel hacking (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
+Además deshabilita a mano en .config: CONFIG_FRAME_POINTER (ya que es activado por la opción ARM64, que es inevitable)
+-En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable"
+-En ENABLE THE BLOCK LAYER, pon el I/O Scheduler a BFQ por defecto y quita los demás
+-En CPU POWER MANAGEMENT, deja el governor performance solamente y ponlo por defecto.
 
 -Instalamos los módulos del kernel así:
-sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/mnt/LINUX/ modules_install
+sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/media/manuel/CUSTOM_ROOT1 modules_install
 (kernel_out es nuestro directorio de salida del kernel, los módulos, los dtbs y tal. Así va en esos tutoriales que usamos: mandando los resultados a un directorio a parte).
 
 -Instalamos el kernel con:
-sudo cp ../kernel-out/arch/arm64/boot/Image /mnt/BOOT/kernel8.img
+sudo cp ../kernel-out/arch/arm64/boot/Image /media/manuel/CUSTOM_BOOT/kernel8.img
 
 -Nosotros no instalamos los módulos del kernel hasta el final, después de instalar el rootfs (que es la segunda parte de este documento
 que estás leyendo). De momento instala el kernel (kernel8.img) y los dtb, y los overlays.
@@ -45,7 +51,7 @@ kernel=kernel8.img
 arm_control=0x200
 
 PARTE 2: EL ROOTFS
-=================
+==================
 
 Seguimos el tutorial de:
 https://www.debian.org/releases/stable/arm64/apds03.html.en#idm3828
@@ -191,7 +197,9 @@ max locked memory (kbytes, -l) unlimited
 Deshabilita el servicio que lo lleva, y pon en .profile:
 sudo alsactl restore 0 --file /etc/asound.state
 Esto restaura los valores de alsamixer para la primera tarjeta. Podemos generar estos valores una vez tengamos nuestra configuración idonea guardándola con:
-alsactl --file /etc/asound.state store
+alsactl store --file /etc/asound.state
+(También puedes investigar por qué falla alsa-restore.service, que es más fácil que andar con todo esto. Tienes notas en LINUX_KNOWLEDGE.TXT al respecto,
+busca en las NOTAS HIFIBERRY, aunque este problema también ocurre sin ella).
 
 -Al final, sólo necesitas estos servicios de los que salen con systemd-analyze blame:
 pi@raspberrypi:~$ sudo systemd-analyze blame
