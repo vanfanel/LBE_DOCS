@@ -193,17 +193,31 @@ real-time priority (-r) 99
 max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
--El guardado y restauración de los valores de alsamixer falla a veces.
-Deshabilita el servicio que lo lleva, y pon en .profile:
-sudo alsactl restore 0 --file /etc/asound.state
-Esto restaura los valores de alsamixer para la primera tarjeta. Podemos generar estos valores una vez tengamos nuestra configuración idonea guardándola con:
-alsactl store --file /etc/asound.state
-(También puedes investigar por qué falla alsa-restore.service, que es más fácil que andar con todo esto. Tienes notas en LINUX_KNOWLEDGE.TXT al respecto,
-busca en las NOTAS HIFIBERRY, aunque este problema también ocurre sin ella).
-
+-El guardado y restauración de los valores de alsamixer falla a veces. Tienes dos opciones:
+	-La más sencilla:
+		El problema es que no se cumple la condición de que exista "/dev/snd/control*" cuando se intenta cargar alsa-restore.service
+		Si editamos completamente el unit del servicio alsa-restore.service ("sudo systemctl edit --full alsa-restore.service"), vemos que tiene la condición:
+		ConditionPathExistsGlob=/dev/snd/control*
+		...que es la que está fallando.
+		Pues bien: vamos a quitar esa condición. Para ello, editamos un "override" del unit, no el unit en sí (ya que esto se perdería al actualizar el sistema...).
+		Lo editamos con:
+		sudo systemctl edit alsa-restore.service
+		Y simplemente añadimos esa condition pero "en blanco":
+		
+		[Unit]
+		ConditionPathExistsGlob=
+		
+		Salvamos, reiniciamos, y alsamixer debería restaurar los niveles sin problemas. Comprueba que "systemctl status alsa-restore.service" se ha iniciado correctamente ahora.
+	-La más complicada y poco recomendada: 
+		Deshabilita el servicio que lo lleva, y pon en .profile:
+		sudo alsactl restore 0 --file /etc/asound.state
+		Esto restaura los valores de alsamixer para la primera tarjeta. Podemos generar estos valores una vez tengamos nuestra configuración idonea guardándola con:
+		alsactl store --file /etc/asound.state
+		
 -Al final, sólo necesitas estos servicios de los que salen con systemd-analyze blame:
 pi@raspberrypi:~$ sudo systemd-analyze blame
            542ms dev-mmcblk0p2.device
+          1.011s alsa-restore.service
            382ms keyboard-setup.service
            266ms systemd-udevd.service
            238ms systemd-remount-fs.service
