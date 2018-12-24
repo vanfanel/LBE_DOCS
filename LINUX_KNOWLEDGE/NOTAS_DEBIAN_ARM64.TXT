@@ -253,7 +253,7 @@ Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
 configuramos con:
 ./autogen.sh
-./configure --prefix=/usr --libdir=/usr/lib --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --libdir=/usr/lib --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
 
 COPIAR ARCHIVOS DESDE UN SISTEMA ANTIGUO
 =========================================
