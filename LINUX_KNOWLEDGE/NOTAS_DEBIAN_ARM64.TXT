@@ -24,7 +24,7 @@ Cosas que hacemos distintas para instalar el kernel, módulos y dtbs:
 -Configuramos el kernel con:
 make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 Ajustes al kernel:
--Asegúrate de que el scheduler está a 1000HZ y que estás en FULL PREEMPTIBLE KERNEL.
+-Asegúrate de que el scheduler está a 1000HZ y que estás en FULL PREEMPTIBLE KERNEL, si estás en RT. Si no, a 300Hz y la máxima preemtion que puedas.
 -Quita todo en kernel hacking (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
 Además deshabilita a mano en .config: CONFIG_FRAME_POINTER (ya que es activado por la opción ARM64, que es inevitable)
 -En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable"
@@ -43,6 +43,8 @@ que estás leyendo). De momento instala el kernel (kernel8.img) y los dtb, y los
 Los DTBs están en arch/arm64/boot/dts/broadcom/*.dtb y los tienes que pasar al directorio raiz de la partición de boot (FAT32) de la SD.
 Los overlays están en arch/arm64/boot/dts/overlays/*.dtb* y los tienes que pasar a overlays, un directorio que cuelga directamente del raiz de la partición de boot (FAT32) de la SD.
 (Vamos, como en Raspbian más o menos).
+cp ../kernel-out/arch/arm64/boot/dts/broadcom/*.dtb /media/manuel/CUSTOM_BOOT/
+cp ../kernel-out/arch/arm64/boot/dts/overlays/* /media/manuel/CUSTOM_BOOT/overlays/
 
 -En config.txt nosotros ponemos (a consecuencia de cómo tenemos las cosas instaladas):
 device_tree=bcm2710-rpi-3-b-plus.dtb
@@ -130,10 +132,20 @@ sudo adduser pi audio
 sudo adduser pi video
 (Esto último es importante, porque has estado dando vueltas y el kernel sí reconocía el audio interno y la hifiberry (cat /proc/asound/cards)
 pero aplay -L no listaba los dispositivos...¡porque no estabas en el grupo audio!)
--Si usas la hifiberry, acuérdate que en config.txt tienes que tener para que funcione sin poner nada en /etc/asound.conf:
-dtoverlay=hifiberry-dacplus
+-Si usas la hifiberry, acuérdate que en config.txt tienes que tener para que funcione:
 Y la línea del audio interno comentada, para que el kernel sólo cargue la hifiberry:
 #dtparam=audio=on
+Y además puedes necesitar unas cosas en en /etc/asound.conf: si entras en alsamixer y no te sale el mezclador de la hifiberry, dale a F6 para ver qué número de tarjeta tiene,
+y si no es la 0 le tienes que decir a alsa que seleccionas la tarjeta 1 por defecto y no la 0, que es vc4-hdmi, para lo cual pones en /etc/asound.conf:
+pcm.!default {
+    type hw
+    card 1
+}
+
+ctl.!default {
+    type hw           
+    card 1
+}
 
 -Crear el /usr/bin/netup con:
 sudo ifconfig eth0 up
