@@ -133,19 +133,25 @@ sudo adduser pi video
 (Esto último es importante, porque has estado dando vueltas y el kernel sí reconocía el audio interno y la hifiberry (cat /proc/asound/cards)
 pero aplay -L no listaba los dispositivos...¡porque no estabas en el grupo audio!)
 -Si usas la hifiberry, acuérdate que en config.txt tienes que tener para que funcione:
+dtoverlay=hifiberry-dacplus
 Y la línea del audio interno comentada, para que el kernel sólo cargue la hifiberry:
 #dtparam=audio=on
-Y además puedes necesitar unas cosas en en /etc/asound.conf: si entras en alsamixer y no te sale el mezclador de la hifiberry, dale a F6 para ver qué número de tarjeta tiene,
-y si no es la 0 le tienes que decir a alsa que seleccionas la tarjeta 1 por defecto y no la 0, que es vc4-hdmi, para lo cual pones en /etc/asound.conf:
+Y además, para evital problemas de ordering (o sea, que a veces la hifiberry es la 0 y por tanto es usada por defecto, pero otras veces la vc4hdmi es la 0 y es usada por defecto) necesitas unas cosas en /etc/asound.conf, que vamos a ver ahora mismo.
+Para empezar, entra en alsamixer y no te sale el mezclador de la hifiberry, dale a F6 para ver si ALSA la ve al menos. (Este paso es opcional).
+Ahora, averiguamos el NOMBRE de la tarjeta con aplay -l. Nos interesa lo que pone justo después de CARD=, NO lo que pone debajo ni nada de eso, sino lo que pone
+justo a continuación del =. ESE es el nombre de las tarjetas. Nos interesa la que se llama "sndrpihifiberry", así que creamos /etc/asound.conf y lo dejamos así:
+
 pcm.!default {
     type hw
-    card 1
+    card sndrpihifiberry
 }
 
 ctl.!default {
     type hw           
-    card 1
+    card sndrpihifiberry
 }
+
+Pues con esto, ya da igual qué tarjeta sea la 0, porque seleccionamos la tarjeta ALSA por defecto a través de su nombre, no por su número. 
 
 -Crear el /usr/bin/netup con:
 sudo ifconfig eth0 up

@@ -3782,13 +3782,21 @@ dtoverlay=vc4-kms-v3d
 
 Y si queremos la hifiberry:
 dtoverlay=hifiberry-dacplus
+#dtparam=audio=on
 
 Lo de dtoverlay=i2s-mmap no hace falta para la hifiberry.
 
 Y en /etc/asound.conf, si queremos la hifiberry:
 
-defaults.pcm.!card $sndrpihifiberry
-defaults.ctl.!card $sndrpihifiberry
+pcm.!default {
+    type hw
+    card sndrpihifiberry
+}
+
+ctl.!default {
+    type hw           
+    card sndrpihifiberry
+}
 
 Si funciona alsamixer, ya tienes lo del audio arreglado.
 
@@ -4022,17 +4030,16 @@ Al meter el overlay de vc4 en config.txt, se te habrá activado también el soni
 Confirma qué dispositivos tienes con:
 cat /proc/asound/cards
 Elige la hifiberry como dispositivo de sonido por defecto, para lo cual
-puedes ver su número de dispositivo con:
-aplay -l | awk -F \: '/,/{print $2}' | awk '{print $1}' | uniq
-Y si por ejemplo es el 1, crea un /etc/asound.conf así:
+puedes ver su nombre de dispositivo con: aplay -l, y fíjate en lo que pone a continuación de CARD=.
+Y si por ejemplo quieres la hifiberry, crea un /etc/asound.conf así para seleccionar POR NOMBRE (no selecciones por número porque eso puede cambiar entre arranques):
 pcm.!default {
     type hw
-    card 1
+    card sndrpihifiberry
 }
 
 ctl.!default {
     type hw           
-    card 1
+    card sndrpihifiberry
 }
 
 Ahora ya configuramos:
@@ -4157,16 +4164,18 @@ NOTA: NO FUNCIONA el PGO con el DISTCC, ya que al correr no genera los .gcda, as
 COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
 ===========================================================================
 
-Buscamos en makefile.libretro la parte de generate-files, y dejamos sólo las entradas de capcom, neogeo y tal.
-La línea queda tal que así, pero vamos, hazlo a mano:
-        $(PERL) $(FBA_SCRIPTS_DIR)/gamelist.pl -o $(FBA_GENERATED_DIR)/driverlist.h -l gamelist.txt $(FBA_BURN_DRIVERS_DIR) $(FBA_BURN_DRIVERS_DIR)/capcom $(FBA_BURN_DRIVERS_DIR)/cps3 $(FBA_BURN_DRIVERS_DIR)/neogeo
-
-Ahora, en makefile.libretro_common, quitamos los directorios de la parte de FBA_BURN_DIRS := $(FBA_BURN_DIR) en adelante.
+En makefile.libretro_common, quitamos los directorios de la parte de FBA_BURN_DRIVERS_DIRS :=
 No hace falta que quites los directorios de los includes, esos dan igual.
 
 Ahora hacemos un 
 make -f makefile.libretro platform=rpi3 generate-files
 de manera que nos genere los headers sólo con los drivers que hemos dejado en el makefile.libretro,
+dejamos la platform definition de la pi3 asi:
+
+   else ifneq (,$(findstring rpi3,$(platform)))
+      PLATFORM_DEFINES := -march=armv8-a+crc -mtune=cortex-a53
+   endif
+
 y luego ya el 
 make -f makefile.libretro platform=rpi3 -j6
 y listo. 
