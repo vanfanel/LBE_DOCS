@@ -151,7 +151,8 @@ ctl.!default {
     card sndrpihifiberry
 }
 
-Pues con esto, ya da igual qué tarjeta sea la 0, porque seleccionamos la tarjeta ALSA por defecto a través de su nombre, no por su número. 
+Pues con esto, ya da igual qué tarjeta sea la 0, porque seleccionamos la tarjeta ALSA por defecto a través de su nombre, no por su número.
+La mejor información sobre esto está en la wiki de arch: https://wiki.archlinux.org/index.php/Advanced_Linux_Sound_Architecture#Select_the_default_PCM_via_environment_variable
 
 -Crear el /usr/bin/netup con:
 sudo ifconfig eth0 up
