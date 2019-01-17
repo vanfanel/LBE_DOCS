@@ -286,7 +286,9 @@ Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
 configuramos con:
 ./autogen.sh
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --libdir=/usr/lib --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib"  ./configure --prefix=/usr --libdir=/usr/lib --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
+
+(lo de AR, NM y RANLIB es para que funcione el LTO, que falla si no se lo pasas, como al compilar el SCUMMVM.
 
 COPIAR ARCHIVOS DESDE UN SISTEMA ANTIGUO
 =========================================

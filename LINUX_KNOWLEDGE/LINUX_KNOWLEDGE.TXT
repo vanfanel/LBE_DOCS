@@ -4158,7 +4158,7 @@ No hace falta que quites los directorios de los includes, esos dan igual.
 
 Ahora hacemos un 
 make -f makefile.libretro platform=rpi3 generate-files
-de manera que nos genere los headers sólo con los drivers que hemos dejado en el makefile.libretro,
+de manera que nos genere los headers sólo con los drivers que hemos dejado en el makefile.libretro_common,
 dejamos la platform definition de la pi3 asi:
 
    else ifneq (,$(findstring rpi3,$(platform)))
