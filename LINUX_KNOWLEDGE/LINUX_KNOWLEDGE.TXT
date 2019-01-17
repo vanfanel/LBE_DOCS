@@ -5158,3 +5158,34 @@ sudo apt-get install mame-tools
 
 Y se comprime pasándole el CUE:
 chdman createcd -i BC\ Racers.cue -o BC\ Racers.chd
+
+ESCRIBIENDO Y GESTIONANDO SERVICIOS EN SYSTEMD
+==============================================
+
+Por ejemplo, he creado el servicio retroarch.service y lo he puesto en /etc/systemd/system/retroarch.service
+
+El contenido de retroarch.service es:
+
+[Unit]
+Description=RetroArch service
+
+[Service]
+User=pi
+Group=pi
+ExecStart=/home/pi/retro/ragui.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+Para habilitarlo, lo que hago es:
+systemctl enable retroarch
+
+En realidad esto lo único que hace es copiar /etc/systemd/system/retroarch.service a /etc/systemd/system/multi-user.target.wants/retroarch.service, es decir, lo mete
+en el directorio del target "multiuser", que es el último, supongo, cuando se inicia el sistema. (Bueno, crea un symlink, pero ya me entiendes).
+
+Naturalmente, "systemctl disable retroarch" hace lo contrario: borra /etc/systemd/system/multi-user.target.wants/retroarch.service.
+
+Saber esto nos permite habilitar y deshabilitar servicios manualmente sin necesidad de que arranque el sistema, accediendo al rootfs desde otro ordenador.
+
+
