@@ -260,13 +260,14 @@ Los CFLAGS van a ser:
 -march=armv8-a+crc -mtune=cortex-a53
 
 Empezamos con DRM:
-git clone --depth 1 git://anongit.freedesktop.org/mesa/dr
+Bajamos la última versión estable de:
+https://dri.freedesktop.org/libdrm/
 sudo apt-get install xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
 ./autogen.sh
-Editamos configure y donde pone O2 ponemos:
--O3 -march=armv8-a+crc -mtune=cortex-a53
-Configuramos y compilamos:
-./configure --prefix=/usr --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
+Configuramos con esto:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
+
+Compilamos e instalamos.
 
 Ahora vamos a por MESA. Instalamos estos paquetes previos:
 sudo apt-get install --no-install-recommends \

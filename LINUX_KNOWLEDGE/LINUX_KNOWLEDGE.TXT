@@ -384,11 +384,19 @@ https://www.vogons.org/viewtopic.php?f=41&t=34770&start=120
 
 patch -p0 < parche.patch
 
+Cambiamos "AR = ar" por "AR = gcc-ar" en todos los Makefile.in (hay varios, en distintos subdirectorios) con:
+
+find ./ -type f -exec sed -i 's/AR = ar/AR = gcc-ar/g' {} \;
+
+Cambiamos "-g -O2" por los flags que nos interesan, porque en algunos ficheros Makefile no se han propagado:
+
+find ./ -type f -exec sed -i 's/-g -O2/-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto/g' {} \;
+
 Editamos configure y ponemos a "no" todos los have... relacionados con opengl y x11.
 
 Configuraríamos para SDL2. 
 
-CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  ./configure
+CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure
 
 Luego en el conf nos interesará tener la opción output=texture o texturenb. Pasa que texturenb a veces falla, usa texture que se ve mejor.
 En renderer pon renderer=auto y fullscreen=true, o no se verá nada. SDL2 luego ya usa el renderer "opengles2" por debajo... Pero dosbox no admite este valor.
