@@ -410,6 +410,8 @@ En renderer pon renderer=auto y fullscreen=true, o no se verá nada. SDL2 luego 
 El caso es que no dejes puesto renderer=opengl porque ese no se ve.
 Pon el scaler a none también.
 
+NOTA: A continuación indico cómo activar el cynarec en ARM. No hace falta hacer todo eso, porque ya lo detecta solo, e incluso funciona dynarec para ARMv8.
+
 Hemos encontrado las las instrucciones para dynarec ARM y para UNALIGNED MEMORY ACCESS en estas páginas:
 
 https://www.raspberrypi.org/forums/viewtopic.php?f=78&t=95421
@@ -477,7 +479,7 @@ fps=(double)clock/(vtotal*htotal);
 
 Por último, a nuestro .conf le añadimos algo como:
 refresh=60.016804;
-Eso debería darnos un refresco de 60.016804 HZ
+Eso debería darnos un refresco de 60.016804 HZ, que es la apropiada con audio a 44100Hz.
 
 CAMBIA BOTONES O TECLAS
 ========================
