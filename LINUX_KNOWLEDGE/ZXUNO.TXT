@@ -44,3 +44,8 @@ Añade el poke en la primera línea, la 10 por ejemplo:
 10 POKE -1,0
 Confirma que está con LIST, y salva con SAVE "archivo.bas" 
 
+CONFIGURACIÓN IDEAL DE VÍDEO PARA MONITOR LG
+============================================
+
+En el ZXUNO, CSYNC a PAL, video VGA, SCANLINES ENABLED, FREQUENCY 51
+Y en el monitor, CLOCK a 86, y luego el ajuste horizontal y vertical que quieras.
