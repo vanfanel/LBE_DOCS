@@ -30,6 +30,7 @@ APUNTES 1CHIPMSX
 -Cargar el BUBBLE BOBBLE:
 romload bubble.rom /A /S
 -Cargar el SWORD OF IANNA:
+configura el segundo slot como ASCII-16K
 mgload ianna.rom /S02
 reset
 
