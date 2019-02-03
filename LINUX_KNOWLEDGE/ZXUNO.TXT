@@ -112,10 +112,7 @@ Una vez que tienes la ROM en TAP, la pasas a WAV con tape2wav, que está en el p
 sudo apt-get install fuse-emulator-utils
 
 Ahora, entras en la BIOS del ZXUNO, y donde las ROMs borras las que quieras, y para añadir una nueva
-pulsas la tecla N. Piensa que necesitas a veces 2 slots por ROM, o sea que si la última está en la 12, intenta meter la nueva en
+pulsas la tecla N. Piensa que necesitas a veces 2 slots por ROM, ya que cada slot son 16K. O sea que si la última está en la 12, intenta meter la nueva en
 el slot 14, NO en el 13 porque no te va a dejar.
 
 Cuando te salga "header: ", pulsas PLAY en el VLC, y listo, a subir la nueva ROM!
-
-
-Ahora 
