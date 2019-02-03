@@ -83,3 +83,39 @@ Usa el recovery.73.bit, no el antiguo sino el .73 ese, que tiene que ocupar 16M.
 Y pásale la ruta completa. Si te da un error del comando load, es que no está encontrando el fichero recovery.bit.
 
 Feliz unbricking!
+
+PASAR ROMS NUEVAS DE SPECTRUM A LA BIOS PARA ARRANCAR DESDE MODELOS NUEVOS
+==========================================================================
+
+Puedes bajarte las ROMs desde
+
+http://svn.zxuno.com/svn/zxuno/firmware/roms/
+
+Luego, la ROM que quieras la pasas a TAP con genrom, que viene aquí:
+
+https://github.com/antoniovillena/zxuno.git
+
+Está en la carpeta firmware.
+Compila genrom con:
+
+gcc GenRom.c -o genrom
+sudo cp genrom /usr/bin
+
+Ahora la conviertes a TAP con (para la ROM 128K, por ejemplo):
+genrom dnxth1 "Spectrum 128K EN" 128en.rom 128en.tap
+
+Si fuese un juego de 48k, serían los parámetros: xlh17
+Y un juego de 128k, serían los parámetros: xth1
+(esto se ve en https://github.com/antoniovillena/zxuno/blob/master/firmware/generaflash_multi.bat, en la parte de las llamadas "call :CreateRom"
+
+Una vez que tienes la ROM en TAP, la pasas a WAV con tape2wav, que está en el paquete de fuse-emulator-utils:
+sudo apt-get install fuse-emulator-utils
+
+Ahora, entras en la BIOS del ZXUNO, y donde las ROMs borras las que quieras, y para añadir una nueva
+pulsas la tecla N. Piensa que necesitas a veces 2 slots por ROM, o sea que si la última está en la 12, intenta meter la nueva en
+el slot 14, NO en el 13 porque no te va a dejar.
+
+Cuando te salga "header: ", pulsas PLAY en el VLC, y listo, a subir la nueva ROM!
+
+
+Ahora 
