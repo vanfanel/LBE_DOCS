@@ -49,3 +49,37 @@ CONFIGURACIÓN IDEAL DE VÍDEO PARA MONITOR LG
 
 En el ZXUNO, CSYNC a PAL, video VGA, SCANLINES ENABLED, FREQUENCY 51
 Y en el monitor, CLOCK a 86, PHASE a 50, y luego el ajuste horizontal y vertical que quieras.
+
+
+
+DESBRICKEAR EL ZXUNO DESDE LINUX
+================================
+
+Se hace con el urgjtag, que NO puedes instalar desde apt sino que tienes que compilarlo tú.
+Lo primero instala:
+sudo apt-get install libftdi-dev libusb-dev python-dev libtool autopoint
+
+Ahora clona el repo más reciente de urgjtag de:
+git clone --depth 1 https://github.com/shuckc/urjtag.git
+
+Ahora ejecuta autogen.sh
+
+Ahora configura con:
+./configure --prefix=usr
+Fíjate bien que haya detectado libftdi y libusb!!!
+Ahora compila con make -j4 e instala con sudo make install
+Ahora intenta ejecutar "jtag". Si te dice que no encuentra la librería liburjtag, es porque el script de instalación se empeña en instalarlas en /usr/local/lib. MAAAAL.
+Las movemos a /usr/lib:
+mv /usr/local/lib/liburjtag.* /usr/lib/
+Ya debería ir jtag.
+
+Si ya va, pues conecta el ZXUNO a la corriente, y conéctalo al PC por USB usando el USB Blaster a su conector JTAG (sólo entra en un sitio!)
+
+Una vez en jtag, le dices:
+cable usbblaster
+detect
+pld load <RUTA_COMPLETA_A_RECOVERY.BIT>
+Usa el recovery.73.bit, no el antiguo sino el .73 ese, que tiene que ocupar 16M.
+Y pásale la ruta completa. Si te da un error del comando load, es que no está encontrando el fichero recovery.bit.
+
+Feliz unbricking!

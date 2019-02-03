@@ -291,6 +291,9 @@ CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=arm
 
 (lo de AR, NM y RANLIB es para que funcione el LTO, que falla si no se lo pasas, como al compilar el SCUMMVM.
 
+Si al compilar te da un error de que NULL no está definido, añade en src/egl/main/egldevice.h:
+#include <stddef.h>
+
 COPIAR ARCHIVOS DESDE UN SISTEMA ANTIGUO
 =========================================
 
