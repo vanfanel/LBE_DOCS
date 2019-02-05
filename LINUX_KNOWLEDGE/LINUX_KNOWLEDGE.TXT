@@ -3954,30 +3954,17 @@ En concreto, la sección de -mfpu=name.
 Sacarás en conclusión que como NEON no cumple IEEE, tienes que desactivar el cumplimiento con estándar IEEE, para lo cual puedes parsar -funsafe-math-optimizations,
 o con -ffast-math, que hace lo mismo que -funsafe-math-optimizations y más cosas (lee la segunda respuesta buena aquí: http://stackoverflow.com/questions/7420665/what-does-gccs-ffast-math-actually-do)
 
-Detecta el EGL de la Pi y todo, y activamos nosotros dispmanx:
-
-Para la Pi 1:
-
-./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --enable-opengl --enable-opengles --disable-flac
-
-Para la Pi 2: y la 3 (la diferencia es que se activa el uso de las instrucciones NEON):
-
-./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac --disable-qt
+Detecta el EGL de la Pi y todo, ya NO activamos dispmanx:
 
 Para la Pi 3 (Aquí NO le pasamos --enable-hardfloat ni --enable-neon, porque cuando le pasemos en los CFLAGS y los CXXFLAGS "-march=armv8-a+crc -mtune=cortex-a53" eso se da por hecho
 debido a la aquitectura armv8):
 
-./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac --disable-qt
-
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" ./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-ozone --disable-easteregg
 
 Para PC:
 LO PRIMERO TEN INSTALADO PKGCONFIG, O NO DETECTARÁ ALGUNAS LIBRERÍAS ESENCIALES!!!
 
 ./configure --enable-kms --disable-vg --disable-wayland --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac --disable-qt
-
-Añadimos los flags de CPU en config.mk. Para Pi3 en modo 64 bits serían los CFLAGS y CXXFLAGS:
--march=armv8-a+crc -mtune=cortex-a53
-Y ponemos manualmente HAVE_NEON=1
 
 Editamos Makefile.common y comentamos la línea del -g
 
@@ -4125,31 +4112,11 @@ a la sección de platform unix, si te de problemas el cross compilador al especi
 se compila con 
 make -j8 platform="unix armv6j hardfloat"
 
-En Stella tenemos que poner también platform=unix, y si se empeña en compilar como dll, busca dll en el makefile y manda ese bloque a la mierda.
-
-El core de prboom (doom) requiere configurar las teclas a mano: Las he dejado así las más importantes:
-
-input_player1_b = "alt"
- input_player1_y = "shift"
-input_player1_a = "space"
-input_player1_x = "ctrl"
-input_player1_l = "z"
-input_player1_r = "x"
-input_player1_l2 = "q"
-input_player1_r2 = "w"
-
 PARA que haya input con el driver udev (input_driver = "udev") debemos crear /etc/udev/rules.d/99-evdev.rules con el contenido:
 KERNEL=="event*", NAME="input/%k", MODE="666"
 Y reiniciar.
 
 Si le pasas algún flag de march o mtune, el ejecutable va a salir mal y no funcionará.
-
-Para FRODO: 
--Compila con
-make -j8 -f Makefile.libretro NOLIBCO=1 EMUTYPE=frodosc
--Deshabilita los LEDs en libretro/emu/Display_retro.i y luego busca dónde se colola la pantalla en void C64Display::Update(void) para dejarla en el medio.
--Luego, para el AUTOLOAD de disk images, te vas a libretro/core/core-mapper.cpp b/libretro/core/core-mapper.cpp, y metes el parche que tienes en los foros de RA en
-el hilo del core de C64.
 
 Para medir el uso de CPU, usamos PERFORMANCE COUNTERS:
 -En RGUI: en General Options, activamos LOGGING VERBOSITY, PERFOMANCE COUNTERS, y ponemos LOGGING LEVEL a 0. Al salir, deberíamos
@@ -4179,11 +4146,12 @@ de manera que nos genere los headers sólo con los drivers que hemos dejado en e
 dejamos la platform definition de la pi3 asi:
 
    else ifneq (,$(findstring rpi3,$(platform)))
-      PLATFORM_DEFINES := -march=armv8-a+crc -mtune=cortex-a53
+      PLATFORM_DEFINES := -march=armv8-a+crc -mtune=cortex-a53 -flto
+      LDFLAGS += -flto
    endif
 
 y luego ya el 
-make -f makefile.libretro platform=rpi3 -j6
+make -f makefile.libretro platform=rpi3 -j4
 y listo. 
 
 
