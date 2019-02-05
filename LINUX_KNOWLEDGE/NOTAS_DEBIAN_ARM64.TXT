@@ -327,10 +327,16 @@ INSTALAR RETROARCH
 ===================
 
 Se configura con:
-./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --enable-neon --enable-floathard --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac
-(No le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 
-Ponemos en config.mk, en CFLAGS y CXXFLAGS:
- -march=armv8-a+crc -mtune=cortex-a53
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" ./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac --disable-rgui
+
+(NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
+(Como le estamos pasando --disable-rgui, sólo va a tener el GUI por defecto, llamado OZONE, que es en 2D pero muy funcional)
 
 Compilar y listo.
+
+
+Si quieres que te salgan iconos en el menú OZONE en lugar de cuadrados negros, necesitas los assets de aquí: https://github.com/libretro/retroarch-assets
+De ese repo, necesitas solamente el directorio ozone en el directorio de assets. El directorio de assets se cambia en el menú o en el cfg. Yo los tengo en ~/retro/assets,
+de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/ozone
+Con assets/ozone te vale, borra los demás.

@@ -4931,21 +4931,6 @@ Los detalles sobre los dip switches están en dle21.txt, que acompaña a las rom
 Recuerda que ahí se cuentan los switches del 0 al 7. Se empieza de derecha a izquierda a contar.
 Por lo demás, el banco A es el 0, y el B es el 1.
 
-FLASHEAR EL CONTROLADOR ARDUINO DEL ZXUNO QUE SE USA PARA EL TECLADO DEL GO+
-================================================================================
-Instalamos el paquete del arduino desde synaptic, que incluye el avrdude, y hacemos:
-
-avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -v -v -v -v -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -D -Uflash:w:/home/manuel/Downloads/zxunops2-01112017-go.hex:i
-
-FORMATEAR LA TARJETA DEL ZXUNO PARA QUE VAYAN LOS CORES DE ZX SPECTRUM, BBC MICRO, ATARI800, MSX
-=================================================================================================
-
-Hay que crear una partición de un tamaño máximo de 1024M con fdisk, y luego usar mkdosfs con un tamaño de cluster de 64 sectores por cluster.
-O sea, que creamos la partición con fdisk de tipo FAT16 normal (tipo número 6) de 1024M, y luego formateamos con:
-sudo mkdosfs -s 64 -F 16 /dev/sdb1
-
-Y funciona! De tal manera que ahora puedo usar la misma SD para los cores de ZX Spectrum. BBC Micro, Atari 800XL y MSX.
-
 CREAR UN ALIAS EN LINUX DE MANERA PERMANENTE
 ===============================================
 
@@ -4971,6 +4956,17 @@ Sí. El kernel corre sobre HRTIMERS, lo de los 100HZ es la velocidad del shedule
 Son cosas distintas e independientes, la granularidad del kernel es mucho mayor que 100HZ... eso es sólo el scheduler.
 Y el scheduler, en tus sistemas de no-escritorio, va de sobra a 100Hz para una cosa que ejecutas a la vez (mas el housekeeping del kernel fuera de las CPUs aisladas).
 Así que sí, se puede.
+
+COMPILAR FROTZ A SECAS, SIN GRÁFICOS NI SDL NI NADA
+===================================================
+
+Baja los surces de 
+git clone --depth 1 https://gitlab.com/DavidGriffith/frotz.git
+
+Ahora edita el Makefile y pon sound a NONE
+
+Ahora compila con "make frotz" (hay "make sfrotz", para SDL, etc...)
+
 
 COMPILAR FROTZ VERSIÓN SDL, QUE SOPORTA ACENTOS, SIN INSTALAR LIBJPEG EN EL SISTEMA
 =================================================================================

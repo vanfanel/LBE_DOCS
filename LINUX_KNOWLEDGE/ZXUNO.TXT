@@ -1,11 +1,43 @@
+FLASHEAR EL CONTROLADOR ARDUINO DEL ZXUNO QUE SE USA PARA EL TECLADO DEL GO+
+================================================================================
+Instalamos el paquete del arduino desde synaptic, que incluye el avrdude, y hacemos:
+
+avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -v -v -v -v -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -D -Uflash:w:/home/manuel/Downloads/zxunops2-01112017-go.hex:i
+
+
+COMBINACIONES DE TECLADO DEL ZXUNO GO+
+========================================
+
+Establecer un modo de teclado:
+
+CAPS+SHIFT+U y luego un número (0 es el ZX Spectrum, etc). Salvamos permanentemente con CAPS+SHIT+X
+
+Entrar en el menú NMI:
+
+CAPS+SHIFT+Y
+
+Reiniciar
+
+CAPS+SHIFT+B
+
+FORMATEAR LA TARJETA DEL ZXUNO PARA QUE VAYAN LOS CORES DE ZX SPECTRUM, BBC MICRO, ATARI800, MSX
+=================================================================================================
+
+Hay que crear una partición de un tamaño máximo de 1024M con fdisk, y luego usar mkdosfs con un tamaño de cluster de 64 sectores por cluster.
+O sea, que creamos la partición con fdisk de tipo FAT16 normal (tipo número 6) de 1024M, y luego formateamos con:
+sudo mkdosfs -s 64 -F 16 /dev/sdb1
+
+Y funciona! De tal manera que ahora puedo usar la misma SD para los cores de ZX Spectrum. BBC Micro, Atari 800XL y MSX.
+
 CARGAR DISCOS DE C64
 ====================
+
+Con los atajos del Jiffydos, simplemente F5 y luego F1, tras insertar el disco.
 
 Sin los atajos del Jiffydos:
 Cargamos el listado de archivos del disco:
 LOAD "$",8 
-LIST.
-
+LIST
 Cargamos el primer archivo del disco:
 LOAD "*",8 
 RUN
@@ -22,7 +54,6 @@ fdisk -l -u=cylinders
 
 Para el segundo campo, sectorsperhead, debes usar los "sectors/track".
 Lo demás te lo da todo fdisk -u=cylinders tal cual
-
 
 APUNTES 1CHIPMSX
 =================
@@ -49,8 +80,6 @@ CONFIGURACIÓN IDEAL DE VÍDEO PARA MONITOR LG
 
 En el ZXUNO, CSYNC a PAL, video VGA, SCANLINES ENABLED, FREQUENCY 51
 Y en el monitor, CLOCK a 86, PHASE a 50, y luego el ajuste horizontal y vertical que quieras.
-
-
 
 DESBRICKEAR EL ZXUNO DESDE LINUX
 ================================
@@ -90,6 +119,7 @@ PASAR ROMS NUEVAS DE SPECTRUM A LA BIOS PARA ARRANCAR DESDE MODELOS NUEVOS
 Puedes bajarte las ROMs desde
 
 http://svn.zxuno.com/svn/zxuno/firmware/roms/
+(zxuno/guest)
 
 Luego, la ROM que quieras la pasas a TAP con genrom, que viene aquí:
 
@@ -116,3 +146,6 @@ pulsas la tecla N. Piensa que necesitas a veces 2 slots por ROM, ya que cada slo
 el slot 14, NO en el 13 porque no te va a dejar.
 
 Cuando te salga "header: ", pulsas PLAY en el VLC, y listo, a subir la nueva ROM!
+
+La mejor combinación de ROMs que hay está en este hilo:
+http://www.zxuno.com/forum/viewtopic.php?f=27&t=1983
