@@ -1630,7 +1630,7 @@ Fácil. Con fdisk vemos dónde empieza y cuánto mide la partición que queremos
 sudo fdisk -l Downloads/MSX3_sd.img
 
 Device               			                   Start    End            Sectors       Size      Id Type
-Downloads/MSX3_sd.img          2048     1982463 1980416      967M  e W95 FAT16 (LBA)
+Downloads/MSX3_sd.img          					   2048     1982463        1980416       967M      e W95 FAT16 (LBA)
 
 Vemos que sólo tiene una partición, que empieza en el sector 2048 y ocupa 1982563 sectores. Con eso ya ponemos hacer:
 dd if=Downloads/MSX3_sd.img of=fat16_partition.img skip=2048 count=1980416
@@ -5203,3 +5203,8 @@ En el setup del dm2, dejamos que detecte la sound blaster, y luego seleccionamos
 Ejecutamos LOADPATS.EXE cada vez que carguemos el dm2. Debería funcionar si tienes una GUS activada y el ULTRASND en C:\
 
 Y ya debería ir... Ya sabes: Sound Blaster para los efectos, y GUS para la música. Es cutre, pero funciona de momento.
+
+LA MEJOR PÁGINA PARA BAJAR PELÍCULAS BUENAS Y ALTERNATIVAS
+==========================================================
+
+Busca ZOOWOMAN y el nombre de la peli.
