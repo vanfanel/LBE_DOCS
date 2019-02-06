@@ -48,3 +48,13 @@ El único problema es que detecta la partición FAT32 y es la que monta. Así qu
 *rmkill fat32fs
 *rmkill dosfs
 3) Le damos al icono del pen para que re-monte, y ya tenemos la partición ADFS donde tenemos todo lo del sistema antiguo. 
+
+REPRODUCIR VÍDEO EN MPEG CON AUDIO Y TODO
+=========================================
+
+PREVIO: Para instalar un SYSTEM, simplemente le damos doble click a BOOT, y ya ves que ahí tienes un icono para hacer merges de SYSTEMS
+que traen los programas.
+
+Necesitamos el KinoAmp, última versión y el AMPlayer, última versión. Copiamos la aplicación del KinoAmp a Apps, SIN instalar su SYSTEM,
+e instalamos el SYSTEM del AMPlayer. Copiar la aplicación de AMPlayer a Apps ya es opcional, aunque está bien para escuchar música.
+Para que se oiga, vamos a los CHOICES del KinoAmp, y elegimos la salida del AMPlayer.
