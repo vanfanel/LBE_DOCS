@@ -72,6 +72,6 @@ int main () {
         printf ("VTOTAL: ");
         scanf ("%d", &vtotal);
     
-        printf ("video_mode=%d %d %d %d %d %d %d %d %f\n", hdisp, hsyncstart - hdisp, hsyncend - hsyncstart, htotal - hsyncend,
+        printf ("video_mode=%d,%d,%d,%d,%d,%d,%d,%d,%f\n", hdisp, hsyncstart - hdisp, hsyncend - hsyncstart, htotal - hsyncend,
                                                         vdisp, vsyncstart - vdisp, vsyncend - vsyncstart, vtotal - vsyncend,
                                                         clock * 1000);
