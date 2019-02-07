@@ -40,4 +40,38 @@ Sin JiffyDOS,
 cargamos con: LOAD"*",8
 y luego RUN
 
+PROGRAMA PARA CONVERTIR MODELINES DE XORG A video_mode DE LA MISTER
+===================================================================
 
+Simplemente es irle metiendo, en el órden en que salen en la página, los parámetros del modeline que quieras, y que puedes generar con el
+generador de modelines de https://arachnoid.com/modelines/
+NO copies los decimales del último parámetro del resultado (deberían ser ceros, de todos modos, pero no los copies).
+
+#include <stdio.h>
+
+int main () {
+        float clock;
+        int hdisp, hsyncstart, hsyncend, htotal, vdisp, vsyncstart, vsyncend, vtotal;
+
+        printf ("CLOCK: ");
+        scanf ("%f", &clock);
+        printf ("HDISP: ");
+        scanf ("%d", &hdisp);
+        printf ("HSYNCSTART: ");
+        scanf ("%d", &hsyncstart);
+        printf ("HSYNCEND: ");
+        scanf ("%d", &hsyncend);
+        printf ("HTOTAL: ");
+        scanf ("%d", &htotal);
+        printf ("VDISP: ");
+        scanf ("%d", &vdisp);
+        printf ("VSYNCSTART: ");
+        scanf ("%d", &vsyncstart);
+        printf ("VSYNCEND: ");
+        scanf ("%d", &vsyncend);
+        printf ("VTOTAL: ");
+        scanf ("%d", &vtotal);
+    
+        printf ("video_mode=%d %d %d %d %d %d %d %d %f\n", hdisp, hsyncstart - hdisp, hsyncend - hsyncstart, htotal - hsyncend,
+                                                        vdisp, vsyncstart - vdisp, vsyncend - vsyncstart, vtotal - vsyncend,
+                                                        clock * 1000);

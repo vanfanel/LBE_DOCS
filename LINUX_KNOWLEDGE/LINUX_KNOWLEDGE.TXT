@@ -1640,9 +1640,8 @@ sudo mount -o loop fat16_partition.img /mn/hdd
 
 Ahora, podrías volcar esa partición a otro disco, empezando en el sector 2048 como en el disco original, con:
 sudo dd if=fat16_partition.img of=/dev/sdb seek=2048
-
-PERO TEN EN CUENTA QUE TIENES QUE CREAR LA PARTICIÓN ANTES, PARA QUE SE GUARDE EN LA TABLA DE PARTICIONES, YA QUE AL VOLCAR
-LA PARTICIÓN SOLAMENTE NO QUEDA GUARDADA EN LA TABLA Y ES INVISIBLE!
+PERO ESO NO TENDRÍA SENTIDO, PORQUE NO SE VERÍA LA PARTICIÓN: TEN EN CUENTA QUE TIENES QUE CREAR LA PARTICIÓN ANTES, PARA QUE SE GUARDE EN LA
+TABLA DE PARTICIONES, YA QUE AL VOLCAR LA PARTICIÓN SOLAMENTE NO QUEDA GUARDADA EN LA TABLA Y ES INVISIBLE!
 
 Efectivamente, seek sirve para posicionarse en un sector del disco de salida, igual que skip nos sirvió para lo mismo en el disco de entrada.
 Se podría haber hecho todo en el mismo comando combinando seek y skip, ambos a 2048 en el ejemplo:
@@ -5109,7 +5108,7 @@ Normalmente no es posible instalar un nuevo SO después de instalar NOOBS en una
   "bootable" : true,
   "description" : "Sistema GNU/Linux de 64bits para juegos",
   "folder" : "/settings/os/debian64",
-  "icon" : "/settings/os/linux64/icon.png",
+  "icon" : "/settings/os/debian64/icon.png",
   "name" : "Debian 64 bits",
   "partitions" : [
 "/dev/mmcblk0p8",
@@ -5121,15 +5120,56 @@ Normalmente no es posible instalar un nuevo SO después de instalar NOOBS en una
   ]
  },
 
-^^^Como ves, ahí se le especifican las particiones que tiene. El directorio SETTINGS/os/linux64 lo creamos nosotros también y metemos ahí el icono que queramos que
+^^^Como ves, ahí se le especifican las particiones que tiene. El directorio SETTINGS/os/debian64 lo creamos nosotros también y metemos ahí el icono que queramos que
 se muestre en el arranque. Con el icono vale, no hace falta tener nada más en ese directorio.
-El icono tendrá un tamaño de 48 pixels para no desentonar con el tamaño de los demás. Aqui tienes un ejemplo:
+El icono tendrá un tamaño de 40x40 pixels para no desentonar con el tamaño de los demás. Aqui tienes un ejemplo:
 http://www.iconarchive.com/show/super-mario-icons-by-ph03nyx/Retro-Block-Question-icon.html 
+Puedes escalar cualquien imágen con GIMP, en image->scale image, y dejarla a 40x40 que es lo que se necesita.
 
 -Ahora edita el cmdline.txt del sistema custom que acabas de instalar, y ajusta el parámetro root= con el PARTUUID de la partición de rootfs.
 -Ahora edita el /etc/fstab del sistema custom que acabas de instalar, y lo mismo, ajusta los dos PARTUUID a los de la partición boot y rootfs.
 ...Y ya debería arrancar sin ningún problema.
 Si te sale sólo la pantalla en negro, es que el kernel necesita los módulos instalados en el rootfs para poder mostrar algo por pantalla.
+
+INSTALAR LIBREELEC EN UNA SD CON NOOBS QUE YA TIENE OTROS SISTEMAS INSTALADOS
+=============================================================================
+
+Es igual que lo de instalar un sistema custom tuyo, solo que lo vamos a ver de manera más resumida.
+-Creamos con GPARTED las dos particiones necesarias en la SD donde haya espacio libre: una de FAT32 de 512MB llamada LIBREELEC y otra en EXT4 del tamaño que puedas llamada STORAGE.
+ No hay que cambiar nada en gparted al crearlas, los tipos por defecto fata FAT32 y EXT4 nos valen.
+-Copiamos los contenidos de la partición LIBREELEC de la imágen descargada de LibreeElec para Raspberry Pi a nuestra partición LIBREELEC de la tarjeta (tienes en este mismo
+ documento cómo montar una partición individual de una imágen con varias particiones, es muy fácil).
+ La partición STORAGE la dejamos vacía totalmente.
+-MUY IMPORTANTE: ajustamos los parámetros boot= y disk= de cmdline.txt en la partición LIBREELEC de la tarjeta, poniendo los UUID de las dos particiones LIBREELEC y STORAGE
+ que puedes conseguir en gparted, mirando INFORMATION de cada una de las particiones.
+-Creamos la nueva entrada para LibreeElec el archivo installed_os.json de la partición SETTINGS de la tarjeta, es decir, en /media/manuel/SETTINGS/installed_os.json.
+ En ella tienes que poner qué particiones va a tener disponibles el sistema. La manera más fácil de ver qué número tiene cada partición es con fdisk -l, pero también lo puedes
+ mirar en gparted. Mi entrada queda así:
+
+
+{ 
+  "bootable" : true,
+  "description" : "Distro orientada a la reproducción de audio y vídeo",
+  "folder" : "/settings/os/libreelec",
+  "icon" : "/settings/os/libreelec/icon.png",
+  "name" : "LibreElec",
+  "partitions" : [ 
+"/dev/mmcblk0p12",
+"/dev/mmcblk0p13"
+  ],  
+  "release_date" : "2019-02-05",
+  "supported_models" : [ 
+"Pi 2",
+"Pi 3",
+"Pi Compute Module 3"
+  ]
+},
+
+
+-Ahora ya sólo queda crear el directorio /media/manuel/SETTINGS/os/libreelec, y encontrar un png adecuado para ser el icon.png de ese directorio: 
+Tiene que ser de 40x40 pixels: puedes coger cualquier imágen y escalarla con GIMP: la abres, pinchas sobre ella con el boton derecho, image->scale image.
+Si necesitas recortarla, usa el rectángulo de selección (arriba a la izquerda), y luego en image->crop to selection.
+En SETTINGS/os/libreelec, con que esté el archivo icon.png vale, no hace falta nada más.
 
 COMPRIMR CUE/BIN A CHD
 ======================
