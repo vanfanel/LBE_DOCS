@@ -207,10 +207,6 @@ dtoverlay=pi3-disable-wifi
 -Para ocultar los mensajes de systemd en el inicio, pon en cmdline.txt:
 systemd.show_status=false
 
--Para que el rendimiento gráfico del driver VC4 no varíe como le da la gana, asegúrale un mínimo de RAM. Para ello,
-en cmdline.txt pon: cma=128M
-en config.txt pon: gpu_mem=256
-
 -TENEMOS QUE QUITAR LOS RLIMITS, o los emuladores se empezarán a quejar al llegar al 80% de uso de la CPU!
 Para ello, editamos /etc/security/limits.conf, añadiendo unas cosillas para quitar ciertas limitaciones a los miembros de ese grupo:
 
