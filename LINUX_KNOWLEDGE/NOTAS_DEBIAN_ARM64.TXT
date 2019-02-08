@@ -150,7 +150,11 @@ ctl.!default {
 
 Esto NO evita el problema que tiene el alsa-restore.service debido a que el órden de las tarjetas cambia entre arranques, pero al menos tendrás la hifiberry
 funcionando en los juegos de SDL2 y de libretro siempre que arranques.
-Para evitar el fallo ocasionar de alsa-restore.service, tenemos que solucionar los problemas de ordering (o sea, que a veces la hifiberry es la 0 y por tanto es usada
+En lo que arreglamos lo del boot ordering, puedes poner en .profile:
+amixer set Digital 85%
+Esto se supone que funciona siempre porque, como has especificado la tarjeta por defecto en /etc/asound.conf, amixer actúa sobre la tarjeta por defecto si no especificas ninguna.
+
+EXPERIMENTAL, NO FUNCIONA: Para evitar el fallo ocasionar de alsa-restore.service, tenemos que solucionar los problemas de ordering (o sea, que a veces la hifiberry es la 0 y por tanto es usada
 por defecto, pero otras veces la vc4hdmi es la 0 y la hifiberry es la 1, con lo cual alsa-restore.service intenta aplicar los valores a controles
 de la tarjeta equivocada, y falla, obviamente porque tienen distintos controles y está intentando aplicar unos valores a los controles de la tarjeta "contraria").
 Para empezar, entra en alsamixer y si no te sale el mezclador de la hifiberry, dale a F6 para ver si ALSA la ve al menos. (Este paso es opcional).
@@ -226,22 +230,34 @@ max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
 -El guardado y restauración de los valores de alsamixer falla a veces. Tienes DOS opciones:
-	-La más recomemdada: soluciona los problemas de ordering, porque tienes dos tarjetas. Para ello, crea /etc/modprobe.d/alsa-base.conf con:
+	-LA QUE USAMOS POR AHORA: Se supone que funciona siempre porque aunque el ordering de las tarjetas puede cambiar entre arranques, estamos espeficicando la tarjeta por
+	    defecto en /etc/asound.conf con el contenido:
+	    	pcm.!default {
+    			type hw
+    			card sndrpihifiberry
+			}
+			
+			ctl.!default {
+    			type hw    
+    			card sndrpihifiberry
+			}					
+		Deshabilita el servicio alsa-restore.service, y pon en .profile:
+		amixer set Digital 85% -q
+		Esto lo que hace es que te pone el control llamado Digital a 55 (no a 85 como podría parecer). Puedes ver los controles con "amixer scontrols".
+		Vamos, que esto lo que hace es que pongas a mano el valor que quieras para cada control de la tarjeta por defecto (también se puede elegir tarjeta y tal, mira "man amixer"
+		si ves que te hace falta).
+
+	-EXPERIMENTAL, NO FUNCIONA: Sería la más recomemdada: soluciona los problemas de ordering, porque tienes dos tarjetas. Para ello, crea /etc/modprobe.d/alsa-base.conf con:
 		options snd_soc_hifiberry_dacplus index=0
 		options vc4 index=1
-	 De esta manera, el servicio de restauración de ALSA (alsa-restore.service) no debería fallar nunca, porque la primera tarjeta es siempre la hifiberry.
+	 De esta manera, el servicio de restauración de ALSA (alsa-restore.service) no debería fallar nunca, porque la primera tarjeta es siempre la hifiberry y aplicaría los
+	 valores guardados correctos para cada tarjeta en el arranque, ya que el ordering de las tarjetas no cambiaría nunca.
 
 	-La más complicada y poco recomendada, porque falla a veces ya que el ordering de las tarjetas puede cambiar entre arranques:: 
 		Deshabilita el servicio que lo lleva, y pon en .profile:
 		sudo alsactl restore 0 --file /etc/asound.state
 		Esto restaura los valores de alsamixer para la primera tarjeta. Podemos generar estos valores una vez tengamos nuestra configuración idonea guardándola con:
 		alsactl store --file /etc/asound.state
-	-Otra opción poco recomendada, porque falla a veces ya que el ordering de las tarjetas puede cambiar entre arranques: 
-		Deshabilita el servicio que lo lleva, y pon en .profile:
-		amixer sset Digital 85% -q
-		Esto lo que hace es que te pone el control llamado Digital a 55 (no a 85 como podría parecer). Puedes ver los controles con "amixer scontrols".
-		Vamos, que esto lo que hace es que pongas a mano el valor que quieras para cada control de la tarjeta por defecto (también se puede elegir tarjeta y tal, mira "man amixer"
-		si ves que te hace falta).
 
 -Al final, sólo necesitas estos servicios de los que salen con systemd-analyze blame:
 pi@raspberrypi:~$ sudo systemd-analyze blame
