@@ -1700,11 +1700,14 @@ Partition Table: amiga
 Disk Flags: 
 
 Number  Start            End                        Size                       File system        Name           Flags
- 1                 258048B    754919423B     754661376B     affs1                      DH0               boot
+ 1      258048B    		 754919423B     			754661376B     			   affs1              DH0            boot
 
 Ahora simplemente montamos con ambos parámetros y ¡funciona!
 
 sudo mount -t affs -o loop,rw,offset=258048,sizelimit=754661376 /media/manuel/MINIMIG_V1/hdf_sys31.hdf /mnt/hdd/
+
+Y para montar la imágen del disco laserdisc.hdf donde tienes los juegos de EAROK:
+sudo mount -o loop,rw,offset=258048,sizelimit=1073479680 -t affs /media/manuel/E94A-DA9D/amiga/laserdisc.hdf /mnt/hdd
 
 ***********Encoger una partición de una imágen de disco***********************************************************************************
 
@@ -5248,3 +5251,16 @@ LA MEJOR PÁGINA PARA BAJAR PELÍCULAS BUENAS Y ALTERNATIVAS
 ==========================================================
 
 Busca ZOOWOMAN y el nombre de la peli.
+
+ACTUALIZAR EL FIRMWARE DEL 8BITDO SN30
+======================================
+
+Conéctalo y escribe en la consola de comandos:
+
+fwupdmgr get-devices
+
+Luego haz:
+
+fwupdmgr get-updates
+
+Y si hay algo nuevo, pues se actualizará. Más fácil imposible.

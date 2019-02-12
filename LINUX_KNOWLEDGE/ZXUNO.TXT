@@ -149,3 +149,11 @@ Cuando te salga "header: ", pulsas PLAY en el VLC, y listo, a subir la nueva ROM
 
 La mejor combinación de ROMs que hay está en este hilo:
 http://www.zxuno.com/forum/viewtopic.php?f=27&t=1983
+
+HACER QUE EL ESXDOS EMPIEZE EN UN DIRECTORIO
+============================================
+
+nos metemos en SYS, y allí creamos AUTOBOOT.BAS con este contenido:
+10 .cd /ZX
+(MUY importante la barra, o si no intentará ir a /SYS/ZX y al no encontrarlo no entrará)
+SAVE *"AUTOBOOT.BAS"

@@ -69,6 +69,10 @@ Ahora ya puedes configurar con:
 
 CFLAGS="-march=armv8-a+crc -mtune=cortex-a53 -ffast-math -flto" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53 -ffast-math -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --disable-debug --enable-release --enable-optimizations --disable-eventrecorder --disable-savegame-timestamp --enable-mt32emu --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-fluidsynth --disable-timidity --disable-hq-scalers --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=xeen,hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,gnap,mads,bbvs,sherlock,access,lab,titanic,fullpipe,plumbers,illusions
 
+SIN LTO:
+
+CFLAGS="-march=armv8-a+crc -mtune=cortex-a53 -ffast-math" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53 -ffast-math" ./configure --disable-debug --enable-release --enable-optimizations --disable-eventrecorder --disable-savegame-timestamp --enable-mt32emu --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-fluidsynth --disable-timidity --disable-hq-scalers --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=xeen,hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,gnap,mads,bbvs,sherlock,access,lab,titanic,fullpipe,plumbers,illusions
+
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
 
 Para poner un buffer de audio más pequeño, editamos backends/mixer/sdl/sdl-mixer.cpp y ponemos el número de milisegundos que queramos en la línea:
