@@ -154,6 +154,7 @@ HACER QUE EL ESXDOS EMPIEZE EN UN DIRECTORIO
 ============================================
 
 nos metemos en SYS, y allí creamos AUTOBOOT.BAS con este contenido:
-10 .cd /ZX
+10 :.cd /ZX
 (MUY importante la barra, o si no intentará ir a /SYS/ZX y al no encontrarlo no entrará)
-SAVE *"AUTOBOOT.BAS"
+SAVE *"AUTOBOOT.BAS" LINE 10
+(MUY importante indicarle en qué línea tiene que empezar a ejecutar el BASIC. Para escribir ese LINE, te pones en modo extended (CAPS SHIFT + SYMBOL SHIFT) y luego SYMBOL SHIFT + 3
