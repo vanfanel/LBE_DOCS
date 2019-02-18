@@ -108,8 +108,9 @@ Una vez en jtag, le dices:
 cable usbblaster
 detect
 pld load <RUTA_COMPLETA_A_RECOVERY.BIT>
-Usa el recovery.73.bit, no el antiguo sino el .73 ese, que tiene que ocupar 16M.
-Y pásale la ruta completa. Si te da un error del comando load, es que no está encontrando el fichero recovery.bit.
+Usa el recovery.73.bit, no el antiguo sino el .73.
+Debes tener en la tarjeta un FLASH.ZX1, que ocupará 16M.
+Y pásale la ruta completa del recovery. Si te da un error del comando load, es que no está encontrando el fichero recovery.bit.
 
 Feliz unbricking!
 
