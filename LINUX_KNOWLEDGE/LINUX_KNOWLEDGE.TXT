@@ -1997,11 +1997,9 @@ en source/build/src/sdlayer.cpp, antes de SDL_CreateWindow()
 
 Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
+Funciona con aceleración GLES, por cierto, usando POLYMOST, y bastante bien además.
 
-make -j4 WITHOUT_GTK=1 USE_OPENGL=0 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 OPTOPT="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"
-
-Añade para Polymost:
-CUSTOMOPT="-DEDUKE32_GLES"
+make -j4 WITHOUT_GTK=1 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 RENDERTYPESDL=1 HAVE_JWZGLES=1 USE_OPENGL=1 OPTOPT="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
