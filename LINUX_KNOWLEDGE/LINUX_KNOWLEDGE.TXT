@@ -1988,12 +1988,31 @@ Y ya se supone que podemos usarlo.
 
 Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
 
-Clonamos el repo:
-svn checkout http://svn.eduke32.com/eduke32 eduke32
+Bajamos los últimos sources estables desde:
+https://dukeworld.com/eduke32/synthesis/latest/?s=d&o=d&dir=eduke32/synthesis/latest
 
-Añadimos 
+Edita source/build/src/sdlayer.cpp y haz todos los cambios que se detallan a continuación:
+
+-Añadimos 
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-en source/build/src/sdlayer.cpp, antes de SDL_CreateWindow()
+antes de SDL_CreateWindow()
+
+-Busca la variable currentVBlankInterval. Verás que se establece su valor en setrefreshrate(void), y que se usa
+en este trozo de código maldito:
+
+        if (vsync)
+        {
+            static uint32_t lastSwapTime = 0;
+            // busy loop until we're ready to update again
+            while (SDL_GetTicks()-lastSwapTime < currentVBlankInterval) {}
+            lastSwapTime = SDL_GetTicks();
+        }
+        
+-COMENTA ese pedazo de código, incluído el IF y todo. Que no quede nada de esa espera absurda.
+
+-Busca SDL_GL_SetSwapInterval(vsync_renderlayer); y cámbialo por SDL_GL_SetSwapInterval(1);
+
+-Cambia todas las ocurrencias de SDL_WINDOW_FULLSCREEN por SDL_WINDOW_FULLSCREEN_DESKTOP
 
 Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
@@ -2005,6 +2024,12 @@ Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que 
 
 Si te da problemas porque, a pesar de que estamos deshabilitando libflac, la busca en tiempo de linkado, borra la referencia de libflac de la plataforma LINUX
 en el Makefile, y fuera.
+
+Si quieres música, bájate un pack de música de http://hrp.duke4.net/download.php, y lo descomprimes en donde tengas el duke3d.grp, es decir, los .ogg o lo que sea
+ahí tirados con el duke3d.grp. Te recomiendo este: http://www.duke4.org/files/nightfright/music/duke3d_music-sc55.zip
+Si el pack está en FLAC o en OGG necesitas que el eduke32 se haya linkado contra la librería correspondiente.
+
+							=========================================
 
 Para CROSS COMPILAR EDUKE32: (para poder tener LTO, Linking Time Optimizations):
 
