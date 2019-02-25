@@ -21,6 +21,8 @@ Cosas que hacemos distintas para instalar el kernel, módulos y dtbs:
 -Para empezar, nosotros usamos el branch realtime del kernel, que clonamos con:
 	git clone --depth 1 https://github.com/raspberrypi/linux.git -b rpi-4.14.y-rt
 	(Puede que la versión sea más actual, busca el branch que lleve lo de -rt en el repo del kernel para la Raspberry, y ahí ves qué versión es ahora).
+-Ponemos la configuración por defecto con:
+make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-  bcmrpi3_defconfig
 -Configuramos el kernel con:
 make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 Ajustes al kernel:
@@ -28,8 +30,14 @@ Ajustes al kernel:
 -Quita todo en kernel hacking (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
 Además deshabilita a mano en .config: CONFIG_FRAME_POINTER (ya que es activado por la opción ARM64, que es inevitable)
 -En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable"
--En ENABLE THE BLOCK LAYER, pon el I/O Scheduler a BFQ por defecto y quita los demás
+-En ENABLE THE BLOCK LAYER, quita TODOS los i/o scheduler, lo que hará que por defecto se use el no-op. Eso es lo correcto para unidades de disco solido.
 -En CPU POWER MANAGEMENT, deja el governor performance solamente y ponlo por defecto.
+-ASEGÚRATE DE TENER ACTIVADO COMO MÓDULO EL DRIVER DE LA TARJETA ETHERNET: ES EL CONFIG_USB_LAN78XX en el .config, y está en:
+Device Drivers > Network device support > USB Network Adapters -> Microchip LAN78XX Based USB Ethernet Adapters
+Si no funciona ni así, haz un sudo ifconfig -a, porque igual sí que funciona solo que no está puesto como eth0 (mira más abajo para ver cómo arreglarlo en tal caso).
+
+-Compilamos el kernel y los módulos así:
+make -j4 O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
 
 -Instalamos los módulos del kernel así:
 sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/media/manuel/CUSTOM_ROOT1 modules_install
