@@ -2018,7 +2018,7 @@ Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
 Funciona con aceleración GLES, por cierto, usando POLYMOST, y bastante bien además.
 
-make -j4 WITHOUT_GTK=1 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 RENDERTYPESDL=1 HAVE_JWZGLES=1 USE_OPENGL=1 OPTOPT="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"
+make -j4 WITHOUT_GTK=1 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 RENDERTYPESDL=1 HAVE_JWZGLES=1 USE_OPENGL=1 OPTOPT="-march=armv8-a+crc -mtune=cortex-a53"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
@@ -4407,7 +4407,7 @@ git clone --depth 1 https://github.com/exult/exult.git
 Ejecutamos el autogen.sh
 Configuramos con:
 
-./configure --disable-all-hq-scalers --disable-nxbr
+CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa --enable-lto --with-optimization=heavy
 
 Editamos imagewin/imagewin.cc y añadimos
 
@@ -4444,6 +4444,10 @@ Ahora editamos  ~/ultima7/exult.cfg y le añadimos, bajo <disk>:
     ./blackgate_savegame
     </savegame_path>
 </game>
+
+Para tener música y efectos de sonido, bájate el ZIP all-in-one de aquí:
+http://exult.sourceforge.net/download.php
+Y simplemente mete los contenidos del zip en ~/ultima7/data/ , ahí a saco sin más. No hay que añadir nada en el CFG, va solo con lo que tienes.
 
 A exult le pasamos el cfg así:
 ./exult -c exult.cfg
