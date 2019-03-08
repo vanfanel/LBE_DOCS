@@ -2018,7 +2018,7 @@ Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
 Funciona con aceleración GLES, por cierto, usando POLYMOST, y bastante bien además.
 
-make -j4 WITHOUT_GTK=1 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=0 RENDERTYPESDL=1 HAVE_JWZGLES=1 USE_OPENGL=1 OPTOPT="-march=armv8-a+crc -mtune=cortex-a53"
+make -j4 WITHOUT_GTK=1 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=2 LTO=1 RENDERTYPESDL=1 HAVE_JWZGLES=1 USE_OPENGL=1 OPTOPT="-march=armv8-a+crc -mtune=cortex-a53"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
@@ -5195,6 +5195,8 @@ Es igual que lo de instalar un sistema custom tuyo, solo que lo vamos a ver de m
   ]
 },
 
+¡¡CUIDADO CON LA COMA DEL FINAL!! SI EL SISTEMA QUE VAS A INSTALAR ES EL ÚLTIMO, NO TE HACE FALTA UNA COMA, PERO SI NO, PUES SÍ. Y SI NO LA PONES, TE VA A SALIR
+EL MENÚ EN BLANCO.
 
 -Ahora ya sólo queda crear el directorio /media/manuel/SETTINGS/os/libreelec, y encontrar un png adecuado para ser el icon.png de ese directorio: 
 Tiene que ser de 40x40 pixels: puedes coger cualquier imágen y escalarla con GIMP: la abres, pinchas sobre ella con el boton derecho, image->scale image.
