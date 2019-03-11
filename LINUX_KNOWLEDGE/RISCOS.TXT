@@ -49,6 +49,17 @@ El único problema es que detecta la partición FAT32 y es la que monta. Así qu
 *rmkill dosfs
 3) Le damos al icono del pen para que re-monte, y ya tenemos la partición ADFS donde tenemos todo lo del sistema antiguo. 
 
+SACAR AUDIO POR HDMI
+====================
+
+Recuerda que en config.txt tienes que tener:
+
+hdmi_drive=2
+force_hdmi_open=1
+config_hdmi_boost=4
+
+(Las dos últimas líneas son para que el audio se mantenga siempre activo después el promer sonido del sistema).
+
 REPRODUCIR VÍDEO EN MPEG CON AUDIO Y TODO
 =========================================
 
