@@ -2111,15 +2111,12 @@ cd build
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DGPL=ON \
--DSDL_LIBRARY=/usr/lib/libSDL2.so -DSDL_INCLUDE_DIR=/usr/include/SDL2 -DSDL_MIXER_LIBRARY=/usr/lib/libSDL2_mixer.so -DSDL_MIXER_INCLUDE_DIR=/usr/include/SDL2/ \
--DSDL_NET_LIBRARY=/usr/lib/libSDL2_net.so -DSDL_NET_INCLUDE_DIR=/usr/include/SDL2/ ..
-include/SDL2/ ..
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DGPL=ON ..
 
 Te tiene que funcionar, si no es que no encuentra las librerías o las cabeceras que le pasas, comprueba que están donde le estás diciendo.
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
 
-Sólo hace falta tener el ejecutable en el mismo directorio que los datos del wolfenstein, y funcionará sin más.
+Sólo hace falta tener el ejecutable en el mismo directorio que los datos del wolfenstein (versión de ACTIVISION, NO la original de Apogee, OJO!!!), y funcionará sin más.
 
 ¡¡¡¡¡NO TE OLVIDES de editar el cfg (~/.config/ecwolf/ecwolf.cf) y poner así estos valores:
 
@@ -2169,15 +2166,13 @@ cd build
 cmake .. -DXASH_SDL=ON -DXASH_VGUI=OFF -DXASH_NANOGL=ON -DXASH_64BIT=1
 make -j4
 
-Ahora, creamos ~/hailai, y vamos copiando los archivos que necesitamos:
-cp engine/libxash.so game_launch/xash3d mainui/libxashmenu.so ~/hailai
-Ahora nos vamos a ~/hailai, y creamos nuestro script de lanzamiento, yo lo he llamado también "hailai" porque es gracioso, con el siguiente contenido:
-LD_LIBRARY_PATH=. ./xash -dev 5
-Ahora copiamos el directorio "valve" de una instalación de Half Life a ~/hailai/valve
+Ahora, creamos ~/halai, y vamos copiando los archivos que necesitamos:
+cp engine/libxash.so game_launch/xash3d mainui/libxashmenu64.so ~/halai
+Ahora nos vamos a ~/halai, y creamos nuestro script de lanzamiento, yo lo he llamado también "halai" porque es gracioso, con el siguiente contenido:
+LD_LIBRARY_PATH=. ./xash3d -dev 5
+Ahora copiamos el directorio "valve" de una instalación de Half Life a ~/halai/valve
 (Tienen un CD completo en archive.org, en formato CUE/BIN que puedes convertir a .ISO+.WAV con:
 bchunk -w HALF_LIFE.BIN HALF_LIFE.BIN half
-
-
 
 
 Ahora vamos a por las librerías del juego: clonamos esto:
@@ -2191,22 +2186,30 @@ cmake -D64BIT=ON ..
 make -j4
 
 Esto nos va a generar dos archivos: hl64.so y client64.so
-Mandamos estos a ~/hailai/valve/dlls/hl64.so y ~/hailai/valve/cl_dlls/client64.so
-Editamos ~/hailai/valve/gameinfo.txt, y dejamos la línea de gamedll_linux así:
+Mandamos estos a ~/halai/valve/dlls/hl64.so y ~/halai/valve/cl_dlls/client64.so
+Editamos ~/halai/valve/gameinfo.txt, y dejamos la línea de gamedll_linux así:
 gamedll_linux           "dlls/hl64.so"
 (Le estamos diciendo que nuestra librería de juego es de 64bits y se llama hl64.so).
-Ahora nos metemos en ~/hailai/valve y nos bajamos el archivo "delta.lst" de los servidores de VALVE. Ya casi estamos!:
-cd ~/hailai/valve
+Ahora nos metemos en ~/halai/valve y nos bajamos el archivo "delta.lst" de los servidores de VALVE. Ya casi estamos!:
+cd ~/halai/valve
 wget https://raw.githubusercontent.com/ValveSoftware/halflife/master/network/delta.lst
 
 Pues ya tenemos instaladas las librerías del juego. Ya debeíamos poder darle a NEW GAME.
-Nos vamos a ~/hailai y ejecutamos nuestro script de lanzamiento, ./hailai
+Nos vamos a ~/halai y ejecutamos nuestro script de lanzamiento, ./halai
+
+Y si quieres counterstrike 1.6, la librería de juego que tendrías que compilar e instalar en ~/halai/valve/dlls/ es esta:
+https://github.com/FWGS/cs16-client/releases
+
+
 
 SI QUIERES TENER MÚSICA DURANTE EL JUEGO, cuando ripees el CD con bchunk (porque vas a necesitar hacerlo para sacar el diretorio "valve" de la ISO) hazlo así:
 bchunk -w HALF_LIFE.BIN HALF_LIFE.BIN half
 Y ahora, los WAV que has obtenido los conviertes a mp3 con:
 for i in *.wav; do ffmpeg -i "$i" -ab 320k "${i%.*}.mp3"; done
-Los subes a ~/hailai/valve/media, y editas cdaudio.txt para que las pistas se llamen como los mp3 que acabas de generar (half01.mp3, half02.mp3, etc).
+Los subes a ~/halai/valve/media, y editas cdaudio.txt para que las pistas se llamen como los mp3 que acabas de generar (half01.mp3, half02.mp3, etc).
+
+Y si quieres counterstrike 1.6, la librería de juego que tendrías que compilar e instalar en ~/halai/valve/dlls/ es esta:
+https://github.com/FWGS/cs16-client/releases
 
 ************Wolf4SDL (Wolfenstein 3D) en la Raspberry Pi*********************************************************************************
 
