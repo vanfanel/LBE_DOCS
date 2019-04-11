@@ -1,0 +1,32 @@
+FUENTES
+========
+
+
+Vete a Preferences > Customize Look and Feel
+
+Y en DEFAULT FONT, ponla a 13.
+
+Y para poner la de la decoración de las ventanas, ve a la pestania Window Border, y ahí busca la pestania Tittle Bar, y ahí puedes cambiar las fuentes.
+
+Las fuentes del Firefox no hace falta que las cambies, con CTRL y + vas poniendo las páginas más grandes.
+
+TECLADO
+=========
+
+Ponemos el teclado en US en /etc/default/keyboard
+
+Ponemos el teclado en US con variante altgr-int en el KEYBOARD LAYOUT HANDLER (KLH). El KLH se aniade a la barra de abajo en ADD/REMOVE PANEL ITEMS.
+LAS VARIANTES se ven desplegando el + al lado de US.
+Una vez hecho, podemos quitar el KHL ese de la barra, no nos vale para nada tenerlo ahí puesto.
+
+Ahora hacemos que la tilde (llamada dead_acute) salga sola al darle a la tecla de la tilde, en vez de salir la comilla simple. Para ello, la línea de xmodmap sería:
+(SI NECESITAS otro keycode, te lo da xev)
+
+xmodmap -e "keycode 48 = dead_acute quotedbl apostrophe quotedbl apostrophe dead_diaeresis dead_acute"
+NOSOTROS NO LA EJECUTAMOS A MANO, sino que  ponemos en ~/.Xmodmap:
+
+keycode 48 = dead_acute quotedbl apostrophe quotedbl apostrophe dead_diaeresis dead_acute
+
+Y ahora hacemos que xmodpap se ejecute al inicio poniendo en ~/.xinitrc :
+xmodmap ~/.Xmodmap
+
