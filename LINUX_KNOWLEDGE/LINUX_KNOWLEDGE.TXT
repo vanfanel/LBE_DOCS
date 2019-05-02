@@ -133,11 +133,11 @@ sudo apt-get install automake
 
 Para SDL2_mixer, configuramos con:
 
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth   
 
 Para SDL2_image o SDL2_ttf, configuramos con:
 
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --without-x
+CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --without-x   
 
 SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
 Le puedes pasar también --without-x si tienes los headers de las X11 instalados.
@@ -149,7 +149,13 @@ Aún así, debería funcionar como SDL_joystick al menos.
 
 *****SDL2 en hardware genérico con mi driver KMSDRM*******************************************************************************************************************************************
 
+Lo primero, asegúrate de tener instaladas las libgbm-dev:
+sudo apt-get install libgbm-dev
+
  ./configure --prefix=/usr --enable-video-kmsdrm --enable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
+
+Fíjate que en el resúmen al acabar del configure, te tiene que indicar que el soporte KMSDRM está activado, para ello se requiere que las librerías necesarias estén en el sistema (libgbm y libdrm).
+Ahora borra las librerías libSDL2* que vienen instaladas en la mayoría de las distros en /usr/lib/x86_64-linux-gnu/, e instala las que acabas de compilar, que acabarán en /usr/lib.
 
 ******Notas SDLPop : el clon open source y libre de Prince of Persia *****************************************************************************************************************************************************
 
@@ -1770,6 +1776,11 @@ for f in *.wav; do ffmpeg -i "$f" -c:a libmp3lame -q:a 2 "${f/%wav/mp3}" -c:a li
 for f in *.wav; do ffmpeg -i "$f" -c:a libvorbis -q:a 4 "${f/%wav/ogg}"; done
 
 ***********OpenLara, versión opensource del Tomb Raider********************************************************************************
+
+PUEDES BAJARTE LOS DATOS DEL JUEGO SIMPLEMENTE DE:
+http://xproger.info/projects/OpenLara/files/
+...Y los pones donde tengas el ejecutable, y ya.
+O te puedes complicar la vida con los siguientes consejos:
 
 -Para extraer los archivos del juego, usa ISOBUSTER y extraelos en modo RAW!! (Esto es muy importante o los vídeos sonarán mal)
 -Copia los directorios PSXDATA, DELDATA y FMV al directorio donde tengas el ejecutable.
