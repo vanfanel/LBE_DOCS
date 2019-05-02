@@ -18,16 +18,17 @@ Antes de empezar, siempre ponemos el crosscompilador de 64bits en el path:
 export PATH=$PATH:/opt/aarch64/bin/
 
 Cosas que hacemos distintas para instalar el kernel, módulos y dtbs:
--Para empezar, nosotros usamos el branch realtime del kernel, que clonamos con:
-	git clone --depth 1 https://github.com/raspberrypi/linux.git -b rpi-4.14.y-rt
-	(Puede que la versión sea más actual, busca el branch que lleve lo de -rt en el repo del kernel para la Raspberry, y ahí ves qué versión es ahora).
+-Para empezar clonamos el kernel con:
+	git clone --depth 1 https://github.com/raspberrypi/linux.git -b rpi-4.19.y
+	git pull
+       (Puede que la versión sea más actual, pero NUNCA CLONES SIN PASARLE EL BRANCH, aunque parezca redundante, que si no luego git pull no funciona bien).
 -Ponemos la configuración por defecto con:
 make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-  bcmrpi3_defconfig
 -Configuramos el kernel con:
 make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 Ajustes al kernel:
--Asegúrate de que el scheduler está a 1000HZ y que estás en FULL PREEMPTIBLE KERNEL, si estás en RT. Si no, a 300Hz y la máxima preemtion que puedas.
--Quita todo en kernel hacking (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
+-Asegúrate de que el scheduler está en LOW LATENCY DESKTOP (GENERAL SETUP) y que el scheduler está a 1000HZ (KERNEL FEATURES). 
+-Quita todo en KERNEL HACKING (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
 Además deshabilita a mano en .config: CONFIG_FRAME_POINTER (ya que es activado por la opción ARM64, que es inevitable)
 -En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable"
 -En ENABLE THE BLOCK LAYER, quita TODOS los i/o scheduler, lo que hará que por defecto se use el no-op. Eso es lo correcto para unidades de disco solido.
@@ -35,24 +36,27 @@ Además deshabilita a mano en .config: CONFIG_FRAME_POINTER (ya que es activado 
 -ASEGÚRATE DE TENER ACTIVADO COMO MÓDULO EL DRIVER DE LA TARJETA ETHERNET: ES EL CONFIG_USB_LAN78XX en el .config, y está en:
 Device Drivers > Network device support > USB Network Adapters -> Microchip LAN78XX Based USB Ethernet Adapters
 Si no funciona ni así, haz un sudo ifconfig -a, porque igual sí que funciona solo que no está puesto como eth0 (mira más abajo para ver cómo arreglarlo en tal caso).
+-OJO, NO desactives el SYNOPSIS DWC en DEVICE DRIVERS->USB SUPPORT, porque es el USB host usado por la Raspberry Pi
+-OJO, NO desactives el WATCHDOG de BCM2835, o si no, no se reiniciará ni se apagará la Pi.
+-El único RTC que necesitas en DEVICE DRIVERS->REAL TIME CLOCK es el DALLAS/MAXIM DS1307
 
 -Compilamos el kernel y los módulos así:
-make -j4 O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+make -j6 O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
 
--Instalamos los módulos del kernel así:
-sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/media/manuel/CUSTOM_ROOT1 modules_install
+-Instalamos los módulos del kernel así: (OJO!!!!!!!!!!!! MUCHO CUIDADO QUE UNAS VECES LA PARTICIÓN APARECE COMO CUSTOM_ROOT Y OTRAS COMO CUSTOM_ROOT1!!!!
+SI LE PASAS LA RUTA EQUIVOCADA, TE FALTARÁN LOS MÓDULOS Y EL KERNEL ARRANCA PERO SIN MÓDULOS, POR LO QUE TENDRÁS UN BONITO PANTALLAZO NEGRO CON KMS, CUELGUES AL REINICIO, ETC)
+sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/media/manuel/CUSTOM_ROOT modules_install
 (kernel_out es nuestro directorio de salida del kernel, los módulos, los dtbs y tal. Así va en esos tutoriales que usamos: mandando los resultados a un directorio a parte).
 
 -Instalamos el kernel con:
-sudo cp ../kernel-out/arch/arm64/boot/Image /media/manuel/CUSTOM_BOOT/kernel8.img
+cp ../kernel-out/arch/arm64/boot/Image /media/manuel/CUSTOM_BOOT/kernel8.img
 
 -Nosotros no instalamos los módulos del kernel hasta el final, después de instalar el rootfs (que es la segunda parte de este documento
 que estás leyendo). De momento instala el kernel (kernel8.img) y los dtb, y los overlays.
-Los DTBs están en arch/arm64/boot/dts/broadcom/*.dtb y los tienes que pasar al directorio raiz de la partición de boot (FAT32) de la SD.
 Los overlays están en arch/arm64/boot/dts/overlays/*.dtb* y los tienes que pasar a overlays, un directorio que cuelga directamente del raiz de la partición de boot (FAT32) de la SD.
 (Vamos, como en Raspbian más o menos).
 cp ../kernel-out/arch/arm64/boot/dts/broadcom/*.dtb /media/manuel/CUSTOM_BOOT/
-cp ../kernel-out/arch/arm64/boot/dts/overlays/* /media/manuel/CUSTOM_BOOT/overlays/
+cp ../kernel-out/arch/arm64/boot/dts/overlays/*.dtbo /media/manuel/CUSTOM_BOOT/overlays/
 
 -En config.txt nosotros ponemos (a consecuencia de cómo tenemos las cosas instaladas):
 device_tree=bcm2710-rpi-3-b-plus.dtb
@@ -377,10 +381,9 @@ INSTALAR RETROARCH
 
 Se configura con:
 
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" ./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac --disable-qt --disable-materialui --enable-xmb --disable-ozone --disable-easteregg
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" ./configure --disable-ibxm --disable-vg --disable-x11  --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --enable-opengl --enable-opengles --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-easteregg
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
-(Como le estamos pasando --disable-rgui, sólo va a tener el GUI por defecto, llamado OZONE, que es en 2D pero muy funcional)
 
 Compilar y listo.
 

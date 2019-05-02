@@ -4449,7 +4449,7 @@ Editamos el script configure y quitamos toda mención a -O2 y -g.
 
 Configuramos así:
 
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --disable-debug
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" ./configure --disable-debug
 
 Compilamos:
 
