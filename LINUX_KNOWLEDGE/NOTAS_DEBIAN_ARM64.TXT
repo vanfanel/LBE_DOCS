@@ -22,6 +22,12 @@ Cosas que hacemos distintas para instalar el kernel, módulos y dtbs:
 	git clone --depth 1 https://github.com/raspberrypi/linux.git -b rpi-4.19.y
 	git pull
        (Puede que la versión sea más actual, pero NUNCA CLONES SIN PASARLE EL BRANCH, aunque parezca redundante, que si no luego git pull no funciona bien).
+-OPCIONAL: SI QUEREMOS parchear el kernel para REALTIME, bajamos el parche correspondiente de:
+https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt
+Y parcheamos copiando el parche (.patch) al directorio raiz de los sources y haciendo:
+patch -p1 < parche.diff
+Y luego ajustamos GENERAL SETUP->PREEMPTION MODEL a FULLY PREEMPTIBLE KERNEL(RT).
+
 -Ponemos la configuración por defecto con:
 make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-  bcmrpi3_defconfig
 -Configuramos el kernel con:
