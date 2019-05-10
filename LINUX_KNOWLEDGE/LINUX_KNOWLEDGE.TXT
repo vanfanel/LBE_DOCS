@@ -195,6 +195,7 @@ Done. that's all you need to make everything compatible. (HBC + 1 patched IOS, t
 
 Así que vamos por partes:
 1) Para hackear la Wii en 2019, y dejarle así instalado el HBC, simplemente vete a que te genere un letterbomb metiendo la MAC de la consola aquí: https://please.hackmii.com/haxx
+     Pasa el "boot.elf" y el directorio "private" a la SD, y luego busca el letterbomb en el menú de novedades de la Wii. 
      Como probablemente ya tienes el softmod hecho, este paso te lo puedes saltar.
 2) Para actualizar el CIOS 249:
 	-Tienes que tener la consola conectada a internet, o si no (algún día los archivos van a dejar de estar disponibles) vas a tener que bajarte un archivo WAD a mano. Pero por ahora,
@@ -226,7 +227,7 @@ OJO, que en TODOS los juegos la ISO se tiene que llamar así, "game.iso".
 
 9) Para que arranque directamente al USBLoaderGX, tenemos que instalar el priiloader (https://www.wiibrew.org/wiki/Priiloader), y poner el .DOL de un forwarder en la raiz de la SD.
 Ahora arrancamos en el priiloader (mantén presionado RESET mientras le das al POWER para encender la Wii), y en el menú instalamos el .DOL, y en SETTINGS le decimos que arranque a installed file.
-(NOTA: por ahora se cuelga...)
+(NOTA: si todo está bien, funciona, pero en una de las Wiis que tengo se cuelga...)
 
 ******Compilando OpenBOR*********************************************************************************************************************************************
 
