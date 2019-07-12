@@ -266,7 +266,28 @@ max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
 -El guardado y restauración de los valores de alsamixer falla a veces. Tienes DOS opciones:
-	-LA QUE USAMOS POR AHORA: Se supone que funciona siempre porque aunque el ordering de las tarjetas puede cambiar entre arranques, estamos espeficicando la tarjeta por
+
+	-La que uso SIN LA HIFIBERRY (podría fallar a veces ya que el ordering de las tarjetas puede cambiar entre arranques, no está claro. Lo ideal sería tener sólo la tarjeta vc4-hdmi, pero en 64bit no suena):
+		En /etc/asound.conf tenemos:
+ 
+			pcm.!default {
+    				type hw
+    				card ALSA
+			}
+			
+			ctl.!default {
+    				type hw    
+    				card ALSA
+			}
+
+		Deshabilita el servicio alsa-restore.service (sudo systemctl mask alsa-restore.service), pon los controles a tu gusto en alsamixer, y guarda la configuración con:
+		alsactl store -f /etc/asound.state
+		Prueba a cargar la configuración con:
+		sudo alsactl restore -f /etc/asound.state
+		Si todo va bien, ALSA va a restaurar esos valores en cada arranque, leyéndolos de /etc/asound.state, sin que hagas nada y sin ningún servicio.
+		Si quieres, puedes aniadir lo de alsactl restore al .profile		
+
+	-LA QUE USO CON LA HIFIBERRY: Se supone que funciona siempre porque aunque el ordering de las tarjetas puede cambiar entre arranques, estamos espeficicando la tarjeta por
 	    defecto en /etc/asound.conf con el contenido:
 	    	pcm.!default {
     			type hw
@@ -289,11 +310,6 @@ max locked memory (kbytes, -l) unlimited
 	 De esta manera, el servicio de restauración de ALSA (alsa-restore.service) no debería fallar nunca, porque la primera tarjeta es siempre la hifiberry y aplicaría los
 	 valores guardados correctos para cada tarjeta en el arranque, ya que el ordering de las tarjetas no cambiaría nunca.
 
-	-La más complicada y poco recomendada, porque falla a veces ya que el ordering de las tarjetas puede cambiar entre arranques:: 
-		Deshabilita el servicio que lo lleva, y pon en .profile:
-		sudo alsactl restore 0 --file /etc/asound.state
-		Esto restaura los valores de alsamixer para la primera tarjeta. Podemos generar estos valores una vez tengamos nuestra configuración idonea guardándola con:
-		alsactl store --file /etc/asound.state
 
 -Al final, sólo necesitas estos servicios de los que salen con systemd-analyze blame:
 pi@raspberrypi:~$ sudo systemd-analyze blame

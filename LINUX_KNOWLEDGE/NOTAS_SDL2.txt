@@ -237,7 +237,7 @@ Si nos encontramos con los tipos de eventos SDL_ACTIVEEVENT, como ya no existen 
 Ahora, una vez que sabemos que el tipo es SDL_WINDOWEVENT, se suele comprobar qué evento de ventana es, o sea, se comprueba el campo event->window.event.
 Ahora, tampoco tenemos los tìpicos SDL_APPINPUTFOCUS y SDL_APPMOUSEFOCUS. En su lugar, usaremos cosas como SDL_WINDOWEVENT_FOCUS_GAINED, SDL_WINDOWEVENT_ENTER, etc.. 
 
-=========Dibujar gráficos de 8 bits, o sea, 8bpp, usando SDL2============================================
+=========Dibujar gráficos de 8bits, o sea, 8bpp, usando SDL2============================================
 
 Lo mejor es usar este truco tan increíble: no uses NADA de 8bpp, ni surface, ni textura, ni nada. Simplemente. le pasas unas máscaras a SDL_CreateRGBTexture(), creas una textura de 32bits,
 y luego eso lo subes tal como sueles hacer: sin conversiones y sin nada. Es una pasada! Mira, haz así:

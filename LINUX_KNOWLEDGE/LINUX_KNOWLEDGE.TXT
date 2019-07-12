@@ -152,7 +152,7 @@ Aún así, debería funcionar como SDL_joystick al menos.
 Lo primero, asegúrate de tener instaladas las libgbm-dev:
 sudo apt-get install libgbm-dev
 
- ./configure --prefix=/usr --enable-video-kmsdrm --enable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
+ ./configure --prefix=/usr --enable-video-kmsdrm --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
 
 Fíjate que en el resúmen al acabar del configure, te tiene que indicar que el soporte KMSDRM está activado, para ello se requiere que las librerías necesarias estén en el sistema (libgbm y libdrm).
 Ahora borra las librerías libSDL2* que vienen instaladas en la mayoría de las distros en /usr/lib/x86_64-linux-gnu/, e instala las que acabas de compilar, que acabarán en /usr/lib.
@@ -202,9 +202,8 @@ make BUILD_LINUX=1 GCC_TARGET=64 -j8
 ******Another World en la Raspberry Pi***********************************************************************************************************************************
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
--En el Makefile: quitar -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
--En graphics.h quitamos todo lo que lleve GL
--En main.cpp quitamos todo lo que lleve GL, y cambiamos el tipo de gráficos por defecto a GRAPHICS_ORIGINAL, y ya de paso si quieres el lenguaje por defecto a LANGUAGE_US
+-En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
+-En mixer.cpp, ajusta el tamanio del buffer de 4096 a 512
 
 ******FLASHBACK en la Rasberry Pi***************************************************************************************************************************************
 
@@ -258,10 +257,18 @@ Si tenemos SDL2 instalado y funcionando, podemos tener este increíble programa 
 Tenemos que tener también SDL2_image con soporte para JPG, PNG y TIFF, así que comprueba que tienes esos formatos soportados al configurar SDL2_image.
 Tendrás que instalar para ello libtiff-dev.
 
-svn co svn://pulkomandy.tk/GrafX2/branches/sdl2
+Clonamos su repo:
+git clone --depth 1 https://gitlab.com/GrafX2/grafX2.git
 
-Simplemente hay que compilarlo con estas opciones:
-make -j8 NOLUA=1 NOTTF=1
+Editamos src/sdlscreen.c y cambiamos:
+SDL_WINDOW_FULLSCREEN
+por
+SDL_WINDOW_FULLSCREEN_DESKTOP
+Y antes de SDL_CreateWindow aniadimos:
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
+Compilamos con:
+make API=sdl2 NOTTF=1 NOLUA=1 -j4
 
 Si queremos que busque los init, skin y demás en el mismo directorio donde tengamos el ejecutable, editamos src/setup.c y tocamos las funciones:
 Set_data_directory() : Dejamos sólo la primera línea, "strcpy(data_dir,program_dir);" Comentamos lo demás.
@@ -273,6 +280,9 @@ skings
 ...tienes ambas cosas en share
 ..Y ahora, editamos gfx2def.ini y cambiamos  el Skin_file, para evitar el error "Error in skin file: Was looking right from 254,139 for a 'mouse cursor', and reached the edge of the image":
 Skin_file = skin_modern.png
+
+Lanzamos con:
+./grafx2-sdl2 -mode 640x360
 
 ******Compilar VICE en la Raspberry Pi*************************************************************************************************************************************
 Necesitaremos tener instalados los paquetes flex y bison durante la configuración.
@@ -2103,40 +2113,30 @@ Compilamos y listo!
 
 ************ECWOLF, el mejor port del Wolfenstein 3D, en la Pi*****************************************************************************
 
-Pillamos la última versión estable de:
-http://maniacsvault.net/ecwolf/download.php
+Pillamos la última versión de su repo:
+https://bitbucket.org/ecwolf/ecwolf/downloads/
 
 Metemos esto al principio de CMakeLists.txt, para evitar segfaults por la optimización del compilador en O3:
 string(REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
 string(REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
 
-Hacemos un pequeño cambio o si no da errores al compilar (estos errores están solventados en las versiones svn pero las svn tienen otros peores).
-Para ello, editamos ../src/id_sd.cpp y añadimos el parámetro true a las llamadas a Mix_LoadMUS_RW(), de tal manera que quedan:
-
-music = Mix_LoadMUS_RW(mus_cunk, true);
-
-Hay un par de llamadas de estas. Las cambias y ya.
-
-mkdir build
-cd build
+CORREGIMOS la salida para que no nos de un segfault al salir (es cosa de MESA cuando va sin X, OJO, no de las SDL2....):
+-Editamos src/wl_main.cpp y comentamos:
+atterm(SDL_Quit); 
+en la función InitGame()
+Y en su lugar ponemos un SDL_Quit() en void Quit (), justo al final, antes de exit(0).
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
 cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DGPL=ON ..
+(PARA compilar en modo verbose, haz make VERBOSE=1)
 
-Te tiene que funcionar, si no es que no encuentra las librerías o las cabeceras que le pasas, comprueba que están donde le estás diciendo.
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
+Puedes establecer un buffer de audio menor con --audiobuffer 512
 
 Sólo hace falta tener el ejecutable en el mismo directorio que los datos del wolfenstein (versión de ACTIVISION, NO la original de Apogee, OJO!!!), y funcionará sin más.
 
-¡¡¡¡¡NO TE OLVIDES de editar el cfg (~/.config/ecwolf/ecwolf.cf) y poner así estos valores:
-
-FullScreenWidth = 320;
-FullScreenHeight = 200;
-WindowedScreenWidth = 320;
-WindowedScreenHeight = 200;
-
-O la CPU se usará al 100%!!!!!
+Pon la resolución a 320x200 en el menú, fullscreen, vsync ON.
 
 Puedes añadir en src/sdlvideo.cpp el típico
 
@@ -2144,12 +2144,17 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
-También puedes poner en src/sdlvideo.cpp, fmt = SDL_PIXELFORMAT_ARGB8888; justo debajo del switch(vid_displaybits), porque estará detectando 16 bits que es lo que usa
-la Pi en el modo de vídeo por defecto, pero nos interesan más 32bits porque desde los modos de DOS es más rápido convertir los píxels. PERO esto no parece influir, la verdad.
-
 NO soporta el Rise Of The Triad, sólo el Wolfenstein y el Spear of Destiny.
 
-PARA compilar en modo verbose, haz make VERBOSE=1
+Para mejorar la música y los gŕaficos, yo uso el pack ECWolf_hdmus_BrainStewX para la música (tienes que tener SDL2_Mixer compilado con soporte de OGG, 
+para lo que habrás tenido que instalar libogg-dev antes de configurar, compilar e instalar SDL2_Mixer, lo normal es que ya lo tengas porque es lo que usas para las músicas custom del SCUMMVM):
+https://forum.zdoom.org/viewtopic.php?f=19&t=48633
+
+Y el pack hi-res sencillo de aquí para los gráficos de armas y enemigos, sonidos fx, etc:
+https://www.moddb.com/games/wolfenstein-3d/addons/ecwolf-rmst
+
+Al final, mi script wolf3d contiene esta línea para lanzar el ECWOLF a mi gusto:
+./ecwolf --noadaptive --audiobuffer 512 --file hdpack.pk3 hdmus.pk3
 
 ***********XASH3D para Raspberry Pi (GLES) **********************************************************************************************
 
@@ -4280,7 +4285,10 @@ Móviles Android, SONY walkman y dispositivos MTP que fallan al funcionar en mod
 El problema es que el PCMANFM los automonta como MTP y no van bien. Para que los monte como MSC, es decir, como pendrives normales y corrientes, simplemente ELIMINA
 o mueve a otro sitio /usr/lib/gvfs/gvfs-mtp-volume-monitor
 Y el PCMANFM ya no toca los huevos.
-Ahora usa jmtpfs para montarlos a mano desde la línea de comandos. Es muy fácil. Creas un punto de montaje, y se lo pasas a jmtpfs, sin nodo ni nada. Él sabe qué hacer.
+
+Ahora pon el móvil en modo PTP (en los ajustes de la conexión USB) y debería ir. MTP es mierda.
+
+También podrías usar jmtpfs para montarlos a mano desde la línea de comandos. Es muy fácil. Creas un punto de montaje, y se lo pasas a jmtpfs, sin nodo ni nada. Él sabe qué hacer.
 jmtpfs ~/mnt
 
 Instalar la versión que queramos de IOS desde Linux en Ipad/Ipod/la basura para retrasados que sea
@@ -4639,37 +4647,17 @@ sudo apt-get update
 
 GZDOOM en la Raspberry Pi
 =========================
-Usamos el fork de OpenAL ya que no hay FMOD en la Pi..
 
-PARA COMPILAR OpenAL NECESITAS GCC 6.1.0 O POSTERIOR
+GZDoom usa OpenGL incluso en modo hardware, así que no va en la Pi. Usa el branch VINTAGE, que usa GLES2:
 
-Nos compilamos nosotros OpenAL bajando la última versión del código estable, porque el de debian tiene dependencias cochinas.
-
-mkdir build
-cd build
-
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
--DCMAKE_CXX_FLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  \
--DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DCMAKE_BUILD_TYPE=Release ..
-
-make
-sudo make install
-
-Si quisiéramos desinstalar el OpenAL, sólo tenemos que leer el fichero install_manifest.txt y borrar a mano esos archivos.
-
-Y ahora vamos a por el ZDOOM en sí:
-Si quisiéramos música en mp3, tendríamos que instalar libmpg123-dev antes de configurar, pero no va bien, así que tiramos de música tracker.
-
-git clone --depth 1 https://github.com/rheit/zdoom
-
-mkdir build
-cd build
+https://forum.zdoom.org/viewtopic.php?t=64521
+https://zdoom.org/files/gzdoom/src/
 
 Puedes añadir 
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 SDL_ShowCursor(SDL_DISABLE);
 en
-../src/posix/sdl/sdlvideo.cpp
+src/posix/sdl/sdlvideo.cpp
 justo antes de SDL_CreateWindow(), como siempre.
 
 LO PRIMERO, agregamos esto en CMakelists.txt para que se compile con O2 y no con O3, que falla en ARM.
@@ -4684,7 +4672,7 @@ option( DYN_MPG123 "Dynamically load libmpg123" OFF )
 option( DYN_FLUIDSYNTH "Dynamically load fluidsynth" OFF ) 
 Además, comenta las líneas de FLUIDSYNTH_FOUND, MPG123_FOUND, toda esa sección entera.
 
-cmake -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" -DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"  -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"  -DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j6
 
@@ -4739,6 +4727,21 @@ XASH_X11 ?= 0
 Ahora compilamos:
 make -f Makefile.linux NANO_GL=1 XASH_VGUI=0 -j4
 
+OpenDUNE
+=========
+
+Empezamos con los sources del munt (emulador de mt32):
+Clonamos de:
+https://github.com/munt/munt.git
+
+Ahora entramos en munt/
+
+Ahora, vamos a por el OpenDUNE en sí.
+Bajamos los últimos sources de:
+https://github.com/OpenDUNE/OpenDUNE.git
+
+Configuramos con:
+./configure --with-asound --without-oss --without-pulse --with-sdl2 --with-munt
 
 NOTAS TIMIDITY
 ==============
@@ -4847,6 +4850,7 @@ CÓMO LOGUEARSE AL SVN DE RETROGURU Y CLONAR REPOS, Y LUEGO GUARDAR LOS CAMBIOS 
 Lo primero es autentificarse, sólo hay que hacerlo la primera vez:
 (El password es uno de los típicos que usas, tiene letras y números)
 cvs -d:pserver:vanfanel@sun.hasenbraten.de:/usr/src/cvs login
+El pass es: Manuel22
 
 Y luego ya clonar el proyecto giana, por ejemplo:
 cvs -d:pserver:vanfanel@sun.hasenbraten.de:/usr/src/cvs checkout giana
