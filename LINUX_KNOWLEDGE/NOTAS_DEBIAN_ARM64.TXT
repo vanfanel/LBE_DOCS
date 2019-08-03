@@ -430,13 +430,16 @@ FIN NOCIONES PREVIAS
 Los CFLAGS van a ser: 
 -march=armv8-a+crc -mtune=cortex-a53
 
-Empezamos con DRM:
+Empezamos con libDRM:
 Bajamos la última versión estable de:
 https://dri.freedesktop.org/libdrm/
 sudo apt-get install xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
 ./autogen.sh
 Configuramos con esto:
+CON FLTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
+SIN FLTO:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
 
 Compilamos e instalamos.
 
@@ -479,7 +482,10 @@ mkdir b3
 cd b3 
 
 AHORA, PARA CONFIGURAR MESA CON GLX, SIN LIBGLVND, CON GLES, GLES2 y OPENGL COMPLETO:
+CON FLTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" meson --prefix=/usr --buildtype=plain -Db_ndebug=true -Dglvnd=false -Dplatforms=drm,x11 -Dglx=dri -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+SIN FLTO:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --buildtype=plain -Db_ndebug=true -Dglvnd=false -Dplatforms=drm,x11 -Dglx=dri -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
 ninja -j4 
 sudo ninja install
@@ -519,8 +525,12 @@ Si queremos que el SN30 de 8Bitdo se detecte como un gamepad (importante en SDLP
 SÓLO CON GLES1 y GLES2:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
-CON OPENGL COMPLETO, GLES1 y GLES2:
+CON OPENGL COMPLETO, GLES1 y GLES2
+CON LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+SIN LTO:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+
 TEMPORAL (SIN PROBAR DEL TODO) CON CMAKE POR SI UN DÍA HAY QUE CAMBIAR:
 cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DASSERTIONS=disabled -DVIDEO_DUMMY=OFF -DVIDEO_VULKAN=OFF -DDISKAUDIO=OFF -DDUMMYAUDIO=OFF -DOSS=OFF ..
 
