@@ -10,14 +10,8 @@ SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 ...O NO COINCIDIR. Perom vamos, que se averigua luego la versión.
 
-MANEJO DE BUFFERS DE RENDERING, O CÓMO HACER QUE EL JUEGO CORRA EN BAJA RESOLUCIÓN Y SEA ESCALADO A PANTALLA COMPLETA: RENDERIZANDO A UN FBO Y LUEGO ESCALANDO ESE FBO
-===============================================================================================================================================================
+POR QUÉ NO SE VE EL EFECTO DEL AGUA EN MEDIUM Y HIGH
+================================================
 
-EN ../../gapi/gl.h
-
-El framebuffer al que se renderiza por defecto (sin que hagamos nada para ello, simplemente al que GL renderiza por defecto) lo pilla y lo guarda en esta línea:
-
-glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint*)&defaultFBO);
-
-...porque luego, a veces, al entrar en el menú y así, se cambia el framebuffer, en la función bindTarget()
-
+La plataforma debe soportar "float textures".
+Al lanzarse el juego, verás qué soporta la plataforma y qué no soporta.

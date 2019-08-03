@@ -1,0 +1,36 @@
+Cómo compilar QEMU
+==================
+APARENTEMENTE QEMU usa SDL para sacar la salida VGA. Soporta SDL2 para el video, ALSA para el audio y UDEV para entrada.
+
+Clonamos los sources:
+git clone --depth 1 git://git.qemu-project.org/qemu.git 
+
+Instalamos librerías que nos hacen falta:
+sudo apt-get install libpixman-1-dev
+
+Configuramos para un 386 en modo "full computer emulation" (el modo user para msdos no nos vale y además necesitamos gráficos, audio...)
+./configure --enable-kvm --target-list=i386-softmmu --audio-drv-list=alsa --disable-vnc --disable-parallels --disable-vhost-net --disable-sheepdog --disable-qom-cast-debug --disable-cloop --disable-qed --disable-qcow1 --disable-dmg --disable-tpm                                                   
+
+Puedes ir consultando las funciones que quitas y dejas aquí, en esta wiki de feaures del qemu:
+https://wiki.qemu.org/index.php?title=Special:AllPages&from=Features/&to=Features/zzzzz&namespace=0
+
+Necesitarás los ficheros en el mismo directorio que el ejecutable de qemu:
+bios-256k.bin
+efi-e1000.rom
+kvmvapic.bin 
+vgabios-stdvga.bin
+Los puedes bajar de:
+https://github.com/xqemu/xqemu/blob/master/pc-bios/
+
+En ui/sdl2.c, comenta la ínea:
+setenv("SDL_VIDEODRIVER", "x11", 0);
+Y aniade la linea:
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
+Para lanzarlo y que arranque un MSDOS desde un disco en RAW que creamos nosotros manualmente para otra cosa:
+./qemu-system-i386 -drive format=raw,file=msdos622.img -soundhw sb16,adlib -enable-kvm -object input-linux,id=kbd,evdev=/dev/input/by-path/platform-i8042-serio-0-event-kbd,grab_all=on
+(puedes hacer ./qemu-system-i386 -soundhw  help, para ver las opciones de audio, por ejemplo)
+
+Para saber si está corriendo en modo KVM, entraríamos en la consola interna de qemu con Ctrl+Alt+Shift+2 , y escribiríamos info kvm. Pero a mi eso no me funciona.
+Como se queja del KVM si no eres root, pues supongo que va.
+

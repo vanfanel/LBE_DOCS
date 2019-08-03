@@ -5215,7 +5215,7 @@ Normalmente no es posible instalar un nuevo SO después de instalar NOOBS en una
 -Creamos las particiones. Necesitamos dos: una en FAT32, y otra en EXT4 (si vas a instalar un GNU/Linux propio "from scratch" por ejemplo, como un sistema de 64 bits, etc)
 	Vamos a suponer que quedan como sdb8 (fat32) y sdb9 (ext4) desde el PC. Una es la partición de boot y otra la de rootfs, obviamente. Les puedes poner de nombre CUSTOM_BOOT
 	y CUSTOM_ROOT, por ejemplo. Se cambia el nombre de las particiones con fatlabel para la fat32 y e2label para la ext4.
-	Apunta también sus PARTUUID, que puedes averiguar con blkid /dev/sdb8 y blkid /dev/sdb9
+	Apunta también sus PARTUUID, que puedes averiguar con sudo blkid /dev/sdb8 y blkid /dev/sdb9
 
 -En la partición boot copia todo lo que se necesita (kernel, dbts, overlays, ficheros de configuración, firmware, etc...). Con cp -R vale.
 -En la partición del rootfs copia el rootfs del sistema a instalar, pero recuerda hacerlo con rsync -a origen/* destino/ , NO con cp que la lías con los permisos.

@@ -44,6 +44,7 @@ Device Drivers > Network device support > USB Network Adapters -> Microchip LAN7
 Si no funciona ni así, haz un sudo ifconfig -a, porque igual sí que funciona solo que no está puesto como eth0 (mira más abajo para ver cómo arreglarlo en tal caso).
 -OJO, NO desactives el SYNOPSIS DWC en DEVICE DRIVERS->USB SUPPORT, porque es el USB host usado por la Raspberry Pi
 -OJO, NO desactives el WATCHDOG de BCM2835, o si no, no se reiniciará ni se apagará la Pi.
+-OJO, NO desactives el FILE LOCKING API, en FILESYSTEMS. Es necesario para que funcione flock(), y flock() lo usan dpkg y apt-get.
 -El único RTC que necesitas en DEVICE DRIVERS->REAL TIME CLOCK es el DALLAS/MAXIM DS1307
 
 -Compilamos el kernel y los módulos así:
@@ -74,34 +75,46 @@ PARTE 2: EL ROOTFS
 ==================
 
 Seguimos el tutorial de:
-https://www.debian.org/releases/stable/arm64/apds03.html.en#idm3828
+https://www.debian.org/releases/stable/arm64/apds03.en.html
 
 Lo primero formateamos la partición EXT4:
 sudo mkfs.ext4 /dev/sdb2
 Lo montamos como /mnt/LINUX
 sudo mount /dev/sdb2 /mnt/LINUX
 
-La línea para hacer el debootstrap a un directorio llamado arm64 es:
-sudo debootstrap --foreign --arch arm64 stretch  /mnt/LINUX http://ftp.es.debian.org/debian
+Instalamos el debootstrap:
+sudo apt-get install debootstrap
+
+La línea para hacer el debootstrap a un filesystem EXT4 vacío y montado en /mnt/LINUX es:
+sudo debootstrap --foreign --arch arm64 buster /mnt/LINUX http://ftp.es.debian.org/debian
 
 Ahora copiamos el quemu-static al nuevo sistema:
 sudo cp /usr/bin/qemu-aarch64-static /mnt/LINUX/usr/bin/
 
-Ahora chrooteamos al nuevo sistema:
+Ahora chrooteamos al nuevo sistema (aún no hace falta que hagas el mount bind de dev, sys y proc, sólo con un chroot básico vale):
 LANG=C.UTF-8 sudo chroot /mnt/LINUX qemu-aarch64-static /bin/bash
 
 Exportamos el modelo de terminal del host:
 export TERM=xterm-color
 
-Y ahora empezamos con el 2nd stage del nuevo sistema! (Recuerda que para tener debootstrap/debootstrap has tenido que pasar la opción "--foreing" ahí arriba,
+Y ahora empezamos con el 2nd stage del nuevo sistema! (Recuerda que para tener debootstrap/debootstrap has tenido que pasar la opción "--foreign" ahí arriba,
 cuando ejecutaste debootstrap en el host al principio para empezar):
 /debootstrap/debootstrap --second-stage
 
 Aprovecha para:
+
+-Crear el /etc/fstab con el contenido:
+proc    /proc                   proc    defaults                                0       0
+#PARTUUID=db375d88-08  /boot           vfat    defaults,noatime,nodiratime      0       2
+PARTUUID=db375d88-09  /               ext4    defaults,noatime,nodiratime       0       1
+(el PARTUUID lo puedes obtener con sudo blkid /dev/...)
+-Ajustar el PARTUUID en cmdline.txt de la partición de boot.
 -Instalar el VIM, sudo, net-tools, sshd... (sí, ¡funciona con la red del host!):
-apt install vim sudo net-tools alsa-utils 
+apt install vim sudo net-tools 
+OJO!!!! NO INSTALES alsa-utils desde un entorno chrooted!!!! LO DEL AUDIO CON ALSA VA LUEGO!!!! TIENE SU PROPIA SECCIÓN!!!! NO LO HAGAS AQUÍ!!!!
 -Para que sudo no de el error (unable to resolve hos), en /etc/hosts, añade la línea:
-127.0.1.1    raspberrypi
+127.0.1.1    raspi
+(suponiendo que hayas llamado al sistema raspi en /etc/hostname, claro. Si lo has llamado de otra manera, pon el nombre correspondiente).
 -Cambiar el password de root  mientras estás chrooteado
 -Ajustar el hostname, en /etc/hostname.
 -Arreglar el nombre del interface de red, que aparece como enx..., para que aparezca como eth0:
@@ -111,20 +124,45 @@ Y para que futuras actualizaciones no nos jodan el arreglo, haz:
 cp /lib/udev/rules.d/73-usb-net-by-mac.rules /etc/udev/rules.d/
 
 -Instala bash-completion si quieres que funcione autocompletar cuando usas sudo:
-sudo apt-get install bash-completion
+apt-get install bash-completion
 -Instala psmisc para tener killall:
-sudo apt-get install psmisc
-
-Si te dejas algo que no se pueda hacer en la máquina objetivo, puedes volver a chrootearte en la partición EXT4 de la SD después de haber transferido el rootfs,
-y lo puedes hacer tantas veces como sea necesario, pero pasándole a chroot la ruta del raiz del EXT4 de la SD:
-LANG=C.UTF-8 sudo chroot /mnt/LINUX qemu-aarch64-static /bin/bash
+apt-get install psmisc
 
 ¡¡¡Sólo si hemos hecho el rootfs en un disco y lo transferimos a otro!!!
 Transferimos el rootfs desde el disco duro del host a la partición EXT4 de la tarjeta con:
 sudo rsync -avP --numeric-ids debian_arm64/ /mnt/LINUX/
 
-Ahora instalamos los módulos del kernel:
+-QUE NO SE TE OLVIDE: Ahora instalamos los módulos del kernel en nuestro nuevo rootfs, QUE NO SE TE OLVIDE JAMÁS!!!!:
 sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/mnt/LINUX/ modules_install
+
+-Y ahora ya, arranca el sistema en nativo. Adelante!!
+
+OJO!!!!!!!!!! SI NO VES NADA EN LA PANTALLA (PANTALLA NEGRA!!!), LO MÁS PROBABLE ES QUE NO HAYAS INSTALADO LOS MÓDULOS DEL KERNEL!!!!!
+ACABAS DE CONFIGURAR UN ROOTFS NUEVO, Y PRETENDES USAR UN KERNEL ANTERIOR O ALGO ASÍ, Y NO HAS INSTALADOS LOS MÓDULOS!!!!! INSTÁLALOS!!!!!
+
+OJO!!!!!!!!!! SI AL EJECUTAR apt-get o dpkg TE DA ERRORES DE LOCKS, Y NO TE LOS DA ACCEDIENDO AL MISMO SISTEMA OBJETIVO POR CHROOT, ES QUE TIENES DESACTIVADO
+EL FILE LOCKING API EN EL KERNEL, EN FILESYSTEMS->FILE LOCKING API. El file locking API es usado por flock(), que a su vez es usado por DPKG y APT. ACTÍVALO Y LISTO!!!!
+
+!!!!!!!!!!!!!!!!!!!!!
+SI TE DEJAS ALGO que no se pueda hacer en la máquina objetivo, puedes volver a chrootearte en la partición EXT4 de la SD después de haber transferido el rootfs,
+y lo puedes hacer tantas veces como sea necesario, pero pasándole a chroot la ruta del raiz del EXT4 de la SD:
+
+LANG=C.UTF-8 sudo chroot /media/manuel/CUSTOM_ROOT qemu-aarch64-static /bin/bash
+
+Puede ser necesario hacer:
+mount --rbind /dev dev/
+Pero hazlo sólo si tienes problemas al instalar cosas en el entorno chrooted (como que apt-get se quede en "0% WAITING FOR HEADERS" clavado)!
+Lo normal es que no te haga falta si no has borrado el contenido estático de /dev
+(El contenido estático de /dev NO es necesario para un funcionamiento normal del sistema, pero sí para estas cosas. Si no lo borraste, no hace falta que hagas el mount binding de dev este).
+
+***
+Si te chrooteas y al ejecutar un simple "ls" te da un error "bash: /bin/ls: cannot execute binary file: Exec format error", debes reinstalar el qemu en el host, y luego copiarlo de nuevo
+al sistema debian que estás instalando. O sea, si el rootfs del sistema está ya en /media/manuel/CUSTOM_ROOT:
+sudo apt-get install qemu-user-static
+sudo cp /usr/bin/qemu-aarch64-static /media/manuel/CUSTOM_ROOT/usr/bin/
+LANG=C.UTF-8 sudo chroot /media/manuel/CUSTOM_ROOT qemu-aarch64-static /bin/bash
+***
+!!!!!!!!!!!!!!!!!!!!!!!!
 
 OJO A ESTO QUE SIGUE: SI NO VES NADA EN LA PANTALLA HASTA EL LOGIN, NO ES QUE TE FALTE NADA EN /dev. SI TIENES console=tty1 EN CMDLINE.TXT SE TIENE QUE
 VER. EL PROBLEMA ES QUE SYSTEMD LIMPIA LA CONSOLA TAN RÁPIDO ANTES DEL LOGIN, QUE PARECE QUE NO SALE NADA EN PANTALLA PERO ES MENTIRA.
@@ -132,11 +170,11 @@ VER. EL PROBLEMA ES QUE SYSTEMD LIMPIA LA CONSOLA TAN RÁPIDO ANTES DEL LOGIN, Q
 PERMANENTE EN /dev, CON LOS QUE CREA UDEV EN EL ARRANQUE ES SUFICIENTE!!! (QUE SON INVISIBLES SI HACES UN CHROOT AL ROOTFS EN VEZ DE ARRANCAR 
 EN ÉL DE VERDAD) 
 Ahora hacemos que systemd deje de borrarnos la consola en el incio, o no veremos nada del arranque (ni del kernel ni de los procesos que va levantando systemd):
-mkdir /etc/systemd/system/getty@.service.d
-cat >/etc/systemd/system/getty@.service.d/noclear.conf <<EOF
+Para ello creamos el fichero:
+/etc/systemd/system/getty@.service.d/noclear.conf <<EOF
+Con el contenido:
 [Service]
 TTYVTDisallocate=no
-EOF
 
 PARTE 3: FINETUNING THE SYSTEM
 =============================
@@ -151,7 +189,46 @@ sudo adduser pi video
 (Esto último es importante, porque has estado dando vueltas y el kernel sí reconocía el audio interno y la hifiberry (cat /proc/asound/cards)
 pero aplay -L no listaba los dispositivos...¡porque no estabas en el grupo audio!)
 
--Si NO usas la hifiberry y quieres que el audio salga por HDMI, en config.txt tienes que tener:
+-Deshabilita los timers de actualización diaria de APT:
+sudo systemctl disable apt-daily-upgrade.timer
+sudo systemctl disable apt-daily.timer
+y crea el fichero:
+/etc/apt/apt.conf.d/99periodic-disable
+con el contenido:
+APT::Periodic::Enable "0";
+
+-Deshabilita el target de swap:
+sudo systemctl mask swap.target
+
+-Deshabilita los timers de cleaning de tmp y el timer de rotación diaria de logs:
+sudo systectl mask systemd-tmpfiles-clean.timer
+sudo systectl disable logrotate.timer
+Otros timers activos los puedes buscar con:
+sudo systemclt | grep timer
+Y miras a ver cuáles están active loaded. Unos se quitan con mask, otros con disable.
+
+-Para eliminar el error de "automount point not supported", simplemente haz:
+sudo depmod -a
+Y reinicia. Ya no debería salir más.
+
+-Si después de hacer lo del autologin no puedes cambiar a TTY2 (ctrl+alt+f2), es porque no has activado el servicio. Haz:
+sudo systemctl enable getty@tty2.service
+Y ya podrás cambiar de TTY1 a TTY2!!!
+
+***BLOQUE ALSA****
+-PARA INSTALAR ALSA:
+Instalamos alsa-utils, pero NO desde el entorno chrooted sino nativamente.
+Si no tienes red en la Pi, puedes descargar los paquetes en el entorno chrooted, y luego instalarlos en nativo, o sea, en dos pasos, mira:
+1) En el entorno chrooted:
+sudo apt-get clean (para que no haya lios con otros paquetes en /var/cache/apt/archives)
+sudo apt-get install --download-only alsa-utils
+2) En el entorno nativo, es decir, en la Pi sin red:
+cd /var/cache/apt/archives
+sudo dpkg -i *
+AHORA PASA A CREAR /etc/asound.conf, cuyo contenido varía si usas la HIFIBERRY o si no la usas:
+
+
+Si NO usas la hifiberry y quieres que el audio salga por HDMI, en config.txt tienes que tener:
 dtparam=audio=on
 hdmi_drive=2
 force_hdmi_open=1
@@ -184,28 +261,14 @@ ctl.!default {
     card sndrpihifiberry
 }
 
-Esto NO evita el problema que tiene el alsa-restore.service debido a que el órden de las tarjetas cambia entre arranques, pero al menos tendrás la hifiberry
-funcionando en los juegos de SDL2 y de libretro siempre que arranques.
-En lo que arreglamos lo del boot ordering, puedes poner en .profile:
-amixer set Digital 85% -q
+-Ahora ajusta los niveles en ALSAMIXER, que se van a quedar como los dejes porque vamos a quitar los servicios que los guardan y los restauran
 
-Y si estás usando el audio HDMI de la raspberry:
-amixer set PCM 95% -q
+-Y ahora quita los servicios que guardan y restauran los niveles de ALSA:
+sudo systemctl mask alsa-state.service 
+sudo systemctl mask alsa-restore.service
 
-Esto se supone que funciona siempre porque, como has especificado la tarjeta por defecto en /etc/asound.conf, amixer actúa sobre la tarjeta por defecto si no especificas ninguna.
-
-EXPERIMENTAL, NO FUNCIONA: Para evitar el fallo ocasionar de alsa-restore.service, tenemos que solucionar los problemas de ordering (o sea, que a veces la hifiberry es la 0 y por tanto es usada
-por defecto, pero otras veces la vc4hdmi es la 0 y la hifiberry es la 1, con lo cual alsa-restore.service intenta aplicar los valores a controles
-de la tarjeta equivocada, y falla, obviamente porque tienen distintos controles y está intentando aplicar unos valores a los controles de la tarjeta "contraria").
-Para empezar, entra en alsamixer y si no te sale el mezclador de la hifiberry, dale a F6 para ver si ALSA la ve al menos. (Este paso es opcional).
-Ahora vamos a decirle a ALSA que siempre la hifiberry sea la primera tarjeta (Tenemos dos: snd_rpi_hifiberry_dacplus y vc4-hdmi).
-Para ello, creamos /etc/modrobe.d/alsa-base.conf con el contenido:
-options snd_soc_hifiberry_dacplus index=0
-options vc4 index=1
-De esta manera, el servicio de restauración de ALSA (alsa-restore.service) no debería fallar nunca, porque la primera tarjeta es siempre la hifiberry.
-
-La info sobre esto está en: https://wiki.archlinux.org/index.php/Advanced_Linux_Sound_Architecture
-Busca la parte de " if you want your mia sound card to be #0: ".
+Y ya van a quedar así para siempre los niveles. Si los quieres cambiar, pues unmaskeas los servicios state y restore, los cambias, reinicias y los vuelves a maskear.
+****FIN BLOQUE ALSA****
 
 -Crear el /usr/bin/netup con:
 sudo ifconfig eth0 up
@@ -214,11 +277,8 @@ sudo ip route add default via 192.168.5.7
 sudo systemctl start dropbear
 (OJO: dropbear ya no arranca a mano con '/etc/init.d/dropbear start')
 
--Instalar SSH y luego quitarlo, en dos pasos, uno en chroot y otro en nativo: Esto además instala fuentes, setup de la consola y todo eso, que nos va a hacer falta:
-apt install sshd (en entorno chroot. No podrá configurar, lo hacemos en nativo con dpkg --configure -a)
-apt-get purge ssh-server (en nativo)
-
--Instalar dropbear, generar sus claves y quitarlo del arranque sin maskearlo, porque si no luego no arranca desde mi script netup:
+-Instalar dropbear, generar sus claves y quitarlo del arranque sin maskearlo, porque si no luego no arranca desde mi script netup.
+(Esto además instala fuentes, setup de la consola y todo eso, que nos va a hacer falta)
 apt-get install dropbear
 dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
 sudo systemctl disable dropbear
@@ -247,6 +307,11 @@ dtoverlay=pi3-disable-wifi
 -Para ocultar los mensajes de systemd en el inicio, pon en cmdline.txt:
 systemd.show_status=false
 
+-En .bashrc, descomenta para tener el prompt en color:
+force_color_prompt=yes
+
+-El mensaje que quieras que se vea en el inicio, ponlo en /etc/issue
+
 -TENEMOS QUE QUITAR LOS RLIMITS, o los emuladores se empezarán a quejar al llegar al 80% de uso de la CPU!
 Para ello, editamos /etc/security/limits.conf, añadiendo unas cosillas para quitar ciertas limitaciones a los miembros de ese grupo:
 
@@ -268,7 +333,9 @@ max locked memory (kbytes, -l) unlimited
 -El guardado y restauración de los valores de alsamixer falla a veces. Tienes DOS opciones:
 
 	-La que uso SIN LA HIFIBERRY (podría fallar a veces ya que el ordering de las tarjetas puede cambiar entre arranques, no está claro. Lo ideal sería tener sólo la tarjeta vc4-hdmi, pero en 64bit no suena):
-		En /etc/asound.conf tenemos:
+		En vim drivers/gpu/drm/vc4/vc4_hdmi.c, haz que la función vc4_hdmi_audio_init retorne cero y no haga nada más. Adiós a la tarjeta vc4-hdmi!!
+
+		En /etc/asound.conf tenemos esto, aunque no hace falta si te has cargado la tarjeta vc4-hdmi:
  
 			pcm.!default {
     				type hw
@@ -331,8 +398,34 @@ Luego los vas quitando, al igual que los services, con systemctl mask <monbre se
 Si metes la pata y el sistema no arranca más, elimina cosas de /etc/systemd/system, que es donde pone los links a /dev/null correspondientes a los services o targets que hayas eliminado
 sin deber hacerlo...
 
+-Si PING te da el error "ping: socket: Address family not supported by protocol", simplemente haz:
+sudo chmod 4755 /bin/ping
+Y ya te irá perfectamente.
+
 INSTALAR MESA
 ==============
+
+NOCIONES PREVIAS DE APIS, DEPENDENCIAS, Y SOPORTE DE OPENGL COMPLETO (NO GLES)
+
+Mesa se puede compilar con GLX o con glvnd o con ninguno de los dos.
+Compilar MESA para GLX nos produce libGL.so, que es lo que hace falta para OPENGL COMPLETO (NO GLES). Pero eso depende de muchas librerías de las X11.
+Una alternativa es compilar MESA para LIBGLVND, que es un GLES multifabricante de NVIDIA, opensource. En ese caso, MESA produce libEGL_mesa.so pero NO produce libEGL.so. Tampoco produce
+libGL.so, sino libglapi.so. PERO que tengamos libGL.so o libglapi.so NOS DEBERÍA DAR IGUAL porque los programas se deberían basar en usar libEGL.so y NO buscar libGL.so o libglapi.so directamente, sólo
+deberían entender de libEGL.so!!! Y las SDL2 igual, sólo deberían entender de libEGL.so.
+
+Si queremos que MESA nos aporte un libEGL.so, tenemos que compilarla, o bien con glx, o bien SIN GLX NI TAMPOCO LIBGLVND. Entonces sí crea un libEGL.so en vez de un libEGL_mesa.so.
+Pero en ese caso, al no haber GLX (libGL.so), loas SDL2 interpretan que no tenemos OpenGL COMPLETO (NO GLES) porque lo que hacen es buscar de algún modo libGL.so en vez de simplemente
+buscar libEGL.so y abstraerse de si tenemos libGL.so o libglapi.so
+
+DICHO de otro modo: SDL2 para tener OPENGL COMPLETO, necesita GLX. Y MESA, si se compila con GLX, se tiene que compilar con las plataformas drm y x11. Y al compilarse para X11, tiene un montón
+de dependencias de X11 aunque no necesite el servidor funcionando.
+Lo ideal es que SDL2, para tener soporte para OPENGL COMPLETO, sólo necesitase libEGL.so y le diese igual tener libglapi.so o libGL.so. De ese modo, podríamos compilar MESA con platform=drm solamente,
+y sin necesidad de GLX ni de LIBGLVND.
+Si compilamos MESA sin GLX ni LIBGLVND, en SDL2 actualmente sólo tenemos GLES1 y GLES2, no OPENGL COMPLETO.
+
+Si MESA te da un error de que no encuentra GL/glxproto.h, reinstala el paquete x11proto-dev
+
+FIN NOCIONES PREVIAS
 
 Los CFLAGS van a ser: 
 -march=armv8-a+crc -mtune=cortex-a53
@@ -348,26 +441,62 @@ CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=arm
 Compilamos e instalamos.
 
 Ahora vamos a por MESA. Instalamos estos paquetes previos:
+
+(SI NO QUIERES GLX, SINO LIBGLVND O NI GLX NI LIBGLVND, SÓLO NECESITAS ESTAS. PERO EN TAL CASO, SDL2 NO FUNCIONARÁ CON OPENGL COMPLETO, SÓLO GLES1 Y GLES2:)
 sudo apt-get install --no-install-recommends \
-    flex bison python-mako \
+    flex bison python3-mako \
+    libexpat1-dev libudev-dev gettext \
+    ca-certificates xz-utils \
+    zlib1g-dev pkg-config meson libglvnd-core-dev
+
+SÓLO SI DECIDES COMPILAR MESA CONTRA LIBGLVND:
+sudo apt-get install libtool
+https://github.com/NVIDIA/libglvnd.git
+./autogen.sh
+./configure --help
+etc... (no recomendado porque SDL2 no funciona con libglapi.so, ver más arriba).
+
+(SI QUIERES GLX, PARA QUE SDL2 FUNCIONE CON OPENGL COMPLETO, GLES1 Y GLES2, NECESITAS TODO ESTO:).
+sudo apt-get install --no-install-recommends --reinstall \
+    flex bison python3-mako \
     libxcb-dri3-dev libxcb-dri2-0-dev \
     libxcb-glx0-dev libx11-xcb-dev \
     libxcb-present-dev libxcb-sync-dev \
-    libxshmfence-dev \
+    libxshmfence-dev libxxf86vm-dev libxrandr-dev \
     libxdamage-dev libxext-dev libxfixes-dev \
     x11proto-dri2-dev x11proto-dri3-dev \
     x11proto-present-dev x11proto-gl-dev \
     libexpat1-dev libudev-dev gettext \
-    ca-certificates \
-    zlib1g-dev
+    ca-certificates xz-utils \
+    zlib1g-dev pkg-config meson
 
 Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
+Las instrucciones para compilar con MESON se pueden ver en: https://www.mesa3d.org/meson.html
+Pero yo ya lo tengo resumido a continuación...mira:
 configuramos con:
-./autogen.sh
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib"  ./configure --prefix=/usr --libdir=/usr/lib --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
+mkdir b3
+cd b3 
 
-(lo de AR, NM y RANLIB es para que funcione el LTO, que falla si no se lo pasas, como al compilar el SCUMMVM.
+AHORA, PARA CONFIGURAR MESA CON GLX, SIN LIBGLVND, CON GLES, GLES2 y OPENGL COMPLETO:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" meson --prefix=/usr --buildtype=plain -Db_ndebug=true -Dglvnd=false -Dplatforms=drm,x11 -Dglx=dri -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+
+ninja -j4 
+sudo ninja install
+Y PARA DESINSTALAR
+sudo ninja meson-uninstall
+O ALTERNATIVAMENTE:
+meson introspect ./ --installed | python3 -c 'import sys; a = eval(sys.stdin.read()); print(" ".join(a.keys()))' | xargs rm
+
+(si quieres ver las lineas de compilación, pásale -v).
+La cosa es que al usar glvnd ahora, ya no dependemos de librerías relacionadas con las X. No tenemos GLX, pero tenemos FULL OPENGL sobre contexto EGL! GLX depende de las X sí o sí, aunque sea sólo en build time
+y no en runtime, y EGL no. Por eso usamos glvnd y así tenemos full opengl sin X11 ni sus librerías: mira:
+<imirkin> SDL2 has no knowledge of glapi
+<imirkin> SDL2 knows about EGL, which in turn has cleverness.
+<imirkin> glapi is an internal mesa detail
+
+!!!!NOTA QUE TE PUEDE INTERESAR EN EL FUTURO: En X86_64, donde se usa el driver i965 que NO es gallium sino dri, se haría:
+CFLAGS="-O3 -flto -march=native -mtune=native" CXXFLAGS="-O3 -flto  -march=native -mtune=native" LDFLAGS="-flto" meson --buildtype=plain -Db_ndebug=true -Dglvnd=true -Dplatforms=drm -Dglx=disabled -Dllvm=false -Ddri-drivers=i915 -Dgallium-drivers='' -Dvulkan-drivers='' ..
 
 Si al compilar te da un error de que NULL no está definido, añade en src/egl/main/egldevice.h:
 #include <stddef.h>
@@ -387,8 +516,13 @@ sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg
 Si queremos que el SN30 de 8Bitdo se detecte como un gamepad (importante en SDLPop!), tenemos que añadir en src/joystick/SDL_gamecontrollerdb.h, en la parte de #if defined(__LINUX__):
 "03000000c82d00000031000011010000,8Bitdo Receiver,a:b1,b:b0,back:b10,leftshoulder:b6,leftx:a0,lefty:a1,rightshoulder:b7,start:b11,x:b4,y:b3,",
 
-Se configura con:
+SÓLO CON GLES1 y GLES2:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+
+CON OPENGL COMPLETO, GLES1 y GLES2:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+TEMPORAL (SIN PROBAR DEL TODO) CON CMAKE POR SI UN DÍA HAY QUE CAMBIAR:
+cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DASSERTIONS=disabled -DVIDEO_DUMMY=OFF -DVIDEO_VULKAN=OFF -DDISKAUDIO=OFF -DDUMMYAUDIO=OFF -DOSS=OFF ..
 
 Compilar e instalar.
 
