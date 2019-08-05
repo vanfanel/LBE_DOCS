@@ -204,6 +204,7 @@ Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de 
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
 -En mixer.cpp, ajusta el tamanio del buffer de 4096 a 512
+-Aniade los flags de optimización en el Makefile, en los CXXFLAGS, y si qieres LTO aniade -flto tanto en los CXXFLAGS como en SDL_LIBS
 
 ******FLASHBACK en la Rasberry Pi***************************************************************************************************************************************
 
@@ -2124,7 +2125,11 @@ CORREGIMOS la salida para que no nos de un segfault al salir (es cosa de MESA cu
 -Editamos src/wl_main.cpp y comentamos:
 atterm(SDL_Quit); 
 en la función InitGame()
-Y en su lugar ponemos un SDL_Quit() en void Quit (), justo al final, antes de exit(0).
+Y en su lugar ponemos un SDL_Quit() en void Quit(), justo al final, antes de exit(0).
+
+Puedes añadir en src/sdlvideo.cpp el típico
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
@@ -2137,12 +2142,6 @@ Puedes establecer un buffer de audio menor con --audiobuffer 512
 Sólo hace falta tener el ejecutable en el mismo directorio que los datos del wolfenstein (versión de ACTIVISION, NO la original de Apogee, OJO!!!), y funcionará sin más.
 
 Pon la resolución a 320x200 en el menú, fullscreen, vsync ON.
-
-Puedes añadir en src/sdlvideo.cpp el típico
-
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-
-justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
 NO soporta el Rise Of The Triad, sólo el Wolfenstein y el Spear of Destiny.
 
@@ -4487,26 +4486,40 @@ Si queremos ajustar cosas, en ~/.nuvierc
 EXULT, Ultima VII en la Raspberry Pi
 ==============================
 
+Cosas que debemos instalar previamente:
+sudo apt-get install autoconf automake libtool
+
 Clonamos
 
 git clone --depth 1 https://github.com/exult/exult.git
 
+---MODIFICACIONES AL CÓDIGO
+
+Editamos imagewin/imagewin.cc y dejamos las líneas de CreateRenderer con estos flags:
+screen_renderer = SDL_CreateRenderer(screen_window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
+
+Editamos exult.cc, comentamos la línea
+std::atexit(SDL_Quit);
+Y aniadimos SDL_Quit() al final de la función Play(), antes del return(0).
+
+---CONFIGURACIÓN DEL CÓDIGO
+
 Ejecutamos el autogen.sh
+
+Editamos el script configure resultante, y cambiamos la línea debajo de donde pone "linux*)" de así:
+WINDOWING_SYSTEM="-DXWIN"
+a así:
+WINDOWING_SYSTEM=""
+ESTO es para que NO dependa de las X11, así que es importante.
+
 Configuramos con:
 
 CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa --enable-lto --with-optimization=heavy
+SI EL EJECUTABLE QUE OBTIENES DA SEGFAULTS, PON --with-optimization=normal EN VEZ DE --with-optimization=heavy
 
-Editamos imagewin/imagewin.cc y añadimos
+Compilamos con make -j4
 
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-Y dejamos las líneas de CreateRenderer con estos flags:
-screen_renderer = SDL_CreateRenderer(screen_window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
-
-Editamos exult.cc y dejamos la función  WrappedConnectionNumber() así:
-
-static inline int WrappedConnectionNumber() {
-        return 0;
-}
+---INSTALACIÓN DEL JUEGO
 
 Copiamos el directorio data que viene con los sources a ~/ultima7/data
 Copiamos el ejecutable exult resultante a ~/ultima7
@@ -5046,10 +5059,11 @@ sudo apt-get install libncursesw5-dev
 Baja los surces de 
 git clone --depth 1 https://gitlab.com/DavidGriffith/frotz.git
 
-Ahora edita el Makefile y pon sound a NONE
+Ahora edita el Makefile y pon sound a NONE, comenta la línea de los CFLAGS del -g, y descomenta la que tienes encima, o sea, la que tiene los CFLAGS de optimización, y aniade los propios de la Pi3.
+Ajusta el valor de PREFIX a /usr en vez de /usr/local
 
 Ahora compila con "make frotz" (hay "make sfrotz" para SDL, etc...)
-
+Y sudo make install
 
 COMPILAR FROTZ VERSIÓN SDL, QUE SOPORTA ACENTOS, SIN INSTALAR LIBJPEG EN EL SISTEMA
 =================================================================================

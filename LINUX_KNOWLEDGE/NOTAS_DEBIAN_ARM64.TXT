@@ -450,9 +450,9 @@ sudo apt-get install --no-install-recommends \
     flex bison python3-mako \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
-    zlib1g-dev pkg-config meson libglvnd-core-dev
+    zlib1g-dev pkg-config meson
 
-SÓLO SI DECIDES COMPILAR MESA CONTRA LIBGLVND:
+SÓLO SI DECIDES COMPILAR MESA CONTRA LIBGLVND, PUES TIENES QUE INSTALAR LIBGLVND. OJO, SI SÓLO QUIERES GLES, NO NECESITAS LIBGLVND:
 sudo apt-get install libtool
 https://github.com/NVIDIA/libglvnd.git
 ./autogen.sh
@@ -461,7 +461,7 @@ etc... (no recomendado porque SDL2 no funciona con libglapi.so, ver más arriba)
 
 (SI QUIERES GLX, PARA QUE SDL2 FUNCIONE CON OPENGL COMPLETO, GLES1 Y GLES2, NECESITAS TODO ESTO:).
 sudo apt-get install --no-install-recommends --reinstall \
-    flex bison python3-mako \
+    flex bison python3-mako libexpat1-dev \
     libxcb-dri3-dev libxcb-dri2-0-dev \
     libxcb-glx0-dev libx11-xcb-dev \
     libxcb-present-dev libxcb-sync-dev \
@@ -469,7 +469,7 @@ sudo apt-get install --no-install-recommends --reinstall \
     libxdamage-dev libxext-dev libxfixes-dev \
     x11proto-dri2-dev x11proto-dri3-dev \
     x11proto-present-dev x11proto-gl-dev \
-    libexpat1-dev libudev-dev gettext \
+    libudev-dev gettext \
     ca-certificates xz-utils \
     zlib1g-dev pkg-config meson
 
@@ -481,13 +481,17 @@ configuramos con:
 mkdir b3
 cd b3 
 
-AHORA, PARA CONFIGURAR MESA CON GLX, SIN LIBGLVND, CON GLES, GLES2 y OPENGL COMPLETO:
-CON FLTO:
+AHORA PARA CONFIGURAR:
+ASI LO VENIMOS HACIENDO:  CON GLES Y GLES2, SIN OPENGL COMPLETO, SIN LTO:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+
+ALTERNATIVAS SIN MUCHO SENTIDO:
+CON GLX, SIN LIBGLVND, CON GLES, GLES2 y OPENGL COMPLETO, CON LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" meson --prefix=/usr --buildtype=plain -Db_ndebug=true -Dglvnd=false -Dplatforms=drm,x11 -Dglx=dri -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
-SIN FLTO:
+CON GLX, SIN LIBGLVND, CON GLES, GLES2 y OPENGL COMPLETO, SIN LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --buildtype=plain -Db_ndebug=true -Dglvnd=false -Dplatforms=drm,x11 -Dglx=dri -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
-ninja -j4 
+ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
 sudo ninja install
 Y PARA DESINSTALAR
 sudo ninja meson-uninstall
@@ -523,7 +527,10 @@ Si queremos que el SN30 de 8Bitdo se detecte como un gamepad (importante en SDLP
 "03000000c82d00000031000011010000,8Bitdo Receiver,a:b1,b:b0,back:b10,leftshoulder:b6,leftx:a0,lefty:a1,rightshoulder:b7,start:b11,x:b4,y:b3,",
 
 SÓLO CON GLES1 y GLES2:
+CON LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
+SIN LTO:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 CON OPENGL COMPLETO, GLES1 y GLES2
 CON LTO:
@@ -531,16 +538,23 @@ CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=arm
 SIN LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
-TEMPORAL (SIN PROBAR DEL TODO) CON CMAKE POR SI UN DÍA HAY QUE CAMBIAR:
+TEMPORAL (SIN PROBAR DEL TODO) CON CMAKE POR SI UN DÍA HAY QUE CAMBIAR AL CMAKE (ESPEREMOS QUE NO!):
 cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DASSERTIONS=disabled -DVIDEO_DUMMY=OFF -DVIDEO_VULKAN=OFF -DDISKAUDIO=OFF -DDUMMYAUDIO=OFF -DOSS=OFF ..
 
 Compilar e instalar.
 
 Para SDL2_Mixer:
+CON LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
+SIN LTO:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
+
 
 Para SDL2_Image o SDL2_ttf:
+CON LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --without-x
+SIN LTO:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --without-x
 
 INSTALAR RETROARCH
 ===================
