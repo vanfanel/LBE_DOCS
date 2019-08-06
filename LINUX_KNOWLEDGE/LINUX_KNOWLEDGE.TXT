@@ -517,7 +517,7 @@ else ifeq ($(platform), rpi2)
    ENDIANNESS_DEFINES := -DLSB_FIRST
    COMMONFLAGS += -DARM
    COMMONFLAGS += -mfloat-abi=hard
-   COMMONFLAGS += -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer -fstrict-aliasing -ffast-math
+   COMMONFLAGS += -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer -fstrict-aliasing
    COMMONFLAGS += -DDISABLE_EXCEPTIONS
    COMMONFLAGS += -DC_DYNREC -DC_TARGETCPU="ARMV7LE" -DC_UNALIGNED_MEMORY
    IS_X86 := 0
@@ -968,7 +968,7 @@ en src/video/fbcon/SDL_fbvideo.c, función FB_WaitVBL().
 
 Configuramos con:
 
-CFLAGS="-Ofast -march=armv7-a -mtune=cortex-a7 -mfloat-abi=hard -mfpu=neon-vfpv4 -ffast-math -funroll-loops" ./configure --disable-video-opengl --enable-video-fbcon --disable-video-kms --disable-video-directfb --disable-oss --disable-alsatest --disable-pulseaudio --disable-pulseaudio-shared --disable-arts --disable-nas --disable-esd --disable-nas-shared --disable-diskaudio --disable-dummyaudio --disable-mintaudio --disable-video-x11
+CFLAGS="-Ofast -march=armv7-a -mtune=cortex-a7 -mfloat-abi=hard -mfpu=neon-vfpv4 -funroll-loops" ./configure --disable-video-opengl --enable-video-fbcon --disable-video-kms --disable-video-directfb --disable-oss --disable-alsatest --disable-pulseaudio --disable-pulseaudio-shared --disable-arts --disable-nas --disable-esd --disable-nas-shared --disable-diskaudio --disable-dummyaudio --disable-mintaudio --disable-video-x11
 
 Si se queja el DOSBOX de que falta el ratón, usa la variable de entorno SDL_NOMOUSE=1
 Si se queja de que las SDL no tienen soporte para CDROM, pues te toca recompilar las SDL.
@@ -2104,7 +2104,7 @@ en ese mismo fichero, schism/video.c
 
 Editamos Makefile y dejamos la línea de CFLAGS así: (el Makefile es un poco lioso porque es de generación automática, busca -g y te lleva al sitio)
 
-CFLAGS = -O3 -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j -ffast-math
+CFLAGS = -O3 -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
 
 Quitamos el -O2 y el -g de OBJFLAGS.
 
@@ -4061,6 +4061,7 @@ https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
 En concreto, la sección de -mfpu=name.
 Sacarás en conclusión que como NEON no cumple IEEE, tienes que desactivar el cumplimiento con estándar IEEE, para lo cual puedes parsar -funsafe-math-optimizations,
 o con -ffast-math, que hace lo mismo que -funsafe-math-optimizations y más cosas (lee la segunda respuesta buena aquí: http://stackoverflow.com/questions/7420665/what-does-gccs-ffast-math-actually-do)
+NO USES FFAST-MATH, PRODUCE ERRORES DE CÁLCULO EN LOS PROGRAMAS!!!
 
 Detecta el EGL de la Pi y todo, ya NO activamos dispmanx:
 
