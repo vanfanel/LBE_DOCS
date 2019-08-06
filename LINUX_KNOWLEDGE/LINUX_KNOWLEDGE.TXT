@@ -748,13 +748,13 @@ Recuerda: libreoffice-gtk. Es un paquete de integración.
 *******Preparar el portátil como router para salir a internet desde la Raspberry Pi u otra placa conectada a él por ethernet*********************************
 
 Al router (el portátil, por ejemplo, que es el que se conecta a internet) le ponemos una IP fija en el mismo rango que el cliente. En Lubuntu o Debian es tan fácil
-como crear una conexión ehernet nueva en el gestor de redes. 
+como crear una conexión ethernet nueva en el gestor de redes. 
 CUIDADO!!! CUIDADO!!! NO LE PONGAS un gateway o puerta de enlace, porque LA CONEXIÓN WIFI DEJARÁ DE FUNCIONAR AL PONER EL CABLE SI LO HACES.
 Ahora editamos /etc/sysctl.conf y descomentamos la línea
 #net.ipv4.ip_forward=1
 Añadimos el binding a las IPtables:
-sudo iptables -t nat -A POSTROUTING -o wlo1 -j MASQUERADE
-Donde digo wlo1, me refiero al interface con el que el servidor se conecta a internet. Antes de la 14.04 de Lubuntu, la wifi era eth1, luego fue un tiempo wlan0... así que fíjate bien.
+sudo iptables -t nat -A POSTROUTING -o wlp1s01 -j MASQUERADE
+Donde digo wlp1s0, me refiero al interface con el que el servidor se conecta a internet. Antes de la 14.04 de Lubuntu, la wifi era eth1, luego fue un tiempo wlan0... así que fíjate bien.
 Si queremos que estas cosas empiezen a funcionar sin reiniciar, hacemos
 echo 1 > /proc/sys/net/ipv4/ip_forward
 Ahora salvamos las IPtables:
@@ -2438,7 +2438,7 @@ cd b3
 
 Y configuramos desde un directorio de build que creamos nosotros:
 
-CFLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0
+CFLAGS=" -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS=" -march=armv8-a+crc -mtune=cortex-a53" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0
 
 Y compilamos con make -j4, e instalamos con:
 sudo make install
@@ -4495,8 +4495,7 @@ git clone --depth 1 https://github.com/exult/exult.git
 
 ---MODIFICACIONES AL CÓDIGO
 
-Editamos imagewin/imagewin.cc y dejamos las líneas de CreateRenderer con estos flags:
-screen_renderer = SDL_CreateRenderer(screen_window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
+Editamos imagewin/imagewin.cc y 
 
 Editamos exult.cc, comentamos la línea
 std::atexit(SDL_Quit);
@@ -4657,6 +4656,26 @@ sudo apt-get purge 4.9
 Volvemos a poner jessie donde estaba stretch, y actualizamos a los índices de jessie:
 sudo vim /etc/apt/sources.list
 sudo apt-get update
+
+LIBOPENAL en la Raspberry Pi
+=======================
+
+Por si alguna vez lo necesitas para algo.
+Bajamos la última release de: https://github.com/kcat/openal-soft/releases
+Configuramos así:
+cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+
+STUNT CAR RACER EN LA RASPBERRY PI (NO COMPILA POR PROBLEMAS CON OPENGL)
+=====================================================================
+
+Instalamos una dependencia previa (a parte de openal, justo encima lo tienes):
+sudo apt-get install libglm-dev
+
+Clonamos el repo de 
+https://github.com/ptitSeb/stuntcarremake.git
+
+Compilamos con:
+make -j4 SDL=2 DEBUG=0 HAVE_GLES=1
 
 GZDOOM en la Raspberry Pi
 =========================
