@@ -436,9 +436,6 @@ https://dri.freedesktop.org/libdrm/
 sudo apt-get install xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
 ./autogen.sh
 Configuramos con esto:
-CON FLTO:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
-SIN FLTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
 
 Compilamos e instalamos.
@@ -482,14 +479,8 @@ mkdir b3
 cd b3 
 
 AHORA PARA CONFIGURAR:
-ASI LO VENIMOS HACIENDO:  CON GLES Y GLES2, SIN OPENGL COMPLETO, SIN LTO:
+ASI LO VENIMOS HACIENDO:  CON GLES Y GLES2, SIN OPENGL COMPLETO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
-
-ALTERNATIVAS SIN MUCHO SENTIDO:
-CON GLX, SIN LIBGLVND, CON GLES, GLES2 y OPENGL COMPLETO, CON LTO:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" meson --prefix=/usr --buildtype=plain -Db_ndebug=true -Dglvnd=false -Dplatforms=drm,x11 -Dglx=dri -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
-CON GLX, SIN LIBGLVND, CON GLES, GLES2 y OPENGL COMPLETO, SIN LTO:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --buildtype=plain -Db_ndebug=true -Dglvnd=false -Dplatforms=drm,x11 -Dglx=dri -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
 sudo ninja install
@@ -506,7 +497,7 @@ y no en runtime, y EGL no. Por eso usamos glvnd y así tenemos full opengl sin X
 <imirkin> glapi is an internal mesa detail
 
 !!!!NOTA QUE TE PUEDE INTERESAR EN EL FUTURO: En X86_64, donde se usa el driver i965 que NO es gallium sino dri, se haría:
-CFLAGS="-O3 -flto -march=native -mtune=native" CXXFLAGS="-O3 -flto  -march=native -mtune=native" LDFLAGS="-flto" meson --buildtype=plain -Db_ndebug=true -Dglvnd=true -Dplatforms=drm -Dglx=disabled -Dllvm=false -Ddri-drivers=i915 -Dgallium-drivers='' -Dvulkan-drivers='' ..
+CFLAGS="-O3 -march=native -mtune=native" CXXFLAGS="-O3  -march=native -mtune=native" meson --buildtype=plain -Db_ndebug=true -Dglvnd=true -Dplatforms=drm -Dglx=disabled -Dllvm=false -Ddri-drivers=i915 -Dgallium-drivers='' -Dvulkan-drivers='' ..
 
 Si al compilar te da un error de que NULL no está definido, añade en src/egl/main/egldevice.h:
 #include <stddef.h>
@@ -527,15 +518,9 @@ Si queremos que el SN30 de 8Bitdo se detecte como un gamepad (importante en SDLP
 "03000000c82d00000031000011010000,8Bitdo Receiver,a:b1,b:b0,back:b10,leftshoulder:b6,leftx:a0,lefty:a1,rightshoulder:b7,start:b11,x:b4,y:b3,",
 
 SÓLO CON GLES1 y GLES2:
-CON LTO:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
-SIN LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 CON OPENGL COMPLETO, GLES1 y GLES2
-CON LTO:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
-SIN LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
 
 TEMPORAL (SIN PROBAR DEL TODO) CON CMAKE POR SI UN DÍA HAY QUE CAMBIAR AL CMAKE (ESPEREMOS QUE NO!):
@@ -544,16 +529,10 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DASSERTIONS=disabl
 Compilar e instalar.
 
 Para SDL2_Mixer:
-CON LTO:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
-SIN LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
 
 Para SDL2_Image o SDL2_ttf:
-CON LTO:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" AR="gcc-ar" NM="gcc-nm" RANLIB="gcc-ranlib" ./configure --prefix=/usr --without-x
-SIN LTO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --without-x
 
 INSTALAR RETROARCH
@@ -561,7 +540,7 @@ INSTALAR RETROARCH
 
 Se configura con:
 
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -flto" LDFLAGS="-flto" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --enable-opengles --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-menu_widgets --disable-easteregg --disable-cdrom   
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --enable-opengles --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-menu_widgets --disable-easteregg --disable-cdrom   
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 
