@@ -1268,28 +1268,6 @@ Aunque lo normal es que no tengas que hacer esto tampoco, sino que la librería 
 Para asegurarnos de esto, hacemos "ldconfig --verbose", y se actualizarán los directorios donde se buscan las librerias que usan los programas.
 Así que si has instalado una librería pero no la encuentra un programa en tiempo de ejecuciçon, puedes pasarle el -rpath o hacer un ldconfig y listo.
 
-***********Notas SDL1.2.x en Raspbian****************************************************************************************************
-
-Por defecto, al ejecutar el script de configuración, se nos crea un makefile que especifica que se instalen las librerías en una ubicación que no
-nos conviene, ya que las demás librerías accesorias como SDL_Mixer se instalan en /usr/loca/lib, que es más estándar.
-
-Así que cinfiguramos siempre con la opción 
---libdir="/usr/local/lib"
-y ANTES de compilar comprobamos que es así como aparece en el Makefile.
-
-Ahora, configurar SDL_mixer ya no tiene ningún problema y no le tenemos que pasar libdir porque por defecto se mete en /usr/local/lib:
-
-CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure --disable-music-mod --disable-music-ogg --disable-music-flac --disable-music-mp3
-
-¿Y todo esto por qué?
-Pues porque algunos programas cuyos scripts de inicio están planteados regular, usan sdl-config (o lo que es lo mismo, pkg-config --libs <librería>) para
-decirle al linker dónde están las librerías: y resulta que sdl-config, si tenemos las SDL1 en /usr/lib/arm-linux-gnueabihf, pues nos va a devolver esa ruta
-mientras que SDL_mixer está en /usr/local/lib, así que luego el programa no encuentra SDL_mixer.
-¿Solución? Pues esta precisamente: que tando SDL_mixer como libSDL1.2.x vayan a parar a /usr/local/lib, y así sdl-config devuelve una ruta válida para
-ambas librerías.
-¡¡¡¡NO TE OLVIDES de hacer "sudo ldconfig -v" tras instalar, o los programas no encontrarán las libSDL1.2.x en tiempo de ejecución!!! Podrías 
-añadir -Wl,-rpath,/usr/local/lib al linker en cada programa, pero no merece la pena, obviamente.
-
 ***********Montar un DSK de Mac antiguo, o un ADF de Amiga******************************************************************************
 
 Para el DSK de MAC antiguo:
@@ -3853,94 +3831,7 @@ sudo service lightdm stop
 
 y para volver, obviamente, start.
 
-*************************Instalar driver VC4 en la Raspberry PI, paso a paso, para arrancar en modo KMS y usarla así***********************
-
-Instalamos estos paquetes antes de empezar:
-sudo apt-get install flex bison python-mako gettext xutils-dev x11proto-gl-dev x11proto-dri2-dev libpthread-stubs0-dev automake autoconf libtool --no-install-recommends
-
-Empezamos instalando libdrm:
-git clone --depth 1 git://anongit.freedesktop.org/mesa/drm
-./autogen.sh
-
-Editamos el configure, y donde pone "-O2 -g" pon "-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard"
-Configuramos:
-./configure --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
-Y compilamos:
-make -j6
-sudo make install
-
-Ahora vamos a por MESA:
-
-sudo apt-get install --no-install-recommends \
-    flex bison python-mako \
-    libxcb-dri3-dev libxcb-dri2-0-dev \
-    libxcb-glx0-dev libx11-xcb-dev \
-    libxcb-present-dev libxcb-sync-dev \
-    libxshmfence-dev \
-    libxdamage-dev libxext-dev libxfixes-dev \
-    x11proto-dri2-dev x11proto-dri3-dev \
-    x11proto-present-dev x11proto-gl-dev \
-    libexpat1-dev libudev-dev gettext
-
-Ahora, para los sources de MESA, lo mejor es bajar los últimos estables desde:
-https://mesa.freedesktop.org/archive/
-O si queremos los últimos sources de GIT:
-git clone --depth 1 https://gitlab.freedesktop.org/mesa/mesa.git
-
-Y ahora seguimos con:
-./autogen.sh
-
-Editamos el script configure y donde pone O2 ponemos:
--O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
-
-Configuramos:
-./configure --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --with-gallium-drivers=vc4 --with-dri-drivers= --with-egl-platforms=drm --disable-glx
-
-Y compilamos:
-make -j6
-sudo make install
-
-NO HACE FALTA que instales libgbm1 ni libgbm-dev ni nada de eso: forma parte de MESA y se instala al instalar MESA, y la última versión siempre viene dentro de MESA.
-
-Ahora añadimos a config.txt:
-dtoverlay=vc4-kms-v3d
-
-Y si queremos la hifiberry:
-dtoverlay=hifiberry-dacplus
-#dtparam=audio=on
-
-Lo de dtoverlay=i2s-mmap no hace falta para la hifiberry.
-
-Y en /etc/asound.conf, si queremos la hifiberry:
-
-pcm.!default {
-    type hw
-    card sndrpihifiberry
-}
-
-ctl.!default {
-    type hw           
-    card sndrpihifiberry
-}
-
-Si funciona alsamixer, ya tienes lo del audio arreglado.
-
 *************************Notas de RetroArch en x86**********************************************
-
-Retroarch es guay porque podemos tirar el servidor gráfico y, si tenemos una tarjeta que soporte KMS+EGL, podemos correrlo sin X, con doble buffer + vsync y sin input lag.
-
-Lo ideal es compilarlo nosotros. Nos instalamos:
-
-sudo apt-get install gcc g++ make libdrm-dev libgbm-dev libgles2-mesa-dev libasound2-dev
-
-(A lo mejor hace falta algo más, ya lo pedirá al configurar o al compilar).
-
-configuramos con:
-
-./configure --disable-x11 --disable-sdl2 --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-cheevos  --enable-kms --enable-egl --enable-gles
-
-Comprobamos en lo que sale que ha detectado las librerías drm y EGL.
-Y procedemos a compilar con make.
 
 PARA que haya input con el driver udev (input_driver = "udev") debemos crear /etc/udev/rules.d/99-evdev.rules con el contenido:
 KERNEL=="event*", NAME="input/%k", MODE="666"
@@ -3949,57 +3840,12 @@ sudo udevadm control --reload-rules
 sudo chmod 666 /dev/input/event*
 o simplemente reiniciar.
 
-En lugar de todo esto, podemos instalar desde repo, en forma de binario precompilado, de la siguente manera: añadimos el repo
-
-sudo add-apt-repository ppa:hunter-kaller/ppa
-
-Y ahora podemos instalarlo junto con algunos cores:
-
-sudo apt-get install retroarch
-sudo apt-get install libretro-*
-
-Al intentar ejecutarlo en modo KMS+EGL, nos va a pedir unas librerías. Nos anticipamos y las instalamos antes: 
-
-sudo apt-get install libegl1-mesa
-sudo apt-get install libgbm1 
-sudo apt-get install libEGL
-
-Los cores van a ir a /usr/lib/libretro-*.so
-
-También vamos a necesitar retroarch-phoenix para generar la primera configuración:
-
-sudo apt-get install retroarch-phoenix
-
-El retroarch guarda la configuración general en ~/.config/retroarch.cfg, pero esta configuración sólo admite una entrada del campo “libretro_path =”. Si esta entrada es un directorio, empezaremos a navegar desde ahí una vez entremos en “cores” dentro del menú del retroarch.
-Si es un fichero *.so, pues estará activo ese core por defecto, y para cargar roms o ficheros de otro sistema tendremos que cambiar de core.
-Así que lo ideal es tener un lanzador por cada juego o sistema, tipo:
-
-retroarch -c .config/retroarch/gb.cfg <rom_opcional>
-
-Para configurar los botones para ese sistema en concreto, haremos
-
-retroarch-joyconfig -j 1
-
-(por defecto sería -j 0 si no ponemos nada, pero el portátil detecta un acelerómetro en primer lugar...)
-CUIDADO: la salida de este comando, tras acabar de configurar las teclas, la añadimos al cfg del sistema cuyo mando estemos configurando.
-¡¡NO TE OLVIDES LUEGO DE AÑADIR input_driver = “linuxraw” (RESPETA LOS ESPACIOS) en el retroarch.cfg!! Si no tienes soporte para SDL y no pones esto en el fichero, te va a dar un error bien gordo de input driver “null” al lanzar el retroarch.
-
-Ah, y prboom-libretro guarda su configuración en ~/roms/doom/prboom.cfg, o sea, la crea en el directorio donde metamos los WADs.
-
-Si tienes un error de "unable to open device" por udev, simpemente:
-crea /etc/udev/rules.d/99-evdev.rules con el contenido
-KERNEL=="event*", NAME="input/%k", MODE="666"
-ejecuta 
-sudo udevadm control --reload-rules
-
-y reinicia. Ya deberia ir.
 
 ****************************Cómo compilar libmodplug*******************************
 
 Cambia automake-1.13 a automake-1.11 en el Makefile.
 Configura con: 
 CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --enable-static
-
 
 ****************************Milkytracker en la Raspberry Pi****************************
 
@@ -4098,132 +3944,6 @@ Es mejor usar ALSATHREAD QUE ALSA porque al lanzar los juegos no hace doble crac
 Si quieres HID, instala libusb-1.0-0-dev y luego...
 Para el adaptador greenasia, en input/connect/joypad_connection.c añade esta entrada con sus VID/PID correctos:
 { "PS2/PSX Controller Adapter",  4607,  13121,      &pad_connection_ps2adapter },
-
-*****************RETROARCH EN LA RASPBERRY PI CON DRIVER VC4***************************************************************
-
-Para Pi 2 y 3 con KMS/DRM: LO PRIMERO MUEVE /opt/vc A /opt/BCK PARA QUE RETROARCH NO DETECTE BCMHOST Y COMPILE CONTRA EL EGL/GLES DE BROADCOM!!!
-Que luego eso causa un error en eglGetDisplay() Y NO HAY MANERA DE DEBUGEARLO!!!
-Luego instala estas:
-sudo apt-get install libgl1-mesa-dev libdrm-dev libgbm-dev libgles2-mesa-dev
-Si te da error al linkar porque no encuentra libdrm.so.2, instala libdrm desde los sources:
-git clone --depth 1 git://anongit.freedesktop.org/mesa/drm
-./autogen.sh --prefix=/usr --libdir=/usr/lib/arm-linux-gnueabihf --disable-vmwgfx --disable-radeon --disable-amdgpu --disable-nouveau --disable-freedreno
-make -j4
-sudo make install
-Al meter el overlay de vc4 en config.txt, se te habrá activado también el sonido de VC4 por HDMI.
-Confirma qué dispositivos tienes con:
-cat /proc/asound/cards
-Elige la hifiberry como dispositivo de sonido por defecto, para lo cual
-puedes ver su nombre de dispositivo con: aplay -l, y fíjate en lo que pone a continuación de CARD=.
-Y si por ejemplo quieres la hifiberry, crea un /etc/asound.conf así para seleccionar POR NOMBRE (no selecciones por número porque eso puede cambiar entre arranques):
-pcm.!default {
-    type hw
-    card sndrpihifiberry
-}
-
-ctl.!default {
-    type hw           
-    card sndrpihifiberry
-}
-
-Ahora ya configuramos:
-./configure --disable-ibxm --enable-neon --enable-floathard --enable-kms --disable-vg  --disable-wayland  --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac
-
-Añadimos lo que tenemos que añadir a config.mk y quitamos el -g de Makefile.common, y compilamos.
-
-*********************************************************************************************************************************************
-
-=====PARA LOS CORES=========
-
-Vamos editando el Makefile.libretro, y añadiendo en la línea donde se ñade sólo -marm (se llega buscand marm un par de veces):
-
-Para la Pi 1:
-
--march=armv6j -mfpu=vfp -mfloat-abi=hard
-
-Para la Pi 2 y 3:
-
--march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard
-
-Y compilamos con
-
-make -f Makefile.libretro platform="armv" -j8
-
-(La idea es pasarle armv pero sin un número, para que coja la línea en la que antes sólo había -marm y ahora están los flags que hemos añadido nosotros a mano).
-
-Si no, pues directamente en la línea de los Os (como en STELLA):
-
--O3 -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
-
-Cuando un core se niegue a compilar con el distcc, si vemos que está intentando usar cc en lugar de gcc, hacemos
-export CC = gcc
-o bien añadimos a su Makefile:
-  CC = gcc 
-  CXX = g++ 
-a la sección de platform unix, si te de problemas el cross compilador al especificar la plataforma. 
-
-El core blueMSX trae LOG_PERFORMANCE activado. Desactivalo en el Makefile.libretro al principio.
-
-Para el core de picodrive, NO sirve el zip, clonamos con git:
-
-git clone https://github.com/libretro/picodrive.git
-
-Ahora instalamos unos complementos que hacen falta antes de compilar:
-
-git submodule init && git submodule update
-
-Editamos Makefile (NO Makefile.libretro sino Makefile sin más) y nos libramos de -ggdb y ponemos -O3.
-
-Ahora hacemos 
-
-make -f Makefile.libretro -j8 platform=raspberrypi
-(Envié un parche para que las cosas se compilasen como deben para la Pi con este platform, mira el Makefile.libretro si tienes curiosidad: está basado en el platform de 3Ds
-en cuanto a lo que se debe compilar en assembler y eso, con cosas del plarform de Linux para el formato de la librería de salida).
-
-LISTO!! Picodrive es un core ESPECTACULAR, ya verás.
-
-Para el core de scummvm, clonamos repo y luego entramos en:
-
-backends/platform/libretro/build
-
-SI SE TE OCURRE ACTIVAR O DESACTIVAR CORES, no linkará bien. Y necesitas mucho espacio en disco para que linke, además. Fíjate no sólo en la RAM que queda sino también en el espacio
-en disco.
-
-y hacemos:
-
-make -j4
-
-Para que la autodetección de core funcione, tienes que tener dist/info en el directorio de retroarch. Está en el repo libretro-super.
-
-PARA Dinothawr puede que tengas que mover
-  CC = gcc 
-  CXX = g++ 
-a la sección de platform unix, si te de problemas el cross compilador al especificar la plataforma. 
-
-se compila con 
-make -j8 platform="unix armv6j hardfloat"
-
-PARA que haya input con el driver udev (input_driver = "udev") debemos crear /etc/udev/rules.d/99-evdev.rules con el contenido:
-KERNEL=="event*", NAME="input/%k", MODE="666"
-Y reiniciar.
-
-Si le pasas algún flag de march o mtune, el ejecutable va a salir mal y no funcionará.
-
-Para medir el uso de CPU, usamos PERFORMANCE COUNTERS:
--En RGUI: en General Options, activamos LOGGING VERBOSITY, PERFOMANCE COUNTERS, y ponemos LOGGING LEVEL a 0. Al salir, deberíamos
-ver los stats. El resampler_proc son los cpu ticks que se zampa el resampler.
--DSINC_LOWEST_QUALITY para compilar con el SINC resampler de menor calidad. El otro resampler, CC, hay que evitarlo en ARM. Busca DSINC en el Makefile
-de Retroarch.
-
-Para PGO (profile guided optimization) agregamos esto al Makefile:
-FLAGS += -fprofile-generate
-LDFLAGS += -lgcov
-...y tras las ejecuciones para que recabe datos, tenemos que tener unos .gcda por todo el código.
-Ahora hacemos "make clean", y tranquilo, que no borra los .gcda.
-Ahora compilamos usando los .gcda con:
-FLAGS += -fprofile-use
-LDFLAGS += -lgcov
-NOTA: NO FUNCIONA el PGO con el DISTCC, ya que al correr no genera los .gcda, así que tienes que compilar en local (saca la ruta del distcc del ~/.profile temporalmente y ya).
 
 COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
 ===========================================================================
