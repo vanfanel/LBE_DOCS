@@ -930,6 +930,25 @@ por
 
 El nuevo valor de Atari800_FPS_NTSC se ha obtenido de RetroArch.
 
+*********NO funciona la conexión con una tarjeta de broadcom (módulo b43)*************************************************************************************
+
+Si miras 
+dmesg | grep err
+verás queSE QUEJA DE QUE LE FALTAN LOS FICHEROS DEL FIRMWARE. Tendrías que instalar el b43-fwcutter... pero claro, no tienes internet. (Si tienes internet, simplemente
+instala firmware-b43-installer
+Vale, la solución es descargar a mano desde otro ordenador con conexión:
+http://mirrors.kernel.org/ubuntu/pool/main/b/b43-fwcutter/b43-fwcutter_015-9_amd64.deb
+http://www.lwfinger.com/b43-firmware/broadcom-wl-5.100.138.tar.bz2
+
+Ahora descomprime, recorta el hardware y déjalo instalado:
+
+sudo dpkg -i b43-fwcutter_015-9_amd64.deb
+tar xfvj broadcom-wl-5.100.138.tar.bz2
+sudo b43-fwcutter -w /lib/firmware broadcom-wl-5.100.138/linux/wl_apsta.o
+
+Instrucciones sacadas de:
+https://askubuntu.com/questions/730799/installing-firmware-b43-installer-offline
+
 *********Conexión WIFI lenta con BCM4313********************************************************************************************************************* 
 Para arreglarlo, líbrate de los drivers b43 que son una mierdaca.
 
@@ -939,7 +958,7 @@ sudo modprobe wl
 
 reboot and ejoy! :)
 
-Si no tienes wifi en absoluto, instala el paquete b43-fwcutter y reinicia, a ver si hay suerte.
+Si no tienes wifi en absoluto, instala el paquete firmware-b43-installer y reinicia, a ver si hay suerte.
 
 ********Establecer el niceness de un programa siendo usuario******************************************************************************************
 
