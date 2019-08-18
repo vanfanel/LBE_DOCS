@@ -3345,12 +3345,24 @@ LD_LIBRARY_PATH=/home/manuel/sidplay/lib ./sidplayfp <tema>.sid
 
 Descarga los últimos sources de
 git clone --depth 1 https://github.com/Davidslv/rogue.git
+
 Antes de nada, instala las libncurses5-dev, antes de hacer el configure.
+sudo apt-get install libncurses5-dev --no-install-recommends
+
+Ahora actualiza el config.guess, que el que trae el rogue es viejo y no detecta bien el sistema:
+wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' -O config.guess
+
 Configurar y compilar:
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure
 make -j4
 
+Si te da un error al compilar sobre un incomplete type, aquí hay un fork que lo resuelve, usa ese en lugar del que usabas:
+https://github.com/gillesdami/rogue
+
 Ayuda de teclas con shift+?
+
+Puedes pasarle un nombre de jugador, un archivo de salvado, etc.. usando la variable de entorno ROGUEOPTS. Como por ejemplo así:
+ROGUEOPTS="name=Manuel,file=manuel.save" ./rogue.bin -r
 
 ***************Borrar un archivo con nombre que contiene caracteres extraños*****************************
 
