@@ -753,7 +753,7 @@ CUIDADO!!! CUIDADO!!! NO LE PONGAS un gateway o puerta de enlace, porque LA CONE
 Ahora editamos /etc/sysctl.conf y descomentamos la línea
 #net.ipv4.ip_forward=1
 Añadimos el binding a las IPtables:
-sudo iptables -t nat -A POSTROUTING -o wlp1s01 -j MASQUERADE
+sudo iptables -t nat -A POSTROUTING -o wlp1s0 -j MASQUERADE
 Donde digo wlp1s0, me refiero al interface con el que el servidor se conecta a internet. Antes de la 14.04 de Lubuntu, la wifi era eth1, luego fue un tiempo wlan0... así que fíjate bien.
 Si queremos que estas cosas empiezen a funcionar sin reiniciar, hacemos
 echo 1 > /proc/sys/net/ipv4/ip_forward
@@ -4172,6 +4172,34 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs -j8
 
 Para instalar kernel, módulos y demás, sigue ya con: https://www.raspberrypi.org/documentation/linux/kernel/building.md
 
+DEVILUTIONX, Diablo en Linux
+=========================
+
+Dependencias previas:
+sudo apt-get install libsodium-dev --no-install-recommends
+
+Clonamos:
+git clone --depth 1 https://github.com/diasurgical/devilutionX.git
+
+Configuramos:
+cmake -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+
+Compilamos y metemos en el directorio ~/diablo el ejecutable, junto con diabdat.mpq
+
+Ajustamos el upscaling, para ello creamos diablo.ini en ~/diablo, con este contenido:
+
+[devilutionx]
+upscale=0
+fullscreen=1
+scaling quality=0
+grab input=1
+[Diablo]
+Intro=0
+Gamma Correction=100
+Color Cycling=1
+Sound Volume=0
+Music Volume=0
+
 NUVIE (Ultima VI) en la Raspberry Pi
 ==============================
 
@@ -4179,16 +4207,16 @@ Clonamos:
 
 git clone --depth 1 https://github.com/nuvie/nuvie.git
 
+Editamos configure.ac y cambiamos O2 por O3.
 Ejecutamos el autogen.sh
+
 Añadimos 
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 en screen/Screen.cpp, justo antes de SDL_CreateWindowAndRenderer()
 
-Editamos el script configure y quitamos toda mención a -O2 y -g. 
-
 Configuramos así:
 
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-debug
+CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-debug
 
 Compilamos:
 
