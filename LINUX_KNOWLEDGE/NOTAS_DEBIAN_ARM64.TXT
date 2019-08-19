@@ -529,10 +529,17 @@ INSTALAR SDL2
 Lo primero es instalar estos:
 sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 
-Por ahora, deshabilitamos NEON_INTRINSICS en el resampler ya que da problemas con el sonido del ECWolf y del DevilutionX (Diablo 1). Para ello, editamos src/audio/SDL_audiotypecvt.c y cambiamos
-#define HAVE_NEON_INTRINSICS 1
-por
-#define HAVE_NEON_INTRINSICS 0
+Por ahora, tenemos que cambiar código para que funcione bien el resampler de audio acelerado para instrucciones NEON. Para ello, editamos src/audio/SDL_audiotypecvt.c, y cambiamos las 4 líneas estas:
+           vst1q_f32(dst, vmlaq_f32(negone, vcvtq_f32_u32(vmovl_u16(vget_high_u16(uint16hi))), divby128));
+           vst1q_f32(dst+4, vmlaq_f32(negone, vcvtq_f32_u32(vmovl_u16(vget_low_u16(uint16hi))), divby128));
+           vst1q_f32(dst+8, vmlaq_f32(negone, vcvtq_f32_u32(vmovl_u16(vget_high_u16(uint16lo))), divby128));
+           vst1q_f32(dst+12, vmlaq_f32(negone, vcvtq_f32_u32(vmovl_u16(vget_low_u16(uint16lo))), divby128));
+por estas 4:
+            vst1q_f32(dst, vmlaq_f32(negone, vcvtq_f32_u32(vmovl_u16(vget_low_u16(uint16lo))), divby128));
+            vst1q_f32(dst+4, vmlaq_f32(negone, vcvtq_f32_u32(vmovl_u16(vget_high_u16(uint16lo))), divby128));
+            vst1q_f32(dst+8, vmlaq_f32(negone, vcvtq_f32_u32(vmovl_u16(vget_low_u16(uint16hi))), divby128));
+            vst1q_f32(dst+12, vmlaq_f32(negone, vcvtq_f32_u32(vmovl_u16(vget_high_u16(uint16hi))), divby128));
+(Más info en https://bugzilla.libsdl.org/show_bug.cgi?id=4186)
 
 Si queremos que el SN30 de 8Bitdo se detecte como un gamepad (importante en SDLPop!), tenemos que añadir en src/joystick/SDL_gamecontrollerdb.h, en la parte de #if defined(__LINUX__):
 "03000000c82d00000031000011010000,8Bitdo Receiver,a:b1,b:b0,back:b10,leftshoulder:b6,leftx:a0,lefty:a1,rightshoulder:b7,start:b11,x:b4,y:b3,",
