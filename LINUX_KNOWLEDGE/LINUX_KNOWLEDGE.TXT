@@ -203,7 +203,7 @@ make BUILD_LINUX=1 GCC_TARGET=64 -j8
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
--En mixer.cpp, ajusta el tamanio del buffer de 4096 a 512
+-En mixer.cpp, ajusta el tamanio del buffer de 4096 a 1024
 -Aniade los flags de optimización en el Makefile, en los CXXFLAGS
 
 ******FLASHBACK en la Rasberry Pi***************************************************************************************************************************************
