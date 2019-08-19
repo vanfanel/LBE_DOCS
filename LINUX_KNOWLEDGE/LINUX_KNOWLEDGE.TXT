@@ -4242,7 +4242,7 @@ O sea que nos tiene que quedar:
 ~/ultima6/ultima6data/<aquí los datos originales del juego>
 
 En ~/.nuvierc tenemos que poner el gamedir apuntando a ./ultima6data
-Si queremos ajustar cosas, en ~/.nuvierc
+Si queremos ajustar cosas, en ~/.nuvierc (puedes poner <show_console> a "no", por ejemplo...)
 
 EXULT, Ultima VII en la Raspberry Pi
 ==============================
