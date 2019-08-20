@@ -4693,6 +4693,11 @@ justo antes de donde sea que hagas:
     SDL_SetSurfaceAlphaMod(star,128);
 ...porque estás estableciendo un nivel de transparencia sin haber dicho que quieres que esa surface sea transparente en el proceso de blitting para empezar.
 
+Debes copiar el directorio data que viene con los sources al directorio donde metas el ejecutable.
+El fichero de configuración lo crea en ~/.giana/giana.cfg.
+Puedes poner ahí fast=1 para que no tengas que ver la intro, elegir idioma y todo eso.
+Puedes pasarle al ejecutable  "-fs -aspect" para conservar el aspect ratio.
+
 AUDIO POR I2C: EL PI TOP SPEAKER
 ==============================
 
