@@ -4672,11 +4672,12 @@ O bien usamos la 0.87 que traen los sources de los juegos, ya que en algunos cas
 CXXFLAGS="-fpermissive" ./configure --enable-static
 make -j8
 
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --enable-static
+CFLAGS="-O3  -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3  -march=armv8-a+crc -mtune=cortex-a53" ./configure --enable-static
 
 Buscamos libmodplug.a
 find ./ -name 'libmodplug.a'
 Y lo copiamos a la raiz de los sources del giana.
+Así mismo, copiamos el directorio de los sources de libmodplug (llamado así, libmodplug) a la raiz de los sources del giana, porque necesita headers que buscará ahí.
 
 Ahora, si vamos a compilar en Linux de 64 bits, tenemos que usar estos flags en nuestro Makefile, que son de Makefile_ubuntu64:
 CFLAGS = $(INCLUDES) -DMODPLUG -DLINUX $(OPTIM) -Wall -DFADEINOUT -DLINUX64 -DHOME_DIR
