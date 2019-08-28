@@ -23,7 +23,7 @@ Si es así, tienes que bajarte los archivos:
 brcmfmac43430-sdio.bin
 brcmfmac43430-sdio.txt
 Que están en:
-https://github.com/RPi-Distro/firmware-nonfree/tree/master/brcm80211/brcm
+https://github.com/RPi-Distro/firmware-nonfree/blob/master/brcm
 Y meterlos en:
 /lib/firmware/brcm/
 
@@ -32,6 +32,9 @@ sudo modprobe brcmfmac
 
 Ahora levantamos el interface wlan0
 sudo ifconfig wlan0 up
+
+Instalamos wpasupplicant así:
+sudo apt-get install wpasupplicant --no-install-recommends
 
 Ahora tenemos que dejar /etc/wpa_supplican/wpa_supplican.conf así:
 
@@ -3020,9 +3023,13 @@ ldd <nombre_del_ejecutable>
 
 *************Commander Genius en la Raspberri Pi**********************************************************************************
 
+Dependencias previas:
+
+sudo apt-get install libboost-dev --no-install-recommends
+
 Clonamos el repo, se requieren tres pasos:
 
-git clone --depth 1 https://github.com/gerstrong/Commander-Genius.git
+git clone --depth 1 https://gitlab.com/Dringgstein/Commander-Genius.git
 git submodule init
 git submodule update
 
@@ -3036,9 +3043,7 @@ cd build
 
 Ahora configuramos:
 
-cmake  -DUSE_SDL2=ON -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DTREMOR=OFF -DOPENGL=OFF -DDOWNLOADER=OFF -DUSE_PYTHON3=OFF ..
-
-Tenemos que tener instalados libsdl_image (versión 2) y libboost-dev (libboost1.55-dev).
+cmake  -DUSE_SDL2=ON -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGL=OFF -DDOWNLOADER=OFF -DUSE_PYTHON3=OFF -Wno-dev -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
@@ -4264,17 +4269,16 @@ Y aniadimos SDL_Quit() al final de la función Play(), antes del return(0).
 
 ---CONFIGURACIÓN DEL CÓDIGO
 
-Ejecutamos el autogen.sh
-
-Editamos el script configure resultante, y cambiamos la línea debajo de donde pone "linux*)" de así:
+Editamos el configure.ac, y dejamos, en la parte de linux,
 WINDOWING_SYSTEM="-DXWIN"
 a así:
 WINDOWING_SYSTEM=""
-ESTO es para que NO dependa de las X11, así que es importante.
+
+Ejecutamos el autogen.sh
 
 Configuramos con:
 
-CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa --enable-lto --with-optimization=heavy
+CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa --enable-lto --with-optimization=normal
 SI EL EJECUTABLE QUE OBTIENES DA SEGFAULTS, PON --with-optimization=normal EN VEZ DE --with-optimization=heavy
 
 Compilamos con make -j4

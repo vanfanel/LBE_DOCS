@@ -39,6 +39,12 @@ Además deshabilita a mano en .config: CONFIG_FRAME_POINTER (ya que es activado 
 -En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable" y el resto de mitigations
 -En GENERAL SETUP, deshabilida EMBEDDED SYSTEM, lo que te perminirá desactivar CONFIGURE STANDARD KERNEL FEATURES, que es el symbol EXPERT=y (NO lo tienes que dejar a =y, sino desactivado, no lo dudes)
 Con esto desactivado, ya puedes ira KERNEL HACKING y quitar KERNEL DEBUGGING.
+-Si quieres WIFI:
+	En NETWORKING SUPPORT, activa WIRELESS, activa "CFG80211 wireless configuration api"
+	En DEVICE DRIVERS->Network Device Support->WIRELESS LAN->Broadcom Devices->Broadcom FULLMAC WLAN Driver
+	A parte, necesitas los ficheros brcmfmac43430-sdio.bin y brcmfmac43430-sdio.txt en /lib/firmware/brcm/ que se descargan de https://github.com/RPi-Distro/firmware-nonfree/blob/master/brcm
+	Sólo si tienes esos ficheros puedes hacer: sudo ifconfig wlan0 up 
+	Y deberías ver wlan0 levantado.
 
 -En ENABLE THE BLOCK LAYER, quita TODOS los i/o scheduler, lo que hará que por defecto se use el no-op. Eso es lo correcto para unidades de disco solido.
 -En CPU POWER MANAGEMENT, deja el governor performance solamente y ponlo por defecto.
