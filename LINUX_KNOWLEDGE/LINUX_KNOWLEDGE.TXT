@@ -1308,6 +1308,22 @@ Y el proceso contrario:
 
 tr '\n' '\r' < unixfile.txt > macfile.txt
 
+***********Montar un VHD de MSX para la MiSTer******************************************************************************************
+
+---Averiguamos dónde empieza con parted. Necesitamos saberlo en BYTES para poder pasárselo a mount, NO en sectores como nos lo dice FDISK. Por eso usamos parted:
+
+sudo parted msx.vhd
+(parted) unit                                                             
+Unit?  [compact]? B                                                       
+(parted) p                                                                
+
+Number  Start   	End         	      Size                     Type        File system  Flags
+ 1      	   65536B    131137535B  131072000B  primary  fat16
+
+---Nos quedamos con el 65536. Y montamos así:
+
+sudo mount -t vfat -o loop,offset=65536 msx.vhd /mnt/hdd
+
 ***********Montar un archivo .toast de MAC***********************************************************************************************
 
 mount -o loop -t hfsplus imagename.toast [mount point]
@@ -2651,17 +2667,19 @@ Si usamos dmixer y queremos cambiar la frecuencia de muestreo de salida para que
 
 *************GEMRB : Engine para Baldur's Gate 1 & 2*******************************************************************************
 
+Dependencias previas:
+
+sudo apt-get install libpython-dev --no-install-recommends
+
 Hay que leer el INSTALL para saber cómo se compila, pero esencialmente:
-mkdir build
-cd build
 
 Para OPENGL_ES:
 
-cmake .. -DUSE_OPENGL=2 -DUSE_SDL2=1 -DDISABLE_WERROR=1
+cmake .. -DUSE_OPENGL=2 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_OPENAL=0 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
 
 O bien sin GLES ni OPENGL:
 
-cmake .. -DUSE_OPENGL=0 -DUSE_SDL2=1 -DDISABLE_WERROR=1
+cmake .. -DUSE_OPENGL=0 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_OPENAL=0 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
 
 make -j8
 
@@ -2674,6 +2692,13 @@ Ahora copias build/gemrb/plugins/*.so a ~/baldurs/plugins, y el ejecutable build
 Ahora te copias el cfg de ejemplo, que viene en build/gemrb, a ~/baldurs también, lo editas y le pasas la ruta de los plugins y de los datos
 del juego, relativa a ~/baldurs, o sea, donde vive el ejecutable gemrb al que le vas a pasar el cfg.
 Le puedes pasar un cfg con -c, en plan gemrb -c game.cfg
+
+Por ejemplo, el path de los plugins lo dejaríamos como:
+PluginsPath=./plugins
+Y el de los datos del BG2 como:
+GamePath=./bg2_data
+
+Las ediciones que necesitas de GOG son las COMPLETE (Baldurs Gate Complete, Baldurs Gate 2 Compleye), NO LAS ENHANCED. Las ENHANCED NO SIRVEN.
 
 Si no se te oye mira a ver qué plugin está cargando. Si está cargando NullSound, y compruebas que tienes SDLAudio.so en la ruta de los plugins,
 es que te falta pasarle la ruta de los plugins en el cfg.
@@ -3053,6 +3078,12 @@ Los datos de los juegos deben ir en ~/.CommanderGenius/games/
 Si quieres especificar qué juego cargar, es con 
 ./CGeniusExe dir=keen1
 donde keen1 estaría en ~/.CommanderGenius/games/keen1 (el parámetro dir es relativo a ~/.CommanderGenius/games/ siempre).
+
+*************OMNISPEAK, motor de KEEN 4, 5 y 6 en la Raspberry Pi*************************************************************
+
+Entramos en src y compilamos con:
+ 
+ make RENDERER=sdl2 CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" -j4
 
 *************Doomretro en la Raspberry Pi*************************************************************************************
 
