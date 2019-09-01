@@ -1324,6 +1324,12 @@ Number  Start   	End         	      Size                     Type        File sy
 
 sudo mount -t vfat -o loop,offset=65536 msx.vhd /mnt/hdd
 
+***********Editar el AUTOEXEC.BAT de MSX en Linux**************************************************************************************
+
+Se puede editar como cualquier otro fichero, pero debes guardarlo en formato DOS antes de salir, así:
+:set ff=dos
+:wq
+
 ***********Montar un archivo .toast de MAC***********************************************************************************************
 
 mount -o loop -t hfsplus imagename.toast [mount point]
