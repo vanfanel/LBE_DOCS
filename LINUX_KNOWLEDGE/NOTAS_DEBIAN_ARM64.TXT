@@ -434,7 +434,8 @@ Si queremos que MESA nos aporte un libEGL.so, tenemos que compilarla, o bien con
 Pero en ese caso, al no haber GLX (libGL.so), loas SDL2 interpretan que no tenemos OpenGL COMPLETO (NO GLES) porque lo que hacen es buscar de algún modo libGL.so en vez de simplemente
 buscar libEGL.so y abstraerse de si tenemos libGL.so o libglapi.so
 
-DICHO de otro modo: SDL2 para tener OPENGL COMPLETO, necesita GLX. Y MESA, si se compila con GLX, se tiene que compilar con las plataformas drm y x11. Y al compilarse para X11, tiene un montón
+DICHO de otro modo: SDL2 para tener OPENGL COMPLETO, necesita GLX. SDL2 NO encuentra OPENGL completo si no es con GLX: si compilas MESA con OPENGL COMPLETO mediante libglvnd, SDL2
+no lo detecta, sólo detecta GLES. Y MESA, si se compila con GLX, se tiene que compilar con las plataformas drm y x11. Y al compilarse para X11, tiene un montón
 de dependencias de X11 aunque no necesite el servidor funcionando.
 Lo ideal es que SDL2, para tener soporte para OPENGL COMPLETO, sólo necesitase libEGL.so y le diese igual tener libglapi.so o libGL.so. De ese modo, podríamos compilar MESA con platform=drm solamente,
 y sin necesidad de GLX ni de LIBGLVND.
@@ -469,9 +470,10 @@ sudo apt-get install --no-install-recommends \
 
 SÓLO SI DECIDES COMPILAR MESA CONTRA LIBGLVND, PUES TIENES QUE INSTALAR LIBGLVND. OJO, SI SÓLO QUIERES GLES, NO NECESITAS LIBGLVND:
 sudo apt-get install libtool
-https://github.com/NVIDIA/libglvnd.git
+sudo apt-get install  libx11-dev libxext-dev --no-install-recommends
+git clone --depth 1 https://github.com/NVIDIA/libglvnd.git
 ./autogen.sh
-./configure --help
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-glx
 etc... (no recomendado porque SDL2 no funciona con libglapi.so, ver más arriba).
 
 (SI QUIERES GLX, PARA QUE SDL2 FUNCIONE CON OPENGL COMPLETO, GLES1 Y GLES2, NECESITAS TODO ESTO:).
@@ -500,8 +502,11 @@ AHORA PARA CONFIGURAR:
 ASI LO VENIMOS HACIENDO:  CON GLES Y GLES2, SIN OPENGL COMPLETO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --libdir=/usr/lib --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
-SI QUISIERAS GLES, GLES2 Y GLX COMPLETO:
+SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --libdir=/usr/lib --buildtype=plain -Db_ndebug=true  -Dglx=dri -Dglvnd=false -Dplatforms=drm,x11 -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+
+SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --libdir=/usr/lib --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=true -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
 sudo ninja install
@@ -569,7 +574,7 @@ INSTALAR RETROARCH
 
 Se configura con:
 
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --enable-opengles --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-menu_widgets --disable-easteregg --disable-cdrom   
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DMESA_EGL_NO_X11_HEADERS" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DMESA_EGL_NO_X11_HEADERS" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-menu_widgets --disable-easteregg --disable-cdrom --enable-opengles --enable-egl
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 
