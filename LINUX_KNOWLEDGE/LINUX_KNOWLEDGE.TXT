@@ -4060,7 +4060,7 @@ El problema es que el PCMANFM los automonta como MTP y no van bien. Para que los
 o mueve a otro sitio /usr/lib/gvfs/gvfs-mtp-volume-monitor
 Y el PCMANFM ya no toca los huevos.
 
-Ahora pon el móvil en modo PTP (en los ajustes de la conexión USB) y debería ir. MTP es mierda.
+Ahora pon el móvil en modo PTP (en los ajustes de la conexión USB) y debería ir. MTP es mierda. Se cambia en las opciones de desarrollador, en "modo USB predeterminado" o algo así.
 
 También podrías usar jmtpfs para montarlos a mano desde la línea de comandos. Es muy fácil. Creas un punto de montaje, y se lo pasas a jmtpfs, sin nodo ni nada. Él sabe qué hacer.
 jmtpfs ~/mnt
