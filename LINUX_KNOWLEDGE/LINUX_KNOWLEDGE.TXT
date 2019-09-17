@@ -2681,11 +2681,11 @@ Hay que leer el INSTALL para saber cómo se compila, pero esencialmente:
 
 Para OPENGL_ES:
 
-cmake .. -DUSE_OPENGL=2 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_OPENAL=0 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGL=2 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_OPENAL=0 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
 
 O bien sin GLES ni OPENGL:
 
-cmake .. -DUSE_OPENGL=0 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_OPENAL=0 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGL=0 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_OPENAL=0 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
 
 make -j8
 
