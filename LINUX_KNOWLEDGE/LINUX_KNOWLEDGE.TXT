@@ -2677,21 +2677,21 @@ Dependencias previas:
 
 sudo apt-get install libpython-dev --no-install-recommends
 
+HAY que tener instalado OpenAL, porque aunque tiene soporte para SDL2 sin OpenAL, faltan los sonidos ambientales si usas SDL2.
+
 Hay que leer el INSTALL para saber cómo se compila, pero esencialmente:
 
 Para OPENGL_ES:
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGL=2 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_OPENAL=0 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DUSE_OPENGL=2 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
 
 O bien sin GLES ni OPENGL:
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGL=0 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_OPENAL=0 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DUSE_OPENGL=0 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
 
 make -j8
 
 Si usas gles, dará un error porque tiene mal el nombre de GLES2/gl2.h en OpenGLEnv.h, lo corriges y ya.
-
-No hace falta tener instalado libopenal-dev ni mucho menos. Es opcional y tira de SDL2 para el audio si no lo tienes.
 
 Ahora te creas un directorio para instalarlo, por ejemplo ~/baldurs, y creas dentro el directorio plugins.
 Ahora copias build/gemrb/plugins/*.so a ~/baldurs/plugins, y el ejecutable build/gemrb/gembr a ~/baldurs también.

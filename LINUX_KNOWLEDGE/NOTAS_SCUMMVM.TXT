@@ -65,9 +65,9 @@ Tienes que hacer un par de cambios en el script configure:
 si lo compilas con -flto, no contendrá las cadenas que se buscan. No lo vamos a arreglar, así que ponemos el endianness manualmente y listo.
 Ahora ya puedes configurar con:
 
-COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS
+COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
 
-CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-debug --enable-release --enable-optimizations --opengl-mode=none --disable-eventrecorder --disable-savegame-timestamp --disable-mt32emu --disable-nuked-opl --disable-fluidsynth --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-vorbis --disable-theoradec --disable-png --disable-sdlnet --enable-plugins --default-dynamic --disable-engine=xeen,hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,gnap,mads,bbvs,sherlock,access,lab,titanic,fullpipe,plumbers,illusions,bladerunner,cryomni3d
+CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-debug --enable-release --enable-optimizations --opengl-mode=none --disable-eventrecorder --disable-savegame-timestamp --disable-mt32emu --disable-nuked-opl --disable-fluidsynth --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-vorbis --disable-theoradec --disable-png --disable-sdlnet --enable-plugins --default-dynamic --disable-engine=xeen,hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,gnap,mads,bbvs,sherlock,access,lab,titanic,fullpipe,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova
 
 Para que no salga el cursor de sistema, editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse comentamos todo el "if" y lo que hay dentro.
 
