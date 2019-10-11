@@ -3093,9 +3093,9 @@ Entramos en src y compilamos con:
 
 *************Doomretro en la Raspberry Pi*************************************************************************************
 
-Bajamos la última stable.
+Bajamos la última stable de https://github.com/bradharding/doomretro/releases
 Entramos en src, editamos doomdef.h y ponemos SCREENSCALE a 1.
-Editamos el Makefile y ponemos los CFLAGs que sean, y quitamos el -g.
+Editamos el Makefile y ponemos los CFLAGs  "-march=armv8-a+crc -mtune=cortex-a53", y quitamos el -g.
 Compilar y listo.
 
 En doomretro.cfg, ponemos vid_scalefilter a "linear", y gp_thumbsticks 1.
