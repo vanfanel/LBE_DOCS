@@ -35,7 +35,6 @@ make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 Ajustes al kernel:
 -Asegúrate de que el scheduler está en LOW LATENCY DESKTOP (GENERAL SETUP) y que el scheduler está a 1000HZ (KERNEL FEATURES). 
 -Quita todo en KERNEL HACKING (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
-Además deshabilita a mano en .config: CONFIG_FRAME_POINTER (ya que es activado por la opción ARM64, que es inevitable)
 -En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable" y el resto de mitigations
 -En GENERAL SETUP, deshabilida EMBEDDED SYSTEM, lo que te perminirá desactivar CONFIGURE STANDARD KERNEL FEATURES, que es el symbol EXPERT=y (NO lo tienes que dejar a =y, sino desactivado, no lo dudes)
 Con esto desactivado, ya puedes ira KERNEL HACKING y quitar KERNEL DEBUGGING.
