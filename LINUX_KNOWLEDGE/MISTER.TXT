@@ -9,6 +9,8 @@ Part2: Starts from last 1MB of SD card with size of 1MB. Type: 0xA2
 And now dd u-boot binary to Part2.
 
 Usando FDISK, pon el tipo de partición 7 para la primera partición (exFAT) y el tipo A2 para la segunda. Te dirá que el tipo 2A es desconocido, da igual porque la vas a machacar con el u-boot.img. 
+El u-boot.img viene de:
+https://github.com/MiSTer-devel/SD-Installer-Win64_MiSTer
 
 Formatea la partición 1 como exFAT con: mkfs.exfat /dev/sdb1
 (mkfs.exfat está en el paquete exfat-utils)
