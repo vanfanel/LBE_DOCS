@@ -2679,35 +2679,32 @@ sudo apt-get install libpython-dev --no-install-recommends
 
 HAY que tener instalado OpenAL, porque aunque tiene soporte para SDL2 sin OpenAL, faltan los sonidos ambientales si usas SDL2.
 
+Cambia en gemrb/plugins/SDLVideo/SDL20Video.cpp:
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+por
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
 Hay que leer el INSTALL para saber cómo se compila, pero esencialmente:
 
-Para OPENGL_ES:
-
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DUSE_OPENGL=2 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
-
-O bien sin GLES ni OPENGL:
-
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DUSE_OPENGL=0 -DSDL_BACKEND=SDL2 -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DSDL_BACKEND=SDL2 -DOPENGL_BACKEND=None -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
 
 make -j8
 
-Si usas gles, dará un error porque tiene mal el nombre de GLES2/gl2.h en OpenGLEnv.h, lo corriges y ya.
+El renderer OpenGL es experimental, no se está desarrollando y NO APORTA NADA. No te molestes en usarlo por ahora.
 
-Ahora te creas un directorio para instalarlo, por ejemplo ~/baldurs, y creas dentro el directorio plugins.
-Ahora copias build/gemrb/plugins/*.so a ~/baldurs/plugins, y el ejecutable build/gemrb/gembr a ~/baldurs también.
-Ahora te copias el cfg de ejemplo, que viene en build/gemrb, a ~/baldurs también, lo editas y le pasas la ruta de los plugins y de los datos
-del juego, relativa a ~/baldurs, o sea, donde vive el ejecutable gemrb al que le vas a pasar el cfg.
-Le puedes pasar un cfg con -c, en plan gemrb -c game.cfg
+Instalar con sudo make install, el uninstall funciona bien. NO INTENTES JUGAR INSTALÁNDOLO A MANO, ES UN LIOTE Y NO MERECE LA PENA, INSTALA EL ENGINE SIN MIEDO, QUE SE DESISTALA SIN PROBLEMAS.
 
-Por ejemplo, el path de los plugins lo dejaríamos como:
-PluginsPath=./plugins
-Y el de los datos del BG2 como:
+Ahora te creas un directorio, por ejemplo ~/baldurs, y dentro creas bg2_data, que es donde meterás el baldurs 2 instalado tal cual.
+Ahora te copias el cfg de ejemplo, que viene en build/gemrb, a ~/baldurs también, lo editas y le pasas la ruta del baldurs 2 instalado, relativa a ~/baldurs.
+Le puedes pasar el cfg con -c, en plan gemrb -c game.cfg
+
+Por ejemplo, dejaríamos el path de los datos del BG2 como:
 GamePath=./bg2_data
+Ahí puedes poner fullscreen a 1 también si quieres.
 
-Las ediciones que necesitas de GOG son las COMPLETE (Baldurs Gate Complete, Baldurs Gate 2 Compleye), NO LAS ENHANCED. Las ENHANCED NO SIRVEN.
+Las ediciones que necesitas de GOG son las COMPLETE (Baldurs Gate Original Saga que es el Baldurs 1, Baldurs Gate 2 Complete que es el 2), NO LAS ENHANCED. Las ENHANCED NO SIRVEN.
 
-Si no se te oye mira a ver qué plugin está cargando. Si está cargando NullSound, y compruebas que tienes SDLAudio.so en la ruta de los plugins,
-es que te falta pasarle la ruta de los plugins en el cfg.
+Si no se te oye mira a ver qué plugin está cargando. Si está cargando NullSound comprueba que tienes SDLAudio.so en la ruta de los plugins.
 
 *************Compilar openadventure*********************************************************************************************
 
