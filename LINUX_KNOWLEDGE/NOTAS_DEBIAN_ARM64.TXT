@@ -507,9 +507,11 @@ CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+c
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --libdir=/usr/lib --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=true -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
+PARA COMPILAR:
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
+PARA INSTALAR:
 sudo ninja install
-Y PARA DESINSTALAR
+Y PARA DESINSTALAR:
 sudo ninja meson-uninstall
 O ALTERNATIVAMENTE:
 meson introspect ./ --installed | python3 -c 'import sys; a = eval(sys.stdin.read()); print(" ".join(a.keys()))' | xargs rm

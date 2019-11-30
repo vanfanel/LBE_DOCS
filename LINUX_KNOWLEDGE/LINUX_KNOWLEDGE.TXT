@@ -787,7 +787,7 @@ SysVStartPriority=99
 [Install]
 WantedBy=multi-user.target
 
-Ahora creamos rc.local con este contenido:
+Ahora creamos /etc/rc.local con este contenido:
 #!/bin/sh -e
 #
 # rc.local
@@ -1739,11 +1739,11 @@ Partition Table: amiga
 Disk Flags: 
 
 Number  Start            End                        Size                       File system        Name           Flags
- 1      258048B    		 754919423B     			754661376B     			   affs1              DH0            boot
+ 1               258048B    754919423B     754661376B   affs1                     DH0            boot
 
 Ahora simplemente montamos con ambos parámetros y ¡funciona!
 
-sudo mount -t affs -o loop,rw,offset=258048,sizelimit=754661376 /media/manuel/MINIMIG_V1/hdf_sys31.hdf /mnt/hdd/
+sudo mount -t affs -o loop,rw,offset=258048,sizelimit=754661376 /media/manuel/E94A-DA9D/amiga/hdf_sys31.hdf /mnt/hdd
 
 Y para montar la imágen del disco laserdisc.hdf donde tienes los juegos de EAROK:
 sudo mount -o loop,rw,offset=258048,sizelimit=1073479680 -t affs /media/manuel/E94A-DA9D/amiga/laserdisc.hdf /mnt/hdd
@@ -4018,11 +4018,14 @@ Para el adaptador greenasia, en input/connect/joypad_connection.c añade esta en
 COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
 ===========================================================================
 
+Lo primero, nos vamos a
+cd src/burner/libretro
+
 En makefile.libretro_common, quitamos los directorios de la parte de FBA_BURN_DRIVERS_DIRS :=
 No hace falta que quites los directorios de los includes, esos dan igual.
 
 Ahora hacemos un 
-make -f makefile.libretro platform=rpi3 generate-files
+make platform=rpi3 generate-files
 de manera que nos genere los headers sólo con los drivers que hemos dejado en el makefile.libretro_common,
 dejamos la platform definition de la pi3 asi:
 
@@ -4031,7 +4034,7 @@ dejamos la platform definition de la pi3 asi:
    endif
 
 y luego ya el 
-make -f makefile.libretro platform=rpi3 -j4
+make platform=rpi3 -j4
 y listo. 
 
 
@@ -5076,7 +5079,7 @@ Normalmente no es posible instalar un nuevo SO después de instalar NOOBS en una
 
 ^^^Como ves, ahí se le especifican las particiones que tiene. El directorio SETTINGS/os/debian64 lo creamos nosotros también y metemos ahí el icono que queramos que
 se muestre en el arranque. Con el icono vale, no hace falta tener nada más en ese directorio.
-El icono tendrá un tamaño de 40x40 pixels para no desentonar con el tamaño de los demás. Aqui tienes un ejemplo:
+El icono tendrá un tamaño de 40x40 pixels en png para no desentonar con el tamaño de los demás. Aqui tienes un ejemplo:
 http://www.iconarchive.com/show/super-mario-icons-by-ph03nyx/Retro-Block-Question-icon.html 
 Puedes escalar cualquien imágen con GIMP, en image->scale image, y dejarla a 40x40 que es lo que se necesita.
 
@@ -5217,3 +5220,59 @@ Luego haz:
 fwupdmgr get-updates
 
 Y si hay algo nuevo, pues se actualizará. Más fácil imposible.
+
+Poner RETROARCH en el arranque de una manera moderna, basado en systemd
+=============================================================
+
+Creamos el fichero del servicio en etc/systemd/system/retroarch.service, con este contenido:
+
+[Unit]
+Description=Systemd service and user to run Retroarch in stand-alone mode
+
+[Service]
+User=root
+Group=root
+PAMName=login
+WorkingDirectory=/root/retro
+ExecStart=
+ExecStart=-/usr/bin/retroarch
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+y activaríamos el unit con 
+sudo systemctl enable retroarch.service
+
+Naturalmente, el ejecutable tiene que estar en /root/bin/retroarch, o donde sea pero que coincida con lo que dice el .service
+Puedes quitar el Restart=always para hacer pruebas, porque al quitarlo se sale al TTY1 si tienes una consola ahí.
+
+Si quieres tener diferentes cmdline.txt (en diferentes particiones boot) que lancen diferentes cosas, puedes:
+1) NO activar el servicio
+2) Entonces, puedes decirle a systemd que lance un servicio no activado desde el cmdline.txt con:
+systemd.unit="retroarch.service"
+3) Puedes hacer que cuando salgas del programa que sea la máquina se reinicie(y así puedes elegir otro): para ello, aniade en la sección [Unit] del .service:
+SuccessAction=reboot
+
+Algunos programas, como el Scummvm, necesitan en la sección [Service]:
+WorkingDirectory=/root/scummvm
+..O si no, no detecta los juegos que aniades.
+Lo mismo pasa con todo lo que lances con un script en el que tienes un ejecutable al que le pasas cosas. Como no tengas un WorkingDirectory, no encontrará las cosas que le pasas.
+Por ejemplo, para el doom (doomretro, siendo doom.sh un script donde a doomretro se le pasa un iwad y tal), haríamos:
+
+[Unit]
+Description=Systemd service and user to run Doom in stand-alone mode
+
+[Service]
+User=root
+Group=root
+PAMName=login
+WorkingDirectory=/root/doom
+ExecStart=
+ExecStart=-/root/doom/doom.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+OJO!!! doom.sh debe empezar con #!/bin/bash en la primera línea, o no funcionará! Esto igual para todos los scripts que lances desde units.
