@@ -4021,17 +4021,18 @@ COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
 Lo primero, nos vamos a
 cd src/burner/libretro
 
-En makefile.libretro_common, quitamos los directorios de la parte de FBA_BURN_DRIVERS_DIRS :=
+En Makefile.common, quitamos los directorios de la parte de FBNEO_BURN_DRIVERS_DIR. Busca la cadena snes y ahí ves qué tipo de líneas tienes que quitar.
 No hace falta que quites los directorios de los includes, esos dan igual.
 
-Ahora hacemos un 
-make platform=rpi3 generate-files
-de manera que nos genere los headers sólo con los drivers que hemos dejado en el makefile.libretro_common,
-dejamos la platform definition de la pi3 asi:
+Editamos Makefile y dejamos la platform definition de la pi3 asi:
 
    else ifneq (,$(findstring rpi3,$(platform)))
       PLATFORM_DEFINES := -march=armv8-a+crc -mtune=cortex-a53
    endif
+
+Ahora hacemos un 
+make platform=rpi3 generate-files
+de manera que nos genere los headers sólo con los drivers que hemos dejado en el makefile.libretro_common,
 
 y luego ya el 
 make platform=rpi3 -j4
@@ -4519,18 +4520,10 @@ Vamos a centrarnos en CrispyDoom primero:
 Clonamos el repo de:
 https://github.com/fabiangreffrath/crispy-doom.git
 
-En src/i_video.h, ponemos "#define hires" a 0
-Ahora en src/i_video.c ponemos "SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");" donde viene puesto a "nearest" (sólo sale una vez, cambias nearest por linear y ya).
-Borramos el config viejo:
-sudo rm -R ~/.local/share/crispy-doom
-
-Editamos configure.ac, cambiamos el OPT_LEVEL a 3,
-y más abajo donde se usa el OPT_LEVEL añadimos:  -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
-
-Ahora ya:
-./autogen.sh
-./configure
-make -j6
+mkdir b3
+cd b3
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DCMAKE_BUILD_TYPE=Release ..
+make -j4
 
 Ejecutamos el juego con normalidad.
 Ahora editamos ~/.local/share/crispy-doom/crispy-doom.cfg
