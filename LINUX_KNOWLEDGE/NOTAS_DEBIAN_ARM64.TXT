@@ -563,9 +563,17 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DASSERTIONS=disabl
 
 Compilar e instalar.
 
+No te olvides de aniadir en /etc/profile:
+export SDL_VIDEO_DOUBLE_BUFFER=1
+Luego puedes comprobarlo con echo $<nombre_variable>, en plan:
+echo $SDL_VIDEO_DOUBLE_BUFFER
+
+Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sabrás porque no funciona con el Prince...), saca su cadena de mapping de la SDL2 Gamepad Tool (http://www.generalarcade.com/gamepadtool),
+ y la aniades en /etc/profile usando la variable de entorno SDL_GAMECONTROLLERCONFIG, tal que así:
+SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
+
 Para SDL2_Mixer:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
-
 
 Para SDL2_Image o SDL2_ttf:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --without-x

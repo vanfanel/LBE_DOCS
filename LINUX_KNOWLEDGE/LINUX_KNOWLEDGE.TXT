@@ -145,10 +145,14 @@ CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3
 SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
 Le puedes pasar también --without-x si tienes los headers de las X11 instalados.
 
-SI un gamepad o joystick no te lo detecta como gamecontroller (SDL_IsGameController() retorna false), lo puedes agregar a src/joystick/SDL_gamecontrollerdb.h.
-La configuración de botones (que es lo que lleva cada línea de ahí, a parte del ID y del nombre) la puedes sacar del "SDL2 gamepad tool", en http://www.generalarcade.com/gamepadtool/
-El nombre lo puedes sacar de dmesg, y el ID, pues te lo da la "SDL2 gamepad tool" esa.
-Aún así, debería funcionar como SDL_joystick al menos.
+SI un gamepad o joystick no te lo detecta como gamecontroller (SDL_IsGameController() retorna false, pero debería funcionar como joystick al menos), tienes dos opciones:
+
+-La fácil y buena, sin recompilar nada: te vas al gamepadtool (http://www.generalarcade.com/gamepadtool) y lo configuras para que te genere el mapping. Copias el mapping al portapapeles con "Copy mapping string",
+y lo aniades en /etc/profile usando la variable de entorno SDL_CAMECONTROLLERCONFIG. Por ejemplo, para el joystick de Dreamcast conectado con el conversor Raphnet, lo dejo así:
+SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
+
+-La complicada porque te toca recompilar las SDL2: lo puedes agregar a src/joystick/SDL_gamecontrollerdb.h.
+Se hace igual, con el gamepadtool para sacar el mapping, lo aniades ahí, y recompilas. Es un rollo y no hace falta, usa la otra opción de arriba, es más sencillo todo.
 
 *****SDL2 en hardware genérico con mi driver KMSDRM*******************************************************************************************************************************************
 
