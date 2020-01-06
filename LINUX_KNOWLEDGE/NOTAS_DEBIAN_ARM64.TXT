@@ -22,6 +22,16 @@ Cosas que hacemos distintas para instalar el kernel, módulos y dtbs:
 	git clone --depth 1 https://github.com/raspberrypi/linux.git -b rpi-4.19.y
 	git pull
        (Puede que la versión sea más actual, pero NUNCA CLONES SIN PASARLE EL BRANCH, aunque parezca redundante, que si no luego git pull no funciona bien).
+
+-RECOMENDADO: SI QUEREMOS parchear el kernel para MUQSS scheduler, bajamos el parche correspondiente de:
+http://ck.kolivas.org/patches/
+(Aplica el parche completo, no sólo el del MUQSS scheduler sino el patch-set CK completo)
+(Nótese que con el MUQSS el kermel puede funcionar a 100Hz, no a 1000, y así podemos tener más thoughput a la vez que excelente latencia! El conjunto de parches de CK
+deberían poner el kernel a 100Hz por defecto si se usa MUQSS).
+Y parcheamos copiando el parche (.patch) al directorio raiz de los sources y haciendo:
+patch -p1 < parche
+Y luego elegimos el MUQSS como scheduler (GENERAL SETUP, primerísima opción) y ponemos los HZ a 100.
+
 -OPCIONAL: SI QUEREMOS parchear el kernel para REALTIME, bajamos el parche correspondiente de:
 https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt
 Y parcheamos copiando el parche (.patch) al directorio raiz de los sources y haciendo:
@@ -33,11 +43,11 @@ make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-  bcmrpi3_defco
 -Configuramos el kernel con:
 make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 Ajustes al kernel:
--Asegúrate de que el scheduler está en LOW LATENCY DESKTOP (GENERAL SETUP) y que el scheduler está a 1000HZ (KERNEL FEATURES). 
--Quita todo en KERNEL HACKING (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
--En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable" y el resto de mitigations
+-Asegúrate de que el scheduler está en LOW LATENCY DESKTOP (GENERAL SETUP) y que el scheduler está a 100Hz si usas MUQSS y a 1000Hz si no lo usas (KERNEL FEATURES). 
 -En GENERAL SETUP, deshabilida EMBEDDED SYSTEM, lo que te perminirá desactivar CONFIGURE STANDARD KERNEL FEATURES, que es el symbol EXPERT=y (NO lo tienes que dejar a =y, sino desactivado, no lo dudes)
 Con esto desactivado, ya puedes ira KERNEL HACKING y quitar KERNEL DEBUGGING.
+-Quita todo en KERNEL HACKING (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
+-En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable" y el resto de mitigations
 -Si quieres WIFI:
 	En NETWORKING SUPPORT, activa WIRELESS, activa "CFG80211 wireless configuration api"
 	En DEVICE DRIVERS->Network Device Support->WIRELESS LAN->Broadcom Devices->Broadcom FULLMAC WLAN Driver

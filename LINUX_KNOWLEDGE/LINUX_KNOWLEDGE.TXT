@@ -2066,7 +2066,7 @@ Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
 Funciona con aceleración GLES, por cierto, usando POLYMOST, y bastante bien además.
 
-make -j4 WITHOUT_GTK=1 POLYMER=0 USE_LIBVPX=0 HAVE_FLAC=0 OPTLEVEL=3 LTO=0 RENDERTYPESDL=1 HAVE_JWZGLES=0 USE_OPENGL=0 OPTOPT="-march=armv8-a+crc -mtune=cortex-a53"
+make -j4 USE_OPENGL=0 WITHOUT_GTK=1 USE_LIBVPX=0 HAVE_FLAC=0 LTO=0 OPTOPT="-march=armv8-a+crc -mtune=cortex-a53"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
@@ -5273,3 +5273,23 @@ Restart=always
 WantedBy=multi-user.target
 
 OJO!!! doom.sh debe empezar con #!/bin/bash en la primera línea, o no funcionará! Esto igual para todos los scripts que lances desde units.
+
+OPENFODDER, versión opensource de Cannon Fodder 1 y 2
+==============================================
+
+Clonamos el repo:
+
+git clone --depth 1 https://github.com/OpenFodder/openfodder.git
+
+Entramos en los sources y editamos el Makefile, cambiando el clang++ por g++, y quitamos el -ferror-limit=100 que eso es específico del CLANG ese.
+Aniadimos las FLAGS que queramos, ya de paso.
+
+Ahora, nos creamos ~/cf, y ahí:
+-Copiamos el ejecutable que tendrás recién compilado en Run/OpenFodder
+-Copiamos el archivo openfodder.ini.example a ~/cf/openfodder.ini, y lo dejamos a nuestro gusto
+-Descomprimimos directamente los contenidos de un ZIP de datos del engine que está aquí:
+https://github.com/OpenFodder/data/releases
+
+Dentro del directorio Data de los datos del engine, si te fijas verás que hay directorios preparados para cada juego.
+Nos interesa el directorio Dos_CD: ahí es donde meteremos los datos del juego en su versión DOS, que tiene más colores. Sólo nos hace falta el archivo CF_ENG.DAT.
+Por si te lo preguntas, los datos de Amiga aún no parecen funcionar bien con el engine, da segfaults y movidas. Pero con la versión DOS, la música suena también en MOD, así que nos vale.
