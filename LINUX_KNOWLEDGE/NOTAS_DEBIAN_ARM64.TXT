@@ -31,6 +31,7 @@ deberían poner el kernel a 100Hz por defecto si se usa MUQSS).
 Y parcheamos copiando el parche (.patch) al directorio raiz de los sources y haciendo:
 patch -p1 < parche
 Y luego elegimos el MUQSS como scheduler (GENERAL SETUP, primerísima opción) y ponemos los HZ a 100.
+SI VAS A APLICAR ESTE PARCHE, PRIMERO PON EL DEFCONFIG QUE VAYAS A USAR Y LUEGO PARCHEAS, Y LUEGO ENTRAS EN MENUCONFIG. En ese órden va bien.
 
 -OPCIONAL: SI QUEREMOS parchear el kernel para REALTIME, bajamos el parche correspondiente de:
 https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt

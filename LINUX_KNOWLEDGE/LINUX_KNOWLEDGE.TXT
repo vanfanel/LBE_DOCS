@@ -5293,3 +5293,19 @@ https://github.com/OpenFodder/data/releases
 Dentro del directorio Data de los datos del engine, si te fijas verás que hay directorios preparados para cada juego.
 Nos interesa el directorio Dos_CD: ahí es donde meteremos los datos del juego en su versión DOS, que tiene más colores. Sólo nos hace falta el archivo CF_ENG.DAT.
 Por si te lo preguntas, los datos de Amiga aún no parecen funcionar bien con el engine, da segfaults y movidas. Pero con la versión DOS, la música suena también en MOD, así que nos vale.
+
+VVVVVV en la Raspberry Pi
+=====================
+
+Entramos en su repo y clonamos
+
+git clone --depth 1 https://github.com/TerryCavanagh/VVVVVV.git
+
+Entramos en desktop_version, creamos b3 y configuramos con:
+
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-DNDEBUG -march=armv8-a+crc -mtune=cortex-a53" -DCMAKE_CXX_FLAGS="-DNDEBUG -march=armv8-a+crc -mtune=cortex-a53" ..
+NO compiles con -j, sino que sólo usa un hilo de compilación. NO uses más de uno, no compila nunca. Tampoco le pases ningún -O en los CFLAGS, o se disparará el consumo de RAM y no acabará jamás de compilar.
+
+Bajamos el data.zip que viene con la versión Windows del VVVVVV, disponible aquí:
+http://distractionware.com/blog/category/vvvvvv-make-and-play/
+Ponemos el data.zip junto al ejecutable... Y listo!
