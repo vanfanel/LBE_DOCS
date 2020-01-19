@@ -550,7 +550,7 @@ INSTALAR SDL2
 =============
 
 Lo primero es instalar estos:
-sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev libgbm-dev --no-install-recommends
 
 Por ahora, hasta que salga SDL 2.0.11, tenemos que cambiar código para que funcione bien el resampler de audio acelerado para instrucciones NEON. 
 Para ello, actualizamos src/audio/SDL_audiotypecvt.c desde la versión actual, que podemos sacar de https://hg.libsdl.org/SDL

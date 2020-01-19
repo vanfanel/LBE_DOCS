@@ -156,8 +156,8 @@ Se hace igual, con el gamepadtool para sacar el mapping, lo aniades ahí, y reco
 
 *****SDL2 en hardware genérico con mi driver KMSDRM*******************************************************************************************************************************************
 
-Lo primero, asegúrate de tener instaladas las libgbm-dev:
-sudo apt-get install libgbm-dev
+Lo primero, asegúrate de tener instaladas las libgbm-dev y algunas otras cosas:
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev libgbm-dev --no-install-recommends
 (Si has compilado SDL2 con soporte para kmsdrm pero te da el error "not available video device", es porque compilaste sin tener instalado libgmb-dev y no te ha avisado... Instala ese paquete y recompila, anda.)
 
  ./configure --prefix=/usr --enable-video-kmsdrm --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
@@ -211,7 +211,9 @@ make BUILD_LINUX=1 GCC_TARGET=64 -j8
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
+Los CXXFLAGS son: -O3 -march=armv8-a+crc -mtune=cortex-a53
 -En mixer.cpp, ajusta el tamanio del buffer de 4096 a 1024
+-En systemstub_sdl.cp, descomenta el SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 1) y ponlo como SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear")
 -Aniade los flags de optimización en el Makefile, en los CXXFLAGS
 
 ******FLASHBACK en la Rasberry Pi***************************************************************************************************************************************
@@ -221,7 +223,7 @@ http://cyxdown.free.fr/reminiscence/
 
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
-CXXFLAGS += -O3 -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
+CXXFLAGS += -O3 -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O3 -march=armv8-a+crc -mtune=cortex-a53
 
 Para arreglar la música y efectos, que van a la frecuencia equivocada en la Raspberry, ditamos
 sdl_systemstub.cpp y cambiamos:
