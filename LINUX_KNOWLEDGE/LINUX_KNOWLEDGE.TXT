@@ -158,6 +158,7 @@ Se hace igual, con el gamepadtool para sacar el mapping, lo aniades ahí, y reco
 
 Lo primero, asegúrate de tener instaladas las libgbm-dev:
 sudo apt-get install libgbm-dev
+(Si has compilado SDL2 con soporte para kmsdrm pero te da el error "not available video device", es porque compilaste sin tener instalado libgmb-dev y no te ha avisado... Instala ese paquete y recompila, anda.)
 
  ./configure --prefix=/usr --enable-video-kmsdrm --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
 
@@ -4487,10 +4488,11 @@ make -j4 SDL=2 DEBUG=0 HAVE_GLES=1
 GZDOOM en la Raspberry Pi
 =========================
 
-GZDoom usa OpenGL incluso en modo hardware, así que no va en la Pi. Usa el branch VINTAGE, que usa GLES2:
+GZDoom usa OpenGL incluso en modo hardware, así que no va en la Pi. Usa el branch LZDOOM (Legacy ZDoom), que usa GLES2:
 
-https://forum.zdoom.org/viewtopic.php?t=64521
-https://zdoom.org/files/gzdoom/src/
+git clone --depth 1 -b g3.3mgw https://github.com/drfrag666/gzdoom.git
+
+https://forum.zdoom.org/viewtopic.php?f=1&t=66675&start=30
 
 Puedes añadir 
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
@@ -4524,14 +4526,23 @@ Vamos a centrarnos en CrispyDoom primero:
 Clonamos el repo de:
 https://github.com/fabiangreffrath/crispy-doom.git
 
+Reemplazamos en src/i_video.c  todas las ocurrencias de
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+por
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
+En src/i_sdlsound.c, en ExpandSoundData_SDL tienes una llamada a SDL_BuildAudioCVT(), y como ExpandSoundData_SDL() es llamada cada vez que suena un efecto de sonido,
+pues ya sabes lo que pasa: slowdown.
+Pero por suerte tienes una rutina genérica de conversión de samplerate debajo, y también una versión de la función ExpandSoundData_SDL() para libsamplerate.
+Así que, para no complicarnos tocando el código, instalamos libsamplerate y le pasamos que use libsamplerate cuando hagamos el cmake, mira:
+
 mkdir b3
 cd b3
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DHAVE_LIBSAMPLERATE=ON -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
-Ejecutamos el juego con normalidad.
-Ahora editamos ~/.local/share/crispy-doom/crispy-doom.cfg
-Y activamos si queremos el uncapped.
+Ejecura crispy-setup y pulsa INTRO porque si no, no se ve nada.
+El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
 
 Para que la música vaya bien, en el crispy-setup le ponemos "native MIDI" y seleccionamos el timidity.cfg del pack de instrumentos de:
 https://www.doomworld.com/idgames/music/dgguspat
