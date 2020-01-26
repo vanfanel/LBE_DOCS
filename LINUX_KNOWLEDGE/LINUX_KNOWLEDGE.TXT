@@ -193,6 +193,34 @@ si es PAL vendrá un 4, pones un 3 donde el 4 SIN CAMBIAR al texto con TAB, sino
 y ya tienes JAP.
 Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHeader#ProductCode7ffc25Bytes
 
+******RussianDoom, un sourceport peculiar en ruso************************************************************************************************************************
+
+clonamos su repo
+
+git clone --depth 1 https://github.com/JNechaevsky/russian-doom.git
+
+Desactivamos el modo hires en src/i_video.h, dejando la línea del define así:
+#define hires a 0
+
+Desactivamos el uso de la función de SDL2 para resampleo de efectos de sonido. Para ello, editamos src/i_sdlsound.c y cambiamos el if que empieza aquí:
+if (samplerate <= mixer_freq
+por simplemente
+if (false)
+De ese modo se usa la rutina built-in para convertir los sonidos, en vez de la lentísima SDL_BuildAudioCVT()
+
+Ejecutamos ./autogen.sh
+Configuramos con:
+
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure
+
+Copiamos el directorio "src/base" tal cual (tiene wads dentro para el engine) a ~/doom
+cp -R src/base ~/doom/
+
+Copiamos los ejecutables russian* (que están en src) a ~/doom
+cp src/russian-* ~/doom/
+
+Configuramos el juego en sí con ./russian-setup, donde pulsaremos F4 para ver el menú en inglés.
+
 ******Compilando OpenBOR*********************************************************************************************************************************************
 
 Hay que pillar los surces de la última revisión estable. El número lo sacamos de la versión que tengan en la página para descargar.
