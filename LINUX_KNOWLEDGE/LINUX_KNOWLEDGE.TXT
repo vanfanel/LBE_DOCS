@@ -199,19 +199,30 @@ clonamos su repo
 
 git clone --depth 1 https://github.com/JNechaevsky/russian-doom.git
 
-Desactivamos el modo hires en src/i_video.h, dejando la línea del define así:
+En src/i_video.h, desactivamos el modo hires, dejando la línea del define así:
 #define hires a 0
+También descomentamos el #define WIDESCREEN
 
+En src/i_video.c, ponemos el escalado de la "intermediate texture" a linear, para lo cual ponemos a linear la llamada a SDL_SetHint() debajo de este comentario:
+ 
+// Set the scaling quality for rendering the intermediate texture into
+// the upscaled texture to "nearest", which is gritty and pixelated and
+// resembles software scaling pretty well.
+
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
+ESTO YA NO HACE FALTA:
 Desactivamos el uso de la función de SDL2 para resampleo de efectos de sonido. Para ello, editamos src/i_sdlsound.c y cambiamos el if que empieza aquí:
 if (samplerate <= mixer_freq
 por simplemente
 if (false)
 De ese modo se usa la rutina built-in para convertir los sonidos, en vez de la lentísima SDL_BuildAudioCVT()
 
+Editamos configure.ac, cambiamos el OPT_LEVEL a 3 y quitamos el -g.
 Ejecutamos ./autogen.sh
 Configuramos con:
 
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure
+CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure
 
 Copiamos el directorio "src/base" tal cual (tiene wads dentro para el engine) a ~/doom
 cp -R src/base ~/doom/
@@ -220,6 +231,15 @@ Copiamos los ejecutables russian* (que están en src) a ~/doom
 cp src/russian-* ~/doom/
 
 Configuramos el juego en sí con ./russian-setup, donde pulsaremos F4 para ver el menú en inglés.
+
+Para tener música que no sea la emulada por OPL, metemos en un WAD tal cual sin directorios los FLAC o los OGG  de aquí, PERO MUY IMPORTANTE, SIN EXTENSIÓN, en plan E1M3 sin más:
+https://forum.zdoom.org/viewtopic.php?f=19&t=48937
+Bájate el PK3, o sea, la versión preparada para GZDoom y tal, y sacas los OGG y les quitas la extensión.
+Le puedes quitar la extensión OGG a todos los archivos de un directorio con:
+find -type f -name '*.ogg' | while read f; do mv "$f" "${f%.ogg}"; done
+Ahora los metes en un WAD (con SLADE en Linux vale para crear WADs)
+Y le pasamos ese WAD con -file así:
+./russian-heretic -file heretic-music.wad
 
 ******Compilando OpenBOR*********************************************************************************************************************************************
 
