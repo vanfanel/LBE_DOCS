@@ -5370,3 +5370,11 @@ NO compiles con -j, sino que sólo usa un hilo de compilación. NO uses más de 
 Bajamos el data.zip que viene con la versión Windows del VVVVVV, disponible aquí:
 http://distractionware.com/blog/category/vvvvvv-make-and-play/
 Ponemos el data.zip junto al ejecutable... Y listo!
+
+DESCARGAR DESDE EMUPARADISE
+===========================
+
+Con el Chromium, nos instalamos la extensión tampermonkey.
+Ahora desde el Chromium también nos vamos a abrir este script: https://gist.github.com/infval/c69b479ff0bd590f2dd7e1975fe2fcad
+Le damos a RAW (es como un github), y nos saldrá un botón de INSTALL. Instalamos el script, es un script para el tampermonkey.
+Ahora nos vamos a emuparadise, le damos a Download Links de lo que queramos bajar, t nos sale una opción nueva que es "download with workaround script". Le damos y empieza a bajar.
