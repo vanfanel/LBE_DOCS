@@ -1127,7 +1127,32 @@ strace -f -e open <ejecutable>
 Es porque no basta con hacer un -ldrm, sino que hay que hacerlo así en su lugar:
 `pkg-config --cflags --libs libdrm`
 
+**************Cómo conseguir el puntero a una función de una librería******************************************************************************
 
+A veces hace falta esto cuando queremos usar una función que es una extensión. Por ejemplo, en GLES2, glDiscardFramebufferEXT() es una extensión y no viene
+cargada por defecto, así que hacemos:
 
+//Declaramos un puntero del tipo de la función concreta. Lo que ves en mayúsculas viene definido en los ficheros de cabecera de GLES2.
+//De hecho, PFNGLDISCARDFRAMEBUFFEREXTPROC es el tipo de puntero: (void (*)(unsigned int, int, const unsigned int*)
+PFNGLDISCARDFRAMEBUFFEREXTPROC      glDiscardFramebufferEXT;
+
+//Pillamos el puntero de la función de GLES usando la función de las SDL2 para hacerlo, llamada SDL_GL_GetProcAddress.
+//Fíjate que antes de SDL_GL_GetProcAddress() hacemos un cast para pasar el puntero al tipo de puntero correcto para esa función, es decir, que PFNGLDISCARDFRAMEBUFFEREXTPROC
+//es el tipo de puntero de la función glDiscardFramebufferEXT como acabamos de ver.
+glDiscardFramebufferEXT = (PFNGLDISCARDFRAMEBUFFEREXTPROC) SDL_GL_GetProcAddress("glDiscardFramebufferEXT");
+
+Y YA. AHORA VAMOS A VER FORMAS ALTERNATIVAS DE HACER LO MISMO.
+
+Ahora bien, podríamos usar una macro y recuperar el puntero de cualquier función usando esa macro, como lo hace Xproger en el OpenLara:
+
+//Definimos la macro donde se llama a SDL_GL_GetProcAddress. decltype lo que hace es que devuelve el tipo de puntero de x, que en este caso sería la función que le pasamos a la maco.
+//Así que cuando hagamos GetProcOGL(glDiscardFramebufferEXT), lo que sucede es que "decltype(glDiscardFrameBufferEXT)" devuelve el tipo de la función glDiscardFramebufferEXT, o de
+//cualquier otra función que le pasemos en su lugar.
+//Lo de #x es para que trate el parámetro como una cadena (porque SDL_GL_GetProcAddress recibe cadenas), no como una variable.
+#define GetProcOGL(x) x=(decltype(x))(void*)SDL_GL_GetProcAddress(#x);
  
+//Declaramos un puntero del tipo de la función que vamos a recibir:
+PFNGLDISCARDFRAMEBUFFEREXTPROC      glDiscardFramebufferEXT;
 
+//...Y recogemos el puntero a la función usando la macro:
+GetProcOGL(glDiscardFramebufferEXT);
