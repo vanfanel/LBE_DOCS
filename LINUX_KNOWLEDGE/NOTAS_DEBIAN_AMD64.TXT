@@ -1,0 +1,225 @@
+CREAR UN SISTEMA LIVE MÍNIMO PARA ARRANCAR DESDE USB
+==================================================
+La información de cómo instalar GRUB2 en sistemas UEFI se sacó de aquí:
+https://willhaley.com/blog/custom-debian-live-environment/
+También tiene info de cómo instalar GRUB2 de tal manera que arranque en sistemas BIOS antiguos.
+
+ -Instalamos el debootstrap
+sudo apt-get install debootstrap
+
+-Creamos el directorio que contendrá el rootfs que vamos a crear:
+mkdir -p $HOME/LIVE_BOOT
+
+-Creamos el rootfs para AMD64 y usando Debian Buster (Debian 10) que es la última estable. NO uses el servidor de espania que es basura y se cuelga todo el rato:
+sudo debootstrap \
+    --arch=amd64 \
+    --variant=minbase \
+    buster \
+    $HOME/LIVE_BOOT/chroot \
+    http://ftp.fr.debian.org/debian/
+
+-Particionamos el disco de destino con gparted.
+Creamos una primera partición FAT32 de 512MB, que llamaremos DEBIAN_BOOT
+Creamos una segunda partición EXT4 del resto del disco, que llamaremos DEBIAN_ROOTFS.
+Nos pillamos los PARTUUID de ambas, que nos van a hacer falta, con con:
+sudo blkid /dev/sdb1
+sudo blkid /dev/sdb2
+
+-Nos chrooteamos en el sistema de destino:
+sudo chroot $HOME/LIVE_BOOT/chroot
+
+-Bautizamos el hostname:
+echo "macmini" > /etc/hostname
+
+-Para que sudo no de el error (unable to resolve host), en /etc/hosts, añade la línea:
+127.0.1.1    macmini
+(suponiendo que hayas llamado al sistema macmini en /etc/hostname, claro. Si lo has llamado de otra manera, pon el nombre correspondiente).
+
+-Creamos el /etc/fstab con el contenido:
+proc    /proc                   proc    defaults                                0       0
+#PARTUUID=14410d43-01  /boot           vfat    defaults,noatime,nodiratime      0       2
+PARTUUID=14410d43-02  /               ext4    defaults,noatime,nodiratime       0       1
+(LOS PARTUUID los hemos obtenido con sudo blkid /dev/...)
+
+-Actualizamos apt-get
+apt-get update
+
+-Instalamos el kernel amd64, el live-boot y el systemd:
+apt-get install --no-install-recommends linux-image-amd64 systemd-sysv live-boot
+
+-Instalamos el vim y el wget:
+apt-get install --no-install-recommends vim wget
+
+-Ponemos el password de root:
+passwd root
+
+-Arreglar el nombre del interface de red, que aparece como enx..., para que aparezca como eth0:
+Editar /lib/udev/rules.d/73-usb-net-by-mac.rules y dejar así la línea de IMPORT, para que el interface ethernet se llame eth0 y no un churro basado en la MAC address:
+IMPORT{builtin}="net_id", NAME="eth0"
+Y para que futuras actualizaciones no nos jodan el arreglo, haz:
+cp /lib/udev/rules.d/73-usb-net-by-mac.rules /etc/udev/rules.d/
+
+-Instala bash-completion si quieres que funcione autocompletar cuando usas sudo:
+apt-get install bash-completion
+-Instala psmisc para tener killall:
+apt-get install psmisc
+-Instalamos también dialog para tener menús como los de console-setup, y procps para tener ps:
+apt-get install dialog procps
+-Instalamos iprooute2 y net-tools para tener los comandos ifconfig e ip, e iputils-ping para tener ping:
+apt-get install iproute2 net-tools iputils-ping
+-Instalamos wireless-tools para tener iwconfig:
+apt-get install wireless-tools
+
+-Editamos /etc/apt/sources.list, y aniadimos non-free al final de la línea.
+Ahora podemos instalar el firmware para tarjetas WIFI Intel como la 3165 que trae mi portátil chinoso y plasticoso.
+apt-get install firmware-iwlwifi firmware-misc-nonfree
+Ya que estamos, instalamos el wpasupplicant para la wifi:
+apt-get install --no-install-recommends wpasupplicant
+
+-Descargamos solamente alsa-utils y sus dependencias, no lo instalamos aún, lo instalamos luego cuando estemos con el sistema arrancado de verdad:
+apt-get install --download-only alsa-utils
+
+-Hacemos limpieza de paquetes
+apt-get clean
+
+-Borramos /etc/motd
+-Para quitar el lastlogin, editamos sudo vim /etc/pam.d/login y comentamos la línea:
+session optional pam_lastlog.so
+En este mismo fichero, puedes quitar otros mensajes del login, como la versión del kernel y tal.
+Para ello comenta las dos líneas siguientes a esta del lastlogin.
+-Para quitar el delay de login editamos /etc/pam.d/common-auth y dejamos la primera línea que viene descomentada así:
+auth        required      pam_unix.so nodelay
+
+EN ESTE PUNTO SALIMOS DEL CHROOT.
+
+-Transferimos el rootfs
+cd LIVE_BOOT/chroot
+sudo rsync -avP --numeric-ids ./ /mnt/rootfs
+
+-Copiamos el kernel y el initrd, que están en el directorio /boot del rootfs, al raiz de la partición DEBIAN_BOOT, con los nombres vmlinuz e initrd, sin más:
+cd LIVE_BOOT/chroot
+cp boot/vmlinuz-4.19.0-8-amd64 /media/manuel/DEBIAN_BOOT/vmlinuz
+cp boot/initrd.img-4.19.0-8-amd64 /media/manuel/DEBIAN_BOOT/initrd
+
+-Instalamos el GRUB2:
+sudo grub-install \
+    --target=x86_64-efi \
+    --efi-directory=/media/manuel/DEBIAN_BOOT \
+    --boot-directory=/media/manuel/DEBIAN_BOOT \
+    --removable \
+    --recheck
+
+-Creamos DEBIAN_BOOT/grub/grub.cfg con el contenido:
+(recuerda que el PARTUUID lo sacamos con sudo blkid /dev/sdb2)
+
+insmod all_video
+
+set default="0"
+set timeout=30
+
+menuentry "Debian MAC Lite" {
+    linux /vmlinuz root=PARTUUID=14410d43-02 loglevel=3 consoleblank=0
+    initrd /initrd
+}
+
+COSAS PARA ALIGERAR EL SISTEMA CUANDO YA ARRANCA
+
+-Deshabilitar servicios, targets, y cosas así que no usemos con
+systemctl mask <nombre>
+Para ver qué podemos deshabilitar, ejecuta
+systemd-analyze blame
+Y también puedes ver cosas que puedes deshabilitar con:
+systemctl | grep <lo_que_sea>
+
+-Deshabilitar los módulos que no uses o que den problemas, como es el caso de pnd2_edac. Para ello, creamos /etc/modprobe.d/blacklist.conf, con el contenido:
+blacklist bluetooth
+blacklist btusb
+blacklist pnd2_edac
+blacklist ip_tables
+blacklist x_tables
+blacklist uvcvideo
+blacklist videodev
+blacklist snd_usb_audio
+blacklist snd_usbmidi_lib
+blacklist snd_rawmidi
+
+Y luego hacemos 
+depmod -ae
+update-initramfs -u
+Y montamos la partición de boot, y sobreescribimos el initrd con el que se nos acaba de generar.
+
+-Para quitar los mensajes de alsactl en el inicio, editamos lib/systemd/system/alsa-state.service y quitamos el -s de las dos líneas donde aparece, para que así no se mande la salida del comando a dmesg...
+
+INSTALAR MESA Y SDL2
+==================
+
+El CFLAG para x86 64 genérico es -march=x86-64
+
+Nos preparamos para chrootearnos en el sistema de destino con los bindings necesarios para poder compilar las librerías que necesitamos sin problemas:
+cd /media/manuel/DEBIAN_ROOTFS
+sudo mount -o bind /dev dev
+sudo mount -t proc none proc
+Y ahora nos chrooteamos como tal:
+sudo chroot /media/manuel/DEBIAN_ROOTFS
+
+Dependencias previas de libdrm:
+sudo apt-get install xsltproc libpciaccess-dev
+sudo apt-get install xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
+(libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
+
+Nos bajamos la última estable de libdrm aquí:
+https://dri.freedesktop.org/libdrm/
+Configuramos así, sin quitar soporte para ninguna tarjeta porque no sabemos en qué ordenador vamos a usar este sistema:
+CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3 -march=x86-64" ./configure --prefix=/usr --enable-install-test-programs
+Compilamos e instalamos.
+En este punto, puedes probar si libdrm te funciona bien haciendo:
+modetest -s 81:1920x1080
+(donde 81 es un ID de conector válido: puedes ver los conectores con modetest|more).
+
+Ahora vamos a por MESA en sí. 
+
+Instalamos las dependencias de MESA para que funcione con GLES y GLES2 solamente:
+sudo apt-get install --no-install-recommends \
+    flex bison python3-mako \
+    libexpat1-dev libudev-dev gettext \
+    ca-certificates xz-utils \
+    zlib1g-dev pkg-config meson
+
+Pillamos la última estable de MESA de https://mesa.freedesktop.org/archive
+Descomprimimos los sources, entramos en ellos y hacemos
+mkdir b3
+cd b3
+
+Configuramos. (Podemos ver una lista completa de los drivers gallium en meson_options.txt, 
+no activamos los radeon y el sw porque dependen de una versión de llvm que NO tiene Debian aún,
+y NO ACTIVAMOS POR NADA el driver Gallium i915, porque NO HA FUNCIONADO NUNCA, es un desarrollo abandonado. Para gráficas INTEL, se usa el driver Gallium llamado iris). 
+(Para gráficas intel antiguas debes usar el driver i915 e i965, que son dri, no gallium: se puede aniadir a la lista en -Ddri-drivers).
+(Los gallium r300 y r600 cubren en teoría las ATI Radeon más comunes). 
+
+CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3 -march=x86-64" meson --prefix=/usr --libdir=/usr/lib --buildtype=plain \
+-Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers=i915,i965 -Dvulkan-drivers='' -Dgallium-drivers=iris,tegra,nouveau,r300,r600 ..
+
+PARA COMPILAR:
+ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
+PARA INSTALAR:
+ninja install
+Y PARA DESINSTALAR:
+ninja meson-uninstall
+O ALTERNATIVAMENTE:
+meson introspect ./ --installed | python3 -c 'import sys; a = eval(sys.stdin.read()); print(" ".join(a.keys()))' | xargs rm
+
+
+AHORA VAMOS A POR SDL2
+
+-Instalamos dependencias previas:
+apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
+(libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
+
+-Configuramos con
+CFLAGS="-O3 -march=x86-64 -DMESA_EGL_NO_X11_HEADERS" CXXFLAGS="-O3 -march=x86-64 -DMESA_EGL_NO_X11_HEADERS" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan 
+
+SDL2_Mixer:
+CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3 -march=x86-64" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
+
+SDL2_ttf:
+CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3 -march=x86-64" ./configure --prefix=/usr --without-x

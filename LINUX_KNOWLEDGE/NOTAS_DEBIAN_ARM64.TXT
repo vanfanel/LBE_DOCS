@@ -12,6 +12,7 @@ http://www.tal.org/tutorials/raspberry-pi3-build-64-bit-kernel
 http://www.tal.org/tutorials/booting-64-bit-kernel-raspberry-pi-3
 Al final el kernel, los módulos, los dtb y demás quedan en kernel-out, como en el tutorial.
 
+Si da error al compilar las binutils, mira que tengas instalado el paquete texinfo.
 Si te da error al compilar el gcc, modifica gcc/graphite.h y ponle includes para isl/id.h y isl/space.h
 
 Antes de empezar, siempre ponemos el crosscompilador de 64bits en el path:
@@ -43,9 +44,10 @@ Y luego ajustamos GENERAL SETUP->PREEMPTION MODEL a FULLY PREEMPTIBLE KERNEL(RT)
 make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-  bcmrpi3_defconfig
 -Configuramos el kernel con:
 make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
+
 Ajustes al kernel:
 -Asegúrate de que el scheduler está en LOW LATENCY DESKTOP (GENERAL SETUP) y que el scheduler está a 100Hz si usas MUQSS y a 1000Hz si no lo usas (KERNEL FEATURES). 
--En GENERAL SETUP, deshabilida EMBEDDED SYSTEM, lo que te perminirá desactivar CONFIGURE STANDARD KERNEL FEATURES, que es el symbol EXPERT=y (NO lo tienes que dejar a =y, sino desactivado, no lo dudes)
+-En GENERAL SETUP, deshabilita EMBEDDED SYSTEM, lo que te perminirá desactivar CONFIGURE STANDARD KERNEL FEATURES, que es el symbol EXPERT=y (NO lo tienes que dejar a =y, sino desactivado, no lo dudes)
 Con esto desactivado, ya puedes ira KERNEL HACKING y quitar KERNEL DEBUGGING.
 -Quita todo en KERNEL HACKING (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
 -En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable" y el resto de mitigations
@@ -134,7 +136,7 @@ PARTUUID=db375d88-09  /               ext4    defaults,noatime,nodiratime       
 -Instalar el VIM, sudo, net-tools, sshd... (sí, ¡funciona con la red del host!):
 apt install vim sudo net-tools 
 OJO!!!! NO INSTALES alsa-utils desde un entorno chrooted!!!! LO DEL AUDIO CON ALSA VA LUEGO!!!! TIENE SU PROPIA SECCIÓN!!!! NO LO HAGAS AQUÍ!!!!
--Para que sudo no de el error (unable to resolve hos), en /etc/hosts, añade la línea:
+-Para que sudo no de el error (unable to resolve host), en /etc/hosts, añade la línea:
 127.0.1.1    raspi
 (suponiendo que hayas llamado al sistema raspi en /etc/hostname, claro. Si lo has llamado de otra manera, pon el nombre correspondiente).
 -Cambiar el password de root  mientras estás chrooteado
@@ -194,7 +196,7 @@ PERMANENTE EN /dev, CON LOS QUE CREA UDEV EN EL ARRANQUE ES SUFICIENTE!!! (QUE S
 EN ÉL DE VERDAD) 
 Ahora hacemos que systemd deje de borrarnos la consola en el incio, o no veremos nada del arranque (ni del kernel ni de los procesos que va levantando systemd):
 Para ello creamos el fichero:
-/etc/systemd/system/getty@.service.d/noclear.conf <<EOF
+/etc/systemd/system/getty@.service.d/noclear.conf
 Con el contenido:
 [Service]
 TTYVTDisallocate=no
@@ -459,15 +461,19 @@ Los CFLAGS van a ser:
 -march=armv8-a+crc -mtune=cortex-a53
 
 Empezamos con libDRM:
-Instalamos esta dependencia previa: sudo apt-get install xsltproc
+Instalamos estas dependencias previas: 
+sudo apt-get install xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
+sudo apt-get install xsltproc libpciaccess-dev
+(libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 Bajamos la última versión estable de:
 https://dri.freedesktop.org/libdrm/
-sudo apt-get install xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
 ./autogen.sh
 Configuramos con esto:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
-
 Compilamos e instalamos.
+En este punto, puedes probar si libdrm te funciona bien haciendo:
+modetest -s 81:1920x1080
+(donde 81 es un ID de conector válido: puedes ver los conectores con modetest|more).
 
 Ahora vamos a por MESA. Instalamos estos paquetes previos:
 
@@ -550,7 +556,8 @@ INSTALAR SDL2
 =============
 
 Lo primero es instalar estos:
-sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev libgbm-dev --no-install-recommends
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
+(libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 
 Por ahora, hasta que salga SDL 2.0.11, tenemos que cambiar código para que funcione bien el resampler de audio acelerado para instrucciones NEON. 
 Para ello, actualizamos src/audio/SDL_audiotypecvt.c desde la versión actual, que podemos sacar de https://hg.libsdl.org/SDL

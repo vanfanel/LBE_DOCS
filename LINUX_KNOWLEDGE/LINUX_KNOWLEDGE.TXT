@@ -156,9 +156,11 @@ Se hace igual, con el gamepadtool para sacar el mapping, lo aniades ahí, y reco
 
 *****SDL2 en hardware genérico con mi driver KMSDRM*******************************************************************************************************************************************
 
-Lo primero, asegúrate de tener instaladas las libgbm-dev y algunas otras cosas:
-sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev libgbm-dev --no-install-recommends
-(Si has compilado SDL2 con soporte para kmsdrm pero te da el error "not available video device", es porque compilaste sin tener instalado libgmb-dev y no te ha avisado... Instala ese paquete y recompila, anda.)
+Lo primero, asegúrate de tener instaladas algunas otras cosas:
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
+(libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente, si es que instalas MESA compilándolo por tu cuenta. Si no, pues sí, hace falta libgbm-dev si usas un MESA precocinado.)
+(Si has compilado SDL2 con soporte para kmsdrm pero te da el error "not available video device", es porque compilaste sin tener instalado libgmb-dev junto con un MESA precocinado,
+ y no te ha avisado... Instala ese paquete y recompila, anda.)
 
  ./configure --prefix=/usr --enable-video-kmsdrm --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
 
