@@ -215,11 +215,20 @@ AHORA VAMOS A POR SDL2
 apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 
--Configuramos con
+-Configuramos SDL2 con
 CFLAGS="-O3 -march=x86-64 -DMESA_EGL_NO_X11_HEADERS" CXXFLAGS="-O3 -march=x86-64 -DMESA_EGL_NO_X11_HEADERS" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan 
+
+No te olvides de aniadir en /etc/profile:
+export SDL_VIDEO_DOUBLE_BUFFER=1
+Luego puedes comprobarlo con echo $<nombre_variable>, en plan:
+echo $SDL_VIDEO_DOUBLE_BUFFER
+
 
 SDL2_Mixer:
 CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3 -march=x86-64" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
 SDL2_ttf:
 CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3 -march=x86-64" ./configure --prefix=/usr --without-x
+
+SDL2_image:
+CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3  -march=x86-64" ./configure --prefix=/usr --without-x
