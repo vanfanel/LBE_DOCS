@@ -118,8 +118,15 @@ set default="0"
 set timeout=30
 
 menuentry "Debian MAC Lite" {
-    linux /vmlinuz root=PARTUUID=14410d43-02 loglevel=3 consoleblank=0
+    linux /vmlinuz root=PARTUUID=14410d43-02 loglevel=3 consoleblank=0 selinux=0
     initrd /initrd
+}
+
+-Evitamos problemas de audio (como underruns y demás) creando un /etc/asound.conf así:
+pcm.!default {
+	type hw  		
+	card 0
+	device 0.
 }
 
 COSAS PARA ALIGERAR EL SISTEMA CUANDO YA ARRANCA
@@ -142,11 +149,20 @@ blacklist videodev
 blacklist snd_usb_audio
 blacklist snd_usbmidi_lib
 blacklist snd_rawmidi
+blacklist intel_telemetry_core
+blacklist intel_telemetry_debugfs
+blacklist intel_telemetry_pltdrv
 
 Y luego hacemos 
 depmod -ae
 update-initramfs -u
 Y montamos la partición de boot, y sobreescribimos el initrd con el que se nos acaba de generar.
+
+Si te da errores de possible missing firmware con ficheros de i915:
+Clona el repo de firmware de kernel.org:
+git clone --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
+Copia los firmwares que faltan a su sitio:
+cp i915/* /media/manuel/DEBIAN_ROOTFS/lib/firmware/i915/
 
 -Para quitar los mensajes de alsactl en el inicio, editamos lib/systemd/system/alsa-state.service y quitamos el -s de las dos líneas donde aparece, para que así no se mande la salida del comando a dmesg...
 
@@ -232,3 +248,33 @@ CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3 -march=x86-64" ./configure --prefix=/us
 
 SDL2_image:
 CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3  -march=x86-64" ./configure --prefix=/usr --without-x
+
+Arreglar el VIM
+============
+
+Sigue las instrucciones normales, pero no te preocupes si el volvel a la última línea no funciona en modo CHROOT.
+Y si, tras seguir las instrucciones, no te puedes librarte de que entre en modo VISUAL cuando seleccionas texto con el ratón, edita /usr/share/vim/vim81/defaults.vim y comenta lo del mouse.
+
+INSTALAR KERNEL LIQUORIX
+=======================
+
+-Aniade a /etc/apt/sources.list:
+(Adaptando donde pone buster por el nombre en clave de tu debian, claro)
+
+deb http://liquorix.net/debian buster main
+deb-src http://liquorix.net/debian buster main
+
+-Instalamos dependencias previas para poder aniadir la clave pública:
+apt-get install gnupg curl --no-install-recommends
+
+-Aniadimos la clave pública del repositorio:
+curl https://liquorix.net/linux-liquorix.pub | sudo apt-key add
+
+-Actualizamos los metadatos de paquetes:
+apt-get update
+
+-Instalamos el kernel Liquorix con:
+sudo apt-get install linux-image-liquorix-amd64 linux-headers-liquorix-amd64
+
+Ahora, naturalmente tienes el vmlinuz y el initrd de este nuevo kernel en /boot. Lo tienes que copiar a la partición de arranque (DEBIAN_BOOT, siguiendo esta guía),
+sobreescribiendo el vmlinuz y el initrd que hay ahí.

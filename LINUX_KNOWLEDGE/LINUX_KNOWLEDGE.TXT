@@ -3336,6 +3336,8 @@ Y cambiamos el ownership de ~/.viminfo al usuario, ya que viene como propiedad d
 Y si aún así no funciona, comenta todo lo que has puesto en ~/.vimrc, debería funcionar. Entonces ve descomentando líneas y comprobando qué setting de .vimrc es el que
 impide que funcione. Sí, esto me ha pasado.
 
+En DEBIAN como ROOT, edita /usr/share/vim/vim81/defaults.vim y comenta lo del mouse para que no entre en modo visual.
+
 **************Traducir en tiempo real la consola desde una codificación distinta de UTF-8 a UTF-8***************************************
 
 Por ejemplo, en este caso nos conectamos por telnet a un servidor que "emite" en ISO-8859-1, y de este modo vemos tildes y todo:
@@ -4316,6 +4318,9 @@ Gamma Correction=100
 Color Cycling=1
 Sound Volume=0
 Music Volume=0
+
+Si nos da un error repetido de "Unhandled SDL Event: SDL_AUDIODEVICEADDED", ni caso. No es por el sistema sino porque el código del juego imprime eventos que no usa.
+Manda la salida a /dev/null y fuera.
 
 NUVIE (Ultima VI) en la Raspberry Pi
 ==============================
