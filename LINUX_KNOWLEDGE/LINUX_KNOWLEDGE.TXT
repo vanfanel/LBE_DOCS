@@ -4300,6 +4300,12 @@ También necesita SDL_ttf.
 Clonamos:
 git clone --depth 1 https://github.com/diasurgical/devilutionX.git
 
+Editamos devilutionX/SourceX/display.cpp y comentamos atexit(SDL_Quit), y llamamos a SDL_Quit() en devilutionX/SourceX/DiabloUI/diabloui.cpp, justo antes de exit(0).
+(Ya que meter SDL_Quit() en atexit no es buena idea nunca, mira: 
+https://lists.freedesktop.org/archives/mesa-users/2019-March/001519.html
+La respuesta de MESA:
+https://lists.freedesktop.org/archives/mesa-users/2019-March/001520.html
+
 Configuramos:
 cmake -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
 
@@ -4392,14 +4398,17 @@ Compilamos con make -j4
 
 Copiamos el directorio data que viene con los sources a ~/ultima7/data
 Copiamos el ejecutable exult resultante a ~/ultima7
-Copiamos los datos de STATIC del juego a ~/ultima7/blackgate_static
+
+Creamos ~/ultima7/blackgate_static
 Creamos ~/ultima7/blackgate_gamedat
 Creamos ~/ultima7/blackgate_savegame
+
+Copiamos los datos de STATIC del juego a ~/ultima7/blackgate_static
 
 Ahora copiamos ~/.exult.cfg a ~/ultima7/exult.cfg. Si no tenemos ~/.exult.cfg, ejecutamos el exult por primera vez y lo creará.
 Ahora editamos  ~/ultima7/exult.cfg y le añadimos, bajo <disk>:
 
- <game>
+<game>
    <blackgate>
     <path>
     </path>
