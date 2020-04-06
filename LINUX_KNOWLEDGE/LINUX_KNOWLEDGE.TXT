@@ -4328,6 +4328,28 @@ Music Volume=0
 Si nos da un error repetido de "Unhandled SDL Event: SDL_AUDIODEVICEADDED", ni caso. No es por el sistema sino porque el código del juego imprime eventos que no usa.
 Manda la salida a /dev/null y fuera.
 
+FLARE, un engine RPG libre en la Raspberry Pi
+===================================
+
+Clonamos el repo del engine y del juego:
+git clone --depth 1 https://github.com/flareteam/flare-engine.git
+git clone --depth 1 https://github.com/flareteam/flare-game.git
+
+creamos el directorio de compilación, entramos en él, configuramos y compilamos:
+mkdir b3
+cd b3
+CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53 -flto -fwhole-program" cmake -DCMAKE_BUILD_TYPE=Release ..
+make -j4
+
+creamos ~/flare y mandamos el ejecutable flare allí.
+
+entramos en flare-game, copiamos el mod default de flare-engine al directorio de mods de flare-game, y copiamos el directorio mods a ~/flare
+cd flare-game
+cp -R ../flare-engine/mods/default mods/
+cp -R mods ~/flare
+
+Ahora ya podemos ejecutar el juego y activar la campania.
+
 NUVIE (Ultima VI) en la Raspberry Pi
 ==============================
 
