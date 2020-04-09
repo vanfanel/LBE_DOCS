@@ -275,17 +275,20 @@ Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las lín
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
 CXXFLAGS += -O3 -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O3 -march=armv8-a+crc -mtune=cortex-a53
 
-Para arreglar la música y efectos, que van a la frecuencia equivocada en la Raspberry, ditamos
-sdl_systemstub.cpp y cambiamos:
-if (SDL_OpenAudio(&desired, &obtained) == 0) {
-por
-if (SDL_OpenAudio(&desired, NULL) == 0) {
-Y también:
+Editamos sdl_systemstub.cpp y cambiamos:
 desired.samples = 2048;
 por
 desired.samples = 512;
+Y también aniadomos SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
+Así mismo, cambia SDL_INIT_JOYSTICK por SDL_INIT_GAMECONTROLLER en SDL_Init() si quieres joystick.
 
-Así mismo, en el mismo fichero, añade SDL_INIT_GAMECONTROLLER a SDL_Init() si quieres joystick.
+Creamos el directorio data y allí metemos los datos de la versión MS-DOS.
+Dentro de data creamos music y ahí metemos los MODs de:
+http://wiibrew.org/w/images/2/2b/Flashbackmods.zip
+(NO, no sirven los ficheros de música de AMIGA directamente).
+
+Lanzamos con:
+./rs --datapath=./data --fullscreen
 
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)**********************************************************************************************************
 
@@ -2098,21 +2101,6 @@ Edita source/build/src/sdlayer.cpp y haz todos los cambios que se detallan a con
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 antes de SDL_CreateWindow()
 
--Busca la variable currentVBlankInterval. Verás que se establece su valor en setrefreshrate(void), y que se usa
-en este trozo de código maldito:
-
-        if (vsync)
-        {
-            static uint32_t lastSwapTime = 0;
-            // busy loop until we're ready to update again
-            while (SDL_GetTicks()-lastSwapTime < currentVBlankInterval) {}
-            lastSwapTime = SDL_GetTicks();
-        }
-        
--COMENTA ese pedazo de código, incluído el IF y todo. Que no quede nada de esa espera absurda.
-
--Busca SDL_GL_SetSwapInterval(vsync_renderlayer); y cámbialo por SDL_GL_SetSwapInterval(1);
-
 -Cambia todas las ocurrencias de SDL_WINDOW_FULLSCREEN por SDL_WINDOW_FULLSCREEN_DESKTOP
 
 Compilamos con:
@@ -3118,21 +3106,17 @@ git clone --depth 1 https://gitlab.com/Dringgstein/Commander-Genius.git
 git submodule init
 git submodule update
 
-Editamos el CMakefiles.txt y añadimos debajo de la línea de Project:
-string(REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
-string(REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
-
 creamos un directorio de compilación y entramos en él:
-mkdir build
-cd build
+mkdir b3
+cd b3
 
 Ahora configuramos:
 
-cmake  -DUSE_SDL2=ON -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGL=OFF -DDOWNLOADER=OFF -DUSE_PYTHON3=OFF -Wno-dev -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON  -DUSE_PYTHON3=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
-El resultado queda en src/Build/LINUX/CGeniusExe
+El resultado queda en src/CGeniusExe
 
 Los datos de los juegos deben ir en ~/.CommanderGenius/games/
 Si quieres especificar qué juego cargar, es con 
@@ -3446,7 +3430,7 @@ LD_LIBRARY_PATH=/home/manuel/sidplay/lib ./sidplayfp <tema>.sid
 ***************Rogue en Linux**************************************************************************
 
 Descarga los últimos sources de
-git clone --depth 1 https://github.com/Davidslv/rogue.git
+git clone --depth 1https://github.com/gillesdami/rogue.git
 
 Antes de nada, instala las libncurses5-dev, antes de hacer el configure.
 sudo apt-get install libncurses5-dev --no-install-recommends
@@ -3457,9 +3441,6 @@ wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.gue
 Configurar y compilar:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure
 make -j4
-
-Si te da un error al compilar sobre un incomplete type, aquí hay un fork que lo resuelve, usa ese en lugar del que usabas:
-https://github.com/gillesdami/rogue
 
 Ayuda de teclas con shift+?
 
@@ -4984,8 +4965,8 @@ COMPILAR FROTZ A SECAS, SIN GRÁFICOS NI SDL NI NADA
 Instala las ncursesw, que es una versión más mehó de las ncurses:
 sudo apt-get install libncursesw5-dev
 
-Baja los surces de 
-git clone --depth 1 https://gitlab.com/DavidGriffith/frotz.git
+Baja los surces de la última estable de:
+https://gitlab.com/DavidGriffith/frotz/-/releases
 
 Ahora edita el Makefile y pon sound a NONE, comenta la línea de los CFLAGS del -g, y descomenta la que tienes encima, o sea, la que tiene los CFLAGS de optimización, y aniade los propios de la Pi3.
 Ajusta el valor de PREFIX a /usr en vez de /usr/local
@@ -5397,6 +5378,83 @@ https://github.com/OpenFodder/data/releases
 Dentro del directorio Data de los datos del engine, si te fijas verás que hay directorios preparados para cada juego.
 Nos interesa el directorio Dos_CD: ahí es donde meteremos los datos del juego en su versión DOS, que tiene más colores. Sólo nos hace falta el archivo CF_ENG.DAT.
 Por si te lo preguntas, los datos de Amiga aún no parecen funcionar bien con el engine, da segfaults y movidas. Pero con la versión DOS, la música suena también en MOD, así que nos vale.
+
+HEART OF DARKNESS en linux (HODE)
+==============================
+
+Bajamos la última versión de los sources de:
+http://cyxdown.free.fr/hode/
+Los descromprimimos, y dentro de ellos creamos el director 3p, y ahí copiamos ini.h e ini.c de este repo:
+https://github.com/benhoyt/inih.git
+
+Editamos el Makefile:
+-Comentamos la línea SCALERS
+-Quitamos las referencias a los SCALERS de las líneas OBJS y DEPS
+-Quitamos el -g y aniadimos los FLAGS de compilación que queramos según nuestra arquitectura.
+
+Editamos system_sdl2.cpp  y:
+-Dejamos la línea
+static const Scaler *_scaler = &scaler_xbr;
+como 
+static const Scaler *_scaler = NULL;
+-Dejamos la línea
+static int _scalerMultiplier = 3;
+como
+static int _scalerMultiplier = 1;
+-Dejamos la línea
+desired.samples = 4096;
+como
+desired.samples = 512;
+-Comentamos las referencias a los scalers "nearest" y "xbr".
+-Y también aniadomos SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
+
+En el directorio donde va el ejecutable, creamos hode.ini con el contenido:
+
+[engine]
+
+# disable animations playback
+disable_paf=false
+
+# disable monsters handling code
+disable_mst=false
+
+# disable sound handling code
+disable_sss=false
+
+# maximum number of active sounds (original engine sets to 10 if a slow CPU or low memory is detected)
+max_active_sounds=16
+
+# 0:easy 1:normal 2:hard
+difficulty=0
+
+# frame duration in milliseconds (original is 80ms, eg. 12.5hz)
+frame_duration=50
+
+
+[display]
+
+# scaling factor for game graphics (base resolution is 256x192)
+scale_factor=1
+
+# scaling algorithm for game graphics ('xbr' or 'nearest')
+scale_algorithm=xbr
+
+# gamma correction
+gamma=1.0
+
+# use intensity color
+grayscale=false
+
+# fullscreen display
+fullscreen=true
+
+# widescreen (16:9)
+widescreen=false
+
+-Una vez que lo tengamos todo, ejecutamos con:
+./hode --datapath=data_pc
+...Donde data_pc es un directorio donde están los datos del juego (ver README para saber qué archivos se necesitan).
+Las teclas son las flechas F, G y H.
 
 VVVVVV en la Raspberry Pi
 =====================

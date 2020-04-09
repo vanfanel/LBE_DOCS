@@ -307,6 +307,26 @@ Luego, en unidadB.c
 Y en unidadC.c
 #include "unidadB.h"
 
+********El uso de variables EXTERN en C/C++***************************************************************************************************
+
+Lo primero es distinguir entre declarar y definir, que es algo que se te olvida a veces!
+int v1;			<----- Estás definiendo. Queda bien claro qué variable es v1;
+extern int v1;	<----- Estás sólo declarando. Estás diciendo: "mira, hay una variable de tipo entero llamada v1, pero ya te diré cuál es, vale? Luego te digo, quedamos en eso, queda pendiente".
+
+Una variable declarada EXTERN significa que la hemos DEFINIDO en una unidad de compilación, y que queremos acceder a ella desde otra unidad distinta:
+extern int variable1; <--- Significa que la variable1 está definida en otra parte (otra unidad de compilación, por ejemplo), y queremos acceder a ella desde aquí.
+
+Te recuerdo cómo va, con un ejemplo: 
+-Defines una variable normalmente en un unidad1.cpp, y luego la usas en esa unidad. Aquí olvídate de extern. Aquí estas definiendo, no declarando solamente:
+BOOL var1 = false;
+-En la unidad2.cpp quieres acceder a ella. Pues en unidad2.h haces:
+extern BOOL var1;
+Y en unidad2.cpp accedes a la variable y la usas para lo que te de la gana:
+if (var1)
+{
+	loquesea()
+}
+
 ********Undefined reference recalcitrante al incluir código de C en CPP*************************************************************************
 
 Se soluciona colocando esto en el .h:
