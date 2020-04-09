@@ -271,6 +271,9 @@ Los CXXFLAGS son: -O3 -march=armv8-a+crc -mtune=cortex-a53
 Bajamos los sources de:
 http://cyxdown.free.fr/reminiscence/
 
+Instalamos
+apt-get install libmodplug-dev --no-install-recommends
+
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
 CXXFLAGS += -O3 -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O3 -march=armv8-a+crc -mtune=cortex-a53
