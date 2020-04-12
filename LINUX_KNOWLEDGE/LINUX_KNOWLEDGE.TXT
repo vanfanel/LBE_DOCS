@@ -264,7 +264,6 @@ Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de 
 Los CXXFLAGS son: -O3 -march=armv8-a+crc -mtune=cortex-a53
 -En mixer.cpp, ajusta el tamanio del buffer de 4096 a 1024
 -En systemstub_sdl.cp, descomenta el SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 1) y ponlo como SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear")
--Aniade los flags de optimización en el Makefile, en los CXXFLAGS
 
 ******FLASHBACK en la Rasberry Pi***************************************************************************************************************************************
 
@@ -2295,6 +2294,11 @@ Los subes a ~/halai/valve/media, y editas cdaudio.txt para que las pistas se lla
 
 Y si quieres counterstrike 1.6, la librería de juego que tendrías que compilar e instalar en ~/halai/valve/dlls/ es esta:
 https://github.com/FWGS/cs16-client/releases
+
+************Parchear con XDelta en Linux************************************************************************************************
+
+Tienes que usar el comando xdelta3, NO el xdelta.
+xdelta3 -d -s originar parche resultado
 
 ************Wolf4SDL (Wolfenstein 3D) en la Raspberry Pi*********************************************************************************
 
@@ -5472,8 +5476,10 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-DNDEBUG -march=armv8-a+crc -m
 NO compiles con -j, sino que sólo usa un hilo de compilación. NO uses más de uno, no compila nunca. Tampoco le pases ningún -O en los CFLAGS, o se disparará el consumo de RAM y no acabará jamás de compilar.
 
 Bajamos el data.zip que viene con la versión Windows del VVVVVV, disponible aquí:
-http://distractionware.com/blog/category/vvvvvv-make-and-play/
+https://thelettervsixtim.es/makeandplay/
 Ponemos el data.zip junto al ejecutable... Y listo!
+
+Puedes modificar los FPS del juego tocando la variable gameframerate en src/Game.cpp
 
 DESCARGAR DESDE EMUPARADISE
 ===========================
