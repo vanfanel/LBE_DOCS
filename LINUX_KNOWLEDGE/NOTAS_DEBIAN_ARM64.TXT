@@ -317,14 +317,17 @@ dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
 sudo systemctl disable dropbear
 (CUIDADO QUE SIN LAS CLAVES NO FUNCIONA!!!)
 
--Reconfiguramos la consola, el teclado y los locales (NO LO HAGAS POR SSH, o fallará por culpa de los LOCALE de la máquina desde la que te conectas
+-Configuramos la consola, el teclado y los locales (NO LO HAGAS POR SSH, o fallará por culpa de los LOCALE de la máquina desde la que te conectas
 y perderás un buen rato):
-sudo apt-get install locales console-setup keyboard-configuration
+sudo apt-get install locales console-setup console-data keyboard-configuration
 sudo dpkg-reconfigure console-setup
-sudo dpkg-reconfigure keyboard-configuration
 sudo dpkg-reconfigure locales
 (generamos sólo en_US.UTF-8, y dejamos puesto por defecto ese antes de salir. Tenemos que comprobar con el comando locale que todo sale puesto a en_US.UTF-8 y NO a POSIX)
+sudo dpkg-reconfigure keyboard-configuration
 Tras reiniciar (sí, hay que reiniciar), ya tendría que ir la Ñ, los acentos y todo eso.
+Si queremos cambiar la distribución del teclado de nuevo (porque cambiamos de sistema y/o teclado) basta con volver a hacer:
+sudo dpkg-reconfigure keyboard-configuration
+Eso sí, asegúrate antes de que el comando "locale" nos dice que está todo a en_US.UTF-8.
 
 -Vamos quitando los servicios con:
 sudo systemctl mask <sevcio> 
