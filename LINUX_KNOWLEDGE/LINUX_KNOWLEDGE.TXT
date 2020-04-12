@@ -4455,19 +4455,21 @@ Y listo!
 LÖVE2D en la Raspberry Pi (love)
 ============================
 
-Las instrucciones básicas están aquí: https://love2d.org/wiki/Building_L%C3%96VE
-
 Bajamos los últimos source estables de:
-https://love2d.org/
+https://bitbucket.org/rude/love/downloads/
 
-Satisfacemos las dependencias con:
-sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libluajit-5.1-dev libtheora-dev libmpg123-dev
+Satisfacemos algunas dependencias.
+sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev  libmpg123-dev libluajit-5.1-dev luajit
 
-Ejecutamos, desde el directorio love:
-./platform/unix/automagic
+Las otras dos dependencias son OpenAL (tienes instrucciones para compilarlas e instalarlas) y libtheora. NO las instalamos con apt-get porque tiran de BASURA como PulseAudio y X11,
+que NO quiero en mi sistema.
+Con respecto a libtheora, entra aquí y baja los últimos estables:
+https://www.theora.org/downloads/
+Configura con
+CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CPPFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-examples --disable-encode
 
-Luego configuramos para Pi 2 y 3 con:
-CFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard" ./configure --prefix=/usr
+Configuramos love:
+CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr
 
 make y sudo make install
 
