@@ -202,7 +202,8 @@ sudo apt-get install xutils-dev libtool make automake pkg-config gcc g++ --no-in
 Nos bajamos la última estable de libdrm aquí:
 https://dri.freedesktop.org/libdrm/
 Configuramos así, sin quitar soporte para ninguna tarjeta porque no sabemos en qué ordenador vamos a usar este sistema:
-CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3 -march=x86-64" ./configure --prefix=/usr --enable-install-test-programs
+CFLAGS="-O3 -march=x86-64" CXXFLAGS="-O3 -march=x86-64" meson --prefix=/usr -Dudev=true -Dinstall-test-programs=true ..
+
 Compilamos e instalamos.
 En este punto, puedes probar si libdrm te funciona bien haciendo:
 modetest -s 81:1920x1080
@@ -236,7 +237,7 @@ ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por ag
 PARA INSTALAR:
 ninja install
 Y PARA DESINSTALAR:
-ninja meson-uninstall
+ninja uninstall
 O ALTERNATIVAMENTE:
 meson introspect ./ --installed | python3 -c 'import sys; a = eval(sys.stdin.read()); print(" ".join(a.keys()))' | xargs rm
 

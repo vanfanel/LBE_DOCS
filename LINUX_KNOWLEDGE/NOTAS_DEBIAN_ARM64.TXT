@@ -48,7 +48,8 @@ make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 Ajustes al kernel:
 -Asegúrate de que el scheduler está en LOW LATENCY DESKTOP (GENERAL SETUP) y que el scheduler está a 100Hz si usas MUQSS y a 1000Hz si no lo usas (KERNEL FEATURES). 
 -En GENERAL SETUP, deshabilita EMBEDDED SYSTEM, lo que te perminirá desactivar CONFIGURE STANDARD KERNEL FEATURES, que es el symbol EXPERT=y (NO lo tienes que dejar a =y, sino desactivado, no lo dudes)
-Con esto desactivado, ya puedes ira KERNEL HACKING y quitar KERNEL DEBUGGING.
+-En GENERAL SETUP, deshabilita abajo del todo SLUB PER CPU PARTIAL CACHE y PROFILING SUPPORT
+Con esto desactivado, ya puedes ir a KERNEL HACKING y quitar KERNEL DEBUGGING.
 -Quita todo en KERNEL HACKING (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
 -En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable" y el resto de mitigations
 -Si quieres WIFI:
@@ -58,7 +59,7 @@ Con esto desactivado, ya puedes ira KERNEL HACKING y quitar KERNEL DEBUGGING.
 	Sólo si tienes esos ficheros puedes hacer: sudo ifconfig wlan0 up 
 	Y deberías ver wlan0 levantado.
 
--En ENABLE THE BLOCK LAYER, quita TODOS los i/o scheduler, lo que hará que por defecto se use el no-op. Eso es lo correcto para unidades de disco solido.
+-En I/O SCHEDULER, quita TODOS los i/o scheduler, lo que hará que por defecto se use el no-op. Eso es lo correcto para unidades de disco solido.
 -En CPU POWER MANAGEMENT, deja el governor performance solamente y ponlo por defecto.
 -ASEGÚRATE DE TENER ACTIVADO COMO MÓDULO EL DRIVER DE LA TARJETA ETHERNET: ES EL CONFIG_USB_LAN78XX en el .config, y está en:
 Device Drivers > Network device support > USB Network Adapters -> Microchip LAN78XX Based USB Ethernet Adapters
@@ -66,6 +67,8 @@ Si no funciona ni así, haz un sudo ifconfig -a, porque igual sí que funciona s
 -OJO, NO desactives el SYNOPSIS DWC en DEVICE DRIVERS->USB SUPPORT, porque es el USB host usado por la Raspberry Pi
 -OJO, NO desactives el WATCHDOG de BCM2835 (En DEVICE DRIVERS->WATCHDOG TIER SUPPORT->BROADCOM BCM2835), o si no, no se reiniciará ni se apagará la Pi.
 -OJO, NO desactives el FILE LOCKING API, en FILESYSTEMS. Es necesario para que funcione flock(), y flock() lo usan dpkg y apt-get.
+-OJO, NO desaactives-> Device Drivers -> Graphics support -> Direct Rendering Manager -> Enable legacy fbdev support for your modesetting driver,
+porque en el viejo FBDev es donde se pinta la consola TTY de texto!!
 -El único RTC que necesitas en DEVICE DRIVERS->REAL TIME CLOCK es el DALLAS/MAXIM DS1307
 
 -Compilamos el kernel y los módulos así:
@@ -92,7 +95,7 @@ overlay_prefix=overlays/
 kernel=kernel8.img
 arm_control=0x200
 
-Puedes actualizar el kernel con el contenido de boot de este repo:
+Puedes actualizar el firmware con el contenido de boot de este repo:
 https://github.com/raspberrypi/firmware.git
 
 PARTE 2: EL ROOTFS
@@ -475,13 +478,19 @@ sudo apt-get install xsltproc libpciaccess-dev
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 Bajamos la última versión estable de:
 https://dri.freedesktop.org/libdrm/
-./autogen.sh
+mkdir b3
+cd b3
+
 Configuramos con esto:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-vmwgfx --disable-radeon --disable-nouveau --disable-freedreno --disable-amdgpu
-Compilamos e instalamos.
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false -Dinstall-test-programs=true ..
+
+Compilamos e instalamos:
+ninja -j4
+sudo ninja install
+
 En este punto, puedes probar si libdrm te funciona bien haciendo:
-modetest -s 81:1920x1080
-(donde 81 es un ID de conector válido: puedes ver los conectores con modetest|more).
+modetest -s 29:1360x768
+(donde 29 es un ID de conector válido: puedes ver los conectores con modetest|more).
 
 Ahora vamos a por MESA. Instalamos estos paquetes previos:
 
@@ -520,8 +529,7 @@ Las instrucciones para compilar con MESON se pueden ver en: https://www.mesa3d.o
 Pero yo ya lo tengo resumido a continuación...mira:
 configuramos con:
 mkdir b3
-cd b3 
-
+cd b3
 AHORA PARA CONFIGURAR:
 ASI LO VENIMOS HACIENDO:  CON GLES Y GLES2, SIN OPENGL COMPLETO:
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --libdir=/usr/lib --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
@@ -537,7 +545,7 @@ ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por ag
 PARA INSTALAR:
 sudo ninja install
 Y PARA DESINSTALAR:
-sudo ninja meson-uninstall
+sudo ninja uninstall
 O ALTERNATIVAMENTE:
 meson introspect ./ --installed | python3 -c 'import sys; a = eval(sys.stdin.read()); print(" ".join(a.keys()))' | xargs rm
 

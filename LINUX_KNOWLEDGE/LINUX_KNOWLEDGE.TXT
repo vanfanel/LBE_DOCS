@@ -2195,6 +2195,7 @@ CORREGIMOS la salida para que no nos de un segfault al salir (es cosa de MESA cu
 atterm(SDL_Quit); 
 en la función InitGame()
 Y en su lugar ponemos un SDL_Quit() en void Quit(), justo al final, antes de exit(0).
+-Editamos src/sdlvideo.cpp y comentamos SDL_QuitSubSystem (SDL_INIT_VIDEO)
 
 Puedes añadir en src/sdlvideo.cpp el típico
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
@@ -4288,12 +4289,6 @@ También necesita SDL_ttf.
 Clonamos:
 git clone --depth 1 https://github.com/diasurgical/devilutionX.git
 
-Editamos devilutionX/SourceX/display.cpp y comentamos atexit(SDL_Quit), y llamamos a SDL_Quit() en devilutionX/SourceX/DiabloUI/diabloui.cpp, justo antes de exit(0).
-(Ya que meter SDL_Quit() en atexit no es buena idea nunca, mira: 
-https://lists.freedesktop.org/archives/mesa-users/2019-March/001519.html
-La respuesta de MESA:
-https://lists.freedesktop.org/archives/mesa-users/2019-March/001520.html
-
 Configuramos:
 cmake -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
 
@@ -4605,7 +4600,6 @@ Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus
 CRISPY DOOM
 ============
 
-Vamos a centrarnos en CrispyDoom primero:
 Clonamos el repo de:
 https://github.com/fabiangreffrath/crispy-doom.git
 
@@ -4627,9 +4621,12 @@ make -j4
 Ejecura crispy-setup y pulsa INTRO porque si no, no se ve nada.
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
 
-Para que la música vaya bien, en el crispy-setup le ponemos "native MIDI" y seleccionamos el timidity.cfg del pack de instrumentos de:
-https://www.doomworld.com/idgames/music/dgguspat
-
+Para que la música digital vaya, nos bajamos un pack (de OGG, de FLAC o de lo que queramos y SDL_Mixer() tenga soporte para reproducir)
+y lo mandamos, por ejemplo, a ~/heretic/heretic-music, dejando ahí los OGG o los FLAC tirados sin más.
+Ahora editamos ~/.local/share/crispy-doom/crispy-heretic.cfg y en el setting music_pack_path ponemos el path: "/home/manuel/heretic/heretic-music"
+(O el que sea, vamos).
+Ya que estás, pon en crispy-heretic.cfg el setting use_libsamplerate a 0 si no estás usando libsamplerate.
+ 
 MONITORIZAR ACCESO A FICHEROS EN GNU/LINUX
 ===========================================
 
