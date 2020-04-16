@@ -262,8 +262,15 @@ Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de 
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
 Los CXXFLAGS son: -O3 -march=armv8-a+crc -mtune=cortex-a53
+Y aniade la línea de optimiación agresiva debajo de la original de CFLAGS:
+CXXFLAGS += -flto -fwhole-program -funroll-loops -fomit-frame-pointer
+
 -En mixer.cpp, ajusta el tamanio del buffer de 4096 a 1024
 -En systemstub_sdl.cp, descomenta el SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 1) y ponlo como SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear")
+
+Lanzamos con:
+./rawgl --render=original --datapat=data_dos --fullscreen-ar --language=us
+(usar --render=original provoca errores como tiras en las piernas de los enemigos en lugar de ser sólidas).
 
 ******FLASHBACK en la Rasberry Pi***************************************************************************************************************************************
 
@@ -2184,6 +2191,9 @@ Compilamos y listo!
 ************ECWOLF, el mejor port del Wolfenstein 3D, en la Pi*****************************************************************************
 
 NOTA: SI USAS EL CORE DE RETROARCH, pon los datos y el EXE de la versión de ACTIVISION, NO la original de Apogee, y a Retroarch, además del core, le pasas el WOLF3D.EXE.
+Y se compila con:
+
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53"  cmake -DLIBRETRO=1 ..
 
 Pillamos la última versión de su repo:
 https://bitbucket.org/ecwolf/ecwolf/downloads/
@@ -2507,11 +2517,8 @@ Instalamos unas dependencias que tiene. Necesita glib porque el threading multip
 
 sudo apt-get install libglib2.0-dev --no-install-recommends
 
-Ahora clonamos su repo:
-
-git clone --depth 1 https://github.com/FluidSynth/fluidsynth.git
-mkdir b3
-cd b3
+Bajamos la última versión estable de fluidsynth de aquí:
+https://github.com/FluidSynth/fluidsynth/releases
 
 Y configuramos desde un directorio de build que creamos nosotros:
 
@@ -5463,6 +5470,12 @@ widescreen=false
 ./hode --datapath=data_pc
 ...Donde data_pc es un directorio donde están los datos del juego (ver README para saber qué archivos se necesitan).
 Las teclas son las flechas F, G y H.
+
+Neverball en la Raspberry Pi
+=====================
+
+Compilamos con
+make ENABLE_OPENGLES=1 ENABLE_FS=stdio make ENABLE_NLS=0
 
 VVVVVV en la Raspberry Pi
 =====================
