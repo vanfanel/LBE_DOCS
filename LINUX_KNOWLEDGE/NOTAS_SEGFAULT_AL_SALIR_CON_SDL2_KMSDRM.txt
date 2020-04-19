@@ -1,0 +1,57 @@
+LO PRIMERO: Lee y entiende esto con calma. Se entiende bien, pero debes estar despejado y prestar atención.
+
+LOS MOTIVOS DE LOS SEGFAULT AL SALIR CUANDO SDL2 CORRE SOBRE KMSDRM
+NO se puede llamar a funciones de SDL2 relacionadas con el vídeo desde fuera del bucle principal del programa.
+(Se entiende por bucle principal todas las funciones normales del programa, que al final son todas llamadas directa o indirectamente desde MAIN)
+porque entonces MESA no tiene control sobre esas llamadas fuera del bucle principal y hay corrupción de memoria.
+Esta corrupción de memoria se da cuando se hace la llamada a una llamada de una función de vídeo de SDL2 fuera del bucle principal,
+PERO se manifiesta luego, en puntos del programa que NO TIENEN NADA QUE VER con SDL2 (normalmente destructores de otras clases
+que DE VERDAD no guardan relación alguna con SDL2 ni con MESA ni con nada). 
+
+Por eso es una locura dar con el bug: quitas la llamada que da el segfault y salta en otro lado, quitas esa otra llamada y salta en otro, etc, etc.. así hasta el infinito. 
+
+EN CONSECUENCIA, no se puede tener llamadas a funciones de SDL2 relacionadas con el vídeo:
+-En atexit. NADA de atexit(SDL_Quit) ni ningún otro atexit de SDL2, a ser posible.
+-En destructores de objetos singleton del programa. NADA de llamar a NADA de SDL2 en destructores de singletons. Esto hay que entenderlo bien, mira:
+(Un singleton es un objeto de una clase que se instancia una sola vez. Sólo una. Y si alguna otra función desde algún otro sitio lo instancia otra vez, debe recibir el mismo
+objeto, no otro distinto de esa clase. Esto se consigue con un singleton pattern: mira aquí -> https://www.oreilly.com/library/view/c-cookbook/0596007612/ch08s10.html )
+(Resumiendo, un singleton se trata de usar un puntero static al propio objeto único, y dar ese puntero a quien pida un objeto de esa clase).
+AL SER UN OBJETO SINGLETON, UNA PRÁCTICA MUY COMÚN ES QUE NUNCA SE LLAMA A SU DESTRUCTOR, SINO QUE COMO SÓLO EXISTE ESE OBJETO DE ESA CLASE,
+SE LE DA POR DESTRUIDO AL RETORNAR EL PROGRAMA Y PUNTO. ESTO TIENE EL MISMO PROBLEMA QUE HACER atexit(SDL_Quit), YA QUE LA LLAMADA A LA FUNCIÓN
+DE SDL2 SE ESTÁ HACIENDO DESDE FUERA DEL BUCLE PRINCIPAL.
+Por eso, asegúrate de que no hay llamadas a funciones de SDL2 en destructores que se ejecuten de manera implícita (sin ser llamados de forma explícita, vamos)
+y situaciones similares.
+-ENTENDIDO LO ANTERIOR, asegúrate de que no haya llamadas A DESTRUCTORES DE CUALQUIER CLASE EN LOS QUE SE LLAME A ALGO DE VÍDEO DE SLD2,
+SEA SINGLETON O NO, DESDE FUNCIONES QUE VENGAN LLAMADAS DIRECTA O INDIRECTAMENTE DESDE UN ATEXIT().
+
+CÓMO VER CON VALGRIND QUE SE ESTÁ LLAMANDO A ALGO DE SDL2 DENTRO DE UN DESTRUCTOR DE SINGLETON (ES DECIR, DENTRO DE UN DESTRUCTOR QUE NO SE
+LLAMA EXPLÍCITAMENTE SINO QUE SE EJECUTA AL SALIR DEL PROGRAMA, DE MANERA DESCONTROLADA COMO SI METIÉSEMOS ESA LLAMANA A UNA FUNCIÓN DE SDL2
+ EN UN ATEXIT())
+=====================================================================================================================================
+
+Como lo que estás buscando son errores que se producen A LA SALIDA del prograa, lo que tienes que mirar en el Valgrind son las primeras cosas "invalid" que se producen 
+a la salida del programa (ignorando las que se producen al principio, que no tienen nada que ver con la salida del programa). En el caso del fheroes2, por ejemplo, ves algo Invalid
+y dentro del stack de llamadas de ese Invalid, ves que se llama al destructor de un singleton: el destructor ~Display
+Las siguientes cosas invalid que se producen a la salida son consecuencias de las primeras...
+
+Otra cosa. Busca llamadas a destructores en valgrind (empiezan con ~, ya lo sabes). Y mira en el código a ver si en esos destructores se llama a algo de SDL2 relacionado con el vídeo.
+Y mira a ver si esos destructores se llaman explícitamente o por el contrario el destructor se ejecuta de manera implícita al retornar el programa principal.
+Y en caso de que sí que sea llamado explícitamente el destructor, mira que no esté siendo llamado desde alguna función llamada indirectamente desde un atexit(), en plan
+el atexit() llama a tal, que a su vez llama a tal, que a su vez llama a una función que incluye una llamada a algo de SDL2 de vídeo.
+
+NOTAS SOBRE THREAD SAFETY
+=========================
+
+Otro problema que puedes tener es que, como los objetos relacionados con el vídeo (Display, Screen, etc.. como se llame en el programa) son singletons normalmente,
+no estés teniendo en cuenta el THREAD SAFETY, con lo cual la clase puede ser instanciada varias veces porque tienes varios threads y pueden hacerlo.
+Y menudo problema eso de que se instancie varias veces un singleton! LOS DIFERENTES THREADS DEBEN SER CAPACES DE INSTANCIAR EL SINGLETON, ESO SÍ ES CORRECTO,
+PERO DEBEN RECIBIR SIEMPRE EL MISMO OBJETO, NUNCA OBJETOS DISTINTOS.
+Mira, aquí tienes un documento que explica cómo solucionar el asunto:
+https://poesiabinaria.net/2014/04/singleton-in-cpp/
+https://poesiabinaria.net/2014/04/singletons-en-c-thread-safety/
+
+
+PUNTEROS VS REFERENCIAS
+=======================
+
+A reference can be thought of as a constant pointer (not to be confused with a pointer to a constant value!) with automatic indirection, ie the compiler will apply the * operator for you.

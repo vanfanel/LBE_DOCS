@@ -2522,7 +2522,7 @@ https://github.com/FluidSynth/fluidsynth/releases
 
 Y configuramos desde un directorio de build que creamos nosotros:
 
-CFLAGS=" -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS=" -march=armv8-a+crc -mtune=cortex-a53" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0
+CFLAGS=" -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS=" -march=armv8-a+crc -mtune=cortex-a53" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
 
 Y compilamos con make -j4, e instalamos con:
 sudo make install
@@ -4404,6 +4404,7 @@ Ejecutamos el autogen.sh
 Configuramos con:
 
 CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa --enable-lto --with-optimization=normal
+
 SI EL EJECUTABLE QUE OBTIENES DA SEGFAULTS, PON --with-optimization=normal EN VEZ DE --with-optimization=heavy
 
 Compilamos con make -j4
@@ -4551,6 +4552,37 @@ sudo apt-get purge 4.9
 Volvemos a poner jessie donde estaba stretch, y actualizamos a los índices de jessie:
 sudo vim /etc/apt/sources.list
 sudo apt-get update
+
+TWIN, el gestor de ventanas para TTY
+=============================
+
+Clonamos su repo de:
+https://github.com/cosmos72/twin
+
+Instalamos esta dependencia previa si queremos ratón en la consola:
+sudo apt-get install gpm libgpm-dev --no-install-recommends
+
+Configuramos e instalamos:
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-hw-tty=yes  --enable-hw-x11=no 
+make -j4
+sudo make install
+
+HEROES OF MIGHT AND MAGIC II (fheroes2) en Linux
+=========================================
+
+Bajamos la última estable de:
+https://github.com/ihhub/fheroes2/releases
+
+Compilamos con:
+WITHOUT_AUDIOCD=1 WITH_SDL2=1 WITHOUT_IMAGE=1 WITHOUT_XML=1 make -j4
+
+Creamos ~/heroes2
+Copiamos el ejecutable a ~/heroes2
+Copiamos el directorio files que viene con los sources a ~/heroes2, quedando ~/heroes2/files
+Creamos ~/heroes2/data y metemos ahí el contenido de DATA de una instalación del Heroes 2 de GOG
+Creamos ~/heroes2/maps y metemos ahí el contenido de MAPS de una instalación del Heroes 2 de GOG
+Copiamos los .ogg que vienen en MUSIC de una instalación del Heroes 2 de GOG a ~/heroes2/files/music
+(No hace falta que les cambies el nombre ni nada, con que lleven en el nombre el número de pista, le vale).
 
 LIBOPENAL en la Raspberry Pi
 =======================
@@ -5474,8 +5506,13 @@ Las teclas son las flechas F, G y H.
 Neverball en la Raspberry Pi
 =====================
 
+Clonamos su repo en:
+git clone --depth 1 https://github.com/Neverball/neverball.git
+
+Editamos Makefile y cambiamos O2 a O3
+
 Compilamos con
-make ENABLE_OPENGLES=1 ENABLE_FS=stdio make ENABLE_NLS=0
+CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4
 
 VVVVVV en la Raspberry Pi
 =====================

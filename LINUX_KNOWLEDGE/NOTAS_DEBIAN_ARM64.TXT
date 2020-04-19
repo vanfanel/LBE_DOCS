@@ -69,6 +69,8 @@ Si no funciona ni así, haz un sudo ifconfig -a, porque igual sí que funciona s
 -OJO, NO desactives el FILE LOCKING API, en FILESYSTEMS. Es necesario para que funcione flock(), y flock() lo usan dpkg y apt-get.
 -OJO, NO desaactives-> Device Drivers -> Graphics support -> Direct Rendering Manager -> Enable legacy fbdev support for your modesetting driver,
 porque en el viejo FBDev es donde se pinta la consola TTY de texto!!
+-OJO, ACTIVA como módulo Device Drivers->Input device support->Mouse interface (es para que funcione el servicio GPM, que nos da ratón en gestores de ventanas en modo texto como
+TWIN, SCREEN, etc). Ya que estás aquí, DESACTIVA "Support for memoryless force-feedback devices"
 -El único RTC que necesitas en DEVICE DRIVERS->REAL TIME CLOCK es el DALLAS/MAXIM DS1307
 
 -Compilamos el kernel y los módulos así:
