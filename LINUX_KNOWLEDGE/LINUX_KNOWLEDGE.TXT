@@ -4567,6 +4567,8 @@ CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+c
 make -j4
 sudo make install
 
+Se activa el menú para moverse por él con el teclado con F12.
+
 HEROES OF MIGHT AND MAGIC II (fheroes2) en Linux
 =========================================
 
