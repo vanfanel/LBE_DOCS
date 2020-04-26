@@ -274,7 +274,7 @@ static void process_keyboard (){
 ********Error:  multiple definition of ...*******************************************************************************************************
 
 ¿estás, además de declarar una variable, asignándole un valor en un fichero de cabecera? Eso se considera definición. O sea que la estás definiendo dos
-veces en el .h. MAL, muy mal. En el .h sólo la declaramos, y en el .c le asignamos el valor.
+veces en el .h. MAL, muy mal. En el .h sólo la declaramos, y en el .c la definimos cuando le asignamos el valor.
 Y si luego quieres acceder a ella desde otra unidad de compilación (otra pareja de un .h + un .c), la declaras como extern en el .c de la segunda unidad de 
 compilación, con lo que ya busca en otra unidad de compilación la declaración+definición y haces desde el .c de la segunda unidad un include al .h de la 
 primera unidad de compilación. O ni eso: con el include vale, se toma como declaración la que haces en el .h de la primera unidad y como definición la 
@@ -790,7 +790,7 @@ Si declaras por ejemplo FILE *fp con la idea de usarlo a lo largo de varias func
 ejecutable fuera de funciones. Te dará un error de "initializer is not constant" si lo intentas. Algo como FILE* fp = NULL sí funcionaría.
 Así que lo que has de hacer es dejar fp declarado, y luego ya, el .c, en alguna de las funciones que inicializan algo, haces el fp = fopen(...) y en alguna
 de las funciones que cierran algo y liberan cosas, al acabar, haces el fclose (fp).
-¡¡SEspero que lo hayas entendido!!
+¡¡Espero que lo hayas entendido!!
 
 ***********Debugear un programa con GDB al que se le pasan argumentos************************************************************
 

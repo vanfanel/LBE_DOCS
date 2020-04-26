@@ -2198,24 +2198,13 @@ CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53"  cmake -DLIBRETRO=1 ..
 Pillamos la última versión de su repo:
 https://bitbucket.org/ecwolf/ecwolf/downloads/
 
-Metemos esto al principio de CMakeLists.txt, para evitar segfaults por la optimización del compilador en O3:
-string(REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
-string(REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
-
-CORREGIMOS la salida para que no nos de un segfault al salir (es cosa de MESA cuando va sin X, OJO, no de las SDL2....):
--Editamos src/wl_main.cpp y comentamos:
-atterm(SDL_Quit); 
-en la función InitGame()
-Y en su lugar ponemos un SDL_Quit() en void Quit(), justo al final, antes de exit(0).
--Editamos src/sdlvideo.cpp y comentamos SDL_QuitSubSystem (SDL_INIT_VIDEO)
-
 Puedes añadir en src/sdlvideo.cpp el típico
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DGPL=ON ..
+cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
 (PARA compilar en modo verbose, haz make VERBOSE=1)
 
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
@@ -2733,6 +2722,37 @@ pcm.!default {
 Si usamos dmixer y queremos cambiar la frecuencia de muestreo de salida para que coincida con la más común de entrada, editamos
 /usr/share/alsa/alsa.conf y cambiamos "defaults.pcm.dmix.rate 48000" a 44100.
 
+*************Grabar audio (grabar sonido) de ALSA, sin usar PULSEAUDIO PARA NADA*************************************************
+
+En la mayoría de los sitios se dice que es imposible, porque el audio de ALSA es enviado a la salida y se pierde, al no pasar por ningún sitio en medio donde sea copiado.
+Pero es posible lograrlo, usando simplemente arecord. Y es MUY MUY fácil.
+
+Lo primero es entender que podemos ver los dispositivos de los que podemos grabar con arecord así:
+arecord -l
+Y vemos:
+card 0: PCH [HDA Intel PCH], device 0: ALC269VC Analog [ALC269VC Analog]
+card 1: Camera [USB 2.0 PC Camera], device 0: USB Audio [USB Audio]
+
+Así de entrada no tenemos ningún dispositivo que nos sirva, así que lo primero insertamos este módulo:
+sudo modprobe snd-aloop
+
+Ahora volvemos a mirar con
+arecord -l
+Y vemos que tenemos:
+card 0: PCH [HDA Intel PCH], device 0: ALC269VC Analog [ALC269VC Analog]
+card 1: Camera [USB 2.0 PC Camera], device 0: USB Audio [USB Audio]
+card 2: Loopback [Loopback], device 0: Loopback PCM [Loopback PCM]
+card 2: Loopback [Loopback], device 1: Loopback PCM [Loopback PCM]
+
+Los dispositivos loopback son los que nos interesan.
+El que me funciona es el:
+card 2: Loopback [Loopback], device 1: Loopback PCM [Loopback PCM]
+
+Así que grabamos de la tarjeta 2 dispositivo 2 con:
+arecord -f CD -r 44100 --device="hw:2,1" grabación.wav
+
+Podría ser necesario usar otro dispositivo de loopback en otras tarjetas distintas, claro.
+
 *************GEMRB : Engine para Baldur's Gate 1 & 2*******************************************************************************
 
 Dependencias previas:
@@ -2855,13 +2875,13 @@ git reset --soft HEAD~
 ************Deshacer un push que hemos hecho mal********************************************************************************
 
 Nos vamos al branch donde queremos corregir el push:
-git checkout dispmanx
+git checkout master
 
 Lo ponemos en el último commit bueno:
 git reset --hard cc4b63bebb6
 
 Hacemos un push forzado:
-git push -f origin dispmanx
+git push -f origin master
 
 Y listo. Ya hemos vuelto en local y en el server al último commit/push bueno.
 
