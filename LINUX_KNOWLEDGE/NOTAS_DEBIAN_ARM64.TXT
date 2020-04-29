@@ -498,7 +498,7 @@ Ahora vamos a por MESA. Instalamos estos paquetes previos:
 
 (SI NO QUIERES GLX, SINO LIBGLVND O NI GLX NI LIBGLVND, SÓLO NECESITAS ESTAS. PERO EN TAL CASO, SDL2 NO FUNCIONARÁ CON OPENGL COMPLETO, SÓLO GLES1 Y GLES2:)
 sudo apt-get install --no-install-recommends \
-    flex bison python3-mako \
+    flex bison python3-mako phyton3-setuptools \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
     zlib1g-dev pkg-config meson
@@ -619,7 +619,7 @@ INSTALAR RETROARCH
 
 Se configura con:
 
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DMESA_EGL_NO_X11_HEADERS" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DMESA_EGL_NO_X11_HEADERS" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --enable-opengles --enable-egl  
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DMESA_EGL_NO_X11_HEADERS" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DMESA_EGL_NO_X11_HEADERS" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-glslang --disable-builtinglslang --enable-opengles --enable-egl  
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 

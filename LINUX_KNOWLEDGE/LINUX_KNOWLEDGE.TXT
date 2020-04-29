@@ -245,8 +245,8 @@ Y le pasamos ese WAD con -file así:
 
 ******Compilando OpenBOR*********************************************************************************************************************************************
 
-Hay que pillar los surces de la última revisión estable. El número lo sacamos de la versión que tengan en la página para descargar.
-svn checkout -r 4165 svn://svn.code.sf.net/p/openbor/engine openbor
+Clonamos los sources de:
+git clone --depth 1 https://github.com/DCurrent/openbor.git
 
 Lo primero es que gcc 5.x sepone por defecto en -std=gnu11, y como ha cambiado la manera de declarar las funciones inline, necesitamos ponernos en -std=gnu99, lo cual le
 pasamos en el Makefile, añadiéndolo a CFLAGS.
@@ -263,7 +263,8 @@ Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
 Los CXXFLAGS son: -O3 -march=armv8-a+crc -mtune=cortex-a53
 Y aniade la línea de optimiación agresiva debajo de la original de CFLAGS:
-CXXFLAGS += -flto -fwhole-program -funroll-loops -fomit-frame-pointer
+CXXFLAGS += -flto -fomit-frame-pointer
+(NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
 
 -En mixer.cpp, ajusta el tamanio del buffer de 4096 a 1024
 -En systemstub_sdl.cp, descomenta el SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 1) y ponlo como SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear")
@@ -2190,11 +2191,6 @@ Compilamos y listo!
 
 ************ECWOLF, el mejor port del Wolfenstein 3D, en la Pi*****************************************************************************
 
-NOTA: SI USAS EL CORE DE RETROARCH, pon los datos y el EXE de la versión de ACTIVISION, NO la original de Apogee, y a Retroarch, además del core, le pasas el WOLF3D.EXE.
-Y se compila con:
-
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53"  cmake -DLIBRETRO=1 ..
-
 Pillamos la última versión de su repo:
 https://bitbucket.org/ecwolf/ecwolf/downloads/
 
@@ -2225,6 +2221,11 @@ https://www.moddb.com/games/wolfenstein-3d/addons/ecwolf-rmst
 
 Al final, mi script wolf3d contiene esta línea para lanzar el ECWOLF a mi gusto:
 ./ecwolf --noadaptive --audiobuffer 512 --file hdpack.pk3 hdmus.pk3
+
+NOTA: SI USAS EL CORE DE RETROARCH, pon los datos y el EXE de la versión de ACTIVISION, NO la original de Apogee, y a Retroarch, además del core, le pasas el WOLF3D.EXE.
+Y se compila con:
+
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53"  cmake -DLIBRETRO=1 ..
 
 ***********XASH3D para Raspberry Pi (GLES) **********************************************************************************************
 
@@ -3226,7 +3227,7 @@ NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da 
 
 **************SDL2 en x86 con Xorg*************************************************************************************************
 
-./configure --prefix=/usr --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-libudev
+./configure --prefix=/usr --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-libudev --enable-video-kmsdrm --disable-video-wayland --disable-video-vulkan --disable-dbus --enable-libudev --disable-ime 
 
 Compilar e instalar.
 
@@ -5050,7 +5051,7 @@ Empezamos compilando libjpeg-turbo, que nos va a hacer falta la versión estáti
 https://github.com/libjpeg-turbo/libjpeg-turbo/releases
 
 Ahora creamos directorio de compilación, entramos, y configuramos con CMAKE así:
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" cmake -DCMAKE_BUILD_TYPE=Release ..
+CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" cmake -DCMAKE_BUILD_TYPE=Release ..
 
 Ahora, clonamos el repo del FROTZ:
 git clone --depth 1 https://github.com/DavidGriffith/frotz.git

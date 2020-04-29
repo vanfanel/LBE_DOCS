@@ -83,6 +83,14 @@ Y lo que es más grave, TAMPOCO HAY SOPORTE PARA MULTIARCH EN EL CROSSCOMPILADOR
 Así que sólo nos queda arreglar las cosas a mano en el sysroot que tenemos en /opt/rpi_root, a base de editar los scripts .so para LD,  o bien dejarlos tal cual 
 y tirar de -B$RPI_ROOT/usr/lib/arm-linux-gnueabihf.
 
+*Error con el linker: undefined reference to `SDL_...
+Y esto lo da teniendo instaladas las SDL2 en su sitio (/usr/lib) y todo bien aparentemente.
+Pues es porque antes podíamos hacer:
+gcc -lSDL2 -L/usr/lib -I/usr/include/SDL2 ejemplo.c
+Y ahora ya no, ahora sólo podemos hacer:
+gcc -lSDL2 ejemplo.c -L/usr/lib -I/usr/include/SDL2
+Es decir: ahora los CFLAGS y los LIBS van obligatoriamente antes de los ficheros a compilar o a linkar, y antes se permitía ponerlos después si se quería.
+Esto ha cambiado, al menos, desde GCC 9.2.
 
 *****Empieza la explicación a por qué --sysroot no funciona bien y nos faltan los crt*.so, scripts .so para LD, librerías...**********
 

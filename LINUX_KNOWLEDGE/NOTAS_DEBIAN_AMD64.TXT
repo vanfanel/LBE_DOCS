@@ -213,7 +213,7 @@ Ahora vamos a por MESA en sí.
 
 Instalamos las dependencias de MESA para que funcione con GLES y GLES2 solamente:
 sudo apt-get install --no-install-recommends \
-    flex bison python3-mako \
+    flex bison python3-mako phyton3-setuptools \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
     zlib1g-dev pkg-config meson
