@@ -1,4 +1,5 @@
 ******LANZAR programas en sus propias CPUs (realtime, nada más puede ejecutarse ahí: garantia total probada con uso masivo de CPU de housekeeping simultáneo)************************** 
+
 HABIENDO AISLADO LAS CPUs DEL 1 al 3 CON "isolcpus=1-3" EN CMDLINE.TXT: 
 -Para lanzar algo como un emulador que no son multithread:
 taskset -c 3 ./retroarch
@@ -1579,6 +1580,7 @@ En este mismo fichero, puedes quitar otros mensajes del login, como la versión 
 Para ello comenta las dos líneas siguientes a esta del lastlogin.
 -Para quitar el delay de login editamos /etc/pam.d/common-auth y dejamos la primera línea que viene descomentada así:
 auth        required      pam_unix.so nodelay
+-Para quitar la frase donde dice la versión de DEBIAN y tal, borra /etc/issue o pon allí lo que quieras que salga.
 
 -Cambiamos el servidor ssh de openssh a dropbear, para ahorrar memoria:
 sudo apt-get install dropbear

@@ -1,3 +1,245 @@
+INFORMACIÓN ESENCIAL SOBRE LA RELACIÓN ENTRE EGL Y GBM
+====================================================
+
+Este repositorio de Daniels, un tio que frecuenta dri-devel en freenode.
+https://gitlab.freedesktop.org/daniels/kms-quads
+Fíjate en lo bien que está explicado todo. Es una maravilla. La puta cueva de las maravillas para quien busca el conocimiento de KMSDRM.
+Atiende al README.
+
+Y mira por ejemplo cómo crea la surface GBM (una surface contiene varios buffers, recuerda!) para usarla con EGL.
+https://gitlab.freedesktop.org/daniels/kms-quads/-/blob/master/egl-gles.c#L551
+
+También, para entender cómo funciona lo de esperar al vsync, mira las explicaciones sobre el vblank en:
+https://github.com/dvdhrm/docs/blob/master/drm-howto/modeset-vsync.c
+
+NOTAS INICIALES SOBRE EL DRIVER POR SI TE TIENES QUE VOLVER A METER CON ÉL
+==================================================================
+
+----PREVIO: EL SENTIDO DE UN DOBLE BUFFER Y DE UN TRIPLE BUFFER----
+
+Normalmente con un doble buffer, al llegar el loop a la función de window swap, tenemos un buffer en pantalla (front buffer) y otro en el que el loop del juego puede dibujar (back buffer).
+así que el loop tiene que esperar al vsync para poder cambiar un buffer por otro, porque no puede meterse a iterar otra vez ya que sobreescribiría el back buffer destruyendo contenido que aún no se ha mostrado.
+
+Con un triple buffer, en el momento de llegar a la función de window swap tenemos un buffer que está en pantalla (front buffer), un buffer dibujado por completo y que aún no se ha mostrado (back buffer)
+y otro buffer más, de manera que cuando el loop del juego llega a la función de window swap puede solicitar el flip (=el back buffer pasa a ser front buffer) usando una función de issue flip
+que retorna inmediatamente (el flip se producirá bien en el siguiente vsync o bien ASAP, dependiendo de si hemos pasado ASYNC o no a la función de issue flip)
+y meterse otra vez a iterar, pudiendo dibujar en el tercer buffer sin sobreescribir segundo que aún no ha sido mostrado. (A la salida de la función de swap window,
+el tercer buffer pasaría a ser el back buffer, y el segundo quedaría con el flip solicitado, que ya se haría cuando fuese).
+El hecho de poder iterar una vez más nos permitiría aprovechar la CPU para crear otro frame y meterlo en el tercer buffer, pero claro, ese tercer buffer se crea mientras el jugador está viendo
+un buffer que no es el anterior, sino el anterior al anterior. Y tenemos por tanto el efecto de 1 frame más de input lag.
+
+OTRA COSA: Cuando solicitas un flip de un buffer (issue flip) le estás haciendo el issue flip a ESE buffer. CADA ISSUE FLIP VA ASOCIADO A UN BUFFER: PUEDES HACER VARIOS ISSUE FLIP SEGUIDOS
+SIN ESPERAR A QUE SE COMPLETEN, CADA UNO A UN BUFFER. LO QUE NO PUEDES HACER ES VARIOS ISSUE FLIP AL MISMO BUFFER SIN QUE SE COMPLETE EL ANTERIOR ISSUE FLIP A ESE MISMO BUFFER,
+PORQUE ENTONCES ES CUANDO TE DA ERROR LA FUNCIÓN drmModeFlipBuffer().
+
+---FIN PREVIO DOBLE Y TRIPLE----
+
+
+----PREVIO: LA DIFERENCIA ENTRE PONER LA ESPERA AL PRINCIPIO O AL FINAL-------
+
+FIJAMOS PARA EMPEZAR: que vamos a usar drmModePageFlip(), que solicita el flip de un buffer (=pasarlo de ser el back buffer donde pinta EGL a ser el front buffer, es decir el buffer visible en pantalla)
+y retorna inmediatamente y que NO LE VAMOS A PASAR EL FLAG DRM_MODE_PAGE_FLIP_ASYNC, POR LO QUE EL FLIP SE PRODUCIRÁ CUANDO LLEGUE EL SIGUIENTE VSYNC.
+
+VEAMOS LAS DOS ALTERNATIVAS DE CÓMO PUEDE SER LA FUNCIÓN DE SWAP:
+
+1) Método 1: ESPERAR EL FLIP A LA ENTRADA, Y LUEGO SOLICITAR OTRO FLIP E INMEDIATAMENTE VOLVER AL LOOP DEL JUEGO (exige tener tres buffers, ahora veremos por qué). Llegamos a la función de swap; Entonces...
+	-Esperamos a que se haya completado el flip anterior
+	-Ya podemos devolver el anterior front buffer al pool de buffers disponibles. Lo devolvemos, con gbm_surface_release_buffer()
+ 	-Marcamos el backbuffer que EGL está usando (lo sacó por su cuenta del pool de buffers disponibles de la GBM surface) como próximo front buffer, con eglSwapBuffers().  
+	-Candamos el backbuffer que EGL está usando como back buffer, y que hemos marcado como próximo front buffer,
+		para que EGL no lo pueda elegir (del pool de buffers disponibles de la GBM surface) como back buffer, con gbm_surface_lock_front_buffer()
+	-Solicitamos el buffer flip del backbuffer que EGL está usando como back buffer, y que hemos marcado como próximo front buffer. Cuando esto suceda, ya será de verdad el front buffer.
+	-Volvemos al loop del juego.
+En este método nos exige para funcionar como se espera (=poder volver al loop del juego mientras llega el flip, que se produce en el vsync) tener tres buffers: 
+	el back buffer que estamos esperando a que se convierta en front buffer mediante el flip, que obviamiente no podemos tocar,
+	el actual front buffer que está en pantalla, que obviamente no podemos tocar, 
+	y un tercer buffer para que EGL pueda dibujar en él para poder volver a entrar en el loop antes de que se complete el flip (que al ser un flip síncrono se completa en el siguiente vsync)
+Este método, además,  como el aviso de que se ha completado el flip se hace desde una función de callback (=función de event handle, esas funciones que se llaman cuando llega el evento)
+y las funciones de callback corren en un hilo a parte (ya que no estamos esperando en el hilo pricipal a que se produzca el evento, sino que la función de issue flip retorna inmediatamente),
+nos obliga a usar una variable que es accedida por el hilo secundario y por el principal, lo que puede dar lugar a condiciones de carrera.
+Este método, además, como entra en el loop del juego antes de que se complete el flip, empieza a crear el nuevo frame del juego sin que el jugador haya visto aún el anterior, con lo que
+"juega a ciegas", siendo aceptadas sus entradas "a ciegas", hasta el siguiente vysnc. Es decir, mete input lag.
+
+2) Método 2: SOLICITAR UN FLIP, ESPERAR A QUE SE COMPLETE ESE FLIP (con lo que ponemos en pantalla lo más reciente) Y ENTONCES VOLVEL AL LOOP DEL JUEGO (con dos buffers nos vale)
+	-Marcamos el backbuffer que EGL está usando (lo sacó por su cuenta del pool de buffers disponibles de la GBM surface) como próximo front buffer, con eglSwapBuffers().  
+	-Candamos el backbuffer que EGL está usando como back buffer, y que hemos marcado como próximo front buffer,
+		para que EGL no lo pueda elegir (del pool de buffers disponibles de la GBM surface) como back buffer, con gbm_surface_lock_front_buffer()
+	-Solicitamos el buffer flip del backbuffer que EGL está usando como back buffer, y que hemos marcado como próximo front buffer. Cuando esto suceda, ya será de verdad el front buffer.
+	-Esperamos a que se produzca el flip que hemo solicitado, que como es síncrono se producirá en el siguiente vsync.
+	-Devolvemos el anterior front buffer al pool de buffers disponibles. Lo devolvemos, con gbm_surface_release_buffer().
+	-Volvemos al loop del juego.
+Este método nos funciona con dos buffers. A la salida de la función de swap sólo necesitamos el buffer que tenemos en pantalla (front buffer) y el buffer donde EGL puede dibujar (back buffer).
+No mete lag porque no entra en el loop de juego hasta haber mostrado el último buffer completado (con lo que NO empieza a elaborar otro frame hasta que el jugador ve el último fotograma completado),
+no requiere variables accedidas desde dos threads, etc.
+
+NOTA CONCLUSIÓN (POR QUÉ UN TRIPLE BUFFER METE INPUT LAG): EN CUANTO TE METES EN EL BUCLE DE JUEGO SIN HABER MOSTRADO EN PANTALLA LO ÚLTIMO QUE HAYAS MANDADO MOSTRAR,
+YA ESTÁS METIENDO LAG PORQUE EL JUEGO EMPIEZA A HACER COSAS SIN QUE EL USUARIO TENGA EN PANTALLA LA INFORMACIÓN MÁS RECIENTE: JUEGA "A CIEGAS" HASTA QUE SE MUESTRA LO ÚLTIMO
+QUE HAS MANDADO MOSTRAR.
+
+----LO PRIMERO es entender cómo funciona ***la mecánica de GBM y EGL****.----
+
+El centro de todo es la GBM surface (windata->gs en el driver).
+Una GBM surface tiene N buffers. PERO OJO: no podemos elegir el número de buffers (depende de la implementación del driver gráfico) ni en qué órden son elegidos para dibujar en ellos fuera de la pantalla
+(es decir, para que un buffer sea puesto como backbuffer) o ser mostrados en pantalla (es decir, ser puesto como frontbuffer).
+Lo que sucede es esto: CUANDO LLAMAMOS POR PRIMERA VEZ A UNA FUNCIÓN QUE NECESITA ACCEDER A UN BACKBUFFER  (con el objetivo de que pase a ser mostrado, es decir, para que pase a ser el frontbuffer) como por ejemplo
+llamadas a eglQuerySurface con EGL_BUFFER_AGE_EXT,  glDraw*(), glClear(), etc.. cosas así que necesitan acceder a un backbuffer, LO QUE PASA ES QUE EGL ELIJE POR SU CUENTA UN BUFFER DEL POOL DE BUFFERS
+DE LA GBM SURFACE. ESE BUFFER SE CONVIERTE EN EL BACKBUFFER, Y SE EMPIEZA A USAR PARA TODAS LAS OPERACIONES (para pintar OpenGL en él).
+ENTONCES, CUANDO LLAMAMOS A eglSwapBuffers(), EL BUFFER QUE ES ACTUALMENTE BACKBUFFER ES PROMOVIDO PARA SER FRONTBUFFER (=buffer en pantalla, visible).
+PERO TEN CLARO QUE eglSwapBuffers() SOLAMENTE PROVOCA QUE EGL MARQUE EL BACKBUFFER PARA PASAR A SER FRONTBUFFER, LO MARCA Y NADA MÁS: NO LO PONE COMO FRONTBUFFER,
+SÓLO LO DEJA MARCADO.
+PARA QUE REALMENTE SE PONGA COMO FRONTBUFFER EN EL SIGUIENTE VSYNC (=para hacer un ISSUE FLIP), TENDREMOS QUE USAR drmModePageFlip() o drmModeSetCrtc() o drmModeAtomicCommit(),
+hay varias maneras.
+UNA VEZ QUE EL BUFFER ESTÁ REALMENTE PUESTO COMO FRONTBUFFER, NOS INTERESA LLAMAR a gbm_surface_lock_front_buffer(), QUE HACE DOS COSAS MUY IMPORTANTES:
+LO SACA DEL POOL DE BUFFERS DISPONIBLES DE LA GBM SURFACE DE MANERA QUE NO PUEDA SER ELEGIDO COMO BACKBUFFER (está como frontbuffer así que está visible en pantalla.. no queremos que se pueda
+escribir en él!) Y ADEMÁS NOS DEVUELVE UN HANDLER AL FRONTBUFFER, PARA QUE ASÍ PODAMOS LIBERARLO Y DEVOLVÉRSELO LUEGO AL POOL DE BUFFERS DISPONIBLES DE LA GBM SURFACE
+MEDIANTE gbm_surface_release_buffer(), y así pueda ser elegido de nuevo como backbuffer por EGL, etc... El ciclo de la vida, amigos.
+
+NO HAGAS NUNCA UN ISSUE FLIP Y TE PONGAS A ESPERAR A VSYNC A CONTINUACIÓN, PORQUE ESO PUEDE TARDAR SUS 16MS TIRADOS A LA BASURA.
+
+----FIN DE LA LECCIÓN 1 DE MECÁNICA DE GBM/EGL--------
+
+-----------LECCIÓN 1.5: LA MECÁNICA DEL BUFFER FLIP-----------------
+
+HACER EL FLIP DE UN BUFFER SIGNIFICA QUE COGEMOS EL BUFFER QUE:
+1- YA ESTÁ SIENDO USADO POR EGL COMO BACKBUFFER, cosa que ocurre cuando EGL lo elige del pool de buffers libres de la GBM SURFACE
+2- YA ESTÁ MARCADO POR EGL PARA PASAR DE BACKBUFFER A FRONTBUFFER, cosa que ocurrió con eglSwapBuffers() 
+... Y LO PONEMOS DE VERDAD COMO FRONT BUFFER (buffer visible).
+
+AHORA BIEN: UN BUFFER FLIP PUEDE SER SÍNCRONO O ASÍNCRONO. UN BUFFER FLIP SÍNCRONO ES AQUEL QUE SE HACE CUANDO LLEGUE EL EVENTO DE VSYNC.
+UN BUFFER FLIP ASÍNCRONO SE HACE ASAP: NO SABEMOS DE ENTRADA CUÁNDO SE PRODUCE, PERO PODEMOS ESPERAR EL EVENTO CORRESPODIENTE AL BUFFER FLIP Y ASÍ LO SABEMOS. 
+***NO CONFUNDAS EL EVENTO DE FLIP CON EL EVENTO DE VSYNC***. EN UN FLIP ASÍNCRONO, EL FLIP NO SE PRODUCE EN EL EVENTO DE VSYNC SINO EN CUALQUIER MOMENTO ASAP.
+ASÍ QUE TEN EN CUENTA ESTO: SI HACES UN FLIP ASÍNCRONO Y ESPERAS AL EVENTO DE FLIP BUFFER, ***NO*** ESTÁS ESPERANDO A VSYNC, YA QUE UN FLIP ASÍNCRONO NO SE PRODUCE
+EN EL VSYNC. SIMPLEMENTE ESTÁS ESPERANDO A QUE EL FLIP SE HAYA COMPLETADO, COSA QUE ES FUNDAMENTAL HACERLA SIEMPRE QUE USES UNA FUNCIÓN QUE HAGA UN ISSUE FLIP,
+YA QUE JAMÁS DEBES HACER UN ISSUE FLIP SIN HABERSE COMPLETADO UN FLIP ANTERIOR.
+ 
+POSIBILIDADES QUE TENEMOS:
+-PODEMOS HACER EL FLIP BUFFER MEDIANTE drmModeSetCrtc(), QUE LO QUE HACE ES EL ISSUE FLIP SÍNCRONO Y ADEMÁS ESPERA A VSYNC, ES DECIR, BLOQUEA A VSYNC.
+ES EL CASO MÁS SENCILLO Y QUE QUEREMOS USAR CUANDO NO QUERAMOS LATENCIA Y ADEMÁS QUERAMOS VSYNC.
+-PODEMOS HACER EL FLIP BUFFER MEDIANTE drmModePageFlip(), QUE LO QUE HACE ES HACER UN ISSUE FLIP Y RETORNAR AL INSTANTE, Y YA SE HARÁ EL FLIP CUANDO SEA. 
+ESTA FUNCIÓN NOS PERMITE HACER ISSUE FLIP SÍNCRONO O ASÍNCRONO.
+
+A) SI LO HACEMOS SÍNCRONO Y ESPERAMOS AL EVENTO DE FLIP BUFFER, ESTAREMOS EN LA PRÁCTICA ESPERANDO A VSYNC, YA QUE AL SER UN FLIP SÍNCRONO SE HACE EN EL VSYNC.
+NO HACER OTRO drmModePageFlip() HASTA QUE SE HAYA PRODUCIDO EL FLIP ANTERIOR SIGNIFICARÍA, EN LA PRÁCTICA, BLOQUEAR EL PROGRAMA HASTA VSYNC CADA VEZ QUE QUERAMOS
+VOLCAR LA PANTALLA, LO QUE EQUIVALDRÍA A HACER drmModeSetCrtc(). 
+
+B) SI LO HACEMOS ASÍNCRONO (mediante drmModePageFlip() con DRM_MODE_PAGE_FLIP_ASYNC) Y ESPERAMOS AL MISMO EVENTO DE FLIP BUFFER, ESTA VEZ ESTAREMOS ESPERANDO SÓLO A ESO, AL EVENTO DE FLIP BUFFER, QUE SE PUEDE PRODUCIR
+EN CUALQUIER MOMENTO. EN ESTE CASO DE SER UN FLIP ASÍNCRONO, NOS INTERESA ESPECIALMENTE TENER CONFIRMACIÓN DEL EVENTO DE FLIP, YA QUE DE LO CONTRARIO PODRÍAMOS
+LLEGAR DE NUEVO A drmModePageFlip() Y HACER OTRO ISSUE FLIP ANTES DE QUE SE HAGA EL FLIP ANTERIOR, CON LO QUE SE PRODUCIRÍA UN ERROR Y drmModePageFlip() NOS DEVOLVERÍA
+EL VALOR EBUSY, Y ESO NO ES BUENO.
+OJO!!!! ESTAMOS EN MAYO DE 2020, Y DRM_MODE_PAGE_FLIP_ASYNC HACE QUE drmModePageFlip() DEVUELVA -22, Y EL FLIP NO SE HACE, Y EL EVENTO DE FLIP NUNCA LLEGA.. Y TE QUEDAS ATASCADO EN EL
+POLL O SELECT QUE USES PARA SABER SI LLEGA O NO. TOTAL, QUE NO HAGAS ISSUE FLIPS ASÍNCRONOS POR AHORA, QUE NO FUNCIONARÁ.
+
+-----------FIN LECCIÓN 1.5---------------------------------------------------------
+
+----LECCIÓN 2: LA MECÁNICA DE ESPERAR HASTA VSYNC-------
+
+Usamos poll(), una función que espera un evento en un descriptor de fichero. Poll() es bloqueante mientras se espera el evento: bloquea hasta que llegue el evento esperado,
+o durante el número de milisegundos que se le pasa en el parámetro timeout, lo que pase antes.
+También se le puede pasar un timeout de 0, para que NO bloquee en absoluto, o un timeout de -1, para que bloquee para siempre hasta que llegue el evento esperado.
+Nosotros le pasamos -1 (para que espere para siempre hasta que llegue el evento esperado) cuando esperamos el vsync,
+y le pasamos 0 (para que no espere nada de nada, ni evento ni tiempo ni nada) cuando desactivamos la espera por vsync.
+
+ 
+Lo primero es conocer la estructura drmEventContext{} que contiene los campos:
+	version (no importante)
+	page_flip_handler (una función de callback, llamada cuando se produce el evento)
+La función drmHandleEvent() recibe el descriptor de fichero y un drmEventContext: lo que hace es establecer QUÉ FUNCIÓN DE CALLBACK EJECUTA COMO RESPUESTA A UN DETERMINADO EVENTO
+EN EL DESCRIPTOR DE FICHERO QUE LE PASAMOS.
+
+Para esperar el evento, usamos la función POLL, que recibe un vector de los pollfd que queramos (nosotros sólo le pasamos uno) y un timeout. CADA POLLFD NOS PERMITE ESPERAR UNOS EVENTOS
+EN UN DESCRIPTOR. Así que cada pollfd tiene:
+-Un descriptor
+-events: los eventos solicitados, por lo que es un parámetro de entrada
+-revents: los eventos ocurridos, por lo que es un parámetro de salida
+
+TIENES QUE TENER CLARO QUE:
+-POR QUÉ TENEMOS EL WHILE (WAITING_FLIP)?? PORQUE NOS PUEDEN LLEGAR MÁS EVENTOS A DESCRIPTOR. Y ADEMÁS NOS PUEDEN LLEGAR MÁS EVENTOS DE TIPO PAGE FLIP, PORQUE 
+ TENGAMOS VARIOS CRTC YA QUE CADA CRTC GENERA SUS VBLANKS INDEPENDIENTES.
+ POR ESO EL BUCLE WHILE: PORQUE EL DESCRIPTOR SE PONE LEGIBLE CON CUALQUIER EVENTO, PERO ESTAMOS ESPERANDO UN EVENTO CONCRETO, Y SÓLO EN ESE CASO ROMPEMOS EL WHILE.
+-NO NOS VALDRÍA CON LLAMAR A drmWaitVBlank(), PORQUE PUEDEN LLEGAR OTROS VBLANK Y NOS INTERESA UNO EN CONCRETO, QUE ES EL CORRESPONDIENTE AL FLIP QUE HEMOS SOLICITADO.
+-ACUÉRDATE DE QUE TODOS LOS FLIPS SE HACEN EN EL SIUGIENTE VSYNC/VBLANK A NO SER QUE LE PASES DRM_MODE_PAGE_FLIP_ASYNC, PERO COMO ESO NO FUNCIONA, SÓLO ES POSIBLE HACER FLIPS
+SÍNCRONOS, O SEA QUE SÍ, CUALQUIER FLIP QUE SOLICITES SE VA A HACER EN EL SIUGIENTE VSYNC.
+-LA FUNCIÓN DE CALLBACK page_flip_handler NO SE EJECUTA EN UN HILO A PARTE: CUANDO LLAMAS A drmHandleEvent(), SI EL EVENTO ES EL QUE ESPERAMOS
+-TODO ES SÍNCRONO, NADA DE NADA VA EN OTRO THREAD, ***POR ESO NO TIENES QUE PROTEGER LA VARIABLE waiting_for_flip CON MUTEX NI NADA***. NOSOTROS 
+LLAMAMOS A drmHandleEvent() Y ESTA CAUSA LA LLAMADA A LA FUNCIÓN DE CALLBACK, QUE TAMBIÉN SE HACE DE MANERA SÍNCRONA, NO EN OTRO HILO NI NADA. 
+
+TOTAL, que lo que hacemos es esto:
+
+-ENTRAMOS EN UN BUCLE. EL SENTIDO DEL BUCLE ES ESTAR EN ÉL MIENTRAS NO ENTRE UN EVENTO ESPECÍFICO: EL EVENTO DE VSYNC QUE ESTAMOS ESPERANDO (Y EN CASO DE ENTRAR ESE TIPO 
+ESE EVENTO ESPECÍFICO, ROMPER EL BUCLE AL PONER waiting_for_flip A FALSE DESDE DENTRO DE LA FUNCIÓN DE CALLBACK page_flip_handler.
+
+	-Esperamos evento en el descriptor de fichero de la gráfica durante un timeout: poll() es bloqueante durante ese timeout.
+	if (poll(&pfd, 1, timeout) < 0) {
+	Cuando se produzca un evento en ese descriptor, o cuando pase el timeout:
+	-Miramos si el evento es de tipo POLLIN, en cuyo caso NOS HACEMOS CARGO DE ÉL con drmHandleEvent(), QUE EJECUTA LA FUNCIÓN page_flip_handler SÓLO SI EL EVENTO ES UN PAGE FLIP
+	 (POR ESO SE LLAMA page_flip_handler Y NO DE OTRA MANERA, PORQUE SÓLO SE EJECUTA CUANDO LLEGA UN EVENTO PAGE FLIP. Y SABEMOS QUE ES EL PAGE FLIP QUE ESTAMOS ESPERANDO
+	Y NO OTRO PAGE FLIP PORQUE EN drmModePageFlip() LE ESTAMOS PASANDO COMO ÚLTIMO PARÁMETRO EL PUNTERI user_data QUE ES PUNTERO user_data QUE VA A RECIBIR page_flip_hander,
+	ASÍ QUE SI EN page_flip_handler PONEMOS EL VALOR APUNTADO POR EL user_data A FALSE, YA SABEMOS QUE LO ESTAMOS PONIENDO A FALSE PORQUE HA LLEGADO EL PAGE FLIP QUE SOLICITAMOS
+	CON LA LLAMADA A drmModePageFlip() DESDE LA QUE ENTRÓ ESE user_data. LO PILLAS? CADA LLAMADA A drmPageFlip() SOLICITA UN FLIP, Y SABEMOS QUE ES ESE FLIP PORQUE EN page_flip_handler
+	TOCAMOS EL user_data DE ESA LLAMADA a drmPageFlip(), Y NO DE OTRA LLAMADA a drmPageFlip().
+	ESTO NOS PERMITE CONTROLAR CUÁNDO SE PRODUCEN DISTINTOS PAGE FLIPS DE DISTINTAS LLAMADAS A drmPageFlip()!!!, Y DEBES ENTENDERLO PERFECTAMENTE.
+
+	if (pfd.revents & POLLIN) {
+		KMSDRM_drmHandleEvent(viddata->drm_fd, &ev);
+
+
+ 	TAMBIÉN, AL LLAMAR A drmHandleEvent(), EL EVENTO ES SACADO DE LA COLA DE EVENTOS DEL DESCRIPTOR. ES FUNDAMENTAL SACAR EL EVENTO DE LA COLA DE EVENTOS DEL DESCRIPTOR, O DE LO CONTRARIO EL SIGUIENTE SELECT
+        SALTARÍA AL MOMENTO SIN BLOQUEAR PORQUE DETECTARÍA ERRÓNEAMENTE QUE EL EVENTO YA HA LLEGADO.
+
+
+
+-----FIN LECCIÓN 2-------------------------------------------------------------
+
+El refresco de pantalla se hace en nuestra función de SwapWindow (KMSDRM_GLES_SwapWindow).
+
+	-Esperamos a que el que va a ser nuestro nuevo frontbuffer haya sido puesto visble (flipped, que es dar la vuelta a una carta para que se vea)
+          puesto que le mandamos hacerlo la última vez que estuvimos aquí.
+          if (!KMSDRM_WaitPageFlip(_this, windata, timeout)) {
+         
+         -Como ya sabemos que nuestro nuevo frontbuffer ha sido puesto visible (flipped), liberamos el antiguo buffer que estaba puesto como frontbuffer, devolviéndolo al pool de buffers disponibles de la GB Surface
+         para que así pueda ser elegido de nuevo por EGL como backbuffer:
+         KMSDRM_gbm_surface_release_buffer(windata->gs, windata->curr_bo);
+
+         -Nos apuntamos cuál va a ser el antiguo frontbuffer la próxima vez que lleguemos aquí, para poder liberarlo como acabamos de hacer con el viejo frontbuffer (para acordarte puedes
+        recordar la nemotecnia "lo que se llama curr_bo es para ser borrado"):
+	windata->curr_bo = windata->next_bo;
+
+	-Marcamos el buffer que actualmente EGL tiene como backbuffer para que sea el próximo frontbuffer, cosa que no ocurrirá hasta que hagamos un FLIP (ojo que eglSwapBuffers sólo lo marca,
+        el FLIP se hace desde DRM luego):
+        if (!(_this->egl_data->eglSwapBuffers(_this->egl_data->egl_display, windata->egl_surface))) {
+
+	-Candamos el buffer que hemos marcado como próximo frontbuffer, para que no pueda ser elegido por EGL para ser backbuffer, y también obtenemos un handler a ese próximo frontbuffer, para saber
+        exactamente cuál es de entre los buffers del pool de buffers de la GBM surface:
+        windata->next_bo = KMSDRM_gbm_surface_lock_front_buffer(windata->gs);
+
+	-Obtenemos la estructura de información del buffer que hemos marcado como próximo frontbuffer, porque las funciones de flip de DRM usan eso:
+	fb_info = KMSDRM_FBFromBO(_this, windata->next_bo);
+
+	-Solicitamos FLIP en sí, de manera que el buffer marcado como próximo frontbuffer pasará a ser frontbuffer de verdad en el próximo VSYNC:
+	ret = KMSDRM_drmModePageFlip(viddata->drm_fd, dispdata->crtc_id, fb_info->fb_id, DRM_MODE_PAGE_FLIP_EVENT, &windata->waiting_for_flip);
+	(El último parámetro es el puntero a los datos que le pasamos a la función de callback
+
+Nosotros usamos una GBM surface, es el centro de todo. Se llama windata->gs. La GBM surface contiene los diferentes buffers. Una GBM surface tiene varios buffers. 
+Pueden estar libres o no. Para marcar un buffer como no-libre, usamos
+KMSDRM_gbm_surface_lock_front_buffer(windata->gs).
+Nos interesa candar el front buffer para que no sea usado como back-buffer, ya que un back-buffer es para dibujar en él sin que se vea. Y no queremos dibujar en el buffer que se está viendo...
+
+EGL utiliza como surface nestra GBM surface, creada así:
+windata->gs = KMSDRM_gbm_surface_create(viddata->gbm, width, height, surface_fmt, surface_flags);
+
+...Que le es pasada a SDL_EGL_CreateSurface() para que la use como EGLSurface en:
+windata->egl_surface = SDL_EGL_CreateSurface(_this, (NativeWindowType)windata->gs);
+
+Y que luego EGL utiliza como EGLSurface en:
+eglSwapBuffers(_this->egl_data->egl_display, windata->egl_surface)
+Cuando le pasamos la GBM surface a eglSwapBuffers(), lo que hace eglSwapBuffers() es elegir un buffer de la GBM surface y lo promueve para ser el próximo frontbuffer. 
+Pero eglSwapBuffers() SÓLO HACE ESO: ELIJE SIN NINGÚN CONTROL POR NUESTRA PARTE Y LO MARCA PARA SER EL SIGUIENTE FRONT BUFFER.
+Entonces, con gbm_surface_lock_front_buffer() se nos da el ACTUAL (no el futuro frontbuffer) frontbuffer, y nosotros lo guardamos, para liberarlo luego. Es la única situación en la que obtenemos
+un buffer directamente y podemos hacer algo con él.
+
+CÓMO ENGANCHA CON EL RESTO DE LAS SDL2
+=====================================
+
 Interface con clase kmsdrm video en:
 
 src/video/SDL_sysvideo.h
