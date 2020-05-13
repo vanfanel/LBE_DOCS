@@ -110,51 +110,6 @@ vcgencmd measure_temp
 sudo cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
 vcgencmd get_config arm_freq
 
-******SDL2 en la Raspberry Pi***************************************************************************************************************************************************************
-
-Instalamos libudev-dev y libasound2-dev, lo primero.
-
-Bajamos los sources estables de http://libsdl.org/download-2.0.php
-
-Si queremos que el SN30 de 8Bitdo se detecte como un gamepad (importante en SDLPop!), tenemos que añadir en src/joystick/SDL_gamecontrollerdb.h, en la parte de #if defined(__LINUX__):
-"03000000c82d00000031000011010000,8Bitdo Receiver,a:b1,b:b0,back:b10,leftshoulder:b6,leftx:a0,lefty:a1,rightshoulder:b7,start:b11,x:b4,y:b3,",
-
-O bien:
-"03000000c82d00000031000011010000,8Bitdo Receiver,a:b1,b:b0,x:b4,y:b3,back:b10,start:b11,leftshoulder:b6,rightshoulder:b7,dpup:-a1,dpdown:+a1,dpleft:-a0,dpright:+a0"
-
-Configuramos con:
-
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-video-mir --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --disable-video-vulkan
-
-Compilamos e instalamos.
-Añadimos a /etc/profile:
-export SDL_VIDEO_DOUBLE_BUFFER=1
-
-Para SDL mixer, y SDL_image, primero instalamos libvorbis-dev, libpng12-dev
-Y también
-sudo apt-get install autotools-dev
-sudo apt-get install automake
-
-Para SDL2_mixer, configuramos con:
-
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth   
-
-Para SDL2_image o SDL2_ttf, configuramos con:
-
-CFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" CXXFLAGS="-O3 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ./configure --prefix=/usr --without-x   
-
-SDL2_ttf se configura igual, pero tiene problemas para compilar porque detecta que tenemos OPENGL de escritorio. Deshabilita su detección en el configure.
-Le puedes pasar también --without-x si tienes los headers de las X11 instalados.
-
-SI un gamepad o joystick no te lo detecta como gamecontroller (SDL_IsGameController() retorna false, pero debería funcionar como joystick al menos), tienes dos opciones:
-
--La fácil y buena, sin recompilar nada: te vas al gamepadtool (http://www.generalarcade.com/gamepadtool) y lo configuras para que te genere el mapping. Copias el mapping al portapapeles con "Copy mapping string",
-y lo aniades en /etc/profile usando la variable de entorno SDL_CAMECONTROLLERCONFIG. Por ejemplo, para el joystick de Dreamcast conectado con el conversor Raphnet, lo dejo así:
-SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
-
--La complicada porque te toca recompilar las SDL2: lo puedes agregar a src/joystick/SDL_gamecontrollerdb.h.
-Se hace igual, con el gamepadtool para sacar el mapping, lo aniades ahí, y recompilas. Es un rollo y no hace falta, usa la otra opción de arriba, es más sencillo todo.
-
 *****SDL2 en hardware genérico con mi driver KMSDRM*******************************************************************************************************************************************
 
 Lo primero, asegúrate de tener instaladas algunas otras cosas:
@@ -2026,6 +1981,13 @@ Esto es lo que se llama el "binding" del servidor.
 sale en negro o con ASCII raros todo va bien, ya que telnet lee datos crudos por ese puerto.
 O bien desde el propio servidor, o desde el cliente, con "nmap -p 3632 192.168.5.7". Nos tiene que salir que el puerto 3632 TCP está abierto. 
 
+***********Las voces en OSMAND+ (osmand) en Android**********************************************************************************
+
+Este tema siempre da algo de guerra.
+Debes instalar un motor de TTS en el sistema, que las versiones libres de Android no suelen traerlo. Instala el AHOTTs de la Aurora Store (Clon libre de la PlayStore).
+Elígelo como motor TTS en la configuración del teléfono, en accesibilidad. 
+Ya te debería ir en OSMAND.
+
 ***********Actualizar gcc 4.6 a gcc 4.7 en raspbian****************************************************************************************
 
 Tras hacer un apt-get update y un apt-get upgrade, y sin eliminar NADA, o sea, dejando gcc-4.6 ya que tiene muchas dependencias, hacemos
@@ -2099,6 +2061,20 @@ y antes de usarlo hacemos
 sudo updatedb
 
 Y ya se supone que podemos usarlo.
+
+***********TIC-80, una consola imaginaria para Pi****************************************************************************************************
+
+Clonamos su repo y actualizamos los submódulos para poder compilar:
+git clone --depth 1 https://github.com/nesbox/TIC-80.git
+git submodule update --init --recursive
+
+Creamos el dir de compilación, entramos, configuramos y compilamos:
+mkdir b3
+cd b3
+cmake  -DCMAKE_BUILD_TYPE=Release \
+-DSDL_GPU_DISABLE_GLES_1=TRUE -DSDL_GPU_DISABLE_GLES_3=ON -DSDL_GPU_DISABLE_OPENGL=ON \
+ -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DDISABLE_NETWORKING=ON ../
+make -j4
 
 ***********EDUKE32: Duke Nukem 3D en la Raspberry Pi*********************************************************************************************
 
@@ -3226,20 +3202,6 @@ Verificamos que no hay -g, que se compila con -O3 y que los flags de cpu son cor
 Listo!
 
 NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da igual.
-
-**************SDL2 en x86 con Xorg*************************************************************************************************
-
-./configure --prefix=/usr --disable-diskaudio --disable-oss --disable-pulseaudio --disable-haptic --disable-dummyaudio --disable-video-dummy --enable-libudev --enable-video-kmsdrm --disable-video-wayland --disable-video-vulkan --disable-dbus --enable-libudev --disable-ime 
-
-Compilar e instalar.
-
-**************SDL2 en x86 o donde sea con KMS/DRM + GLES*************************************************************************
-
-En este caso va con cmake en lugar de configure, así que creamos el directorio build, nos metemos en él y hacemos:
-
-cmake ../ -DVIDEO_X11=OFF -DVIDEO_WAYLAND=OFF -DOSS=OFF -DDISKAUDIO=OFF -DVIDEO_DUMMY=OFF -DCMAKE_INSTALL_PREFIX=/usr
-
-Compilar, e instalar.
 
 **************SWAP de emergencia*************************************************************************************************
 Algunos sistemas, como la Raspberry Pi, no usan swap normalmente porque nos cargaríamos la SD rápido.
