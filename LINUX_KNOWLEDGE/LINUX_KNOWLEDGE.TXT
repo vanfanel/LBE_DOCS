@@ -2071,7 +2071,8 @@ git submodule update --init --recursive
 Creamos el dir de compilación, entramos, configuramos y compilamos:
 mkdir b3
 cd b3
-cmake  -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DDISABLE_NETWORKING=ON ..
+cmake  -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DBUILD_SOKOL=OFF -DDISABLE_NETWORKING=ON ..
+
 make -j4
 
 ***********EDUKE32: Duke Nukem 3D en la Raspberry Pi*********************************************************************************************

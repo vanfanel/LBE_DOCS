@@ -12,6 +12,9 @@ https://gitlab.freedesktop.org/daniels/kms-quads/-/blob/master/egl-gles.c#L551
 También, para entender cómo funciona lo de esperar al vsync, mira las explicaciones sobre el vblank en:
 https://github.com/dvdhrm/docs/blob/master/drm-howto/modeset-vsync.c
 
+Y para consultar las funciones de drm lo mejor es esta web de NVIDIA:
+https://docs.nvidia.com/drive/archive/5.0.5.0bL/nvvib_docs/NVIDIA%20DRIVE%20Linux%20SDK%20Development%20Guide/baggage/group__direct__rendering__manager.html#gaca6c143ee52d6cd6b6f7cf1522be4c08
+
 NOTAS INICIALES SOBRE EL DRIVER POR SI TE TIENES QUE VOLVER A METER CON ÉL
 ==================================================================
 
@@ -236,6 +239,27 @@ Cuando le pasamos la GBM surface a eglSwapBuffers(), lo que hace eglSwapBuffers(
 Pero eglSwapBuffers() SÓLO HACE ESO: ELIJE SIN NINGÚN CONTROL POR NUESTRA PARTE Y LO MARCA PARA SER EL SIGUIENTE FRONT BUFFER.
 Entonces, con gbm_surface_lock_front_buffer() se nos da el ACTUAL (no el futuro frontbuffer) frontbuffer, y nosotros lo guardamos, para liberarlo luego. Es la única situación en la que obtenemos
 un buffer directamente y podemos hacer algo con él.
+
+LA GESTIÓN DE LOS MODOS DE VÍDEO EN EL BACKEND KMSDRM
+===================================================
+
+Funciona a dos niveles: por una parte los modos de vídeo de SDL, que se meten en una lista de modos de vídeo SDL en KMSDRM_GetVideoModes(),
+y por otra parte los modos de KMSDRM, que están desde el principio en dispdata->connector->modes (a veces abreviado como conn->modes).
+
+Lo que se hace es que, en KMSDRM_GetVideoModes(), se va recorriendo la lista de modos de KMSDRM a base de iterar en conn->modes[i],
+y las características de cada modo de KMSDR se guardan en un modo de SDL (SDL_DisplayMode).
+Además, y esto es lo importante, se guarda en otro campo de cada modo SDL llamado driverdata (mode.driverdata) el índice que tiene ese modo en la lista de modos de KMSDRM.
+Para eso sirve driverdata: es un puntero genérico void*, que nosotros usamos para guardar el índice de ese modo en la lista de modos de KMSDRM.
+(En realidad, el puntero void* mode.driverdata apunta a una estructura que sólo tiene un campo: mode_index, que es ese índice que digo que ocupa el modo en la lista de modos KMSDRM). 
+
+Esto nos permite luego, en KMSDRM_SetDisplayMode(), recibir un modo SDL y, a partir de su mode.driverdata (es decir, a partir del campo mode_index de mode.driverdata)
+acceder al modo KMSDRM que tiene ese índice, sencillamente indexando con ese índice a la lista de modos KMSDRM así: 
+	mode = conn->modes[modedata->mode_index];
+
+O sea, que en KMSDRM_SetDisplayMode(), nos pasan un modo SDL y nosotros obtenemos el modo KMSDRM correspondiente para poder establecerlo a nivel nuestro, del backend KMSDRM
+(ya que lógicamente KMSDRM no funciona con modos de vídeo SDL sino con modos de vídeo KMSDRM, cuya lista tenemos desde el principio.)
+
+Esto lo tienes que entender bien si te metes con los modos otra vez.
 
 CÓMO ENGANCHA CON EL RESTO DE LAS SDL2
 =====================================
