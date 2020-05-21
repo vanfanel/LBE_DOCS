@@ -261,6 +261,11 @@ O sea, que en KMSDRM_SetDisplayMode(), nos pasan un modo SDL y nosotros obtenemo
 
 Esto lo tienes que entender bien si te metes con los modos otra vez.
 
+LUEGO, a parte, el modo que usa el sistema se guarda a parte (aunque también estará en la lista de modos SDL y en la lista de modos KMSDRM).
+Se guarda en display.desktop_mode, al final de KMSDRM_VideoInit(), y el problema es que, como ahí todavía no hemos rellenado la lista de modos SDL (cosa que se hace en
+KMSDRM_GetDisplayModes()), el modo no tiene un índice que meterle, así que como ves tenemos que iterar en la lista de modos KMSDRM sólo para guardar el índice del modo
+en display->desktop_mode->driverdata->mode_index.
+
 CÓMO ENGANCHA CON EL RESTO DE LAS SDL2
 =====================================
 
