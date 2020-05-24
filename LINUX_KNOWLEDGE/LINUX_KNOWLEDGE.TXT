@@ -1775,6 +1775,19 @@ sudo mount -t affs -o loop,rw,offset=258048,sizelimit=754661376 /media/manuel/E9
 Y para montar la imágen del disco laserdisc.hdf donde tienes los juegos de EAROK:
 sudo mount -o loop,rw,offset=258048,sizelimit=1073479680 -t affs /media/manuel/E94A-DA9D/amiga/laserdisc.hdf /mnt/hdd
 
+***********Montar una partición HFS dentro de una imágen completa de las que usa el core FPGA MACPLus************************************
+
+La imágen que uso es la de 100MB de aquí: http://www.savagetaylor.com/downloads/
+(Aunque ponga que es de IOMEGA Zip funciona perfectamente)
+
+Como el Mini VMAC no funciona con imágenes en las que la partición HFS empieza con un offset, la extraemos primero tirando de la info de parted:
+
+dd if=OS_608_100MB.vhd of=OS_608_100MB_HFS.vhd skip=49152 count=94306304 iflag=skip_bytes,count_bytes
+
+Hacemos lo que sea y la volvemos a meter:
+
+dd if=OS_608_100MB_HFS.vhd of=OS_608_100MB.vhd seek=49152 count=94306304 iflag=count_bytes oflag=seek_bytes
+
 ***********Encoger una partición de una imágen de disco***********************************************************************************
 
 No es simplemente acceder con parted: se tiene que operar sobre un loop para esa imágen.
@@ -5006,6 +5019,8 @@ Ajusta el valor de PREFIX a /usr en vez de /usr/local
 
 Ahora compila con "make frotz" (hay "make sfrotz" para SDL, etc...)
 Y sudo make install
+
+Para compilar SFROTZ, no te olvides de pasar el CFLAG  -fsigned-char, o el cursor aparecerá descolocado. En el futuro no debería ser necesario.
 
 COMPILAR FROTZ VERSIÓN SDL, QUE SOPORTA ACENTOS, SIN INSTALAR LIBJPEG EN EL SISTEMA
 =================================================================================
