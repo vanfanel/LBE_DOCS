@@ -106,7 +106,7 @@ int main () {
 
 CREAR IMÁGENES DE DISCO DURO DE ATARIST Y LUEGO MONTARLAS EN LINUX
 ==============================================================
-
+La info sale de aquí: http://joo.kie.sk/?page_id=306
 PREVIO: El sistema y driver de discos original de Atari para los AtariST se llamaba AHDI. Tiene limitaciones del copón como que sólo puede arrancar desde particiones de tipo GEM de menos i igual de 16Megas,
 luego tampoco se pueden hacer particiones GEM de más de 32MB, etc.. es una mierda.
 Tenemos dos tipos de particiones, las GEM y las BGM. Las BGM son las modernas (varios GB, etc), que se pueden hacer desde el ICD y que van con el driver ICD. Vamos a usar particiones BGM, claro.
