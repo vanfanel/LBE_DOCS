@@ -131,3 +131,5 @@ sudo mount -t vfat -o loop,offset=1024 hdd200m.vhd hdd
 Ahí ya metemos lo que queramos.
 Tienes juegos instalados en disco a saco aquí:
 https://atari.8bitchip.info/fromhd2.php#DL
+
+-Si tienes que reinstalar el AMBERSTAR, sólo se instala desde una TOS 1.x. Desde una 2.x, al pedirnos el disco B no lo reconoce y no permite seguir la instalación.
