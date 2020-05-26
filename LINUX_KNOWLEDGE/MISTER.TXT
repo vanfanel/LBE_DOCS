@@ -106,34 +106,27 @@ int main () {
 
 CREAR IMÁGENES DE DISCO DURO DE ATARIST Y LUEGO MONTARLAS EN LINUX
 ==============================================================
-La info sale de aquí: http://joo.kie.sk/?page_id=306
+
 PREVIO: El sistema y driver de discos original de Atari para los AtariST se llamaba AHDI. Tiene limitaciones del copón como que sólo puede arrancar desde particiones de tipo GEM de menos i igual de 16Megas,
 luego tampoco se pueden hacer particiones GEM de más de 32MB, etc.. es una mierda.
-Tenemos dos tipos de particiones, las GEM y las BGM. Las BGM son las modernas (varios GB, etc), que se pueden hacer desde el ICD y que van con el driver ICD. Vamos a usar particiones BGM, claro.
+TOTAL, que nosotros usamos HDDRIVER de: https://www.hddriver.net/en/
+ES DE PAGO, el fichero se llama hddr1016.zip
 
 Empezamos creando un fichero para contener la imágen de 200MB:
 dd if=/dev/zero of=hdd200m.vhd count=200 bs=1M
 
-Ahora tenemos que formatearla, particionarla e instalarle el driver ICD.
-Para ello, lo primero es crear un DSK normal usando HATARI (no hay que tocar nada, sólo un DSK como viene por defecto.
-Luego ese DSK lo monatamos en Linux (sin offset ni nada) y le metemos los contenidos del fichero de aquí:
-http://joo.kie.sk/wp-content/uploads/2013/05/icdp655a.zip
-Ahora arrancamos el HATARI con la imágen de HDD y el DSK, y cargamos el programa del DSK que se llama ICDFMT.PRG.
-En el ICDFMT
--Primero nos vamos a FORMAT y formateamos el disco.
--Una vez hecho eso, vamos a PARTITIONS.
-Una vez en el menú de particionado, le damos al botón PARAMETERS y ponemos ATARI AHDI COMPATIBLE a NO, MAP BAD SECTORS a SCSI, y VERIFY PASSES a 0  
-Luego volvemos al menú principal de particionado, y borramos todass las particiones y sólo creamos UNA de 200MB (o de lo que sea) que ocupe todo el disco, de formado BGM
-(las particiones GEM están limitadas a 32MB o algo así...).
-Cuidado de tener el check puesto en la columna ON.
-Cuando lo tengas todo listo, dale a PARTITION ENTIRE HARD DISK. Se hará el particionado.
--Una vez particionado, se reseteará el sistema. Entonces verás que se carga el driver ICD desde el diskette, y ya vemos la unidad C, pero para no tener que tener el diskette puesto
-tenemos que instalar el driver ICD en el disco duro en sí.
-Para ello, cargamos el programa HDUTIL.PRG del diskette, le damos a BOOT, seleccionamos la unidad C, le damos a INSTALL y se instalará allí el driver.
-Ya podemos sacar el diskette y arrancará sin problemas detectando el disco duro.
+Ahora creamos un DSK con el HATARI, lo montamos (se monta sin parámetros), y metemos en él los contenidos de hddr1016.zip
+Reiniciamos el HATARI con el DSK del driver, y con la imágen de disco que acabamos de crear.
+Entramos en el diskette A: desde GEM, y ejecutamos HDDRUTIL.APP
+Una ve que haya cargado, seleccionamos el DEVICE (ventana del medio), y luego nos vamos a las opciones de arriba a MEDIUM->FORMAT. Formateamos. Luego nos vamos a MEDIUM->PARTITION.
+Particionamos, creando una sola partición que ocupe todo el disco. No hace falta que especifiques un tipo de partición, ni que cambies ninguna otra opción.
+Luego nos pide que reiniciemos. Reiniciamos y volvemos a cargar HDDRUTIL.APP.
+En la ventana de arriba de las tres, seleccionamos el disco C:, y nos vamos a las opciones de arriba a FILE->INSTALL HDD DRIVER. Lo instalamos.
+Ahora nos vamos otra vez a las opciones de arriba con el disco C: seleccionado, a SETTINGS->DEVICES AND PARTITIONS, y desmarcamos todo menos el 0.0, así no nos buscará todo lo demás en el arranque.
+Ahora volvemos a FILE->INSTALL HDD DRIVER, y lo volvemos a instalar, ya con los settings que acabamos de configurar. Reiniciamos y listo.
 
-Y ahora ya salimos de HAYATI y ya podemos montar la imágen de disco así, paśandole el offset ya que como de costumbre estas imágenes tienen cosas antes de las particiónes:
-sudo mount -t vfat -o loop,offset=512 hdd200m.vhd hdd
+Y ahora ya salimos de HATARI y ya podemos montar la imágen de disco así, paśandole el offset ya que como de costumbre estas imágenes tienen cosas antes de las particiónes:
+sudo mount -t vfat -o loop,offset=1024 hdd200m.vhd hdd
 
 Ahí ya metemos lo que queramos.
 Tienes juegos instalados en disco a saco aquí:
