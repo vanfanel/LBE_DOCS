@@ -5005,8 +5005,8 @@ Son cosas distintas e independientes, la granularidad del kernel es mucho mayor 
 Y el scheduler, en tus sistemas de no-escritorio, va de sobra a 100Hz para una cosa que ejecutas a la vez (mas el housekeeping del kernel fuera de las CPUs aisladas).
 Así que sí, se puede.
 
-COMPILAR FROTZ A SECAS, SIN GRÁFICOS NI SDL NI NADA
-===================================================
+COMPILAR FROTZ 
+===============
 
 Instala las ncursesw, que es una versión más mehó de las ncurses:
 sudo apt-get install libncursesw5-dev
@@ -5025,6 +5025,9 @@ Para compilar SFROTZ, no te olvides de pasar el CFLAG  -fsigned-char, o el curso
 Los juegos que tienen gráficos los llevan en un fichero de extensión .BLB. O sea que tendrías que tener zorkzero.dat y zorksero.blb y hacer:
 sfrotz zorkzero.dat zorkzero.blb
 Muchas veces vienen con otra extensión, los renombras a .blb y ya.
+
+Hay dos juegos con sonido, el Sherlock y el Lurking Horror. Los sonidos de ambos deben estar en un subdirectorio llamado sound, y están en formato .snd
+Los de ambos van al mismo subdirectorio y ya. Tú le pasas al frotz el .DAT del juego, y ya se busca él la vida para encontrar los sonidos en sound.
 
 Puedes convertir juegos de THE QUILL a .z5 para el frotz con el unquill: https://www.seasip.info/Unix/UnQuill/
 Pero el unquill recibe .SNA, y lo más que hay por ahí son .Z80, así que para pasar .SNA a .Z80 usa el spconv: https://live.worldofspectrum.org/infoseek/utils
