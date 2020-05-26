@@ -5022,6 +5022,13 @@ Y sudo make install
 
 Para compilar SFROTZ, no te olvides de pasar el CFLAG  -fsigned-char, o el cursor aparecerá descolocado. En el futuro no debería ser necesario.
 
+Puedes convertir juegos de THE QUILL a .z5 para el frotz con el unquill: https://www.seasip.info/Unix/UnQuill/
+Pero el unquill recibe .SNA, y lo más que hay por ahí son .Z80, así que para pasar .SNA a .Z80 usa el spconv: https://live.worldofspectrum.org/infoseek/utils
+Una vez que tengas el .SNA, sólo tienes que hacer:
+./unquill -T5 -L -OBORED1.z5 BORED1.SNA
+Tienes juegos de THE QUILL en .Z80 en: http://ifmirror.russotto.net/indexes/if-archiveXgamesXspectrum.html
+
+
 COMPILAR FROTZ VERSIÓN SDL, QUE SOPORTA ACENTOS, SIN INSTALAR LIBJPEG EN EL SISTEMA
 =================================================================================
 
