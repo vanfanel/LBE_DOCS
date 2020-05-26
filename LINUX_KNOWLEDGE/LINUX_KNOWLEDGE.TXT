@@ -5022,6 +5022,10 @@ Y sudo make install
 
 Para compilar SFROTZ, no te olvides de pasar el CFLAG  -fsigned-char, o el cursor aparecerá descolocado. En el futuro no debería ser necesario.
 
+Los juegos que tienen gráficos los llevan en un fichero de extensión .BLB. O sea que tendrías que tener zorkzero.dat y zorksero.blb y hacer:
+sfrotz zorkzero.dat zorkzero.blb
+Muchas veces vienen con otra extensión, los renombras a .blb y ya.
+
 Puedes convertir juegos de THE QUILL a .z5 para el frotz con el unquill: https://www.seasip.info/Unix/UnQuill/
 Pero el unquill recibe .SNA, y lo más que hay por ahí son .Z80, así que para pasar .SNA a .Z80 usa el spconv: https://live.worldofspectrum.org/infoseek/utils
 Una vez que tengas el .SNA, sólo tienes que hacer:
