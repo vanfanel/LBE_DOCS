@@ -118,7 +118,7 @@ dd if=/dev/zero of=hdd200m.vhd count=200 bs=1M
 Ahora creamos un DSK con el HATARI, lo montamos (se monta sin parámetros), y metemos en él los contenidos de hddr1016.zip
 Reiniciamos el HATARI con el DSK del driver, y con la imágen de disco que acabamos de crear.
 Entramos en el diskette A: desde GEM, y ejecutamos HDDRUTIL.APP
-Una ve que haya cargado, seleccionamos el DEVICE (ventana del medio), y luego nos vamos a las opciones de arriba a MEDIUM->FORMAT. Formateamos. Luego nos vamos a MEDIUM->PARTITION.
+Una vez que haya cargado, seleccionamos el DEVICE (ventana del medio), y luego nos vamos a las opciones de arriba a MEDIUM->FORMAT. Formateamos. Luego nos vamos a MEDIUM->PARTITION.
 Particionamos, creando una sola partición que ocupe todo el disco. No hace falta que especifiques un tipo de partición, ni que cambies ninguna otra opción.
 Luego nos pide que reiniciemos. Reiniciamos y volvemos a cargar HDDRUTIL.APP.
 En la ventana de arriba de las tres, seleccionamos el disco C:, y nos vamos a las opciones de arriba a FILE->INSTALL HDD DRIVER. Lo instalamos.
@@ -131,5 +131,8 @@ sudo mount -t vfat -o loop,offset=1024 hdd200m.vhd hdd
 Ahí ya metemos lo que queramos.
 Tienes juegos instalados en disco a saco aquí:
 https://atari.8bitchip.info/fromhd2.php#DL
+
+-Para descomprimir archivos .ARC en Linux, usa nomarch, que se puede instalar con apt-get.
+-Para que un ejecutable se autoejecute en el inicio, simplemente mételo en AUTOBOOT. Tiene que tener extensión .PRG, los .TOS sólo hay que renombrarlos y ya.
 
 -Si tienes que reinstalar el AMBERSTAR, sólo se instala desde una TOS 1.x. Desde una 2.x, al pedirnos el disco B no lo reconoce y no permite seguir la instalación.
