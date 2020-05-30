@@ -782,14 +782,16 @@ CUIDADO!!! CUIDADO!!! NO LE PONGAS un gateway o puerta de enlace, porque LA CONE
 Ahora editamos /etc/sysctl.conf y descomentamos la línea
 #net.ipv4.ip_forward=1
 Añadimos el binding a las IPtables:
-sudo iptables -t nat -A POSTROUTING -o wlp1s0 -j MASQUERADE
-Donde digo wlp1s0, me refiero al interface con el que el servidor se conecta a internet. Antes de la 14.04 de Lubuntu, la wifi era eth1, luego fue un tiempo wlan0... así que fíjate bien.
+sudo iptables -t nat -A POSTROUTING -o wlo1 -j MASQUERADE
+Donde digo wlo1, me refiero al interface con el que el servidor se conecta a internet. Antes de la 14.04 de Lubuntu, la wifi era eth1, luego fue un tiempo wlan0... así que fíjate bien.
 Si queremos que estas cosas empiezen a funcionar sin reiniciar, hacemos
 echo 1 > /proc/sys/net/ipv4/ip_forward
 Ahora salvamos las IPtables:
 sudo iptables-save | sudo tee /etc/iptables.sav
-Y nos aseguremos de que se carguen al reiniciar, editando /etc/rc.local (OJO, SI NO TIENES /etc/rc.local mira más abajo!!) y añadiendo:
+Y nos aseguremos de que se carguen al reiniciar, creando /etc/profile.d/load-iptables.sh con el contenido:
 iptables-restore < /etc/iptables.sav
+Y le damos permmisos de ejecución:
+sudo chmod +x /etc/profile.d/load_iptables.sh
 Recuerda crear una conexión en el servidor que sea del mismo rango que la IP fija del cliente, y en el cliente poner como gateway la IP del servidor, añadir
 el servidor dns en /etc/resolv.conf si hace falta, etc... Lo típico de /etc/network/interfaces, que tienes más abajo en varios sitios.
 
