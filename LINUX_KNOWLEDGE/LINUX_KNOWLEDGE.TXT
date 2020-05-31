@@ -788,8 +788,10 @@ Si queremos que estas cosas empiezen a funcionar sin reiniciar, hacemos
 echo 1 > /proc/sys/net/ipv4/ip_forward
 Ahora salvamos las IPtables:
 sudo iptables-save | sudo tee /etc/iptables.sav
-Y nos aseguremos de que se carguen al reiniciar, creando /etc/profile.d/load-iptables.sh con el contenido:
-iptables-restore < /etc/iptables.sav
+Y nos aseguremos de que se carguen al reiniciar. Para ello, editamos el crontab así:
+sudo crontab -e
+Y le añadimos la línea:
+@reboot /usr/sbin/iptables-restore < /etc/iptables.sav
 Y le damos permmisos de ejecución:
 sudo chmod +x /etc/profile.d/load_iptables.sh
 Recuerda crear una conexión en el servidor que sea del mismo rango que la IP fija del cliente, y en el cliente poner como gateway la IP del servidor, añadir
@@ -797,7 +799,18 @@ el servidor dns en /etc/resolv.conf si hace falta, etc... Lo típico de /etc/net
 
 *******No tengo rc.local! Dónde añado cosas al inicio??*********************************************************************************************
 
-En las nuevas versiones de Lubuntu, systemd no trae el servicio rc.local ya, así que tenemos que crearlo:
+En las versiones actuales de Debian/Ubuntu, el servicio rc-local, que leía comandos de /etc/rc.local, no viene ya, así que tenemos dos opciones:
+
+OPCIÓN 1: Añadir cosas al crontab. Es la opción más simple.
+
+Editamos el crontab
+sudo crontab -e
+Y ahí al final le añadimos la línea del comando que queramos, pero con la ruta completa donde está el comando. Además, si queremos que
+lo que sea se ejecute al inicio, le ponemos delante @reboot. Así:
+@reboot <COMANDO CON SU RUTA COMPLETA>
+
+OPCIÓN 2: Crearnos un servicio rc-local
+
 sudo vim /etc/systemd/system/rc-local.service
 ..con el contenido:
 [Unit]
