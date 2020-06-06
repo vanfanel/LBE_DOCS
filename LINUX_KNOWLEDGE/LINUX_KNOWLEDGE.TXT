@@ -1349,22 +1349,6 @@ Y el proceso contrario:
 
 tr '\n' '\r' < unixfile.txt > macfile.txt
 
-***********Montar un VHD de MSX para la MiSTer******************************************************************************************
-
----Averiguamos dónde empieza con parted. Necesitamos saberlo en BYTES para poder pasárselo a mount, NO en sectores como nos lo dice FDISK. Por eso usamos parted:
-
-sudo parted msx.vhd
-(parted) unit                                                             
-Unit?  [compact]? B                                                       
-(parted) p                                                                
-
-Number  Start   	End         	      Size                     Type        File system  Flags
- 1      	   65536B    131137535B  131072000B  primary  fat16
-
----Nos quedamos con el 65536. Y montamos así:
-
-sudo mount -t vfat -o loop,offset=65536 msx.vhd /mnt/hdd
-
 ***********Editar el AUTOEXEC.BAT de MSX en Linux**************************************************************************************
 
 Se puede editar como cualquier otro fichero, pero debes guardarlo en formato DOS antes de salir, así:

@@ -131,6 +131,8 @@ sudo mount -t vfat -o loop,offset=1024 hdd200m.vhd hdd
 Ahí ya metemos lo que queramos.
 Tienes juegos instalados en disco a saco aquí:
 https://atari.8bitchip.info/fromhd2.php#DL
+Cuando un juego no vaya bien, búscalo aquí:
+http://d-bug.mooo.com/klaz/
 
 -Para descomprimir archivos .ARC en Linux, usa nomarch, que se puede instalar con apt-get.
 -Para que un ejecutable se autoejecute en el inicio, simplemente mételo en AUTOBOOT. Tiene que tener extensión .PRG, los .TOS sólo hay que renombrarlos y ya.
@@ -150,3 +152,20 @@ connmanctl config ethernet_020304050607_cable --nameservers 192.168.1.1 8.8.8.8
 Tienes que tener una conexión cableada con IP estática en esa IP en el ordenador,
 y tener el ordenador preparado para compartir la conexión WIFI, como haces para la Raspberry Pi (Ver en LINUX_KNOWLEDGE.TXT)
 Tienes que ejecutar el comando para tener la IP estática.
+
+
+***********Montar un VHD de MSX para la MiSTer******************************************************************************************
+
+---Averiguamos dónde empieza con parted. Necesitamos saberlo en BYTES para poder pasárselo a mount, NO en sectores como nos lo dice FDISK. Por eso usamos parted:
+
+sudo parted msx.vhd
+(parted) unit                                                             
+Unit?  [compact]? B                                                       
+(parted) p                                                                
+
+Number  Start   	End         	      Size                     Type        File system  Flags
+ 1      	   65536B    131137535B  131072000B  primary  fat16
+
+---Nos quedamos con el 65536. Y montamos así:
+
+sudo mount -t vfat -o loop,offset=65536 msx.vhd /mnt/hdd
