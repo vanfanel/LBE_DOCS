@@ -3121,11 +3121,7 @@ sudo swapon /dev/sda1
 ldd <nombre_del_ejecutable>
 
 
-*************Commander Genius en la Raspberri Pi**********************************************************************************
-
-Dependencias previas:
-
-sudo apt-get install libboost-dev --no-install-recommends
+*************Commander Genius en la Raspberry Pi**********************************************************************************
 
 Clonamos el repo, se requieren tres pasos:
 
@@ -3139,7 +3135,7 @@ cd b3
 
 Ahora configuramos:
 
-cmake -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON  -DUSE_PYTHON3=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DUSE_PYTHON3=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
@@ -5553,3 +5549,87 @@ Con el Chromium, nos instalamos la extensión tampermonkey.
 Ahora desde el Chromium también nos vamos a abrir este script: https://gist.github.com/infval/c69b479ff0bd590f2dd7e1975fe2fcad
 Le damos a RAW (es como un github), y nos saldrá un botón de INSTALL. Instalamos el script, es un script para el tampermonkey.
 Ahora nos vamos a emuparadise, le damos a Download Links de lo que queramos bajar, t nos sale una opción nueva que es "download with workaround script". Le damos y empieza a bajar.
+
+HACER QUE LOS MANDOS SEAN DETECTADOS COMO GAMEPAD POR LA API DE SDL2
+=====================================================================
+
+Lo primero es conocer el GUID del controller. El GUID es propio de las SDL, no se puede sacar de otro sitio, y es el resultado de fundir el bus, vendor, product and version numbers en un sólo valor.
+
+El programa con el que sacamos el GUID de un controller es este:
+
+#include <SDL.h>
+
+int main()
+{
+  SDL_Init(SDL_INIT_JOYSTICK);
+  atexit(SDL_Quit);
+
+  int num_joysticks = SDL_NumJoysticks();
+  int i;
+  for(i = 0; i < num_joysticks; ++i)
+  {
+    SDL_Joystick* js = SDL_JoystickOpen(i);
+    if (js)
+    {
+      SDL_JoystickGUID guid = SDL_JoystickGetGUID(js);
+      char guid_str[1024];
+      SDL_JoystickGetGUIDString(guid, guid_str, sizeof(guid_str));
+      const char* name = SDL_JoystickName(js);
+
+      int num_axes = SDL_JoystickNumAxes(js);
+      int num_buttons = SDL_JoystickNumButtons(js);
+      int num_hats = SDL_JoystickNumHats(js);
+      int num_balls = SDL_JoystickNumBalls(js);
+
+      printf("%s \"%s\" axes:%d buttons:%d hats:%d balls:%d\n", 
+             guid_str, name,
+             num_axes, num_buttons, num_hats, num_balls);
+
+      SDL_JoystickClose(js);
+    }
+  }
+
+  return 0;
+}
+
+
+Compilamos este programa con:
+
+gcc -o sdl2-joystick sdl2-joystick.c `pkg-config --libs --cflags sdl2`
+
+
+Si queremos que el SN30 de 8Bitdo se detecte como un gamepad (importante en SDLPop!), tenemos que añadir en src/joystick/SDL_gamecontrollerdb.h, en la parte de #if defined(__LINUX__):
+"03000000c82d00000031000011010000,8Bitdo Receiver,a:b1,b:b0,back:b10,leftshoulder:b6,leftx:a0,lefty:a1,rightshoulder:b7,start:b11,x:b4,y:b3,",
+
+O bien en /etc/profile
+export SDL_GAMECONTROLLERCONFIG="03000000c82d00000031000011010000,8Bitdo Receiver,a:b1,b:b0,back:b10,leftshoulder:b6,leftx:a0,lefty:a1,rightshoulder:b7,start:b11,x:b4,y:b3,platform:Linux,"
+
+Y si queremos que el mando de DreamCast se detecte como gamepad, tenemos que añadir en src/joystick/SDL_gamecontrollerdb.h, en la parte de #if defined(__LINUX__):
+"030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,",
+
+O bien en /etc/profile
+export SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
+
+
+DESCARGAR DE MEGA POR CACHOS CON LAS MEGATOOLS
+==============================================
+
+Se usa megadl.
+
+Clonamos el repo de las megatools:
+git clone --depth 1 https://megous.com/git/megatools
+
+Instalamos dependencias previas:
+sudo apt-get install libglib2.0-dev libcurl4-gnutls-dev libssl-dev
+
+Creamos el directorio de compilación, entramos en él y configuramos con meson:
+mkdir b3
+cd b3
+meson ..
+
+Compilamos
+ninja -j3
+sudo ninja install
+
+Y ya podemos descargar con:
+megatools dl <LINK DE MEGA>

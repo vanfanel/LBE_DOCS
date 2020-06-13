@@ -620,7 +620,7 @@ Basta con poner "*<nombre_puntero>@<número_de_elementos>", como por ejemplo en:
 
 void *array = calloc (1, len * sizeof (int));
  
-y luego eb GDB haríamos:
+y luego en GDB haríamos:
 
 p *(int*)temp@40
 o bien
