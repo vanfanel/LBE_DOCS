@@ -3135,22 +3135,30 @@ cd b3
 
 Ahora configuramos:
 
-cmake -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DUSE_PYTHON3=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DUSE_PYTHON3=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
 El resultado queda en src/CGeniusExe
 
-Los datos de los juegos deben ir en ~/.CommanderGenius/games/
-Si quieres especificar qué juego cargar, es con 
-./CGeniusExe dir=keen1
-donde keen1 estaría en ~/.CommanderGenius/games/keen1 (el parámetro dir es relativo a ~/.CommanderGenius/games/ siempre).
+Nos creamos ~/keen
+Ahora editamos ~/.CommanderGenius/cgenius.cfg, y dejamos el primer searchpath así:
+SearchPath1 = ${HOME}/keen
+Ahora, creamos ~/keen/games, y metemos el directorio keen1 (que contrendrá los archivos del keen1) ahí, en ~/keen/games/keen1
+Y ya lo tiene que ver el cargador.
+
+Si queremos lanzar un juego directamente sin pasar por el lanzador, es con:
+./CGeniusExe dir=games/keen1
+
+Y si quieres tener música en keen1, gráficos mejorados, etc... te vas al directorio hqp que viene con los sources de gitlab,
+y copias el directorio hqp/global a ~/keen, y luego lo que hay en hqp/keen1 a ~/keen/games/keen1,
+lo que hay en hqp/keen2 a ~/keen/games/keen2, etc... 
 
 *************OMNISPEAK, motor de KEEN 4, 5 y 6 en la Raspberry Pi*************************************************************
 
 Entramos en src y compilamos con:
  
- make RENDERER=sdl2 CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" -j4
+make RENDERER=sdl2 CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" -j4
 
 *************Doomretro en la Raspberry Pi*************************************************************************************
 
@@ -4449,7 +4457,7 @@ AR Correction: Disabled
 
 Y listo!
 
-LÖVE2D en la Raspberry Pi (love)
+LOVE2D en la Raspberry Pi (love)
 ============================
 
 Bajamos los últimos source estables de:
@@ -5633,3 +5641,5 @@ sudo ninja install
 
 Y ya podemos descargar con:
 megatools dl <LINK DE MEGA>
+O bien
+megadl <LINK DE MEGA>
