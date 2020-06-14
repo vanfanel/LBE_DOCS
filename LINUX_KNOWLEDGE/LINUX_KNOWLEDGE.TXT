@@ -2094,7 +2094,10 @@ Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
 Bajamos los últimos sources estables desde:
 https://dukeworld.com/eduke32/synthesis/latest/?s=d&o=d&dir=eduke32/synthesis/latest
 
-Edita source/build/src/sdlayer.cpp y haz todos los cambios que se detallan a continuación:
+O clonamos su repo en:
+git clone --depth 1 https://voidpoint.io/terminx/eduke32.git
+
+Editamos source/build/src/sdlayer.cpp y hacemos todos los cambios que se detallan a continuación:
 
 -Añadimos 
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
