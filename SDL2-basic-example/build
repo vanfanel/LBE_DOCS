@@ -1,1 +1,1 @@
-gcc -I/usr/include/SDL2 ppp.c -o ppp -lSDL2
+gcc -O0 -ggdb -I/usr/include/SDL2 ppp.c -o ppp -lSDL2
