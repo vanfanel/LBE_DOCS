@@ -123,6 +123,8 @@ Ahora ya configuramos:
 Fíjate que en el resúmen al acabar del configure, te tiene que indicar que el soporte KMSDRM está activado, para ello se requiere que las librerías necesarias estén en el sistema (libgbm y libdrm).
 Ahora borra las librerías libSDL2* que vienen instaladas en la mayoría de las distros en /usr/lib/x86_64-linux-gnu/, e instala las que acabas de compilar, que acabarán en /usr/lib.
 
+Si quieres debugear las SDL, añade antes de ./configure: CFLAGS="-O0 -ggdb"
+
 ******Notas SDLPop : el clon open source y libre de Prince of Persia *****************************************************************************************************************************************************
 
 Para adaptar los controles a tu gusto, ve a SDL_JOYBUTTONDOWN  y a SDL_JOYBUTTONUP, y en ambos casos verás que los CASE de los botones están en secuencia: 0 1 2 3
@@ -4467,17 +4469,12 @@ Bajamos los últimos source estables de:
 https://bitbucket.org/rude/love/downloads/
 
 Satisfacemos algunas dependencias.
-sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev  libmpg123-dev libluajit-5.1-dev luajit
+sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libtheora-dev libmpg123-dev libluajit-5.1-dev luajit
 
-Las otras dos dependencias son OpenAL (tienes instrucciones para compilarlas e instalarlas) y libtheora. NO las instalamos con apt-get porque tiran de BASURA como PulseAudio y X11,
-que NO quiero en mi sistema.
-Con respecto a libtheora, entra aquí y baja los últimos estables:
-https://www.theora.org/downloads/
-Configura con
-CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CPPFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-examples --disable-encode
+Las otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarlas).
 
 Configuramos love:
-CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr
 
 make y sudo make install
 

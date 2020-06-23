@@ -250,7 +250,7 @@ Lo que se hace es que, en KMSDRM_GetVideoModes(), se va recorriendo la lista de 
 y las características de cada modo de KMSDR se guardan en un modo de SDL (SDL_DisplayMode).
 Además, y esto es lo importante, se guarda en otro campo de cada modo SDL llamado driverdata (mode.driverdata) el índice que tiene ese modo en la lista de modos de KMSDRM.
 Para eso sirve driverdata: es un puntero genérico void*, que nosotros usamos para guardar el índice de ese modo en la lista de modos de KMSDRM.
-(En realidad, el puntero void* mode.driverdata apunta a una estructura que sólo tiene un campo: mode_index, que es ese índice que digo que ocupa el modo en la lista de modos KMSDRM). 
+(Es muy simple: el puntero void* mode.driverdata apunta a una estructura que sólo tiene un campo: mode_index, que es ese índice que digo que ocupa el modo en la lista de modos KMSDRM). 
 
 Esto nos permite luego, en KMSDRM_SetDisplayMode(), recibir un modo SDL y, a partir de su mode.driverdata (es decir, a partir del campo mode_index de mode.driverdata)
 acceder al modo KMSDRM que tiene ese índice, sencillamente indexando con ese índice a la lista de modos KMSDRM así: 
