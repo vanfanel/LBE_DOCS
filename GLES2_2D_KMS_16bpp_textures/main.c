@@ -20,6 +20,11 @@ int main () {
 	int total_pitch = 320 * 2; /*2 bpp*/
 	
 	uint16_t *pixels = malloc (320 * 200 * sizeof(uint16_t));
+
+
+
+	// PART I
+
 	init_egl();
 
 	gles2_init(320, 200, 16, false);
@@ -45,8 +50,41 @@ int main () {
 			drmPageFlip();
 		}
 	}
-	free (pixels);
+
 	deinitEGL();
+
+	// PART II
+
+	init_egl();
+
+	gles2_init(320, 200, 16, false);
+
+	clear_screen (320, 200,  pixels);
+
+	for (m = 0; m < 1; m++) {
+		for (j = 0; j < 320 - 50; j++) {
+			
+			clear_screen (320, 200,  pixels);
+			
+			for (i = 0; i < 200; i++) {
+				
+				for (k = 0; k < 50; k++) 
+					pixels[i * 320 + j + k] = 0x0FF0;
+				
+			}
+			
+			gles2_draw(pixels);
+			ret = eglSwapBuffers(eglInfo.display, eglInfo.surface);
+			drmPageFlip();
+		}
+	}
+
+	deinitEGL();
+
+	// PART II ENDS
+	
+	free (pixels);
+
 	
 	return 0;
 }

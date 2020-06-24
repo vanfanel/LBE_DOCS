@@ -372,7 +372,15 @@ real-time priority (-r) 99
 max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
--El guardado y restauración de los valores de alsamixer falla a veces. Tienes DOS opciones:
+-Para configurar el audio con el driver de audio HDMI del lado de ARM (que es como lo venimos haciendo en 2020):
+	-En config.txt
+		dtoverlay=vc4-kms-v3d-pi4
+		#dtparam=audio=on <---SE DEBE deshabilitar la carga de bcm2835.
+	-En /usr/share/alsa/cards/vc4-hdmi.conf no debería hacer falta cambiar nada, pero por si acaso, el contenido que funciona es el que dice
+	 Dom en este hilo:https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769
+Y YA. CON ESTO TIENE QUE FUNCIONAR SÍ O SÍ. 
+
+-Si el guardado y restauración de los valores de alsamixer falla a veces, tienes DOS opciones:
 
 	-La que uso SIN LA HIFIBERRY (podría fallar a veces ya que el ordering de las tarjetas puede cambiar entre arranques, no está claro. Lo ideal sería tener sólo la tarjeta vc4-hdmi, pero en 64bit no suena):
 		En vim drivers/gpu/drm/vc4/vc4_hdmi.c, haz que la función vc4_hdmi_audio_init retorne cero y no haga nada más. Adiós a la tarjeta vc4-hdmi!!
