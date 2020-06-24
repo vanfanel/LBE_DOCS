@@ -376,8 +376,7 @@ max locked memory (kbytes, -l) unlimited
 	-En config.txt
 		dtoverlay=vc4-kms-v3d-pi4
 		#dtparam=audio=on <---SE DEBE deshabilitar la carga de bcm2835.
-	-En /usr/share/alsa/cards/vc4-hdmi.conf no debería hacer falta cambiar nada, pero por si acaso, el contenido que funciona es el que dice
-	 Dom en este hilo:https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769
+	-Si falla algo, pregunta en este hilo a dom:https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769
 Y YA. CON ESTO TIENE QUE FUNCIONAR SÍ O SÍ. 
 
 -Si el guardado y restauración de los valores de alsamixer falla a veces, tienes DOS opciones:
