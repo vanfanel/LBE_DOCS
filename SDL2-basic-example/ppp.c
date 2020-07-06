@@ -20,14 +20,10 @@ int main () {
         screen_pixels[i] = 0xffff0000;
     }    
 
-    SDL_Init(SDL_INIT_EVERYTHING);              // Initialize SDL2
+    SDL_Init(SDL_INIT_VIDEO);              // Initialize SDL2
 
     windowTest();
-    
-    SDL_Delay(500);  
-
-    windowTest();
-
+   
     // Clean up
     SDL_Quit();
     return 0;
@@ -43,7 +39,7 @@ int windowTest () {
         SDL_WINDOWPOS_UNDEFINED,           // initial y position
         320,                               // width, in pixels
         200,                               // height, in pixels
-        0//SDL_WINDOW_FULLSCREEN              // flags - see below
+        SDL_WINDOW_FULLSCREEN      // flags - see below
     );
 
     // Check that the window was successfully created
@@ -60,7 +56,6 @@ int windowTest () {
                                SDL_PIXELFORMAT_ARGB8888,
                                SDL_TEXTUREACCESS_STREAMING,
                                src_width, src_height);
-
 
     // Present the image
     

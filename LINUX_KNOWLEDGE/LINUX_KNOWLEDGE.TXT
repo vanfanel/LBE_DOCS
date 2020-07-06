@@ -3128,7 +3128,11 @@ ldd <nombre_del_ejecutable>
 
 *************Commander Genius en la Raspberry Pi**********************************************************************************
 
-Clonamos el repo, se requieren tres pasos:
+Podemos bajarnos una release (lo más recomendado), la última de aquí:
+
+https://gitlab.com/Dringgstein/Commander-Genius/-/tags
+
+O si decidimos clonar el repo, se requieren tres pasos:
 
 git clone --depth 1 https://gitlab.com/Dringgstein/Commander-Genius.git
 git submodule init
@@ -3326,6 +3330,10 @@ map <C-w> :bnext!<cr>
 " tap indent movement 
 vmap <Tab> >gv
 vmap <S-Tab> <gv
+
+" para que cuando estás en modo visual y mueves el texto con < y >, no se pierda la selección.
+vnoremap < <gv
+vnoremap > >gv
 
 ===========================================================
 
