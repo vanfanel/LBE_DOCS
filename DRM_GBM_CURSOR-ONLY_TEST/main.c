@@ -48,8 +48,7 @@ void create_cursor () {
         printf("Unsupported pixel format for cursor\n");
     }
 
-    cursor_bo = gbm_bo_create(viddata->gbm_dev, cursor_w, cursor_h, bo_format,
-                                       GBM_BO_USE_CURSOR | GBM_BO_USE_WRITE);
+    cursor_bo = gbm_bo_create(viddata->gbm_dev, cursor_w, cursor_h, bo_format, GBM_BO_USE_CURSOR | GBM_BO_USE_WRITE);
     if (!cursor_bo) {
         printf("ERROR: Could not create GBM cursor BO\n");
     }
@@ -61,8 +60,12 @@ void create_cursor () {
     /* Create a buffer and set all pixels of it. */
     buffer = malloc(bufsize);
     printf ("bo_stride = %d buffsize = %d\n", bo_stride, (int)bufsize);
-    /*               AARRGGBB                      */
-    memset(buffer, 0xFFFF00FF, bo_stride * cursor_h);
+    
+    /*                  0xAARRGGBB                      */
+    uint32_t pixvalue = 0xFFFF0000; 
+    for (int i = 0; i < (bufsize/4); i++) {
+        memcpy(((uint32_t*)buffer) + i, &pixvalue, 4);
+    }
 
     /* Write the buffer to the cursor bo. */
     if (gbm_bo_write(cursor_bo, buffer, bufsize)) {
