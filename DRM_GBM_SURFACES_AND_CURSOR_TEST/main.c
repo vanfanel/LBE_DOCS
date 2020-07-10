@@ -7,7 +7,8 @@
 
 #include "context.h"
 
-void cursor_test();
+void create_cursor ();
+void destroy_cursor ();
 
 int main () {
 
@@ -15,13 +16,13 @@ int main () {
 	KMSDRM_VideoInit();
         KMSDRM_CreateWindow();
 
-        cursor_test();
+        create_cursor();
 
 	KMSDRM_SwapWindow();
 
 	usleep(1000000);
 
-        drmModeSetCursor(viddata->drm_fd, dispdata->crtc_id, 0, 0, 0);
+        destroy_cursor();
 
         KMSDRM_DestroyWindow();
 	KMSDRM_VideoQuit();
@@ -29,7 +30,7 @@ int main () {
 }
 
 //Hardware GBM cursor creation test
-void cursor_test () {
+void create_cursor () {
 	
     struct gbm_bo *cursor_bo;
     uint32_t bo_format, bo_stride;
@@ -39,6 +40,10 @@ void cursor_test () {
 
     int cursor_w = 128;
     int cursor_h = 128;
+    /* Each line has 128 pixels, 32 bits per pixel => each line has 4096 bits,
+       so each line is 4096 bits / 8 = 512 bytes.
+       Total buffer size (bufsize) => 512 * 128 = 65536 bytes. 
+    */
             
     bo_format = GBM_FORMAT_ARGB8888;
 
@@ -46,8 +51,7 @@ void cursor_test () {
         printf("Unsupported pixel format for cursor\n");
     }
 
-    cursor_bo = gbm_bo_create(viddata->gbm_dev, cursor_w, cursor_h, bo_format,
-                                       GBM_BO_USE_CURSOR | GBM_BO_USE_WRITE);
+    cursor_bo = gbm_bo_create(viddata->gbm_dev, cursor_w, cursor_h, bo_format, GBM_BO_USE_CURSOR | GBM_BO_USE_WRITE);
     if (!cursor_bo) {
         printf("ERROR: Could not create GBM cursor BO\n");
     }
@@ -58,7 +62,15 @@ void cursor_test () {
 
     /* Create a buffer and set all pixels of it. */
     buffer = malloc(bufsize);
-    memset(buffer, 0xFFFFFFFF, bo_stride * cursor_h);
+    printf ("bo_stride = %d buffsize = %d\n", bo_stride, (int)bufsize);
+
+    /* Keep in mind that: 1) memset() only takes 1 byte. With ecah memcpy() call however, 
+     * we can copy as many bytes as we want.    
+     *                  0xAARRGGBB */
+    uint32_t pixvalue = 0x88FF0000; 
+    for (int i = 0; i < (bufsize/4); i++) {
+        memcpy(((uint32_t*)buffer) + i, &pixvalue, 4);
+    }
 
     /* Write the buffer to the cursor bo. */
     if (gbm_bo_write(cursor_bo, buffer, bufsize)) {
@@ -79,7 +91,9 @@ void cursor_test () {
     } else {
         printf("drmModeSetCursor succesfull.\n");
     }
+}
 
-    /* Hide cursor. */
-    //drmModeSetCursor(viddata->drm_fd, dispdata->crtc_id, 0, 0, 0);
+
+void destroy_cursor () {
+        drmModeSetCursor(viddata->drm_fd, dispdata->crtc_id, 0, 0, 0);
 }

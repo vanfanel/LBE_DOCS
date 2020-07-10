@@ -60,8 +60,10 @@ void create_cursor () {
     /* Create a buffer and set all pixels of it. */
     buffer = malloc(bufsize);
     printf ("bo_stride = %d buffsize = %d\n", bo_stride, (int)bufsize);
-    
-    /*                  0xAARRGGBB                      */
+
+    /* Keep in mind that: 1) memset() only takes 1 byte. With ecah memcpy() call however, 
+     * we can copy as many bytes as we want.    
+     *                  0xAARRGGBB */
     uint32_t pixvalue = 0xFFFF0000; 
     for (int i = 0; i < (bufsize/4); i++) {
         memcpy(((uint32_t*)buffer) + i, &pixvalue, 4);
