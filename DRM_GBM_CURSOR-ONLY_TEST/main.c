@@ -9,6 +9,7 @@
 
 void create_cursor();
 void destroy_cursor();
+void alpha_premultiply_ARGB8888 (uint32_t *pixel);
 
 int main () {
 
@@ -61,12 +62,15 @@ void create_cursor () {
     buffer = malloc(bufsize);
     printf ("bo_stride = %d buffsize = %d\n", bo_stride, (int)bufsize);
 
-    /* Keep in mind that: 1) memset() only takes 1 byte. With ecah memcpy() call however, 
-     * we can copy as many bytes as we want.    
-     *                  0xAARRGGBB */
-    uint32_t pixvalue = 0x00FF0000; 
+    /* VERY important: We have created an ARGB8888 GBM BO for the cursor,
+       but we need to fill it with alpha-premultiplied pìxels [AA, RR, GG, BB], instead of straight-alpha ones
+       [AA. AA*RR, AA*GG, AA*BB]. */ 
+    uint32_t pixel = 0xEEFF0000;
+    alpha_premultiply_ARGB8888 (&pixel);
+
+    /* */
     for (int i = 0; i < (bufsize/4); i++) {
-        memcpy(((uint32_t*)buffer) + i, &pixvalue, 4);
+        memcpy(((uint32_t*)buffer) + i, &pixel, 4);
     }
 
     /* Write the buffer to the cursor bo. */
@@ -90,6 +94,41 @@ void create_cursor () {
     }
 }
 
+/* Each pixel is converted from straight-alpha [AA, RR, GG, BB] to premultiplied-alpha [AA. AA*RR, AA*GG, AA*BB].
+   But we have to operate these multiplications with floats instead of integers, and also we have 
+   to convert the values to be relative to 0-255, where 255 is 1.00 and anything between 0 and 255 is 0.xx.
+*/
+void alpha_premultiply_ARGB8888 (uint32_t *pixel) {
+    uint32_t pix_output = 0;
+    uint32_t A, R, G, B;
+
+    A = (*pixel >> (3 << 3)) & 0xFF;
+    R = (*pixel >> (2 << 3)) & 0xFF;
+    G = (*pixel >> (1 << 3)) & 0xFF;
+    B = (*pixel >> (0 << 3)) & 0xFF;
+
+    printf ("Extracted A byte = 0x%x = float %2f\n", A, (float)A /255 );
+    printf ("Extracted R byte = 0x%x = float %2f\n", R, (float)R /255 );
+    printf ("Extracted G byte = 0x%x = float %2f\n", G, (float)G /255 );
+    printf ("Extracted B byte = 0x%x = float %2f\n", B, (float)B /255 );
+    printf ("\n\n");
+
+    printf("Composed pix_output (before ALPHA premult.) = 0x%x\n", *pixel);
+
+    R = (float)A * ((float)R /255);
+    G = (float)A * ((float)G /255);
+    B = (float)A * ((float)B /255);
+
+    (*pixel) = (((uint32_t)A << 24) | ((uint32_t)R << 16) | ((uint32_t)G << 8)) | ((uint32_t)B << 0);
+
+    printf ("ALPHA-multiplied A byte = 0x%x = float %2f\n", A, (float)A /255 );
+    printf ("ALPHA-multiplied R byte = 0x%x = float %2f\n", R, (float)R /255 );
+    printf ("ALPHA-multiplied G byte = 0x%x = float %2f\n", G, (float)G /255 );
+    printf ("ALPHA-multiplied B byte = 0x%x = float %2f\n", B, (float)B /255 );
+    printf ("\n\n");
+
+    printf("Composed pix_output (after ALPHA premult.) = 0x%x\n", *pixel);
+}
 
 void destroy_cursor () {
         drmModeSetCursor(viddata->drm_fd, dispdata->crtc_id, 0, 0, 0);
