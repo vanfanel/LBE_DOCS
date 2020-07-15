@@ -3610,6 +3610,10 @@ e instalamos:
 sudo apt-get install libgtk2.0-dev
 Ya sólo queda un -/config y make, y a correr.
 
+*********Averiguar qué paquete contiene un archivo dado***************
+
+dpkg -S filename
+
 *********************Versión que tenemos instalada de un paquete******
 
 dpkg -l |grep libgbm-dev
@@ -5037,7 +5041,6 @@ Baja los surces de la última estable de:
 https://gitlab.com/DavidGriffith/frotz/-/releases
 
 Ahora edita el Makefile y pon sound a NONE, comenta la línea de los CFLAGS del -g, y descomenta la que tienes encima, o sea, la que tiene los CFLAGS de optimización, y aniade los propios de la Pi3.
-Ajusta el valor de PREFIX a /usr en vez de /usr/local
 
 Ahora compila con "make frotz" (hay "make sfrotz" para SDL, etc...)
 Y sudo make install

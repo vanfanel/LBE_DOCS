@@ -597,7 +597,7 @@ Para ello, actualizamos src/audio/SDL_audiotypecvt.c desde la versión actual, q
 (En la parte de arriba tienes la última versión en ZIP, TAR, etc... Sobreescribe el  src/audio/SDL_audiotypecvt.c con la versión actualizada de aquí).
 
 SÓLO CON GLES1 y GLES2, COMO LO HACEMOS AHORA:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan --disable-haptic --disable-sensor
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan
 
 CON OPENGL COMPLETO, GLES1 y GLES2
 CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan 
