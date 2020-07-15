@@ -4939,6 +4939,17 @@ lavc:h264_mmal
 en la lista de decoders si hacemos:
 mpv --vd=help
 
+PROBLEMA: UN PROGRAMA NO ENCUENTRA UNA LIBRERÍA QUE SÍ ESTÁ INSTALADA Y CONTRA LA QUE SE HA LINKADO DINÁMICAMENTE SIN PROBLEMAS
+================================================================================================================================
+
+Vemos con ldd <nombre_ejecutable> que busca una librería que sí está instalada en /usr/local/...etc
+Pues limpiamos la caché de ld:
+
+sudo rm /etc/ld.so.cache
+sudo ldconfig
+
+Y ya debería ver la librería que le faltaba con ldd <nombre_ejecutable>
+
 NOTAS HIFIBERRY
 ===============
 

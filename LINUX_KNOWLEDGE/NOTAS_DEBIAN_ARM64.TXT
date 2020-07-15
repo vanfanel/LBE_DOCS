@@ -375,9 +375,14 @@ max locked memory (kbytes, -l) unlimited
 -Para configurar el audio con el driver de audio HDMI del lado de ARM (que es como lo venimos haciendo en 2020):
 	-En config.txt
 		dtoverlay=vc4-kms-v3d-pi4
+		(o bien dtoverlay=vc4-kms-v3d para pi3 y anteriores)
 		#dtparam=audio=on <---SE DEBE deshabilitar la carga de bcm2835.
+	-Si falla speakertest, mira que tengas en /usr/share/alsa/cards/vc4-hdmi.conf lo que pone en el post de DOM en
+	 https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769&p=1636828#p1636828
+	 OJO! PARECE QUE SEGÚN SE ACTUALIZA EL KERNEL, LOS CONTENIDOS DE /usr/share/alsa/cards/vc4-hdmi.conf hay que irlos cambiando
+	 a veces. Así que si no te va, mira o pregunta en ese hilo.	
 	-Si falla algo, pregunta en este hilo a dom:https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769
-Y YA. CON ESTO TIENE QUE FUNCIONAR SÍ O SÍ. 
+     Y YA. CON ESTO TIENE QUE FUNCIONAR SÍ O SÍ. 
 
 -Si el guardado y restauración de los valores de alsamixer falla a veces, tienes DOS opciones:
 
@@ -482,8 +487,7 @@ Los CFLAGS van a ser:
 
 Empezamos con libDRM:
 Instalamos estas dependencias previas: 
-sudo apt-get install xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
-sudo apt-get install xsltproc libpciaccess-dev
+sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ meson --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 Bajamos la última versión estable de:
 https://dri.freedesktop.org/libdrm/
@@ -491,21 +495,21 @@ mkdir b3
 cd b3
 
 Configuramos con esto:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false -Dinstall-test-programs=true ..
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false -Dinstall-test-programs=true ..
 
 Compilamos e instalamos:
 ninja -j4
 sudo ninja install
 
 En este punto, puedes probar si libdrm te funciona bien haciendo:
-modetest -s 29:1360x768
-(donde 29 es un ID de conector válido: puedes ver los conectores con modetest|more).
+modetest -s 32:1360x768
+(donde 32 es un ID de conector válido: puedes ver los conectores con modetest|more).
 
 Ahora vamos a por MESA. Instalamos estos paquetes previos:
 
 (SI NO QUIERES GLX, SINO LIBGLVND O NI GLX NI LIBGLVND, SÓLO NECESITAS ESTAS. PERO EN TAL CASO, SDL2 NO FUNCIONARÁ CON OPENGL COMPLETO, SÓLO GLES1 Y GLES2:)
 sudo apt-get install --no-install-recommends \
-    flex bison python3-mako phyton3-setuptools \
+    flex bison python3-mako python3-setuptools \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
     zlib1g-dev pkg-config meson
@@ -541,18 +545,22 @@ mkdir b3
 cd b3
 AHORA PARA CONFIGURAR:
 ASI LO VENIMOS HACIENDO:  CON GLES Y GLES2, SIN OPENGL COMPLETO:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --libdir=/usr/lib --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --libdir=/usr/lib --buildtype=plain -Db_ndebug=true  -Dglx=dri -Dglvnd=false -Dplatforms=drm,x11 -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=dri -Dglvnd=false -Dplatforms=drm,x11 -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --prefix=/usr --libdir=/usr/lib --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=true -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=true -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
 PARA COMPILAR:
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
 PARA INSTALAR:
 sudo ninja install
+Y NO TE OLVIDES DE HACER:
+sudo rm /etc/ld.so.cache
+sudo ldconfig
+
 Y PARA DESINSTALAR:
 sudo ninja uninstall
 O ALTERNATIVAMENTE:
@@ -581,7 +589,7 @@ INSTALAR SDL2
 =============
 
 Lo primero es instalar estos:
-sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmodplug-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 
 Por ahora, hasta que salga SDL 2.0.11, tenemos que cambiar código para que funcione bien el resampler de audio acelerado para instrucciones NEON. 
@@ -589,10 +597,10 @@ Para ello, actualizamos src/audio/SDL_audiotypecvt.c desde la versión actual, q
 (En la parte de arriba tienes la última versión en ZIP, TAR, etc... Sobreescribe el  src/audio/SDL_audiotypecvt.c con la versión actualizada de aquí).
 
 SÓLO CON GLES1 y GLES2, COMO LO HACEMOS AHORA:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan 
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan --disable-haptic --disable-sensor
 
 CON OPENGL COMPLETO, GLES1 y GLES2
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --prefix=/usr --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan 
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan 
 
 (LO DE  -DMESA_EGL_NO_X11_HEADERS LO HEMOS SACADO DE /usr/lib/pkgconfig/egl.pc. Como el viejo buildsystem de las SDL2 basado en configure y make no usa pkgconfig para saber qué flags tiene que pasar cuando
 se compile eglplatform.h, parte de EGL de MESA, que es donde  MESA_EGL_NO_X11_HEADERS evita intentar incluir las headers de X11, pues se lo tenemos que pasar nosotros a mano. El buildsystem de las SDL2 basado en CMAKE sí
@@ -613,10 +621,10 @@ Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sa
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
 Para SDL2_Mixer (instalar antes libogg-dev y libflac-dev):
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-music-midi-timidity --disable-music-midi-fluidsynth
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
 Para SDL2_Image o SDL2_ttf:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --without-x
+CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --without-x
 
 INSTALAR RETROARCH
 ===================

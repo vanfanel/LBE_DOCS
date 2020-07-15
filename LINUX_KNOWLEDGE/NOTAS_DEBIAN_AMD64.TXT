@@ -236,6 +236,10 @@ PARA COMPILAR:
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
 PARA INSTALAR:
 ninja install
+Y NO TE OLVIDES DE HACER:
+sudo rm /etc/ld.so.cache
+sudo ldconfig
+
 Y PARA DESINSTALAR:
 ninja uninstall
 O ALTERNATIVAMENTE:
