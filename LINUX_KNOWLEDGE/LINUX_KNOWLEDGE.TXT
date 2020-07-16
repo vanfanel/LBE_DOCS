@@ -1385,6 +1385,10 @@ hay que quitarlo como servicio pero no desinstalarlo del sistema porque OMXplaye
 -Ponemos una IP estática. Para ello:
 	-Eliminamos del sistema estas cosas para que no se sobreescriba resolv.conf en cada arranque:
 		sudo apt-get purge dhcpcd5 openresolv
+	-Eliminamos las mierdas de BROADCOM:
+	    sudo apt-get purge libraspberrypi*
+	-Eliminamos MESA y demás porque vamos a instalar la nuestra:
+		sudo apt-get purge libdrm* libgbm* libgles*
 	-Dejamos /etc/resolv.conf como:
 		nameserver 8.8.8.8
 	-Deshabilitamos los servicios de red que no vamos a usar y que sobreescribirían /etc/resolv.conf:
@@ -1616,6 +1620,23 @@ Nos tiene que salir algo como:
 real-time priority (-r) 99
 max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
+
+************Acutualizar el kernel de la Raspberry Pi sin tener las herramientas de broadcom***************************************
+
+Porque claro, eliminaste las mierdas binarias cerradas de broadcom con sudo apt-get purge libraspberrypi*
+Así que esto debería de todos modos actualizar el kernel.
+
+sudo apt-get update
+sudo apt-get full-upgrade
+
+************Actualizar la eeprom de la raspberry Pi 4 sin tener las herramientas de broadcom**************************************
+
+Las instalas, actualizas y desinstalas.
+sudo apt-get install rpi-eeprom
+(Se instalan las libraspberrypi como dependencias).
+sudo rpi-eeprom-update
+(Volvemos a borrar las libraspberrypi....)
+sudo apt-get purge libraspberrypi*
 
 ************VALORES DE OVERCLOCKING PARA RASPBERRY PI 3***************************************************************************
 
@@ -5553,6 +5574,12 @@ Editamos Makefile y cambiamos O2 a O3
 
 Compilamos con
 CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4
+
+MARIO64 nativo en la RASPBERRY PI
+=================================
+
+Se compila con:
+make TARGET_RPI=1 -j4
 
 VVVVVV en la Raspberry Pi
 =====================
