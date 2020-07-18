@@ -17,6 +17,10 @@ export SDL_VIDEO_DOUBLE_BUFFER=1
 Luego puedes comprobarlo con echo $<nombre_variable>, en plan:
 echo $SDL_VIDEO_DOUBLE_BUFFER
 
+*******Visualizar los scancodes de las teclas desde la consola TTY*******************************************************
+
+Con el comando showkeys
+
 ******Conectar a una red WIFI desde la Raspberry PI 3 usando el WIFI interno******************************************************************************************************************
 
 PUEDE QUE NECESITES BAJAR MANUALMENTE EL FIRMWARE DEL WIFI SI AL HACER MODPROBE AL brcmfmac NO TE CREA EL INTERFACE WLAN0.
@@ -200,6 +204,58 @@ find -type f -name '*.ogg' | while read f; do mv "$f" "${f%.ogg}"; done
 Ahora los metes en un WAD (con SLADE en Linux vale para crear WADs)
 Y le pasamos ese WAD con -file así:
 ./russian-heretic -file heretic-music.wad
+
+******Compilar driver VULKAN en la raspberry pi 3 con aarch64*********
+
+Instalamos dependencias previas:
+
+sudo apt-get install --no-install-recommends libmtdev-dev libevdev-dev
+
+VAMOS PRIMERO A POR LAS VULKAN HEADERS (no hace falta compilar nada para instalarlas):
+
+git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Headers.git
+mkdir b3
+cd b3
+cmake ..
+sudo make install
+export VULKAN_HEADERS_INSTALL_DIR=/usr/local
+
+VAMOS AHORA A POR EL VULKAN-LOADER:
+
+git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Loader.git
+mkdir b3
+cd b3
+cmake -DBUILD_WSI_WAYLAND_SUPPORT=OFF -DBUILD_WSI_XLIB_SUPPORT=OFF -DBUILD_WSI_XCB_SUPPORT=OFF ..
+make -j4
+sudo make install
+
+AHORA VAMOS A POR EL DRIVER VULKAN EN SÍ:
+
+Clonamos el repo
+https://github.com/Yours3lf/rpi-vk-driver.git
+
+cd rpi-vk-driver
+
+Editamos CMakeLists.txt y añadimos el flag -fpermissive, para lo cual añadimos estas dos líneas debajo de la línea de cmake_minumun_required...:
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fpermissive")
+
+Debajo añadimos también la línea para poner la arquitectura a armv8-a:
+SET(RPI_ARCH "armv8-a")
+
+Editamos test/CMakeLists.txt, y eliminamos la línea:
+add_subdirectory(inputTest)
+(La eliminamos porque este test necesita libinput-dev, que tiene un montón de dependencias absurdas y de todos modos es una librería
+para X11 y Wayland, así que a nosotros nos sobra la librería.. y el test este).
+
+Configuramos y compilamos con:
+mkdir b3
+cd b3
+cmake -DRPI_ARCH=armv8-a ..
+make
+NOS DARÁ ERRORES CON VkImageView. Cada vez que nos de un error de esos, editamos le fichero correspondiente y cambiamos depthImageView por depthImage, y seguimos compilando como si no hubiera pasado nada XD
+
+Ahora instalamos:
+sudo make install
 
 ******Compilando OpenBOR*********************************************************************************************************************************************
 
