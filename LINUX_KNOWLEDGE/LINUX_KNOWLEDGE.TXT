@@ -77,6 +77,16 @@ El programa se llama tunesviewer.
 Si te da un error y no te deja buscar, dale a view y desactiva Request HTM5 Mode.
 Cambia la búsqueda a Podcast Search.
 
+*******Compilar el core duckstation para RAspberry Pi con Aarch64*********************************************************************
+
+Clonamos el repo:
+git clone --depth 1 https://github.com/stenzek/duckstation.git
+
+Configuramos con:
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON ..
+
+(PARA compilar en una Pi con 1GB necesitas swap).
+
 ******Error tonto: ACLOCAL is missing on your system**************************************************************************************************************
 
 No te falta nada realmente. Sencillamente, hazle un touch a:
