@@ -349,6 +349,9 @@ dtoverlay=pi3-disable-wifi
 -Para ocultar los mensajes de systemd en el inicio, pon en cmdline.txt:
 systemd.show_status=false
 
+-Para evitar parones (stalls) en el vídeo de los juegos debido al i/o scheduler, pon en cmdline.txt:
+elevator=noop
+
 -En .bashrc, descomenta para tener el prompt en color:
 force_color_prompt=yes
 
