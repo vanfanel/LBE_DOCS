@@ -1,0 +1,40 @@
+NOTAS BÁSICAS ATOMIC
+--Un CRTC es un puntero a un scanout buffer. EL número de CRTCs en nuestro sistema determina cuántos scanout buffers pueden estar activos a la vez.
+--Un PLANO representa una imágen que puede ser colocada encima de un CRTC durante el proceso de scanout: o sea, mientras el monitor lee
+un scanout buffer (mediante un CRTC que es un puntero a un scanout buffer) superpone al CRTC los planos que le digamos.
+Cada plano del sistema, eso sí, sólo está disponible para un o unos CRTCs concretos, no para todos los CRTCs. Eso lo ves en el struct drmModePlane, en possible_crtcs.
+
+LA SECUENCIA DE INICIALIZACIÓN DE DRM (KMSDRM_VideoInit())
+--Lo primero es buscar un conector conectado. Luego buscamos el encoder conectado a ese conector. Si no hay ninguno, buscamos un encoder soportado por ese conector (nos vale igual con que soporte el conector conectado. No te compliques más).
+--Luego buscamos un CRTC conectado a ese encoder. Si no hay ninguno, buscamos un CRTC soportado por ese encoder.
+(Cuando busquemos un plano, sólo nos interesa un plano que pueda usarse con el CRTC que hemos elegido)
+--Una vez seleccionado un CRTC, vamos a usar ese CRTC todo el rato. El CRTC determina qué plano vamos a elegir, porque tiene que ser un plano que tenga ese CRTC entre sus posibles CRTCs.
+Una vez que hemos elegido plano, TODO PIVOTA EN TORNO AL PLANO. Ya no hay que elegir más cosas. Vamos a usar ese CRTC y ese plano. Listo.
+
+
+FUNCIONAMIENTO GENERAL DE KMSCUBE CUANDO SE USA KMSDRM ATOMIC (drm-atomic.c)
+
+---Cada una de las funciones "add_loquesea_propery()" es para cambiar una propiedad de un objeto del tipo "loquesea".
+Hay una función de estas para cambiar propiedades de conectores, de planos, y de CRTCs (un CRTC relaciona N planos y con N conectores, recuerda).
+
+---La función que corre una vez por frame para refrescar la pantalla (sería nuestra SwapWindow()) es atomic_run().
+	---En atomic_run():
+	   -se hace la gestión del cambio de los buffers GBM y EGL (como en nuestra SwapWindow(),
+	   -se llama a drm_atomic_commit(), donde se solicita el cambio atómico de propiedades llamando a una lista de "add_loquesea_property()"
+	   y además, en caso de ser necesario,se hace el MODESET (que sería como nuestra llamada a SetCrtc(). Se hace, al igual que aquella, cuando ya
+	   tenemos el FB_ID). 
+	   
+	   
+NOTAS PASO A ATOMIC
+-La elección de connector y CRTC se mantiene igual. Lo que cambia es el cambio de buffer al CRTC, que hay que elegir plano, etc.
+-Así que lo primero es ver qué planos tenemos y elegir un plano (sea primario o sea o overlay o cursor plane=overlay).
+
+TODO EN EL BACKEND KMSDRM
+==========================
+--Qué CRTC estás usando? Qué MODE?
+--Eliminar dispdata o viddata. Mételo todo en el mismo.
+--SACAR lo que hace get_plane_id() a KMSDRM_VideoInit(), no hay necesidad de otra función. O hacerlo de otra manera.
+--Ver cómo le llegan dispdata y viddata a las funciones ATOMIC: AddProperty_LOQUESEA, atomic_commit, etc...
+--Ver si tenemos que esperar al pageflip (o sea, si tenemos que esperar a que se completen los cambios KMS que pedimos en el atomic ioctl) antes de destruir las surfaces.
+--Liberar todo lo que hayamos reservado con calloc, malloc, etc
+--Pasar lo del ratón a las peticiones del atomic ioctl.

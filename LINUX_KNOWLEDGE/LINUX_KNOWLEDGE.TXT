@@ -3014,7 +3014,7 @@ Y listo. Ya hemos vuelto en local y en el server al último commit/push bueno.
 
 Lo primero añadimos un remote que vamos a llamar upstream como podríamos llamarlo pepito, pero para entendernos:
 
-git remote add upstream https://github.com/libretro/RetroArch.git 
+git remote add upstream https://github.com/SDL-mirror/SDL.git
 
 Ahora descargamos todos los branches de upstream:
 
@@ -4821,6 +4821,12 @@ sudo apt-get install inotify-tools
 
 Y ahora, si queremos ver todos los accesos a archivos de $HOME, por ejemplo...:
 inotifywait -r -m $HOME
+
+Otra alternativa es iotop
+sudo apt-get install iotop
+
+Nos permite ver cuánto se ha escrito en disco, estadísticas después de dejarlo correr minutos u horas, etc:
+iotop -oPa
 
 XASH3D, ENGINE DE HALF LIFE EN LA RASPBERRY PI
 =============================================
