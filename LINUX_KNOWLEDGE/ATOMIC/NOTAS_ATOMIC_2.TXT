@@ -29,12 +29,15 @@ NOTAS PASO A ATOMIC
 -La elección de connector y CRTC se mantiene igual. Lo que cambia es el cambio de buffer al CRTC, que hay que elegir plano, etc.
 -Así que lo primero es ver qué planos tenemos y elegir un plano (sea primario o sea o overlay o cursor plane=overlay).
 
+OTRAS NOTAS
+Los miembros del struct drm_bo los puedes ver en
+https://cgit.freedesktop.org/mesa/mesa/tree/src/gbm/main/gbmint.h#n108
+
 TODO EN EL BACKEND KMSDRM
 ==========================
---Qué CRTC estás usando? Qué MODE?
---Eliminar dispdata o viddata. Mételo todo en el mismo.
---SACAR lo que hace get_plane_id() a KMSDRM_VideoInit(), no hay necesidad de otra función. O hacerlo de otra manera.
+--Libera las props_info y demás del cursor_plane como haces con las del plano principal. Sólo si existen, ojo.
+--Sacar las funciones drmMode...() que ya no usemos del kmsdrmmodesym.h
 --Ver cómo le llegan dispdata y viddata a las funciones ATOMIC: AddProperty_LOQUESEA, atomic_commit, etc...
---Ver si tenemos que esperar al pageflip (o sea, si tenemos que esperar a que se completen los cambios KMS que pedimos en el atomic ioctl) antes de destruir las surfaces.
---Liberar todo lo que hayamos reservado con calloc, malloc, etc
---Pasar lo del ratón a las peticiones del atomic ioctl.
+--Pasar lo del cursor a las peticiones del atomic ioctl que hacemos en SwapBuffers.
+--Seguir quitando printfs de kmsdrmmouse y demás unidades...
+--Qué lío tienes montado entre hacer atomic_commits() bloqueantes y el seteo de flags para hacer el commit bloqueante? Míratelo...

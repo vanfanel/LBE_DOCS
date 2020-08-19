@@ -1,0 +1,11 @@
+*******GUIA RÁPIDA DE DEBUGEO DE KMSDRM*******************************************************************************************************
+
+Para ver mensajes de debug de KMS/DRM
+echo 31 | sudo tee /sys/module/drm/parameters/debug
+Limpiamos dmesg con dmesg -c como root.
+Luego hacemos dmesg >> errors.txt y buscamos "Invalid" o el ioctl que ha fallado, SETPLANE, DRM_IOCTL_MODE_CURSOR, o lo que sea: todas las funciones del tipo drmMode* hacen ioctls por debajo, busca su implementación o pregunta a robclark en freenode qué ioctl has de buscar en dmesg para un error en esa función.
+Los EINVAL (la función drmMode* retorna -22) significan que un parámetro de la estructura que se le pasa al ioctl interno no es correcto, o no está soportado...
+Pero vamos, tú mira en dmesg que es donde las funciones del lado del kernel que se ejecutan al llamar a una ioctl dejan sus errores: visto el IOCTL que falla, deberías ver al lado su error.
+OJO!! Puedes hacer
+dmesg | grep -10 failed 
+porque alrededor del failed es donde vas a ver qué ha fallado, un poco antes normalmente, a veces varias páginas antes. Pero RECUERDA: busca el failed y a partir de ahí, antes, es donde ves el problema: un unsupported pixel format, etc...

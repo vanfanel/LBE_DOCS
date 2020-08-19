@@ -1,22 +1,9 @@
-*******GUIA RÁPIDA DE DEBUGEO DE KMSDRM*******************************************************************************************************
 
-Para ver mensajes de debug de KMS/DRM
-echo 31 > /sys/module/drm/parameters/debug
-Limpiamos dmesg con dmesg -c como root.
-Luego hacemos dmesg >> errors.txt y buscamos "Invalid" o el ioctl que ha fallado, SETPLANE, DRM_IOCTL_MODE_CURSOR, o lo que sea: todas las funciones del tipo drmMode* hacen ioctls por debajo, busca su implementación o pregunta a robclark en freenode qué ioctl has de buscar en dmesg para un error en esa función.
-Los EINVAL (la función drmMode* retorna -22) significan que un parámetro de la estructura que se le pasa al ioctl interno no es correcto, o no está soportado...
-Pero vamos, tú mira en dmesg que es donde las funciones del lado del kernel que se ejecutan al llamar a una ioctl dejan sus errores: visto el IOCTL que falla, deberías
-ver al lado su error.
-
-*****************************************************************************************************************************************************
-
--Si vamos a dibujar usando GLES, usaremos una GBM surface. Sus buffers vienen incluidos, y se va dibujando en uno o en otro, mira drmFlip() en el ejemplo
-de GLES2D-KMS para entenderlo. Hay alguna sutileza como lo de eglSwapBuffers() y la función de lock buffer esa, pero está todo comentado en el código.
+-Si vamos a dibujar usando GLES, usaremos una GBM surface. Sus buffers vienen incluidos, y se va dibujando en uno o en otro, mira drmFlip() en el ejemplo de GLES2D-KMS para entenderlo. Hay alguna sutileza como lo de eglSwapBuffers() y la función de lock buffer esa, pero está todo comentado en el código.
 A SetCRTC le tendremos que pasar uno de los buffers, claro, ya que un CRTC es un combo de conector+videomode+buffer de scanout, que será el que esté
 de front buffer en ese momento.
 
--En cambio, si queremos dibujar a piñón pixel a pixel, tenemos que usar DUMB BUFFERS. Lo mismo: a setCRTC habrá que pasarle un buffer, pero este buffer
-lo creamos nosotros a mano con drmIoctl(drm.fd, DRM_IOCTL_MODE_CREATE_DUMB, &fbRequeriments) 
+-En cambio, si queremos dibujar a piñón pixel a pixel, tenemos que usar DUMB BUFFERS. Lo mismo: a setCRTC habrá que pasarle un buffer, pero este buffer lo creamos nosotros a mano con drmIoctl(drm.fd, DRM_IOCTL_MODE_CREATE_DUMB, &fbRequeriments) 
 y con drmModeAddFB(drm.fd, drm.mode->hdisplay, drm.mode->vdisplay, 16, 16,  fbRequeriments.pitch, fbRequeriments.handle, &fb->fb_id), y luego
 se lo pasaremos a setCRTC. (Vamos, uno de los buffers que hayamos creado).
 

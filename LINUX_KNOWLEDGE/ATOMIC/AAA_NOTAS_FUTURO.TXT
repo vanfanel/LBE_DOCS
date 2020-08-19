@@ -1,0 +1,30 @@
+-DEBES VER TODO COMO LINEAL, NO HAY PARALELISMO: vamos añadiendo a la atomic-request peticiones de cambios de props de planos, crtcs, conectores... y luego se envían todas en el atomic_commit(), que tenemos uno central en SwapWindow(). ASÍ ES CADA CICLO DEL PROGRAMA, UNO, OTRO, OTRO...
+
+-En SwapWindow() se mete un fence de entrada en el kernel (kms_in_fence_fd) para decirle que KMS tiene que paralizar la aplicación de cambios a que acabe de ejecutarse el cmdstream de la GPU, y se saca un fence de salida del kernel (kms_out_fence_fd) para saber cuándo el kernel ha completado los cambios (en esencia, para saber cuándo se ha hecho el pageflip, que es lo que le pedimos en drm_atomic_setbuffer, cambiar un buffer del plano primario por otro, o sea, un pageflip).
+Para tratar estos fences, tenemos que, por una parte, importarlos a EGLSyncKHR (mediante create_fence()) para esperar en ellos desde nuestro programa o para decirle a la GPU que espere en ellos, o bien exportarlos a FDs (mediante eglDupNativeFenceFDANDROID()) para pasárselos al kernel,
+que el hombre lo que entiende son los FDs.
+
+-CUANDO te pongas a trabajar con el driver, recuerda siempre DESCOMENTAR el printf de atomic_commit() para saber inmediatamente cuándo hay un commit fallido. Un -22 es EINVAL, valor no válido de algún prop que has intentado poner... en dmesg deberías ver dónde, mirando diez o veinte líneas por encima de la línea que tenga la cadena "fail".
+
+-CUANDO te de un -22 el atomic_commit, y no sepas por qué, Y FALLE EL CURSOR EN LA SDL2-basic-test, PIENSA QUE LO MISMO ESTÁ LLEGANDO TU LLAMADA A SetCursor() JUSTO MIENTRAS EL PLANO PRIMARIO ESTÁ DESCONECTADO DE SU FB_ID Y SU CRTC_ID. EL plano primario debe estar conectado a ambos para que se pueda poner un cursor en el plano de cursor! Aunque sean planos distintos, esto es así!
+Así que mucho cuidado con las situaciones donde el plano primario está desconectado de un buffer o un CRTC: esto pasaba mucho cuando destruíamos la GBM surface y sus GBM buffers mientras el plano primario estaba leyendo alguno de esos buffers: automáticamente, el kernel desconecta el plano primario del CRTC como "medida de emergencia" y lo que hagamos hasta que llega el atomic_commit() central, el de SwapWindow(), que ya arrastra en el atomic request el reestablecimiento del CRTC y el FB_ID del plano primario (ya que estas cosas se hacen en drm_atomic_setbuffer()) no se realiza.
+O sea, EL PLANO PRIMARIO SIEMPRE DEBE ESTAR BIEN CONECTADITO A UN CRTC Y A UN FB VÁLIDO QUE NO DESTRUYAMOS MIENTRAS ESTÁ EN USO.. PORQUE ENTONCES EL PLANO PRIMARIO ES DESCONECTADO DEL CRTC Y EMPIEZAN A FALLAR LAS PETICIONES ATÓMICAS (los atomic_commit, vaya).
+
+COSAS QUE HACER
+===============
+
+1) LO DEL CURSOR DEL RATÓN
+-Lo del cursor del ratón el el menú de QUIT del SDLPoP. Ocurre porque en ese menú el SDLPoP ya no está llamando a SwapWindow(), con lo que las props que cambiamos en drm_atomic_movecursor() no se aplican esos cambios porque ya no se produce la llamada atomic_commit() central del driver, o sea, la de SwapWindow().
+Y tampoco podemos hacer un atomic_commit() cada vez que llamamos a drm_atomic_movecursor(), porque:
+-si lo hacemos no-bloqueante llega de nuevo la siguiente secuencia de drm_atomic_movecursor() y atomic_commit(), y como no se ha completado el commit da error porque se acumulan los commits (-16)
+-si lo hacemos bloqueante, eso afecta a los programas que sí que están llamando a SwapWindow() mientras movemos el ratón, y hacen que vayan lastrados por el commit bloqueante del ratón y por el commit del vídeo, haciendo que vayan a 30FPS.
+----Las solución sería algo así como actualizar independientemente el cursor, ya que actualmente CABALGAMOS la actualización de la pantalla (el atomic_commit central, de SwapWindow()) y claro, cuando no hay actualización central no se mueve el cursor porque nadie hace commit de los cambios solicitados en drm_atomic_movecursor().
+*SOLUCIONES POSIBLES 1: Quizá se podría usar un timer, como dice robclack, y que cada cierto tiempo se llame a la función de commit en plan callback: "ha pasado un tiempo, llamo a callback que contiene el commit; ha pasado otra vez un tiempo, llamo otra vez a la función de callback que contiene el commit, etc, etc.."
+Estos timers en teoría van en su propio thread y no deberían ser un problema.. excepto por el acceso a variables en común con el thread del programa donde corren nuestras llamadas drm_atomic..(), pero podría haber un atomic_req propio del ratón, etc, que no haya variables en común.
+*SOLUCIONES POSIBLES 2: Que atomic_commit() compruebe si ha sido llamada ya, y si ya ha sido llamada que retorne sin hacer nada. También habría que marcar cuándo se han completado los cambios solicitados en el commit, para considerar que "ya no se ha llamado". De ese modo, podemos llamarla desde SwapBuffers() o desde MoveCursor(), y sólo meterá el commit en el kernel una vez por cada vysnc.
+EL PROBLEMA es que es posible que, si es MoveCUrsor() la que llama a atomic_commit() y después llega la llamada a drm_atomic_setbuffer() de SwapWindow() (que es donde pedimos el pageflip) pues en el atomic_commit() no entran los cambios solicitados en SwapWindow(), y eso afecta al framerate del juego.
+
+2) LO DE PONER EL CRTC_ID Y EL FB_ID DEL PLANO PRIMARIO A 0 ANTES DE DESTRUIR LA GBM SURFACE Y SUS BUFFERS, en vez de poner el plano primario mirando al FB original que contiene el TTY.
+Esto tiene su importancia porque algún día no se usará FBCON (que se basa en fbdev.. imagínate!) sino KMSCON, y en ese momento no va a haber un FB original al que recurrir (crtc->crtc->buffer_id).
+Lo de poner CRTC_ID y FB_ID a 0 (y también el resto de props del plano, supongo!) debería funcionar sin problemas en VC4, aunque falla malamente en AMDGPU. Si funciona en VC4, lo dejas así y a AMDGPU que le den, que arreglen los drivers.
+Esto sí lo puedes probar estos días!

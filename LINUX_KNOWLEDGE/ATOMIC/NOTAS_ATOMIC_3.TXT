@@ -19,7 +19,7 @@ Hay que:
 
 *****COSAS PREVIAS PARA ENTERDER SwapWindow() con ATOMIC PAGEFLIP*************
 
--Lo primero, recuerda que durante el loop de juego la GPU construye, mediante las lamadas GL, el cmdstrin. LO CONSTRUYE, y luelo LO EJECUTA, y sólo al renderizar es cuando renderiza en un buffer. Esta separación entre construir el cmdstring y renderizar el cmdstring es fundamental, ya que si bien dejamos que la GPU construya otro cmdstring completo correspondiente a un frame al volver al loop de juego, NO permitimos que lo renderice hasta completarse el último pageflip solicitado (ya que lo renderizaría en un buffer que aún es el front buffer...causando tearing).
+-Lo primero, recuerda que durante el loop de juego la GPU construye, mediante las lamadas GL, el cmdstream. LO CONSTRUYE, y luelo LO EJECUTA, y sólo al renderizar es cuando renderiza en un buffer. Esta separación entre construir el cmdstring y renderizar el cmdstring es fundamental, ya que si bien dejamos que la GPU construya otro cmdstring completo correspondiente a un frame al volver al loop de juego, NO permitimos que lo renderice hasta completarse el último pageflip solicitado (ya que lo renderizaría en un buffer que aún es el front buffer...causando tearing).
  
 -Hay dos niveles: el nivel EGL y el nivel KMS. Que algo se haya hecho a nivel EGL no quiere decir que esté hecho a nivel KMS.
 Por eso tenemos que sincronizarlos.
