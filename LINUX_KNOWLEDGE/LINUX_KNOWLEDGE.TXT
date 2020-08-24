@@ -3274,7 +3274,7 @@ cd b3
 
 Ahora configuramos:
 
-cmake -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DUSE_PYTHON3=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
