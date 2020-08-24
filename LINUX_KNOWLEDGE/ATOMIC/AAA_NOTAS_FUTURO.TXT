@@ -6,15 +6,27 @@ que el hombre lo que entiende son los FDs.
 
 -CUANDO te pongas a trabajar con el driver, recuerda siempre DESCOMENTAR el printf de atomic_commit() para saber inmediatamente cuándo hay un commit fallido. Un -22 es EINVAL, valor no válido de algún prop que has intentado poner... en dmesg deberías ver dónde, mirando diez o veinte líneas por encima de la línea que tenga la cadena "fail".
 
+-En DestroyWindow() se llama a DestroySurfaces() y en CreateWindow() se llama a CreateSurfaces().
+
+-NO DEBES hacer lo de que, para recrear los surfaces, se crean en RecreateSurfaces() y luego se destruyen en SwapWindow(), porque
+los programas cambian la resolución sin llamar a SwapWindow(), o sea, sin pedir pageflips, con lo que acabas creando un montón de surfaces
+nuevas que nunca eliminas. FUGA DE MEMORIA. No te compliques: haz todo en RecreateSurfaces().
+
+-Los punteros driverdata del SDL_Display, SDL_Window, etc... NO los tienes que liberar tú, sólo reservarlos: SDL se encarga de liberar los punteros driverdata de todo. Así que no tienes que liberar dispdata, ni windata, etc. Ya lo hace SDL.
+
 -CUANDO te de un -22 el atomic_commit, y no sepas por qué, Y FALLE EL CURSOR EN LA SDL2-basic-test, PIENSA QUE LO MISMO ESTÁ LLEGANDO TU LLAMADA A SetCursor() JUSTO MIENTRAS EL PLANO PRIMARIO ESTÁ DESCONECTADO DE SU FB_ID Y SU CRTC_ID. EL plano primario debe estar conectado a ambos para que se pueda poner un cursor en el plano de cursor! Aunque sean planos distintos, esto es así!
 Así que mucho cuidado con las situaciones donde el plano primario está desconectado de un buffer o un CRTC: esto pasaba mucho cuando destruíamos la GBM surface y sus GBM buffers mientras el plano primario estaba leyendo alguno de esos buffers: automáticamente, el kernel desconecta el plano primario del CRTC como "medida de emergencia" y lo que hagamos hasta que llega el atomic_commit() central, el de SwapWindow(), que ya arrastra en el atomic request el reestablecimiento del CRTC y el FB_ID del plano primario (ya que estas cosas se hacen en drm_atomic_setbuffer()) no se realiza.
-O sea, EL PLANO PRIMARIO SIEMPRE DEBE ESTAR BIEN CONECTADITO A UN CRTC Y A UN FB VÁLIDO QUE NO DESTRUYAMOS MIENTRAS ESTÁ EN USO.. PORQUE ENTONCES EL PLANO PRIMARIO ES DESCONECTADO DEL CRTC Y EMPIEZAN A FALLAR LAS PETICIONES ATÓMICAS (los atomic_commit, vaya).
+O sea, EL PLANO PRIMARIO SIEMPRE DEBE ESTAR BIEN CONECTADITO A UN CRTC Y A UN FB VÁLIDO QUE NO DESTRUYAMOS MIENTRAS ESTÁ EN USO.. PORQUE ENTONCES EL PLANO PRIMARIO ES DESCONECTADO DEL CRTC Y EMPIEZAN A FALLAR LAS PETICIONES ATÓMICAS (los atomic_commit, vaya). 
+/*************************************************************************************************************************************/
+* NI POR UN INSTANTE DEBE EL PLANO PRIMARIO ESTAR DESCONECTADO DEL CRTC Y DE UN FB_ID FUNCIONAL, PORQUE NO SABES CUÁNDO VAN A LLEGAR */
+* ATOMIC COMMITS CON CAMBIOS EN PROPS DEL PLANO PRIMARIO O DEL PLANO DEL CURSOR, Y ESOS COMMITS FALLARÁN SIN MOTIVO APARANTE,        */
+/*************************************************************************************************************************************/
 
 COSAS QUE HACER
 ===============
 
 1) LO DEL CURSOR DEL RATÓN
--Lo del cursor del ratón el el menú de QUIT del SDLPoP. Ocurre porque en ese menú el SDLPoP ya no está llamando a SwapWindow(), con lo que las props que cambiamos en drm_atomic_movecursor() no se aplican esos cambios porque ya no se produce la llamada atomic_commit() central del driver, o sea, la de SwapWindow().
+-Lo del cursor del ratón el el menú de QUIT del SDLPoP. Ocurre porque en ese menú el SDLPoP ya no está llamando a SwapWindow(), con lo que las props que cambiamos en drm_atomic_movecursor() no se aplican esos cambios porque ya no se produce la llamada atomic_commit() central del driver, o sea, la de SwapWindow(). Y por tanto, esos cambios NO se envían al kernel.
 Y tampoco podemos hacer un atomic_commit() cada vez que llamamos a drm_atomic_movecursor(), porque:
 -si lo hacemos no-bloqueante llega de nuevo la siguiente secuencia de drm_atomic_movecursor() y atomic_commit(), y como no se ha completado el commit da error porque se acumulan los commits (-16)
 -si lo hacemos bloqueante, eso afecta a los programas que sí que están llamando a SwapWindow() mientras movemos el ratón, y hacen que vayan lastrados por el commit bloqueante del ratón y por el commit del vídeo, haciendo que vayan a 30FPS.

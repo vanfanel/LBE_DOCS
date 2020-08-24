@@ -3308,8 +3308,7 @@ Compilar y listo.
 
 En doomretro.cfg, ponemos vid_scalefilter a "linear", y gp_thumbsticks 1.
 
-La música tiene que ir en un WAD (no valen PK3 ni movidas de esas) y tienen que estar los .ogg o los .flac ahí dentro sin estar en ningún directorio ni nada,
-con sus extensiones y nombres originales. Y debes haber compilado SDL_Mixer con soporte para ogg o flac, claro.
+La música tiene que ir en un WAD (no valen PK3 ni movidas de esas) y tienen que estar los .ogg o los .flac ahí dentro sin estar en ningún directorio ni nada, con sus extensiones y nombres originales. Y debes haber compilado SDL_Mixer con soporte para ogg o flac, claro.
 
 Para el 8Bitdo receiver, los botones son:
 bind gamepad4 +fire
