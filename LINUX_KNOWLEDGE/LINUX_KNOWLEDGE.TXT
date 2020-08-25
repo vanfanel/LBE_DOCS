@@ -4466,6 +4466,21 @@ Music Volume=0
 Si nos da un error repetido de "Unhandled SDL Event: SDL_AUDIODEVICEADDED", ni caso. No es por el sistema sino porque el código del juego imprime eventos que no usa.
 Manda la salida a /dev/null y fuera.
 
+SM64EX, port del Mario64 para GNU/Linux
+========================================
+
+Los sources están en:
+https://github.com/sm64pc/sm64ex
+
+Hay que tener baserom.us.z64 en el directorio raiz.
+
+Se compila para la Pi con:
+
+make TARGET_RPI=1 -j3
+
+Pide algunas dependencias que sólo necesita en la máquina donde se extraen los datos del juego, que puede ser un PC de escritorio y luego compilar en la Pi.
+Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo.
+
 FLARE, un engine RPG libre en la Raspberry Pi
 ===================================
 
