@@ -4472,6 +4472,9 @@ SM64EX, port del Mario64 para GNU/Linux
 Los sources están en:
 https://github.com/sm64pc/sm64ex
 
+Aplicamos el parche de 60FPS que viene incluido con:
+tools/apply_patch.sh enhancements/60fps_ex.patch
+
 Hay que tener baserom.us.z64 en el directorio raiz.
 
 Se compila para la Pi con:
@@ -4482,6 +4485,7 @@ El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
 
 Pide algunas dependencias que sólo necesita en la máquina donde se extraen los datos del juego, que puede ser un PC de escritorio y luego compilar en la Pi.
 Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo.
+PARA EVITAR LOS PARONES, pon el tamaño de audio buffer de 1024 (trae 512).
 
 FLARE, un engine RPG libre en la Raspberry Pi
 ===================================
