@@ -4478,6 +4478,8 @@ Se compila para la Pi con:
 
 make TARGET_RPI=1 -j3
 
+El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
+
 Pide algunas dependencias que sólo necesita en la máquina donde se extraen los datos del juego, que puede ser un PC de escritorio y luego compilar en la Pi.
 Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo.
 
