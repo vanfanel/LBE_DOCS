@@ -1,3 +1,8 @@
+-CONOCIMIENTO INICIAL MUY IMPORTANTE: Recuerda que PUEDE HABER VARIOS CONECTORES LEYENDO UN MISMO CRTC: por eso, cada conector tiene un campo CRTC_ID, pero un CRTC no tiene un campo conector... Varios conectores pueden estar "mamando" la imágen de un mismo crtc!!!
+
+-PRIMER TRUCO: Si la pantalla se pone en negro apagada, normalmente es porque el kernel ha deshabilitado el CRTC, desconectando el CONECTOR en uso del CRTC. Y eso lo hace el kernel normalmente cuando destruyes algo que el PLANO PRIMARIO está leyendo, como un buffer GBM o la surface EGL, etc.
+Y ESTE ES EL TRUCO: localiza, con GDB, en qué línea exacta se apaga la pantalla: ahí es donde estás destruyendo algo que el PLANO PRIMARIO está usando...
+
 -DEBES VER TODO COMO LINEAL, NO HAY PARALELISMO: vamos añadiendo a la atomic-request peticiones de cambios de props de planos, crtcs, conectores... y luego se envían todas en el atomic_commit(), que tenemos uno central en SwapWindow(). ASÍ ES CADA CICLO DEL PROGRAMA, UNO, OTRO, OTRO...
 
 -En SwapWindow() se mete un fence de entrada en el kernel (kms_in_fence_fd) para decirle que KMS tiene que paralizar la aplicación de cambios a que acabe de ejecutarse el cmdstream de la GPU, y se saca un fence de salida del kernel (kms_out_fence_fd) para saber cuándo el kernel ha completado los cambios (en esencia, para saber cuándo se ha hecho el pageflip, que es lo que le pedimos en drm_atomic_setbuffer, cambiar un buffer del plano primario por otro, o sea, un pageflip).
@@ -14,13 +19,31 @@ nuevas que nunca eliminas. FUGA DE MEMORIA. No te compliques: haz todo en Recrea
 
 -Los punteros driverdata del SDL_Display, SDL_Window, etc... NO los tienes que liberar tú, sólo reservarlos: SDL se encarga de liberar los punteros driverdata de todo. Así que no tienes que liberar dispdata, ni windata, etc. Ya lo hace SDL.
 
--CUANDO te de un -22 el atomic_commit, y no sepas por qué, Y FALLE EL CURSOR EN LA SDL2-basic-test, PIENSA QUE LO MISMO ESTÁ LLEGANDO TU LLAMADA A SetCursor() JUSTO MIENTRAS EL PLANO PRIMARIO ESTÁ DESCONECTADO DE SU FB_ID Y SU CRTC_ID. EL plano primario debe estar conectado a ambos para que se pueda poner un cursor en el plano de cursor! Aunque sean planos distintos, esto es así!
-Así que mucho cuidado con las situaciones donde el plano primario está desconectado de un buffer o un CRTC: esto pasaba mucho cuando destruíamos la GBM surface y sus GBM buffers mientras el plano primario estaba leyendo alguno de esos buffers: automáticamente, el kernel desconecta el plano primario del CRTC como "medida de emergencia" y lo que hagamos hasta que llega el atomic_commit() central, el de SwapWindow(), que ya arrastra en el atomic request el reestablecimiento del CRTC y el FB_ID del plano primario (ya que estas cosas se hacen en drm_atomic_setbuffer()) no se realiza.
-O sea, EL PLANO PRIMARIO SIEMPRE DEBE ESTAR BIEN CONECTADITO A UN CRTC Y A UN FB VÁLIDO QUE NO DESTRUYAMOS MIENTRAS ESTÁ EN USO.. PORQUE ENTONCES EL PLANO PRIMARIO ES DESCONECTADO DEL CRTC Y EMPIEZAN A FALLAR LAS PETICIONES ATÓMICAS (los atomic_commit, vaya). 
-/*************************************************************************************************************************************/
-* NI POR UN INSTANTE DEBE EL PLANO PRIMARIO ESTAR DESCONECTADO DEL CRTC Y DE UN FB_ID FUNCIONAL, PORQUE NO SABES CUÁNDO VAN A LLEGAR */
-* ATOMIC COMMITS CON CAMBIOS EN PROPS DEL PLANO PRIMARIO O DEL PLANO DEL CURSOR, Y ESOS COMMITS FALLARÁN SIN MOTIVO APARANTE,        */
-/*************************************************************************************************************************************/
+-Puedes mirar la información sobre las PROPS y los valores que aceptan y sus tipos aquí: https://drmdb.emersion.fr/
+
+-Como las EGL y GBM surfaces están viculadas a la SDL_Window, la destrucción de las surfaces GBM y EGL se hace al destruir la ventana
+(o sea, se llama a DestroySurfaces() desde DestroyWindow(). O sea que las GBM y EGL surfaces NO se destruyen desde VideoQuit(), sino que
+al llegar a VideoQuit() ya se han destruido, porque cuando las SDL internamente llaman a VideoQuit(), las SDL internamente ya han lamado antes a DestroyWindow().
+Y claro, cada vez que se destruye la ventana (DestroyWindow()) se destruyen las GBM y EGL surfaces (como pasa en el CGenius cuanto entras en
+Video o Display en el menú). Y se vuelven a crear si se vuelve a crear la ventana, si no pues destruidas las surfaces se quedan, lo que es
+muy apropiado al salir del programa del todo. 
+
+13:33 < emersion> > my opinion as a userspace developer is that enabling a CRTC without a primary plane has traditionally not worked, so userspace cannot *rely* on it ever working
+-CUANDO queremos destruir la GBM surface y sus buffers, siendo que esos buffers están siendo leidos por el PLANO PRIMARIO, antes tenemos que poner el FB_ID del plano primario apuntando a un buffer que no sea el que vamos a destruir, o simplemente a 0 (y que luego, o bien vayamos  SwapWindow() y se le pase un FB_ID de una nueva GBM surface, o bien salgamos del programa y FBCON recupere la TTY porque nosotros cerramos el drm_fd, y listo).
+Pero no podemos poner FB_ID a 0 sin más, tenemos que poner las props FB_ID y CRTC_ID a 0 a la vez, en el mismo commit.
+Pero pasa una cosa: NO ES POSIBLE TENER UN CRTC ACTIVO SIN UN PLANO! Y AL DESACTIVAR EL CRTC TENEMOS QUE DESENCHUFAR EL CONECTOR QUE LO ESTÁ LEYENDO (varios conectores pueden estar leyendo un CRTC, por eso un CONNECTOR tiene la prop CRTC_ID, pero un CRTC no tiene ninguna prop de CONNECTOR: los CONNECTORs pueden "mamar" varios de cada CRTC). Así que en un sólo atomic commit tendríamos que:
+	-Del CRTC en uso, poner ACTIVE a 0 
+    -Del CONNECTOR en uso, poner el CRTC_ID a 0
+    -Y claro, del PLANO PRIMARIO, poner el FB_ID y el CRTC_ID a 0. 
+LA ALTERNATIVA SENCILLA es mantener siempre el FB_ID apuntando a un buffer que no sea el que vas a destruir, tal como el crtc->buffer_id que es el buffer original donde "vive" la consola TTY, pero que no es fiable que esté ahí, o bien QUE NO DESTRUYAS los buffers de la GBM surface hasta que llegues a SwapWindow() de nuevo, donde ya directamente cambias de un FB_ID de uno de los buffers de la antigua GBM surface a un FB_ID de uno de los buffers de la nueva GBM surface.
+
+-CUANDO te de un -22 el atomic_commit, y no sepas por qué, Y FALLE EL CURSOR EN LA SDL2-basic-test, es que la petición del cursor se está metiendo en la misma request donde estás desactivando el CRTC, desconectando el conector del CRTC y poniendo FB_ID y CRTC_ID del PLANO PRIMARIO a 0.
+Y NO se puede establecer un cursor con el CRTC desactivado, es imposible porque aunque el cursor va en el PLANO CURSOR, necesita el CRTC activo. 
+Esto se arreglaría haciendo un commit inmediato y bloqueante cuando intentamos poner un nuevo cursor en el plano de cursor, para que la petición
+no "viaje" en la petición de desactivación del CRTC. PERO TODO ESTO NO ES NECESARIO SI NUNCA DEJAS EL PLANO PRIMARIO SIN UN FB_ID/CRTC_ID VÁLIDOS,
+lo cual ahora mismo consigo NO DESTRUYENDO LOS BUFFERS GBM HASTA QUE TENGO UNO NUEVO EN SwapWindow().
+
+-En el futuro, la PROP pixel_blend_mode llegará a estar disponible para VC4, y nos permitirá establecer cursores ARGB8888 sin premultiplicar el ALPHA. Para ver qué video cores lo van soportando, mira esta tabla: https://drmdb.emersion.fr/properties/4008636142/pixel%20blend%20mode
 
 COSAS QUE HACER
 ===============
@@ -40,3 +63,20 @@ EL PROBLEMA es que es posible que, si es MoveCUrsor() la que llama a atomic_comm
 Esto tiene su importancia porque algún día no se usará FBCON (que se basa en fbdev.. imagínate!) sino KMSCON, y en ese momento no va a haber un FB original al que recurrir (crtc->crtc->buffer_id).
 Lo de poner CRTC_ID y FB_ID a 0 (y también el resto de props del plano, supongo!) debería funcionar sin problemas en VC4, aunque falla malamente en AMDGPU. Si funciona en VC4, lo dejas así y a AMDGPU que le den, que arreglen los drivers.
 Esto sí lo puedes probar estos días!
+
+...En DestroySurfaces...
+-GUARDAR LAS ANTIGUAS SURFACES Y BUFFERS COMO OLD_
+-CREAR LAS NUEVAS, SOBREESCRIBIENDO LOS PUNTEROS DE LAS VIEJAS EN DISPDATA, PARA QUE SE OPERE SOBRE ELLAS COMO SI TAL COSA
+Le decimos a EGL que empiece a usar las nuevas: cuidado no pongas la EGL surface a NO_SURFACE, que es lo que nos jodía el otro día.
+
+...En DestroyPending....(Es llamada al ppio de SwapWindow() y tras ella se retorna inmediatamente)
+-Hacemos el pageflip a un buffer de los nuevos, pageflip síncrono para estar SEGUROS de que se ha hecho antes de destruir los
+antiguos buffers y la antigua surface.
+
+NOTA1: PUEDE que CreateSurfaces()no debiera hacer nada, porque las surfaces se crean en DestroySurfaces().
+O mejor aún, que CreateSurfaces() compruebe si ya están creadas, Y NO HAGA NADA SI ES ASÍ.
+La cosa es que se pueda llegar desde CreateWindow() y que luego se pueda hacer lo mismo (crear las surfaces) en DestroySurfaces()
+y que no se creen otra vez.
+O sea: hay que evitar que se creen las nuevas surfaces en DestroySurfaces() llamada desde DestroyWindow() y que a continuación
+se llame a CreateSurfaces() desde CreateWindow() y CreateSurfaces() nos cree otras surfaces de nuevo.
+CreateSurfaces() TAMPOCO debería llamar a DestroySurfaces...
