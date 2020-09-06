@@ -1190,7 +1190,7 @@ GetProcOGL(glDiscardFramebufferEXT);
 -Iteradores para bucles (i, j, k...) que se van a usar hasta contadores de resources (count_planes, etc): uint32_t, o unsigned int
 -Identificadores de objetos de GBM, como fb_id, crtc_id, connector_id...: uint32_t
 -Numéricos definidos de DRM, como flags tales como DRM_MODE_ATOMIC_NONBLOCK o como tipos tales como DRM_PLANE_TYPE_PRIMARY, etc... uint32_t
-
+-Tamaños de pantalla o buffer, posiciones de pantalla: int32_t.
 -Variables o contadores que no vayan a alcanzar valores muy altos, pero que obviamente no tiene sentido que sean negativos: unsigned int
 
 -Valores de retorno (ret): int, ya que las funciones pueden devolver valores negativos.

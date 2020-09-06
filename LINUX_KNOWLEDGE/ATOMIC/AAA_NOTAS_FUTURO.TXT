@@ -45,6 +45,7 @@ lo cual ahora mismo consigo NO DESTRUYENDO LOS BUFFERS GBM HASTA QUE TENGO UNO N
 
 -En el futuro, la PROP pixel_blend_mode llegará a estar disponible para VC4, y nos permitirá establecer cursores ARGB8888 sin premultiplicar el ALPHA. Para ver qué video cores lo van soportando, mira esta tabla: https://drmdb.emersion.fr/properties/4008636142/pixel%20blend%20mode
 
+
 COSAS QUE HACER
 ===============
 
@@ -58,25 +59,4 @@ Y tampoco podemos hacer un atomic_commit() cada vez que llamamos a drm_atomic_mo
 Estos timers en teoría van en su propio thread y no deberían ser un problema.. excepto por el acceso a variables en común con el thread del programa donde corren nuestras llamadas drm_atomic..(), pero podría haber un atomic_req propio del ratón, etc, que no haya variables en común.
 *SOLUCIONES POSIBLES 2: Que atomic_commit() compruebe si ha sido llamada ya, y si ya ha sido llamada que retorne sin hacer nada. También habría que marcar cuándo se han completado los cambios solicitados en el commit, para considerar que "ya no se ha llamado". De ese modo, podemos llamarla desde SwapBuffers() o desde MoveCursor(), y sólo meterá el commit en el kernel una vez por cada vysnc.
 EL PROBLEMA es que es posible que, si es MoveCUrsor() la que llama a atomic_commit() y después llega la llamada a drm_atomic_setbuffer() de SwapWindow() (que es donde pedimos el pageflip) pues en el atomic_commit() no entran los cambios solicitados en SwapWindow(), y eso afecta al framerate del juego.
-
-2) LO DE PONER EL CRTC_ID Y EL FB_ID DEL PLANO PRIMARIO A 0 ANTES DE DESTRUIR LA GBM SURFACE Y SUS BUFFERS, en vez de poner el plano primario mirando al FB original que contiene el TTY.
-Esto tiene su importancia porque algún día no se usará FBCON (que se basa en fbdev.. imagínate!) sino KMSCON, y en ese momento no va a haber un FB original al que recurrir (crtc->crtc->buffer_id).
-Lo de poner CRTC_ID y FB_ID a 0 (y también el resto de props del plano, supongo!) debería funcionar sin problemas en VC4, aunque falla malamente en AMDGPU. Si funciona en VC4, lo dejas así y a AMDGPU que le den, que arreglen los drivers.
-Esto sí lo puedes probar estos días!
-
-...En DestroySurfaces...
--GUARDAR LAS ANTIGUAS SURFACES Y BUFFERS COMO OLD_
--CREAR LAS NUEVAS, SOBREESCRIBIENDO LOS PUNTEROS DE LAS VIEJAS EN DISPDATA, PARA QUE SE OPERE SOBRE ELLAS COMO SI TAL COSA
-Le decimos a EGL que empiece a usar las nuevas: cuidado no pongas la EGL surface a NO_SURFACE, que es lo que nos jodía el otro día.
-
-...En DestroyPending....(Es llamada al ppio de SwapWindow() y tras ella se retorna inmediatamente)
--Hacemos el pageflip a un buffer de los nuevos, pageflip síncrono para estar SEGUROS de que se ha hecho antes de destruir los
-antiguos buffers y la antigua surface.
-
-NOTA1: PUEDE que CreateSurfaces()no debiera hacer nada, porque las surfaces se crean en DestroySurfaces().
-O mejor aún, que CreateSurfaces() compruebe si ya están creadas, Y NO HAGA NADA SI ES ASÍ.
-La cosa es que se pueda llegar desde CreateWindow() y que luego se pueda hacer lo mismo (crear las surfaces) en DestroySurfaces()
-y que no se creen otra vez.
-O sea: hay que evitar que se creen las nuevas surfaces en DestroySurfaces() llamada desde DestroyWindow() y que a continuación
-se llame a CreateSurfaces() desde CreateWindow() y CreateSurfaces() nos cree otras surfaces de nuevo.
-CreateSurfaces() TAMPOCO debería llamar a DestroySurfaces...
+CONCLUSIÓN: SIN UN SISTEMA DE VENTANAS QUE MUEVA EL CURSOR POR SU CUENTA, NO HAY SOLUCIÓN.

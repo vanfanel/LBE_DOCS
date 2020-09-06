@@ -9,3 +9,14 @@ Pero vamos, tú mira en dmesg que es donde las funciones del lado del kernel que
 OJO!! Puedes hacer
 dmesg | grep -10 failed 
 porque alrededor del failed es donde vas a ver qué ha fallado, un poco antes normalmente, a veces varias páginas antes. Pero RECUERDA: busca el failed y a partir de ahí, antes, es donde ves el problema: un unsupported pixel format, etc...
+
+*******GUIA RÁPIDA DE DEBUGEO DE EGL***********************************************************************************************************
+
+-PARA DEBUGEAR problemas de EGL, lo mejor es pillar el error generado por EGL con SDL_EGL_SetError(), que es DISTINTA que SDL_SetError() ya que guarda los errores generados por EGL (en plan EGL_BAD_DISPLAY, etc...) y luego imprimir nosotros el error, haciendo desde el programa o desde
+el GDB un printf().
+Un ejemplo con eglSwapBuffers()
+1) Pillamos el posible error que nos de:
+if (! _this->egl_data->eglSwapBuffers(_this->egl_data->egl_display, windata->egl_surface)) {
+        SDL_EGL_SetError("Failed to swap EGL buffers", "eglSwapBuffers");
+2) Imprimimos el error generado por EGL tranquilamente, cosa que podemos hacer desde el programa o desde GDB justo después de llamar a eglSwapBuffers:
+printf(SDL_GetError());   

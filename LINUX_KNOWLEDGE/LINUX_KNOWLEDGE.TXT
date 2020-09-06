@@ -2223,7 +2223,10 @@ make -j4
 
 Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
 
-Bajamos los últimos sources estables desde:
+Bajamos el último daily tarball de:
+https://dukeworld.duke4.net/eduke32/synthesis/
+
+O bajamos los últimos sources estables desde:
 https://dukeworld.com/eduke32/synthesis/latest/?s=d&o=d&dir=eduke32/synthesis/latest
 
 O clonamos su repo en:
@@ -4813,14 +4816,9 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 por
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
-En src/i_sdlsound.c, en ExpandSoundData_SDL tienes una llamada a SDL_BuildAudioCVT(), y como ExpandSoundData_SDL() es llamada cada vez que suena un efecto de sonido,
-pues ya sabes lo que pasa: slowdown.
-Pero por suerte tienes una rutina genérica de conversión de samplerate debajo, y también una versión de la función ExpandSoundData_SDL() para libsamplerate.
-Así que, para no complicarnos tocando el código, instalamos libsamplerate y le pasamos que use libsamplerate cuando hagamos el cmake, mira:
-
 mkdir b3
 cd b3
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DHAVE_LIBSAMPLERATE=ON -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
 Ejecura crispy-setup y pulsa INTRO porque si no, no se ve nada.
