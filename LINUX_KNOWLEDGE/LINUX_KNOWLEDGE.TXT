@@ -4805,6 +4805,21 @@ Y compilamos con make -j6
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
 
+BARONY, UN DUNGEON CRAWLER 3D OPENSOURCE PARA LINUX
+====================================================
+
+Clonamos su repo o pillamos la última estable de:
+https://github.com/TurningWheel/Barony
+
+Instalamos una dependencia adicional que tiene:
+udo apt-get install rapidjson-dev
+
+Configuramos y compilamos con:
+mkdir b3
+cd b3
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DFMOD_ENABLED=OFF -DCMAKE_BUILD_TYPE=Release ..
+make -j4
+
 CRISPY DOOM
 ============
 
@@ -4821,14 +4836,12 @@ cd b3
 cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
-Ejecura crispy-setup y pulsa INTRO porque si no, no se ve nada.
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
 
 Para que la música digital vaya, nos bajamos un pack (de OGG, de FLAC o de lo que queramos y SDL_Mixer() tenga soporte para reproducir)
 y lo mandamos, por ejemplo, a ~/heretic/heretic-music, dejando ahí los OGG o los FLAC tirados sin más.
 Ahora editamos ~/.local/share/crispy-doom/crispy-heretic.cfg y en el setting music_pack_path ponemos el path: "/home/manuel/heretic/heretic-music"
 (O el que sea, vamos).
-Ya que estás, pon en crispy-heretic.cfg el setting use_libsamplerate a 0 si no estás usando libsamplerate.
  
 MONITORIZAR ACCESO A FICHEROS EN GNU/LINUX
 ===========================================

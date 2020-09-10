@@ -1,3 +1,16 @@
+*****CONOCIMIENTO INICIAL FUNDAMENTAL: SIN ESTO NO HACES NADA *****
+
+EL ÁRBOL DE RECURSOS DE KMSDRM (el por qué de su existencia, y por qué KMSDRM es mucho más lowlevel y flexible que algo como DispmanX)
+
+--La imágen sale por un ENCODER conectado a un CONNECTOR. O sea, cada ENCODER va a un CONECTOR, que va a un display o pantalla.
+--FUNDAMENTALÍSIMO: Varios CONNECTORs pueden estar conectados a un CRTC, o sea, varios CONNECTORs pueden estar "mamando" la imágen de un mismo CRTC.
+  POR ESO, los CONNECTORs tienen una propiedad CRTC_ID, pero los CRTCs *NO* tienen una propiedad CONNECTOR_ID ni nada por el estilo.
+--1 CRTC puede escanear varios PLANOS, y un PLANO puede ser escaneado por varios CRTCs (imagina la misma imáge saliendo por varias pantallas...)
+  Por eso un PLANO tiene una propiedad CRTC_ID.
+  Así mismo, un PLANO puede leer un KMS BUFFER (fb_id, típicamente, procedente de pasarle un GBM BO a AddFB2() para asignarle memoria),
+  por eso cada plano tiene una propiedad FB_ID.
+  A parte, claro, supongo que un KMS BUFFER puede ser leido por varios planos...
+   
 -CONOCIMIENTO INICIAL MUY IMPORTANTE: Recuerda que PUEDE HABER VARIOS CONECTORES LEYENDO UN MISMO CRTC: por eso, cada conector tiene un campo CRTC_ID, pero un CRTC no tiene un campo conector... Varios conectores pueden estar "mamando" la imágen de un mismo crtc!!!
 
 -PRIMER TRUCO: Si la pantalla se pone en negro apagada, normalmente es porque el kernel ha deshabilitado el CRTC, desconectando el CONECTOR en uso del CRTC. Y eso lo hace el kernel normalmente cuando destruyes algo que el PLANO PRIMARIO está leyendo, como un buffer GBM o la surface EGL, etc.

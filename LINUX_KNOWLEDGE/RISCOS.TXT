@@ -69,3 +69,28 @@ que traen los programas.
 Necesitamos el KinoAmp, última versión y el AMPlayer, última versión. Copiamos la aplicación del KinoAmp a Apps, SIN instalar su SYSTEM,
 e instalamos el SYSTEM del AMPlayer. Copiar la aplicación de AMPlayer a Apps ya es opcional, aunque está bien para escuchar música.
 Para que se oiga, vamos a los CHOICES del KinoAmp, y elegimos la salida del AMPlayer.
+
+CONFIGURAR EL JOYSTICK CON USBJOYSTICK
+======================================
+
+Primero cargamos el módulo USBJOYSTICK, que viene dentro de !ADDFS.
+
+Ahora, desde la consola (F12) tenemos que ver la info de nuestro joystick USB con:
+USBJOYSTICK_LIST
+
+Ahora podemos ver su configuración por defecto con:
+USBJOYSTICK_MAPPED
+
+Y si queremos podemos mapearlo manualmente. Pare ello, primero vemos cómo van cambiando los valores de los botones y los ejes al moverlos, con:
+USBJOYSTICK_READ 0
+Ahora que sabemos qué número tiene cada botón y eje que pulsamos, podemos mapearlos a mano con varios comandos:
+USBJOYSTICK_MAPSTICK, USBJOYSTICK_MAPAXES8, USBJOYSTICK_MAPAXES16, USBJOYSTICK_MAPBUTTONS.
+Puedes ver la sintaxis de cada uno con HELP <NOMBRE_COMANDO>
+Lo suyo es hacerse un OBEY que, tras cargar el módulo, configure el joystick usando estos comandos. Paciencia... 
+
+CONFIGURAR LA RED CON IP ESTÁTICA (para descargar paquetes de !PackMan con la Pi conectada al portátil que sale a internet con el móvil)
+========================================================================================================================================
+
+Es todo bastante obvio excepto el servidor DNS, que se configura en HOST NAMES tras haber marcado la casilla de "TRY NAME SERVER TOO".
+Por si acaso, hay un tutorial completo en http://www.riscos.org/iyonix/networking.html
+(Pero ya digo que es MUY obvio todo...)

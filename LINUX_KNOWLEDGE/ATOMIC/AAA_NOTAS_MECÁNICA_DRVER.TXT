@@ -5,10 +5,3 @@ el commit al que se una ese cambio va a fallar.
 Luego, tras hacer la petición de cambio de buffer para el pageflip en SwapWindow(), se manda el atomic commit, para solicitar todo: el cambio de buffer correspondiente al pageflip, y todos los cambios que hayamos solicitado durante ese loop del juego.
 La propia función atomic_commit() ya lleva incortporada la espera de la completación del commit anterior, ya que como sabes no se puede mandar un atomic commit antes de completarse el anterior.
 La propioa función atomic_commit() también resetea el req tras pedir el atomic commit.
-
-TODO 2
-======
-
--Pasar la definición de la estructura KMSDRM_CursorData a KMSDRM_kmsdrmmouse.h, y que kmsdrmvideo la conozca mediante un extern en kmsdrmvideo.h
--Acortar los paths de punteros anidados tipo crtc->crtc->...
--Quitar el printf() de atomic_commit().

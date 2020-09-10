@@ -32,12 +32,3 @@ NOTAS PASO A ATOMIC
 OTRAS NOTAS
 Los miembros del struct drm_bo los puedes ver en
 https://cgit.freedesktop.org/mesa/mesa/tree/src/gbm/main/gbmint.h#n108
-
-TODO EN EL BACKEND KMSDRM
-==========================
---Libera las props_info y demás del cursor_plane como haces con las del plano principal. Sólo si existen, ojo.
---Sacar las funciones drmMode...() que ya no usemos del kmsdrmmodesym.h
---Ver cómo le llegan dispdata y viddata a las funciones ATOMIC: AddProperty_LOQUESEA, atomic_commit, etc...
---Pasar lo del cursor a las peticiones del atomic ioctl que hacemos en SwapBuffers.
---Seguir quitando printfs de kmsdrmmouse y demás unidades...
---Qué lío tienes montado entre hacer atomic_commits() bloqueantes y el seteo de flags para hacer el commit bloqueante? Míratelo...
