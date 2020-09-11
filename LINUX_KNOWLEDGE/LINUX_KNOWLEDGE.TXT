@@ -4823,7 +4823,10 @@ make -j4
 CRISPY DOOM
 ============
 
-Clonamos el repo de:
+Primero instalamos una dependencia suya para que pre-convierta TODOS los efectos de sonido y así el juego no pegue tirones:
+sudo apt-get install --no-install-recommends libsamplerate0-dev
+
+Ahora clonamos el repo de crispy-doom:
 https://github.com/fabiangreffrath/crispy-doom.git
 
 Reemplazamos en src/i_video.c  todas las ocurrencias de
@@ -4842,7 +4845,8 @@ Para que la música digital vaya, nos bajamos un pack (de OGG, de FLAC o de lo q
 y lo mandamos, por ejemplo, a ~/heretic/heretic-music, dejando ahí los OGG o los FLAC tirados sin más.
 Ahora editamos ~/.local/share/crispy-doom/crispy-heretic.cfg y en el setting music_pack_path ponemos el path: "/home/manuel/heretic/heretic-music"
 (O el que sea, vamos).
- 
+FÍJATE BIEN QUE AL PRINCIPIO DIGA: "Pre-caching all sounds..."
+
 MONITORIZAR ACCESO A FICHEROS EN GNU/LINUX
 ===========================================
 
