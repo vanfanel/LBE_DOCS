@@ -2223,13 +2223,7 @@ make -j4
 
 Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
 
-Bajamos el último daily tarball de:
-https://dukeworld.duke4.net/eduke32/synthesis/
-
-O bajamos los últimos sources estables desde:
-https://dukeworld.com/eduke32/synthesis/latest/?s=d&o=d&dir=eduke32/synthesis/latest
-
-O clonamos su repo en:
+Clonamos su repo en:
 git clone --depth 1 https://voidpoint.io/terminx/eduke32.git
 
 Editamos source/build/src/sdlayer.cpp y hacemos todos los cambios que se detallan a continuación:
@@ -4472,8 +4466,8 @@ Manda la salida a /dev/null y fuera.
 SM64EX, port del Mario64 para GNU/Linux
 ========================================
 
-Los sources están en:
-https://github.com/sm64pc/sm64ex
+Clonamos los surces de su nightly (el master no trae el parche para 60FPS!)
+git clone --depth 1 https://github.com/sm64pc/sm64ex.git -b nightly
 
 Aplicamos el parche de 60FPS que viene incluido con:
 tools/apply_patch.sh enhancements/60fps_ex.patch
@@ -4487,8 +4481,19 @@ make TARGET_RPI=1 -j3
 El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
 
 Pide algunas dependencias que sólo necesita en la máquina donde se extraen los datos del juego, que puede ser un PC de escritorio y luego compilar en la Pi.
-Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo.
-PARA EVITAR LOS PARONES, pon el tamaño de audio buffer de 1024 (trae 512).
+Al compilar en la Pi te dará errores con las tools que se hayan compilado antes en X86_64, así que haz:
+make clean
+Y borra:
+rm tools/aifc_decode
+rm tools/aiff_extract_codebook
+rm tools/vadpcm_enc
+rm tools/textconv
+rm tools/skyconv
+rm tools/n64graphics
+rm tools/n64cksum
+Si aun así da error, borra el fichero con el que da error (el tool que da el error seguramente ya lo hayas borrado antes).
+
+Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo. Pero vamos, viene en 512, si lo tocas será para subirlo a 1024.
 
 FLARE, un engine RPG libre en la Raspberry Pi
 ===================================
