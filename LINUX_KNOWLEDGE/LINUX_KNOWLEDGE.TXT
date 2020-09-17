@@ -85,7 +85,7 @@ Hay que crosscompilar. No compila en Pi3 con 1GB ni con swap. Crosscompilamos en
 sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
 -Copiamos el rootfs a /opt/rpi_root, excluyendo home, con:
-sudo rsync -av --progress /media/manuel/rootfs /opt/ --exclude rootfs/home/pi
+sudo rsync -av --progress /media/manuel/DEBIAN_ROOT /opt/ --exclude DEBIAN_ROOT/home/pi
 
 -Clonamos el repo:
 git clone --depth 1 https://github.com/stenzek/duckstation.git
@@ -123,7 +123,7 @@ mkdir build
 cd build
 
 -Configuramos pasándole el cmake toolchain file así:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_TOOLCHAIN_FILE=../aarch64-toolchain.cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
 
 -Compilamos con make, y comprobamos el ejecutable, que sea aarch64:
 file duckstation_libretro.so
@@ -2238,7 +2238,7 @@ Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
 Funciona con aceleración GLES, por cierto, usando POLYMOST, y bastante bien además.
 
-make -j4 USE_OPENGL=0 WITHOUT_GTK=1 USE_LIBVPX=0 HAVE_FLAC=0 LTO=0 OPTOPT="-march=armv8-a+crc -mtune=cortex-a53"
+make -j4 RELEASE=1 USE_OPENGL=0 WITHOUT_GTK=1 USE_LIBVPX=0 HAVE_FLAC=0 LTO=0 OPTOPT="-march=armv8-a+crc -mtune=cortex-a53"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
@@ -4319,7 +4319,7 @@ cosa en nuestro caso.
 Lo de CONFIG_PREEMPT y 250HZ NO INFLUYE en la latencia, ni en el desempeño ni en nada.
 Si luego te quieres meter con CPU isolation (que es DISTINTO a que las CPUs sean tickless: las CPUs aisladas no tienen que ejecutar ticks del scheduler CUANDO NO CORRE NADA EN ELLAS,
 si hay algo corriendo en varias CPUs aisladas, tienen que correr ticks del scheduler sí o sí) ya es cosa tuya, el ningún beneficio evidente es que los programas que se ejecutan en una CPU aislada
-no se quedan sin CPU nunca por culpa de otros programas: combínalo con ejecutar las aplicaciones con "chrt -f 80", que le da prioridad realtime y no suelta la CPU
+no se quedan sin CPU nunca por culpa de otros programas: combínalo con ejecutar las aplicaciones con "chrt -f 99", que le da prioridad realtime y no suelta la CPU
 porque no hay otra aplicación a la que dársela con la misma prioridad (SCHED_FIFO). Luego hay SCHED_RR, que es con -r, y que genera más ticks del scheduler, así que nos conviene menos.
 
 EL MEJOR hilo donde se habla de estas cosas es este:
