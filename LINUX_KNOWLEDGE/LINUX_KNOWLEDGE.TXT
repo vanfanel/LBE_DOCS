@@ -84,7 +84,7 @@ Hay que crosscompilar. No compila en Pi3 con 1GB ni con swap. Crosscompilamos en
 -Instalamos los paquetes:
 sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
--Copiamos el rootfs a /opt/rpi_root, excluyendo home, con:
+-Copiamos el rootfs a /opt/DEBIAN_ROOT, excluyendo home, con:
 sudo rsync -av --progress /media/manuel/DEBIAN_ROOT /opt/ --exclude DEBIAN_ROOT/home/pi
 
 -Clonamos el repo:
@@ -92,30 +92,25 @@ git clone --depth 1 https://github.com/stenzek/duckstation.git
 
 -Creamos en el raiz de los sources (o donde nos de la gana) el cmake toolchain file, donde le especificamos todo lo necesario
 para crosscompilar para aarch64.
-Yo lo he llamado aarch64-toolchain.cmake, con el contenido:
+Yo lo he llamado toolchain.cmake, con el contenido:
 
 # Target system
 SET(CMAKE_SYSTEM_NAME Linux)
 SET(CMAKE_SYSTEM_PROCESSOR aarch64)
-SET(CMAKE_SYSTEM_VERSION 1)
-set(CMAKE_CROSSCOMPILING TRUE)
 
-set(CMAKE_FIND_ROOT_PATH /opt/rootfs)
+SET(CMAKE_SYSROOT /opt/DEBIAN_ROOT)
+#set(CMAKE_FIND_ROOT_PATH /opt/DEBIAN_ROOT)
 
 # Cross compiler
 SET(CMAKE_C_COMPILER   aarch64-linux-gnu-gcc)
 SET(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)
-set(CMAKE_LIBRARY_ARCHITECTURE aarch64-linux-gnu)
+SET(CMAKE_LIBRARY_ARCHITECTURE aarch64-linux-gnu)
+SET(CMAKE_PREFIX_PATH /opt/DEBIAN_ROOT/usr/lib/aarch64-linux-gnu)
 
-# Search for programs in the build host directories
 SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-
-# Libraries and headers in the target directories
-set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
-set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
-
-set(THREADS_PTHREAD_ARG "0" CACHE STRING "Result from TRY_RUN" FORCE)
+SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+SET(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 -Ahora creamos el directorio de compilación y nos movemos a él:
 
@@ -123,7 +118,7 @@ mkdir build
 cd build
 
 -Configuramos pasándole el cmake toolchain file así:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_TOOLCHAIN_FILE=../aarch64-toolchain.cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
 
 -Compilamos con make, y comprobamos el ejecutable, que sea aarch64:
 file duckstation_libretro.so
@@ -5729,12 +5724,6 @@ Editamos Makefile y cambiamos O2 a O3
 
 Compilamos con
 CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4
-
-MARIO64 nativo en la RASPBERRY PI
-=================================
-
-Se compila con:
-make TARGET_RPI=1 -j4
 
 VVVVVV en la Raspberry Pi
 =====================
