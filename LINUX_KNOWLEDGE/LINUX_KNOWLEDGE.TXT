@@ -323,7 +323,7 @@ make BUILD_LINUX=1 GCC_TARGET=64 -j8
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
-Los CXXFLAGS son: -O3 -march=armv8-a+crc -mtune=cortex-a53
+Los CXXFLAGS son: -O2 -march=armv8-a+crc -mtune=cortex-a53
 Y aniade la línea de optimiación agresiva debajo de la original de CFLAGS:
 CXXFLAGS += -flto -fomit-frame-pointer
 (NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
@@ -345,7 +345,7 @@ apt-get install libmodplug-dev --no-install-recommends
 
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
-CXXFLAGS += -O3 -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O3 -march=armv8-a+crc -mtune=cortex-a53
+CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=armv8-a+crc -mtune=cortex-a53
 
 Editamos sdl_systemstub.cpp y cambiamos:
 desired.samples = 2048;
@@ -537,14 +537,14 @@ https://www.vogons.org/viewtopic.php?f=41&t=34770&start=120
 patch -p0 < parche.patch
 
 Editamos el configure, y cambiamos "-g -O2" por los flags:
--O3 -march=armv8-a+crc -mtune=cortex-a53
+-O2 -march=armv8-a+crc -mtune=cortex-a53
 porque si no algunos Makefiles van a tener los flags antiguos.
 
 Editamos configure y ponemos a "no" todos los have... relacionados con opengl y x11.
 
 Configuraríamos para SDL2. 
 
-CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure
+CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure
 
 Cambiamos "AR = ar" por "AR = gcc-ar" y "RANLIB = ranlib" por "RANLIB = gcc-ranlib" en todos los Makefile (hay varios, en distintos subdirectorios) y forzamos los CFLAGS
 que nos interesan en ellos, ya que no llegan desde el configure a algunos Makefiles, con:
@@ -553,7 +553,7 @@ find ./ -name Makefile -exec sed -i 's/AR = ar/AR = gcc-ar/g' {} \;
 
 find ./ -name Makefile -exec sed -i 's/RANLIB = ranlib/RANLIB = gcc-ranlib/g' {} \;
 
-find ./ -name Makefile -exec sed -i 's/-g -O2/-O3 -march=armv8-a+crc -mtune=cortex-a53 /g' {} \;
+find ./ -name Makefile -exec sed -i 's/-g -O2/-O2 -march=armv8-a+crc -mtune=cortex-a53 /g' {} \;
 
 (Siempre que ejecutes configure, te tocará sustutuir AR y RANLIB y reajustar los CFLAGS con el find como acabas de ver, porque el configure lo pone mal otra vez en los makefiles).
 
@@ -2264,7 +2264,7 @@ LIBS+= -pthread
 SDLCONFIG_COMMONFLAGS:=$(subst -Dmain=SDL_main,,-I/opt/rpi_root/usr/include/SDL2 -I/opt/rpi_root/opt/vc/include -I/opt/rpi_root/opt/vc/include/interface/vcos/pthreads -I/opt/rpi_root/opt/vc/include/interface/vmcs_host/linux -D_REENTRANT)
 SDLCONFIG_LIBS:=--sysroot=/opt/rpi_root -B/opt/rpi_root/usr/lib/arm-linux-gnueabihf -Xlinker -rpath-link=/opt/rpi_root/usr/lib/arm-linux-gnueabihf -Xlinker -rpath-link=/opt/rpi_root/lib/arm-linux-gnueabihf -L/opt/rpi_root/usr/lib/arm-linux-gnueabihf -L/opt/rpi_root/usr/lib -Wl,-rpath,/opt/rpi_root/usr/lib -L/opt/rpi_root/usr/lib/arm-linux-gnueabihf -L/opt/rpi_root/lib/arm-linux-gnueabihf -L/opt/rpi_root/usr/lib -L/opt/rpi_root/opt/vc/lib -lbcm_host -lvcos -lvchiq_arm
 
-Y ahora ya compila, con nivel de opimización -O3 y flags para la Pi1 quedaría:
+Y ahora ya compila, con nivel de opimización -O2 y flags para la Pi1 quedaría:
 
 make -j8 USE_LIBVPX=0 USE_LIBPNG=0 WITHOUT_GTK=1 USE_OPENGL=0 CROSS=bcm2708hardfp- OPTLEVEL=3 OPTOPT="-marm -mfpu=vfp -mfloat-abi=hard"
 
@@ -2297,7 +2297,7 @@ en ese mismo fichero, schism/video.c
 
 Editamos Makefile y dejamos la línea de CFLAGS así: (el Makefile es un poco lioso porque es de generación automática, busca -g y te lleva al sitio)
 
-CFLAGS = -O3 -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
+CFLAGS = -O2 -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
 
 Quitamos el -O2 y el -g de OBJFLAGS.
 
@@ -2341,7 +2341,7 @@ Al final, mi script wolf3d contiene esta línea para lanzar el ECWOLF a mi gusto
 NOTA: SI USAS EL CORE DE RETROARCH, pon los datos y el EXE de la versión de ACTIVISION, NO la original de Apogee, y a Retroarch, además del core, le pasas el WOLF3D.EXE.
 Y se compila con:
 
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53"  cmake -DLIBRETRO=1 ..
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53"  cmake -DLIBRETRO=1 ..
 
 ***********XASH3D para Raspberry Pi (GLES) **********************************************************************************************
 
@@ -2676,7 +2676,7 @@ Para compilar fluidsynth podemos hacerlo desde los sources estables antiguos que
 Editamos configure y quitamos los O2 y los -g que encontremos antes de ejecutar configure.
 Ahora ya ejecutamos configure así:
 
-CFLAGS="-O3 -march=armv6 -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O3 -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure  --prefix=/usr --disable-aufile-support --disable-oss-support --disable-dbus-support
+CFLAGS="-O2 -march=armv6 -mfpu=vfp -mfloat-abi=hard" CXXFLAGS="-O2 -march=armv6 -mfpu=vfp -mfloat-abi=hard" ./configure  --prefix=/usr --disable-aufile-support --disable-oss-support --disable-dbus-support
 
 Y POR ÚLTIMO compilamos.
 
@@ -2696,7 +2696,7 @@ Ejecutamos autogen.sh
 Editamos configure y quitamos los O2 y los -g que encontremos antes de ejecutar configure.
 Ahora ya ejecutamos configure así:
 
-CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr --disable-oss-support --disable-aufile-support  --disable-dbus-support
+CFLAGS="-O2 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O2 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr --disable-oss-support --disable-aufile-support  --disable-dbus-support
 
 Y POR ÚLTIMO compilamos.
 
@@ -3128,7 +3128,7 @@ luego he editado src/MYOSGLUE.c y he cambiado el bpp de SetVideoMode() de 8 a 16
 Para la velocidad original del Macintosh plus, tendrías que poner "-speed z"
 
 Compilar con los flags en el makefile así:
-mk_COptions = -c -Wall -Wmissing-prototypes -Wno-uninitialized -Wundef -Wstrict-prototypes -O3 -marm -mfpu=vfp -mfloat    -abi=hard -march=armv6j
+mk_COptions = -c -Wall -Wmissing-prototypes -Wno-uninitialized -Wundef -Wstrict-prototypes -O2 -marm -mfpu=vfp -mfloat -abi=hard -march=armv6j
 
 Para hacerte un HFV con juegos y programas, bájate los system disks de la 6.0.8 de aquí:
 http://www.gryphel.com/c/sw/system/sys60/index.html
@@ -3289,7 +3289,7 @@ lo que hay en hqp/keen2 a ~/keen/games/keen2, etc...
 
 Entramos en src y compilamos con:
  
-make RENDERER=sdl2 CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" -j4
+make RENDERER=sdl2 CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" -j4
 
 *************Doomretro en la Raspberry Pi*************************************************************************************
 
@@ -3339,11 +3339,11 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 Ahora editamos configure.ac ponemos el optimization level a 3 y quitamos y el -g que encontremos.
 Ahora configuramos con 
 CFLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure
-NO LE PASES el -O3 al script de configuración: ya lo has puesto en el configure.ac.
+NO LE PASES el -O2 al script de configuración: ya lo has puesto en el configure.ac.
 
 Compilamos con
 make -j8 V=1
-Verificamos que no hay -g, que se compila con -O3 y que los flags de cpu son correctos.
+Verificamos que no hay -g, que se compila con -O2 y que los flags de cpu son correctos.
 Listo!
 
 NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da igual.
@@ -3590,7 +3590,7 @@ Ahora actualiza el config.guess, que el que trae el rogue es viejo y no detecta 
 wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' -O config.guess
 
 Configurar y compilar:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure
 make -j4
 
 Ayuda de teclas con shift+?
@@ -4114,7 +4114,7 @@ o simplemente reiniciar.
 
 Cambia automake-1.13 a automake-1.11 en el Makefile.
 Configura con: 
-CFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O3 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --enable-static
+CFLAGS="-O2 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O2 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --enable-static
 
 ****************************Milkytracker en la Raspberry Pi****************************
 
@@ -4180,7 +4180,7 @@ El V=1 es para ver las líneas de compilación y comprobar que nuestros flags se
 
 Si quieres compilar en modo debug, haz:
 make -j6 DEBUG=1 V=1
-y se le pasará -O0 -g al compilador, y nada de -O2 ni -O3
+y se le pasará -O0 -g al compilador, y nada de -O2 ni -O2
 
 NO instales ninguna librería de mesa, gl NI NADA DE ESO, o luego las SDL2 se liarán. En la Rpi NO HAY MESA y no hay GL, sólo EGL y GLES que ya
 vienen instaladas como libs e includes en /opt/vc.
@@ -4519,7 +4519,6 @@ Clonamos:
 
 git clone --depth 1 https://github.com/nuvie/nuvie.git
 
-Editamos configure.ac y cambiamos O2 por O3.
 Ejecutamos el autogen.sh
 
 Añadimos 
@@ -4639,7 +4638,7 @@ sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libthe
 Las otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarlas).
 
 Configuramos love:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr
 
 make y sudo make install
 
@@ -4728,7 +4727,7 @@ Instalamos esta dependencia previa si queremos ratón en la consola:
 sudo apt-get install gpm libgpm-dev --no-install-recommends
 
 Configuramos e instalamos:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-hw-tty=yes  --enable-hw-x11=no 
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-hw-tty=yes  --enable-hw-x11=no 
 make -j4
 sudo make install
 
@@ -5027,7 +5026,7 @@ O bien usamos la 0.87 que traen los sources de los juegos, ya que en algunos cas
 CXXFLAGS="-fpermissive" ./configure --enable-static
 make -j8
 
-CFLAGS="-O3  -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3  -march=armv8-a+crc -mtune=cortex-a53" ./configure --enable-static
+CFLAGS="-O2  -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2  -march=armv8-a+crc -mtune=cortex-a53" ./configure --enable-static
 
 Buscamos libmodplug.a
 find ./ -name 'libmodplug.a'
@@ -5719,8 +5718,6 @@ Neverball en la Raspberry Pi
 
 Clonamos su repo en:
 git clone --depth 1 https://github.com/Neverball/neverball.git
-
-Editamos Makefile y cambiamos O2 a O3
 
 Compilamos con
 CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4

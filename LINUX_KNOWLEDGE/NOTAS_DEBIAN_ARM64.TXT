@@ -501,7 +501,7 @@ mkdir b3
 cd b3
 
 Configuramos con esto:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false -Dinstall-test-programs=true ..
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false -Dinstall-test-programs=true ..
 
 Compilamos e instalamos:
 ninja -j4
@@ -525,7 +525,7 @@ sudo apt-get install libtool
 sudo apt-get install  libx11-dev libxext-dev --no-install-recommends
 git clone --depth 1 https://github.com/NVIDIA/libglvnd.git
 ./autogen.sh
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-glx
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-glx
 etc... (no recomendado porque SDL2 no funciona con libglapi.so, ver más arriba).
 
 (SI QUIERES GLX, PARA QUE SDL2 FUNCIONE CON OPENGL COMPLETO, GLES1 Y GLES2, NECESITAS TODO ESTO:).
@@ -551,13 +551,13 @@ mkdir b3
 cd b3
 AHORA PARA CONFIGURAR:
 ASI LO VENIMOS HACIENDO:  CON GLES Y GLES2, SIN OPENGL COMPLETO:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=dri -Dglvnd=false -Dplatforms=drm,x11 -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=dri -Dglvnd=false -Dplatforms=drm,x11 -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=true -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=true -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
 PARA COMPILAR:
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
@@ -580,7 +580,7 @@ y no en runtime, y EGL no. Por eso usamos glvnd y así tenemos full opengl sin X
 <imirkin> glapi is an internal mesa detail
 
 !!!!NOTA QUE TE PUEDE INTERESAR EN EL FUTURO: En X86_64, donde se usa el driver i965 que NO es gallium sino dri, se haría:
-CFLAGS="-O3 -march=native -mtune=native" CXXFLAGS="-O3  -march=native -mtune=native" meson --buildtype=plain -Db_ndebug=true -Dglvnd=true -Dplatforms=drm -Dglx=disabled -Dllvm=false -Ddri-drivers=i915 -Dgallium-drivers='' -Dvulkan-drivers='' ..
+CFLAGS="-O2 -march=native -mtune=native" CXXFLAGS="-O2  -march=native -mtune=native" meson --buildtype=plain -Db_ndebug=true -Dglvnd=true -Dplatforms=drm -Dglx=disabled -Dllvm=false -Ddri-drivers=i915 -Dgallium-drivers='' -Dvulkan-drivers='' ..
 
 Si al compilar te da un error de que NULL no está definido, añade en src/egl/main/egldevice.h:
 #include <stddef.h>
@@ -603,10 +603,10 @@ Para ello, actualizamos src/audio/SDL_audiotypecvt.c desde la versión actual, q
 (En la parte de arriba tienes la última versión en ZIP, TAR, etc... Sobreescribe el  src/audio/SDL_audiotypecvt.c con la versión actualizada de aquí).
 
 SÓLO CON GLES1 y GLES2, COMO LO HACEMOS AHORA:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan
 
 CON OPENGL COMPLETO, GLES1 y GLES2
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan 
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan 
 
 (LO DE  -DMESA_EGL_NO_X11_HEADERS LO HEMOS SACADO DE /usr/lib/pkgconfig/egl.pc. Como el viejo buildsystem de las SDL2 basado en configure y make no usa pkgconfig para saber qué flags tiene que pasar cuando
 se compile eglplatform.h, parte de EGL de MESA, que es donde  MESA_EGL_NO_X11_HEADERS evita intentar incluir las headers de X11, pues se lo tenemos que pasar nosotros a mano. El buildsystem de las SDL2 basado en CMAKE sí
@@ -627,17 +627,17 @@ Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sa
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
 Para SDL2_Mixer (instalar antes libogg-dev y libflac-dev):
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
 Para SDL2_Image o SDL2_ttf:
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53" ./configure --without-x
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure --without-x
 
 INSTALAR RETROARCH
 ===================
 
 Se configura con:
 
-CFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O3 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-glslang --disable-builtinglslang --disable-rpiled --enable-opengles --enable-egl
+CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-glslang --disable-builtinglslang --disable-rpiled --enable-opengles --enable-egl
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 
