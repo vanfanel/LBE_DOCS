@@ -2874,9 +2874,13 @@ Podría ser necesario usar otro dispositivo de loopback en otras tarjetas distin
 
 Dependencias previas:
 
-sudo apt-get install libpython-dev --no-install-recommends
+-sudo apt-get install libpython-dev --no-install-recommends
 
-HAY que tener instalado OpenAL, porque aunque tiene soporte para SDL2 sin OpenAL, faltan los sonidos ambientales si usas SDL2.
+-HAY que tener instalado OpenAL, porque aunque tiene soporte para SDL2 sin OpenAL, faltan los sonidos ambientales si usas SDL2.
+Cuando acabes de compilar e instalar OpenAL, haz:
+sudo rm /etc/ld.so.cache
+sudo ldconfig
+...O el plugin de audio no podrá ser cargado.
 
 Cambia en gemrb/plugins/SDLVideo/SDL20Video.cpp:
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
@@ -2895,6 +2899,13 @@ Instalar con sudo make install, el uninstall funciona bien. NO INTENTES JUGAR IN
 
 Ahora te creas un directorio, por ejemplo ~/baldurs, y dentro creas bg2_data, que es donde meterás el baldurs 2 instalado tal cual.
 Ahora te copias el cfg de ejemplo, que viene en build/gemrb, a ~/baldurs también, lo editas y le pasas la ruta del baldurs 2 instalado, relativa a ~/baldurs.
+También tienes que descomentar las líneas del .cfg:
+GUIScriptsPath=/usr/local/share/gemrb
+PluginsPath=/usr/local/lib/gemrb/plugins
+GemRBOverridePath=/usr/local/share/gemrb
+GemRBUnhardcodedPath=/usr/local/share/gemrb
+...O habrá muchas cosas que no encuentre y NO DEBES copiarlas a mano ni nada, las tiene que encontrar.
+
 Le puedes pasar el cfg con -c, en plan gemrb -c game.cfg
 
 Por ejemplo, dejaríamos el path de los datos del BG2 como:
@@ -2904,6 +2915,25 @@ Ahí puedes poner fullscreen a 1 también si quieres.
 Las ediciones que necesitas de GOG son las COMPLETE (Baldurs Gate Original Saga que es el Baldurs 1, Baldurs Gate 2 Complete que es el 2), NO LAS ENHANCED. Las ENHANCED NO SIRVEN.
 
 Si no se te oye mira a ver qué plugin está cargando. Si está cargando NullSound comprueba que tienes SDLAudio.so en la ruta de los plugins.
+
+PARA CUSTOMIZAR LAS FUENTES (vamos a verlo con el Baldur's Gate 1 como ejemplo)
+1- Copia un fichero de configuración de fuentes al directorio de overrides del juego, así:
+cp /usr/local/share/gemrb/unhardcoded/bg1/fonts.2da /usr/local/share/gemrb/override/bg1/
+2- Copia una fuente .TTF a /usr/local/share/gemrb/override/bg1/
+2- Edita el fichero de configuración de fuentes:
+vim /usr/local/share/gemrb/override/bg1/fonts.2da
+...Y en la columna FONT_NAME pones el nombre SIN EXTENSIÓN del .TTF que quieras usar.
+PARA más información sobre la customización de fuentes, mira en:
+https://gemrb.org/Fonts.html
+
+PARA USAR LA RESOLUCIÓN QUE QUERAMOS tenemos que aplicar el parche widescreen, que lo puedes bajar de aquí:
+https://www.gibberlings3.net/mods/tools/widescreen/
+
+Lo primero, nos bajamos el parcheador "weidu" desde aquí:
+http://www.weidu.org/~thebigg
+Extraes los ejecutables weidu, weinstall y tolower, y los mandas a /usr/local/bin
+Ahora extraes el parche de widescreen, y el directorio "widescreen" con todo dentro lo metes tal cual en el directorio donde tengas instalado el juego que quieres parchear.
+Ahora haces "weinstall widescreen" en el directorio del juego (recuerda que a parte de los datos del juego tendrás el directorio "widescreen" ahí metido, NO sus contenidos sino el directorio en sí con todo dentro) y vas respondiendo a las preguntas.
 
 *************Compilar openadventure*********************************************************************************************
 
