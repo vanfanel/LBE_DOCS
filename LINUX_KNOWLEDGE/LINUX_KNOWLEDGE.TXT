@@ -2925,15 +2925,16 @@ vim /usr/local/share/gemrb/override/bg1/fonts.2da
 ...Y en la columna FONT_NAME pones el nombre SIN EXTENSIÓN del .TTF que quieras usar.
 PARA más información sobre la customización de fuentes, mira en:
 https://gemrb.org/Fonts.html
+LA MEJOR FUENTE es SHERWOOD.TTF, que es la que usa el juego pero en TTF.
 
 PARA USAR LA RESOLUCIÓN QUE QUERAMOS tenemos que aplicar el parche widescreen, que lo puedes bajar de aquí:
 https://www.gibberlings3.net/mods/tools/widescreen/
-
 Lo primero, nos bajamos el parcheador "weidu" desde aquí:
 http://www.weidu.org/~thebigg
 Extraes los ejecutables weidu, weinstall y tolower, y los mandas a /usr/local/bin
 Ahora extraes el parche de widescreen, y el directorio "widescreen" con todo dentro lo metes tal cual en el directorio donde tengas instalado el juego que quieres parchear.
 Ahora haces "weinstall widescreen" en el directorio del juego (recuerda que a parte de los datos del juego tendrás el directorio "widescreen" ahí metido, NO sus contenidos sino el directorio en sí con todo dentro) y vas respondiendo a las preguntas.
+Para X Coordinate e Y Coordinate, usa 854x480. Para el tamaño máximo del juego, usa 1920x1080. Habilita lo de las múltiples resoluciones.
 
 *************Compilar openadventure*********************************************************************************************
 

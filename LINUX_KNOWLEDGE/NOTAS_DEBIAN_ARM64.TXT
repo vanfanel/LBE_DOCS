@@ -488,8 +488,11 @@ Si MESA te da un error de que no encuentra GL/glxproto.h, reinstala el paquete x
 
 FIN NOCIONES PREVIAS
 
-Los CFLAGS van a ser: 
+Los CFLAGS para Pi3 van a ser: 
 -march=armv8-a+crc -mtune=cortex-a53
+
+Los CFLAGS para Pi4 van a ser:
+-march=armv8-a+crc+simd -mtune=cortex-a72
 
 Empezamos con libDRM:
 Instalamos estas dependencias previas: 
@@ -558,6 +561,16 @@ CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+c
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
 CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=true -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+
+Como venimos haciendo para tener el driver VULKAN de la Pi4:
+Primero instalamos el vulkan loader:
+sudo apt-get install libvulkan-dev libvulkan1 glslang-dev spirv-tools
+Y ahora configuramos para tener GLES y VULKAN en Pi4:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dudev=true -Dplatforms=drm -Dvulkan-drivers=broadcom -Ddri-drivers= -Dgallium-drivers=v3d,vc4,kmsro -Dglx=disabled -Dinstall-test-programs=true -Dbuildtype=release --libdir lib ..
+RECUERDA que con VULKAN tendrás que hacer:
+sudo cp -R /usr/include/glslang/SPIRV
+Y PARA QUE EL VULKAN LOADER (que está en los paquetes libvulkan-dev libvulkan1) pueda cargar el .so de vulkan con el nombre correcto cuando vas a compilar un programa, dado que se llama libvulkan_broadcom.so y no libvulkan.so, tienes que hacer: 
+export VK_ICD_FILENAMES=/usr/local/share/vulkan/icd.d/broadcom_icd.aarch64.json
 
 PARA COMPILAR:
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
@@ -640,6 +653,9 @@ Se configura con:
 CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-glslang --disable-builtinglslang --disable-rpiled --enable-opengles --enable-egl
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
+
+PARA PI4 CON VULKAN:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --enable-vulkan
 
 Compilar y listo.
 
