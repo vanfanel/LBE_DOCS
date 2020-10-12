@@ -555,6 +555,8 @@ cd b3
 AHORA PARA CONFIGURAR:
 ASI LO VENIMOS HACIENDO:  CON GLES Y GLES2, SIN OPENGL COMPLETO:
 CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+PARA PI4:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson --buildtype=plain -Db_ndebug=true -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
 CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=dri -Dglvnd=false -Dplatforms=drm,x11 -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
@@ -690,7 +692,7 @@ export VK_ICD_FILENAMES=/usr/local/share/vulkan/icd.d/broadcom_icd.aarch64.json
 ---RETROARCH CON VULKAN---
 
 Instalamos el compilador de shaders:
-sudo apt-get install glslang-dev spirv-tools
+sudo apt-get install glslang-dev glslang-tools spirv-tools
 
 Configuramos para Pi4 y VULKAN solamente:
 
