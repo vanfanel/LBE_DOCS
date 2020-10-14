@@ -693,7 +693,7 @@ Clonamos el branch v3dv experimental del repo de Igalia:
 git clone https://gitlab.freedesktop.org/apinheiro/mesa.git -b wip/igalia/v3dv mesa
 
 Si lo queremos sólo con GLES1 y GLES2, sin VULKAN:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Db_ndebug=true -Dglx=disabled -Dplatforms=drm -Dllvm=false -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d -Dbuildtype=release ..
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Db_ndebug=true -Dglx=disabled -Dplatforms=drm -Dllvm=false -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 Si lo queremos con VULKAN:
 CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Db_ndebug=true -Dglx=disabled -Dplatforms=drm -Dllvm=false -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4 -Dbuildtype=release ..
