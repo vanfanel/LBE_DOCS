@@ -665,15 +665,37 @@ SECCIÓN VULKAN
 
 ---MESA CON VULKAN---
 
-Empezamos con MESA en sí (que nos dará libvulkan_broadcom.so que no se puede usar directamente):
+
 Primero instalamos libDRM, que se instala como siempre.
-Y ahora instalamos MESA con VULKAN para Pi4
+Instalamos estas dependencias previas: 
+sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ meson --no-install-recommends
+(libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
+Bajamos la última versión estable de:
+https://dri.freedesktop.org/libdrm/
+mkdir b3
+cd b3
+
+Configuramos libdrm con esto:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false -Dinstall-test-programs=true ..
+
+Compilamos e instalamos:
+ninja -j4
+sudo ninja install
+
+En este punto, puedes probar si libdrm te funciona bien haciendo:
+modetest -s 32:1360x768
+(donde 32 es un ID de conector válido: puedes ver los conectores con modetest|more).
+
+Y ahora instalamos MESA con VULKAN para Pi4 (que nos dará libvulkan_broadcom.so que no se puede usar directamente,
+si no que lo carga el loader):
 
 Clonamos el branch v3dv experimental del repo de Igalia:
 git clone https://gitlab.freedesktop.org/apinheiro/mesa.git -b wip/igalia/v3dv mesa
 
-Se configura con:
+Si lo queremos sólo con GLES1 y GLES2, sin VULKAN:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Db_ndebug=true -Dglx=disabled -Dplatforms=drm -Dllvm=false -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d -Dbuildtype=release ..
 
+Si lo queremos con VULKAN:
 CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Db_ndebug=true -Dglx=disabled -Dplatforms=drm -Dllvm=false -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4 -Dbuildtype=release ..
 
 Instalamos las vulkan headers:
