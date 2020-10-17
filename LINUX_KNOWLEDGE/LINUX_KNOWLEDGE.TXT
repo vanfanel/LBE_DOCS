@@ -5864,3 +5864,27 @@ Y ya podemos descargar con:
 megatools dl <LINK DE MEGA>
 O bien
 megadl <LINK DE MEGA>
+
+WARCRAFT II NATIVO EN LINUX
+===========================
+
+Nos hacen falta dos cosas: el stratagus que es el engine, y el wargus que es un importador del WCII para que funcione para stratagus.
+
+Instalamos dependencias previas:
+sudo apt-get install tolua++ libluajit-5.1-dev libbz2-dev --no-install-recommends
+
+Instalamos el stratagus:
+git clone --depth 1 https://github.com/Wargus/stratagus.git
+cd stratagus && mkdir b3 && cmake .. && make -j4 && sudo make install
+
+
+Instalamos el wargus:
+git clone --depth 1 https://github.com/Wargus/wargus.git
+cd wargus && mkdir b3
+
+Ahora atiende: configuramos stratagus pasándole el ejecutable del stratagus que tenemos instalado y el path de gameheaders, que es un directorio de los sources de stratagus. Es fácil, por ejemplo si tenemos los sources de stratagus en ~/src/stratagus, sólo hay que hacer:
+cmake .. -DCMAKE_PROGRAM_PATH=/usr/local/games/stratagus -DCMAKE_INCLUDE_PATH=~/src/stratagus/gameheaders
+make -j4
+sudo make install
+
+
