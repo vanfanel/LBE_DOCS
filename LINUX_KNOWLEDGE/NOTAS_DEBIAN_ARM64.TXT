@@ -477,22 +477,19 @@ Si queremos que MESA nos aporte un libEGL.so, tenemos que compilarla, o bien con
 Pero en ese caso, al no haber GLX (libGL.so), loas SDL2 interpretan que no tenemos OpenGL COMPLETO (NO GLES) porque lo que hacen es buscar de algún modo libGL.so en vez de simplemente
 buscar libEGL.so y abstraerse de si tenemos libGL.so o libglapi.so
 
-DICHO de otro modo: SDL2 para tener OPENGL COMPLETO, necesita GLX. SDL2 NO encuentra OPENGL completo si no es con GLX: si compilas MESA con OPENGL COMPLETO mediante libglvnd, SDL2
-no lo detecta, sólo detecta GLES. Y MESA, si se compila con GLX, se tiene que compilar con las plataformas drm y x11. Y al compilarse para X11, tiene un montón
-de dependencias de X11 aunque no necesite el servidor funcionando.
-Lo ideal es que SDL2, para tener soporte para OPENGL COMPLETO, sólo necesitase libEGL.so y le diese igual tener libglapi.so o libGL.so. De ese modo, podríamos compilar MESA con platform=drm solamente,
-y sin necesidad de GLX ni de LIBGLVND.
+DICHO de otro modo: SDL2 para tener OPENGL COMPLETO, necesita GLX. SDL2 NO encuentra OPENGL completo si no es con GLX: si compilas MESA con OPENGL COMPLETO mediante libglvnd, SDL2 no lo detecta, sólo detecta GLES. Y MESA, si se compila con GLX, se tiene que compilar con las plataformas drm y x11. Y al compilarse para X11, tiene un montón de dependencias de X11 aunque no necesite el servidor funcionando.
+Lo ideal es que SDL2, para tener soporte para OPENGL COMPLETO, sólo necesitase libEGL.so y le diese igual tener libglapi.so o libGL.so. De ese modo, podríamos compilar MESA con platform=drm solamente, y sin necesidad de GLX ni de LIBGLVND.
 Si compilamos MESA sin GLX ni LIBGLVND, en SDL2 actualmente sólo tenemos GLES1 y GLES2, no OPENGL COMPLETO.
 
 Si MESA te da un error de que no encuentra GL/glxproto.h, reinstala el paquete x11proto-dev
 
 FIN NOCIONES PREVIAS
 
-Los CFLAGS para Pi3 van a ser: 
--march=armv8-a+crc -mtune=cortex-a53
+¡¡¡OJO!!! LO PRIMERO EN LA PI4, AÑADE AL USUARIO "pi" AL GRUPO RENDER, O TE VOLVERÁS LOCO PORQUE GLES NO IRÁ PERO DRM SÍ (o sea, modetest funciona pero MESA no puede cargar GLES). PARA ELLO, HAZ:
+sudo usermod -a -G render pi
 
-Los CFLAGS para Pi4 van a ser:
--march=armv8-a+crc+simd -mtune=cortex-a72
+TAMBIÉN, ACTUALIZA AL ÚLTIMO KERNEL DEL BRANCH NEXT:
+sudo BRANCH=next rpi-update
 
 Empezamos con libDRM:
 Instalamos estas dependencias previas: 
@@ -503,8 +500,8 @@ https://dri.freedesktop.org/libdrm/
 mkdir b3
 cd b3
 
-Configuramos con esto:
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false -Dinstall-test-programs=true ..
+Configuramos libdrm con esto:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false -Dinstall-test-programs=true ..
 
 Compilamos e instalamos:
 ninja -j4
@@ -528,7 +525,7 @@ sudo apt-get install libtool
 sudo apt-get install  libx11-dev libxext-dev --no-install-recommends
 git clone --depth 1 https://github.com/NVIDIA/libglvnd.git
 ./autogen.sh
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --disable-glx
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --prefix=/usr --disable-glx
 etc... (no recomendado porque SDL2 no funciona con libglapi.so, ver más arriba).
 
 (SI QUIERES GLX, PARA QUE SDL2 FUNCIONE CON OPENGL COMPLETO, GLES1 Y GLES2, NECESITAS TODO ESTO:).
@@ -554,15 +551,13 @@ mkdir b3
 cd b3
 AHORA PARA CONFIGURAR:
 ASI LO VENIMOS HACIENDO:  CON GLES Y GLES2, SIN OPENGL COMPLETO:
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
-PARA PI4:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson --buildtype=plain -Db_ndebug=true -Dglx=disabled -Dglvnd=false -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms= -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=dri -Dglvnd=false -Dplatforms=drm,x11 -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=dri -Dplatforms=drm,x11 -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" meson --buildtype=plain -Db_ndebug=true  -Dglx=disabled -Dglvnd=true -Dplatforms=drm -Dllvm=false -Ddri-drivers='' -Dvulkan-drivers='' -Dgallium-drivers=vc4 ..
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dglvnd=true -Dplatforms= -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 PARA COMPILAR:
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
@@ -608,10 +603,10 @@ Para ello, actualizamos src/audio/SDL_audiotypecvt.c desde la versión actual, q
 (En la parte de arriba tienes la última versión en ZIP, TAR, etc... Sobreescribe el  src/audio/SDL_audiotypecvt.c con la versión actualizada de aquí).
 
 SÓLO CON GLES1 y GLES2, COMO LO HACEMOS AHORA:
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan
 
 CON OPENGL COMPLETO, GLES1 y GLES2
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan 
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-ime --disable-video-vulkan 
 
 (LO DE -DMESA_EGL_NO_X11_HEADERS LO HEMOS SACADO DE /usr/lib/pkgconfig/egl.pc. Como el viejo buildsystem de las SDL2 basado en configure y make no usa pkgconfig para saber qué flags tiene que pasar cuando
 se compile eglplatform.h, parte de EGL de MESA, que es donde  MESA_EGL_NO_X11_HEADERS evita intentar incluir las headers de X11, pues se lo tenemos que pasar nosotros a mano. El buildsystem de las SDL2 basado en CMAKE sí
@@ -632,17 +627,17 @@ Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sa
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
 Para SDL2_Mixer (instalar antes libogg-dev y libflac-dev):
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
 Para SDL2_Image o SDL2_ttf:
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure --without-x
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --without-x
 
 INSTALAR RETROARCH
 ===================
 
 Se configura con:
 
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-glslang --disable-builtinglslang --disable-rpiled --enable-opengles --enable-egl
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-glslang --disable-builtinglslang --disable-rpiled --enable-opengles --enable-egl
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 
@@ -660,43 +655,18 @@ En XMB, puedes desactivas el lazo de fondo en SETTINGS->USER INTERFACE->APPEARAN
 Para XMB, un buen tema es el Systematic ("SETTINGS->USER INTERFACE->APPEARANCE->MENU ICON THEME")
 
 
-SECCIÓN RPI4
-============
+SECCIÓN VULKAN
+==============
 
----MESA CON VULKAN---
-
-
-Primero instalamos libDRM, que se instala como siempre.
-Instalamos estas dependencias previas: 
-sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ meson --no-install-recommends
-(libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
-Bajamos la última versión estable de:
-https://dri.freedesktop.org/libdrm/
-mkdir b3
-cd b3
-
-Configuramos libdrm con esto:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false -Dinstall-test-programs=true ..
-
-Compilamos e instalamos:
-ninja -j4
-sudo ninja install
-
-En este punto, puedes probar si libdrm te funciona bien haciendo:
-modetest -s 32:1360x768
-(donde 32 es un ID de conector válido: puedes ver los conectores con modetest|more).
-
-Y ahora instalamos MESA con VULKAN para Pi4 (que nos dará libvulkan_broadcom.so que no se puede usar directamente,
-si no que lo carga el loader):
+---BLOQUE MESA CON VULKAN---
 
 Clonamos el branch v3dv experimental del repo de Igalia:
 git clone https://gitlab.freedesktop.org/apinheiro/mesa.git -b wip/igalia/v3dv mesa
 
-Si lo queremos sólo con GLES1 y GLES2, sin VULKAN:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Db_ndebug=true -Dglx=disabled -Dplatforms=drm -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
+Configuramos así (NO hace falta especificar platforms=drm, porque drm se selecciona solo):
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms= -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro -Dbuildtype=release ..
 
-Si lo queremos con VULKAN:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Db_ndebug=true -Dglx=disabled -Dplatforms=drm -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4 -Dbuildtype=release ..
+MESA nos dará libvulkan_broadcom.so que no se puede usar directamente, si no que lo carga el loader. Así que procedemos a instalar las VULKAN HEADERS y el VULKAN LOADER:
 
 Instalamos las vulkan headers:
 git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Headers.git
@@ -710,6 +680,7 @@ cmake -DBUILD_WSI_XCB_SUPPORT=OFF -DBUILD_WSI_XLIB_SUPPORT=OFF -DBUILD_WSI_WAYLA
 
 Ponemos esto en el /etc/profile para que el VULKAN LOADER sepa qué librería cargar (es decir, para que cargue libvulkan_broadcom.so):
 export VK_ICD_FILENAMES=/usr/local/share/vulkan/icd.d/broadcom_icd.aarch64.json
+---FIN BLOQUE MESA VULKAN---
 
 ---RETROARCH CON VULKAN---
 

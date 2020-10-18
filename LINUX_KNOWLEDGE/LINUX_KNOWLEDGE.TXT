@@ -2316,7 +2316,7 @@ justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
-cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 (PARA compilar en modo verbose, haz make VERBOSE=1)
 
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
@@ -4468,23 +4468,27 @@ Clonamos:
 git clone --depth 1 https://github.com/diasurgical/devilutionX.git
 
 Configuramos:
-cmake -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
 Compilamos y metemos en el directorio ~/diablo el ejecutable, junto con diabdat.mpq y con la fuente CharisSILB.ttf que viene incluida en los sources.
 
-Ajustamos el upscaling, para ello creamos diablo.ini en ~/diablo, con este contenido:
+La primera vez que ejecutemos el juego, se creará el fichero de configuración en ~/.local/share/diasurgical/diablo.ini
+Nos interesa saber:
+--scaling quality: 0 es NEAREST, 1 es LINEAR (nuestro favorito) y 2 es ANISOTROPIC (DirectX, bah).
+--original aspect ratio: que el juego se vea en 4:3. Si lo ponemos a 0, se verá en 16:9 si nuestra pantalla es de 16:9.
+--upscale: que si queremos que se escale la ventana a pantalla completa o no. Así que si lo ponemos a 0 y "original aspect ratio" a 0, la ventana es estirada por SDL2, perdiéndose el aspect ratio original.
 
-[devilutionx]
-upscale=0
-fullscreen=1
-scaling quality=0
-grab input=1
-[Diablo]
-Intro=0
-Gamma Correction=100
-Color Cycling=1
-Sound Volume=0
-Music Volume=0
+O sea, si lo queremos en 4:3, con escalado linear y conservando el ratio original, haremos:
+upscale=1
+scaling quality=1
+original aspect ratio=1
+
+Y si lo queremos en 16:9:
+upscale=1
+scaling quality=1
+original aspect ratio=0
+
+En 16:9 usa un 10% más de CPU, y upscaling es por hardware así que no usa nada de CPU extra.
 
 Si nos da un error repetido de "Unhandled SDL Event: SDL_AUDIODEVICEADDED", ni caso. No es por el sistema sino porque el código del juego imprime eventos que no usa.
 Manda la salida a /dev/null y fuera.
@@ -4508,8 +4512,7 @@ El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
 
 Pide algunas dependencias que sólo necesita en la máquina donde se extraen los datos del juego, que puede ser un PC de escritorio y luego compilar en la Pi.
 Al compilar en la Pi te dará errores con las tools que se hayan compilado antes en X86_64, así que haz:
-make clean
-Y borra:
+
 rm tools/aifc_decode
 rm tools/aiff_extract_codebook
 rm tools/vadpcm_enc
@@ -4517,6 +4520,8 @@ rm tools/textconv
 rm tools/skyconv
 rm tools/n64graphics
 rm tools/n64cksum
+make clean
+
 Si aun así da error, borra el fichero con el que da error (el tool que da el error seguramente ya lo hayas borrado antes).
 
 Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo. Pero vamos, viene en 512, si lo tocas será para subirlo a 1024.
@@ -4866,7 +4871,7 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 mkdir b3
 cd b3
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53 -fsigned-char" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -fsigned-char" -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
