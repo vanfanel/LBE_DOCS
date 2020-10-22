@@ -136,7 +136,7 @@ Clonamos su repo:
 git clone --recursive https://github.com/nesbox/TIC-80 --depth 1
 
 Configuramos con:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
 ******Error tonto: ACLOCAL is missing on your system**************************************************************************************************************
 
