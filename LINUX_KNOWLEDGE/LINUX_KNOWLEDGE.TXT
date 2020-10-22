@@ -130,6 +130,14 @@ cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_CXX_FLAGS="-ma
 Añade en config.txt: hdmi_enable_4kp60=1
 Se supone que hace que la GPU vaya un pelín más rápido...
 
+******TIC-80 FANTASY CONSOLE para Raspberry Pi como core libretro***************************************************
+
+Clonamos su repo:
+git clone --recursive https://github.com/nesbox/TIC-80 --depth 1
+
+Configuramos con:
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+
 ******Error tonto: ACLOCAL is missing on your system**************************************************************************************************************
 
 No te falta nada realmente. Sencillamente, hazle un touch a:
