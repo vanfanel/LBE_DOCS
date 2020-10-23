@@ -93,3 +93,10 @@ CONFIGURAR LA RED CON IP ESTÁTICA (para descargar paquetes de !PackMan con la P
 Es todo bastante obvio excepto el servidor DNS, que se configura en HOST NAMES tras haber marcado la casilla de "TRY NAME SERVER TOO".
 Por si acaso, hay un tutorial completo en http://www.riscos.org/iyonix/networking.html
 (Pero ya digo que es MUY obvio todo...)
+
+INSTALAR ADFFS Y LOS JUEGOS DESDE PACKMAN
+=========================================
+
+Tienes que actualizar Packman a la última, y añadir estos repos en SOURCES, y actualizar la lista de paquetes claro:
+http://www.jaspp.org.uk/packages/release
+http://www.jaspp.org.uk/packages/beta
