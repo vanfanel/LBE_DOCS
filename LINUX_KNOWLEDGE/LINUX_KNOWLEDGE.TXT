@@ -118,7 +118,7 @@ mkdir build
 cd build
 
 -Configuramos pasándole el cmake toolchain file así:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
 -Compilamos con make, y comprobamos el ejecutable, que sea aarch64:
 file duckstation_libretro.so
@@ -136,7 +136,7 @@ Clonamos su repo:
 git clone --recursive https://github.com/nesbox/TIC-80 --depth 1
 
 Configuramos con:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
 Los juegos están en:
 https://tic80.com/play?cat=0
@@ -250,7 +250,7 @@ Editamos configure.ac, cambiamos el OPT_LEVEL a 3 y quitamos el -g.
 Ejecutamos ./autogen.sh
 Configuramos con:
 
-CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ./configure
 
 Copiamos el directorio "src/base" tal cual (tiene wads dentro para el engine) a ~/doom
 cp -R src/base ~/doom/
@@ -339,7 +339,7 @@ make BUILD_LINUX=1 GCC_TARGET=64 -j8
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
-Los CXXFLAGS son: -O2 -march=armv8-a+crc -mtune=cortex-a53
+Los CXXFLAGS son: -O2 -march=armv8-a+crc+simd -mtune=cortex-a72
 Y aniade la línea de optimiación agresiva debajo de la original de CFLAGS:
 CXXFLAGS += -flto -fomit-frame-pointer
 (NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
@@ -361,7 +361,7 @@ apt-get install libmodplug-dev --no-install-recommends
 
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
-CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=armv8-a+crc -mtune=cortex-a53
+CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=armv8-a+crc+simd -mtune=cortex-a72
 
 Editamos sdl_systemstub.cpp y cambiamos:
 desired.samples = 2048;
@@ -553,14 +553,14 @@ https://www.vogons.org/viewtopic.php?f=41&t=34770&start=120
 patch -p0 < parche.patch
 
 Editamos el configure, y cambiamos "-g -O2" por los flags:
--O2 -march=armv8-a+crc -mtune=cortex-a53
+-O2 -march=armv8-a+crc+simd -mtune=cortex-a72
 porque si no algunos Makefiles van a tener los flags antiguos.
 
 Editamos configure y ponemos a "no" todos los have... relacionados con opengl y x11.
 
 Configuraríamos para SDL2. 
 
-CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure
 
 Cambiamos "AR = ar" por "AR = gcc-ar" y "RANLIB = ranlib" por "RANLIB = gcc-ranlib" en todos los Makefile (hay varios, en distintos subdirectorios) y forzamos los CFLAGS
 que nos interesan en ellos, ya que no llegan desde el configure a algunos Makefiles, con:
@@ -569,7 +569,7 @@ find ./ -name Makefile -exec sed -i 's/AR = ar/AR = gcc-ar/g' {} \;
 
 find ./ -name Makefile -exec sed -i 's/RANLIB = ranlib/RANLIB = gcc-ranlib/g' {} \;
 
-find ./ -name Makefile -exec sed -i 's/-g -O2/-O2 -march=armv8-a+crc -mtune=cortex-a53 /g' {} \;
+find ./ -name Makefile -exec sed -i 's/-g -O2/-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 /g' {} \;
 
 (Siempre que ejecutes configure, te tocará sustutuir AR y RANLIB y reajustar los CFLAGS con el find como acabas de ver, porque el configure lo pone mal otra vez en los makefiles).
 
@@ -2226,8 +2226,7 @@ git submodule update --init --recursive
 Creamos el dir de compilación, entramos, configuramos y compilamos:
 mkdir b3
 cd b3
-cmake  -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DBUILD_SOKOL=OFF -DDISABLE_NETWORKING=ON ..
-
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 make -j4
 
 ***********EDUKE32: Duke Nukem 3D en la Raspberry Pi*********************************************************************************************
@@ -2331,7 +2330,7 @@ justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
-cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 (PARA compilar en modo verbose, haz make VERBOSE=1)
 
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
@@ -2356,7 +2355,7 @@ Al final, mi script wolf3d contiene esta línea para lanzar el ECWOLF a mi gusto
 NOTA: SI USAS EL CORE DE RETROARCH, pon los datos y el EXE de la versión de ACTIVISION, NO la original de Apogee, y a Retroarch, además del core, le pasas el WOLF3D.EXE.
 Y se compila con:
 
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53"  cmake -DLIBRETRO=1 ..
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72"  cmake -DLIBRETRO=1 ..
 
 ***********XASH3D para Raspberry Pi (GLES) **********************************************************************************************
 
@@ -2643,7 +2642,7 @@ https://github.com/FluidSynth/fluidsynth/releases
 
 Y configuramos desde un directorio de build que creamos nosotros:
 
-CFLAGS=" -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS=" -march=armv8-a+crc -mtune=cortex-a53" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
 
 Y compilamos con make -j4, e instalamos con:
 sudo make install
@@ -2904,7 +2903,7 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 Hay que leer el INSTALL para saber cómo se compila, pero esencialmente:
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_BACKEND=SDL2 -DOPENGL_BACKEND=None -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_BACKEND=SDL2 -DOPENGL_BACKEND=None -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
 
 make -j4
 
@@ -3312,7 +3311,7 @@ cd b3
 
 Ahora configuramos:
 
-cmake -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
@@ -3335,13 +3334,13 @@ lo que hay en hqp/keen2 a ~/keen/games/keen2, etc...
 
 Entramos en src y compilamos con:
  
-make RENDERER=sdl2 CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" -j4
+make RENDERER=sdl2 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -j4
 
 *************Doomretro en la Raspberry Pi*************************************************************************************
 
 Bajamos la última stable de https://github.com/bradharding/doomretro/releases
 Entramos en src, editamos doomdef.h y ponemos SCREENSCALE a 1.
-Editamos el Makefile y ponemos los CFLAGs  "-march=armv8-a+crc -mtune=cortex-a53", y quitamos el -g.
+Editamos el Makefile y ponemos los CFLAGs  "-march=armv8-a+crc+simd -mtune=cortex-a72", y quitamos el -g.
 Compilar y listo.
 
 En doomretro.cfg, ponemos vid_scalefilter a "linear", y gp_thumbsticks 1.
@@ -3637,7 +3636,7 @@ Ahora actualiza el config.guess, que el que trae el rogue es viejo y no detecta 
 wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' -O config.guess
 
 Configurar y compilar:
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure
 make -j4
 
 Ayuda de teclas con shift+?
@@ -4273,7 +4272,7 @@ No hace falta que quites los directorios de los includes, esos dan igual.
 Editamos Makefile y dejamos la platform definition de la pi3 asi:
 
    else ifneq (,$(findstring rpi3,$(platform)))
-      PLATFORM_DEFINES := -march=armv8-a+crc -mtune=cortex-a53
+      PLATFORM_DEFINES := -march=armv8-a+crc+simd -mtune=cortex-a72
    endif
 
 Ahora hacemos un 
@@ -4484,7 +4483,7 @@ Clonamos:
 git clone --depth 1 https://github.com/diasurgical/devilutionX.git
 
 Configuramos:
-cmake -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
 Compilamos y metemos en el directorio ~/diablo el ejecutable, junto con diabdat.mpq y con la fuente CharisSILB.ttf que viene incluida en los sources.
 
@@ -4552,7 +4551,7 @@ git clone --depth 1 https://github.com/flareteam/flare-game.git
 creamos el directorio de compilación, entramos en él, configuramos y compilamos:
 mkdir b3
 cd b3
-CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53 -flto -fwhole-program" cmake -DCMAKE_BUILD_TYPE=Release ..
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -flto -fwhole-program" cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
 creamos ~/flare y mandamos el ejecutable flare allí.
@@ -4579,7 +4578,7 @@ en screen/Screen.cpp, justo antes de SDL_CreateWindowAndRenderer()
 
 Configuramos así:
 
-CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-debug
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --disable-debug
 
 Compilamos:
 
@@ -4624,7 +4623,7 @@ Ejecutamos el autogen.sh
 
 Configuramos con:
 
-CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" ./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa --enable-lto --with-optimization=normal
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa --enable-lto --with-optimization=normal
 
 SI EL EJECUTABLE QUE OBTIENES DA SEGFAULTS, PON --with-optimization=normal EN VEZ DE --with-optimization=heavy
 
@@ -4690,7 +4689,7 @@ sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libthe
 Las otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarlas).
 
 Configuramos love:
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --prefix=/usr
 
 make y sudo make install
 
@@ -4779,7 +4778,7 @@ Instalamos esta dependencia previa si queremos ratón en la consola:
 sudo apt-get install gpm libgpm-dev --no-install-recommends
 
 Configuramos e instalamos:
-CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a53" ./configure --prefix=/usr --enable-hw-tty=yes  --enable-hw-x11=no 
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --prefix=/usr --enable-hw-tty=yes  --enable-hw-x11=no 
 make -j4
 sudo make install
 
@@ -4808,7 +4807,7 @@ LIBOPENAL en la Raspberry Pi
 Por si alguna vez lo necesitas para algo.
 Bajamos la última release de: https://github.com/kcat/openal-soft/releases
 Configuramos así:
-cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
 STUNT CAR RACER EN LA RASPBERRY PI (NO COMPILA POR PROBLEMAS CON OPENGL)
 =====================================================================
@@ -4850,7 +4849,7 @@ option( DYN_MPG123 "Dynamically load libmpg123" OFF )
 option( DYN_FLUIDSYNTH "Dynamically load fluidsynth" OFF ) 
 Además, comenta las líneas de FLUIDSYNTH_FOUND, MPG123_FOUND, toda esa sección entera.
 
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc -mtune=cortex-a53"  -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"  -DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j6
 
@@ -4868,7 +4867,7 @@ udo apt-get install rapidjson-dev
 Configuramos y compilamos con:
 mkdir b3
 cd b3
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53" -DFMOD_ENABLED=OFF -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DFMOD_ENABLED=OFF -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
 CRISPY DOOM
@@ -4887,7 +4886,7 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 mkdir b3
 cd b3
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc -mtune=cortex-a53 -fsigned-char" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -fsigned-char" -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
@@ -5080,7 +5079,7 @@ O bien usamos la 0.87 que traen los sources de los juegos, ya que en algunos cas
 CXXFLAGS="-fpermissive" ./configure --enable-static
 make -j8
 
-CFLAGS="-O2  -march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-O2  -march=armv8-a+crc -mtune=cortex-a53" ./configure --enable-static
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --enable-static
 
 Buscamos libmodplug.a
 find ./ -name 'libmodplug.a'
@@ -5220,8 +5219,8 @@ Ahora, creamos directorio de compilación y usamos cmake y luego make:
 mkdir b3
 cd b3
 cmake ../src
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" \
- -DCMAKE_CXX_FLAGS="-mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard" ../src
+cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
+ -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ../src
 
 make -j6
 
@@ -5292,7 +5291,7 @@ Empezamos compilando libjpeg-turbo, que nos va a hacer falta la versión estáti
 https://github.com/libjpeg-turbo/libjpeg-turbo/releases
 
 Ahora creamos directorio de compilación, entramos, y configuramos con CMAKE así:
-CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" cmake -DCMAKE_BUILD_TYPE=Release ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" cmake -DCMAKE_BUILD_TYPE=Release ..
 
 Ahora, clonamos el repo del FROTZ:
 git clone --depth 1 https://github.com/DavidGriffith/frotz.git
@@ -5774,7 +5773,7 @@ Clonamos su repo en:
 git clone --depth 1 https://github.com/Neverball/neverball.git
 
 Compilamos con
-CFLAGS="-march=armv8-a+crc -mtune=cortex-a53" CXXFLAGS="-march=armv8-a+crc -mtune=cortex-a53" make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4
 
 VVVVVV en la Raspberry Pi
 =====================
@@ -5785,7 +5784,7 @@ git clone --depth 1 https://github.com/TerryCavanagh/VVVVVV.git
 
 Entramos en desktop_version, creamos b3 y configuramos con:
 
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-DNDEBUG -march=armv8-a+crc -mtune=cortex-a53" -DCMAKE_CXX_FLAGS="-DNDEBUG -march=armv8-a+crc -mtune=cortex-a53" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-DNDEBUG -march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-DNDEBUG -march=armv8-a+crc+simd -mtune=cortex-a72" ..
 NO compiles con -j, sino que sólo usa un hilo de compilación. NO uses más de uno, no compila nunca. Tampoco le pases ningún -O en los CFLAGS, o se disparará el consumo de RAM y no acabará jamás de compilar.
 
 Bajamos el data.zip que viene con la versión Windows del VVVVVV, disponible aquí:
