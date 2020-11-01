@@ -118,7 +118,10 @@ mkdir build
 cd build
 
 -Configuramos pasándole el cmake toolchain file así:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DENABLE_DISCORD_PRESENCE=OFF -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+
+-Para compilar contra SDL2, sin RetroArch, sería:
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=OFF -DBUILD_QT_FRONTEND=OFF -DENABLE_DISCORD_PRESENCE=OFF ..
 
 -Compilamos con make, y comprobamos el ejecutable, que sea aarch64:
 file duckstation_libretro.so
@@ -348,7 +351,7 @@ CXXFLAGS += -flto -fomit-frame-pointer
 -En systemstub_sdl.cp, descomenta el SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 1) y ponlo como SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear")
 
 Lanzamos con:
-./rawgl --render=original --datapat=data_dos --fullscreen-ar --language=us
+./rawgl --language=us --render=software --fullscreen-ar --datapath=data_dos
 (usar --render=original provoca errores como tiras en las piernas de los enemigos en lugar de ser sólidas).
 
 ******FLASHBACK en la Rasberry Pi***************************************************************************************************************************************
@@ -377,6 +380,23 @@ http://wiibrew.org/w/images/2/2b/Flashbackmods.zip
 
 Lanzamos con:
 ./rs --datapath=./data --fullscreen
+
+********Supaplex en la Pi con OpenSupaplex********************************************************************
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/sergiou87/open-supaplex.git
+
+Entramos en el directorio linux, editamos Makefile y añadimos a los CFLAGS:
+
+-O2 -march=armv8-a+crc+simd -mtune=cortex-a72
+
+Compilamos.
+
+Nos bajamos la release de Windows de aquí:
+https://github.com/sergiou87/open-supaplex/releases
+Y copiamos el ejecutable de Linux ahí dentro, y listo.
+
 
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)**********************************************************************************************************
 
