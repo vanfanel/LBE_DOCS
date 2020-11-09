@@ -77,7 +77,7 @@ El programa se llama tunesviewer.
 Si te da un error y no te deja buscar, dale a view y desactiva Request HTM5 Mode.
 Cambia la búsqueda a Podcast Search.
 
-*******Compilar el core duckstation para RAspberry Pi con Aarch64*********************************************************************
+*******Compilar el core duckstation para Raspberry Pi con Aarch64*********************************************************************
 
 Hay que crosscompilar. No compila en Pi3 con 1GB ni con swap. Crosscompilamos en local.
 
@@ -118,20 +118,30 @@ mkdir build
 cd build
 
 -Configuramos pasándole el cmake toolchain file así:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DENABLE_DISCORD_PRESENCE=OFF -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
-
--Para compilar contra SDL2, sin RetroArch, sería:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=OFF -DBUILD_QT_FRONTEND=OFF -DENABLE_DISCORD_PRESENCE=OFF ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DENABLE_DISCORD_PRESENCE=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ..
 
 -Compilamos con make, y comprobamos el ejecutable, que sea aarch64:
 file duckstation_libretro.so
 
 ¡¡Y listo!! Menuda aventura macho....
 
-Para Pi4 compilado directamente en la máquina:
+Para Pi4, versión LIBRETRO, compilado directamente en la máquina:
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+
+SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
+
 Añade en config.txt: hdmi_enable_4kp60=1
 Se supone que hace que la GPU vaya un pelín más rápido...
+
+******DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
+
+git clone --depth 1 -b nogui https://github.com/stenzek/duckstation.git
+
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DBUILD_SDL_FRONTEND=OFF ..
+
+Si  el ejecutable resultante te da un error con que no puede abrir card1, edita src/common/drm_display.h y cambia card = 1 por card = 0.
+
+La BIOS va en ~/.local/share/duckstation/bios/
 
 ******TIC-80 FANTASY CONSOLE para Raspberry Pi como core libretro***************************************************
 
@@ -5929,4 +5939,49 @@ cmake .. -DCMAKE_PROGRAM_PATH=/usr/local/games/stratagus -DCMAKE_INCLUDE_PATH=~/
 make -j4
 sudo make install
 
+EJECUTAR EJECUTABLES DE 32BIT (armhf) EN LINU DE 64BIT (aarch64)
+================================================================
 
+Lo primero, ver si nuestro kernel soporta compat:
+grep CONFIG_COMPAT= /boot/config-$(uname -r)
+
+Ahora a ver qué arquitecturas extranjeras soporta el sistema de gestión de paquetes (nos tiene que salir armhf como mínimo):
+dpkg --print-foreign-architectures
+
+Tenemos instalado libc6 versión armhf?
+dpkg -l libc6:armhf
+
+Tenemos instalado libc++6 versión armhf?
+dpkg -l libstdc++6:armhf
+
+Si nos falta alguna, la instalamos:
+sudo apt-get install libstdc++6:armhf
+
+NO CONFUNDAS libstd con libc, son cosas distintas.
+
+EASYRPG, EL MOTOR DE RPGMAKER EN LINUX
+======================================
+
+LO COMPILAMOS COMO UN CORE PARA LIBRETRO
+
+Empezamos instalando libclf, que es parte del proyecto EASYRPG, así que hay que instalarla a mano:
+
+Dependencias previas:
+sudo apt-get install libexpat1-dev libpixman-1-dev libfmt-dev libsndfile1-dev --no-install-recommends
+
+Ahora vamos a por libclf:
+git clone --depth 1 https://github.com/EasyRPG/liblcf.git
+mkdir b4
+cd b4
+cmake -DDISABLE_ICU=ON ..
+
+Ahora vamos a por EASYRPG:
+git clone --depth 1 https://github.com/EasyRPG/Player.git
+git submodule init
+git submodule update
+mkdir b4
+cd b4
+cmake -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON ..
+
+Ahora lo lanzaríamos con:
+retroach -L core <.exe del juego hecho con RPG Maker>

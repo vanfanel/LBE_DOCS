@@ -663,10 +663,17 @@ SECCIÓN VULKAN
 Clonamos el branch v3dv experimental del repo de Igalia:
 git clone https://gitlab.freedesktop.org/apinheiro/mesa.git -b wip/igalia/v3dv mesa
 
+Instalamos unas dependencias previas:
+sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommends
+
 Configuramos así (NO hace falta especificar platforms=drm, porque drm se selecciona solo):
 CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms= -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro -Dbuildtype=release ..
 
-MESA nos dará libvulkan_broadcom.so que no se puede usar directamente, si no que lo carga el loader. Así que procedemos a instalar las VULKAN HEADERS y el VULKAN LOADER:
+Y YA DEBERÍA ESTAR. Ejecuta vulkaninfo para ver que todo va bien.
+
+MESA nos dará libvulkan_broadcom.so que no se puede usar directamente, si no que lo carga el loader.
+El loader y las headers de vulkan se supone que las instalamos ahí arriba con los paquetes libvulkan-dev y libvulkan1, pero estos paquetes tienen dependencias de las X11, así que nos puede interesar instalar los VULKAN HEADERS y el VULKAN LOADER a mano.
+Si decidimos instalar a mano las VULKAN HEADERS y el VULKAN LOADER:
 
 Instalamos las vulkan headers:
 git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Headers.git
@@ -678,8 +685,6 @@ git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Loader.git
 mkdir b4 && cd b4
 cmake -DBUILD_WSI_XCB_SUPPORT=OFF -DBUILD_WSI_XLIB_SUPPORT=OFF -DBUILD_WSI_WAYLAND_SUPPORT=OFF  ..
 
-Ponemos esto en el /etc/profile para que el VULKAN LOADER sepa qué librería cargar (es decir, para que cargue libvulkan_broadcom.so):
-export VK_ICD_FILENAMES=/usr/local/share/vulkan/icd.d/broadcom_icd.aarch64.json
 ---FIN BLOQUE MESA VULKAN---
 
 ---RETROARCH CON VULKAN---
@@ -687,9 +692,11 @@ export VK_ICD_FILENAMES=/usr/local/share/vulkan/icd.d/broadcom_icd.aarch64.json
 Instalamos el compilador de shaders:
 sudo apt-get install glslang-dev glslang-tools spirv-tools
 
-Configuramos para Pi4 y VULKAN solamente:
+Configuramos para Pi4 con VULKAN solamente:
 
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --enable-vulkan
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --disable-egl --disable-gles --enable-vulkan
+
+SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
 PARA CUALQUIER PROBLEMA de librerías no encontradas pero que sí están instaladas, RECUERDA REGENERAR LA CACHE DE LDD:
 sudo rm /etc/ld.so.cache
