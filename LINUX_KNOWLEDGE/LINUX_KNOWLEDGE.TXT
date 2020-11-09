@@ -1564,7 +1564,7 @@ consoleblank=0
 -Desactivamos el modo turbo para la tarjeta de red, que como cuelga del USB da problemas, con smsc95xx.turbo_mode=N
 -Desactivamos el powerlink de USB con dwc_otg.lpm_enable=0, pero vamos, que creo que viene desactivado por defecto.
 -En el futuro, a partir del kernel 4.12, se podrá especificar el polling rate de los joysticks, para quitar latencia, con usbhid.jspoll=<polling rate>. Míratelo para entonces y añádelo.
- usbhid.jspoll=2 es un buen valor, resultando en 500Hz de polling rate... lo que ya está muy bien.
+ usbhid.jspoll=1 es un buen valor, resultando en 1000Hz de polling rate... lo que ya está muy bien.
  Se puede comprobar una vez arrancado el sistema con evhz, un programa que se baja de aquí: git clone --depth 1 https://gitlab.com/iankelling/evhz
 RECUERDA que tienes que poder PRIMERO quiet, y luego loglevel: EN ESE PRECISO ÓRDEN, o el valor de loglevel será IGNORADO. Tengo cmdline.txt así:
 dwc_otg.lpm_enable=0 smsc95xx.turbo_mode=N console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=noop rootwait consoleblank=0 quiet loglevel=3 fastboot logo.nologo
@@ -4375,7 +4375,7 @@ a la vez que dan soporte a los programas (un navegador, correo electrónico, men
 lo tienes TODO a la vez y quieres que todo tenga una respuesta buena).
 EN UN SISTEMA EMULADOR ese no es el caso: tienes un proceso y se acabó. NO TIENE SENTIDO un scheduler repartiendo la CPU 1000 veces por segundo,
 con 100 va que chuta. 
-Si quieres elige 250 por aquello de la frecuencia de polling de los USBs, que con usbhid.jspoll=2 puedes leerlos a 500 Hz, 
+Si quieres elige 250 por aquello de la frecuencia de polling de los USBs, que con usbhid.jspoll=1 puedes leerlos a 1000 Hz, 
 o porque para audio es algo mejor, PUES OLVÍDATE: NO TIENE SENTIDO: EL KERNEL CORRE SOBRE HRTIMERS, QUE SON TIMERS INTERNOS DE ALTA RESOLUCIÓN.
 O sea que EL KERNEL NO CORRE SOBRE EL VALOR DE LOS HZ DEL SCHEDULER: ESTE VALOR SÓLO INFLUYE EN PROGRAMAS MULTITHREAD DONDE LOS THREADS
 ESTÁN "ATADOS" A TIEMPO DE COMPUTACIÓN.
@@ -5276,7 +5276,7 @@ then
     sudo mount /dev/sda1 mnt
 fi
 
-DUDA: SI USO UN KERNEL CON EL SCHEDULER PUESTO A 100HZ, ¿PUEDO ESPECIFICAR usbhid.jspoll=2 QUE HACE QUE LOS USB SE LEAN A 500HZ?
+DUDA: SI USO UN KERNEL CON EL SCHEDULER PUESTO A 100HZ, ¿PUEDO ESPECIFICAR usbhid.jspoll=1 QUE HACE QUE LOS USB SE LEAN A 1000HZ?
 =============================================================================================================================
 
 Sí. El kernel corre sobre HRTIMERS, lo de los 100HZ es la velocidad del sheduler, es decir, cuántas veces por segundo mira a ver qué se ejecuta dónde.
