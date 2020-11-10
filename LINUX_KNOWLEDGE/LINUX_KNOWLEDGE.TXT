@@ -199,7 +199,7 @@ sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg
 (Si has compilado SDL2 con soporte para kmsdrm pero te da el error "not available video device", es porque compilaste sin tener instalado libgmb-dev junto con un MESA precocinado, y no te ha avisado... Instala ese paquete y recompila, anda.)
 
 Ahora ya configuramos:
-./configure --prefix=/usr --enable-video-kmsdrm --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime
+./configure --prefix=/usr --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --enable-video-kmsdrm
 
 Fíjate que en el resúmen al acabar del configure, te tiene que indicar que el soporte KMSDRM está activado, para ello se requiere que las librerías necesarias estén en el sistema (libgbm y libdrm).
 Ahora borra las librerías libSDL2* que vienen instaladas en la mayoría de las distros en /usr/lib/x86_64-linux-gnu/, e instala las que acabas de compilar, que acabarán en /usr/lib.
@@ -5720,7 +5720,7 @@ Nos interesa el directorio Dos_CD: ahí es donde meteremos los datos del juego e
 Por si te lo preguntas, los datos de Amiga aún no parecen funcionar bien con el engine, da segfaults y movidas. Pero con la versión DOS, la música suena también en MOD, así que nos vale.
 
 HEART OF DARKNESS en linux (HODE)
-==============================
+=================================
 
 Bajamos la última versión de los sources de:
 http://cyxdown.free.fr/hode/
@@ -5747,6 +5747,9 @@ como
 desired.samples = 512;
 -Comentamos las referencias a los scalers "nearest" y "xbr".
 -Y también aniadomos SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
+-Puedes ajustar los controles del joystick en system_sdl2.cpp.
+Busca SDL_CONTROLLER_BUTTON y ahí asignas como quieras. Pero OJO, si ves SDL_CONTROLLER_BUTTON_B, no es el B del mando SN30 sino el B de un mando de XBOX360 que es como se detecta el mando en el ordenador. Así que mírate una foto del mando de 360 para hacerlo.
+De todos modos, yo lo tengo así, de arriba a abajo: X, A, B, Y. Y coincide con los controles de PSX.
 
 En el directorio donde va el ejecutable, creamos hode.ini con el contenido:
 
