@@ -661,7 +661,7 @@ SECCIÓN VULKAN
 ---BLOQUE MESA CON VULKAN---
 
 Clonamos el branch v3dv experimental del repo de Igalia:
-git clone https://gitlab.freedesktop.org/apinheiro/mesa.git -b wip/igalia/v3dv mesa
+git clone https://gitlab.freedesktop.org/itoral/mesa.git -b v3dv_display_fd_initialization --depth 1
 
 Instalamos unas dependencias previas:
 sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommends
@@ -670,20 +670,6 @@ Configuramos así (NO hace falta especificar platforms=drm, porque drm se selecc
 CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms= -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro -Dbuildtype=release ..
 
 Y YA DEBERÍA ESTAR. Ejecuta vulkaninfo para ver que todo va bien.
-
-MESA nos dará libvulkan_broadcom.so que no se puede usar directamente, si no que lo carga el loader.
-El loader y las headers de vulkan se supone que las instalamos ahí arriba con los paquetes libvulkan-dev y libvulkan1, pero estos paquetes tienen dependencias de las X11, así que nos puede interesar instalar los VULKAN HEADERS y el VULKAN LOADER a mano.
-Si decidimos instalar a mano las VULKAN HEADERS y el VULKAN LOADER:
-
-Instalamos las vulkan headers:
-git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Headers.git
-mkdir b4 && cd b4
-cmake ..
-
-Instalamos el vulkan loader (que es lo que nos dará /usr/local/lib/libvulkan.so, que lo que hace es cargar libvulkan-broadcom generado por MESA)
-git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Loader.git
-mkdir b4 && cd b4
-cmake -DBUILD_WSI_XCB_SUPPORT=OFF -DBUILD_WSI_XLIB_SUPPORT=OFF -DBUILD_WSI_WAYLAND_SUPPORT=OFF  ..
 
 ---FIN BLOQUE MESA VULKAN---
 

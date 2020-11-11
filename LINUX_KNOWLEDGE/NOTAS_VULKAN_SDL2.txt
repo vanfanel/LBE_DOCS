@@ -1,0 +1,97 @@
+CÓMO FUNCIONA LA INICIALIZACIÓN DE VULKAN
+=========================================
+
+Cada programa se encarga de inicializar el vídeo: pillar el physicalDevice, plano, etc.. Los programas se gestionan ellos mismos la inicialización del vídeo, y el cambio de buffers, etc.
+Cada programa que usa VK se crea una vkInstance que le representa: "soy el programa fulanito usando VK". O sea que la instance la crea el programa, no SDL2, ni nada de eso.
+
+Lo único que es específico de cada plataforma, que por lo tanto no lo hace el programa sino que le pide a SDL que se lo haga es:
+
+--Saber qué  extensiones tenemos que tener activadas. Por ejemplo para tener vulkan sin X tenemos que tener la extensión VK_KHR_Display (VK_KHR_DISPLAY_EXTENSION_NAME), así que esto se lo damos nosotros desde las SDL con SDL_GetInstanceExtensions(), y nuestra implementación de GetInstanceExtensions() incluirá las extensiones que queremos para tener vulkan sin X.
+
+--La creación de la SURFACE, porque la función encargada de crear la surface es propia de cada plataforma. Por ejemplo, para Vulkan sin X, la función para crear surfaces es vkCreateDisplayPlaneSurfaceKHR(), y necesita un struct de información que es propio de esa función, de tipo VkDisplaySurfaceCreateInfoKHR, que contiene la información necesaria para crear una vkSurface que haga uso de la extensión VK_KHR_Display para tener vulkan sin X.
+
+Lo vemos perfectamente al analizar cómo interactúa testvulkan.c con las SDL:
+-Que inicializa el vídeo (getPhysicalDevice y todo ese rollo del display, etc).
+-Que llama a SDL con SDL_Vulkan_GetInstanceExtensions() que llama a KMSDRM_Vulkan_GetInstanceExtensions(), y pilla las extensiones que queremos activas, ya que las extensiones son propias de la plataforma (en nuestro caso, vulkan sin X, por lo que necesitamos la extensión VK_KHR_Display AKA VK_KHR_DISPLAY_EXTENSION_NAME).
+-Que crea su instance pasándole esas extensiones que le hemos dicho desde SDL.
+-Que llama a SDL con SDL_Vulkan_CreateSurface() que llama a KMSDRM_Vulkan_CreateSurface(), donde nosotros desde las SDL llamamos a la función que nos interesa para crear la surface de manera que funciona sobre vulkan sin X (la función vkCreateDisplayPlaneSurfaceKHR()) a la cual que pasamos el struct específico que necesita esa función, con muchos más datos que si quiséramos crear una surface para wayland o x11. 
+
+
+
+
+MÁS NOTAS DE LO MISMO
+=====================
+
+--Los programas llaman a vkCreateInstance(), NO nosotros desde SDL.
+PERO antes de llamar a vkCreateInstance(), los programas necesitan la lista de las extensiones que deben activar al crear la extensión, así que llaman a SDL_Vulkan_GetInstanceExtensions(), que a su vez llama a KMSDRM_Vulkan_GetInstanceExtensions o como lo llamemos en nuestro backend, para así recibir la lista de las extensiones que ese backend específico necesita activadas. En el caso de un hipotético backend VULKAN usando KHR_Display (es decir, Vulkan sin las X), se necesitan las extensiones VK_KHR_SURFACE_EXTENSION_NAME y VK_KHR_DISPLAY_EXTENSION_NAME.
+
+--VULKAN gestiona el acceso a pantalla (el windowing system) por sí mismo: no es compatible con GBM surfaces ni con nada de KMSDRM, sino que usa sus propios PLANOS, DISPLAYS y SURFACES. No se puede reaprovechar nada de KMSDRM.
+
+
+LA IDEA es que los programas TODOS crean su propio INSTANCE. La inicialización del vídeo (que en Vulkan es la creación de la SURFACE), eso sí, la tenemos que hacer nosotros en Vulcan_CreateSurface(), NO en VideoInit() puesto que en VideoInit o en CreateDevice() aún no ha creado el programa cliente la INSTANCE.
+
+PREGUNTA VULKAN IRC
+===================
+
+Hi. I am trying to add Vulkan support to SDL2 outside X, using the VK_KHR_Display extenstion. I have this extension active and I can retrieve the pointer to vkCreateDisplayPlaneSurfaceKHR(). However, when I try to get the display count using vkGetPhysicalDeviceDisplayPropertiesKHR(), I get 0 displays. Any idea on what am I doing wrong?
+
+Here's where I retrieve the vkCreateDisplayPlaneSurfaceKHR() pointer: 
+https://github.com/vanfanel/SDL/blob/11e4911657edc495e196b9f262b0b523fe9ad8e0/src/video/kmsdrm/SDL_kmsdrmvulkan.c#L179
+
+And here is where I try to retrieve the display count that results in 0 displays:
+https://github.com/vanfanel/SDL/blob/11e4911657edc495e196b9f262b0b523fe9ad8e0/src/video/kmsdrm/SDL_kmsdrmvulkan.c#L276
+
+
+PREGUNTA VULKAN FORUMS
+======================
+
+Hi!
+
+I am trying to add Vulkan support to SDL2 outside X, using the VK_KHR_Display extenstion.
+
+I have this extension active, and as such I can retrieve the pointer to vkCreateDisplayPlaneSurfaceKHR(), using vkGetInstanceProcAddr() on the program's instance.
+
+However, when I try to get the display count using vkGetPhysicalDeviceDisplayPropertiesKHR(), I get 0 displays. Any idea on what am I doing wrong?
+
+Here's where I successfully retrieve the vkCreateDisplayPlaneSurfaceKHR() pointer: 
+[https://github.com/vanfanel/SDL/blob/11e4911657edc495e196b9f262b0b523fe9ad8e0/src/video/kmsdrm/SDL_kmsdrmvulkan.c#L179](http://Code)
+
+And here is where I try to retrieve the display count that results in 0 displays:
+[https://github.com/vanfanel/SDL/blob/11e4911657edc495e196b9f262b0b523fe9ad8e0/src/video/kmsdrm/SDL_kmsdrmvulkan.c#L276](http://Code)
+
+I am trying this on AMDGPU and intel graphics with the same result.
+Any idea on what am I doing wrong?
+
+CONFIGURAR EN OC PARA DEBUG
+===========================
+
+CFLAGS="-O0 -ggdb" CXXFLAGS="-O0 -ggdb" ./configure --prefix=/usr --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --enable-video-kmsdrm
+
+
+CONFIGURAR SDL2 PI4 DEBUG
+=========================
+
+CFLAGS="-O0 -ggdb -DEGL_NO_X11" CXXFLAGS="-O0 -ggdb -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-libsamplerate
+
+
+PARA AÑADIR SOPORTE AL BUIDLSYSTEM
+===================================
+----Se ha añadido CheckKHR() en configure.ac (CheckKHR activa la compilación de los sources en /src/video/khr/*.c).
+----Se ha añadido CheckKHR() en configure.ac a la lista de checks que hay que hacer.
+----Se ha añadido #undef SDL_VIDEO_DRIVER_KHR en include/SDL_config.h.in
+----Se ha añadido
+
+#if SDL_VIDEO_DRIVER_KHR
+    &KHR_bootstrap,
+#endif
+
+en src/video/SDL_video.c
+
+----Se ha añadido
+
+extern VideoBootStrap KMSDRM_bootstrap;
+
+a src/video/SDL_sysvideo.h
+
+----Se ha ejecutado autogen.sh para regenerar el configure ya con la nueva opción. NUNCA ejecutar autoregen sin más.
+
