@@ -5732,6 +5732,12 @@ Editamos el Makefile:
 -Quitamos el -g y aniadimos los FLAGS de compilación que queramos según nuestra arquitectura.
 
 Editamos system_sdl2.cpp  y:
+-Para arreglar lo de los enemigos infinitos en la cuarta pantalla de la primera fase, cambiamos las líneas:
+    t->codeData = codeData;
+    t->run = &Game::mstTask_main;
+Por las líneas
+    current->codeData = codeData;
+    current->run = &Game::mstTask_main;
 -Dejamos la línea
 static const Scaler *_scaler = &scaler_xbr;
 como 
