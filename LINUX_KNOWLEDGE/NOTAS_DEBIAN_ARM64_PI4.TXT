@@ -660,8 +660,8 @@ SECCIÓN VULKAN
 
 ---BLOQUE MESA CON VULKAN---
 
-Clonamos el branch v3dv experimental del repo de Igalia:
-git clone https://gitlab.freedesktop.org/itoral/mesa.git -b v3dv_display_fd_initialization --depth 1
+Clonamos el repo de MESA en gitlab (por ahora no hay versión estable que tenga VULKAN para la Pi...):
+https://gitlab.freedesktop.org/mesa/mesa/-/tree/master --depth 1
 
 Instalamos unas dependencias previas:
 sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommends
