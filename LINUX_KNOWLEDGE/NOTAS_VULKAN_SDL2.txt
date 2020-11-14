@@ -8,7 +8,8 @@ Lo único que es específico de cada plataforma, que por lo tanto no lo hace el 
 
 --Saber qué  extensiones tenemos que tener activadas. Por ejemplo para tener vulkan sin X tenemos que tener la extensión VK_KHR_Display (VK_KHR_DISPLAY_EXTENSION_NAME), así que esto se lo damos nosotros desde las SDL con SDL_GetInstanceExtensions(), y nuestra implementación de GetInstanceExtensions() incluirá las extensiones que queremos para tener vulkan sin X.
 
---La creación de la SURFACE, porque la función encargada de crear la surface es propia de cada plataforma. Por ejemplo, para Vulkan sin X, la función para crear surfaces es vkCreateDisplayPlaneSurfaceKHR(), y necesita un struct de información que es propio de esa función, de tipo VkDisplaySurfaceCreateInfoKHR, que contiene la información necesaria para crear una vkSurface que haga uso de la extensión VK_KHR_Display para tener vulkan sin X.
+--La creación de la SURFACE, porque la función encargada de crear la surface es propia de cada plataforma, y los programas se la piden a SDL2 mediante SDL_Vulkan_CreateSurface(), que a su vez llama a vkCreateDisplayPlaneSurfaceKHR() que es específica para crear una surface de vulkan pero que sea para vulkan sin X (usando la extensión VK_KHR_Display).
+O sea, para Vulkan sin X, la función para crear surfaces es vkCreateDisplayPlaneSurfaceKHR(), y además necesita un struct de información que es propio de esa función, de tipo VkDisplaySurfaceCreateInfoKHR, que contiene la información necesaria para crear una vkSurface que haga uso de la extensión VK_KHR_Display para tener vulkan sin X.
 
 Lo vemos perfectamente al analizar cómo interactúa testvulkan.c con las SDL:
 -Que inicializa el vídeo (getPhysicalDevice y todo ese rollo del display, etc).
