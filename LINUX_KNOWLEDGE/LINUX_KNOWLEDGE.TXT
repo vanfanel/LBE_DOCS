@@ -23,6 +23,9 @@ Con el comando showkeys
 
 ******Sistema mínimo como root********************************************************************************************
 
+Fuentes:
+https://www.linux.it/~rubini/docs/init/init.html
+
 El siguiente script es el que puedes poner como script mínimo de arranque para levantar un sistema usable sin systemd
 ni ningún otro proceso init.
 Yo lo he puesto como /root/minimal, con permisos de ejecución, y luego en cmdline.txt he puesto
@@ -48,6 +51,12 @@ echo performance > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 # Esto configura la fuente y el teclado de la consola.
 # Lee la configuración de /etc/default/console-setup y /etc/default/keyboard.
 setupcon
+
+# Si quieres levantar la red y el servidor ssh, descomenta estas líneas:
+#ifconfig eth0 up
+#ip addr add 192.168.1.8/24 dev eth0
+#ip route add default via 192.168.1.7
+#/etc/init.d/dropbear start
 
 # En caso de querer consola, descomentar esto.
 # Se puede usar bash pero depende de más basura de systemd.
