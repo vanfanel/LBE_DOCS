@@ -58,6 +58,3 @@
 15:37 < clever> an rpi1 doesnt need pci-e drivers
 15:37 < clever> but an rpi4 does
 15:38 < clever> but luckily, you need the right build for each arm core, so you can still deal with that sanely
-15:38 < Vanfanel> clever: is doing "mount -o remount,rw /" the best way to remount / in rw mode? It fails here 
-                  because doesn't find the disk with the partuuid I specified on the kernel parameters
-15:39 < clever> that should work, but you may need an mtab and/or /dev first
