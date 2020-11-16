@@ -41,8 +41,9 @@ exec setsid sh -c 'exec sh </dev/tty1 >/dev/tty1 2>&1'
 Bueno, pues lo que hacemos en la línea, consta de dos stages:
 STAGE 1:
 	-EXEC lanza una tarea que va a tener el mismo PID que tiene la tarea llamante. Y la tarea llamante muere, o sea que
-	 en cuanto a su PID es como se clona en la tarea lanzada por EXEC.
-	 Esto es importante porque el proceso init es el que tiene PID1, y si muere init, el kernel da un kernel panic.
+	 en cuanto a su PID es como se clona en la tarea lanzada por EXEC. La nueva tarea nunca retorna a la llamante, claro.
+	 Esto de que la nueva tarea tenga el mismo PID que la llamante es importante porque el proceso init es el que tiene PID1,
+	 y si muere init, el kernel da un kernel panic.
 	-SETSID (set session id) le dice a una tarea que le pasamos como parámetro que se ejecute en una nueva sesión.
 	 Esto nos interesa porque, si estuviese en la misma sesión, al morir el proceso padre por el EXEC, el hijo muere también.
 
@@ -51,6 +52,20 @@ STAGE 1:
      1st stage purely does setsid on a 2nd stage script
 STAGE 2:
 	-EXEC lanza sh redireccionando toda su entrada y salida a la tty1, y se hace con EXEC para que sh tenga el PID 1.
+
+--Cuando nos dé un error a la salida, al intentar montar / como read-only ("target / is busy" o algo así) podemos ver qué
+fds a ficheros de / tenemos abiertos haciendo:
+ls -l /proc/*/fd/*
+La mayoría de lo que verás ahí son character devices, que no tienen nada que ver. Ahí puedes ver si están abiertos en modo
+lectura, escritura, ejecución... Si no pone "w" en la cadena del modo de apertura, no hay problema.
+ls -lL /proc/*/fd/*
+Ahí, lo que tenga permisos que empiecen por c (como crw---------) es un character device,y lo que no, pues es un fichero.
+Si al hacer "ls -lL" ves ficheros que tienen "w" en los permisos, no pasa nada, porque son eso, los permisos, no el modo
+en el que está abierto.
+El verdadero problema es que sea un fichero y además esté abierto en modo escritura.
+DE TODOS MODOS, tal como está el sistema, el error "target / busy" lo da cuando has editado el fichero que contiene
+el script de inicio, nada más. Así que edítalo desde fuera y ya, no desde el propio sistema. Ni idea de por qué pasa,
+NO ES IMPORTANTE.
 
 --Cuando en un programa encontremos que hacer un open() a /dev/tty devuelve -1 (es decir, al abrir el FD de la tty en uso)
 y al mirar el ERRNO nos diga "can't open /dev/tty, no such device or address",
