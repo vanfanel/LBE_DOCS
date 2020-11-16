@@ -48,9 +48,13 @@ a una tty de verdad (/dev/tty1, etc..) creado. Y funciona.
 E incluso se puede hacer el típico de KDSKBMODE a K_OFF para que no haya leak de teclas a la consola, o K_XLATE
 para que vuelva a producir pulsaciones de teclas a la consola, etc.. con el fd que nos ha devuelto open() pasándole 0
 en vez de una TTY.
-Lo que pasa es que con SDL2 no hay forma de restaurar el teclado ("ioctl(0, KDSKBMODE, K_XLATE") al salir.
-(Sí funciona si lo restauramos nada más hacer el K_OFF para silenciarlo, pero si lo hacemos a la salida ya no funciona,
-quedaría pendiente investigar por qué).
+Lo que pasa es que con SDL2 no hay forma de restaurar el teclado ("ioctl(0, KDSKBMODE, K_XLATE") al salir, porque el ioctl falla con
+"bad file descriptor". (O sea, el ioctl devuelve -1, pero luego miramos errno con: 
+printf("ERRORNO after ioctl was: %s\n", strerror(errno));
+Y ahí vemos lo del "bad file descriptor".
+(Sí funciona si lo restauramos nada más hacer el K_OFF para silenciarlo, pero si lo hacemos a la salida ya no funciona).
+Esto pasa porque SDL2 hace en alguna parte un close() a un fd que vale 0, o vamos, que le llega 0 a un close.
+Pero eso escapa completamente a nuestro control.
 
 --Partimos de la premisa de que al kernel le pasamos console=tty1, claro. Si usamos otra tty, pues habrá que crear esa otra TTY
 y mandar el sh a correr en esa otra tty.
@@ -71,7 +75,7 @@ Lo de rw es directamente para montar el root como read-write.
 
 #!/bin/sh
 # Para que vayan gráficos y audio, es necesario tener sysfs y proc.
-# Y para que arranque el servicio udev, y para poder configurar el governor a mano, etc
+# Y para que arranque el servicio udev, y para poder configurar el governor a mano.
 mount -t sysfs sysfs /sys
 mount -t proc proc /proc
 mount -n -t tmpfs none /dev
@@ -81,6 +85,23 @@ echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 echo performance > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
 echo performance > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
 echo performance > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+
+# OPCIONAL: Lanzamos udev para que nos detecte lo que conectemos dinámicamene
+# y carge los modulos. NO crea los nodos a no ser que tenga unas rules
+# que creo que le pasa systemd, así que por eso tenemos que crearlos
+# nosotros a mano como acabas de ver.
+# /etc/init.d/udev start >> /dev/null
+
+# LO QUE SOLEMOS HACER PARA NO USAR UDEV: Si no usamos udev, cargamos a mano los modulos.
+# Esta es la lista minima para tener video, sonido, teclado y raton, joystick y red en la Pi4.
+modprobe hid_logitech_hidpp
+modprobe hid_logitech_dj
+modprobe vc4 
+modprobe v3d
+modprobe drm
+modprobe joydev
+modprobe i2c_brcmstb
+modprobe snd_pcm
 
 # Creamos los nodos de tty (que pasará a ser la tty en uso cuando tengamos
 # algo funcionando en alguna tty) y de tty1.
@@ -125,13 +146,10 @@ mknod -m 660 /dev/input/js0 c 13 68
 #mkdir /dev/pts
 #mount -t devpts none /dev/pts -o gid=4,mode=620 
 
-# Lanzamos udev para que nos detecte lo que conectemos dinámicament
-# y carge los modulos. NO crea los nodos a no ser que tenga unas rules
-# que creo que le pasa systemd, así que por eso tenemos que crearlos
-# nosotros a mano como acabas de ver.
-/etc/init.d/udev start >> /dev/null
-
-# Si queremos levantar la red, descomentar esto.
+# Si queremos levantar la red, descomentar esto. Ojo que será necesario tener
+# cargados los módulos para el hardware de red de nuestra máquina.
+# En la Pi4, con la lista mínima de módulos que cargamos manualmente
+# no hace falta nada más.
 #ifconfig eth0 up
 #ip addr add 192.168.1.8/24 dev eth0
 #ip route add default via 192.168.1.7
@@ -149,9 +167,10 @@ exec setsid sh -c 'exec sh </dev/tty1 >/dev/tty1 2>&1'
 # Este es el programa único que va a correr el sistema, en lugar de la consola.
 #/usr/local/bin/retroarch
 
-# Una vez que se sale del programa único, paramos udev y desmontamos todo.
+# Una vez que se sale del programa único, paramos udev (si es que lo hemos lanzado)
+# y desmontamos todo.
 # El desmontaje conlleva la sincronización de los discos.
-/etc/init.d/udev stop
+# /etc/init.d/udev stop
 umount -a
 
 # Dependiendo de si quieres reiniciar o apagar al salir, usa una o la otra.
