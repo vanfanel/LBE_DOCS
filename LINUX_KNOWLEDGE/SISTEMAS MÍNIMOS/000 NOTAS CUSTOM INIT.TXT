@@ -36,10 +36,21 @@ Supongo que es posible tener nodos estáticos, pero ni idea de momento.
 --TIENES QUE SABER ENTENDER LA LÍNEA con la que se lanza el programa único que vas a correr en un sistema mínimo.
 Por ejemplo, para lanzar sh yo uso:
 exec setsid sh -c 'exec sh </dev/tty1 >/dev/tty1 2>&1'
+¿Y por qué no hago simplemente /bin/sh? Porque entonces no estaría corriendo en una TTY, lo podrías ver con el comando "tty".
+
+Bueno, pues lo que hacemos en la línea, consta de dos stages:
+STAGE 1:
 	-EXEC lanza una tarea que va a tener el mismo PID que tiene la tarea llamante. Y la tarea llamante muere, o sea que
 	 en cuanto a su PID es como se clona en la tarea lanzada por EXEC.
 	 Esto es importante porque el proceso init es el que tiene PID1, y si muere init, el kernel da un kernel panic.
-	-SETSID (set session id) le dice a una tarea que le pasamos como parámetro que se ejecute en una TTY concreta.
+	-SETSID (set session id) le dice a una tarea que le pasamos como parámetro que se ejecute en una nueva sesión.
+	 Esto nos interesa porque, si estuviese en la misma sesión, al morir el proceso padre por el EXEC, el hijo muere también.
+
+	 O SEA, este nuevo proceso corre en una nueva sesión, pero con el mismo PID, el PID 1, que no podemos dejar morir
+	 porque el kernel paniquea. Esto es lo que conseguimos con un SETSID dentro de un EXEC.
+     1st stage purely does setsid on a 2nd stage script
+STAGE 2:
+	-EXEC lanza sh redireccionando toda su entrada y salida a la tty1, y se hace con EXEC para que sh tenga el PID 1.
 
 --Cuando en un programa encontremos que hacer un open() a /dev/tty devuelve -1 (es decir, al abrir el FD de la tty en uso)
 y al mirar el ERRNO nos diga "can't open /dev/tty, no such device or address",
