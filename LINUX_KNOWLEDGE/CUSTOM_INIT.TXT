@@ -8,7 +8,7 @@ https://www.linux.it/~rubini/docs/init/init.html
 *NOTAS PREVIAS*
 ***************
 
---Lo más importante que debes saber es que lo importante de un nodo en /dev no es nu nombre, sino sus major y minor numbers.
+--Lo más importante que debes saber es que lo importante de un nodo en /dev no es un nombre, sino sus MAJOR y MINOR numbers.
 Los puedes ver en un sistema "normal" con ls -l /dev/loquesea. Por ejemplo, con "ls -l /dev/tty" vemos:
 crw-rw-rw- 1 root tty 5, 0 nov 16 03:54 /dev/tty
 De donde deducimos que tenemos que creat /dev/tty con major 5 y minor 0. ESE ES EL MODO EN QUE EL KERNEL SABER CÓMO USARLO,
@@ -22,7 +22,7 @@ mknod -m 660 /dev/tty c 4 1
 LA COSA es que, si necesitamos crear nodos a mano, los miramos con ls -l en un sistema funcional, y deducimos cómo crearlos
 a mano nosotros con mknod.
 
---UDEV se encarga de cargar los módulos para el hardware que tengamos conectado, PERO no crea nodos a no ser que
+--UDEV se encarga de cargar los módulos para el hardware que tengamos conectado, PERO no crea nodos en /dev a no ser que
 tenga las rules necesarias, que creo que se las pasa systemd. Vamos, que no crea nodos para el hardware cuyos módulos carga,
 por eso los creamos nosotros a mano en el script de inicio, como vas a ver.
 Los nodos del hardware que está built-in en el kernel sí que los crea el kernel, pero para ello tiene que tener la funcionalidad
