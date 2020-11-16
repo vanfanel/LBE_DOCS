@@ -94,14 +94,20 @@ echo performance > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 
 # LO QUE SOLEMOS HACER PARA NO USAR UDEV: Si no usamos udev, cargamos a mano los modulos.
 # Esta es la lista minima para tener video, sonido, teclado y raton, joystick y red en la Pi4.
-modprobe hid_logitech_hidpp
-modprobe hid_logitech_dj
+# CUIDADO: El módulo uio es necesario para que funcionen los mandos USB.
+# CUIDADO: Los módulos para teclado/ratón (hid_logitech*) y mando (xpad) son específicos
+# para los que yo uso. Para otros distintos, harán falta otros módulos.
 modprobe vc4 
 modprobe v3d
 modprobe drm
-modprobe joydev
 modprobe i2c_brcmstb
 modprobe snd_pcm
+modprobe joydev
+modprobe uio
+
+modprobe hid_logitech_hidpp
+modprobe hid_logitech_dj
+modprobe xpad
 
 # Creamos los nodos de tty (que pasará a ser la tty en uso cuando tengamos
 # algo funcionando en alguna tty) y de tty1.
