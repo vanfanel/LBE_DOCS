@@ -1,0 +1,63 @@
+15:19 < clever> but you can also use an initrd, so nothing is mounted
+15:20 < Vanfanel> Aha. I have to explore initrd. I still don't get the advantages.
+15:20 < clever> basically, the initrd is like a compressed tar
+15:21 < clever> the bootloader (start(4).elf in our case) loads both the kernel and initrd into ram
+15:21 < clever> the kernel then unpacks it to / and runs /init as usual
+15:21 < clever> and /init can then do whatever it wants
+15:22 < clever> normally, that would involve loading drivers for / (but the rpi kernel baked them into the 
+                kernel), then mounting root as /new-root, and using pivot-root to swap / and /new-root
+15:22 < clever> but android for example never runs pivot-root, it just mounts system and data to /system and 
+                /data, within the initrd, and runs like that
+15:22 < clever> and depending on your needs, you can just never mount anything else
+15:23 < clever> just run purely from the initrd
+15:23 < Vanfanel> so the custom init shellscript can be inside the initrd, I guess?
+15:23 < clever> yep
+15:23 < Vanfanel> wow, that would be ideal for console-like enviroments!
+15:24 < Vanfanel> I guess most embedded Linux systems run like that
+15:24 < clever> and since it never mounts anything rw, you dont have to worry about improper shutdowns
+15:24 < clever> and for the rpi, it can run with only a fat32 partition
+15:24 < clever> so you dont even need to dd a .img
+15:24 < clever> you can just extract a .zip to an sd card (thats how noobs/pinn get installed)
+15:25 < Vanfanel> true, it's simply a fat32 partition with some files inside
+15:25 < clever> https://github.com/cleverca22/nix-tests/blob/master/haskell-init/default.nix
+15:25 < clever> this is an experiment a did a while pack
+15:26 < clever> line 22 will generate an initrd, that has hello_world' at /init
+15:26 < clever> and hello_world' just renamed hello_world, to remove bin bin folder
+15:26 < clever> hello_world itself (on line 4), is a 100% static haskell binary
+15:27 < clever> so now i have an initrd with only a binary /init, and it boots under qemu
+15:27 < clever> (and line 31 generates a script to launch it in qemu)
+15:28 < clever> Vanfanel: the tricky part with an initrd, is that if you have a #!/bin/sh script, you must 
+                also include a /bin/sh in your initrd
+15:28 < clever> c2d ~ # ldd /bin/sh
+15:28 < clever>         /lib64/ld-linux-x86-64.so.2 (0x00007fe0364d4000)
+15:28 < clever>         libc.so.6 => /lib64/libc.so.6 (0x00007fe035a7c000)
+15:28 < clever> Vanfanel: and also include every library the /bin/sh depends on
+15:28 < clever> and thats where tools like busybox can be handy
+15:28 < clever> pkgs.makeInitrd from nix are also massively useful, they just auto-detect what you need, and
+                copy it
+15:29 < Vanfanel> wow!! seems SO nice!! I have to do all this!! I feel like entering a candy shop, clever :D
+15:29 < clever> Vanfanel: i went thru a phase many years ago, when running gentoo, when i made a dozen custom 
+                initrd's, lol
+15:30 < clever> one would copy the entire rootfs from usb->ram, and then run the whole system without a disk
+15:30 < clever> another then brought the wifi up (without udev's help), and then did the same, over wifi
+15:30 < clever> one attempt, was to run a full X11 in the initrd, along with some gps software
+15:32 < clever> Vanfanel: using qemu helps with testing massively
+15:35 < Vanfanel> I will go thru the same steps, I fear :D
+15:35 < Vanfanel> Curiosity with that initrd stuff is bugging me already
+15:36 < clever> the major reason an initrd is used on x86
+15:36 < clever> is because the distro doesnt know which driver your using for your root disk
+15:36 < clever> or even what your rootfs is
+15:36 < clever> if they compile too much into the kernel, it wastes ram for people who didnt need those things
+15:36 < clever> if they compile too little, the kernel cant mount the rootfs
+15:37 < clever> the solution, is to compile everything as modules, and then shove a selection of modules into 
+                the initrd
+15:37 < Vanfanel> I see. That doesn't happen with the Pi kernel, which is tailored to the hw.
+15:37 < clever> and then load what you need at boot, and discard the rest with the initrd
+15:37 < clever> Vanfanel: yep, the pi hw is known, so you can just compile for that exact board
+15:37 < clever> but there is still some bloat
+15:37 < clever> an rpi1 doesnt need pci-e drivers
+15:37 < clever> but an rpi4 does
+15:38 < clever> but luckily, you need the right build for each arm core, so you can still deal with that sanely
+15:38 < Vanfanel> clever: is doing "mount -o remount,rw /" the best way to remount / in rw mode? It fails here 
+                  because doesn't find the disk with the partuuid I specified on the kernel parameters
+15:39 < clever> that should work, but you may need an mtab and/or /dev first
