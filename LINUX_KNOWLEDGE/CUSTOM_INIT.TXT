@@ -31,6 +31,27 @@ CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y.
 --Como montamos tmpfs en /dev, los módulos que se crean en cada sesión son creados en RAM, así que se pierden en cada reinicio.
 Supongo que es posible tener nodos estáticos, pero ni idea de momento.
 
+--Cuando en un programa encontremos que hacer un open() a /dev/tty devuelve -1 (es decir, al abrir el FD de la tty en uso)
+y al mirar el ERRNO nos diga "can't open /dev/tty, no such device or address",
+o lo que es lo mismo, cuando nos diga lo de "no such device or address" al hacer un echo hola > /dev/tty,
+significa que SÍ TENEMOS el nodo /dev/tty, pero que no hay una TTY activaa (tty1, tty2, etc)
+por lo que /dev/tty digamos que no apunta a ninguna parte (si la TTY activa es tty1, /dev/tty apunta a /dev/tty1, etc).
+Cuando digo que una TTY es la TTY activa, es que se está viendo en pantalla (se cambiaría con CRTL+ALT+Fn, como sabes).
+POR ESO tenemos que lanzar sh de manera que vaya a parar a una TTY (idealmente la tty1, que es la que está usando el kernel
+para sacar sus mensajes, porque le hemos pasado console=tty1 en la línea de comandos del kernel, recuerda).
+Puedes saber sobre qué TTY está corriendo sh o lo que sea simplemente con el comando "tty".
+Y puedes saber sobre qué TTY corre cada programa en ejecución con ps -a.
+
+--ES POSILBE hacer un open() pasándole 0 en vez de /dev/tty a open(), si no has puesto en ningún TTY el SH
+o el programa único que hayas lanzado en modo singleuser, y/o ni siquiera tienes un nodo /dev/tty que apunte
+a una tty de verdad (/dev/tty1, etc..) creado. Y funciona.
+E incluso se puede hacer el típico de KDSKBMODE a K_OFF para que no haya leak de teclas a la consola, o K_XLATE
+para que vuelva a producir pulsaciones de teclas a la consola, etc.. con el fd que nos ha devuelto open() pasándole 0
+en vez de una TTY.
+Lo que pasa es que con SDL2 no hay forma de restaurar el teclado ("ioctl(0, KDSKBMODE, K_XLATE") al salir.
+(Sí funciona si lo restauramos nada más hacer el K_OFF para silenciarlo, pero si lo hacemos a la salida ya no funciona,
+quedaría pendiente investigar por qué).
+
 --Partimos de la premisa de que al kernel le pasamos console=tty1, claro. Si usamos otra tty, pues habrá que crear esa otra TTY
 y mandar el sh a correr en esa otra tty.
 
