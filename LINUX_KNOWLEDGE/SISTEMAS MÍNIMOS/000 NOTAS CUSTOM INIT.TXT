@@ -4,12 +4,72 @@ Fuentes:
 -Preguntar a clever en el canal #raspberrypi
 -Tienes el script mínimo de arranque, que puedes pasarle al kernel como init, en el mismo directorio que este documento, con
 el nombre "minimal".
+-Tienes un fichero llamano "CREACIÓN MANUAL DE NODOS", que no debería hacerte falta a no ser que uses un sistema sin udev ni mdev,
+es decir, que use siempre el mismo hardware y nodos estáticos, pero a un sistema así no podrás ponerle ni quitarle nada,
+ni en ejecución ni en frio. Tiene lo que tiene y ya.
+El fichero CREACIÓN MANUAL DE NODOS es como una guía con ejemplos para saber crear nodos a mano en caso necesario.
+También explico ahí muy bien qué significa todo lo que se ve al hacer ls -l a un fichero en /dev. Eso sí deberías saberlo siempre
+aunque no crees los nodos a mano
 
-***************
-*NOTAS PREVIAS*
-***************
+***********************************
+*NOTAS IMPORTANTES DE CONOCIMIENTO*
+***********************************
 
---Lo más importante que debes saber es que: lo importante de un nodo en /dev no es un nombre, sino su TIPO y sus MAJOR y MINOR numbers.
+--UDEV se encarga de cargar los módulos para el hardware que tengamos conectado, y crea los nodos necesarios en /dev,
+usando para ello las rules que están en /lib/udev/rules.d/.
+PERO ATENCIÓN: PARA QUE UDEV PUEDA CREAR LOS NODOS NECESARIOS EN /dev SE TIENEN QUE CUMPLIR ESTAS CONDICIONES,
+QUE POR DEFECTO SE CUMPLEN EN EL KERNEL POR DEFECTO DE LA PI:
+----Nuestro kernel tiene que tener la funcionalidad CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y.
+    El kernel de la Pi original las trae. Si alguna vez tuvieses un kernel que no las trae, puedes montar
+    el tmpfs en vez del devtmpfs en /dev con mount -n -t tmpfs none /dev, pero ten en cuenta que en ese caso
+    tendrás que crear los nodos en /dev a mano, porque udev y mdev sólo los crean automáticamente si en /dev
+    está montado un devtmpfs.
+----Tenemos que tener el devtmpfs montado en /dev. Esto, con CONFIG_DEVTMPFS_MOUNT=y, el kernel lo hace solo, pero si por lo que
+    sea tuvieses que hacerlo a mano, basta con hacer: mount -t devtmpfs none /dev
+LOS REQUERIMIENTOS para cuando uses mdev (el udev de busybox) son los mismos.
+
+--TIENES QUE SABER ENTENDER LA LÍNEA con la que se lanza el programa único que vas a correr en un sistema mínimo.
+
+Para ello, tienes que distinguir entre PID y SESIÓN:
+-El PID es el ID de un proceso en el sistema. El proceso con PID 1 es lo que le pasamos al kernel con init=...
+ No podemos dejar que muera, ya que entonces el kernel da un kernel panic.
+ EXEC nombre_comando nos crea un proceso que tendrá el mismo PID que el proceso desde el que estamos haciendo el EXEC,
+ pero el proceso llamante muere, y el nuevo proceso nunca retorna.
+ 
+-Una SESIÓN es una nueva "línea de ejecución de comandos".
+ Los comandos del script de inicio correren todos en la misma sesión, porque van uno detrás de otro en la misma "línea",
+ por así decirlo.
+ Si esa sesión acaba es que se dejan de ejecutar los comandos de esa línea de ejecución.
+ Pero una sesión puede abrir nuevas sesiones, y quedarse esperando a que esas sesiones acaben, y luego esa primera sesión continua.
+
+Eeeeentonces, para lanzar sh yo uso:
+exec setsid sh -c 'exec sh </dev/tty1 >/dev/tty1 2>&1'
+¿Y por qué no hago simplemente /bin/sh? Porque entonces no estaría corriendo en una TTY, lo podrías ver con el comando "tty".
+
+Bueno, pues lo que hacemos en la línea, consta de dos stages:
+STAGE 1: exec setsid sh
+	-EXEC crea un nuevo proceso que sigue teniendo PID 1, y el proceso original muere.
+	 SETSID crea una nueva sesión por donde se van ejecutando cosas. La sesión principal queda parada a la espera de que la nueva sesión acabe.
+STAGE 2: exec sh
+	-EXEC crea un nuevo proceso que sigue teniendo PID 1, y el proceso anterior creado en el STAGE 1 muere.
+	 Además, mediante los operadores > y < direccionamos la entrada y salida de ese nuevo proceso a /dev/tty1,
+	 (para que corra sobre una TTY, y así tener una TTY activa en /dev/tty que los programas puedan abrir con open()). 
+	
+PEROOOO ENTONCES, ¿qué pasa cuando escribo "exit" en sh? Porque si lo he entendido bien, eso hace que el sh del segundo stage muera,
+que es el que tenía el PID 1 porque lo heredó del sh del primer stage, que ya está muerto. Entonces, al morir el proceso con PID 1,
+el kernel paniqueará!! Y no se ejecutarán los comandos de apagado ordenad (desmontaje del raiz, poweroff, etc) Pues sí, así es.
+Así que tenemos dos opciones:
+-OPCIÓN 1: Si en el STAGE 1 quitamos el exec del principio, el primer "sh" va a ser un poceso con un nuevo PID, pero en una nueva sesión.
+ Entonces, cuando escribamos "exit", muere el proceso con PID 2, acaba la segunda sesión, y se siguen ejecutando los comandos
+ de la sesión principal. Ya está. Nos vale.
+-OPCIÓN 2: dejar todo como está y meter, en lugar del "sh" del STAGE 2, un script que: lance un tercer sh y después los comandos de apagado.
+ De ese modo, el nuevo script comienza una nueva sesión (con el PID 1, ya que ambas sesiones empiezan con EXEC), y
+ en esa sesión se lanza un nuevo "sh" y al acabar ese "sh" se hace el apagado ordenado. Nunca se vuelve a la primera sesión, ya que en es
+ en esta seguda sesión donde haríamos el remount y el poweroff, pero funciona.
+ Esto segundo es un pelín más complicado pero todo lo que corra desde el sh va a tener automáticamente su tty si la necesita.
+
+--TIENES QUE SABER INTERPRETAR LOS NODOS EN /dev, AUNQUE NO VAYAS A CREARLOS A MANO:
+Lo más importante que debes saber es que: lo importante de un nodo en /dev no es un nombre, sino su TIPO y sus MAJOR y MINOR numbers.
 Los puedes ver en un sistema "normal" con ls -l /dev/loquesea. Por ejemplo, con "ls -l /dev/tty" vemos:
 crw-rw-rw- 1 root tty 5, 0 nov 16 03:54 /dev/tty
 De donde deducimos que tenemos que creat /dev/tty como un nodo de tipo CARACTER (de ahí la "c") con major 5 y minor 0.
@@ -23,35 +83,6 @@ mknod -m 660 /dev/tty c 4 1
 LA COSA es que, si necesitamos crear nodos a mano, los miramos con ls -l en un sistema funcional, y deducimos cómo crearlos
 a mano nosotros con mknod.
 Los nodos tipo bloque, como los discos, se hacen pasándole a mknod una "b" en vez de una "c".
-
---UDEV se encarga de cargar los módulos para el hardware que tengamos conectado, PERO no crea nodos en /dev a no ser que
-tenga las rules necesarias, que creo que se las pasa systemd. Vamos, que no crea nodos para el hardware cuyos módulos carga,
-por eso los creamos nosotros a mano en el script de inicio, como vas a ver.
-Los nodos del hardware que está built-in en el kernel sí que los crea el kernel, pero para ello tiene que tener la funcionalidad
-CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y.
-
---Como montamos tmpfs en /dev, los módulos que se crean en cada sesión son creados en RAM, así que se pierden en cada reinicio.
-Supongo que es posible tener nodos estáticos, pero ni idea de momento.
-
---TIENES QUE SABER ENTENDER LA LÍNEA con la que se lanza el programa único que vas a correr en un sistema mínimo.
-Por ejemplo, para lanzar sh yo uso:
-exec setsid sh -c 'exec sh </dev/tty1 >/dev/tty1 2>&1'
-¿Y por qué no hago simplemente /bin/sh? Porque entonces no estaría corriendo en una TTY, lo podrías ver con el comando "tty".
-
-Bueno, pues lo que hacemos en la línea, consta de dos stages:
-STAGE 1:
-	-EXEC lanza una tarea que va a tener el mismo PID que tiene la tarea llamante. Y la tarea llamante muere, o sea que
-	 en cuanto a su PID es como se clona en la tarea lanzada por EXEC. La nueva tarea nunca retorna a la llamante, claro.
-	 Esto de que la nueva tarea tenga el mismo PID que la llamante es importante porque el proceso init es el que tiene PID1,
-	 y si muere init, el kernel da un kernel panic.
-	-SETSID (set session id) le dice a una tarea que le pasamos como parámetro que se ejecute en una nueva sesión.
-	 Esto nos interesa porque, si estuviese en la misma sesión, al morir el proceso padre por el EXEC, el hijo muere también.
-
-	 O SEA, este nuevo proceso corre en una nueva sesión, pero con el mismo PID, el PID 1, que no podemos dejar morir
-	 porque el kernel paniquea. Esto es lo que conseguimos con un SETSID dentro de un EXEC.
-     1st stage purely does setsid on a 2nd stage script
-STAGE 2:
-	-EXEC lanza sh redireccionando toda su entrada y salida a la tty1, y se hace con EXEC para que sh tenga el PID 1.
 
 --Cuando nos dé un error a la salida, al intentar montar / como read-only ("target / is busy" o algo así) podemos ver qué
 fds a ficheros de / tenemos abiertos haciendo:
@@ -70,7 +101,8 @@ NO ES IMPORTANTE.
 --Cuando en un programa encontremos que hacer un open() a /dev/tty devuelve -1 (es decir, al abrir el FD de la tty en uso)
 y al mirar el ERRNO nos diga "can't open /dev/tty, no such device or address",
 o lo que es lo mismo, cuando nos diga lo de "no such device or address" al hacer un echo hola > /dev/tty,
-significa que SÍ TENEMOS el nodo /dev/tty, pero que no hay una TTY activaa (tty1, tty2, etc)
+significa que SÍ TENEMOS el nodo /dev/tty, pero que no hay una TTY activa (tty1, tty2, etc).
+(una TTY activa es que está siendo usada por SH, BASH...)
 por lo que /dev/tty digamos que no apunta a ninguna parte (si la TTY activa es tty1, /dev/tty apunta a /dev/tty1, etc).
 Cuando digo que una TTY es la TTY activa, es que se está viendo en pantalla (se cambiaría con CRTL+ALT+Fn, como sabes).
 POR ESO tenemos que lanzar sh de manera que vaya a parar a una TTY (idealmente la tty1, que es la que está usando el kernel
@@ -95,9 +127,9 @@ Pero eso escapa completamente a nuestro control.
 --Partimos de la premisa de que al kernel le pasamos console=tty1, claro. Si usamos otra tty, pues habrá que crear esa otra TTY
 y mandar el sh a correr en esa otra tty.
 
-*******************
-*FIN NOTAS PREVIAS*
-*******************
+***************************************
+*FIN NOTAS IMPORTANTES DE CONOCIMIENTO*
+***************************************
 
 El siguiente script es el que puedes poner como script mínimo de arranque para levantar un sistema usable sin systemd
 ni ningún otro proceso init.
@@ -125,11 +157,6 @@ crea los nodos sin depender de rules externas, así que nos ahorramos lo de hace
 
 -Pasar de udev a mdev, que es lo que se usa en busybox. Para poner en marcha mdev una vez instalado, lee:
 https://git.busybox.net/busybox/plain/docs/mdev.txt
-La alternativa se supone que es tener un kernel con devtmpfs activado (opciones CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y
-de la configuración del kernel), ya que un kernel con devtmpfs crea los nodos necesarios, pero lo malo es que eso no
-carga los módulos necesarios.
-Tampoco sé si mdev carga los módulos automáticamente, se supone que sí. Pero vamos, que con devtmpfs no es suficiente para
-la carga de módulos.
 
 
 ******************

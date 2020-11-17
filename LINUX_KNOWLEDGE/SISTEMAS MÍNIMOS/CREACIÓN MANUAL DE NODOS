@@ -1,0 +1,84 @@
+LAS NOTAS Y EJEMPLOS DE ESTE FICHERO SON PARA SISTEMAS EN LOS QUE NO SE USE NI MDEV NI UDEV.
+SI NECESITAS CREAR LOS NODOS DE /dev A MANO (lo más normal es que lo haga udev o mdev, ojo) ENTONCES MIRA ESTAS NOTAS:
+Lo más importante que debes saber es que: lo importante de un nodo en /dev no es un nombre, sino su TIPO y sus MAJOR y MINOR numbers.
+Los puedes ver en un sistema "normal" con ls -l /dev/loquesea. Por ejemplo, con "ls -l /dev/tty" vemos:
+crw-rw-rw- 1 root tty 5, 0 nov 16 03:54 /dev/tty
+De donde deducimos que tenemos que creat /dev/tty como un nodo de tipo CARACTER (de ahí la "c") con major 5 y minor 0.
+ESE ES EL MODO EN QUE EL KERNEL SABER CÓMO USARLO, SU NOMBRE ES LO DE MENOS.
+Entonces, ese nodo se crearía a mano con:
+mknod -m 666 /dev/tty c 5 0
+Y si miramos tty1 con "ls -l /dev/tty1", vemos:
+crw--w---- 1 root tty 4, 1 nov 15 16:23 /dev/tty1
+Así que ese nodo se crearía a mano con:
+mknod -m 660 /dev/tty c 4 1
+LA COSA es que, si necesitamos crear nodos a mano, los miramos con ls -l en un sistema funcional, y deducimos cómo crearlos
+a mano nosotros con mknod.
+Los nodos tipo bloque, como los discos, se hacen pasándole a mknod una "b" en vez de una "c".
+
+****************************************************
+* Empieza el bloque de creación de nodos de ejemplo*
+****************************************************
+
+# LO QUE VIENE A CONTINUACIÓN ES LO QUE TENDRÍAMOS QUE HACER PARA NO USAR UDEV NI MDEV:
+# cargar nosotros los módulos del kernel, y crear los nodos de /dev a mano.
+# Esta es la lista minima para tener tty, video, sonido, teclado y raton, joystick y red en la Pi4.
+# Esto puede ser últil para sistemas tan tan taaan mínimos que no usen udev ni mdev.
+
+# Creamos el nodo de la partición root (esto habría que hacerlo antes de re-montar / como read-write),
+# o de lo contrario mount no encontrará la partición y no podrá re-montarla r/w.
+mknod -m 660 /dev/mmcblk0 b 179 0
+mknod -m 660 /dev/mmcblk0p11 b 179 11
+
+# CUIDADO: El módulo uio es necesario para que funcionen los mandos USB.
+# CUIDADO: Los módulos para teclado/ratón (hid_logitech*) y mando (xpad) son específicos
+# para los que yo uso. Para otros distintos, harán falta otros módulos.
+modprobe vc4 
+modprobe v3d
+modprobe drm
+modprobe i2c_brcmstb
+modprobe snd_pcm
+modprobe joydev
+modprobe uio
+
+modprobe hid_logitech_hidpp
+modprobe hid_logitech_dj
+modprobe xpad
+
+# Creamos los nodos de tty (que pasará a ser la tty en uso cuando tengamos
+# algo funcionando en alguna tty) y de tty1.
+# Los dos ultimos numeros son el MAJOR y el MINOR, y hay que conocerlos
+# porque son especificos de cada tipo de nodo que creemos.
+mknod -m 666 /dev/tty c 5 0
+mknod -m 660 /dev/tty1 c 4 1
+
+# En caso de que te den en faltar estos nodos basicos, asi se crean.
+#mknod -m 622 /dev/console c 5 1
+#mknod -m 666 /dev/null c 1 3
+#mknod -m 666 /dev/zero c 1 5
+#mknod -m 666 /dev/ptmx c 5 2
+#mknod -m 444 /dev/random c 1 8
+#mknod -m 444 /dev/urandom c 1 9
+
+# Creamos los nodos del chip grafico. La pi4 tiene dos salidas,
+# así que creamos dos tarjetas. El renderD128 también es necesario.
+mkdir -p /dev/dri
+mknod -m 660 /dev/dri/card0 c 226 0
+mknod -m 660 /dev/dri/card1 c 226 1
+mknod -m 660 /dev/dri/renderD128 c 226 128
+
+# Creamos los nodos de audio
+mkdir -p /dev/snd
+mknod -m 660 /dev/snd/controlC0 c 116 0
+mknod -m 660 /dev/snd/controlC1 c 116 32
+mknod -m 660 /dev/snd/pcmC0D0p c 116 16
+mknod -m 660 /dev/snd/pcmC1D0p c 116 48
+mknod -m 660 /dev/snd/timer c 116 33
+
+# Creamos los nodos de input
+mkdir -p /dev/input
+mknod -m 660 /dev/input/mouse0 c 13 32
+mknod -m 660 /dev/input/mice c 13 63
+mknod -m 660 /dev/input/event0 c 13 64
+mknod -m 660 /dev/input/event1 c 13 65
+mknod -m 660 /dev/input/event4 c 13 68
+mknod -m 660 /dev/input/js0 c 13 68
