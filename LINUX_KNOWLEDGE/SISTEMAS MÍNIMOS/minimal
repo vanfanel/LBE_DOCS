@@ -40,6 +40,10 @@ mount -o remount,rw /
 # Lee la configuración de /etc/default/console-setup y /etc/default/keyboard.
 setupcon
 
+# Es FUNDAMENTAL exportar $HOME, o los programas empezarán a salvar sus cosas en /,
+# otros no encontrarán cosas que crees tener en /root porque las buscan en $HOME, etc.
+export HOME=/root
+
 # En caso de querer consola en vez de un único programa corriendo, descomentar esto.
 # Manda el sh, lanzado en dos stages, a correr en tty1 a base de direccionar
 # su entrada y su salida a /dev/tty1.
