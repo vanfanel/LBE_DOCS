@@ -1,3 +1,11 @@
+CÓMO RETOMAR EL DESARROLLO
+==========================
+
+Tienes "publicados" los ficheros de Vulkan para KMSDRM en tu repo de github, se llaman SDL_kmsdrmvulkan.c y .h
+Tienes que copiarlos a la misma carpeta que el resto de sources de kmsdrm (src/video/kmsdrm) y enganchar las funciones
+en SDL_kmsdrmvideo.c, igual que se hace en wayland, x11, etc.
+También tienes que meter SDL_kmsdrmvulkan.h en SDL_kmsdrmvideo.c, porque si enganchas las funciones ahí pues te hace falta lógicamente. 
+
 CÓMO FUNCIONA LA INICIALIZACIÓN DE VULKAN
 =========================================
 
