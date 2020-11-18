@@ -664,7 +664,7 @@ SECCIÓN VULKAN
 ---BLOQUE MESA CON VULKAN---
 
 Clonamos el repo de MESA en gitlab (por ahora no hay versión estable que tenga VULKAN para la Pi...):
-https://gitlab.freedesktop.org/mesa/mesa/-/tree/master --depth 1
+git clone --depth 1 https://gitlab.freedesktop.org/mesa/mesa.git
 
 Instalamos unas dependencias previas:
 sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommends
