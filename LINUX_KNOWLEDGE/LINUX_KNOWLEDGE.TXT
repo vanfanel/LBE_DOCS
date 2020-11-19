@@ -5291,10 +5291,17 @@ COMPILAR FROTZ
 Instala las ncursesw, que es una versión más mehó de las ncurses:
 sudo apt-get install libncursesw5-dev
 
+Si quieres sonido en modo texto, instala estas dependencias antes, PERO NO HACE FALTA PORQUE SFROTZ TIENE SONIDO
+A TRAVÉS DE LAS SDL, así que simplemente los juegos con audio lánzalos con sfrotz.
+sudo apt-get install libao-dev libsamplerate0-dev libsndfile1-dev --no-install-recommends
+
 Baja los surces de la última estable de:
 https://gitlab.com/DavidGriffith/frotz/-/releases
 
-Ahora edita el Makefile y pon sound a NONE, comenta la línea de los CFLAGS del -g, y descomenta la que tienes encima, o sea, la que tiene los CFLAGS de optimización, y aniade los propios de la Pi3.
+Ahora edita el Makefile y:
+-Pon sound a NONE si no quieres sonido en modo texto (sin SDL). En sfrotz el sonido va por las SDL,
+ así que usa SFROTZ para los juegos que tienen sonido, y ya.
+-Comenta la línea de los CFLAGS del -g, y en la que tiene el -O3, y añade los flags propios de la Pi4.
 
 Ahora compila con "make frotz" (hay "make sfrotz" para SDL, etc...)
 Y sudo make install
@@ -5305,7 +5312,8 @@ Los juegos que tienen gráficos los llevan en un fichero de extensión .BLB. O s
 sfrotz zorkzero.dat zorkzero.blb
 Muchas veces vienen con otra extensión, los renombras a .blb y ya.
 
-Hay dos juegos con sonido, el Sherlock y el Lurking Horror. Los sonidos de ambos deben estar en un subdirectorio llamado sound, y están en formato .snd
+Hay dos juegos con sonido, el Sherlock y el Lurking Horror. Los sonidos de ambos deben estar en un subdirectorio llamado sound,
+y están en formato .snd
 Los de ambos van al mismo subdirectorio y ya. Tú le pasas al frotz el .DAT del juego, y ya se busca él la vida para encontrar los sonidos en sound.
 
 Puedes convertir juegos de THE QUILL a .z5 para el frotz con el unquill: https://www.seasip.info/Unix/UnQuill/
@@ -6006,6 +6014,19 @@ Así que hay que añadir unos repos y los instalamos desde ahí con apt-get.
 Las instrucciones, en castellano, aquí:
 
 https://www.sololinux.es/instalar-drivers-de-impresoras-canon-en-ubuntu-20-04/
+
+REVENGE OF TITANS EN LA RASPBERRY PI
+====================================
+
+El juego usa tres librerías cuyas versiones aarch64 necesitas: 
+liblwjgl.so
+libopenal.so
+lwjgl.jar
+
+Para conseguirlas, vamos al configurador online de LWJGL:
+https://www.lwjgl.org/customize
+Generamos el paquete, y en los *natives de cada librería tienes los .so que necesitas.
+SUSTUTUYE las versiones que trae el juego con las que acabas de generar.
 
 
 
