@@ -36,22 +36,27 @@ mount -o remount,rw /
 # Levantamos si queremos el servidor SSH.
 #/etc/init.d/dropbear start
 
-# Esto configura la fuente y el teclado de la consola.
-# Lee la configuración de /etc/default/console-setup y /etc/default/keyboard.
-setupcon
-
-# Es FUNDAMENTAL exportar $HOME, o los programas empezarán a salvar sus cosas en /,
-# otros no encontrarán cosas que crees tener en /root porque las buscan en $HOME, etc.
+# MUY IMPORTANTE exportar $HOME o las configuraciones de los programas
+# se empezarán a guardar en /. Así que esto hay que hacerlo SIEMPRE.
 export HOME=/root
 
-# En caso de querer consola en vez de un único programa corriendo, descomentar esto.
-# Manda el sh, lanzado en dos stages, a correr en tty1 a base de direccionar
-# su entrada y su salida a /dev/tty1.
-# Se puede usar bash pero depende de más basura de systemd.
-setsid sh -c 'exec sh </dev/tty1 >/dev/tty1 2>&1'
+# En caso de querer consola en vez de un único programa corriendo,
+# descomentar este bloque entero.
+# El lanzamiento de sh se hace mediante setsid y exec en dos stages:
+# En el STAGE 1, setsid inicia una nueva sesión y manda un primer sh ahí,
+# y en el STAGE 2 exec ejecuta otro sh con el mismo PID que el sh anterior,
+# que tiene PID 1 (Siempre hay que tener un PID 1 o el kernel da un panic
+# por matar el proceso init). La entrada y salida de este segundo sh
+# es redireccionada a tty1,
+# Setupcon configura la fuente y el teclado de la consola,
+# leyendo la configuración de /etc/default/console-setup y /etc/default/keyboard.
+# Se puede usar bash en lugar de sh.
+hostname minimal
+setupcon
+setsid sh -c 'cd /root;exec sh </dev/tty1 >/dev/tty1 2>&1'
 
 # En caso de querer un único programa corriendo:
-#setsid sh -c 'exec /usr/local/bin/retroarch </dev/tty1 >/dev/tty1 2>&1'
+# setsid sh -c 'exec /usr/local/bin/retroarch </dev/tty1 >/dev/tty1 2>&1'
 
 # Una vez que se sale del programa único, paramos udev (si es que lo hemos lanzado)
 # y montamos el root como readonly.
