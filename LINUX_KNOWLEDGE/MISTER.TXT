@@ -169,3 +169,10 @@ Number  Start   	End         	      Size                     Type        File sy
 ---Nos quedamos con el 65536. Y montamos así:
 
 sudo mount -t vfat -o loop,offset=65536 msx.vhd /mnt/hdd
+
+*********ACTUALIZAR LA MISTER********************************************************
+
+Usa el script update_all de aquí:
+https://github.com/theypsilon/Update_All_MiSTer
+Es bajarse un ZIP, descomprimirlo en Scripts/Updates, y luego ejecutarlo. Entra en el menú la primera vez que lo ejecutes
+pulsando UP. Allí cambia en la primera opción que los cores que te baje sean los de DB9.
