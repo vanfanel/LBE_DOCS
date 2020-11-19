@@ -5298,6 +5298,9 @@ sudo apt-get install libao-dev libsamplerate0-dev libsndfile1-dev --no-install-r
 Baja los surces de la última estable de:
 https://gitlab.com/DavidGriffith/frotz/-/releases
 
+Ahora edita src/sdl/sf_video.c y añade esta línea antes de que se creen la ventana y el renderer:
+SDL_ShowCursor(SDL_DISABLE);
+
 Ahora edita el Makefile y:
 -Pon sound a NONE si no quieres sonido en modo texto (sin SDL). En sfrotz el sonido va por las SDL,
  así que usa SFROTZ para los juegos que tienen sonido, y ya.
