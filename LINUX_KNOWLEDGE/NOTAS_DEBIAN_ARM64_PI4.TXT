@@ -661,6 +661,9 @@ Para XMB, un buen tema es el Systematic ("SETTINGS->USER INTERFACE->APPEARANCE->
 SECCIÓN VULKAN
 ==============
 
+¡¡¡OJO!!! LO PRIMERO EN LA PI4, AÑADE AL USUARIO "pi" AL GRUPO RENDER, O TE VOLVERÁS LOCO PORQUE GLES NO IRÁ PERO DRM SÍ (o sea, modetest funciona pero MESA no puede cargar GLES). PARA ELLO, HAZ:
+sudo usermod -a -G render pi
+
 ---BLOQUE MESA CON VULKAN---
 
 Clonamos el repo de MESA en gitlab (por ahora no hay versión estable que tenga VULKAN para la Pi...):
@@ -683,7 +686,7 @@ sudo apt-get install glslang-dev glslang-tools spirv-tools
 
 Configuramos para Pi4 con VULKAN solamente:
 
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --disable-egl --disable-gles --enable-vulkan
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --enable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --disable-egl --disable-opengles --enable-vulkan
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
