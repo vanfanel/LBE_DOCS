@@ -201,7 +201,7 @@ sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg
 (Si has compilado SDL2 con soporte para kmsdrm pero te da el error "not available video device", es porque compilaste sin tener instalado libgmb-dev junto con un MESA precocinado, y no te ha avisado... Instala ese paquete y recompila, anda.)
 
 Ahora ya configuramos:
-./configure --prefix=/usr --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-dbus --disable-ime --enable-video-kmsdrm
+./configure --prefix=/usr --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --enable-video-kmsdrm
 
 Fíjate que en el resúmen al acabar del configure, te tiene que indicar que el soporte KMSDRM está activado, para ello se requiere que las librerías necesarias estén en el sistema (libgbm y libdrm).
 Ahora borra las librerías libSDL2* que vienen instaladas en la mayoría de las distros en /usr/lib/x86_64-linux-gnu/, e instala las que acabas de compilar, que acabarán en /usr/lib.
@@ -5298,7 +5298,10 @@ sudo apt-get install libao-dev libsamplerate0-dev libsndfile1-dev --no-install-r
 Baja los surces de la última estable de:
 https://gitlab.com/DavidGriffith/frotz/-/releases
 
-Ahora edita src/sdl/sf_video.c y añade esta línea antes de que se creen la ventana y el renderer:
+Ahora edita src/sdl/sf_video.c:
+-Añade estos FLAGS a la línea de SDL_CreateRenderer()
+SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+-Añade esta línea antes de que se creen la ventana y el renderer
 SDL_ShowCursor(SDL_DISABLE);
 
 Ahora edita el Makefile y:
@@ -5311,16 +5314,16 @@ Y sudo make install
 
 Para compilar SFROTZ, no te olvides de pasar el CFLAG  -fsigned-char, o el cursor aparecerá descolocado. En el futuro no debería ser necesario.
 
-Los juegos que tienen gráficos los llevan en un fichero de extensión .BLB. O sea que tendrías que tener zorkzero.dat y zorksero.blb y hacer:
-sfrotz zorkzero.dat zorkzero.blb
-Muchas veces vienen con otra extensión, los renombras a .blb y ya.
-
-Hay dos juegos con sonido, el Sherlock y el Lurking Horror. Los sonidos de ambos deben estar en un subdirectorio llamado sound,
-y están en formato .snd
-Los de ambos van al mismo subdirectorio y ya. Tú le pasas al frotz el .DAT del juego, y ya se busca él la vida para encontrar los sonidos en sound.
+Hay juegos con sonido, gráficos, etc.. Estos añadidos van en ficheros .BLB, que te puedes bajar de aquí ya preparados:
+http://www.ifarchive.org/indexes/if-archiveXinfocomXmediaXblorb.html
+Luego sólo tienes que lanzar el sfrotz (que es el que soporta gráficos, y sonido sin depender de AO) pasándole tanto el archivo del juego como
+el blb, tal que así:
+sfrotz SHERLOCK.Z5 SHERLOCK.BLB
+OJO que para que Sherlock suene necesitas el .DAT o .Z5 (son lo mismo) de la versión de Amiga, NO la de PC.
 
 Puedes convertir juegos de THE QUILL a .z5 para el frotz con el unquill: https://www.seasip.info/Unix/UnQuill/
-Pero el unquill recibe .SNA, y lo más que hay por ahí son .Z80, así que para pasar .SNA a .Z80 usa el spconv: https://live.worldofspectrum.org/infoseek/utils
+Pero el unquill recibe .SNA, y lo más que hay por ahí son .Z80, así que para pasar .SNA a .Z80 usa el spconv:
+https://live.worldofspectrum.org/infoseek/utils
 Una vez que tengas el .SNA, sólo tienes que hacer:
 ./unquill -T5 -L -OBORED1.z5 BORED1.SNA
 Tienes juegos de THE QUILL en .Z80 en: http://ifmirror.russotto.net/indexes/if-archiveXgamesXspectrum.html
@@ -5563,6 +5566,16 @@ EL MENÚ EN BLANCO.
 Tiene que ser de 40x40 pixels: puedes coger cualquier imágen y escalarla con GIMP: la abres, pinchas sobre ella con el boton derecho, image->scale image.
 Si necesitas recortarla, usa el rectángulo de selección (arriba a la izquerda), y luego en image->crop to selection.
 En SETTINGS/os/libreelec, con que esté el archivo icon.png vale, no hace falta nada más.
+
+USAR MAME (a palo seco)
+=======================
+
+Va contra las SDL2 y usa el renderer que usen las SDL2.
+Primero creamos un .ini en el directorio actual:
+mame -createconfig
+Lo editamos a nuestro gusto, y le pasamos a MAME la ruta del .ini para cargarlo:
+mame -inipath /home/manuel/mame ridgerac
+Uno de los sitios donde busca por defecto los .zip de las ROMs es en $HOME/mame/roms, pero pedemos espeficar otras rutas en el .ini
 
 COMPRIMR CUE/BIN A CHD
 ======================
