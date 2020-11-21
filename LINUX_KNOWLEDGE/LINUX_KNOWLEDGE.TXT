@@ -4203,16 +4203,26 @@ CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard -lasound" CXXFLAGS="-Ofas
 
 OJO: Para tener el menú XMB funcionando con sus fuentes, mostrando iconos en lugar de cuadros negros. etc...
 
+-Si no quieres shimmering en las letras del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE
+y activar LINEAR FILTERING.
+
 -Tienes que habilitar el soporte para PNG (rpng) al configurar
 
 -Necesitas los assets de aquí: https://github.com/libretro/retroarch-assets
 De ese repo, necesitas solamente el directorio xmb en el directorio de assets. El directorio de assets se cambia en el menú o en el cfg. Yo los tengo en ~/retro/assets,
 de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/xmb
 
+-Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
+git clone --depth 1 https://github.com/libretro/libretro-super.git
+Y mandar el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/cores. Sí, junto con los cores. Así:
+cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
+Ahora en RetroArch, en Settings->File Browser, desactiva todo y activa "Filter Unknows Extensions"
+
 -Para poder tener las opciones de escanear directorios y tal, de modo que se nos creen las playlists que es lo que permite que al cargar una ROM
  se cargue automáticamente su core, tienes que activar libretrodb.
  Además, tienes que tener las databases de libretro, de manera que pueda comparar tus roms contra las de las databases.
- Así que te bajas las databases de este repo: https://github.com/libretro/libretro-database
+ Así que te bajas las databases de este repo:
+ clone --depth 1 https://github.com/libretro/libretro-database.git
  De ese repo sólo necesitas en realidad el directorio rdb.
  Ahora tienes que configurar el setting "content_database_path" de tal manera que apunte al directorio rdb. Si tengo todo el contenido del repo
  en ~/home/pi/retro/db, pues pongo content_database_path apuntando a ~/home/pi/retro/db.

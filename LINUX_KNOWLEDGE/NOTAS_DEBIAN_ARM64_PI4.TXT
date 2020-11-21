@@ -640,23 +640,31 @@ INSTALAR RETROARCH
 
 Se configura con:
 
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-videocore --disable-vulkan --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --enable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-glslang --disable-builtinglslang --disable-rpiled --enable-egl --enable-opengles --enable-opengles3 --enable-opengles3_1
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-videocore --disable-vulkan --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-glslang --disable-builtinglslang --disable-rpiled --enable-egl --enable-opengles --enable-opengles3 --enable-opengles3_1
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 
 Compilar y listo.
 
-Si quieres que te salgan iconos en el menú XMB en lugar de cuadrados negros, necesitas los assets de aquí: https://github.com/libretro/retroarch-assets
-De ese repo, necesitas solamente el directorio ozone en el directorio de assets. El directorio de assets se cambia en el menú o en el cfg. Yo los tengo en ~/retro/assets,
-de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/xmb
-Con assets/xmb y assets/rgui te vale, borra los demás.
-Con el RGUI es igual.
+Si no quieres shimmering en las letras del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE
+y activar LINEAR FILTERING.
+
+Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
+git clone --depth 1 https://github.com/libretro/libretro-super.git
+Y mandar el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/cores. Sí, junto con los cores. Así:
+cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
+Ahora en RetroArch, en Settings->File Browser, desactiva todo y activa "Filter Unknows Extensions" 
 
 Si quieres configurar un tema del XMB o del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE.
 En RGUI, para que se ponga el tema que elijas con CUSTOM THEME PRESET, tienes que poner MENU COLOR THEME en CUSTOM.
 En XMB, puedes desactivas el lazo de fondo en SETTINGS->USER INTERFACE->APPEARANCE si quieres.
 Para XMB, un buen tema es el Systematic ("SETTINGS->USER INTERFACE->APPEARANCE->MENU ICON THEME")
 
+Si quieres que te salgan iconos en el menú XMB en lugar de cuadrados negros, necesitas los assets de aquí: https://github.com/libretro/retroarch-assets
+De ese repo, necesitas solamente el directorio ozone en el directorio de assets. El directorio de assets se cambia en el menú o en el cfg. Yo los tengo en ~/retro/assets,
+de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/xmb
+Con assets/xmb y assets/rgui te vale, borra los demás.
+Con el RGUI es igual.
 
 SECCIÓN VULKAN
 ==============
@@ -687,6 +695,15 @@ sudo apt-get install glslang-dev glslang-tools spirv-tools
 Configuramos para Pi4 con VULKAN solamente:
 
 CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --enable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --disable-egl --disable-opengles --enable-vulkan
+
+Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
+git clone --depth 1 https://github.com/libretro/libretro-super.git
+Y mandar el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/cores. Sí, junto con los cores. Así:
+cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
+Ahora en RetroArch, en Settings->File Browser, desactiva todo y activa "Filter Unknows Extensions" 
+
+Si no quieres shimmering en las letras del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE
+y activar LINEAR FILTERING.
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
