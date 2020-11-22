@@ -1,0 +1,63 @@
+Los scripts de inicio para systemd están en:
+
+/usr/lib/systemd/system/
+
+
+Accediendo por ssh, user/pass es root/351elec o root/emuelec
+
+
+Lo primero es activar el servicio retroarch, y deshabilitar el servicio emustation:
+systemctl unmask retroarch
+systemctl enable retroarch
+systemctl mask emustation
+systemctl mask emuelec-autostart.service
+systemctl mask emuelec.target
+
+Ahora, como queremos cambiar la UNIT de retroarch.service, lo primero hacemos una copia del archivo
+al lugar donde se guardan los scripts en sus versiones modificables, o los link simbólicos cuando
+maskeamos un servicio, es decir: copiamos retroarch.service a /storage/.config/system.d/:
+cp /usr/lib/systemd/system/retroarch.service /storage/.config/system.d/
+
+Y ahora editamos la UNIT de retroarch:
+vi /storage/.config/system.d/retroarch.service
+Y añadimos en la sección [Unit]:
+FailureAction=poweroff-force
+SuccessAction=poweroff-force
+Y comentamos lo de ConditionPathExists, y la sección [Install] entera.
+
+Editamos /storage/.config/autostart.sh
+Y quitamos la creación de directorios de la parte de "for dir in".
+
+Servicios que podemos maskear tranquilamente:
+(Ya sabes que si te equivocas al maskear algún servicio, o al editarlo, basta con borra su copia
+o su link a /dev/null de la SD metida en el ordenador, que los tienes en STORAGE/.config/system.d/)
+
+systemctl mask pulseaudio
+systemctl mask avahi-daemon
+systemctl mask connman-vpn
+systemctl mask debug-shell
+systemctl mask systemd-logind
+systemctl mask systemd-journald
+systemctl mask systemd-journald.socket
+systemctl mask systemd-journald-dev-log.socket
+systemctl mask userconfig
+
+swap.service
+swap.target
+
+SERVICIOS QUE HACEN FALTA PARA ACCEDER POR SSH:
+connman
+dbus.socket
+CONNMAN es el gestor de conexiones mínimo para sistemas embedidos.
+DBUS hace falta para que RetroArch encuentre la red.
+
+Ahora hacemos que NO monte la partición FAT32 estúpida esa
+systemctl mask var-media-GAMES.mount
+Y la borramos, y expandimos STORAGE con gparted.
+
+Puedes borrar los cores que quieras de /tmp/cores/
+Originalmente los coge de /STORAGE/cores.
+
+NO es posible evitar que re-cree los directorios en /STORAGE/roms, así que te creas /STORAGE/myroms
+(ojo que hay que cambiar el propietario de /STORAGE desde el PC) y ahí metes las ROMs que quieras
+y pones a RetroArch mirando ahí.
