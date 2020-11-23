@@ -40,7 +40,7 @@ systemctl mask pulseaudio
 systemctl mask avahi-daemon
 systemctl mask connman-vpn
 systemctl mask debug-shell
-systemctl mask systemd-logind
+
 systemctl mask systemd-journald
 systemctl mask systemd-journald.socket
 systemctl mask systemd-journald-dev-log.socket
@@ -48,7 +48,9 @@ systemctl mask userconfig
 systemctl mask swap.service
 systemctl mask swap.target
 
-SERVICIOS QUE HACEN FALTA PARA ACCEDER POR SSH:
+--NO quites el servicio systemd-logind si quieres que la máquina se hiberne pulsando una vez el botón de powe.
+
+--SERVICIOS QUE HACEN FALTA PARA ACCEDER POR SSH:
 connman
 dbus.socket
 CONNMAN es el gestor de conexiones mínimo para sistemas embedidos.
@@ -61,8 +63,10 @@ Y la borramos, y expandimos STORAGE con gparted.
 Puedes borrar los cores que quieras de /tmp/cores/
 Originalmente los coge de /STORAGE/cores.
 
-NO es posible evitar que re-cree los directorios en /STORAGE/roms
-(son creados por /tmpfiles.d/emuelec-dirs.conf, que es leido por systemd directamente)
-así que te creas /STORAGE/myroms
-(ojo que hay que cambiar el propietario de /STORAGE desde el PC) y ahí metes las ROMs que quieras
-y pones a RetroArch mirando ahí.
+--Para evitar que re-cree los directorios en /STORAGE/roms (que son creados en /tmpfiles.d/emuelec-dirs.conf,
+que es leido por systemd-tmpfiles-setup.service, y no podemos deshabilitar systemd-tmpfiles-setup.service
+porque entonces no conecta la wifi), lo que hacemos es cambiar el contenido de emuelec-dirs.conf:
+cp /usr/lib/tmpfiles.d/emuelec-dirs.conf /storage/.config/tmpfiles.d/
+Y luego editar
+vi /storage/.config/tmpfiles.d/emuelec-dirs.conf
+Y quitar de ahí los directorios que se están creando (o sea, puedes dejar el fichero vacío entero).
