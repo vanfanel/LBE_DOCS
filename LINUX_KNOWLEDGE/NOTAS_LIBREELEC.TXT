@@ -45,9 +45,8 @@ systemctl mask systemd-journald
 systemctl mask systemd-journald.socket
 systemctl mask systemd-journald-dev-log.socket
 systemctl mask userconfig
-
-swap.service
-swap.target
+systemctl mask swap.service
+systemctl mask swap.target
 
 SERVICIOS QUE HACEN FALTA PARA ACCEDER POR SSH:
 connman
@@ -62,6 +61,8 @@ Y la borramos, y expandimos STORAGE con gparted.
 Puedes borrar los cores que quieras de /tmp/cores/
 Originalmente los coge de /STORAGE/cores.
 
-NO es posible evitar que re-cree los directorios en /STORAGE/roms, así que te creas /STORAGE/myroms
+NO es posible evitar que re-cree los directorios en /STORAGE/roms
+(son creados por /tmpfiles.d/emuelec-dirs.conf, que es leido por systemd directamente)
+así que te creas /STORAGE/myroms
 (ojo que hay que cambiar el propietario de /STORAGE desde el PC) y ahí metes las ROMs que quieras
 y pones a RetroArch mirando ahí.
