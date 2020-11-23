@@ -10,8 +10,12 @@ Lo primero es activar el servicio retroarch, y deshabilitar el servicio emustati
 systemctl unmask retroarch
 systemctl enable retroarch
 systemctl mask emustation
-systemctl mask emuelec-autostart.service
 systemctl mask emuelec.target
+
+El servicio emuelec-autostart.service NO lo quites, porque ahí puedes meter lo que quieras.
+Por ejemplo, el control del brillo se hace ahí, mandándole un valor a un fichero en /sys/class.
+(Vamos, que lo puedes dejar sólo con eso).
+echo 75 >/sys/class/backlight/backlight/brightness
 
 Ahora, como queremos cambiar la UNIT de retroarch.service, lo primero hacemos una copia del archivo
 al lugar donde se guardan los scripts en sus versiones modificables, o los link simbólicos cuando
