@@ -24,6 +24,7 @@ cp /usr/lib/systemd/system/retroarch.service /storage/.config/system.d/
 
 Y ahora editamos la UNIT de retroarch:
 vi /storage/.config/system.d/retroarch.service
+Eliminamos la línea de ExecStartPre
 Y añadimos en la sección [Unit]:
 FailureAction=poweroff-force
 SuccessAction=poweroff-force
@@ -31,6 +32,8 @@ Y comentamos lo de ConditionPathExists, y la sección [Install] entera.
 
 Editamos /storage/.config/autostart.sh
 Y quitamos la creación de directorios de la parte de "for dir in".
+En realidad, aquí con que dejemos que mande la luminosidad a la pantalla es suficiente.
+Todo lo demás, quítalo: NO tiene que gestionar si arranca retroarch o emustation, NO tiene que gestionar el servidor ssh... NADA.
 
 Servicios que podemos maskear tranquilamente:
 (Ya sabes que si te equivocas al maskear algún servicio, o al editarlo, basta con borra su copia
