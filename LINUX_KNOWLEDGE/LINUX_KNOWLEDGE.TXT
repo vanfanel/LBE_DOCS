@@ -241,7 +241,9 @@ Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHead
 El emu de NES de FBNeo es el más exacto, pero requiere un A72 (Pi4) como mínimo.
 
 Las ROMS además hay que prepararlas antes. Veamos como ejemplo cómo preparar el romset de NES:
-Cogemos el ROMSet no-intro de NES, cogemos el DAT de aquí:
+-Cogemos la parte de NES del ROMSET de FBNeo, o el ROMSet no-intro de NES si no tenemos otra cosa
+(con el no-intro te van a faltar muchas cosas, mejor usa el ROMSet de NES de FBNeo, tienes romsets de FBNeo en archive.org).
+-Cogemos el DAT de aquí:
 https://github.com/libretro/FBNeo/blob/master/dats/FinalBurn%20Neo%20(ClrMame%20Pro%20XML%2C%20NES%20Games%20only).dat
 Cogemos el CLRMAME de aquí (bajamos el último ZIP para Windows, NO HAY versión Linux):
 https://mamedev.emulab.it/clrmamepro/#downloads
