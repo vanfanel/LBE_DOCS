@@ -236,6 +236,29 @@ si es PAL vendrá un 4, pones un 3 donde el 4 SIN CAMBIAR al texto con TAB, sino
 y ya tienes JAP.
 Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHeader#ProductCode7ffc25Bytes
 
+******Emulando la NES con FBNeo*********************************************
+
+El emu de NES de FBNeo es el más exacto, pero requiere un A72 (Pi4) como mínimo.
+
+Las ROMS además hay que prepararlas antes. Veamos como ejemplo cómo preparar el romset de NES:
+Cogemos el ROMSet no-intro de NES, cogemos el DAT de aquí:
+https://github.com/libretro/FBNeo/blob/master/dats/FinalBurn%20Neo%20(ClrMame%20Pro%20XML%2C%20NES%20Games%20only).dat
+Cogemos el CLRMAME de aquí (bajamos el último ZIP para Windows, NO HAY versión Linux):
+https://mamedev.emulab.it/clrmamepro/#downloads
+Lanzamos el CLRMAME con WINE, en el profiler simplemente le damos a "Add DatFile", y le damos el DAT que acabamos de bajar.
+Ahora al volver al profiler le damos a Load/Update y ya nos sale el menú de dibujitos del CLRMAME.
+Ahí nos vamos a REBUILDER. En rebuilder, dejamos todo como está menos esto:
+-En el menú principal marcamos "non-merged sets" y elegimos como orígen el directorio donde tenemos el romset no-intro,
+y destino el que queramos.
+-En Advanced nos aseguramos de que "Separated BIOS sets" está sin marcar.
+Pues ya está, le damos a Rebuild.
+
+Cuando acabe, las ROMs que queramos del directorio de destino las copiamos a nuestro dispositivo, pero MUY IMPORTANTE,
+QUE EL DIRECTORIO DONDE LAS METAMOS SE LLAME "nes". Tal cual.
+
+Ahora, en el dispositivo, en RetroArch, nos vamos a "load content", cargamos el .zip que queramos y elegimos el core FBNeo.
+Y tiene que ir.  
+
 ******RussianDoom, un sourceport peculiar en ruso************************************************************************************************************************
 
 clonamos su repo

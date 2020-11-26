@@ -10,7 +10,8 @@ Lo primero es activar el servicio retroarch, y deshabilitar el servicio emustati
 systemctl unmask retroarch
 systemctl enable retroarch
 systemctl mask emustation
-systemctl mask emuelec.target
+(NO deshabilites el emuelec.target, porque es el que hace que se lance retroarch.service cuando
+retroarch.service está habilitado).
 
 El servicio emuelec-autostart.service NO lo quites, porque ahí puedes meter lo que quieras.
 Por ejemplo, el control del brillo se hace ahí, mandándole un valor a un fichero en /sys/class.
@@ -28,11 +29,27 @@ Eliminamos la línea de ExecStartPre
 Y añadimos en la sección [Unit]:
 FailureAction=poweroff-force
 SuccessAction=poweroff-force
-Y comentamos lo de ConditionPathExists, y la sección [Install] entera.
+Y comentamos lo de ConditionPathExists.
 
-Editamos /storage/.config/autostart.sh
+Alterar autostart.sh requiere que primero cambiemos qué fichero autostart.sh queremos que se ejecute,
+y después editar ese fichero autostart.sh y dejarlo como nosotros queremos.
+Como queremos cambiar la UNIT de emuelec.autostart, pimero hacemos una copia editable:
+cp /usr/lib/systemd/system/emuelec-autostart.service /storage/.config/system.d/
+La editamos:
+vi /storage/.config/system.d/emuelec-autostart.service
+Y cambiamos la línea:
+ExecStart=-/bin/sh -c ". /etc/profile; exec /bin/sh /usr/config/autostart.sh"
+Por la línea:
+ExecStart=-/bin/sh -c ". /etc/profile; exec /bin/sh /storage/autostart.sh"
+Ahora ya sabemos que el autostart que se va a ejecutar es el /storage/autostart.sh,
+el cual podemos cambiar a nuestro gusto.
+Así que nos hacemos una copia editable del autostart.sh:
+cp /usr/config/autostart.sh /storage/autostart.sh
+Y la editamos:
+vi /storage/autostart.sh
 Y quitamos la creación de directorios de la parte de "for dir in".
 En realidad, aquí con que dejemos que mande la luminosidad a la pantalla es suficiente.
+También puedes cambiar nomperf por maxperf.
 Todo lo demás, quítalo: NO tiene que gestionar si arranca retroarch o emustation, NO tiene que gestionar el servidor ssh... NADA.
 
 Servicios que podemos maskear tranquilamente:
@@ -43,7 +60,6 @@ systemctl mask pulseaudio
 systemctl mask avahi-daemon
 systemctl mask connman-vpn
 systemctl mask debug-shell
-
 systemctl mask systemd-journald
 systemctl mask systemd-journald.socket
 systemctl mask systemd-journald-dev-log.socket
