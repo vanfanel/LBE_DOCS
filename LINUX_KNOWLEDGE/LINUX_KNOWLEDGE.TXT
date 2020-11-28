@@ -261,6 +261,9 @@ QUE EL DIRECTORIO DONDE LAS METAMOS SE LLAME "nes". Tal cual.
 Ahora, en el dispositivo, en RetroArch, nos vamos a "load content", cargamos el .zip que queramos y elegimos el core FBNeo.
 Y tiene que ir.  
 
+Si quieres emular FDS, necesitas fdsbios.zip que contiene disksys.rom.
+PERO no te compliques: en los torrents de ROMsets de FBNeo, viene todo lo de FDS listo.
+
 ******RussianDoom, un sourceport peculiar en ruso************************************************************************************************************************
 
 clonamos su repo
@@ -5897,10 +5900,10 @@ Puedes modificar los FPS del juego tocando la variable gameframerate en src/Game
 DESCARGAR DESDE EMUPARADISE
 ===========================
 
-Con el Chromium, nos instalamos la extensión tampermonkey.
+Con el Firefox (si no funciona, usa Chromium) nos instalamos la extensión tampermonkey.
 Ahora desde el Chromium también nos vamos a abrir este script: https://gist.github.com/infval/c69b479ff0bd590f2dd7e1975fe2fcad
 Le damos a RAW (es como un github), y nos saldrá un botón de INSTALL. Instalamos el script, es un script para el tampermonkey.
-Ahora nos vamos a emuparadise, le damos a Download Links de lo que queramos bajar, t nos sale una opción nueva que es "download with workaround script". Le damos y empieza a bajar.
+Ahora nos vamos a emuparadise, le damos a Download Links de lo que queramos bajar, y nos sale una opción nueva que es "download with workaround script". Le damos y empieza a bajar.
 
 HACER QUE LOS MANDOS SEAN DETECTADOS COMO GAMEPAD POR LA API DE SDL2
 =====================================================================
