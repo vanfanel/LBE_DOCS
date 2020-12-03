@@ -240,7 +240,13 @@ Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHead
 
 El emu de NES de FBNeo es el más exacto, pero requiere un A72 (Pi4) como mínimo.
 
-Las ROMS además hay que prepararlas antes. Veamos como ejemplo cómo preparar el romset de NES:
+Las ROMS además hay que prepararlas antes.
+Lo más fácil es irte a 
+www.retroroms.info
+y bajarlas de ahí. O preguntarle a dink por privado en https://neo-source.com/index.php?action=pm#msg14377
+
+Pero por si tuvieras que prepararlas "a mano", aquí tienes cómo hacerlo.
+Veamos como ejemplo cómo preparar el romset de NES:
 -Cogemos la parte de NES del ROMSET de FBNeo, o el ROMSet no-intro de NES si no tenemos otra cosa
 (con el no-intro te van a faltar muchas cosas, mejor usa el ROMSet de NES de FBNeo, tienes romsets de FBNeo en archive.org).
 -Cogemos el DAT de aquí:
@@ -262,7 +268,7 @@ Ahora, en el dispositivo, en RetroArch, nos vamos a "load content", cargamos el 
 Y tiene que ir.  
 
 Si quieres emular FDS, necesitas fdsbios.zip que contiene disksys.rom.
-PERO no te compliques: en los torrents de ROMsets de FBNeo, viene todo lo de FDS listo.
+PERO no te compliques: usa retroroms.info, o en los torrents de ROMsets de FBNeo viene todo lo de FDS listo.
 
 ******RussianDoom, un sourceport peculiar en ruso************************************************************************************************************************
 
@@ -6082,5 +6088,18 @@ https://www.lwjgl.org/customize
 Generamos el paquete, y en los *natives de cada librería tienes los .so que necesitas.
 SUSTUTUYE las versiones que trae el juego con las que acabas de generar.
 
+AMS (Advanced Mac Substitute) en LINUX
+=======================================
 
+Clonamos el repo:
+git clone --depth 1 https://github.com/jjuran/metamage_1
 
+Hacemos:
+make ams-linux
+make ams-linux-inst
+
+EJECUTAR VKCUBE SIN LAS X
+=========================
+
+vkcube -m khr -k 0:0:0
+(display 0, modo 0, plano 0. Usa --help para más información).
