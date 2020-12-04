@@ -674,7 +674,10 @@ sudo usermod -a -G render pi
 
 ---BLOQUE MESA CON VULKAN---
 
-Clonamos el repo de MESA en gitlab (por ahora no hay versión estable que tenga VULKAN para la Pi...):
+Nos bajamos la última estable de:
+https://archive.mesa3d.org//
+
+O bien clonamos el repo de MESA en gitlab:
 git clone --depth 1 https://gitlab.freedesktop.org/mesa/mesa.git
 
 Instalamos unas dependencias previas:
@@ -692,9 +695,13 @@ Y YA DEBERÍA ESTAR. Ejecuta vulkaninfo para ver que todo va bien.
 Instalamos el compilador de shaders:
 sudo apt-get install glslang-dev glslang-tools spirv-tools
 
-Configuramos para Pi4 con VULKAN solamente:
+Configuramos para Pi4 con GLES y VULKAN:
 
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --enable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --disable-egl --disable-opengles --enable-vulkan
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --enable-egl --enable-opengles --enable-opengles3 --enable-opengles3_1 --enable-vulkan
+
+O bien con VULKAN solamente:
+
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --disable-egl --disable-opengles --enable-vulkan
 
 Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
 git clone --depth 1 https://github.com/libretro/libretro-super.git
