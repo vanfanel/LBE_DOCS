@@ -20,3 +20,12 @@ if (! _this->egl_data->eglSwapBuffers(_this->egl_data->egl_display, windata->egl
         SDL_EGL_SetError("Failed to swap EGL buffers", "eglSwapBuffers");
 2) Imprimimos el error generado por EGL tranquilamente, cosa que podemos hacer desde el programa o desde GDB justo después de llamar a eglSwapBuffers:
 printf(SDL_GetError());   
+
+********DEBUGEAR EL ACCESO A UNA VARIABLE DESDE CUALQUIER PUNTO DEL PROGRAMA********************************************************************
+
+desde GDB, hacemos:
+awatch -l <expresión>
+Por ejemplo, para ver dónde se accede para leer o escribir en el descriptor de fichero viddata->drm_fd,
+ponemos un breakpoint en un sitio donde tengamos accesible la expresión viddata->drm_fd, y hacemos:
+awatch -l viddata->drm_fd
+Y saltará cada vez que, desde cualquier punto del programa, se acceda a la dirección de viddata->drm_fd.
