@@ -105,3 +105,12 @@ INSTALAR ADFFS Y LOS JUEGOS DESDE PACKMAN
 Tienes que actualizar Packman a la última, y añadir estos repos en SOURCES, y actualizar la lista de paquetes claro:
 http://www.jaspp.org.uk/packages/release
 http://www.jaspp.org.uk/packages/beta
+
+REDIRECCIONAR LA SALIDA DE UN COMANDO A UN FICHERO DE TEXTO
+===========================================================
+
+Un ejemplo:
+
+*usbdevices { >mifichero }
+
+OJO! Los espacios SON IMPORTANTES: PONLOS BIEN.

@@ -4686,8 +4686,6 @@ git clone --depth 1 https://github.com/exult/exult.git
 
 ---MODIFICACIONES AL CÓDIGO
 
-Editamos imagewin/imagewin.cc y 
-
 Editamos exult.cc, comentamos la línea
 std::atexit(SDL_Quit);
 Y aniadimos SDL_Quit() al final de la función Play(), antes del return(0).
@@ -4714,28 +4712,22 @@ Compilamos con make -j4
 Copiamos el directorio data que viene con los sources a ~/ultima7/data
 Copiamos el ejecutable exult resultante a ~/ultima7
 
-Creamos ~/ultima7/blackgate_static
-Creamos ~/ultima7/blackgate_gamedat
-Creamos ~/ultima7/blackgate_savegame
+Creamos ~/ultima7/ultima7_bg/static
+Creamos ~/ultima7/ultima7_bg/gamedat
+Creamos ~/ultima7/ultima7_bg/savegame
 
-Copiamos los datos de STATIC del juego a ~/ultima7/blackgate_static
+Copiamos los datos de STATIC del juego a ~/ultima7/ultima7_bg/static
+Copiamos los datos de GAMEDAT del juego a ~/ultima7/ultima7_bg/gamedat
 
 Ahora copiamos ~/.exult.cfg a ~/ultima7/exult.cfg. Si no tenemos ~/.exult.cfg, ejecutamos el exult por primera vez y lo creará.
 Ahora editamos  ~/ultima7/exult.cfg y le añadimos, bajo <disk>:
-
 <game>
-   <blackgate>
-    <path>
-    </path>
-    <static_path>
-    ./blackgate_static
-    </static_path>
-    <gamedat_path>
-    ./blackgate_gamedat
-    </gamedat_path>
-    </savegame_path>
-    ./blackgate_savegame
-    </savegame_path>
+      <blackgate>
+        <path>./ultima7_bg</path>
+        <static>./ultima7_bg/static</static>
+        <gamedat>./ultima7_bg/gamedat</gamedat>
+        <savegame>./ultima7_bg/savegame</savegame>
+      <blackgate>
 </game>
 
 Para tener música y efectos de sonido, bájate el ZIP all-in-one de aquí:
@@ -6079,6 +6071,38 @@ Así que hay que añadir unos repos y los instalamos desde ahí con apt-get.
 Las instrucciones, en castellano, aquí:
 
 https://www.sololinux.es/instalar-drivers-de-impresoras-canon-en-ubuntu-20-04/
+
+IOQUAKE3 EN LINUX
+=================
+
+Clonamos los sources:
+
+git clone --depth 1 https://github.com/suijingfeng/vkQuake3.git
+
+mkdir ~/q3
+mkdir ~/.q3a
+kmdir ~/.q3a/baseq3
+
+Entramos en los sources y, sin más, hacemos:
+make -j4
+
+Cuando acabe, entramos en build/release-linux-<nombre_arquitectura> y copiamos:
+cp oiquake3* renderer* ~/q3
+cp baseq3/* ~/.q3a/baseq3/ 
+
+Nos bajamos los pak*.pk3 desde el 1 al 8. Los puedes bajar de aquí:
+https://github.com/nrempel/q3-server/tree/master/baseq3
+
+Los metemos todos en ~/.q3a/
+
+Y ya deberíamos poder lanzar el juego, simplemente ejecutando ~/q3/ioquake3.<nombre_arquitectura>
+
+Para activar el renderer Vulkan, sacamos la consola con la tilde (es decir, con ~) y escribimos:
+\cl_renderer vulkan
+\vid_restart
+
+Y vamos que está bien con:
+\vkinfo
 
 REVENGE OF TITANS EN LA RASPBERRY PI
 ====================================

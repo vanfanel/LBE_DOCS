@@ -29,3 +29,12 @@ Por ejemplo, para ver dónde se accede para leer o escribir en el descriptor de 
 ponemos un breakpoint en un sitio donde tengamos accesible la expresión viddata->drm_fd, y hacemos:
 awatch -l viddata->drm_fd
 Y saltará cada vez que, desde cualquier punto del programa, se acceda a la dirección de viddata->drm_fd.
+
+********VER QUÉ SE AÑADE A DMESG EN TIEMPO REAL**************************************************************************************************
+
+Posiciónate con un breakpoint justo en esa llamada a función que te falla, limpia dmesg con:
+sudo dmesg -C
+Y lanza dmesg con:
+dmesg -wH
+
+Además puedes copiar y pegar el resultado si estás con screen! (deberías)
