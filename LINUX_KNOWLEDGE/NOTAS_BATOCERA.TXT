@@ -1,12 +1,35 @@
+ACCEDER POR SSH
+===============
+
+user/pass: root/linux
+
+
 DESACTIVAR THREADED VIDEO
 =========================
 
-video_threaded = false en SHARE/userdata/system/configs/retroarch/retroarchcustom.cfg
+
+Edit /usr/lib/python2.7/site-packages/configgen/generators/libretro/libretroConfig.py  and find the code section:
+
+    # Disable the threaded video while it is causing issues to several people ?
+    # This must be set to true on xu4 for performance issues
+    if system.config['video_threaded']:
+        retroarchConfig['video_threaded'] = 'true'
+    else:
+        retroarchConfig['video_threaded'] = 'false'
+
+Y déjalo como:
+retroarchConfig['video_threaded'] = 'false'
+
+And then do a batocera-save-overlay to keep it persistent on reboots.
+Ahora ve y cámbialo en el menú de RetroArch (que se entra con HOTKEY + A).
+
+OJO!!!!! NO TE OLVIDES DE LO DE batocera-save-overlay, o no funcionará.
+
 
 Cualquier otro parámetro, como
 video_max_swapchain_images = 2
 video_vsync = false
-..También se puede cambiar aquí.
+..También se puede revisar que no esté ahí.
 
 ACCEDER A RETROARCH
 ===================
