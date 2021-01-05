@@ -1,0 +1,13 @@
+DESACTIVAR THREADED VIDEO
+=========================
+
+video_threaded = false en SHARE/userdata/system/configs/retroarch/retroarchcustom.cfg
+
+Cualquier otro parámetro, como
+video_max_swapchain_images = 2
+video_vsync = false
+..También se puede cambiar aquí.
+
+ACCEDER A RETROARCH
+===================
+[Hotkey]+[A]

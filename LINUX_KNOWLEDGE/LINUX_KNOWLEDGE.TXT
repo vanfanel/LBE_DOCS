@@ -21,8 +21,6 @@ echo $SDL_VIDEO_DOUBLE_BUFFER
 
 Con el comando showkeys
 
-
-
 ******Conectar a una red WIFI desde la Raspberry PI 3 usando el WIFI interno******************************************************************************************************************
 
 PUEDE QUE NECESITES BAJAR MANUALMENTE EL FIRMWARE DEL WIFI SI AL HACER MODPROBE AL brcmfmac NO TE CREA EL INTERFACE WLAN0.
@@ -196,7 +194,7 @@ vcgencmd get_config arm_freq
 *****SDL2 en hardware genérico con mi driver KMSDRM*******************************************************************************************************************************************
 
 Lo primero, instala estas dependencias:
-sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++--no-install-recommends
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente, si es que instalas MESA compilándolo por tu cuenta. Si no, pues sí, hace falta libgbm-dev si usas un MESA precocinado.)
 (Si has compilado SDL2 con soporte para kmsdrm pero te da el error "not available video device", es porque compilaste sin tener instalado libgmb-dev junto con un MESA precocinado, y no te ha avisado... Instala ese paquete y recompila, anda.)
 
@@ -4879,7 +4877,7 @@ LIBOPENAL en la Raspberry Pi
 Por si alguna vez lo necesitas para algo.
 Bajamos la última release de: https://github.com/kcat/openal-soft/releases
 Configuramos así:
-cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
 STUNT CAR RACER EN LA RASPBERRY PI (NO COMPILA POR PROBLEMAS CON OPENGL)
 =====================================================================
@@ -5566,6 +5564,16 @@ Puedes escalar cualquien imágen con GIMP, en image->scale image, y dejarla a 40
 ...Y ya debería arrancar sin ningún problema.
 Si te sale sólo la pantalla en negro, es que el kernel necesita los módulos instalados en el rootfs para poder mostrar algo por pantalla.
 
+USAR WIFI EN LA RASPBERRY PI 4 CON KERNEL GENÉRICO
+==================================================
+
+Asegúrate de no tener blacklisteado el módulo brcmfmac en /etc/modprobe.d. Con ese módulo cargado ya deberías poder ver el interface wlan0
+con iwconfig.
+
+O bien, déjalo blacklisteado, y lo cargas manualmente en: 
+
+sudo modprobe brcmfmac
+
 INSTALAR LIBREELEC EN UNA SD CON NOOBS QUE YA TIENE OTROS SISTEMAS INSTALADOS
 =============================================================================
 
@@ -6072,8 +6080,8 @@ Las instrucciones, en castellano, aquí:
 
 https://www.sololinux.es/instalar-drivers-de-impresoras-canon-en-ubuntu-20-04/
 
-IOQUAKE3 EN LINUX
-=================
+QUAKE 3: IOQUAKE3 EN LINUX
+===========================
 
 Clonamos los sources:
 
@@ -6081,28 +6089,35 @@ git clone --depth 1 https://github.com/suijingfeng/vkQuake3.git
 
 mkdir ~/q3
 mkdir ~/.q3a
-kmdir ~/.q3a/baseq3
+mkdir ~/.q3a/baseq3
 
 Entramos en los sources y, sin más, hacemos:
-make -j4
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DSDL_DISABLE_IMMINTRIN_H" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DSDL_DISABLE_IMMINTRIN_H"  make -j4
 
-Cuando acabe, entramos en build/release-linux-<nombre_arquitectura> y copiamos:
-cp oiquake3* renderer* ~/q3
-cp baseq3/* ~/.q3a/baseq3/ 
+En X86_64, con hacer make -j4, vale.
+
+Cuando acabe, hacemos:
+cd build/release-linux-<nombre_arquitectura>
+cp oiquake3* renderer*.so ~/q3
+cp -R baseq3/* ~/.q3a/baseq3/ 
 
 Nos bajamos los pak*.pk3 desde el 1 al 8. Los puedes bajar de aquí:
 https://github.com/nrempel/q3-server/tree/master/baseq3
+...Y los metemos todos en ~/.q3a/baseq3
 
-Los metemos todos en ~/.q3a/
+En la Pi, como NO HAY OpenGL y GLES no vale, sólo Vulkan, creamos:
+~/.q3a/baseq3/q3config.cfg
+Con el contenido:
+seta cl_renderer "vulkan"
 
 Y ya deberíamos poder lanzar el juego, simplemente ejecutando ~/q3/ioquake3.<nombre_arquitectura>
 
 Para activar el renderer Vulkan, sacamos la consola con la tilde (es decir, con ~) y escribimos:
-\cl_renderer vulkan
-\vid_restart
+/cl_renderer vulkan
+/vid_restart
 
 Y vamos que está bien con:
-\vkinfo
+/vkinfo
 
 REVENGE OF TITANS EN LA RASPBERRY PI
 ====================================

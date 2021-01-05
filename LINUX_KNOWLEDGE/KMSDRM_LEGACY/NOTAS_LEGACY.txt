@@ -1,0 +1,17 @@
+
+BLOQUE SOBRE EL TAMAÑO DE BUFFER Y SU RELACIÓN CON LA RESOLUCIÓN QUE TENEMOS PUESTA EN EL CRTC
+===============================================================================================
+
+--OJO!!!!!!! SI INTENTAS CONECTAR UN CRTC CON UN BUFFER MÁS PEQUEÑO QUE EL MODO DE VÍDEO QUE ESTÁ USANDO EL CRTC, TE VA A DAR ERROR -28.
+(ES DECIR, LA FUNCIÓN drmModeSetCrtc() te dará un error -28) Y SI MIRAS EN DMESG VERÁS EL ERROR CLARAMENTE.
+¡¡¡RECUERDA QUE SIEMPRE NECESITAS UN BUFFER SUFICIENTEMENTE GRANDE (O UN MODO DE VÍDEO SUFICIENTEMENTE PEQUEÑO) PARA QUE EL CRTC NO LEA MÁS ALLÁ DE LOS LÍMITES DEL BUFFER!!!
+¿Y CÓMO SE SOLUCIONA ESTO? ¿CÓMO VEO UN BUFFER DE 640x480 EN UN CRTC CONFIGURADO A 1360X768? EN PRINCIPIO NO SE PUEDE, Y POR ESO EN SDL2 FORZÁBAMOS QUE TODAS LAS VENTANAS, INDEPENDIENTEMENTE DEL TAMAÑO QUE SE NOS PIDA, TENGAN LA RESOLUCIÓN A LA QUE ESTÁ CONFIGURADO EL CRTC.
+PERO CON UN PLANO, PODEMOS ESCALAR EL BUFFER PARA QUE SE PUEDA VER EN UN CRTC CONFUGURADO CON UN MODO DE VÍDEO MAYOR. LAS SIGUIENTES NOTAS TE ACLARAN MÁS COSAS SOBRE ESTA POSIBILIDAD.
+
+--Lo único que se nos garantiza sobre un chip de vídeo es un PLANO PRIMARIO y un PLANO DE CURSOR. NO se nos garantiza que tenga PLANO OVERLAY.
+--Normalmente hace falta un PLANO OVERLAY para escalar una imágen a la resolucińo total a la que está configurado el CRTC
+(es decir, para ver un FB de 640x480 en un modo de vídeo de 1360x768, por ejemplo)
+PERO es posible activar la CAP llamada UNIVERSAL PLANES y en teoría entonces se puede hacer con un plano PRIMARIO, pero no todos los HW soportan eso.
+
+--Para ver un ejemplo de cómo se usan los planos en modo LEGACY:
+https://cgit.freedesktop.org/drm/libdrm/tree/tests/modetest/modetest.c#n1258
