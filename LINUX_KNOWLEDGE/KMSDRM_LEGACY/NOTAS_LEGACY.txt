@@ -1,17 +1,55 @@
+REPASO BÁSICO DE CONCEPTOS: BUFFER, PLANO, CONECTOR, CRTC
+=========================================================
 
-BLOQUE SOBRE EL TAMAÑO DE BUFFER Y SU RELACIÓN CON LA RESOLUCIÓN QUE TENEMOS PUESTA EN EL CRTC
-===============================================================================================
+BUFFER: lo que quieres mostrar por pantalla. En KMSDRM, los buffers los vas sacando de la GBM surface mediante gbm_lock_front_buffer(),
+y tendrán el mismo tamaño que la GBM surface.
+Por otro lado, EGL accede a la EGL surface, eligiendo buffers donde va dibujando las cosas de OpenGL.
 
---OJO!!!!!!! SI INTENTAS CONECTAR UN CRTC CON UN BUFFER MÁS PEQUEÑO QUE EL MODO DE VÍDEO QUE ESTÁ USANDO EL CRTC, TE VA A DAR ERROR -28.
-(ES DECIR, LA FUNCIÓN drmModeSetCrtc() te dará un error -28) Y SI MIRAS EN DMESG VERÁS EL ERROR CLARAMENTE.
-¡¡¡RECUERDA QUE SIEMPRE NECESITAS UN BUFFER SUFICIENTEMENTE GRANDE (O UN MODO DE VÍDEO SUFICIENTEMENTE PEQUEÑO) PARA QUE EL CRTC NO LEA MÁS ALLÁ DE LOS LÍMITES DEL BUFFER!!!
-¿Y CÓMO SE SOLUCIONA ESTO? ¿CÓMO VEO UN BUFFER DE 640x480 EN UN CRTC CONFIGURADO A 1360X768? EN PRINCIPIO NO SE PUEDE, Y POR ESO EN SDL2 FORZÁBAMOS QUE TODAS LAS VENTANAS, INDEPENDIENTEMENTE DEL TAMAÑO QUE SE NOS PIDA, TENGAN LA RESOLUCIÓN A LA QUE ESTÁ CONFIGURADO EL CRTC.
-PERO CON UN PLANO, PODEMOS ESCALAR EL BUFFER PARA QUE SE PUEDA VER EN UN CRTC CONFUGURADO CON UN MODO DE VÍDEO MAYOR. LAS SIGUIENTES NOTAS TE ACLARAN MÁS COSAS SOBRE ESTA POSIBILIDAD.
+CRTC: El elemento que lee buffers y los va mostrando por el conector. Así que un CRTC une un buffer y un conector. Por eso drmModeSetCrtc() tiene un parámetro buffer y un parámetro conector.
+Por lo tanto, es fácil entender que el buffer tiene que tener el mismo tamaño que el modo de vídeo configurado en el CRTC, ya que el modo de vídeo configurado en el CRTC determinna el tamaño que el CRTC escanea para mandarlo al conector: si el modo de vídeo puesto en el CRTC es mayor que el buffer, el CRTC intentará leer fuera de los límites del buffer y la función drmModeSetCrtc() o drmModePageFlip() fallará(*).
 
---Lo único que se nos garantiza sobre un chip de vídeo es un PLANO PRIMARIO y un PLANO DE CURSOR. NO se nos garantiza que tenga PLANO OVERLAY.
---Normalmente hace falta un PLANO OVERLAY para escalar una imágen a la resolucińo total a la que está configurado el CRTC
-(es decir, para ver un FB de 640x480 en un modo de vídeo de 1360x768, por ejemplo)
-PERO es posible activar la CAP llamada UNIVERSAL PLANES y en teoría entonces se puede hacer con un plano PRIMARIO, pero no todos los HW soportan eso.
+PLANO: La obligación de tener la misma resolución en el CRTC que el tamaño del buffer que queremos mostrar nos lleva a que, lógicamente, sólo podemos mostrar tamaños de buffer que coincidan con alguna resolución que exista en el conector.
+¿Qué pasa si tenemos un buffer de 325x224? Pues en principio no se podría mostrar por pantalla, porquie no podemos poner ese modo de vídeo en el CRTC ya que no existe en el conector.
+Pero ¿y si tuviésemos algo que estuviese entre el CRTC y el buffer, y que especificándole un tamaño de entrada (el tamaño "raro" del buffer) y un tamaño de salida (la resolución del modo de vídeo puesto en el CRTC) hiciese por nosotros el escalado intermedio? ¡Así, cualquier tamaño de buffer sería escalado "de gratis" a la resolución del modo puesto en el CRTC, y se mostrría cualquier tamaño de buffer imaginable!
+Pues eso son los planos. De la pregunta, surge el entendimiento.
+(Es posible poner uno o varios planos "apilados" para que sean leidos por el CRTC y enviados al conector. El CRTC los "blendea" y los manda.).
+(En el modo LEGACY nosotros NO USAMOS PLANOS, porque no hay los mismos planos en todo el HW, y aunque los haya, no todo el HW permite hacer lo mismo con sus planos: las especificaciones de KMSDRM sólo nos aseguran un plano PRIMARIO, cuyo tamaño de salida debe cubrir totalmente la resolución del modo puesto en el CRTC, y que sólo en el HW moderno permite espeficical un tamaño distinto de entrada. Es decir, sólo en HW moderno se puede usar el plano primario para escalar buffers de un tamaño inferior. Así que no podemos confiar en esta posibilidad).
+(Como en LEGACY no usamos planos, tenemos un "truco" que es que cuando hay un modo de vídeo válido para mostrar el buffer, cambiamos a ese modo de vídeo, y cuando no lo hay, nos quedamos en la resolución original que será la nativa del monitor, y por una parte creamos una GBM surface del tamaño de la resoución original y por otra parte hacemos que las SDL2 pre-escalen la imágen a esa resolución por nosotros).
 
---Para ver un ejemplo de cómo se usan los planos en modo LEGACY:
-https://cgit.freedesktop.org/drm/libdrm/tree/tests/modetest/modetest.c#n1258
+CONECTOR: es por donde sale la imágen enviada por el CRTC. Un conector será un HDMI, un VGA..
+Lo importante es que tiene una lista de resoluciones válidas, y esas son las resoluciones que puedes configurar en el CRTC, ya que es el CRTC el que envía la imágen del buffer a través del conector
+
+EL ESQUEMA SERÍA
+GBM SURFACE->GBM BUFFER->PLANO(Si se usase)->CRTC->CONECTOR
+Como nosotros en LEGACY no usamos planos, simplemente es:
+GBM SURFACE->GBM BUFFER->CRTC->CONECTOR
+
+(*)La resolución puesta en el CRTC tiene que coincidir con el tamaño de buffer que estás intentando mostrar, o el CRTC leerá fuera de los límites del buffer y la función SetCrtc() o drmModePageFlip() fallará. Puedes ver la causa de ese fallo así:
+-pon: echo 31 | sudo tee /sys/module/drm/parameters/debug 
+-ponte cn GDB en la línea de la función que falla
+-limpia dmesg con sudo dmesg -C
+-escucha lo nuevo de dmes con:
+	dmesg -wH
+ y justo ejecuta la función que falla, y ahí verás la explicación. 
+
+EL ERROR MÁS TÍPICO: EL PROGRAMA NO DIBUJA NADA EN PANTALLA
+===========================================================
+
+Es porque drmModePageFlip() falla con un -28, debido a que el tamaño del modo de vídeo actualmente configurado en el CRTC y el tamaño de la GBM surface de la ventana no coinciden.
+
+Para comprobarlo, debes hacer:
+echo 31 | sudo tee /sys/module/drm/parameters/debug
+Y luego limpiar dmesg -C, y luego ponerte con GDB en una terminal y en otra a la vez escuchar a escuhar con dmesg -wH justo cuando ejecutes la línea de drmModePageFlip(). 
+
+Lo puedes comprobar si te vas a KMSDRM_GLES_SwapWindow() y ves que dispdata->mode->hdisplay y window->w no coinciden.
+O pùede que coincidan y aún así el drmPageFlip() falle porque aunque tienes un tamaño de ventana puesto, no coincide con el tamaño de la GBM surface de la ventana: para comprobar con qué tamaño estás creando el GBM surface, vete con GDB a drmModeCreateSurfaces().
+
+CÓMO ESCALAMOS LA IMÁGEN EN LEGACY EN SDL2, SI NO USAMOS PLANOS
+===============================================================
+
+Recuerda lo primero que SIEMPRE el modo de vídeo configurado en el CRTC tiene que coincidir con el tamaño de la GBM surface de la que sacas los buffers que mandas a mostrarse en el CRTC.
+
+Cuando hay un modo de vídeo válido para mostrar el buffer, cambiamos a ese modo de vídeo con drmModeSetCrtc(), y cuando no lo hay, nos quedamos en la resolución original que será la nativa del monitor, y por una parte creamos una GBM surface del tamaño de la resoución original y por otra parte hacemos que las SDL2 pre-escalen la imágen a esa resolución por nosotros.
+Le pedimos a SDL2 que pre-escale la imágen al tamaño que queramos con SDL_SendWindowEvent(SDL_WINDOWEVENT_RESIZED);
+
+El truco tiene sus límites: cuando NO hay un modo de vídeo cuyo tamaño coincida con el del buffer, como nos mantenemos en la resolución original y hacemos que SDL2 pre-escale por nosotros a la resolución total, y como en los juegos GL obviamente se usa GL para renderizar la escena, esos juegos GL son renderizados a la resolución total, y no renderizados a baja y escalados a resolución total que es lo que pretenderías al ponerlo en menos resolución. PERO VAMOS, que esto afecta sólo a los juegos GL que además intenten usar un tamaño de ventana pequeño y raro.
