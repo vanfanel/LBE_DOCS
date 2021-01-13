@@ -1,0 +1,22 @@
+Las CAPS determinan la capacidad de un driver para hacer ciertas cosas, como ATOMIC, o ASYNC FLIPS, etc
+Puedes ver las CAPS de los drivers actualizadas en esta tabla:
+
+https://drmdb.emersion.fr/capabilities
+
+Para activar una CAP (sólo vale para DRM_CLIENT_CAP_ATOMIC y DRM_CLIENT_CAP_UNIVERSAL_PLANES):
+drmSetClientCap(viddata->drm_fd, DRM_CLIENT_CAP_ATOMIC, 1);
+
+
+
+
+Y para testear si tenemos una CAP:
+
+uint64_t has_cap;
+
+KMSDRM_drmGetCap(viddata->drm_fd, DRM_CAP_ASYNC_PAGE_FLIP, &has_cap); 
+if (has_cap == 1)
+    printf("****hascap TRUE****\n");
+
+Lo que devuelve en &has_cap depende de la CAP que le pases. Suele devolver 0 o 1, pero puede ser otra cosa.
+Mira aquí:
+https://docs.nvidia.com/drive/nvvib_docs/NVIDIA%20DRIVE%20Linux%20SDK%20Development%20Guide/baggage/group__direct__rendering__manager.html#ga608d8576033a20ace1b8ff78e6828844
