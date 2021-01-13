@@ -567,6 +567,8 @@ Section "Device"
    Option      "TearFree"    "true"
 EndSection
 
+Si no te funcinona glxgears, cambia "sna" por "uxa".
+
 Reiniciamos el servidor gráfico. Magia!
 
 *******Comprimir un PDF****************************************************************************************************************************************
@@ -2316,7 +2318,7 @@ Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
 Funciona con aceleración GLES, por cierto, usando POLYMOST, y bastante bien además.
 
-make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=0 USE_LIBVPX=0 HAVE_FLAC=0 LTO=1 OPTOPT="-march=armv8-a+crc+simd -mtune=cortex-a72"
+make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=0 USE_LIBVPX=0 HAVE_FLAC=0 LTO=0 OPTOPT="-march=armv8-a+crc+simd -mtune=cortex-a72"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
