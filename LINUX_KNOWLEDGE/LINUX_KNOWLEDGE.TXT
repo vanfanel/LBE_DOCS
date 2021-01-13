@@ -3163,6 +3163,15 @@ git push -f origin master
 
 Y luego ya haríamos el pull request.
 
+************RECUPERAR PARTIDAS EN EL GABRIEL KNIGHT DE SCUMMVM**********************************************************************************
+
+A los datos del juego les falta el archivo
+VERSION
+Con el contenido
+01.100.000
+
+Sin este archivo, podrás salvar pero luego no te deja recuperar la partida porque dice que es de otra versión. Así que lo creamos a mano y listo.
+
 ************Otro caso práctico de git: actualizar mi master branch al master de upstream, luego ponerme en otro branch y merger mi branch master actualizado en el branch secundario*********
 
 O sea, el objetivo es actualizar mi branch secundario de manera que quede con los cambios del branch master de upstream. Mi branch secundario es dispmanx.

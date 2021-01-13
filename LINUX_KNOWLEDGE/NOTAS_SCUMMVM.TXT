@@ -1,3 +1,12 @@
+************RECUPERAR PARTIDAS EN EL GABRIEL KNIGHT DE SCUMMVM**********************************************************************************
+
+A los datos del juego les falta el archivo
+VERSION
+Con el contenido
+01.100.000
+
+Sin este archivo, podrás salvar pero luego no te deja recuperar la partida porque dice que es de otra versión. Así que lo creamos a mano y listo.
+
 BLOQUE DE INSTANCIACIÓN Y BORRADO DE LA CLASE GRAPHICS MANAGER:
 ================================================================
 
