@@ -569,6 +569,14 @@ EndSection
 
 Si no te funcinona glxgears, cambia "sna" por "uxa".
 
+En AMDGPU, sería crear /usr/share/X11/xorg.conf.d/20-amdgpu.conf con el contenido:
+
+Section "Device"
+   Identifier  "AMD Graphics"
+   Driver      "amdgpu"
+   Option      "TearFree"  "true"
+EndSection
+
 Reiniciamos el servidor gráfico. Magia!
 
 *******Comprimir un PDF****************************************************************************************************************************************
