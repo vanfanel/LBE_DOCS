@@ -145,6 +145,9 @@ Si  el ejecutable resultante te da un error con que no puede abrir card1, edita 
 
 La BIOS va en ~/.local/share/duckstation/bios/
 
+PARA LANZAR LOS JUEGOS tienes que pasarle la ruta COMPLETA del .cue, no vale que le pases una ruta relativa a donde estás,
+ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
+
 ******TIC-80 FANTASY CONSOLE para Raspberry Pi como core libretro***************************************************
 
 Clonamos su repo:
