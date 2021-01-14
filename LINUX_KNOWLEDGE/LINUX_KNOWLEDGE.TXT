@@ -3406,8 +3406,7 @@ Configuramos y compilamos con:
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 make -j4
 
-Creamos el directorio ~/cc, y metemos ahí los datos del juego. Convertimos los nombres de los ficheros todos a mayúsculas con:
-for f in * ; do mv -- "$f" "$(tr [:lower:] [:upper:] <<< "$f")" ; done
+Creamos el directorio ~/cc, y metemos ahí los datos del juego.
 
 Copiamos el ejecutable (vanillatd para el C&C original, o vanillara para el RED ALERT) al directorio del juego, y listo!
 
