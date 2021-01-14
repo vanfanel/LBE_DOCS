@@ -3384,6 +3384,32 @@ sudo swapon /dev/sda1
 
 ldd <nombre_del_ejecutable>
 
+*************Vanilla-Conquer: Command and Conquer en la Raspberry Pi**************************************************************
+
+Notas previas:
+-El C&C original se llama "tiberian dawn". Así que el ejecutable es vanillatd, mientras que vanillara es para el RED ALERT.
+-El juego usa OpenAL, busca las instrucciones para instalarlo antes.
+
+Clonamos el repo con:
+clone --depth 1 https://github.com/TheAssemblyArmada/Vanilla-Conquer.git
+
+Editamos common/video_sdl2.cpp
+y añadimos justo antes de la llamada a SDL_CreateRenderer:
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+Y en SDL_CreateRenderer() añadimos el flag SDL_RENDERER_PRESENTVSYNC.
+
+Creamos un directorio de compilación y entramos:
+mkdir b4
+cd b4
+
+Configuramos y compilamos con:
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+make -j4
+
+Creamos el directorio ~/cc, y metemos ahí los datos del juego. Convertimos los nombres de los ficheros todos a mayúsculas con:
+for f in * ; do mv -- "$f" "$(tr [:lower:] [:upper:] <<< "$f")" ; done
+
+Copiamos el ejecutable (vanillatd para el C&C original, o vanillara para el RED ALERT) al directorio del juego, y listo!
 
 *************Commander Genius en la Raspberry Pi**********************************************************************************
 
