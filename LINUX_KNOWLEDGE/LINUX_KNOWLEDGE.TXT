@@ -4915,13 +4915,15 @@ WITHOUT_AUDIOCD=1 WITH_SDL2=1 WITHOUT_IMAGE=1 WITHOUT_XML=1 make -j4
 Creamos ~/heroes2
 Copiamos el ejecutable a ~/heroes2
 Copiamos el directorio files que viene con los sources a ~/heroes2, quedando ~/heroes2/files
+Copiamos el archivo heroes2.key que viene con los sources a ~/heroes2
 Creamos ~/heroes2/data y metemos ahí el contenido de DATA de una instalación del Heroes 2 de GOG
 Creamos ~/heroes2/maps y metemos ahí el contenido de MAPS de una instalación del Heroes 2 de GOG
-Copiamos los .ogg que vienen en MUSIC de una instalación del Heroes 2 de GOG a ~/heroes2/files/music
+Copiamos los .ogg que vienen en MUSIC de una instalación del Heroes 2 de GOG a ~/heroes2/files/music (los de GOG vienen desordenados,
+ya que van de 01 a 42 y deberían ir de 02 a 43! Es sólo moverlas una posición adelante todas al renombrarlas, que tienes que renombrarlas a Track02.ogg, Track03.ogg, etc).
 (No hace falta que les cambies el nombre ni nada, con que lleven en el nombre el número de pista, le vale).
 
 LIBOPENAL en la Raspberry Pi
-=======================
+============================
 
 Por si alguna vez lo necesitas para algo.
 Bajamos la última release de: https://github.com/kcat/openal-soft/releases
