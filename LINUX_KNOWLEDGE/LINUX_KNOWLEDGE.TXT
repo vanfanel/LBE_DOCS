@@ -82,6 +82,9 @@ https://github.com/Hjdskes/cage
 
 Depende de wayland, wlroots y xkbcommon.
 
+Puedes descargar y compilar wayland muy facilmente de aquí, vienen las instrucciones de compilación:
+https://github.com/wayland-project/wayland
+
 ******Descargar contenidos de ITunes desde Linux sin ITunes*********************************************************************************************************************************
 
 El programa se llama tunesviewer.
@@ -4920,6 +4923,9 @@ https://github.com/ihhub/fheroes2/releases
 
 Compilamos con:
 WITHOUT_AUDIOCD=1 WITH_SDL2=1 WITHOUT_IMAGE=1 WITHOUT_XML=1 make -j4
+
+Para Raspberry Pi 4:
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" WITHOUT_AUDIOCD=1 WITH_SDL2=1 WITHOUT_IMAGE=1 WITHOUT_XML=1 make -j4
 
 Creamos ~/heroes2
 Copiamos el ejecutable a ~/heroes2
