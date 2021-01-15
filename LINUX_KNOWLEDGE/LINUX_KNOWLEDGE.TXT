@@ -73,6 +73,15 @@ nameserver 8.8.8.8
 
 Y ya deberíamos ser capaces de hacer ping al router en la 192.168.1.1, a la dns de google en 8.8.8.8, y a google.com si nos da la gana.
 
+******LANZAR PROGRAMAS DE WAYLAND SIN TENER UN ESCRITORIO WAYLAND CORRIENDO************************************************************
+
+Esto es posible gracias a CAGE, un compositor (como WESTON) que sólo lanza la aplicación deseada de manera maximizada y exclusiva, y sobre KMS/DRM.
+Su repo está aquí:
+
+https://github.com/Hjdskes/cage
+
+Depende de wayland, wlroots y xkbcommon.
+
 ******Descargar contenidos de ITunes desde Linux sin ITunes*********************************************************************************************************************************
 
 El programa se llama tunesviewer.
