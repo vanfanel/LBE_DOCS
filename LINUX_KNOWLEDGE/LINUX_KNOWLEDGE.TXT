@@ -4921,6 +4921,8 @@ HEROES OF MIGHT AND MAGIC II (fheroes2) en Linux
 Bajamos la última estable de:
 https://github.com/ihhub/fheroes2/releases
 
+Editamos src/engine/screen.cpp, buscamos SDL_RENDERER_ACCELERATED y añadimos | SDL_RENDERER_PRESENTVSYNC.
+
 Compilamos con:
 WITHOUT_AUDIOCD=1 WITH_SDL2=1 WITHOUT_IMAGE=1 WITHOUT_XML=1 make -j4
 
