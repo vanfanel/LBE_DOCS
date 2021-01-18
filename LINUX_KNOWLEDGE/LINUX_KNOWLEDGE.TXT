@@ -149,9 +149,17 @@ Se supone que hace que la GPU vaya un pelín más rápido...
 
 ******DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
+Clonamos el branch NOGUI:
+
 git clone --depth 1 -b nogui https://github.com/stenzek/duckstation.git
 
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DBUILD_SDL_FRONTEND=OFF ..
+Instalamos dependencias previas:
+
+sudo apt-get install libevdev-dev --no-install-recommends
+
+Configuramos con:
+
+cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DBUILD_SDL_FRONTEND=OFF -DHAVE_EGL=ON ..
 
 Si  el ejecutable resultante te da un error con que no puede abrir card1, edita src/common/drm_display.h y cambia card = 1 por card = 0.
 
@@ -1547,6 +1555,74 @@ pasarle "-Wl,-rpath,<ruta>".
 Aunque lo normal es que no tengas que hacer esto tampoco, sino que la librería esté en una ubicación donde el sistema busque por defecto.
 Para asegurarnos de esto, hacemos "ldconfig --verbose", y se actualizarán los directorios donde se buscan las librerias que usan los programas.
 Así que si has instalado una librería pero no la encuentra un programa en tiempo de ejecuciçon, puedes pasarle el -rpath o hacer un ldconfig y listo.
+
+***********ACCEDER A ESCRITORIO REMOTO POR VNC USANDO TIGHTVNC**************************************************************************
+
+Se usa tightvnc porque es el cliente más ligero.
+Se ha seguido este tutorial: https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-20-04-es
+
+				---EN EL SERVIDOR---
+
+Instalamos tightvnc server:
+sudo apt-get install tightvncserver
+
+Lo ejecutamos por primera vez. Nos pedirá un user/pass y un user para mirar solamente. Del user para mirar pasamos.
+vncserver
+
+Podemos levantar varios servers a la vez en el mismo ordenador, ejecutando vncserver varias veces.
+Y luego podemos matarlos con:
+vncserver -kill :1
+vncserver -kill :2
+vncserver -kill :3
+..etc
+
+Bueno, pues ahora ya podríamos conectarnos a las X remotamente, pero serían las X sin nada y no podríamos hacer nada de nada.
+Así que tenemos que decirle al servidor vnc que ejecute unos comandos que lancen el escritorio en sí cuando nosotros lanzamos el servidor.
+Así que matamos el servidor:
+vncserver -kill :1
+Hacemos una copia de seguridad de la secuencia de comandos que ejecuta el servidor al inicio:
+mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
+Y creamos un nuevo fichero de secuencia de comandos del servidor vnc:
+vim ~/.vnc/xstartup
+Con el contenido (específico de lxqt, otros escritorios requerirán otras cosas):
+
+!/bin/sh
+# Uncomment the following two lines for normal desktop:
+unset SESSION_MANAGER
+#exec /etc/X11/xinit/xinitrc
+exec openbox-session &
+exec startlxqt &
+
+Y ahora lanzamos el servidor otra vez:
+vncserver
+
+HEMOS DE SABER que el servidor vnc escucha en el puerto 5901, si lanzas otro servidor escuchará en 5902, el siguiente en 5903...
+Puedes confirmarlo con netstat -pl, y ahí ves en qué puertos hay servidores vnc escuchando en la máquina.
+
+					---EN EL CLIENTE---
+
+Instalamos el vncviewer:
+
+sudo apt-get install xtightvncviewer
+
+Y ya podemos conectar al servidor con:
+
+vncviewer <IP LOCAL>:PUERTO
+
+Por ejemplo, si el servidor está en la 0.30 de rango local y tiene un servidor vnc escuchando en el 5901, conectamos con:
+
+vncviewer 192.168.0.30:5901
+
+					---CONECTAR A TRAVÉS DE UN TÚNEL SSH---
+					
+Una vez que tenemos el servidor VNC corriendo en el ordenador servidor, podemos mandar el tráfico de ese servidor a través de un túnel SSH:
+
+ssh -L 59000:localhost:5901 -C -N -l <USUARIO> <IP DEL SERVIDOR>
+
+El puerto 59000 es arbitrario: puedes poner el que te de la gana (que no tenga un servicio usándolo, claro).
+
+En teoría, esto debeía permitir que el servidor salga a internet por un puerto abierto, para poder acceder remotamente a la máquina.
+Pero eso lo dejo para más adelante. 
 
 ***********Montar un DSK de Mac antiguo, o un ADF de Amiga******************************************************************************
 
