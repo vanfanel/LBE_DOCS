@@ -3479,7 +3479,7 @@ Notas previas:
 -El juego usa OpenAL, busca las instrucciones para instalarlo antes.
 
 Clonamos el repo con:
-clone --depth 1 https://github.com/TheAssemblyArmada/Vanilla-Conquer.git
+git clone --depth 1 https://github.com/TheAssemblyArmada/Vanilla-Conquer.git
 
 Editamos common/video_sdl2.cpp
 y añadimos justo antes de la llamada a SDL_CreateRenderer:
