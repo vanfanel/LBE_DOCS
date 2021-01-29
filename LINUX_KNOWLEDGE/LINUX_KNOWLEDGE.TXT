@@ -3498,6 +3498,35 @@ Creamos el directorio ~/cc, y metemos ahí los datos del juego.
 
 Copiamos el ejecutable (vanillatd para el C&C original, o vanillara para el RED ALERT) al directorio del juego, y listo!
 
+*************SONIC CD NATIVO en la Raspberry Pi***********************************************************************************
+
+NOTA: Esto vale para el repo de SonicCD:
+https://github.com/Rubberduckycooly/Sonic-CD-11-Decompilation.git
+O para el de Sonic 1 y Sonic 2:
+https://github.com/Rubberduckycooly/Sonic-1-2-2013-Decompilation.git
+
+Instalamos unas dependencias previas...
+
+sudo apt install libvorbis-dev libogg-dev libtheora-dev
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-11-Decompilation.git
+
+Editamos SonicCDDecomp/Drawing.cpp
+Y cambiamos las menciones a "nearest" por "linear".
+
+Compilamos con:
+
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4
+
+Ahora, para ejecutarlo, necesitamos Data.rsdk (preferiblemente de la versión de PC)
+y el directorio "videos" que contendrá unos vídeos .ogv. Por ahora, los vídeos tienen que empezar por mayúscula la primera letra
+para que el engine los detecte. Así, opening.ogv debe ser Opening.ogv, y good_ending.ogv debe ser Good_Ending.ogv, etc.
+
+Si se te ve el cursor mientras juegas, añade en SonicCDDecomp/Drawing.cpp, después de SDL_CreateRenderer():
+SDL_ShowCursor(SDL_FALSE);
+
 *************Commander Genius en la Raspberry Pi**********************************************************************************
 
 Podemos bajarnos una release (lo más recomendado), la última de aquí:
