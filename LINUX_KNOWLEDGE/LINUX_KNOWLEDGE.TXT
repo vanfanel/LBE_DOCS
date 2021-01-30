@@ -3527,6 +3527,9 @@ para que el engine los detecte. Así, opening.ogv debe ser Opening.ogv, y good_e
 Si se te ve el cursor mientras juegas, añade en SonicCDDecomp/Drawing.cpp, después de SDL_CreateRenderer():
 SDL_ShowCursor(SDL_FALSE);
 
+Edita settings.ini y pon VSync y Fullscreen a true, y "UseHQModes" a false.
+Si los colores ROJO y AZUL se ven invertidos en los vídeos, desactiva "EnhancedScaling" en settings.ini
+
 *************Commander Genius en la Raspberry Pi**********************************************************************************
 
 Podemos bajarnos una release (lo más recomendado), la última de aquí:
