@@ -5400,9 +5400,9 @@ O sea, que lo primero es conseguir una versión de ffmpeg con aceleración mmal 
 
 Ahora vamos a por ffmpeg:
 
-git clone --depth 1 https://github.com/FFmpeg/FFmpeg.git
+git clone --depth 1 https://git.ffmpeg.org/ffmpeg.git
 Y luego configurando con:
-./configure --prefix=/usr --enable-mmal --disable-debug --enable-memalign-hack --enable-shared
+./configure --enable-mmal --disable-debug --enable-shared
 
 Para comprobar que nuestro ffmpeg tiene aceleración mmal para Rpi, haz:
 ffmpeg -codecs
@@ -5470,6 +5470,50 @@ Y simplemente añadimos esa condition pero "en blanco":
 ConditionPathExistsGlob=
 
 Salvamos, reiniciamos, y alsamixer debería restaurar los niveles sin problemas. Comprueba que "systemctl status alsa-restore.service" se ha iniciado correctamente ahora.
+
+FFMPEG con aceleración MMAL en aarch64
+======================================
+
+Este hilo tiene información muy interesante:
+
+https://github.com/raspberrypi/userland/pull/586
+
+Se supone que hay que compilar ffmpeg con soporte para mmal.
+
+MMAL es parte del userland de la Pi, que está en:
+
+https://github.com/raspberrypi/userland
+
+EMPEZAMOS:
+
+Clonamos el repo:
+
+git clone --depth 1 https://git.ffmpeg.org/ffmpeg.git
+
+Puedes probal a reproducir un vídeo con:
+
+ffplay -vcodec h264_mmal -i test.mkv
+
+SINGE, el sistema de LASERDISC libre y abierto
+==============================================
+
+Su página oficial es:
+https://kangaroopunch.com/?page=Software%2F3000-2006-singe.xjs&fbclid=IwAR2eZxtVnzNR7bZWKozmVLAb6NDcVN3bpKAIDicZbavUl72N35nGW9i_00I
+
+El código fuente está en:
+https://skunkworks.kangaroopunch.com/skunkworks/singe
+
+Aquí hay más juegos a parte de los de la página oficial:
+http://www.emuline.org/topic/2134-singe-2-new-laserdisc-engine-games-031220-final-update/
+
+EMPEZEMOS!
+
+Lo primero sería compilar ffmpeg con soporte de mmal. Podemos probar que funciona con:
+
+ffplay -vcodec h264_mmal -i test.mkv
+
+Clonamos su repo:
+git clone --depth 1 https://skunkworks.kangaroopunch.com/skunkworks/singe.git
 
 COMPILAR HYPSEUS (Daphne)
 ==========================

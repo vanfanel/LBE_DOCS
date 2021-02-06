@@ -392,29 +392,41 @@ max locked memory (kbytes, -l) unlimited
 
 -Si el guardado y restauración de los valores de alsamixer falla a veces, tienes DOS opciones:
 
-	-La que uso SIN LA HIFIBERRY (podría fallar a veces ya que el ordering de las tarjetas puede cambiar entre arranques, no está claro. Lo ideal sería tener sólo la tarjeta vc4-hdmi, pero en 64bit no suena):
-		En vim drivers/gpu/drm/vc4/vc4_hdmi.c, haz que la función vc4_hdmi_audio_init retorne cero y no haga nada más. Adiós a la tarjeta vc4-hdmi!!
+	1) LA MÁS RECOMENDABLE AHORA MISMO, Y LA QUE MÁS CONTROL TE DA: Modificar el servicio alsa-restore.service.
+	   No está roto el servicio en sí, sino que cuando es lanzado, el mezclador aún no está accesible porque el driver está mal y hasta que un 
+	   programa no reproduce audio, no aparece disponible el mezclador (lo puedes comprobar porque alsamixer no muestra controles hasta que
+	   un programa ha reproducido algo).
+	   Para "parchear" el problema, edita así el servicio de manera que no se sobreescriban los cambios en las acltualizaciones:
+	
+	   sudo systemctl edit --full alsa-restore.service
 
-		En /etc/asound.conf tenemos esto, aunque no hace falta si te has cargado la tarjeta vc4-hdmi:
- 
-			pcm.!default {
-    				type hw
-    				card ALSA
-			}
-			
-			ctl.!default {
-    				type hw    
-    				card ALSA
-			}
+	   Y lo dejas con este contenido (o sea, pasas de usar "alsactc restore" y lo que haces es reproducir un sonido y a continuación
+	   restauras el volúmen que te de la gana):
+	   
+[Unit]
+Description=Restore volume
 
-		Deshabilita el servicio alsa-restore.service (sudo systemctl mask alsa-restore.service), pon los controles a tu gusto en alsamixer, y guarda la configuración con:
+[Service]
+Type=oneshot
+RemainAfterExit=false
+ExecStartPre=-/usr/bin/aplay /usr/local/share/silence.wav
+ExecStart=-/usr/bin/amixer set PCM 215
+       
+       ...donde silent.wav es un fichero de silencio que puedes crear en Audacity con Generate->Silence, marca el mínimo tiempo posible
+       y lo exportas a WAV.
+       El valor 215 NO se corresponde linealmente con un volúmen de 0 a 100. Ya sabes, las cosas del audio.
+
+       CADA VEZ que quieras ajustar el volúmen guardado, te toca hacer: sudo systemctl edit --full alsa-restore.service
+       Pero vamos, que lo controlas tú todo a tu gusto.
+
+	2) (Actualmente no válido porque falla "alsactl restore"). Deshabilitar el servicio alsa-restore.service (sudo systemctl mask alsa-restore.service), pon los controles a tu gusto en alsamixer, y guarda la configuración con:
 		alsactl store -f /etc/asound.state
 		Prueba a cargar la configuración con:
 		sudo alsactl restore -f /etc/asound.state
 		Si todo va bien, ALSA va a restaurar esos valores en cada arranque, leyéndolos de /etc/asound.state, sin que hagas nada y sin ningún servicio.
 		Si quieres, puedes aniadir lo de alsactl restore al .profile		
 
-	-LA QUE USO CON LA HIFIBERRY: Se supone que funciona siempre porque aunque el ordering de las tarjetas puede cambiar entre arranques, estamos espeficicando la tarjeta por
+	-CÓMO USAR LA HIFIBERRY: Se supone que funciona siempre porque aunque el ordering de las tarjetas puede cambiar entre arranques, estamos espeficicando la tarjeta por
 	    defecto en /etc/asound.conf con el contenido:
 	    	pcm.!default {
     			type hw
