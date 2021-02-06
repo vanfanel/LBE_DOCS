@@ -3515,9 +3515,22 @@ Clonamos su repo:
 
 git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-11-Decompilation.git
 
-Editamos SonicCDDecomp/Drawing.cpp
-Y cambiamos las menciones a "nearest" por "linear".
-
+SI estamos compilando el SonicCD:
+	Editamos SonicCDDecomp/Drawing.cpp y ahí:
+	-Cambiamos las menciones a "nearest" por "linear".
+	-Añadimos antes de SDL_CreateWindow(), con los HINTS que hay:
+	SDL_ShowCursor(SDL_FALSE);
+	
+	Editamos SonicCDDecomp/Audio.cpp
+	Y cambiamos
+	#define AUDIO_SAMPLES   (0x800)
+	por
+	#define AUDIO_SAMPLES   (0x400)
+	
+SI estamos compilando el Sonic-1-2: 
+	Editamos Sonic12Decomp/Audio.cpp
+	Y cambiamos spec.samples a 1024.
+	
 Compilamos con:
 
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4
@@ -3525,9 +3538,6 @@ CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4
 Ahora, para ejecutarlo, necesitamos Data.rsdk (preferiblemente de la versión de PC)
 y el directorio "videos" que contendrá unos vídeos .ogv. Por ahora, los vídeos tienen que empezar por mayúscula la primera letra
 para que el engine los detecte. Así, opening.ogv debe ser Opening.ogv, y good_ending.ogv debe ser Good_Ending.ogv, etc.
-
-Si se te ve el cursor mientras juegas, añade en SonicCDDecomp/Drawing.cpp, antes de SDL_CreateWindow(), con los HINTS que hay:
-SDL_ShowCursor(SDL_FALSE);
 
 Edita settings.ini y pon VSync y Fullscreen a true, y "UseHQModes" a false.
 Si los colores ROJO y AZUL se ven invertidos en los vídeos, desactiva "EnhancedScaling" en settings.ini
@@ -3700,6 +3710,10 @@ Ahora, dejamos el /etc/vim/vimrc.local de esta guisa:
 =====================================================
 
 syntax on
+
+" Para que NO nos transforme 8 espacios en un TAB
+set expandtab
+
 set number
 set ls=2
 set sw=1
