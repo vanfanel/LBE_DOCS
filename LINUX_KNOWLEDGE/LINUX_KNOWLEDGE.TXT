@@ -3526,7 +3526,7 @@ Ahora, para ejecutarlo, necesitamos Data.rsdk (preferiblemente de la versión de
 y el directorio "videos" que contendrá unos vídeos .ogv. Por ahora, los vídeos tienen que empezar por mayúscula la primera letra
 para que el engine los detecte. Así, opening.ogv debe ser Opening.ogv, y good_ending.ogv debe ser Good_Ending.ogv, etc.
 
-Si se te ve el cursor mientras juegas, añade en SonicCDDecomp/Drawing.cpp, después de SDL_CreateRenderer():
+Si se te ve el cursor mientras juegas, añade en SonicCDDecomp/Drawing.cpp, antes de SDL_CreateWindow(), con los HINTS que hay:
 SDL_ShowCursor(SDL_FALSE);
 
 Edita settings.ini y pon VSync y Fullscreen a true, y "UseHQModes" a false.
