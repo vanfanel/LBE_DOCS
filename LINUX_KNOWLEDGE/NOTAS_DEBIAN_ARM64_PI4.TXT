@@ -612,9 +612,10 @@ Lo primero es instalar estos:
 sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmodplug-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 
-Por ahora, hasta que salga SDL 2.0.11, tenemos que cambiar código para que funcione bien el resampler de audio acelerado para instrucciones NEON. 
-Para ello, actualizamos src/audio/SDL_audiotypecvt.c desde la versión actual, que podemos sacar de https://hg.libsdl.org/SDL
-(En la parte de arriba tienes la última versión en ZIP, TAR, etc... Sobreescribe el  src/audio/SDL_audiotypecvt.c con la versión actualizada de aquí).
+Clonamos el repo de las SDL2:
+git clone --depth 1 https://github.com/libsdl-org/SDL.git
+
+Ahora, para configurar:
 
 SÓLO CON GLES1 y GLES2, COMO LO HACEMOS AHORA:
 CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-libsamplerate --disable-video-vulkan

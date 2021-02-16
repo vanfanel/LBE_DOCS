@@ -225,6 +225,9 @@ sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente, si es que instalas MESA compilándolo por tu cuenta. Si no, pues sí, hace falta libgbm-dev si usas un MESA precocinado.)
 (Si has compilado SDL2 con soporte para kmsdrm pero te da el error "not available video device", es porque compilaste sin tener instalado libgmb-dev junto con un MESA precocinado, y no te ha avisado... Instala ese paquete y recompila, anda.)
 
+Clonamos:
+git clone --depth 1 https://github.com/libsdl-org/SDL.git
+
 Ahora ya configuramos:
 ./configure --prefix=/usr --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --enable-video-kmsdrm
 
@@ -2604,7 +2607,7 @@ https://github.com/FWGS/cs16-client/releases
 ************Parchear con XDelta en Linux************************************************************************************************
 
 Tienes que usar el comando xdelta3, NO el xdelta.
-xdelta3 -d -s originar parche resultado
+xdelta3 -d -s original parche resultado
 
 ************Wolf4SDL (Wolfenstein 3D) en la Raspberry Pi*********************************************************************************
 
@@ -5050,10 +5053,10 @@ Editamos src/engine/screen.cpp, buscamos SDL_RENDERER_ACCELERATED y lo dejamos c
 NO te olvides de los paréntesis!!!!
 
 Compilamos con:
-WITHOUT_AUDIOCD=1 WITH_SDL2=1 WITHOUT_IMAGE=1 WITHOUT_XML=1 make -j4
+WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
 
 Para Raspberry Pi 4:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" WITHOUT_AUDIOCD=1 WITH_SDL2=1 WITHOUT_IMAGE=1 WITHOUT_XML=1 make -j4
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
 
 SI TIENES MOVIMIENTO ERRÁTICO DEL RATÓN: Desconecta el mando USB.
 
@@ -5529,7 +5532,7 @@ Ahora, creamos directorio de compilación y usamos cmake y luego make:
 mkdir b3
 cd b3
 cmake ../src
-cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
  -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ../src
 
 make -j6
@@ -6137,7 +6140,7 @@ Entramos en su repo y clonamos
 
 git clone --depth 1 https://github.com/TerryCavanagh/VVVVVV.git
 
-Entramos en desktop_version, creamos b3 y configuramos con:
+Entramos en desktop_version, creamos b4 y configuramos con:
 
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-DNDEBUG -march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-DNDEBUG -march=armv8-a+crc+simd -mtune=cortex-a72" ..
 NO compiles con -j, sino que sólo usa un hilo de compilación. NO uses más de uno, no compila nunca. Tampoco le pases ningún -O en los CFLAGS, o se disparará el consumo de RAM y no acabará jamás de compilar.
