@@ -3417,7 +3417,14 @@ para buscar unas y otras cosas.
 
 MUY IMPORTANTE: podemos localizar en qué paquete está un fichero, de manera que podemos eliminar el pquete en cuestión. Se hace con
 "dpkg -S stdio.h" o con "dpkg -S /usr/include/stdio.h".
- 
+
+*************Cómo hacer que el directorio actual siempre esté en el PATH, para no tener que escribir ./archivo *******************
+
+Edita /etc/profile y deja la línea
+export PATH
+como
+export PATH:.
+
 *************Obtener información sobre los paquetes*******************************************************************************
 
 Para conocer la versión, developer, maintainer. etc, de un paquete antes de instalarlo (o instalado), podemos hacer "apt-cache show <nombre_paquete>",
@@ -3601,7 +3608,10 @@ Entramos en src, editamos doomdef.h y ponemos SCREENSCALE a 1.
 Editamos el Makefile y ponemos los CFLAGs  "-march=armv8-a+crc+simd -mtune=cortex-a72", y quitamos el -g.
 Compilar y listo.
 
-En doomretro.cfg, ponemos vid_scalefilter a "linear", y gp_thumbsticks 1.
+En doomretro.cfg, ponemos:
+vid_scalefilter a "linear"
+gp_thumbsticks 2 si tenemos dos analógicos, y gp_sensivity_horizontal a 32 (la mitad que la vertical, vamos, que si no
+es imposible apuntar bien en horizontal).
 
 La música tiene que ir en un WAD (no valen PK3 ni movidas de esas) y tienen que estar los .ogg o los .flac ahí dentro sin estar en ningún directorio ni nada, con sus extensiones y nombres originales. Y debes haber compilado SDL_Mixer con soporte para ogg o flac, claro.
 Vengo usando estas músicas, que ya vienen en WAD y todo listas: https://zandronum.com/forum/viewtopic.php?t=97
