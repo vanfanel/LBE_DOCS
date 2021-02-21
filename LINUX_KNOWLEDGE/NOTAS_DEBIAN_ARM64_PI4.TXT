@@ -212,8 +212,7 @@ PARTE 3: FINETUNING THE SYSTEM
 Una vez que hemos arrancado nativamente, tenemos mucho que hacer.
 
 -RECUERDA que para poder logearte por SSH como ROOT tienes que editar /etc/ssh/sshd_config
-y aniadir
-PermitRootLogin yes
+y añadir PermitRootLogin yes
 
 -Crear el usuario pi:
 sudo adduser pi

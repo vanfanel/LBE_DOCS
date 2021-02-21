@@ -114,3 +114,11 @@ Un ejemplo:
 *usbdevices { >mifichero }
 
 OJO! Los espacios SON IMPORTANTES: PONLOS BIEN.
+
+QUITAR EL MENSAJE ESE DE "A network cable is unplugged”
+=======================================================
+
+En el menú de abajo a la derecha, ve a:
+Configure→Boot→Run
+Y elimina:
+SDFS::RISCOSpi.$.Network.!ReDHCP
