@@ -3233,7 +3233,7 @@ Y listo. Ya hemos vuelto en local y en el server al último commit/push bueno.
 
 Lo primero añadimos un remote que vamos a llamar upstream como podríamos llamarlo pepito, pero para entendernos:
 
-git remote add upstream https://github.com/SDL-mirror/SDL.git
+git remote add upstream https://github.com/libsdl-org/SDL.git
 
 Ahora descargamos todos los branches de upstream:
 
@@ -3241,15 +3241,18 @@ git fetch upstream
 
 Nos aseguramos de estar en el branch master de nuestro fork. Seguramente ya estaremos ahí de todos modos..
 
-git checkout master
+git checkout main
+(si falla, cambia main por master, pero se tiende a que todo sea main)
 
 Hacemos que nuestro fork pase a tener todo lo de upstream: lo convertimos en una copia limpia de upstream, vamos.
 
-git reset --hard upstream/master
+git reset --hard upstream/main
+(lo mismo: si falla, cambia main por master)
 
 Hacemos un push forzado a mi repo para que efectivamente quede como el upstream:
 
-git push -f origin master
+git push -f origin main
+(lo mismo: si falla, cambia main por master)
 
 Hacemos los cambios que tengamos que hacer....
 
@@ -3262,7 +3265,8 @@ git commit -m "blah blah blah"
 
 Hacemos un push forzado a nuestro fork:
 
-git push -f origin master
+git push -f origin main
+(lo mismo: si falla, cambia main por master)
 
 
 Y luego ya haríamos el pull request.

@@ -176,3 +176,19 @@ Usa el script update_all de aquí:
 https://github.com/theypsilon/Update_All_MiSTer
 Es bajarse un ZIP, descomprimirlo en Scripts/Updates, y luego ejecutarlo. Entra en el menú la primera vez que lo ejecutes
 pulsando UP. Allí cambia en la primera opción que los cores que te baje sean los de DB9.
+
+*********NOTAS CORE PC98**************************************************************
+
+Necesitas la BIOS, que puede estar en dos sitios distintos:
+En /Games/Zet98/ con el nombre boot.rom
+En /bootrom/ con el nombre Zet98.rom
+Pero es el mismo fichero. Lo tienes en este hilo:
+https://misterfpga.org/viewtopic.php?f=36&t=167&start=75
+
+Los juegos deben estar en .D88, y los puedes convertir desde cualquier otro formato con el Virtual Floppy Image Converter 011010,
+que se baja de aquí:
+https://www.vector.co.jp/download/file/win95/util/fh212773.html
+
+Tienes muchos juegos ya traducidos y de todo en:
+http://www.pc98.org/main.html
+...Pero están en .HDI y se necesita que estén en HDF. Así que no te valen por ahora.
