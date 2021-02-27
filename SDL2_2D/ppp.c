@@ -79,17 +79,17 @@ void main_loop() {
     int ret;	
     
     for (m = 0; m < 1; m++) {
-            for (j = 0; j < 320 - 50; j++) {
+            for (j = 0; j < 320 - 20; j++) {
                     
                     clear_screen (320, 200,  screen_pixels);
                     
                     for (i = 0; i < 200; i++) {
                             
-                            for (k = 0; k < 20; k++) 
+                            for (k = 0; k < 20; k++) { 
                                     //screen_pixels[i * 320 + j + k] = 0x0FF0;
                                                               //AABBGGRR	
                                     screen_pixels[i * 320 + j + k] = 0x000000FF;
-                            
+                            }
                     }
             
                     render();
