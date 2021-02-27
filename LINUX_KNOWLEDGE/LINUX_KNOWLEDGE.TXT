@@ -309,6 +309,21 @@ Y tiene que ir.
 Si quieres emular FDS, necesitas fdsbios.zip que contiene disksys.rom.
 PERO no te compliques: usa www.retroroms.info, o en los torrents de ROMsets de FBNeo viene todo lo de FDS listo.
 
+******LA ABADÍA DEL CRIMEN, nativo en LINUX**********************************************************************
+
+Copiamos su repo:
+git clone --depth 1 https://github.com/Samuel85/Abbey.git
+
+Creamos el directorio de compilación y compilamos:
+mkdir b4
+cd b4
+cmake ..
+make -j4
+
+Creamos el directorio donde va a ir el juego, por ejemplo ~/abadia
+Y ahí copiamos los directorios "roms", "fonts" y "res" que vienen con los sources en su directorio "build".
+Copiamos también el ejecutable "abbey", y ya debería ir. No necesitas nada más externo.
+
 ******RussianDoom, un sourceport peculiar en ruso************************************************************************************************************************
 
 clonamos su repo

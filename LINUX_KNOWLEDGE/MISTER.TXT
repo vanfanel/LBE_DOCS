@@ -185,6 +185,8 @@ En /bootrom/ con el nombre Zet98.rom
 Pero es el mismo fichero. Lo tienes en este hilo:
 https://misterfpga.org/viewtopic.php?f=36&t=167&start=75
 
+Pon GDC CLOCK a 2.5, viene puesto a 5 y eso jode algunos juegos.
+
 Los juegos deben estar en .D88, y los puedes convertir desde cualquier otro formato con el Virtual Floppy Image Converter 011010,
 que se baja de aquí:
 https://www.vector.co.jp/download/file/win95/util/fh212773.html
