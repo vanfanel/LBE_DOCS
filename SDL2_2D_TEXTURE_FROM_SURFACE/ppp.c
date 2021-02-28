@@ -3,6 +3,7 @@
 
 int src_width = 320;
 int src_height = 200;
+int minimumFrameTime = 130;
 
 SDL_Window *window = NULL;                
 SDL_Renderer *renderer = NULL;
@@ -96,7 +97,9 @@ void main_loop() {
     for (m = 0; m < 1; m++) {
 
             for (j = 0; j < 320 - 20; j++) {
-                    
+                   
+		    unsigned int frameTime = SDL_GetTicks();
+ 
                     clear_surface ();
                     
                     for (i = 0; i < 200; i++) {
@@ -109,7 +112,11 @@ void main_loop() {
                     }
             
                     render();
-        
+
+                    //cap the frame rate (comment out for full framerate operation)
+		    if (SDL_GetTicks() - frameTime < minimumFrameTime){
+			SDL_Delay(minimumFrameTime - (SDL_GetTicks() - frameTime));
+		    }
             }
     }
 }
