@@ -101,7 +101,7 @@ void main_loop() {
                             
                             for (k = 0; k < 20; k++) { 
 
-                                    *((uint32_t*) surface->pixels + (i * surface->w + j + k)) = 0xFFFFFFFF;
+                                    *((uint32_t*) surface->pixels + (i * surface->w + j + k)) = 0xffff0000;
                                                                                                 //AABBGGRR	
                             }
                     }
