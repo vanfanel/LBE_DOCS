@@ -82,7 +82,8 @@ void deinit() {
 }
 
 void main_loop() {
-    // Update pixel array contents
+
+    // Update pixel surface contentx and render.
 
     int i, j, k, m;
 
@@ -93,6 +94,7 @@ void main_loop() {
     //render();
 
     for (m = 0; m < 1; m++) {
+
             for (j = 0; j < 320 - 20; j++) {
                     
                     clear_surface ();
@@ -110,15 +112,6 @@ void main_loop() {
         
             }
     }
-
-
-/*
-    for (int i = 0; i < (src_width * src_height); i++) 
-    {
-        screen_pixels[i] = 0xffff0000;
-    }    
-*/
-
 }
 
 void render () {
