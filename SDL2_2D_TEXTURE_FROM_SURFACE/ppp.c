@@ -94,29 +94,26 @@ void main_loop() {
     //clear_surface ();
     //render();
 
-    for (m = 0; m < 1; m++) {
+    for (j = 0; j < 320 - 20; j++) {
+           
+            unsigned int frameTime = SDL_GetTicks();
 
-            for (j = 0; j < 320 - 20; j++) {
-                   
-		    unsigned int frameTime = SDL_GetTicks();
- 
-                    clear_surface ();
-                    
-                    for (i = 0; i < 200; i++) {
-                            
-                            for (k = 0; k < 20; k++) { 
-
-                                    *((uint32_t*) surface->pixels + (i * surface->w + j + k)) = 0xffff0000;
-                                                                                                //AABBGGRR	
-                            }
-                    }
+            clear_surface ();
             
-                    render();
+            for (i = 0; i < 200; i++) {
+                    
+                    for (k = 0; k < 20; k++) { 
 
-                    //cap the frame rate (comment out for full framerate operation)
-		    if (SDL_GetTicks() - frameTime < minimumFrameTime){
-			SDL_Delay(minimumFrameTime - (SDL_GetTicks() - frameTime));
-		    }
+                            *((uint32_t*) surface->pixels + (i * surface->w + j + k)) = 0xffff0000;
+                                                                                        //AABBGGRR	
+                    }
+            }
+    
+            render();
+
+            //cap the frame rate (comment out for full framerate operation)
+            if (SDL_GetTicks() - frameTime < 130){
+                SDL_Delay(130 - (SDL_GetTicks() - frameTime));
             }
     }
 }
