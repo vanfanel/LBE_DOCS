@@ -40,10 +40,18 @@ int main () {
     init();
 
     while (!exit_program) {
+
+        unsigned int frameTime = SDL_GetTicks();
+
         handle_events();
         process_logic();
         draw_scene();
         render();
+
+        //cap the frame rate (comment out for full framerate operation)
+        if (SDL_GetTicks() - frameTime < 10){
+            SDL_Delay(10 - (SDL_GetTicks() - frameTime));
+        }
     }
 
     deinit();
@@ -116,26 +124,16 @@ void draw_scene() {
     SDL_PixelFormat *format = surface->format;
     Uint8 bytes_per_pixel = format->BytesPerPixel;
  
-    //for (j = 0; j < TEXTURE_WIDTH - 20;) {
-           
-            //unsigned int frameTime = SDL_GetTicks();
-
-            clear_surface ();
+    clear_surface ();
+    
+    for (i = 0; i < TEXTURE_HEIGHT; i++) {
             
-            for (i = 0; i < TEXTURE_HEIGHT; i++) {
-                    
-                    for (k = 0; k < 20; k++) { 
+            for (k = 0; k < 20; k++) { 
 
-                            *((uint32_t*) surface->pixels + (i * surface->w + xstart + k)) = 0xffff0000;
-                                                                                             //AABBGGRR	
-                    }
+                    *((uint32_t*) surface->pixels + (i * surface->w + xstart + k)) = 0xffff0000;
+                                                                                     //AABBGGRR	
             }
-   
-            //cap the frame rate (comment out for full framerate operation)
-            /*if (SDL_GetTicks() - frameTime < 10){
-                SDL_Delay(10 - (SDL_GetTicks() - frameTime));
-            }*/
-    //}
+    }
 }
 
 void render () {
@@ -151,8 +149,6 @@ void render () {
 
     // Renderpresent the renderer
     SDL_RenderPresent(renderer);
-
-    //SDL_Delay(2000);
 }
 
 // Clear surface's pixel array.
@@ -194,7 +190,6 @@ void handle_events()
         {
             switch(event.key.keysym.sym)
             {
-
                 case SDLK_LEFT:
                     pad.left = SDL_FALSE;
                     break;
@@ -207,6 +202,7 @@ void handle_events()
     }
 }
 
+// Logic is decoupled from SDL, and so it must remain.
 void process_logic()
 {
     if (pad.right) {
