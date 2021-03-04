@@ -8,26 +8,43 @@
 #define GAME_FRAME_TIME 130
 #define SCROLL_FRAME_TIME 10
 
+struct pad {
+    SDL_bool up;
+    SDL_bool down;
+    SDL_bool left;
+    SDL_bool right;
+    SDL_bool fire;
+} pad;
+
 int minimumFrameTime = 130;
 
 SDL_Window *window = NULL;                
 SDL_Renderer *renderer = NULL;
 SDL_Texture *texture = NULL;
 SDL_Surface *surface = NULL;
+SDL_bool exit_program = SDL_FALSE;
+
+int xstart = 0;
 uint32_t *screen_pixels;
 
 void init ();
 void deinit ();
-void main_loop();
 void render();
+void draw_scene();
 void clear_surface();
 void handle_events();
+void process_logic();
 
 int main () {
 
     init();
 
-    main_loop();
+    while (!exit_program) {
+        handle_events();
+        process_logic();
+        draw_scene();
+        render();
+    }
 
     deinit();
    
@@ -91,21 +108,17 @@ void deinit() {
     SDL_DestroyWindow(window);
 }
 
-void main_loop() {
-
-    // Update pixel surface contentx and render.
+// Draw scene to surface
+void draw_scene() {
 
     int i, j, k, m;
 
     SDL_PixelFormat *format = surface->format;
     Uint8 bytes_per_pixel = format->BytesPerPixel;
  
-    //clear_surface ();
-    //render();
-
-    for (j = 0; j < TEXTURE_WIDTH - 20; j++) {
+    //for (j = 0; j < TEXTURE_WIDTH - 20;) {
            
-            unsigned int frameTime = SDL_GetTicks();
+            //unsigned int frameTime = SDL_GetTicks();
 
             clear_surface ();
             
@@ -113,19 +126,16 @@ void main_loop() {
                     
                     for (k = 0; k < 20; k++) { 
 
-                            *((uint32_t*) surface->pixels + (i * surface->w + j + k)) = 0xffff0000;
-                                                                                        //AABBGGRR	
+                            *((uint32_t*) surface->pixels + (i * surface->w + xstart + k)) = 0xffff0000;
+                                                                                             //AABBGGRR	
                     }
             }
    
-            handle_events(); 
-            render();
-
             //cap the frame rate (comment out for full framerate operation)
-            if (SDL_GetTicks() - frameTime < 10){
+            /*if (SDL_GetTicks() - frameTime < 10){
                 SDL_Delay(10 - (SDL_GetTicks() - frameTime));
-            }
-    }
+            }*/
+    //}
 }
 
 void render () {
@@ -145,13 +155,12 @@ void render () {
     //SDL_Delay(2000);
 }
 
+// Clear surface's pixel array.
 void clear_surface () {
-	// Clear screen
-	
-	int i;
-	for (i = 0; i < surface->w * surface->h; i++) {
-		((uint32_t *)surface->pixels)[i] = 0x00000000;
-        }
+    int i;
+    for (i = 0; i < surface->w * surface->h; i++) {
+            ((uint32_t *)surface->pixels)[i] = 0x00000000;
+    }
 }
 
 void handle_events()
@@ -159,7 +168,52 @@ void handle_events()
     SDL_Event event;	
     while(SDL_PollEvent(&event))
     {
+        SDL_ControllerButtonEvent ev = event.cbutton;
 
+        if( event.type == SDL_QUIT ){
+                exit_program = SDL_TRUE;
+        }
 
-    } 
+        else if(event.type == SDL_KEYDOWN)
+        {
+            switch(event.key.keysym.sym)
+            {
+                case SDLK_ESCAPE:
+                    exit_program = SDL_TRUE;
+                    break;
+                case SDLK_LEFT:
+                    pad.left = SDL_TRUE;
+                    break;
+                case SDLK_RIGHT:
+                    pad.right = SDL_TRUE;
+                    break;
+            }
+        }
+
+        else if(event.type == SDL_KEYUP)
+        {
+            switch(event.key.keysym.sym)
+            {
+
+                case SDLK_LEFT:
+                    pad.left = SDL_FALSE;
+                    break;
+                case SDLK_RIGHT:
+                    pad.right = SDL_FALSE;
+                    break;
+            }
+        }
+
+    }
+}
+
+void process_logic()
+{
+    if (pad.right) {
+        xstart++;
+    }
+
+    if (pad.left) {
+        xstart--;
+    }
 }
