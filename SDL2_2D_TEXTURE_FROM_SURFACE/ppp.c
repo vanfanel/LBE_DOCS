@@ -133,11 +133,15 @@ void draw_scene() {
             
             for (k = 0; k < 20; k++) { 
 
+                /* This is to document how to access the RGB values of a pixel individually.
+                   In 8bit paletted surfaces it would be useful because the palettes have
+                   individual r,g,b values like this.
+                   But we can simply put 0xffff0000 into p and it would be the same. */
                 r = (Uint8) 255;
                 g = (Uint8) 0;
                 b = (Uint8) 0;	
-
                 p = SDL_MapRGBA(surface->format, r, g, b, 0xFF);
+                /* */
 
                 *((uint32_t*) surface->pixels + (i * surface->w + xstart + k)) = p; /*0xffff0000; */	
 
