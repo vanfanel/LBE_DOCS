@@ -121,6 +121,9 @@ void draw_scene() {
 
     int i, j, k, m;
 
+    Uint8 *dirtyByte, bit, r,g,b;
+    Uint32 p = 0;
+
     SDL_PixelFormat *format = surface->format;
     Uint8 bytes_per_pixel = format->BytesPerPixel;
  
@@ -130,8 +133,14 @@ void draw_scene() {
             
             for (k = 0; k < 20; k++) { 
 
-                    *((uint32_t*) surface->pixels + (i * surface->w + xstart + k)) = 0xffff0000;
-                                                                                     //AABBGGRR	
+                r = (Uint8) 255;
+                g = (Uint8) 0;
+                b = (Uint8) 0;	
+
+                p = SDL_MapRGBA(surface->format, r, g, b, 0xFF);
+
+                *((uint32_t*) surface->pixels + (i * surface->w + xstart + k)) = p; /*0xffff0000; */	
+
             }
     }
 }
