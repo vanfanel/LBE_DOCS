@@ -97,9 +97,37 @@ sudo rm /etc/apt/sources.list.d/vscode.list
 sudo rm /etc/apt/trusted.gpg.d/microsoft.gpg
 sudo apt update
 
-*******Compilar el core duckstation para Raspberry Pi con Aarch64*********************************************************************
+******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
-Hay que crosscompilar. No compila en Pi3 con 1GB ni con swap. Crosscompilamos en local.
+Clonamos el branch NOGUI:
+
+git clone --depth 1 -b nogui https://github.com/stenzek/duckstation.git
+
+Instalamos dependencias previas:
+
+sudo apt-get install libevdev-dev --no-install-recommends
+
+Configuramos con:
+
+cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DBUILD_SDL_FRONTEND=OFF -DHAVE_EGL=ON ..
+
+Copia todo el contenido de bin a ~/psx. No copies sólo el ejecutable, o te dará un segfault cuando lo ejecutes.
+
+Si  el ejecutable resultante te da un error con que no puede abrir card1, edita src/common/drm_display.h y cambia card = 1 por card = 0.
+
+La BIOS va en ~/.local/share/duckstation/bios/
+
+PARA LANZAR LOS JUEGOS tienes que pasarle la ruta COMPLETA del .cue, no vale que le pases una ruta relativa a donde estás,
+ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
+
+*******Compilar el core libretro duckstation*********************************************************************
+
+PARA COMPILAR directamente en la máquina para Pi4:
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+
+PARA CROSSCOMPILAR
+
+Puede ser interesante porque no compila en Pi3 con 1GB ni con swap. Crosscompilamos en local.
 
 -Instalamos los paquetes:
 sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
@@ -138,43 +166,19 @@ mkdir build
 cd build
 
 -Configuramos pasándole el cmake toolchain file así:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DENABLE_DISCORD_PRESENCE=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ..
 
 -Compilamos con make, y comprobamos el ejecutable, que sea aarch64:
 file duckstation_libretro.so
 
 ¡¡Y listo!! Menuda aventura macho....
 
-Para Pi4, versión LIBRETRO, compilado directamente en la máquina:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+NOTAS ADICIONALES para el core:
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
 Añade en config.txt: hdmi_enable_4kp60=1
 Se supone que hace que la GPU vaya un pelín más rápido...
-
-******DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
-
-Clonamos el branch NOGUI:
-
-git clone --depth 1 -b nogui https://github.com/stenzek/duckstation.git
-
-Instalamos dependencias previas:
-
-sudo apt-get install libevdev-dev --no-install-recommends
-
-Configuramos con:
-
-cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DBUILD_SDL_FRONTEND=OFF -DHAVE_EGL=ON ..
-
-Copia todo el contenido de bin a ~/psx. No copies sólo el ejecutable, o te dará un segfault cuando lo ejecutes.
-
-Si  el ejecutable resultante te da un error con que no puede abrir card1, edita src/common/drm_display.h y cambia card = 1 por card = 0.
-
-La BIOS va en ~/.local/share/duckstation/bios/
-
-PARA LANZAR LOS JUEGOS tienes que pasarle la ruta COMPLETA del .cue, no vale que le pases una ruta relativa a donde estás,
-ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
 
 ******TIC-80 FANTASY CONSOLE para Raspberry Pi como core libretro***************************************************
 
@@ -5563,12 +5567,14 @@ COMPILAR HYPSEUS (Daphne)
 Clonamos el repo de btlab:
 git clone --depth 1 https://github.com/btolab/hypseus.git
 
-Ahora, creamos directorio de compilación y usamos cmake y luego make:
+Ahora, creamos directorio de compilación dentro de src, y usamos cmake y luego make:
+
+cd src
 mkdir b3
 cd b3
-cmake ../src
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
- -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ../src
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
+ -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
 
 make -j6
 
