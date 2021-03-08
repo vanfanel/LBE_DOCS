@@ -99,9 +99,9 @@ sudo apt update
 
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
-Clonamos el branch NOGUI:
+Clonamos duckstation:
 
-git clone --depth 1 -b nogui https://github.com/stenzek/duckstation.git
+git clone --depth 1 https://github.com/stenzek/duckstation.git
 
 Instalamos dependencias previas:
 
@@ -2429,6 +2429,41 @@ mkdir b3
 cd b3
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 make -j4
+
+***********Compilar RAZE, el engine de Duke Nukem, Blood, Exhumed, etc para Linux****************************************************************
+
+NECESITA OpenGL, no vale GLES. Vulkan lo soporta pero de momento está deshabilitado porque aún no funciona.
+Se activaría con -DHAVE_VULKAN=ON en los parámetros de CMAKE.
+
+-Instalamos una dependencia previa:
+sudo apt-get install libvpx-dev
+
+-Primero, necesita OpenAL. Tienes las instrucciones de instalación en este documento.
+
+-Segundo, necesita ZMUSIC. Vamos con ZMUSIC pues:
+Descarla los últimos sources estables de:
+https://github.com/coelckers/ZMusic/releases
+
+Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+make -j4
+sudo make install
+
+-Vamos a por RAZE en sí.
+Clonamos su repo:
+git clone --depth 1 https://github.com/coelckers/Raze.git
+
+Creamos el directorio de compilación, entramos, configuramos y compilamos:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+make -j4
+
+Ahora, creamos ~/raze y metemos allí el ejecutable resultante ("raze"), raze.pk3 y duke3d.rgp
+Podemos meter raze.sf2 (que viene en el directorio "soundfont" de los sources") en ~/.config/raze/soundfonts, o en cualquiera
+de los directorios donde busca RAZE, que puedes consultarlos en ~/.config/raze/raze.ini
 
 ***********EDUKE32: Duke Nukem 3D en la Raspberry Pi*********************************************************************************************
 
