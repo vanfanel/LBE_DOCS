@@ -480,17 +480,16 @@ INSTALAR MESA
 
 NOCIONES PREVIAS DE APIS, DEPENDENCIAS, Y SOPORTE DE OPENGL COMPLETO (NO GLES)
 
-Mesa se puede compilar con GLX o con glvnd o con ninguno de los dos.
+Para tener OpenGL "completo" (no GLES), Mesa se puede compilar con GLX o con glvnd. O con ninguno de los dos si sólo queremos GLES, claro.
 Compilar MESA para GLX nos produce libGL.so, que es lo que hace falta para OPENGL COMPLETO (NO GLES). Pero eso depende de muchas librerías de las X11.
-Una alternativa es compilar MESA para LIBGLVND, que es un GLES multifabricante de NVIDIA, opensource. En ese caso, MESA produce libEGL_mesa.so pero NO produce libEGL.so. Tampoco produce
-libGL.so, sino libglapi.so. PERO que tengamos libGL.so o libglapi.so NOS DEBERÍA DAR IGUAL porque los programas se deberían basar en usar libEGL.so y NO buscar libGL.so o libglapi.so directamente, sólo
-deberían entender de libEGL.so!!! Y las SDL2 igual, sólo deberían entender de libEGL.so.
+Una alternativa es compilar MESA para LIBGLVND, que es un GL multifabricante de NVIDIA, opensource. En ese caso, MESA produce libEGL_mesa.so pero NO produce libEGL.so. Tampoco produce
+libGL.so, sino libglapi.so. PERO que tengamos libGL.so o libglapi.so NOS DEBERÍA DAR IGUAL porque los programas se deberían basar en usar libEGL.so y NO buscar libGL.so o libglapi.so directamente, sólo deberían entender de libEGL.so!!! Y las SDL2 igual, sólo deberían entender de libEGL.so.
 
 Si queremos que MESA nos aporte un libEGL.so, tenemos que compilarla, o bien con glx, o bien SIN GLX NI TAMPOCO LIBGLVND. Entonces sí crea un libEGL.so en vez de un libEGL_mesa.so.
-Pero en ese caso, al no haber GLX (libGL.so), loas SDL2 interpretan que no tenemos OpenGL COMPLETO (NO GLES) porque lo que hacen es buscar de algún modo libGL.so en vez de simplemente
-buscar libEGL.so y abstraerse de si tenemos libGL.so o libglapi.so
+Pero en ese caso, al no haber GLX (libGL.so), las SDL2 interpretan que no tenemos OpenGL COMPLETO (NO GLES) porque lo que hacen es buscar de algún modo libGL.so, en vez de simplemente buscar libEGL.so y abstraerse de si tenemos libGL.so o libglapi.so
 
-DICHO de otro modo: SDL2 para tener OPENGL COMPLETO, necesita GLX. SDL2 NO encuentra OPENGL completo si no es con GLX: si compilas MESA con OPENGL COMPLETO mediante libglvnd, SDL2 no lo detecta, sólo detecta GLES. Y MESA, si se compila con GLX, se tiene que compilar con las plataformas drm y x11. Y al compilarse para X11, tiene un montón de dependencias de X11 aunque no necesite el servidor funcionando.
+DICHO de otro modo: por ahora SDL2 para tener OPENGL COMPLETO necesita GLX.
+Esto es porque SDL2 NO encuentra OPENGL completo si no es con GLX: si compilas MESA con OPENGL COMPLETO mediante libglvnd, SDL2 no lo detecta, sólo detecta GLES. Y MESA, si se compila con GLX, se tiene que compilar con las plataformas drm y x11. Y al compilarse para X11, tiene un montón de dependencias de X11 aunque no necesite el servidor funcionando.
 Lo ideal es que SDL2, para tener soporte para OPENGL COMPLETO, sólo necesitase libEGL.so y le diese igual tener libglapi.so o libGL.so. De ese modo, podríamos compilar MESA con platform=drm solamente, y sin necesidad de GLX ni de LIBGLVND.
 Si compilamos MESA sin GLX ni LIBGLVND, en SDL2 actualmente sólo tenemos GLES1 y GLES2, no OPENGL COMPLETO.
 
@@ -534,12 +533,14 @@ sudo apt-get install --no-install-recommends \
     zlib1g-dev pkg-config meson
 
 SÓLO SI DECIDES COMPILAR MESA CONTRA LIBGLVND, PUES TIENES QUE INSTALAR LIBGLVND. OJO, SI SÓLO QUIERES GLES, NO NECESITAS LIBGLVND:
-sudo apt-get install libtool
-sudo apt-get install  libx11-dev libxext-dev --no-install-recommends
 git clone --depth 1 https://github.com/NVIDIA/libglvnd.git
-./autogen.sh
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --prefix=/usr --disable-glx
-etc... (no recomendado porque SDL2 no funciona con libglapi.so, ver más arriba).
+mkdir b4
+cd b4
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dx11=disabled ..
+ninja -4
+sudo ninja install
+(Y "sudo ninja uninstall" para desinstalar)
+LIBGLVND no recomendado porque SDL2 no funciona con libglapi.so, ver más arriba).
 
 (SI QUIERES GLX, PARA QUE SDL2 FUNCIONE CON OPENGL COMPLETO, GLES1 Y GLES2, NECESITAS TODO ESTO:).
 sudo apt-get install --no-install-recommends --reinstall \
