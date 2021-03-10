@@ -49,8 +49,21 @@ int windowTest () {
     }
 
 
-    int x = displayBounds[1].x;
-    int y = displayBounds[1].y;
+    int x = displayBounds[0].x;
+    int y = displayBounds[0].y;
+
+    // Create an application window with the following settings:
+    window = SDL_CreateWindow(
+        "An SDL2 window",                  // window title
+        x,           // initial x position
+        y,           // initial y position
+        320,                               // width, in pixels
+        200,                               // height, in pixels
+        0      // flags - see below
+    );
+
+    x = displayBounds[1].x;
+    y = displayBounds[1].y;
 
     // Create an application window with the following settings:
     window = SDL_CreateWindow(
