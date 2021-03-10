@@ -480,18 +480,13 @@ INSTALAR MESA
 
 NOCIONES PREVIAS DE APIS, DEPENDENCIAS, Y SOPORTE DE OPENGL COMPLETO (NO GLES)
 
-Para tener OpenGL "completo" (no GLES), Mesa se puede compilar con GLX o con glvnd. O con ninguno de los dos si sólo queremos GLES, claro.
-Compilar MESA para GLX nos produce libGL.so, que es lo que hace falta para OPENGL COMPLETO (NO GLES). Pero eso depende de muchas librerías de las X11.
-Una alternativa es compilar MESA para LIBGLVND, que es un GL multifabricante de NVIDIA, opensource. En ese caso, MESA produce libEGL_mesa.so pero NO produce libEGL.so. Tampoco produce
-libGL.so, sino libglapi.so. PERO que tengamos libGL.so o libglapi.so NOS DEBERÍA DAR IGUAL porque los programas se deberían basar en usar libEGL.so y NO buscar libGL.so o libglapi.so directamente, sólo deberían entender de libEGL.so!!! Y las SDL2 igual, sólo deberían entender de libEGL.so.
+Para tener OpenGL "completo" (no GLES), Mesa se puede compilar con GLX (lo que conlleva un cojón de dependencias de X11 y es un asco), o con GLVND (libglvnd, una librería muy ligera de NVIDIA que es libre).
+Compilar MESA con OpenGL completo para GLX nos produce libGL.so, y compilar MESA con OpenGL completo para GLVND nos produce libOpenGL.so  
 
-Si queremos que MESA nos aporte un libEGL.so, tenemos que compilarla, o bien con glx, o bien SIN GLX NI TAMPOCO LIBGLVND. Entonces sí crea un libEGL.so en vez de un libEGL_mesa.so.
-Pero en ese caso, al no haber GLX (libGL.so), las SDL2 interpretan que no tenemos OpenGL COMPLETO (NO GLES) porque lo que hacen es buscar de algún modo libGL.so, en vez de simplemente buscar libEGL.so y abstraerse de si tenemos libGL.so o libglapi.so
-
-DICHO de otro modo: por ahora SDL2 para tener OPENGL COMPLETO necesita GLX.
-Esto es porque SDL2 NO encuentra OPENGL completo si no es con GLX: si compilas MESA con OPENGL COMPLETO mediante libglvnd, SDL2 no lo detecta, sólo detecta GLES. Y MESA, si se compila con GLX, se tiene que compilar con las plataformas drm y x11. Y al compilarse para X11, tiene un montón de dependencias de X11 aunque no necesite el servidor funcionando.
-Lo ideal es que SDL2, para tener soporte para OPENGL COMPLETO, sólo necesitase libEGL.so y le diese igual tener libglapi.so o libGL.so. De ese modo, podríamos compilar MESA con platform=drm solamente, y sin necesidad de GLX ni de LIBGLVND.
-Si compilamos MESA sin GLX ni LIBGLVND, en SDL2 actualmente sólo tenemos GLES1 y GLES2, no OPENGL COMPLETO.
+Si compilas con OpenGL completo mediante GLVND, las SDL2 deberían ya detectar y usar libOpenGL.so en vez de libGL.so, y los programas de SDL2
+que usen OpenGL completo funcionarán.
+Aún así, si algún programa intenta linkar con -lGL, no lo va a encontrar, así que cambia -lGL por -lOpenGL y ya linkará sin problemas.
+Si algún programa linka contra -lGLU, elimínalo y ya. No se necesita nada de ahí.
 
 Si MESA te da un error de que no encuentra GL/glxproto.h, reinstala el paquete x11proto-dev
 
@@ -523,16 +518,19 @@ En este punto, puedes probar si libdrm te funciona bien haciendo:
 modetest -s 32:1360x768
 (donde 32 es un ID de conector válido: puedes ver los conectores con modetest|more).
 
-Ahora vamos a por MESA. Instalamos estos paquetes previos:
+DEPENDENCIAS PREVIAS DE MESA:
 
-(SI NO QUIERES GLX, SINO LIBGLVND O NI GLX NI LIBGLVND, SÓLO NECESITAS ESTAS. PERO EN TAL CASO, SDL2 NO FUNCIONARÁ CON OPENGL COMPLETO, SÓLO GLES1 Y GLES2:)
+SI QUIERES GLES Y GLES2 NECESITAS ESTAS DEPENDENCIAS:
 sudo apt-get install --no-install-recommends \
     flex bison python3-mako python3-setuptools \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
     zlib1g-dev pkg-config meson
 
-SÓLO SI DECIDES COMPILAR MESA CONTRA LIBGLVND, PUES TIENES QUE INSTALAR LIBGLVND. OJO, SI SÓLO QUIERES GLES, NO NECESITAS LIBGLVND:
+SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
+sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommends
+
+SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, PUES TIENES QUE INSTALAR LIBGLVND:
 git clone --depth 1 https://github.com/NVIDIA/libglvnd.git
 mkdir b4
 cd b4
@@ -540,9 +538,8 @@ CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dx1
 ninja -4
 sudo ninja install
 (Y "sudo ninja uninstall" para desinstalar)
-LIBGLVND no recomendado porque SDL2 no funciona con libglapi.so, ver más arriba).
 
-(SI QUIERES GLX, PARA QUE SDL2 FUNCIONE CON OPENGL COMPLETO, GLES1 Y GLES2, NECESITAS TODO ESTO:).
+(NO RECOMENDADO)SI QUIERES OPENGL COMPLETO SOBRE GLX EN LUGAR DE USAR LIBGLVND, NECESITAS TODAS ESTAS MIERDAS DE X11:
 sudo apt-get install --no-install-recommends --reinstall \
     flex bison python3-mako libexpat1-dev \
     libxcb-dri3-dev libxcb-dri2-0-dev \
@@ -556,6 +553,9 @@ sudo apt-get install --no-install-recommends --reinstall \
     ca-certificates xz-utils \
     zlib1g-dev pkg-config meson
 
+
+SATISFECHAS SUS DEPENDENCIAS, PASAMOS A LA COMPILACIÓN DE MESA COMO TAL:
+
 Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
 Las instrucciones para compilar con MESON se pueden ver en: https://www.mesa3d.org/meson.html
@@ -564,7 +564,10 @@ configuramos con:
 mkdir b3
 cd b3
 AHORA PARA CONFIGURAR:
-ASI LO VENIMOS HACIENDO:  CON GLES Y GLES2, SIN OPENGL COMPLETO:
+COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms= -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro -Dglvnd=true -Dbuildtype=release ..
+
+SI QUISIERAS SÓLO GLES Y GLES2, SIN OPENGL COMPLETO:
 CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms= -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
@@ -580,24 +583,15 @@ sudo ninja install
 Y NO TE OLVIDES DE HACER:
 sudo rm /etc/ld.so.cache
 sudo ldconfig
+Y SI HAS COMPILADO CON VULKAN pruebla que todo va bien ejecutando vulkaninfo.
 
 Y PARA DESINSTALAR:
 sudo ninja uninstall
 O ALTERNATIVAMENTE:
 meson introspect ./ --installed | python3 -c 'import sys; a = eval(sys.stdin.read()); print(" ".join(a.keys()))' | xargs rm
 
-(si quieres ver las lineas de compilación, pásale -v).
-La cosa es que al usar glvnd ahora, ya no dependemos de librerías relacionadas con las X. No tenemos GLX, pero tenemos FULL OPENGL sobre contexto EGL! GLX depende de las X sí o sí, aunque sea sólo en build time
-y no en runtime, y EGL no. Por eso usamos glvnd y así tenemos full opengl sin X11 ni sus librerías: mira:
-<imirkin> SDL2 has no knowledge of glapi
-<imirkin> SDL2 knows about EGL, which in turn has cleverness.
-<imirkin> glapi is an internal mesa detail
-
 !!!!NOTA QUE TE PUEDE INTERESAR EN EL FUTURO: En X86_64, donde se usa el driver i965 que NO es gallium sino dri, se haría:
 CFLAGS="-O2 -march=native -mtune=native" CXXFLAGS="-O2  -march=native -mtune=native" meson --buildtype=plain -Db_ndebug=true -Dglvnd=true -Dplatforms=drm -Dglx=disabled -Dllvm=false -Ddri-drivers=i915 -Dgallium-drivers='' -Dvulkan-drivers='' ..
-
-Si al compilar te da un error de que NULL no está definido, añade en src/egl/main/egldevice.h:
-#include <stddef.h>
 
 COPIAR ARCHIVOS DESDE UN SISTEMA ANTIGUO
 =========================================
@@ -617,11 +611,14 @@ git clone --depth 1 https://github.com/libsdl-org/SDL.git
 
 Ahora, para configurar:
 
-SÓLO CON GLES1 y GLES2, COMO LO HACEMOS AHORA:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-libsamplerate --disable-video-vulkan
+CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-ime --disable-libsamplerate
 
-SÓLO CON GLES1 y GLES2, COMO LO HACEMOS AHORA, PERO EN MODO DEBUG:
-CFLAGS="-O0 -ggdb -DEGL_NO_X11" CXXFLAGS="-O0 -ggdb -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-libsamplerate --disable-video-vulkan
+CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA, PERO EN MODO DEBUG:
+CFLAGS="-O0 -ggdb -DEGL_NO_X11" CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-ime --disable-libsamplerate
+
+SÓLO CON GLES1 y GLES2:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-libsamplerate --disable-video-vulkan
 
 CON OPENGL COMPLETO, GLES1 y GLES2
 CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-ime --disable-libsamplerate --disable-video-vulkan 
@@ -653,7 +650,14 @@ CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv
 INSTALAR RETROARCH
 ===================
 
-Se configura con:
+Si vas a compilarlo con soporte para Vulkan, lo primero es instalar el compilador de shaders:
+sudo apt-get install glslang-dev glslang-tools spirv-tools
+
+Para configurar RetroArch con soporte de GLES y VULKAN, como lo venimos haciendo:
+
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --enable-egl --enable-opengles --enable-opengles3 --enable-opengles3_1 --enable-vulkan
+
+O sólo con GLES:
 
 CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-videocore --disable-vulkan --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-glslang --disable-builtinglslang --disable-rpiled --enable-egl --enable-opengles --enable-opengles3 --enable-opengles3_1
 
@@ -680,57 +684,6 @@ De ese repo, necesitas solamente el directorio ozone en el directorio de assets.
 de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/xmb
 Con assets/xmb y assets/rgui te vale, borra los demás.
 Con el RGUI es igual.
-
-SECCIÓN VULKAN
-==============
-
-¡¡¡OJO!!! LO PRIMERO EN LA PI4, AÑADE AL USUARIO "pi" AL GRUPO RENDER, O TE VOLVERÁS LOCO PORQUE GLES NO IRÁ PERO DRM SÍ (o sea, modetest funciona pero MESA no puede cargar GLES). PARA ELLO, HAZ:
-sudo usermod -a -G render pi
-
----BLOQUE MESA CON VULKAN---
-
-Nos bajamos la última estable de:
-https://archive.mesa3d.org//
-
-O bien clonamos el repo de MESA en gitlab:
-git clone --depth 1 https://gitlab.freedesktop.org/mesa/mesa.git
-
-Instalamos unas dependencias previas:
-sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommends
-
-Configuramos así (NO hace falta especificar platforms=drm, porque drm se selecciona solo):
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms= -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro -Dbuildtype=release ..
-
-Y YA DEBERÍA ESTAR. Ejecuta vulkaninfo para ver que todo va bien.
-
----FIN BLOQUE MESA VULKAN---
-
----RETROARCH CON VULKAN---
-
-Instalamos el compilador de shaders:
-sudo apt-get install glslang-dev glslang-tools spirv-tools
-
-Configuramos para Pi4 con GLES y VULKAN:
-
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --enable-egl --enable-opengles --enable-opengles3 --enable-opengles3_1 --enable-vulkan
-
-O bien con VULKAN solamente:
-
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-wayland --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --disable-egl --disable-opengles --enable-vulkan
-
-RECUERDA QUE CON VULKAN, PARA SACARLE PARTIDO TIENES QUE TENER:
--VSYNC DESACTIVADO
--SWAP IMAGES A 1
--DRIVER DE AUDIO ALSA (NO ALSATHREAD).
-
-Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
-git clone --depth 1 https://github.com/libretro/libretro-super.git
-Y mandar el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/cores. Sí, junto con los cores. Así:
-cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
-Ahora en RetroArch, en Settings->File Browser, desactiva todo y activa "Filter Unknows Extensions" 
-
-Si no quieres shimmering en las letras del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE
-y activar LINEAR FILTERING.
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
