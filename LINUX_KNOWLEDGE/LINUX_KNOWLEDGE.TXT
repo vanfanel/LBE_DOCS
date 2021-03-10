@@ -5161,8 +5161,11 @@ sudo apt-get install libglm-dev
 Clonamos el repo de 
 https://github.com/ptitSeb/stuntcarremake.git
 
+Añadimos en StuntCarRacer.cpp, debajo de la llamada a SDL_SetWindowTitle:
+SDL_GL_SetSwapInterval(1);
+
 Compilamos con:
-make -j4 SDL=2 DEBUG=0 HAVE_GLES=1
+make -j4 LINUX=1 SDL=2 DEBUG=0
 
 GZDOOM en la Raspberry Pi
 =========================
