@@ -32,15 +32,47 @@ int main () {
 // Create Window and renderer
 int windowTest () {
 
+    int i;
+    SDL_Rect displayBounds[2];
+
+    int num_displays = SDL_GetNumVideoDisplays();
+
+
+    /* MULTIPLE DISPLAYS TESTING BLOCK */
+
+    printf("===AVAILABLE DISPLAYS %d===\n", num_displays);
+
+    for (i = 0; i < num_displays; i++) {
+        SDL_GetDisplayBounds(i, &displayBounds[i]);
+        printf ("DISPLAY %d: WIDTH %d HEIGHT %d xpos %d ypos %d\n",
+            i, displayBounds[i].w, displayBounds[i].h, displayBounds[i].x, displayBounds[i].y);
+    }
+
+
+    int x = displayBounds[1].x;
+    int y = displayBounds[1].y;
+
     // Create an application window with the following settings:
     window = SDL_CreateWindow(
+        "An SDL2 window",                  // window title
+        x,           // initial x position
+        y,           // initial y position
+        320,                               // width, in pixels
+        200,                               // height, in pixels
+        0      // flags - see below
+    );
+
+    /* MULTIPLE DISPLAYS TESTING BLOCK ENDS */
+
+    // Create an application window with the following settings:
+    /*window = SDL_CreateWindow(
         "An SDL2 window",                  // window title
         SDL_WINDOWPOS_UNDEFINED,           // initial x position
         SDL_WINDOWPOS_UNDEFINED,           // initial y position
         320,                               // width, in pixels
         200,                               // height, in pixels
-        SDL_WINDOW_FULLSCREEN      // flags - see below
-    );
+        0      // flags - see below
+    );*/
 
     // Check that the window was successfully created
     if (window == NULL) {
