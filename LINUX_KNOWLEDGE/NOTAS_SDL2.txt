@@ -1,3 +1,21 @@
+LA RECREACIÓN INNECESARIA DE VENTANAS: UNA LECCIÓN DE ARQUITECTURA DE LAS SDL2 QUE NO DEBES OLVIDAR
+===================================================================================================
+
+Si alguna vez, lanzando un test como testdraw2, ves que KMSDRM_CreateWindow() es llamada dos veces, es por lo que te voy a explicar en esta sección (y NO, NO DEBERÍA PASAR, sólo se tiene que llamar UNA vez).
+
+Después de llamar a SDL_CreateWindow()->KMSDRM_CreateWindow(), el programador que usa las SDL normalmente hará una llamada a SDL_CreateRenderer().
+
+En SDL_CreateRenderer(), lo que hacen las SDL es iterar en los render_driver disponibles, en el órden en que están guardados, que es:
+opengl, opengles2, opengles1, etc... y va intentando crear un renderer de cada uno de los tipos dispoibles.
+O sea que de SDL_CreateRenderer() pasarás a GL_CreateRenderer(), si no se consigue crear un renderer con eso pasa a intentarlo con GLES2_CreateRenderer(), si no se consigue pasará a intentarlo con GLES_CreateRenderer(), etc.
+
+GL_CreateRenderer(), GLES2_CreateRenderer(), GLES_CreateRenderer()... son todas muy parecidas: pillan el profile_mask, major y minor, y comparan esos valores con los que serían los valores correctos para crear un renderer OpenGL, o GLES2, o GLES. Y si no son los correctos, intentan recrear la ventana con los valores que se esperan. POR ESO ves las llamadas indeseadas a KMSDRM_CreateWindow().
+
+Así que no tengas miedo de coger el GDB y poner breakpoints en GL_CreateRenderer(), GLES2_CreateRenderer(), etc... para ver por qué recrean las ventanas: porque eso no debe suceder. 
+
+MIGRACIÓN DE SDL1 a SDL2
+========================
+
 -Tienes unos consejos fabulosos sobre cómo migrar de SDL 1 a SDL2 aquí:
 http://www.cs.umb.edu/~bazz/cms/index.php?id=sdl-sdl2-migration-experience
 A parte de la propia guía de migración oficial, claro.

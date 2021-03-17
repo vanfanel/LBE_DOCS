@@ -6120,40 +6120,31 @@ HEART OF DARKNESS en linux (HODE)
 
 Bajamos la última versión de los sources de:
 http://cyxdown.free.fr/hode/
-Los descromprimimos, y dentro de ellos creamos el director 3p, y ahí copiamos ini.h e ini.c de este repo:
-https://github.com/benhoyt/inih.git
 
 Editamos el Makefile:
 -Comentamos la línea SCALERS
 -Quitamos las referencias a los SCALERS de las líneas OBJS y DEPS
 -Quitamos el -g y añadimos los FLAGS de compilación que queramos según nuestra arquitectura.
 
-Editamos monsters.cpp y:
--Para arreglar lo de los enemigos infinitos en la cuarta pantalla de la primera fase, cambiamos las líneas:
-    t->codeData = codeData;
-    t->run = &Game::mstTask_main;
-Por las líneas
-    current->codeData = codeData;
-    current->run = &Game::mstTask_main;
-
 Editamos system_sdl2.cpp  y:
--Dejamos la línea
+
+-Dejamos las líneas
+static int _scalerMultiplier = 3;
 static const Scaler *_scaler = &scaler_xbr;
 como 
-static const Scaler *_scaler = NULL;
--Dejamos la línea
-static int _scalerMultiplier = 3;
-como
 static int _scalerMultiplier = 1;
+static const Scaler *_scaler = NULL;
+
 -Dejamos la línea
 desired.samples = 4096;
 como
 desired.samples = 512;
+
 -Comentamos las referencias a los scalers "nearest" y "xbr".
 -Y también añadimos SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
 -Puedes ajustar los controles del joystick en system_sdl2.cpp.
 Busca SDL_CONTROLLER_BUTTON y ahí asignas como quieras. Pero OJO, si ves SDL_CONTROLLER_BUTTON_B, no es el B del mando SN30 sino el B de un mando de XBOX360 que es como se detecta el mando en el ordenador. Así que mírate una foto del mando de 360 para hacerlo.
-De todos modos, yo lo tengo así, de arriba a abajo: X, A, B, Y. Y coincide con los controles de PSX.
+De todos modos, yo lo tengo así, de arriba a abajo: X, A, B, Y. Así coincide con los controles de PSX.
 
 En el directorio donde va el ejecutable, creamos hode.ini con el contenido:
 
