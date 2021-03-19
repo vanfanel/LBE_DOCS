@@ -835,7 +835,7 @@ make -f Makefile.libretro -j8 platform=rpi2
 
 Es el port original en el que colabora Ken Silverman!
 Clonamos su repo de:
-git clone --depth https://github.com/jonof/jfduke3d.git
+git clone --depth 1 https://github.com/jonof/jfduke3d.git
 git submodule update --init
 
 Compilamos con:
@@ -846,6 +846,13 @@ Mete el duke3d.grp en el mismo directorio que el ejecutable.
 Antes de lanzarlo, haz:
 sudo modprobe snd-seq
 Porque si no, se queja de que le falta /dev/snd/seq (Y no, no lo tengo blacklisted).
+
+Para tener música con .ogg: Mete los ogg en ./music o en ~/.jfduke3d/music
+
+Para tener música con fluidsynth (NO RECOMENDADO): pon en ~/.jfduke3d/duke3d.cfg, en la sección [Sound Setup]:
+MusicDevice = 6
+MusicParams = "audio.driver=alsa synth.default-soundfont=/usr/share/sounds/sf2/fluid.sf2"
+(la fuente que sea debe estar en /usr/share/sounds/sf2/ o no la encuentra...)
 
 *******Quakesmaspm en la Pi*******************************************************
 
