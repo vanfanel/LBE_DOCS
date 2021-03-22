@@ -863,7 +863,7 @@ git clone --depth 1 https://github.com/sezero/quakespasm.git
 
 Entramos en el directorio Quake, editamos Makefile para cambiar -lGL por -lOpenGL, y compilamos con:
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4 USE_SDL2=1 USE_CODEC_MP3=0 USE_CODEC_WAVE=0 
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4 USE_SDL2=1 USE_CODEC_MP3=0 USE_CODEC_WAVE=0
 
 OJO: Guarda su configuración en el subdirectorio id1 de donde tengas el ejecutable!
 Para tener 60FPS constantes, puedes editar id1/config.cfg y poner:
@@ -2472,6 +2472,21 @@ mkdir b3
 cd b3
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 make -j4
+
+***********RIGEL, el engine de Duke Nukem II************************************************************
+
+Dependencias previas (sólo necesarias para compilar, luego lo puedes desinstalar):
+libboost-program-options-dev
+
+Clonamos tu repo:
+git clone --depth 1 https://github.com/lethal-guitar/RigelEngine.git
+git submodule update --init --recursive
+
+mkdir b4
+cd b4
+
+Compilamos con GLES con:
+cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release ..
 
 ***********Compilar RAZE, el engine de Duke Nukem, Blood, Exhumed, etc para Linux****************************************************************
 
@@ -5210,12 +5225,12 @@ SDL_GL_SetSwapInterval(1);
 Compilamos con:
 make -j4 LINUX=1 SDL=2 DEBUG=0
 
-GZDOOM en la Raspberry Pi
-=========================
+GZDOOM (LZDOOM) en la Raspberry Pi
+==================================
 
 GZDoom usa OpenGL incluso en modo hardware, así que no va en la Pi. Usa el branch LZDOOM (Legacy ZDoom), que usa GLES2:
 
-git clone --depth 1 -b g3.3mgw https://github.com/drfrag666/gzdoom.git
+git clone --depth 1 https://github.com/drfrag666/gzdoom.git
 
 https://forum.zdoom.org/viewtopic.php?f=1&t=66675&start=30
 
@@ -5226,21 +5241,9 @@ en
 src/posix/sdl/sdlvideo.cpp
 justo antes de SDL_CreateWindow(), como siempre.
 
-LO PRIMERO, agregamos esto en CMakelists.txt para que se compile con O2 y no con O3, que falla en ARM.
-LO TENEMOS QUE PONER bajo las líneas iniciales, justo tras: project(GZDoom)
-
-string(REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
-string(REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
-
-AHORA editamos src/CMakeLists.txt (CUIDADO, que es otro makelist distinto!) y desactivamos la carga dinámica de fluidsynth y libmpg123, dejando a OFF
-este par de líneas:
-option( DYN_MPG123 "Dynamically load libmpg123" OFF )
-option( DYN_FLUIDSYNTH "Dynamically load fluidsynth" OFF ) 
-Además, comenta las líneas de FLUIDSYNTH_FOUND, MPG123_FOUND, toda esa sección entera.
-
 cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"  -DCMAKE_BUILD_TYPE=Release ..
 
-Y compilamos con make -j6
+Y compilamos con make -j4
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
 
