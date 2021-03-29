@@ -1,0 +1,64 @@
+(Explicación procedente de hacia la mitad de este documento:
+http://howto-pages.org/ModeLines/)
+
+Los valores HSyncStart, HSyncEnd y HTotal son posteriores a HDisplay. La cosa va así: al llegar a HDisplay, el cañón deja de pintar píxels,
+al llegar a HSyncStart el monitor empieza a enviar la señal de sincronización horizontal,
+al llegar a HSyncEnd el monitor deja de enviar la señal de sincronización horizontal.
+Al llegar a HTotal (el monitor ya ha avisado de que el cañón cambia de línea, para eso es la señal de hsync) el cañón empieza a pintar la nueva línea.
+
+PIXEL CLOCK es el número de píxels por segundo en total que se dibujan.
+
+La equivalencia entre los valores mencionados y lo que se usa en los EDID viene aquí:
+https://www.kernel.org/doc/Documentation/EDID/HOWTO.txt
+
+Por si acaso, esa equivalencia se copia aquí:
+
+X11:
+HTimings:  hdisp hsyncstart hsyncend htotal
+VTimings:  vdisp vsyncstart vsyncend vtotal
+
+EDID:
+#define XPIX hdisp
+#define XBLANK htotal-hdisp
+#define XOFFSET hsyncstart-hdisp
+#define XPULSE hsyncend-hsyncstart
+
+#define YPIX vdisp
+#define YBLANK vtotal-vdisp
+#define YOFFSET vsyncstart-vdisp
+#define YPULSE vsyncend-vsyncstart
+
+======================
+
+PROBLEMA 1)
+Sea un modo de vídeo de 640x480@59.0000Hz, con HTOTAL=800 y VTOTAL=497
+¿Cuál es el pixel clock?
+
+
+R)
+Tenemos un total de píxels por campo de HTOTAL x VTOTAL = 800 x 497 = 397600 
+Y sabemos que dibujamos 59.0000 campos por segundo.
+
+Así que en un segundo dibujamos: HTOTAL x VTOTAL x CAMPOS/Segundo = 397600 x 59.0000 = 23458400 pixels en un segundo.
+Pues 23458400 es el pixel clock. Que si lo pasamos a MHz sale: 23458400 / 1 000 000 = 23.4584 MHz. 
+
+=====================
+
+PROBLEMA 2)
+Sea una resolución de 640x480, con 800 píxels horizontales (HTOTAL), con un píxel clock de 23.46MHz.
+¿Cuál es la frecuencia horizontal?
+
+R)
+6MHz = pintamos 23.460.000 de píxels por segundo.
+Si una línea tiene 800 píxels de HTOTAL, EN UN SEGUNDO pintaremos 23.460.000 / 800 = 29325 líneas. O sea que la frecuencia horizontal son 29325 Hz.
+que son 29.235 KHz. 
+
+=====================
+
+PROBLEMA 3)
+Sea una resolución de 384 píxels horizontales, con un píxel clock de 6MHz.
+¿Cuál es la frecuencia horizontal?
+
+R)
+6MHz = pintamos 6 000 000 de píxels por segundo.
+Si una línea tiene 384 píxels, EN UN SEGUNDO pintaremos 6.000.000 / 384 = 15625 líneas. O sea que la frecuencia horizontal son 15625 Hz. 

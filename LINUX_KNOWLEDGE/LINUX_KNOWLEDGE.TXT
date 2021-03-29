@@ -5217,7 +5217,7 @@ Instalamos una dependencia previa (a parte de openal, justo encima lo tienes):
 sudo apt-get install libglm-dev
 
 Clonamos el repo de 
-https://github.com/ptitSeb/stuntcarremake.git
+git clone --depth 1 https://github.com/ptitSeb/stuntcarremake.git
 
 Añadimos en StuntCarRacer.cpp, debajo de la llamada a SDL_SetWindowTitle:
 SDL_GL_SetSwapInterval(1);
@@ -5238,12 +5238,26 @@ Puedes añadir
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 SDL_ShowCursor(SDL_DISABLE);
 en
-src/posix/sdl/sdlvideo.cpp
+src/common/platform/posix/sdl/sdlglvideo.cpp
 justo antes de SDL_CreateWindow(), como siempre.
+
+También debes poner a SDL_FALSE las llamadas de SDL_ShowCursor() en vim src/common/platform/posix/sdl/i_gui.cpp
 
 cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"  -DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j4
+
+Tenemos que copiar, al directorio de ~/doom:
+lzdoom
+lzdoom.pk3
+soundfonts
+
+Podemos elegir renderer pasándoselo al ejecutable así.
+Para usar el renderer software, que SÍ funciona en la Pi:
+./lzdoom +vid_preferbackend 2
+Para usar el renderer Vulkan, que no va bien en la Pi4 (y además tienes que establecer un tamaño de pantalla que corresponda a un modo de video soportado por el monitor: lo puedes establecer en ~/.config/lzdoom/lzdoom.ini usando las variables win_h y win_w):
+./lzdoom +vid_preferbackend 1
+Queda pendiente investigar el setting de lzdoom.ini: gl_es
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
 
@@ -6441,7 +6455,7 @@ mkdir ~/.q3a
 mkdir ~/.q3a/baseq3
 
 Entramos en los sources y, sin más, hacemos:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DSDL_DISABLE_IMMINTRIN_H" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DSDL_DISABLE_IMMINTRIN_H"  make -j4
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DSDL_DISABLE_IMMINTRIN_H" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DSDL_DISABLE_IMMINTRIN_H" make -j4
 
 En X86_64, con hacer make -j4, vale.
 
