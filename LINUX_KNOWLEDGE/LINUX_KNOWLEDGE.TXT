@@ -862,10 +862,12 @@ RIGHT X - TURNING - 12
 RIGHT Y - LOOKINGUPANDOWN - (-12) (Va en negativo para que NO invierta los ejes... ¡No estamos en un simulador de vuelo!)
 RIGHT TRIGGER - (+)FIRE
 --LOS BOTONES--
-A CROUCH
-B OPEN
-X INVENTORY
-Y JUMP
+A - CROUCH
+B - OPEN
+X - INVENTORY
+Y - JUMP
+BACK - MAP
+START - SHOW MENU
 
 *******Quakesmaspm en la Pi*******************************************************
 
