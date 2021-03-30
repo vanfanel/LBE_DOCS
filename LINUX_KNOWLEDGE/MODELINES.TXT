@@ -2,14 +2,17 @@
 http://howto-pages.org/ModeLines/)
 
 Los valores HSyncStart, HSyncEnd y HTotal son posteriores a HDisplay. La cosa va así: al llegar a HDisplay, el cañón deja de pintar píxels,
-al llegar a HSyncStart el monitor empieza a enviar la señal de sincronización horizontal,
-al llegar a HSyncEnd el monitor deja de enviar la señal de sincronización horizontal.
+al llegar a HSyncStart el monitor empieza a enviar el pulso (=señal) de sincronización horizontal,
+al llegar a HSyncEnd el monitor deja de enviar el pulso de sincronización horizontal.
 Al llegar a HTotal (el monitor ya ha avisado de que el cañón cambia de línea, para eso es la señal de hsync) el cañón empieza a pintar la nueva línea.
 
 PIXEL CLOCK es el número de píxels por segundo en total que se dibujan.
 HFREQ es la frecuencia horizontal, es decir, cuántas líneas se dibujan en un segundo.
 Podemos sacar PCLOCK como HTOTAL*VTOTAL*Número de campos por segundo
 Podemos sacar PCLOCK como HTOTAL*HFREQ (es decir: si conocemos los píxels totales por línea, y las líneas por segundo, podemos multiplicarlos para sacar los píxels totales por segundo).
+
+El BACK PORCH es el espacio (los píxels, vamos, aunque naturalmente no se pintan) entre HDISPLAY y HSYNC START, o sea, desde que el cañón deja de dibujar hasta que empieza el pulso de HSYNC.
+El FRONT PORCH es el espacio entre HSYNC END y HTOTAL, o sea, desde que acaba el pulso de HSYNC hasta que el cañón empieza a dibujar otra vez.
 
 La equivalencia entre los valores mencionados y lo que se usa en los EDID viene aquí:
 https://www.kernel.org/doc/Documentation/EDID/HOWTO.txt
