@@ -2499,6 +2499,7 @@ sudo apt-get install libvpx-dev
 -Primero, necesita OpenAL. Tienes las instrucciones de instalación en este documento.
 
 -Segundo, necesita ZMUSIC. Vamos con ZMUSIC pues:
+Instala libmpg123-dev y libvorbis-dev.
 Descarla los últimos sources estables de:
 https://github.com/coelckers/ZMusic/releases
 
@@ -2636,8 +2637,7 @@ Pon la resolución a 320x200 en el menú, fullscreen, vsync ON.
 
 NO soporta el Rise Of The Triad, sólo el Wolfenstein y el Spear of Destiny.
 
-Para mejorar la música y los gŕaficos, yo uso el pack ECWolf_hdmus_BrainStewX para la música (tienes que tener SDL2_Mixer compilado con soporte de OGG, 
-para lo que habrás tenido que instalar libogg-dev antes de configurar, compilar e instalar SDL2_Mixer, lo normal es que ya lo tengas porque es lo que usas para las músicas custom del SCUMMVM):
+Para mejorar la música y los gŕaficos, yo uso el pack ECWolf_hdmus_BrainStewX para la música (tienes que tener SDL2_Mixer compilado con soporte de OGG, para lo que habrás tenido que instalar libogg-dev antes de configurar, compilar e instalar SDL2_Mixer, lo normal es que ya lo tengas porque es lo que usas para las músicas custom del SCUMMVM):
 https://forum.zdoom.org/viewtopic.php?f=19&t=48633
 
 Y el pack hi-res sencillo de aquí para los gráficos de armas y enemigos, sonidos fx, etc:
@@ -3729,7 +3729,7 @@ vid_scalefilter a "linear"
 gp_thumbsticks 2 si tenemos dos analógicos, y gp_sensivity_horizontal a 32 (la mitad que la vertical, vamos, que si no
 es imposible apuntar bien en horizontal).
 
-La música tiene que ir en un WAD (no valen PK3 ni movidas de esas) y tienen que estar los .ogg o los .flac ahí dentro sin estar en ningún directorio ni nada, con sus extensiones y nombres originales. Y debes haber compilado SDL_Mixer con soporte para ogg o flac, claro.
+La música tiene que ir en un WAD (no valen PK3 ni movidas de esas) y tienen que estar los .ogg, los .mp3 o los .flac ahí dentro sin estar en ningún directorio ni nada, con sus extensiones y nombres originales. Y debes haber compilado SDL_Mixer con soporte para ogg o flac, claro.
 Vengo usando estas músicas, que ya vienen en WAD y todo listas: https://zandronum.com/forum/viewtopic.php?t=97
 
 Para el 8Bitdo receiver, los botones son:
@@ -5268,7 +5268,7 @@ Clonamos su repo o pillamos la última estable de:
 https://github.com/TurningWheel/Barony
 
 Instalamos una dependencia adicional que tiene:
-udo apt-get install rapidjson-dev
+sudo apt-get install rapidjson-dev
 
 Configuramos y compilamos con:
 mkdir b3

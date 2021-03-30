@@ -7,6 +7,9 @@ al llegar a HSyncEnd el monitor deja de enviar la señal de sincronización hori
 Al llegar a HTotal (el monitor ya ha avisado de que el cañón cambia de línea, para eso es la señal de hsync) el cañón empieza a pintar la nueva línea.
 
 PIXEL CLOCK es el número de píxels por segundo en total que se dibujan.
+HFREQ es la frecuencia horizontal, es decir, cuántas líneas se dibujan en un segundo.
+Podemos sacar PCLOCK como HTOTAL*VTOTAL*Número de campos por segundo
+Podemos sacar PCLOCK como HTOTAL*HFREQ (es decir: si conocemos los píxels totales por línea, y las líneas por segundo, podemos multiplicarlos para sacar los píxels totales por segundo).
 
 La equivalencia entre los valores mencionados y lo que se usa en los EDID viene aquí:
 https://www.kernel.org/doc/Documentation/EDID/HOWTO.txt
@@ -27,6 +30,9 @@ EDID:
 #define YBLANK vtotal-vdisp
 #define YOFFSET vsyncstart-vdisp
 #define YPULSE vsyncend-vsyncstart
+
+RECUERDA que, como la frencuencia horizontal (=número de líneas dibujadas por segundo) es el número total de píxels dibujados por segundo (=pixel clock) dividido entre el número de píxels por línea, es posible mantener la misma frecuencia horizontal si variamos el pixel clock y a la vez variamos el número de píxels por línea de tal manera que la proporción entre ambos se mantenga.
+Esto se usa para dibujar píxels "más anchos".
 
 ======================
 
