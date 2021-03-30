@@ -854,6 +854,19 @@ MusicDevice = 6
 MusicParams = "audio.driver=alsa synth.default-soundfont=/usr/share/sounds/sf2/fluid.sf2"
 (la fuente que sea debe estar en /usr/share/sounds/sf2/ o no la encuentra...)
 
+LOS CONTROLES CON 8BitDo SN30 Pro
+--LOS EJES--
+LEFT X - STRAFING - 50
+LEFT Y - MOVING - 50
+RIGHT X - TURNING - 12
+RIGHT Y - LOOKINGUPANDOWN - (-12) (Va en negativo para que NO invierta los ejes... ¡No estamos en un simulador de vuelo!)
+RIGHT TRIGGER - (+)FIRE
+--LOS BOTONES--
+A CROUCH
+B OPEN
+X INVENTORY
+Y JUMP
+
 *******Quakesmaspm en la Pi*******************************************************
 
 Ahora que SDL2 soporta OpenGL de escritorio sobre KMSDRM sin depender de las X11, es hora de volver a Quakespasm.
