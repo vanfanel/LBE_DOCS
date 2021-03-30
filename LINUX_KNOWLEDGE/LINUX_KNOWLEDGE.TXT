@@ -862,10 +862,11 @@ RIGHT X - TURNING - 12
 RIGHT Y - LOOKINGUPANDOWN - (-12) (Va en negativo para que NO invierta los ejes... ¡No estamos en un simulador de vuelo!)
 RIGHT TRIGGER - (+)FIRE
 --LOS BOTONES--
-A - CROUCH
+A - JUMP
 B - OPEN
 X - INVENTORY
-Y - JUMP
+Y - JETPACK
+RIGHT STICK - CROUCH
 BACK - MAP
 START - SHOW MENU
 
