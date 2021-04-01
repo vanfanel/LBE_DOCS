@@ -194,3 +194,8 @@ https://www.vector.co.jp/download/file/win95/util/fh212773.html
 Tienes muchos juegos ya traducidos y de todo en:
 http://www.pc98.org/main.html
 ...Pero están en .HDI y se necesita que estén en HDF. Así que no te valen por ahora.
+
+MONTAR LA IMÁGEN DE DISCO DEL CORE ZXNEXT PARA AÑADIRLE O QUITARLE COSAS
+========================================================================
+
+sudo mount -o loop,rw,offset=65536 boot.vhd /mnt

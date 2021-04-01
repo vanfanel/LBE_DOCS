@@ -1,3 +1,6 @@
+GEOMETRÍA
+=========
+
 (Explicación procedente de hacia la mitad de este documento:
 http://howto-pages.org/ModeLines/)
 
@@ -11,8 +14,30 @@ HFREQ es la frecuencia horizontal, es decir, cuántas líneas se dibujan en un s
 Podemos sacar PCLOCK como HTOTAL*VTOTAL*Número de campos por segundo
 Podemos sacar PCLOCK como HTOTAL*HFREQ (es decir: si conocemos los píxels totales por línea, y las líneas por segundo, podemos multiplicarlos para sacar los píxels totales por segundo).
 
-El BACK PORCH es el espacio (los píxels, vamos, aunque naturalmente no se pintan) entre HDISPLAY y HSYNC START, o sea, desde que el cañón deja de dibujar hasta que empieza el pulso de HSYNC.
-El FRONT PORCH es el espacio entre HSYNC END y HTOTAL, o sea, desde que acaba el pulso de HSYNC hasta que el cañón empieza a dibujar otra vez.
+El FRONT PORCH es el espacio (los píxels, vamos, aunque naturalmente no se pintan) entre HDISPLAY y HSYNC START, o sea, desde que el cañón deja de dibujar hasta que empieza el pulso de HSYNC.
+El BACK PORCH es el espacio entre HSYNC END y HTOTAL, o sea, desde que acaba el pulso de HSYNC hasta que el cañón empieza a dibujar otra vez.
+Como regla lógica, recuerda que los PORCH están "rodeando" el puslo de HSYNC: hay un PORCH antes de inicial el pulso de HSYNC y otro al acabar el pulso de HSYNC. Vamos, que los PORCH son para entrar y salir del pulso de HSYNC.
+
+La cosa va como así:
+
+HDISPLAY | FRONT PORCH | HSYNC START | HSYNC END | BACK PORCH | HTOTAL
+
+Las partes fuera del HDISPLAY se llaman en conjunto el HBLANK, y las partes fuera del VDISPLAY se llaman en conjunto el VBLANK.
+El porcentaje del HDISPLAY que es el HBLANK se llama HBLANK PERCENT, suele ser un 20-25%, así que, para un HDISPLAY de 640, y un HBLANK PERCENT de 25% nos sale un HTOTAL de 800.
+
+TIMINGS
+=======
+
+-El Píxel Clock (PCLOCK) es el número de píxels por segundo totales, sean visibles o no.
+-La frecuencia horiziontal (HFREQ) es el número de líneas por segundo. Normalmente los monitores soportan un rango de HFREQ entre un mínimo y un máximos, que llamaremos HFREQ_MIN y HFREQ_MAX.
+
+El "factor limitante" a la hora de que un monitor soporte o no soporte un modo de vídeo, es el HFREQ. 
+Por ello, derivamos el PCLOCK de HFREQ, y no al revés
+Así que si conocemos HFREQ que es el número total de líneas por segundo y HTOTAL que es el número total de píxels por línea, podemos obtener PCLOCK que es el número total de píxels por segundo:  
+PCLOCK = HFREQ * HTOTAL
+
+EL FORMATO DE LOS MODOS EDID
+============================
 
 La equivalencia entre los valores mencionados y lo que se usa en los EDID viene aquí:
 https://www.kernel.org/doc/Documentation/EDID/HOWTO.txt
@@ -37,7 +62,8 @@ EDID:
 RECUERDA que, como la frencuencia horizontal (=número de líneas dibujadas por segundo) es el número total de píxels dibujados por segundo (=pixel clock) dividido entre el número de píxels por línea, es posible mantener la misma frecuencia horizontal si variamos el pixel clock y a la vez variamos el número de píxels por línea de tal manera que la proporción entre ambos se mantenga.
 Esto se usa para dibujar píxels "más anchos".
 
-======================
+PROBLEMAS
+=========
 
 PROBLEMA 1)
 Sea un modo de vídeo de 640x480@59.0000Hz, con HTOTAL=800 y VTOTAL=497
@@ -71,3 +97,20 @@ Sea una resolución de 384 píxels horizontales, con un píxel clock de 6MHz.
 R)
 6MHz = pintamos 6 000 000 de píxels por segundo.
 Si una línea tiene 384 píxels, EN UN SEGUNDO pintaremos 6.000.000 / 384 = 15625 líneas. O sea que la frecuencia horizontal son 15625 Hz. 
+
+PROBLEMA 4)
+Sea una resolución de 640 píxels horizontales, con un HTOTAL de 800 píxels, y una frecuencia horizontal (HFREQ) de 31.469KHz.
+¿Cuál es el píxel clock?
+
+PCLOCK = HFREQ * HTOTAL
+Convertimos HFREQ a Hz para operar.
+PCLOCK = 31469 * 800 = 25175200 Hz = 25.175 MHz es el PCLOCK. 
+
+TRABAJANDO CON EL EDID DE UN MONITOR
+====================================
+
+Se puede volcar y ver con:
+cat /sys/class/drm/card1-HDMI-A-1/edid | edid-decode
+
+HDISPLAY 1280
+VDISPLAY 720

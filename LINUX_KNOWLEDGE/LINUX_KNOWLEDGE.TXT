@@ -2170,7 +2170,7 @@ Partition Table: amiga
 Disk Flags: 
 
 Number  Start            End                        Size                       File system        Name           Flags
- 1               258048B    754919423B     754661376B   affs1                     DH0            boot
+1       258048B          754919423B                 754661376B                 affs1              DH0            boot
 
 Ahora simplemente montamos con ambos parámetros y ¡funciona!
 
