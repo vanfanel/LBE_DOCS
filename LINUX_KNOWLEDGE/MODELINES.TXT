@@ -36,6 +36,11 @@ Por ello, derivamos el PCLOCK de HFREQ, y no al revés
 Así que si conocemos HFREQ que es el número total de líneas por segundo y HTOTAL que es el número total de píxels por línea, podemos obtener PCLOCK que es el número total de píxels por segundo:  
 PCLOCK = HFREQ * HTOTAL
 
+También por ser HFREQ el "factor limitante", podemos derivar VTOTAL de HFREQ y VREFRESH: si sabemos cuántas líneas se dibujan POR SEGUNTO (HFREQ) y sabemos cuántos campos se dibujan por segunto (VFREQ), podemos saber cuántas líneas se dibujan por campo:
+Duración de campo: 1/VREFRESH 
+Líneas por unidad de tiempo: HFREQ
+=> VTOTAL = HFREQ x 1 / VREFRESH = HFREQ / VREFRESH 
+
 EL FORMATO DE LOS MODOS EDID
 ============================
 
