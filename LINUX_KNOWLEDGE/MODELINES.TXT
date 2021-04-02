@@ -25,8 +25,8 @@ HDISPLAY | FRONT PORCH | HSYNC START | HSYNC END | BACK PORCH | HTOTAL
 Las partes fuera del HDISPLAY se llaman en conjunto el HBLANK, y las partes fuera del VDISPLAY se llaman en conjunto el VBLANK.
 El porcentaje del HDISPLAY que es el HBLANK se llama HBLANK PERCENT, suele ser un 20-25%, así que, para un HDISPLAY de 640, y un HBLANK PERCENT de 25% nos sale un HTOTAL de 800.
 
-TIMINGS
-=======
+TIMINGS (esta es la parte más importante a entender, de principio a fin, sin dejarse ningún detalle)
+====================================================================================================
 
 -El Píxel Clock (PCLOCK) es el número de píxels por segundo totales, sean visibles o no.
 -La frecuencia horiziontal (HFREQ) es el número de líneas por segundo. Normalmente los monitores soportan un rango de HFREQ entre un mínimo y un máximos, que llamaremos HFREQ_MIN y HFREQ_MAX.
@@ -36,10 +36,14 @@ Por ello, derivamos el PCLOCK de HFREQ, y no al revés
 Así que si conocemos HFREQ que es el número total de líneas por segundo y HTOTAL que es el número total de píxels por línea, podemos obtener PCLOCK que es el número total de píxels por segundo:  
 PCLOCK = HFREQ * HTOTAL
 
-También por ser HFREQ el "factor limitante", podemos derivar VTOTAL de HFREQ y VREFRESH: si sabemos cuántas líneas se dibujan POR SEGUNTO (HFREQ) y sabemos cuántos campos se dibujan por segunto (VFREQ), podemos saber cuántas líneas se dibujan por campo:
+También por ser HFREQ el "factor limitante", podemos derivar VTOTAL de HFREQ y VREFRESH: si sabemos cuántas líneas se dibujan por segundo (HFREQ) y sabemos cuántos campos se dibujan por segundo (VFREQ), podemos saber cuántas líneas se dibujan por campo:
 Duración de campo: 1/VREFRESH 
 Líneas por unidad de tiempo: HFREQ
 => VTOTAL = HFREQ x 1 / VREFRESH = HFREQ / VREFRESH 
+
+También podemos deducir la frecuencia vertical (o número de campos por segundo) si sabemos cuántas líneas se dibujan por segundo y
+cuántas líneas se dibujan por campo:
+=> VFREQ = HFREQ / VTOTAL
 
 EL FORMATO DE LOS MODOS EDID
 ============================
