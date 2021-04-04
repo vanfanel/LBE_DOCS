@@ -120,6 +120,3 @@ TRABAJANDO CON EL EDID DE UN MONITOR
 
 Se puede volcar y ver con:
 cat /sys/class/drm/card1-HDMI-A-1/edid | edid-decode
-
-HDISPLAY 1280
-VDISPLAY 720

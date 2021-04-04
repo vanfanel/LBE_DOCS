@@ -109,7 +109,7 @@ sudo apt-get install libevdev-dev --no-install-recommends
 
 Configuramos con:
 
-cmake -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DUSE_SDL2=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=OFF ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=OFF -DUSE_SDL2=OFF ..
 
 Copia todo el contenido de bin a ~/psx. No copies sólo el ejecutable, o te dará un segfault cuando lo ejecutes.
 
@@ -5300,8 +5300,8 @@ CRISPY DOOM
 Primero instalamos una dependencia suya para que pre-convierta TODOS los efectos de sonido y así el juego no pegue tirones:
 sudo apt-get install --no-install-recommends libsamplerate0-dev
 
-Ahora clonamos el repo de crispy-doom:
-https://github.com/fabiangreffrath/crispy-doom.git
+Nos bajamos la última estable de:
+https://github.com/fabiangreffrath/crispy-doom/releases
 
 Reemplazamos en src/i_video.c  todas las ocurrencias de
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
@@ -5317,7 +5317,7 @@ El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
 
 Para que la música digital vaya, nos bajamos un pack (de OGG, de FLAC o de lo que queramos y SDL_Mixer() tenga soporte para reproducir)
 y lo mandamos, por ejemplo, a ~/heretic/heretic-music, dejando ahí los OGG o los FLAC tirados sin más.
-Ahora editamos ~/.local/share/crispy-doom/crispy-heretic.cfg y en el setting music_pack_path ponemos el path: "/home/manuel/heretic/heretic-music"
+Ahora editamos ~/.local/share/crispy-doom/crispy-heretic.cfg y en el setting music_pack_path ponemos el path: "/home/pi/heretic/heretic-music"
 (O el que sea, vamos).
 Vengo usando estas músicas, que están en OGG directamente para bajar:
 https://zandronum.com/forum/viewtopic.php?t=97
@@ -5677,6 +5677,30 @@ ffplay -vcodec h264_mmal -i test.mkv
 Clonamos su repo:
 git clone --depth 1 https://skunkworks.kangaroopunch.com/skunkworks/singe.git
 
+COMPILAR LA VERSIÓN MODERNA DE HYPSEUS (HYPSEUS-SINGE)
+======================================================
+
+Bajamos la última estable de :
+
+https://github.com/DirtBagXon/hypseus-singe/releases/tag/v2.2.8
+
+Ahora, creamos directorio de compilación dentro de src, y usamos cmake y luego make:
+
+cd src
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
+ -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+
+make -j4
+
+Copia, al mismo directorio donde metas el ejecutable hypseus, los directorios fonts y pics.
+
+Los detalles sobre los dip switches están en dle21.txt, que acompaña a las roms del Dragon's Lair Enhanced 2.1
+Recuerda que ahí se cuentan los switches del 0 al 7. Se empieza de derecha a izquierda a contar.
+Por lo demás, el banco A es el 0, y el B es el 1.
+
 COMPILAR HYPSEUS (Daphne)
 ==========================
 
@@ -5686,13 +5710,15 @@ git clone --depth 1 https://github.com/btolab/hypseus.git
 Ahora, creamos directorio de compilación dentro de src, y usamos cmake y luego make:
 
 cd src
-mkdir b3
-cd b3
+mkdir b4
+cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
  -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
 
-make -j6
+make -j4
+
+Copia, al mismo directorio donde metas el ejecutable hypseus, los directorios fonts y pics.
 
 Los detalles sobre los dip switches están en dle21.txt, que acompaña a las roms del Dragon's Lair Enhanced 2.1
 Recuerda que ahí se cuentan los switches del 0 al 7. Se empieza de derecha a izquierda a contar.
