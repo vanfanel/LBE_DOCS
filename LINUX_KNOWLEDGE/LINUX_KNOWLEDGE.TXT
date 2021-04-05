@@ -5246,6 +5246,21 @@ make -j4 LINUX=1 SDL=2 DEBUG=0
 GZDOOM (LZDOOM) en la Raspberry Pi
 ==================================
 
+-Primero, necesita OpenAL. Tienes las instrucciones de instalación en este documento.
+
+-Segundo, necesita ZMUSIC. Vamos con ZMUSIC pues:
+Instala libmpg123-dev y libvorbis-dev.
+Descarla los últimos sources estables de:
+https://github.com/coelckers/ZMusic/releases
+
+Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+make -j4
+sudo make install
+
+Vamos a por LZDoom en sí.
 GZDoom usa OpenGL incluso en modo hardware, así que no va en la Pi. Usa el branch LZDOOM (Legacy ZDoom), que usa GLES2:
 
 git clone --depth 1 https://github.com/drfrag666/gzdoom.git
@@ -5267,13 +5282,22 @@ Y compilamos con make -j4
 
 Tenemos que copiar, al directorio de ~/doom:
 lzdoom
-lzdoom.pk3
+*.pk3
 soundfonts
+
+OJO! SI INTENTAS HACERLO FUNCIONAR EN VULKAN, mira los valores win_h y win_w en ~/.config/lzdoom/lzdoom.ini,
+que se tienen que corresponder con un modo de vídeo soportado o KMSDRM_Vulkan_CreateSurface fallará.
+(Viene puesto por defecto para crear una ventana de 1024x576... ¿Estamos locos o qué?)
+Por ejemplo, si el modo nativo de tu monitor es 720p (1280x720), dejarías los valores win_w y win_h así:
+win_w=1280
+win_h=720
+Y luego ya, dentro del juego, lo pones a 320x200.
 
 Podemos elegir renderer pasándoselo al ejecutable así.
 Para usar el renderer software, que SÍ funciona en la Pi:
 ./lzdoom +vid_preferbackend 2
-Para usar el renderer Vulkan, que no va bien en la Pi4 (y además tienes que establecer un tamaño de pantalla que corresponda a un modo de video soportado por el monitor: lo puedes establecer en ~/.config/lzdoom/lzdoom.ini usando las variables win_h y win_w):
+Para usar el renderer Vulkan, tienes que establecer un tamaño de pantalla que corresponda a un modo de video soportado por el monitor. Lo puedes establecer en ~/.config/lzdoom/lzdoom.ini usando las variables win_h y win_w.
+Y le pasarías este parámetro a lzdoom para que use el renderer Vulkan:
 ./lzdoom +vid_preferbackend 1
 Queda pendiente investigar el setting de lzdoom.ini: gl_es
 
