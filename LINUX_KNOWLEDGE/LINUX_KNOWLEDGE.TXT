@@ -328,11 +328,11 @@ Creamos el directorio donde va a ir el juego, por ejemplo ~/abadia
 Y ahí copiamos los directorios "roms", "fonts" y "res" que vienen con los sources en su directorio "build".
 Copiamos también el ejecutable "abbey", y ya debería ir. No necesitas nada más externo.
 
-******RussianDoom, un sourceport peculiar en ruso************************************************************************************************************************
+******RussianDoom, un sourceport peculiar en ruso**************************************************************************************
 
-clonamos su repo
+Bajamos la última estable de:
 
-git clone --depth 1 https://github.com/JNechaevsky/russian-doom.git
+https://github.com/JNechaevsky/russian-doom/releases
 
 En src/i_video.h, desactivamos el modo hires, dejando la línea del define así:
 #define hires a 0
@@ -353,7 +353,7 @@ por simplemente
 if (false)
 De ese modo se usa la rutina built-in para convertir los sonidos, en vez de la lentísima SDL_BuildAudioCVT()
 
-Editamos configure.ac, cambiamos el OPT_LEVEL a 3 y quitamos el -g.
+Editamos configure.ac y quitamos el -g.
 Ejecutamos ./autogen.sh
 Configuramos con:
 
@@ -5816,12 +5816,12 @@ SDL_ShowCursor(SDL_DISABLE);
 Ahora edita el Makefile y:
 -Pon sound a NONE si no quieres sonido en modo texto (sin SDL). En sfrotz el sonido va por las SDL,
  así que usa SFROTZ para los juegos que tienen sonido, y ya.
--Comenta la línea de los CFLAGS del -g, y en la que tiene el -O3, y añade los flags propios de la Pi4.
+-Comenta la línea de los CFLAGS del -g, y en la que tiene el -O3, y añade el flag -fsigned-char y los flags propios de la Pi4.
 
 Ahora compila con "make frotz" (hay "make sfrotz" para SDL, etc...)
 Y sudo make install
 
-Para compilar SFROTZ, no te olvides de pasar el CFLAG  -fsigned-char, o el cursor aparecerá descolocado. En el futuro no debería ser necesario.
+Para compilar SFROTZ, no te olvides de pasar el CFLAG -fsigned-char, o el cursor aparecerá descolocado. En el futuro no debería ser necesario.
 
 Hay juegos con sonido, gráficos, etc.. Estos añadidos van en ficheros .BLB, que te puedes bajar de aquí ya preparados:
 http://www.ifarchive.org/indexes/if-archiveXinfocomXmediaXblorb.html
@@ -5839,7 +5839,7 @@ Tienes juegos de THE QUILL en .Z80 en: http://ifmirror.russotto.net/indexes/if-a
 
 
 COMPILAR FROTZ VERSIÓN SDL, QUE SOPORTA ACENTOS, SIN INSTALAR LIBJPEG EN EL SISTEMA
-=================================================================================
+===================================================================================
 
 Empezamos compilando libjpeg-turbo, que nos va a hacer falta la versión estática de las librerías. Pillamos la última versión estable de su repo:
 https://github.com/libjpeg-turbo/libjpeg-turbo/releases

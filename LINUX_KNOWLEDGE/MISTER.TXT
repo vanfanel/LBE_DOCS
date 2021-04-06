@@ -153,6 +153,9 @@ Tienes que tener una conexión cableada con IP estática en esa IP en el ordenad
 y tener el ordenador preparado para compartir la conexión WIFI, como haces para la Raspberry Pi (Ver en LINUX_KNOWLEDGE.TXT)
 Tienes que ejecutar el comando para tener la IP estática.
 
+***********Montar el VHD de MSDOS (AO486) para la MiSTer********************************************************************************
+
+mount -o loop,offset=32256 msdos622.vhd mnt
 
 ***********Montar un VHD de MSX para la MiSTer******************************************************************************************
 
