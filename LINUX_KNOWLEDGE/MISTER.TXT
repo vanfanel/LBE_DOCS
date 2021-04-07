@@ -155,7 +155,7 @@ Tienes que ejecutar el comando para tener la IP estática.
 
 ***********Montar el VHD de MSDOS (AO486) para la MiSTer********************************************************************************
 
-mount -o loop,offset=32256 msdos622.vhd mnt
+mount -o loop,offset=32256 msdos622.vhd /mnt
 
 ***********MONTAR LA IMÁGEN DE DISCO DEL CORE ZXNEXT PARA AÑADIRLE O QUITARLE COSAS*****************************************************
 
