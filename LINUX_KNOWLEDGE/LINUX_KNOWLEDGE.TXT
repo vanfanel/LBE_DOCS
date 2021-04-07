@@ -495,15 +495,19 @@ Clonamos su repo:
 
 git clone --depth 1 https://github.com/sergiou87/open-supaplex.git
 
+Editamos src/sdl2/video.c y:
+-Dejamos SDL_WINDOW_FULLSCREEN como SDL_WINDOW_FULLSCREEN_DESKTOP, y quitamos el #ifdef donde está contenido,
+ de manera que se aplique ese flag a TODAS las plataformas.
+-Cambiamos todas las demás ocurrencias de SDL_WINDOW_FULLSCREEN por SDL_WINDOW_FULLSCREEN_DESKTOP. 
+-Añadimos antes de la llamada a SDL_CreateRenderer(): SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
 Entramos en el directorio linux, editamos Makefile y añadimos a los CFLAGS:
 
 -O2 -march=armv8-a+crc+simd -mtune=cortex-a72
 
-Compilamos.
+Compilamos con make -j4
 
-Nos bajamos la release de Windows de aquí:
-https://github.com/sergiou87/open-supaplex/releases
-Y copiamos el ejecutable de Linux ahí dentro, y listo.
+Copiamos el contenido del directorio resources, tal cual, a ~/supaplex, junto con el ejecutable.
 
 
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)**********************************************************************************************************
