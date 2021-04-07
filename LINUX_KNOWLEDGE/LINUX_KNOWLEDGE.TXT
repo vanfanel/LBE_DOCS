@@ -5310,12 +5310,12 @@ Clonamos su repo o pillamos la última estable de:
 https://github.com/TurningWheel/Barony
 
 Instalamos una dependencia adicional que tiene:
-sudo apt-get install rapidjson-dev
+sudo apt-get install libphysfs-dev rapidjson-dev --no-install-recommends
 
 Configuramos y compilamos con:
-mkdir b3
-cd b3
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DFMOD_ENABLED=OFF -DCMAKE_BUILD_TYPE=Release ..
+mkdir b4
+cd b4
+EDITOR_ENABLED=0 cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DFMOD_ENABLED=OFF -DOPENAL_ENABLED=ON -DCMAKE_BUILD_TYPE=Release -Wno-dev ..
 make -j4
 
 CRISPY DOOM
