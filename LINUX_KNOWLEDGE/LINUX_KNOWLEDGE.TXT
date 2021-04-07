@@ -4936,7 +4936,7 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs -j8
 Para instalar kernel, módulos y demás, sigue ya con: https://www.raspberrypi.org/documentation/linux/kernel/building.md
 
 DEVILUTIONX, Diablo en Linux
-=========================
+============================
 
 Dependencias previas:
 sudo apt-get install libsodium-dev --no-install-recommends
@@ -4951,20 +4951,9 @@ cmake -DVERSION_NUM=<NÚMERO_DE_VERSIÓN> -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN
 Compilamos y metemos en el directorio ~/diablo el ejecutable, junto con diabdat.mpq y con la fuente CharisSILB.ttf que viene incluida en los sources.
 
 La primera vez que ejecutemos el juego, se creará el fichero de configuración en ~/.local/share/diasurgical/diablo.ini
-Nos interesa saber:
---scaling quality: 0 es NEAREST, 1 es LINEAR (nuestro favorito) y 2 es ANISOTROPIC (DirectX, bah).
---original aspect ratio: que el juego se vea en 4:3. Si lo ponemos a 0, se verá en 16:9 si nuestra pantalla es de 16:9.
---upscale: que si queremos que se escale la ventana a pantalla completa o no. Así que si lo ponemos a 0 y "original aspect ratio" a 0, la ventana es estirada por SDL2, perdiéndose el aspect ratio original.
+Para saber más de su contenido, mira esto: https://github.com/diasurgical/devilutionX/wiki/DevilutionX-diablo.ini-configuration-guide
 
-O sea, si lo queremos en 4:3, con escalado linear y conservando el ratio original, haremos:
-upscale=1
-scaling quality=1
-original aspect ratio=1
-
-Y si lo queremos en 16:9:
-upscale=1
-scaling quality=1
-original aspect ratio=0
+Si quieres que vaya a 16:9, pon "Fit to Screen=1"
 
 En 16:9 usa un 10% más de CPU, y upscaling es por hardware así que no usa nada de CPU extra.
 
