@@ -97,6 +97,11 @@ sudo rm /etc/apt/sources.list.d/vscode.list
 sudo rm /etc/apt/trusted.gpg.d/microsoft.gpg
 sudo apt update
 
+******Ver los modos soportados de una pantalla/monitor (EDID)****************************************************************
+
+Se puede volcar y ver con:
+cat /sys/class/drm/card1-HDMI-A-1/edid | edid-decode
+
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
 Clonamos duckstation:
@@ -871,6 +876,21 @@ LEFTSHOULDER - PREVIOUS WEAPON
 RIGHTSHOULDER - NEXT WEAPON
 BACK - MAP
 START - SHOW MENU
+
+*******vkQuake en la Pi***********************************************************
+
+Instalamos unas dependencias previas:
+sudo apt-get install libmad0-dev --no-install-recommends
+
+Bajamos la última estable de:
+https://github.com/Novum/vkQuake/releases
+
+Editamos Makefile y quitamos -lX11
+
+cd Quake
+make -j4
+
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4
 
 *******Quakesmaspm en la Pi*******************************************************
 
@@ -4937,7 +4957,7 @@ Hay que tener baserom.us.z64 en el directorio raiz.
 
 Se compila para la Pi con:
 
-make TARGET_RPI=1 -j3
+make TARGET_RPI=1 -j4
 
 El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
 
