@@ -4942,11 +4942,11 @@ Dependencias previas:
 sudo apt-get install libsodium-dev --no-install-recommends
 También necesita SDL_ttf.
 
-Clonamos:
-git clone --depth 1 https://github.com/diasurgical/devilutionX.git
+Bajamos la última estable de:
+https://github.com/diasurgical/devilutionX/releases
 
-Configuramos:
-cmake -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+Configuramos con:
+cmake -DVERSION_NUM=<NÚMERO_DE_VERSIÓN> -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
 Compilamos y metemos en el directorio ~/diablo el ejecutable, junto con diabdat.mpq y con la fuente CharisSILB.ttf que viene incluida en los sources.
 
