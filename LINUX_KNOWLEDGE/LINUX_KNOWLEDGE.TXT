@@ -678,7 +678,26 @@ El hilo en que se hacía referencia a esto es el siguiente:
 
 https://github.com/raspberrypi/firmware/issues/354
 
-*******DOSBOX en la Raspberry Pi*******************************************************************************************************************************
+
+*******DOSBOX STAGING en la Pi***************************************************************************************************
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/dosbox-staging/dosbox-staging.git
+
+Instalamos unas dependencias previas:
+sudo apt-get install libopusfile-dev --no-install-recommends
+
+mkdir b4
+cd b4
+
+Configuramos con:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" \
+meson .. -Duse_opengl=false
+
+Compilamos con:
+ninja -j4
+
+*******DOSBOX en la Pi**************************************************************************************************************
 
 Clonamos el repo principal, que sigue estando en SF:
 
