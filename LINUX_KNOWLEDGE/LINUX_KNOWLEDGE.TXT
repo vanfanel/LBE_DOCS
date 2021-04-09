@@ -433,20 +433,27 @@ NOS DARÁ ERRORES CON VkImageView. Cada vez que nos de un error de esos, editamo
 Ahora instalamos:
 sudo make install
 
-******Compilando OpenBOR*********************************************************************************************************************************************
+******Compilando OpenBOR*********************************************************************
 
 Clonamos los sources de:
 git clone --depth 1 https://github.com/DCurrent/openbor.git
 
-Lo primero es que gcc 5.x se pone por defecto en -std=gnu11, y como ha cambiado la manera de declarar las funciones inline, necesitamos ponernos en -std=gnu99, lo cual le pasamos en el Makefile, añadiéndolo a CFLAGS.
-También quitamos el -Werror para que no trate los warnings como errores.
+Entramos en openbor/engine
+Editamos Makefile y:
+-Quitamos el -Werror para que no trate los warnings como errores.
+-Comentamos la línea de STRIP debajo de "ifdef BUILD_LINUX"
 
 Antes de compilarlo, ejecutamos version.sh para que nos cree version.h
 
 En el PC:
-make BUILD_LINUX=1 GCC_TARGET=64 -j4
+make BUILD_LINUX_LE_x86_64=1 GCC_TARGET=64 -j4
 
-******Another World en la Raspberry Pi***********************************************************************************************************************************
+Para meter los juegos:
+La primera vez que ejecutas OpenBOR, te crea entre otros un directorio llamado Paks. Mete los .pak ahí, y listo.
+
+El mítico juego de HE-MAN lo tienes en su página oficial: https://gamejolt.com/games/he-man/19434
+
+******Another World en la Raspberry Pi******************************************************
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
