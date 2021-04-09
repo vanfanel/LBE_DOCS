@@ -449,6 +449,9 @@ Editamos Makefile y:
 
 Antes de compilarlo, ejecutamos version.sh para que nos cree version.h
 
+En la Raspberry Pi:
+make BUILD_LINUX_LE_arm=1 GCC_TARGET=64 -j4
+
 En el PC:
 make BUILD_LINUX_LE_x86_64=1 GCC_TARGET=64 -j4
 
@@ -461,6 +464,8 @@ NO TE OLVIDES de dejar SOFTWARE RENDERER a SIMPLE 2X y el HARDWARE RENDERER a BI
 
 Para lanzarlo sin pasar por el lanzador:
 ./OpenBOR Paks/HE-MAN.PAK
+
+NO HAY opciones "generales", cada juego gestiona las suyas desde su menú. Son todos parecidos, anyway.
 
 Puedes lanzar los juegos desempaquetados, pero no hay ventaja en ello. Para hacerlo:
 Extrae el juego con borpak, una utilidad que viene en las tools de OpenBOR y que te tienes que compilar. Simplemente es hacer "borpak juego.pak" y te lo deja descomprimido en el directorio en el que estés. Sólo te interesa el directorio "data", TODOS los juegos tienen uno.
