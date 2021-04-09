@@ -5150,7 +5150,7 @@ La otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarl
 Configuramos love con:
 cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
-make y sudo make install
+Instala copiando libliblove.so y love donde quieras.
 
 INSTALAR JACKD2 EN LA RASPBERRY PI
 =================================
