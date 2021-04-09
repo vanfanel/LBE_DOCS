@@ -459,6 +459,19 @@ El mítico juego de HE-MAN lo tienes en su página oficial: https://gamejolt.com
 EN LAS OPCIONES DEL HE-MAN:
 NO TE OLVIDES de dejar SOFTWARE RENDERER a SIMPLE 2X y el HARDWARE RENDERER a BILINEAR, activar la pantalla completa y el vsync.
 
+Para lanzarlo sin pasar por el lanzador:
+./OpenBOR Paks/HE-MAN.PAK
+
+Puedes lanzar los juegos desempaquetados, pero no hay ventaja en ello. Para hacerlo:
+Extrae el juego con borpak, una utilidad que viene en las tools de OpenBOR y que te tienes que compilar. Simplemente es hacer "borpak juego.pak" y te lo deja descomprimido en el directorio en el que estés. Sólo te interesa el directorio "data", TODOS los juegos tienen uno.
+Pilla el directorio "data" del juego, y lo copias en el mismo directorio donde tengas el ejecutable del OpenBOR.
+Crea un archivo de 0 bytes llamado bor.pak, y lo metes en Packs.
+Total, que tienes que tener:
+OpenBOR
+Paks/bor.pak (0 bytes)
+data (del juego que sea)
+Y ya puedes hacer "./OpenBOR Paks/bor.pak" y te lanzará el juego desempaquetado.
+
 ******Another World en la Raspberry Pi******************************************************
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
