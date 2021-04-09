@@ -3870,7 +3870,18 @@ si no queremos colgar el sistema.
 Podemos comprobar cómo se usa la swap con "free" mientras se linka.
 
 **************Tyrian en la Raspberry Pi**********************************************************************************************
-Nos bajamos el branch para SDL2 del OpenTyrian, y MUY IMPORTANTE, compilamos así:
+
+Clonamos el repo de:
+
+https://github.com/opentyrian/opentyrian.git
+
+Editamos src/video.c y:
+-Añadimos SDL_RENDERER_PRESENTVSYNC a SDL_CreateRenderer()
+-Añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear"); antes de la llamada a SDL_CreateRenderer()
+
+Editamos src/nortsong.c y cambiamos la función JE_setTimerInt() para que jasondelay sea lo que queramos en milisegundos.
+(No puede ser constante sino lo que nos falta para completar un frame, es decir, lo que nos falta para llegar
+a ~16ms si estamos en un modo de ~60Hz). Esto queda pendiente investigarlo.
 
 make -j5 release
 
