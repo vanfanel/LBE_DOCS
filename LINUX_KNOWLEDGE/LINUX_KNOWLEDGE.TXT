@@ -5140,15 +5140,15 @@ LOVE2D en la Raspberry Pi (love)
 ============================
 
 Bajamos los últimos source estables de:
-https://bitbucket.org/rude/love/downloads/
+https://github.com/love2d/love/releases
 
 Satisfacemos algunas dependencias.
 sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libtheora-dev libmpg123-dev libluajit-5.1-dev luajit
 
-Las otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarlas).
+La otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarlas).
 
-Configuramos love:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --prefix=/usr
+Configuramos love con:
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 
 make y sudo make install
 
