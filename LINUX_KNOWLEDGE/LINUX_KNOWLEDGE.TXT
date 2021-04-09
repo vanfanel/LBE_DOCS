@@ -442,6 +442,10 @@ Entramos en openbor/engine
 Editamos Makefile y:
 -Quitamos el -Werror para que no trate los warnings como errores.
 -Comentamos la línea de STRIP debajo de "ifdef BUILD_LINUX"
+-Quitamos el -g de la segunda línea de CFLAGS que hay al inicio de la sección Compiler Flags, y ahí mismo
+ añadimos los CFLAGS de la Pi4 si vamos a ocmpilar para ella: -march=armv8-a+crc+simd -mtune=cortex-a72
+-Para que cuando compilemos veamos los flags, nos vamos a la sección "Rules to manage Files and Libraries for SDL"
+ y debajo del "@echo Compiling" de los .c, metemos: @echo $(CC) $(CFLAGS) -c $<
 
 Antes de compilarlo, ejecutamos version.sh para que nos cree version.h
 
@@ -452,6 +456,8 @@ Para meter los juegos:
 La primera vez que ejecutas OpenBOR, te crea entre otros un directorio llamado Paks. Mete los .pak ahí, y listo.
 
 El mítico juego de HE-MAN lo tienes en su página oficial: https://gamejolt.com/games/he-man/19434
+EN LAS OPCIONES DEL HE-MAN:
+NO TE OLVIDES de dejar SOFTWARE RENDERER a SIMPLE 2X y el HARDWARE RENDERER a BILINEAR, activar la pantalla completa y el vsync.
 
 ******Another World en la Raspberry Pi******************************************************
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
