@@ -6716,6 +6716,9 @@ Y vamos que está bien con:
 REVENGE OF TITANS EN LA RASPBERRY PI
 ====================================
 
+Hay un tutorial aquí:
+https://www.raspberrypi.org/forums/viewtopic.php?t=290589
+
 El juego usa tres librerías cuyas versiones aarch64 necesitas: 
 liblwjgl.so
 libopenal.so
@@ -6734,7 +6737,26 @@ git clone --depth 1 https://github.com/jjuran/metamage_1
 
 Hacemos:
 make ams-linux
-make ams-linux-inst
+(Para X11, make ams-x11)
+
+Para lanzar el programa demo, desde el directorio de los sources:
+EXHIBIT_INTERACT=interact-x11 PATH="$PWD/var/demo:$PWD/var/out:$PATH" AMS_BIN=var/links/ams-68k-bin/bin AMS_LIB=var/links/ams-68k-bin/lib AMS_MNT=var/links/ams-68k-bin/mnt var/out/minivx -Z v/bin/ams.vx
+
+Para lanzar el Tic-tac-toe, que es otra demo, simplemente tenemos que añadir AMS_APPNAME=Tic-tac-toe
+Lo mismo con "Nyanochrome Cat":
+
+EXHIBIT_INTERACT=interact-x11 PATH="$PWD/var/demo:$PWD/var/out:$PATH" AMS_BIN=var/links/ams-68k-bin/bin AMS_LIB=var/links/ams-68k-bin/lib AMS_MNT=var/links/ams-68k-bin/mnt AMS_APPNAME=Tic-tac-toe var/out/minivx -Z v/bin/ams.vx
+
+EXHIBIT_INTERACT=interact-x11 PATH="$PWD/var/demo:$PWD/var/out:$PATH" AMS_BIN=var/links/ams-68k-bin/bin AMS_LIB=var/links/ams-68k-bin/lib AMS_MNT=var/links/ams-68k-bin/mnt AMS_APPNAME="Nyanochrome Cat" var/out/minivx -Z v/bin/ams.vx
+
+¿CÓMO FUNCIONA TODO ESTO?
+Pues ams.vx, que es un script escrito en Varyx (??), que llama a exhibit que a su vez va llamando a otras herramientas que ya serían ejecutables nativos de Linux.
+Por ejemplo, si miras los ejemplos que he puesto, interact-x11 es el frontend x11. (Idealmente habría un interact-sdl2).
+Lo que nos interesa son los frontent, es decir, interact-*.
+
+Y si quisieras instalar system-wide:
+
+sudo make ams-linux-inst
 
 EJECUTAR VKCUBE SIN LAS X
 =========================
