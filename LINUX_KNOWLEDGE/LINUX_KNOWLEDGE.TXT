@@ -185,6 +185,11 @@ SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y
 Añade en config.txt: hdmi_enable_4kp60=1
 Se supone que hace que la GPU vaya un pelín más rápido...
 
+******Juegos JAVA que usan GL/GLES en la Raspberry Pi***************************************************************
+
+Lo primero sería compilar esta librería:
+https://github.com/LWJGL/lwjgl3
+
 ******TIC-80 FANTASY CONSOLE para Raspberry Pi como core libretro***************************************************
 
 Clonamos su repo:
@@ -3906,17 +3911,38 @@ Clonamos el repo de:
 
 https://github.com/opentyrian/opentyrian.git
 
-Editamos src/video.c y:
+Editamos src/nortsong.c y cambiamos la función JE_setTimerInt() y JE_resetTimerInt() y simplemente dejamos esto ambas funciones:
+jasondelay = 0;
+(Con esto conseguimos que no se espere a ningún timer interno).
+
+Editamos src/video.c, y:
+-Repetimos la secuencia de llamadas:
+       SDL_RenderClear(main_window_renderer);
+       SDL_RenderCopy(main_window_renderer, main_window_texture, NULL, &dst_rect);
+       SDL_RenderPresent(main_window_renderer);
+(Con esto conseguimos que cada frame se pinte dos veces, con lo que el juego va a la mitad de frames que nuestro modo de vídeo,
+así que irá a unos 30FPS suaves que no está mal).
 -Añadimos SDL_RENDERER_PRESENTVSYNC a SDL_CreateRenderer()
 -Añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear"); antes de la llamada a SDL_CreateRenderer()
 
-Editamos src/nortsong.c y cambiamos la función JE_setTimerInt() para que jasondelay sea lo que queramos en milisegundos.
-(No puede ser constante sino lo que nos falta para completar un frame, es decir, lo que nos falta para llegar
-a ~16ms si estamos en un modo de ~60Hz). Esto queda pendiente investigarlo.
+Editamos Makefile y añadimos al lado de -O2 los flags de la Pi4:
+-march=armv8-a+crc+simd -mtune=cortex-a72
 
-make -j5 release
+Compilamos con:
+make -j4
 
-Si no ponemos lo de release, compilará en modo debug y nos joderemos de lo leeeeeeeento que es.
+Se ejecuta sin más, con los datos del juego original en el mismo directorio que el ejecutable.
+Puedes bajar el original de:
+https://exodos.the-eye.us/public/eXo/
+Los archivos originales de DOS vienen todos en mayúsculas, los puedes pasar a minúsculas con:
+sudo rename 'y/A-Z/a-z/' * 
+
+**************Extraer datos de CUALQUIER ejeculable*******************************************************************************
+
+Usa Universal Extractor:
+https://github.com/Bioruebe/UniExtract2/releases
+
+Es de Windows, usa WINE.
 
 **************VIM autocompletion**************************************************************************************************
 
