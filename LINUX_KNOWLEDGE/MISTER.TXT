@@ -32,6 +32,12 @@ v=loglevel=4 usbhid.jspoll=1
 Y reincia. Comprueba que todo está bien con:
 systool -m usbhid -A jspoll
 
+TECLADO EN CASTELLANO EN LA CONSOLA DE LINUX
+============================================
+
+Añade al final de /etc/profile:
+loadkeys es
+
 ROM JIFFYDOS PARA EL C64
 ========================
 
