@@ -159,6 +159,19 @@ Tienes que tener una conexión cableada con IP estática en esa IP en el ordenad
 y tener el ordenador preparado para compartir la conexión WIFI, como haces para la Raspberry Pi (Ver en LINUX_KNOWLEDGE.TXT)
 Tienes que ejecutar el comando para tener la IP estática.
 
+CONECTAR POR WIFI USANDO UN PINCHO USB WIFI SOPORTADO POR EL KERNEL
+===================================================================
+
+Edita /media/fat/linux/wpa_supplicant.conf y pon ahí tu config wifi en el formato correcto, que es:
+ctrl_interface=/run/wpa_supplicant
+update_config=1
+country=ES
+
+network={
+        ssid="tu_ssid_aqui"
+        psk="tu_clave_aqui"
+}
+
 ***********Montar el VHD de MSDOS (AO486) para la MiSTer********************************************************************************
 
 mount -o loop,offset=32256 msdos622.vhd /mnt
