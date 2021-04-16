@@ -3779,6 +3779,27 @@ para que el engine los detecte. Así, opening.ogv debe ser Opening.ogv, y good_e
 Edita settings.ini y pon VSync y Fullscreen a true, y "UseHQModes" a false.
 Si los colores ROJO y AZUL se ven invertidos en los vídeos, desactiva "EnhancedScaling" en settings.ini
 
+*************HYDRA CASTLE LABYRINTH EN LA PI**************************************************************************************
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/ptitSeb/hydracastlelabyrinth.git
+
+Editamos src/sdl2/graphics.c y:
+-En la llamada a SDL_CreateRenderer(), añadimos SDL_RENDERER_PRESENTVSYNC
+-Antes de eso, añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
+Compilamos con:
+mkdir b4
+cd b4
+cmake -DUSE_SDL2=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+make -j4
+
+Copiamos el directorio data que viene con los sources al mismo directorio donde metamos el ejecutable.
+
+Para que se ejecute en modo fullscreen, sin cambiar resolución, sin escalado XBRZ y con escalado 1x, ejecutamos con:
+./hcl -f -d -x1 --no-xbrz
+
 *************Commander Genius en la Raspberry Pi**********************************************************************************
 
 Podemos bajarnos una release (lo más recomendado), la última de aquí:
