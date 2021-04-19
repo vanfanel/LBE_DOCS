@@ -5866,6 +5866,29 @@ ffplay -vcodec h264_mmal -i test.mkv
 Clonamos su repo:
 git clone --depth 1 https://skunkworks.kangaroopunch.com/skunkworks/singe.git
 
+AMBERMOON.NET EN LINUX
+======================
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/Pyrdacor/Ambermoon.net.git
+
+Nos instalamos el DOTNET SDK de nuestra arquitectura. Se baja de:
+https://dotnet.microsoft.com/download/dotnet/3.1
+Hay dos descargas: el SDK y el RUNTIME. El SDK incluye el RUNTIME pero ocupa más. Para compilar, necesitamos el SDK,
+y luego ya para jugar nos vale con el RUNTIME.
+
+Entramos en el directorio del SDK y compilamos el proyecto Ambermoon.net con:
+./dotnet build ~/src/Ambermoon.net/Ambermoon.net.sln 
+
+Copiamos el RUNTIME de dotnet al directorio de Ambermoon.net (el SDK completo no hace falta, pero funcionaría igual)
+y ejecutamos el DLL con:
+./dotnet Ambermoon.net/bin/Debug/netcoreapp3.1/Ambermoon.net.dll
+(Alternativamente, podríamos ejecutar el projecto directamente sin compilar con: dotnet run -p Ambermoon.net/Ambermoon.net.csproj)
+
+Tenemos que tener los .ADF (llamados Amber_a.adf, Amber_b.adf, etc...) en el mismo directorio que la DLL del juego.
+Podemos descargarlos ya preparados desde: https://github.com/Pyrdacor/Ambermoon/tree/master/Disks
+
 COMPILAR LA VERSIÓN MODERNA DE HYPSEUS (HYPSEUS-SINGE)
 ======================================================
 
@@ -5918,7 +5941,7 @@ y luego pasarle como parámetros el framefile del juego (como en cualquier juego
 Es decir, timegal quedaría metido en:
 ~/laserdisc/singe/timegal
 Y luego lo ejecutaríamos como:
-./hypseus singe vldp -framefile singe/timegal/frame-timegal.txt -script singe/timegal/timegal.singe -fullscreen -nolog
+./hypseus singe vldp -framefile singe/timegal/timegal.txt -script singe/timegal/timegal.singe -fullscreen -nolog
 
 COMPILAR HYPSEUS (Daphne)
 ==========================
