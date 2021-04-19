@@ -5871,13 +5871,38 @@ PROGRAMAS Y JUEGOS XNA EN LINUX, CON FNA
 
 XNA es una plataforma para desarrollar programas en C# de Micro$oft.
 Quedó abandonada, y el proyecto FNA nos permite ejecutar programas XNA en sistemas actuales.
-
-Clonamos su repo:
-git clone --depth 1 https://github.com/FNA-XNA/FNA.git
-git submodule update --init --recursive
+Las versiones de juegos que podemos ejecutar son las que tienen soporte FNA (no las viejas XNA) así que siempre tienen que traer un FNA.dll
+incluido con el juego.
 
 La guía básica es esta:
 https://magazine.odroid.com/article/playing-modern-fna-games-on-the-odroid-platform/
+
+Los juegos son independientes de la plataforma, PERO el mono-runtime y las librerías nativas (SDL2, etc) sí que dependen de la plataforma.
+
+Se ejecutan con mono: mono <juego.exe>
+
+Instalamos mono-runtime:
+sudo apt-get install mono-runtime --no-install-recommends
+EN SU LUGAR, lo ideal sería usar monokickstart, que es un monoruntime auto-contenido y que lo renombras como el juego
+y te lanza el juego que sea:
+https://github.com/flibitijibibo/MonoKickstart
+
+Para lanzar BASTION, versión Linux, por ejemplo, entramos en Game y hacemos:
+LD_LIBRARY_PATH=lib64 mono Bastion.exe
+(También podríamos lanzar directamente Bastion.bin.x86_64 que es el monokickstart que sabe que tiene que pillar las librerías de lib64/).
+
+Algunos juegos necesitan FMOD, que es una librería cerrada que puedes descargar de aquí para tu arquitectura. Sólo la última versión soporta aarch64:
+https://www.fmod.com/download
+
+También es importante que tengas libmojoshader para tu arquitectura. Las instrucciones para compilarla están en:
+https://magazine.odroid.com/article/playing-modern-fna-games-on-the-odroid-platform/
+
+SI QUEREMOS ACTUALIZAR NUESTRO FNA.dll (SÓLO SI LO QUEREMOS ACTUALIZAR, NORMALMENTE NO ES NECESARIO)
+Clonamos su repo:
+git clone --depth 1 https://github.com/FNA-XNA/FNA.git
+git submodule update --init --recursive
+make -j4
+Nos deja el FNA.dll en bin/Debug/FNA.dll
 
 AMBERMOON.NET EN LINUX
 ======================
