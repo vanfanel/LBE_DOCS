@@ -5886,6 +5886,9 @@ make -j4
 
 Copia, al mismo directorio donde metas el ejecutable hypseus, los directorios fonts y pics.
 
+Para poner un buffer de audio más pequeño, puedes pasar el parámetro -sound_buffer 1024
+(Por defecto viene puesto 2048 que es mucho).
+
 Para configurar el joystick:
 Copia, al mismo directorio donde metas el ejecutable hypseus, el archivo docs/hypinput.ini,
 y ahí, para configurar el joystick, fíjate en el formato de cada línea. Por ejemplo:
