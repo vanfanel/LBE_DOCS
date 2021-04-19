@@ -5866,6 +5866,19 @@ ffplay -vcodec h264_mmal -i test.mkv
 Clonamos su repo:
 git clone --depth 1 https://skunkworks.kangaroopunch.com/skunkworks/singe.git
 
+PROGRAMAS Y JUEGOS XNA EN LINUX, CON FNA
+========================================
+
+XNA es una plataforma para desarrollar programas en C# de Micro$oft.
+Quedó abandonada, y el proyecto FNA nos permite ejecutar programas XNA en sistemas actuales.
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/FNA-XNA/FNA.git
+git submodule update --init --recursive
+
+La guía básica es esta:
+https://magazine.odroid.com/article/playing-modern-fna-games-on-the-odroid-platform/
+
 AMBERMOON.NET EN LINUX
 ======================
 
