@@ -3788,6 +3788,7 @@ git clone --depth 1 https://github.com/ptitSeb/hydracastlelabyrinth.git
 Editamos src/sdl2/graphics.c y:
 -En la llamada a SDL_CreateRenderer(), añadimos SDL_RENDERER_PRESENTVSYNC
 -Antes de eso, añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+-En PHL_EndDrawing(), quitamos la sección de "implement some crude frameskipping...", y el while con el SDL_Delay() al final.
 
 Compilamos con:
 mkdir b4
@@ -5908,6 +5909,13 @@ KEY_BUTTON3 = 32 0 3
 Los detalles sobre los dip switches están en dle21.txt, que acompaña a las roms del Dragon's Lair Enhanced 2.1
 Recuerda que ahí se cuentan los switches del 0 al 7. Se empieza de derecha a izquierda a contar.
 Por lo demás, el banco A es el 0, y el B es el 1.
+
+Para lanzar juegos de SINGE (es decir, conversiones nativas), tenemos que meter el directorio del juego que sea dentro de singe,
+y luego pasarle como parámetros el framefile del juego (como en cualquier juego de daphne) y el script del juego singe.
+Es decir, timegal quedaría metido en:
+~/laserdisc/singe/timegal
+Y luego lo ejecutaríamos como:
+./hypseus singe vldp -framefile singe/timegal/frame-timegal.txt -script singe/timegal/timegal.singe -fullscreen -nolog
 
 COMPILAR HYPSEUS (Daphne)
 ==========================
