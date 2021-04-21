@@ -5385,6 +5385,13 @@ cd Code/b4
 cmake -DGLES=ON -DWITH_SDL2=on -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 make -j4
 
+CUIDADO porque este juego carga manualmente libSDL2.so en Code/Libraries/SoLoud/src/backend/sdl/soloud_sdl_dll.c,
+en la función openDLL(). Así que si no arranca, fíjate que tu libSDL2.so (que es un link simbólico) esté apuntando
+a una librería que realmente exista en el sistema (a veces hay lio con esto porque en Lubuntu desinstalas malamente
+las SDL2 que vienen e instalas las tuyas para desarrollo, etc).
+
+Los errores de OpenGL no aparecen si compilas para OpenGL en vez de compilar para GLES (es decir, si no pasas -DGLES=ON a cmake).
+
 GZDOOM (LZDOOM) en la Raspberry Pi
 ==================================
 
