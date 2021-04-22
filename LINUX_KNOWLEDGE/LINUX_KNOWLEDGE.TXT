@@ -5477,6 +5477,24 @@ https://github.com/TurningWheel/Barony
 Instalamos una dependencia adicional que tiene:
 sudo apt-get install libphysfs-dev rapidjson-dev --no-install-recommends
 
+Editamos src/main.hpp y quitamos
+#include <GL/glu.h>
+
+Editamos CMakeLists.txt y cambiamos la línea
+find_package(OpenGL REQUIRED)
+que está debajo de 
+ELSE (APPLE)
+por esto:
+	find_package(OpenGL QUIET)
+	IF(OpenGL_FOUND)
+		message(STATUS "Using OpenGL GLX for OpenGL")
+	ELSE(OpenGL_FOUND)
+		# If we couldn't find old GLX package, try to use modern libglvnd libOpenGL.so instead.
+		message(STATUS "Using GLVND for OpenGL")
+		FIND_LIBRARY(OpenGL_LIBRARY OpenGL)
+		SET(EXTRA_LIBS ${OpenGL_LIBRARY})
+        ENDIF(OpenGL_FOUND
+
 Configuramos y compilamos con:
 mkdir b4
 cd b4
