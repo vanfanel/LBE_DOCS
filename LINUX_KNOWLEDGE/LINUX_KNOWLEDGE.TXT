@@ -5377,7 +5377,7 @@ ELDRITCH en la Raspberry Pi
 ===========================
 
 Clonamos su repo:
-https://github.com/ptitSeb/Eldritch.git
+git clone --depth 1 https://github.com/ptitSeb/Eldritch.git
 
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir Code/b4
@@ -5385,12 +5385,28 @@ cd Code/b4
 cmake -DGLES=ON -DWITH_SDL2=on -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 make -j4
 
+Para instalar el juego:
+-Copia b4/Projects/Eld/Eld a ~/eldritch
+-Copia los datos del juego (que los tienes ya preparados en el disco duro de backup) junto con el ejecutable.
+
+SI TIENES QUE PRERARAR DE NUEVO LOS DATOS DEL JUEGO...(COSA QUE NO DEBERÍA PASAR)
+Para preparar los datos del juego, tenemos que obtener el directorio Config, que tiene unos archivos .ccf dentr, y a parte editar los shaders si queremos que vayan con GLES, porque los shaders tal como vienen inicializan variables globales a valores no constantes, cosa que debemos corregir.
+-Bájate la versión "Eldritch Reanimated 406". Instálala, y copia los archivos eldritch*.cpk a ~/eldritch. Todos.
+-Cópiate eldritch-base.cpk a algún directorio de trabajo junto con la herramienta FilePacker.exe, que viene incluida con los sources
+ en Eldritch/Projects/Eld/Tools/unpack.
+ Descomprime eldritch-base.cpk así: wine FilePacker.exe -u eldritch-base.cpk
+ Obtendrás los directorios Config, Fonts, Misc, y Shaders. Copia los directorios Config y Shaders a ~/eldritch junto con el ejecutable del juego.
+ Intenta ejecutar el juego, y verás varios errores del estilo:
+ "error: initializer of global variable `CGTexSizeSq' must be a constant expression"
+ Ve buscando esos valores en los ficheros contenidos en Shaders (usando grep) y haciendo que esas variables sean inicializadas a constantes,
+ es sólo poner "const" delante de lo que usas para inicializarlas, es muy fácil pero pesado. UNA VEZ LO HAYAS HECHO, LOS ERRORES DE COMPILACIÓN DE 
+ SHADERS YA NO DEBERÍAN SALIR Y EL JUEGO ARRANCARÁ.
+
+OTRAS NOTAS 
 CUIDADO porque este juego carga manualmente libSDL2.so en Code/Libraries/SoLoud/src/backend/sdl/soloud_sdl_dll.c,
 en la función openDLL(). Así que si no arranca, fíjate que tu libSDL2.so (que es un link simbólico) esté apuntando
 a una librería que realmente exista en el sistema (a veces hay lio con esto porque en Lubuntu desinstalas malamente
 las SDL2 que vienen e instalas las tuyas para desarrollo, etc).
-
-Los errores de OpenGL no aparecen si compilas para OpenGL en vez de compilar para GLES (es decir, si no pasas -DGLES=ON a cmake).
 
 GZDOOM (LZDOOM) en la Raspberry Pi
 ==================================
