@@ -5942,6 +5942,7 @@ https://github.com/flibitijibibo/MonoKickstart
 
 Para lanzar BASTION, versión Linux, por ejemplo, entramos en Game y hacemos:
 LD_LIBRARY_PATH=lib64 mono Bastion.exe
+(En lib64 tendríamos las librerías como SDL2, etc... compiladas para nuestra arquitectura.)
 (También podríamos lanzar directamente Bastion.bin.x86_64 que es el monokickstart que sabe que tiene que pillar las librerías de lib64/).
 
 Algunos juegos necesitan FMODEX, que es una librería cerrada que puedes descargar de aquí para tu arquitectura.
