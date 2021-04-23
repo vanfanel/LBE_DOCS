@@ -5379,6 +5379,9 @@ ELDRITCH en la Raspberry Pi
 Clonamos su repo:
 git clone --depth 1 https://github.com/ptitSeb/Eldritch.git
 
+Editamos Code/Libraries/Framework/src/framework3d.cpp y comentamos la llamada a CreateSplashWindow() en Framework3D::Initialize()
+(KMSDRM no permite dos ventanas, recuerda).
+
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir Code/b4
 cd Code/b4
@@ -5390,17 +5393,12 @@ Para instalar el juego:
 -Copia los datos del juego (que los tienes ya preparados en el disco duro de backup) junto con el ejecutable.
 
 SI TIENES QUE PRERARAR DE NUEVO LOS DATOS DEL JUEGO...(COSA QUE NO DEBERÍA PASAR)
-Para preparar los datos del juego, tenemos que obtener el directorio Config, que tiene unos archivos .ccf dentr, y a parte editar los shaders si queremos que vayan con GLES, porque los shaders tal como vienen inicializan variables globales a valores no constantes, cosa que debemos corregir.
+Para preparar los datos del juego, tenemos que obtener el directorio Config, que tiene unos archivos .ccf dentro.
 -Bájate la versión "Eldritch Reanimated 406". Instálala, y copia los archivos eldritch*.cpk a ~/eldritch. Todos.
 -Cópiate eldritch-base.cpk a algún directorio de trabajo junto con la herramienta FilePacker.exe, que viene incluida con los sources
  en Eldritch/Projects/Eld/Tools/unpack.
  Descomprime eldritch-base.cpk así: wine FilePacker.exe -u eldritch-base.cpk
- Obtendrás los directorios Config, Fonts, Misc, y Shaders. Copia los directorios Config y Shaders a ~/eldritch junto con el ejecutable del juego.
- Intenta ejecutar el juego, y verás varios errores del estilo:
- "error: initializer of global variable `CGTexSizeSq' must be a constant expression"
- Ve buscando esos valores en los ficheros contenidos en Shaders (usando grep) y haciendo que esas variables sean inicializadas a constantes,
- es sólo poner "const" delante de lo que usas para inicializarlas, es muy fácil pero pesado. UNA VEZ LO HAYAS HECHO, LOS ERRORES DE COMPILACIÓN DE 
- SHADERS YA NO DEBERÍAN SALIR Y EL JUEGO ARRANCARÁ.
+ Obtendrás los directorios Config, Fonts, Misc, y Shaders. Copia el directorio Config (SÓLO ESE) a ~/eldritch, junto con el ejecutable del juego.
 
 OTRAS NOTAS 
 CUIDADO porque este juego carga manualmente libSDL2.so en Code/Libraries/SoLoud/src/backend/sdl/soloud_sdl_dll.c,
@@ -5772,7 +5770,7 @@ Puedes poner ahí fast=1 para que no tengas que ver la intro, elegir idioma y to
 Puedes pasarle al ejecutable  "-fs -aspect" para conservar el aspect ratio.
 
 AUDIO POR I2C: EL PI TOP SPEAKER
-==============================
+================================
 
 Lo primero es saber que el pi top speaker (pts de ahora en adelante) va por i2c pillando el sonido del hdmi.
 Para que el i2c funcione, tenemos que tener estos módulos cargados:
