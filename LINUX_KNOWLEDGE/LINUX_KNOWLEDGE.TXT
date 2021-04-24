@@ -5379,9 +5379,6 @@ ELDRITCH en la Raspberry Pi
 Clonamos su repo:
 git clone --depth 1 https://github.com/ptitSeb/Eldritch.git
 
-Editamos Code/Libraries/Framework/src/framework3d.cpp y comentamos la llamada a CreateSplashWindow() en Framework3D::Initialize()
-(KMSDRM no permite dos ventanas, recuerda).
-
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir Code/b4
 cd Code/b4
