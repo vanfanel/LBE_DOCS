@@ -100,7 +100,7 @@ sudo apt update
 ******Ver los modos soportados de una pantalla/monitor (EDID)****************************************************************
 
 Se puede volcar y ver con:
-cat /sys/class/drm/card1-HDMI-A-1/edid | edid-decode
+cat /sys/class/drm/card1-HDMI-A-0/edid | edid-decode
 
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
