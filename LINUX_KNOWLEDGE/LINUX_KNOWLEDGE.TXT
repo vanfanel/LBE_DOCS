@@ -2633,7 +2633,10 @@ de los directorios donde busca RAZE, que puedes consultarlos en ~/.config/raze/r
 
 Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
 
-Clonamos su repo en:
+Preferentemente, usa este fork, que inclue soporte para BLOOD y EXHUMED también:
+git clone --depth 1 https://github.com/nukeykt/NBlood.git
+
+Si quieres usar el eduke32 original, clona su repo de aquí:
 git clone --depth 1 https://voidpoint.io/terminx/eduke32.git
 
 Editamos source/build/src/sdlayer.cpp y hacemos todos los cambios que se detallan a continuación:
