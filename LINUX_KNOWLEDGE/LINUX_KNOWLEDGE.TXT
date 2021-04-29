@@ -1119,13 +1119,13 @@ Añade esto a .bash_profile:
 
 PS1="\u@\H\w$ "
 
-******Quitar versión de kernel y lastlogin*************************************************************************************************************
+******Quitar versión de kernel y lastlogin************************************************************************
 
- edita /etc/pam.d/login
-y comenta
+Editamos /etc/pam.d/login
+y comentamos
 #session optional pam_lastlog.so
 
-*******El comando IP********************************************************************************************************************************
+*******El comando IP**********************************************************************************************
 
 Fuente: http://www.tecmint.com/ip-command-examples/
 
@@ -1845,8 +1845,7 @@ Y esto lo puedes hacer con un grep a todo lo de /etc/init.d, con el nombre del s
 ***********Guía rápida de configuración de RASPBIAN desde imágen por defecto (JESSIE)************************************************************
 
 ANTES DE LEER ESTO: Son casi todo pistas, no es para seguirlo paso a paso. CON QUE TE VAYAS A LA "SECCiÓN RESÚMEN" y mires la lista de servicios que
-son necesarios en "systemd-analyze blame" y lo que tienes que gestionar desde rc.local por tu cuenta, es suficiente (excepto los apuntes de DBUS, que
-hay que quitarlo como servicio pero no desinstalarlo del sistema porque OMXplayer lo usa).
+son necesarios en "systemd-analyze blame" y lo que tienes que gestionar desde rc.local por tu cuenta, es suficiente (excepto los apuntes de DBUS, que hay que quitarlo como servicio pero no desinstalarlo del sistema porque OMXplayer lo usa).
 
 -Ponemos la fuente de la consola: dpkg-reconfigure console-setup
 -Ponemos los LOCALES con: dpkg-reconfigure locales. Elegimos que se genere SÓLO en_US.UTF8, y dejamos ese puesto. ESTO nos quita errores de teclado a través de SSH.
@@ -2038,18 +2037,19 @@ Y ya no se te debería colar eso en la consola.
 									SECCIÓN RESÚMEN
 
 AL FINAL sólo tenemos que tener estos 11 servicios listados en systemd-analyze blame:
-
-          1.055s systemd-udev-trigger.service
-           702ms kbd.service
-           434ms fake-hwclock.service
-           353ms sys-kernel-config.mount
-           276ms systemd-modules-load.service
-           263ms rc-local.service
-           231ms udev-finish.service
-           200ms alsa-restore.service
-           188ms systemd-udevd.service
-           180ms systemd-remount-fs.service
-           106ms boot.mount
+pi@raspberrypi:~ $ sudo systemd-analyze blame
+          1.365s dev-mmcblk0p02.device
+           544ms systemd-udev-trigger.service
+           466ms systemd-remount-fs.service
+           450ms keyboard-setup.service
+           309ms boot.mount
+           196ms systemd-fsck@dev-disk-by\x2dpartuuid-521a4163\x2d0a.service
+           190ms alsa-restore.service
+           137ms systemd-udevd.service
+           119ms fake-hwclock.service
+            79ms dropbear.service
+            26ms console-setup.service
+            17ms rc-local.service
 
 SI UN SERVICIO NO ESTÁ EN ESTA LISTA, ES QUE NO ME HACE FALTA.
 
