@@ -382,8 +382,7 @@ max locked memory (kbytes, -l) unlimited
 
 -Para configurar el audio con el driver de audio HDMI del lado de ARM (que es como lo venimos haciendo en 2020):
 	-En config.txt
-		dtoverlay=vc4-kms-v3d-pi4
-		(o bien dtoverlay=vc4-kms-v3d para pi3 y anteriores)
+		dtoverlay=vc4-kms-v3d
 		#dtparam=audio=on <---SE DEBE deshabilitar la carga de bcm2835.
 	-Si falla speakertest, mira que tengas en /usr/share/alsa/cards/vc4-hdmi.conf lo que pone en el post de DOM en
 	 https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769&p=1636828#p1636828
