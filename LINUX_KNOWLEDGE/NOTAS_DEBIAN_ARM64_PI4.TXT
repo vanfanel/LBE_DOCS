@@ -234,8 +234,8 @@ APT::Periodic::Enable "0";
 sudo systemctl mask swap.target
 
 -Deshabilita los timers de cleaning de tmp y el timer de rotación diaria de logs:
-sudo systectl mask systemd-tmpfiles-clean.timer
-sudo systectl disable logrotate.timer
+sudo systemctl mask systemd-tmpfiles-clean.timer
+sudo systemctl disable logrotate.timer
 Otros timers activos los puedes buscar con:
 sudo systemclt | grep timer
 Y miras a ver cuáles están active loaded. Unos se quitan con mask, otros con disable.
@@ -340,6 +340,9 @@ sudo systemctl mask <sevcio>
 -Para que funcione el teclado, ratón y joystick con las SDL2, creamos /etc/udev/rules.d/99-evdev.rules con el contenido:
 KERNEL=="event*", NAME="input/%k", MODE="666"
 Y reiniciamos.
+
+-Para quitar el error: "Failed to connect stdout to the journal socket"
+Edita /etc/systemd/system.conf y pon LogTarget a "null" o a "console"
 
 -Para quitar el error: "brcmfmac: brcmf_sdio_htclk: HT Avail timeout (1000000): clkctl 0x50"
 Puedes instalar el firmware de la wifi, o simplemente deshabilitarla poniendo en config.txt:

@@ -1936,6 +1936,9 @@ sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 Mandamos el openssh al carajo y reiniciamos ya con dropbear:
 sudo apt-get purge openssh-server
 
+-Para quitar el error: "Failed to connect stdout to the journal socket"
+Edita /etc/systemd/system.conf y pon LogTarget a "null" o a "console"
+
 -Como el omxplayer depende de la MIERDA de dbus, nos va a instalar dbus al instalar el omxplayer. Nosotros nos vengamos evitando
 que dbus se lance al inicio, y evitamos que systemd-logind.service nos de errores al no encontrar dbus, porque tampoco lo usamos:
 sudo systemctl mask dbus
