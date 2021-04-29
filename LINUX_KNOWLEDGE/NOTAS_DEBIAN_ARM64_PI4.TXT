@@ -557,6 +557,9 @@ sudo apt-get install --no-install-recommends --reinstall \
     ca-certificates xz-utils \
     zlib1g-dev pkg-config meson
 
+NO TE OLVIDES DE AÑADIR AL USUARIO AL GRUPO RENDER:
+sudo adduser pi render
+(Si ves un error como "MESA-LOADER: failed to open kms_swrast", es porque no lo has hecho).
 
 SATISFECHAS SUS DEPENDENCIAS, PASAMOS A LA COMPILACIÓN DE MESA COMO TAL:
 
@@ -608,7 +611,10 @@ Ambos sistemos deben tener instalado rsync, y se puede usar por red como scp.
 INSTALAR SDL2
 =============
 
-Lo primero es instalar estos:
+Lo primero borra esto:
+sudo rm -R /opt/vc
+
+Instalamos dependendias previas:
 sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg123-dev libmodplug-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 
@@ -618,16 +624,16 @@ git clone --depth 1 https://github.com/libsdl-org/SDL.git
 Ahora, para configurar:
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-ime --disable-libsamplerate
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-ime --disable-libsamplerate
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA, PERO EN MODO DEBUG:
-CFLAGS="-O0 -ggdb -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-ime --disable-libsamplerate
+CFLAGS="-O0 -ggdb -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-ime --disable-libsamplerate
 
 SÓLO CON GLES1 y GLES2:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-libsamplerate --disable-video-vulkan
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-ime --disable-libsamplerate --disable-video-vulkan
 
 CON OPENGL COMPLETO, GLES1 y GLES2
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-ime --disable-libsamplerate --disable-video-vulkan 
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-ime --disable-libsamplerate --disable-video-vulkan 
 
 (LO DE -DMESA_EGL_NO_X11_HEADERS LO HEMOS SACADO DE /usr/lib/pkgconfig/egl.pc. Como el viejo buildsystem de las SDL2 basado en configure y make no usa pkgconfig para saber qué flags tiene que pasar cuando
 se compile eglplatform.h, parte de EGL de MESA, que es donde  MESA_EGL_NO_X11_HEADERS evita intentar incluir las headers de X11, pues se lo tenemos que pasar nosotros a mano. El buildsystem de las SDL2 basado en CMAKE sí
