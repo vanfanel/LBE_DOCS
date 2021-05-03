@@ -6008,9 +6008,9 @@ Podemos descargarlos ya preparados desde: https://github.com/Pyrdacor/Ambermoon/
 COMPILAR LA VERSIÓN MODERNA DE HYPSEUS (HYPSEUS-SINGE)
 ======================================================
 
-Bajamos la última estable de :
+Clonamos el repo (usando el branch RetroPie, esto es importante para que se use el libmpeg2 del sistema!):
 
-https://github.com/DirtBagXon/hypseus-singe/releases/tag/v2.2.8
+git clone --depth 1 -b RetroPie https://github.com/DirtBagXon/hypseus-singe.git
 
 Ahora, creamos directorio de compilación dentro de src, y usamos cmake y luego make:
 
