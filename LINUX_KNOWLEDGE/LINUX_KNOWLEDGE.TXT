@@ -240,7 +240,13 @@ vcgencmd get_config arm_freq
 
 *****SDL2 en hardware genérico con mi driver KMSDRM******
 
-Lo primero, instala estas dependencias:
+Lo primero, borra la versión del sistema.
+sudo rm -R /usr/lib/libSDL*
+sudo rm -R /usr/include/SDL*
+
+VAMOS A DEJAR QUE SE INSTALE EN /usr/local/lib Y /usr/local/include, ASÍ QUE NO LE PASAMOS --prefix=/usr
+
+Antes de compilar, instalamos estas dependencias:
 sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente, si es que instalas MESA compilándolo por tu cuenta. Si no, pues sí, hace falta libgbm-dev si usas un MESA precocinado.)
 (Si has compilado SDL2 con soporte para kmsdrm pero te da el error "not available video device", es porque compilaste sin tener instalado libgmb-dev junto con un MESA precocinado, y no te ha avisado... Instala ese paquete y recompila, anda.)
@@ -249,7 +255,7 @@ Clonamos:
 git clone --depth 1 https://github.com/libsdl-org/SDL.git
 
 Ahora ya configuramos:
-./configure --prefix=/usr --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --enable-video-kmsdrm
+./configure --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --enable-video-kmsdrm
 
 Fíjate que en el resúmen al acabar del configure, te tiene que indicar que el soporte KMSDRM está activado, para ello se requiere que las librerías necesarias estén en el sistema (libgbm y libdrm).
 Ahora borra las librerías libSDL2* que vienen instaladas en la mayoría de las distros en /usr/lib/x86_64-linux-gnu/, e instala las que acabas de compilar, que acabarán en /usr/lib.
@@ -6057,7 +6063,7 @@ y luego pasarle como parámetros el framefile del juego (como en cualquier juego
 Es decir, timegal quedaría metido en:
 ~/laserdisc/singe/timegal
 Y luego lo ejecutaríamos como:
-./hypseus singe vldp -framefile singe/timegal/timegal.txt -script singe/timegal/timegal.singe -fullscreen -nolog
+./hypseus singe vldp -framefile singe/timegal/frame-timegal.txt -script singe/timegal/timegal.singe -fullscreen -nolog
 
 COMPILAR HYPSEUS (Daphne)
 ==========================
