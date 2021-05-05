@@ -3894,6 +3894,17 @@ A + START : MacOS mode, for Apple computers (NOT PHONES/TABLETS)
 
 *************Abbaye des morts************************************************************************************************
 
+Clonamos su repo:
+git clone --depth 1 https://github.com/nevat/abbayedesmorts-gpl.git
+
+Editamos src/main.c, y ponemos fullscreen = 1 y grapset = 1, y en Mix_OpenAudio() ponemos el tamaño de buffer a 1024 o 512.
+
+Compilamos con:
+make PLATFORM=rpi4_64 -j4
+
+Para hacerlo funcionar, copiamos estos directorios que vienen con los sources al mismo directorio donde metamos el ejecutable:
+data graphics screenshots sounds xcf
+
 Puedes asignar el botón en src/base.h
 Para usar el 8bitdo SN30, usa JUMP_BUTTON 0.
 
