@@ -6601,7 +6601,7 @@ Bajamos la última versión de los sources de:
 http://cyxdown.free.fr/hode/
 
 Editamos el Makefile:
--Quitamos el -g y añadimos los FLAGS de compilación que queramos según nuestra arquitectura.
+-Quitamos el -g y añadimos en su lugar los FLAGS: -O2 -march=armv8-a+crc+simd -mtune=cortex-a72
 
 Editamos system_sdl2.cpp  y:
 
@@ -6643,7 +6643,7 @@ frame_duration=50
 # scaling factor for game graphics (base resolution is 256x192)
 scale_factor=1
 
-# scaling algorithm for game graphics ('xbr', 'nearest' or 'none')
+# scaling algorithm for game graphics ('xbr', 'nearest', 'linear' or 'none')
 scale_algorithm=none
 
 # gamma correction
