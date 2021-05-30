@@ -114,7 +114,9 @@ sudo apt-get install libevdev-dev --no-install-recommends
 
 Configuramos con:
 
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=OFF -DUSE_SDL2=OFF ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=OFF -DUSE_SDL2=ON ..
+
+(Hay que dejar el soporte de SDL2 porque EVDEV no implementa aún los ejes de los mandos)
 
 Copia todo el contenido de bin a ~/psx. No copies sólo el ejecutable, o te dará un segfault cuando lo ejecutes.
 
@@ -3767,8 +3769,6 @@ git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-11-Decompilatio
 SI estamos compilando el SonicCD:
 	Editamos RSDKv3/Drawing.cpp y ahí:
 	-Cambiamos las menciones a "nearest" por "linear".
-	-Añadimos antes de SDL_CreateWindow(), con los HINTS que hay:
-	SDL_ShowCursor(SDL_FALSE);
 	
 	Editamos RSDKv3/Audio.cpp
 	Y cambiamos
@@ -3782,7 +3782,7 @@ SI estamos compilando el Sonic-1-2:
 	
 Compilamos con:
 
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" make -j4
 
 Ahora, para ejecutarlo, necesitamos Data.rsdk (preferiblemente de la versión de PC)
 y el directorio "videos" que contendrá unos vídeos .ogv. Por ahora, los vídeos tienen que empezar por mayúscula la primera letra
