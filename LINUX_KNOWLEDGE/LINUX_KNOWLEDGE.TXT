@@ -3779,6 +3779,10 @@ SI estamos compilando el SonicCD:
 SI estamos compilando el Sonic-1-2: 
 	Editamos Sonic12Decomp/Audio.cpp
 	Y cambiamos spec.samples a 1024.
+
+EN AMBOS CASOS:
+	Editamos RSDKv3/RetroEngine.hpp y ponemos el define RETRO_USE_MOD_LOADER a 0.
+	De lo contrario, nos da errores al linkar en Raspbian por la versión de GCC.
 	
 Compilamos con:
 
