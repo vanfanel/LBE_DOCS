@@ -2185,6 +2185,18 @@ sudo /etc/init.d/dropbear start
 (Los detalles sobre el fichero wpa_supplican.conf están en otra sección de este mismo documento donde explico cómo
 gestionar la wifi a mano)
 
+===bin/wifi-on, pero con DHCP en vez de IP estática===
+
+sudo ifconfig eth0 down
+sudo modprobe brcmfmac
+sudo ifconfig wlan0 up
+
+sudo wpa_supplicant -d -Dnl80211 -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -B
+
+sudo dhclient wlan0
+
+sudo /etc/init.d/dropbear start
+
 ===bin/wifi-off===
 
 sudo killall wpa_supplicant
@@ -3776,12 +3788,17 @@ SI estamos compilando el SonicCD:
 	por
 	#define AUDIO_SAMPLES   (0x400)
 	
+	Editamos RSDKv3/RetroEngine.hpp y ponemos el define RETRO_USE_MOD_LOADER a 0.
+	De lo contrario, nos da errores al linkar en Raspbian por la versión de GCC.
+	
 SI estamos compilando el Sonic-1-2: 
-	Editamos Sonic12Decomp/Audio.cpp
+	Editamos RSDKv4/Drawing.cpp y ahí:
+	-Cambiamos las menciones a "nearest" por "linear".
+
+	Editamos RSDKv4/Audio.cpp
 	Y cambiamos spec.samples a 1024.
 
-EN AMBOS CASOS:
-	Editamos RSDKv3/RetroEngine.hpp y ponemos el define RETRO_USE_MOD_LOADER a 0.
+	Editamos RSDKv4/RetroEngine.hpp y ponemos el define RETRO_USE_MOD_LOADER a 0.
 	De lo contrario, nos da errores al linkar en Raspbian por la versión de GCC.
 	
 Compilamos con:
@@ -4868,9 +4885,9 @@ cd src/burner/libretro
 En Makefile.common, quitamos los directorios de la parte de FBNEO_BURN_DRIVERS_DIR. Busca la cadena snes y ahí ves qué tipo de líneas tienes que quitar.
 No hace falta que quites los directorios de los includes, esos dan igual.
 
-Editamos Makefile y dejamos la platform definition de la pi3 asi:
+Editamos Makefile y dejamos la platform definition de la pi4 asi:
 
-   else ifneq (,$(findstring rpi3,$(platform)))
+   else ifneq (,$(findstring rpi4,$(platform)))
       PLATFORM_DEFINES := -march=armv8-a+crc+simd -mtune=cortex-a72
    endif
 
