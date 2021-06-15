@@ -702,4 +702,5 @@ PARA CUALQUIER PROBLEMA de librerías no encontradas pero que sí están instala
 sudo rm /etc/ld.so.cache
 sudo ldconfig
 
-Si quieres filtros por software, entra en gfx/video_filters y haz make, y los copias a ~/.config/retroarch/filters/video/
+Si quieres filtros por software, entra en gfx/video_filters y haz make, y copias los .so y los .filt a ~/.config/retroarch/filters/video/
+y luego los seleccionas en retroarch.
