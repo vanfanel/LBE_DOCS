@@ -701,3 +701,5 @@ SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y
 PARA CUALQUIER PROBLEMA de librerías no encontradas pero que sí están instaladas, RECUERDA REGENERAR LA CACHE DE LDD:
 sudo rm /etc/ld.so.cache
 sudo ldconfig
+
+Si quieres filtros por software, entra en gfx/video_filters y haz make, y los copias a ~/.config/retroarch/filters/video/
