@@ -613,7 +613,7 @@ INSTALAR SDL2
 Lo primero borra esto:
 sudo rm -R /opt/vc
 
-Instalamos dependendias previas:
+Instalamos dependencias previas:
 sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg123-dev libmodplug-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 

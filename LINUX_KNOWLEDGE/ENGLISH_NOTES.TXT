@@ -1,0 +1,26 @@
+TESTING SDL2 ON KMSDRM
+======================
+
+-First delete the system's SDL2 (we can reinstall it later if needed):
+sudo rm -R /usr/lib/libSDL*
+sudo rm -R /usr/include/SDL*
+
+-Install those dependencies to build SDL2 with KMSDRM support:
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libpng-dev libjpeg-dev libfreetype6-dev xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ --no-install-recommends
+
+-Clone the SDL2 repository:
+git clone --depth 1 https://github.com/libsdl-org/SDL.git
+
+-Configure SDL2 sources like this:
+./configure --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --enable-video-kmsdrm
+
+-Build SDL2 and install (it will go into /usr/local/lib...):
+make -j3
+sudo make install
+
+-You can now test SDL2 on KMSDRM. Go into test and do:
+./configure
+make -j3
+./testdraw2
+
+Or you can test GLES on SDL2 with ./testgles2
