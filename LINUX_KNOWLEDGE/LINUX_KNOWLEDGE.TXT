@@ -954,20 +954,18 @@ START - SHOW MENU
 
 *******vkQuake en la Pi***********************************************************
 
-Instalamos unas dependencias previas:
-sudo apt-get install libmad0-dev --no-install-recommends
-
 Bajamos la última estable de:
 https://github.com/Novum/vkQuake/releases
 
-Editamos Makefile y quitamos -lX11
-
 cd Quake
+
+Editamos Makefile y quitamos -lX11, y ponemos MP3LIB=mad a MP3LIB=mpg123 (para no tener que instalar libmad!)
+
 make -j4
 
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4
 
-*******Quakesmaspm en la Pi*******************************************************
+*******Quakespasm en la Pi*******************************************************
 
 Ahora que SDL2 soporta OpenGL de escritorio sobre KMSDRM sin depender de las X11, es hora de volver a Quakespasm.
 
