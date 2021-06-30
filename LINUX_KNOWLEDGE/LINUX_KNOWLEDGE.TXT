@@ -5116,11 +5116,16 @@ Manda la salida a /dev/null y fuera.
 SM64EX, port del Mario64 para GNU/Linux
 ========================================
 
-Clonamos los surces de su nightly (el master no trae el parche para 60FPS!)
-git clone --depth 1 https://github.com/sm64pc/sm64ex.git -b nightly
+Clonamos los surces, y el repo de los parches:
+git clone --depth 1 https://github.com/AloXado320/sm64ex-alo.git
+git clone --depth 1 https://github.com/AloXado320/sm64ex-alo-patches.git
 
-Aplicamos el parche de 60FPS que viene incluido con:
-tools/apply_patch.sh enhancements/60fps_ex.patch
+Para que no se vea el cursor mientras jugamos, editamos el Makefile y comentamos la línea:
+CUSTOM_C_DEFINES += -DMOUSE_ACTIONS
+(Se podría poner BETTERCAM a 0 también, pero vamos, que se puede desactivar la PUPPYCAM en el menú luego).
+
+Aplicamos el parche de 60FPS:
+patch -p1 < ../sm64ex-alo-patches/60fps_ex.patch
 
 Hay que tener baserom.us.z64 en el directorio raiz.
 
@@ -5130,7 +5135,8 @@ make TARGET_RPI=1 -j4
 
 El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
 
-Pide algunas dependencias que sólo necesita en la máquina donde se extraen los datos del juego, que puede ser un PC de escritorio y luego compilar en la Pi.
+Pide algunas dependencias que sólo necesita en la máquina donde se extraen los datos del juego, que puede ser un PC de escritorio
+y luego compilar en la Pi.
 Al compilar en la Pi te dará errores con las tools que se hayan compilado antes en X86_64, así que haz:
 
 rm tools/aifc_decode
@@ -5140,6 +5146,7 @@ rm tools/textconv
 rm tools/skyconv
 rm tools/n64graphics
 rm tools/n64cksum
+rm tools/audiofile/libaudiofile.a
 make clean
 
 Si aun así da error, borra el fichero con el que da error (el tool que da el error seguramente ya lo hayas borrado antes).
@@ -5147,7 +5154,7 @@ Si aun así da error, borra el fichero con el que da error (el tool que da el er
 Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo. Pero vamos, viene en 512, si lo tocas será para subirlo a 1024.
 
 FLARE, un engine RPG libre en la Raspberry Pi
-===================================
+=============================================
 
 Clonamos el repo del engine y del juego:
 git clone --depth 1 https://github.com/flareteam/flare-engine.git
