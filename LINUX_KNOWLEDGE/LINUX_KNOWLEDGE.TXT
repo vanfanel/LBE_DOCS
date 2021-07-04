@@ -6193,20 +6193,24 @@ sudo apt-get install fonts-dejavu-extra
 -Crea el fichero ~/.sfrotzrc con el contenido:
 
 [Window]
-AcWidth = 640
-AcHeight = 400 
+AcWidth = 1280
+AcHeight = 800 
 
 [Fonts]
 fontdir=/usr/share/fonts/truetype/dejavu
-textroman=DejaVuSans.ttf@12
-textbold=DejaVuSans-Bold.ttf@12
-textitalic=DejaVuSans-Oblique.ttf@12
-textbolditalic=DejaVuSans-BoldOblique.ttf@12
-fixedroman=DejaVuSansMono.ttf@12
-fixedbold=DejaVuSansMono-Bold.ttf@12
-fixeditalic=DejaVuSansMono-Oblique.ttf@12
-fixedbolditalic=DejaVuSansMono-BoldOblique.ttf@12
+textroman=DejaVuSans.ttf@28
+textbold=DejaVuSans-Bold.ttf@28
+textitalic=DejaVuSans-Oblique.ttf@28
+textbolditalic=DejaVuSans-BoldOblique.ttf@28
+fixedroman=DejaVuSansMono.ttf@28
+fixedbold=DejaVuSansMono-Bold.ttf@28
+fixeditalic=DejaVuSansMono-Oblique.ttf@28
+fixedbolditalic=DejaVuSansMono-BoldOblique.ttf@28
 antialias=1
+
+NOTA: Los valores de AcWidth y AcHeight se han elegido por ser múltiplos de los 640x400 originales que usa sfrotz,
+de manera que las imágenes gráficas se escalan correctamente y además se usa una fuente DejaVu tamaño 30 para que salgan
+los mismos caracteres por línea que con la fuente VGA original.
 
 PARA CONVERTIR JUEGOS DE THE QUILL A FROTZ
 Puedes convertir juegos de THE QUILL a .z5 para el frotz con el unquill: https://www.seasip.info/Unix/UnQuill/
