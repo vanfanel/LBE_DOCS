@@ -6193,19 +6193,19 @@ sudo apt-get install fonts-dejavu-extra
 -Crea el fichero ~/.sfrotzrc con el contenido:
 
 [Window]
-AcWidth = 1360
-AcHeight = 768 
+AcWidth = 640
+AcHeight = 400 
 
 [Fonts]
 fontdir=/usr/share/fonts/truetype/dejavu
-textroman=DejaVuSans.ttf@24
-textbold=DejaVuSans-Bold.ttf@24
-textitalic=DejaVuSans-Oblique.ttf@24
-textbolditalic=DejaVuSans-BoldOblique.ttf@24
-fixedroman=DejaVuSansMono.ttf@24
-fixedbold=DejaVuSansMono-Bold.ttf@24
-fixeditalic=DejaVuSansMono-Oblique.ttf@24
-fixedbolditalic=DejaVuSansMono-BoldOblique.ttf@24
+textroman=DejaVuSans.ttf@12
+textbold=DejaVuSans-Bold.ttf@12
+textitalic=DejaVuSans-Oblique.ttf@12
+textbolditalic=DejaVuSans-BoldOblique.ttf@12
+fixedroman=DejaVuSansMono.ttf@12
+fixedbold=DejaVuSansMono-Bold.ttf@12
+fixeditalic=DejaVuSansMono-Oblique.ttf@12
+fixedbolditalic=DejaVuSansMono-BoldOblique.ttf@12
 antialias=1
 
 PARA CONVERTIR JUEGOS DE THE QUILL A FROTZ
