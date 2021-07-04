@@ -6191,16 +6191,21 @@ PARA CAMBIAR LA FUENTE DE LETRA POR UNA TRUETYPE ESCALADA CON ANTIALIAS (o sea, 
 -Instala el paquete:
 sudo apt-get install fonts-dejavu-extra
 -Crea el fichero ~/.sfrotzrc con el contenido:
+
+[Window]
+AcWidth = 1360
+AcHeight = 768 
+
 [Fonts]
 fontdir=/usr/share/fonts/truetype/dejavu
-textroman=DejaVuSans.ttf@14
-textbold=DejaVuSans-Bold.ttf@14
-textitalic=DejaVuSans-Oblique.ttf@14
-textbolditalic=DejaVuSans-BoldOblique.ttf@14
-fixedroman=DejaVuSansMono.ttf@14
-fixedbold=DejaVuSansMono-Bold.ttf@14
-fixeditalic=DejaVuSansMono-Oblique.ttf@14
-fixedbolditalic=DejaVuSansMono-BoldOblique.ttf@14
+textroman=DejaVuSans.ttf@24
+textbold=DejaVuSans-Bold.ttf@24
+textitalic=DejaVuSans-Oblique.ttf@24
+textbolditalic=DejaVuSans-BoldOblique.ttf@24
+fixedroman=DejaVuSansMono.ttf@24
+fixedbold=DejaVuSansMono-Bold.ttf@24
+fixeditalic=DejaVuSansMono-Oblique.ttf@24
+fixedbolditalic=DejaVuSansMono-BoldOblique.ttf@24
 antialias=1
 
 PARA CONVERTIR JUEGOS DE THE QUILL A FROTZ
