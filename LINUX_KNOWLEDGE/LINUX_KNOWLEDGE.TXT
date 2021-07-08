@@ -280,7 +280,7 @@ if (event.jaxis.axis == 1) {
 
 A parte de eso, añade los flags del renderer (también en seg009.c como todo lo de los controles que hemos dicho hasta ahora) y los del gcc en el Makefile, y a compilar.
 
-******Cambiar la región de un juego de MegaDrive y Master System************************************************************************************************************************
+******Cambiar la región de un juego de MegaDrive y Master System*****************
 
 PARA IR A UNA DIRECCIÓN CONCRETA EN HEXEDIT: PULSA ENTER Y TE PIDE LA DIRECCIÓN, Y ALLÁ VAMOS.
 Editamos el juego con el hexedit. Nos vamos a la dirección $1F0. Pulsamos TAB para ir al texto. Cambiamos la E por una U, o por una J, como queramos.
@@ -980,7 +980,7 @@ OJO: Guarda su configuración en el subdirectorio id1 de donde tengas el ejecuta
 Para tener 60FPS constantes, puedes editar id1/config.cfg y poner:
 r_oldwater "1"
 gl_texturemode "GL_LINEAR"
-Y poner resolución como 640x480.
+Y poner como resolución 720x400, que mantiene el ratio original, ocupando así la pantalla completa a 16/9 sin deformarse. 
 
 Los pak0.pak y pak1.pak van en ./id1
 La música en OGG y con nombres de archivo como track01.ogg.. track11.ogg, va en ./id1/music
