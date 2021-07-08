@@ -6212,6 +6212,9 @@ NOTA: Los valores de AcWidth y AcHeight se han elegido por ser múltiplos de los
 de manera que las imágenes gráficas se escalan correctamente y además se usa una fuente DejaVu tamaño 30 para que salgan
 los mismos caracteres por línea que con la fuente VGA original.
 
+NOTA2: Para que, al salvar partida o al cargar, SFROTZ no nos saque diálogos gráficos, sino que nos pida el filename a mano como debe ser,
+le pasamos el parámetro -T.
+
 PARA CONVERTIR JUEGOS DE THE QUILL A FROTZ
 Puedes convertir juegos de THE QUILL a .z5 para el frotz con el unquill: https://www.seasip.info/Unix/UnQuill/
 Pero el unquill recibe .SNA, y lo más que hay por ahí son .Z80, así que para pasar .SNA a .Z80 usa el spconv:
