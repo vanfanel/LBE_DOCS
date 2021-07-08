@@ -6198,14 +6198,14 @@ AcHeight = 800
 
 [Fonts]
 fontdir=/usr/share/fonts/truetype/dejavu
-textroman=DejaVuSans.ttf@28
-textbold=DejaVuSans-Bold.ttf@28
-textitalic=DejaVuSans-Oblique.ttf@28
-textbolditalic=DejaVuSans-BoldOblique.ttf@28
-fixedroman=DejaVuSansMono.ttf@28
-fixedbold=DejaVuSansMono-Bold.ttf@28
-fixeditalic=DejaVuSansMono-Oblique.ttf@28
-fixedbolditalic=DejaVuSansMono-BoldOblique.ttf@28
+textroman=DejaVuSans.ttf@24
+textbold=DejaVuSans-Bold.ttf@24
+textitalic=DejaVuSans-Oblique.ttf@24
+textbolditalic=DejaVuSans-BoldOblique.ttf@24
+fixedroman=DejaVuSansMono.ttf@24
+fixedbold=DejaVuSansMono-Bold.ttf@24
+fixeditalic=DejaVuSansMono-Oblique.ttf@24
+fixedbolditalic=DejaVuSansMono-BoldOblique.ttf@24
 antialias=1
 
 NOTA: Los valores de AcWidth y AcHeight se han elegido por ser múltiplos de los 640x400 originales que usa sfrotz,
