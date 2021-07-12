@@ -5832,6 +5832,20 @@ El fichero de configuración lo crea en ~/.giana/giana.cfg.
 Puedes poner ahí fast=1 para que no tengas que ver la intro, elegir idioma y todo eso.
 Puedes pasarle al ejecutable  "-fs -aspect" para conservar el aspect ratio.
 
+HURRICAN, EL TURRICAN DE LINUX
+==============================
+
+Clonamos su repo y compilamos:
+git clone --depth 1 --recurse-submodules https://github.com/drfiemost/Hurrican.git
+cd Hurrican/Hurrican
+mkdir b4
+cd b4
+cmake -DCMAKE_BUILD_TYPE=Release -DRENDERER=GLES3 ..
+(Hay otros renderers disponibles, mira en el README)
+make -j4 
+
+Creamos el directorio ~/hurrican, y allí copiamos el ejecutable, junto con los directorios data y lang, que vienen con los sources.
+
 AUDIO POR I2C: EL PI TOP SPEAKER
 ================================
 
