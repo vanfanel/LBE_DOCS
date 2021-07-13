@@ -3823,6 +3823,9 @@ Editamos src/sdl2/graphics.c y:
 -Antes de eso, añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 -En PHL_EndDrawing(), quitamos la sección de "implement some crude frameskipping...", y el while con el SDL_Delay() al final.
 
+Editamos src/sdl2/audio.c y:
+-Cambiamos el 4096 en Mix_OpenAudio() por 1024.
+
 Compilamos con:
 mkdir b4
 cd b4
