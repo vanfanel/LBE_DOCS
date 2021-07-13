@@ -5835,12 +5835,26 @@ Puedes pasarle al ejecutable  "-fs -aspect" para conservar el aspect ratio.
 HURRICAN, EL TURRICAN DE LINUX
 ==============================
 
-Clonamos su repo y compilamos:
+Empezamos por su dependencia libepoxy, que la tenemos que compilar a mano porque la que viene en DEBIAN depende de X11
+y toda su basura:
+Bajamos la última versión estable de libepoxy desde:
+https://github.com/anholt/libepoxy/releases
+
+Configuramos, compilamos e instalamos:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dx11=false ..
+ninja -j4
+sudo ninja install
+
+AHORA VAMOS CON EL HURRICAN EN SÍ:
+Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/drfiemost/Hurrican.git
 cd Hurrican/Hurrican
+Editamos CMakeLists.txt y comentamos la línea:
+INCLUDE(FindOpenGL REQUIRED) 
+Configuramos y compilamos:
 mkdir b4
 cd b4
-cmake -DCMAKE_BUILD_TYPE=Release -DRENDERER=GLES3 ..
+cmake -DCMAKE_BUILD_TYPE=Release -DRENDERER=GLES2 -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
 (Hay otros renderers disponibles, mira en el README)
 make -j4 
 
