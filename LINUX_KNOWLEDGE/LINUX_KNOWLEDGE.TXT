@@ -3850,8 +3850,8 @@ git submodule init
 git submodule update
 
 creamos un directorio de compilación y entramos en él:
-mkdir b3
-cd b3
+mkdir b4
+cd b4
 
 Ahora configuramos:
 
