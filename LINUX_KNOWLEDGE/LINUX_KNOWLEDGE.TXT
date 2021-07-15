@@ -5892,8 +5892,6 @@ AHORA VAMOS CON EL HURRICAN EN SÍ:
 Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/drfiemost/Hurrican.git
 cd Hurrican/Hurrican
-Editamos CMakeLists.txt y comentamos la línea:
-INCLUDE(FindOpenGL REQUIRED) 
 Configuramos y compilamos:
 mkdir b4
 cd b4
