@@ -5556,6 +5556,22 @@ Queda pendiente investigar el setting de lzdoom.ini: gl_es
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
 
+DUNGEON CRAWL STONE SOUP EN LA PI
+=================================
+
+Instalamos una dependencia previa (se puede compilar contra LUA o contra LUA-JIT, que es más rápido en la Pi):
+udo apt-get install libluajit-5.1-dev
+
+Bajamos los útimos estables de:
+https://github.com/crawl/crawl/releases
+
+Descomprimimos y nos vamos al directorio sources.
+Compilamos con:
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" make -j4 TILES=y LUAJIT=y
+
+Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
+Ahora copiamos el directorio "dat" que viene dentro de "sources" a ~/crawl
+
 BARONY, UN DUNGEON CRAWLER 3D OPENSOURCE PARA LINUX
 ====================================================
 
