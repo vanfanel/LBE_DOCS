@@ -495,7 +495,7 @@ Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de 
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
 Los CXXFLAGS son: -O2 -march=armv8-a+crc+simd -mtune=cortex-a72
-Y aniade la línea de optimiación agresiva debajo de la original de CFLAGS:
+Y añade la línea de optimiación agresiva debajo de la original de CFLAGS:
 CXXFLAGS += -flto -fomit-frame-pointer
 (NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
 
