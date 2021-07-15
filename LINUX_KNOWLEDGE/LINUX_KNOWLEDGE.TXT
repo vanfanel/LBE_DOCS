@@ -952,6 +952,30 @@ RIGHTSHOULDER - NEXT WEAPON
 BACK - MAP
 START - SHOW MENU
 
+*******Star Control 2 (Ur-Quan Masters) en la Pi**********************************
+
+Bajamos los últimos sources estables de:
+https://sourceforge.net/projects/sc2/files/UQM/
+
+Descomprimimos los sources, y ejecutamos:
+./build.sh uqm config
+Activamos y desactivamos lo que queramos, sobre todo lo de compilar una RELEASE en vez de una versión DEBUG.
+Editamos build.vars, y ahí añadimos las CFLAGS y CXXFLAGS de la Pi4:-march=armv8-a+crc+simd -mtune=cortex-a72
+
+Compilamos con:
+./build.sh uqm
+
+Ahora creamos:
+~/sc2
+Y copiamos ahí el ejecutable "uqm" que acabamos de obtener.
+Ahora copiamos el directorio "content" que viene con los sources a ~/sc2, tal cual el directorio con todo lo que tiene dentro.
+Ahora creamos:
+~/sc2/content/packages
+Descargamos los datos del mismo sitio que los sources (con uqm-content.uqm es suficiente) y los metemos en:
+~/sc2/content/packages
+
+Y ya está.
+
 *******vkQuake en la Pi***********************************************************
 
 Bajamos la última estable de:
