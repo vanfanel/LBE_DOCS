@@ -162,6 +162,24 @@ Tienes que ejecutar el comando para tener la IP estática.
 CONECTAR POR WIFI USANDO UN PINCHO USB WIFI SOPORTADO POR EL KERNEL
 ===================================================================
 
+LO PRIMERO, mi pincho WIFI está basado en el chipset RTL8188eu, que no viene soportado en el kernel.
+Así que hay que bajarse el firmware blob + módulo del kernel. Ambas cosas vienen en el archivo rtl8188eu.zip
+que he descargado de este hilo: https://misterfpga.org/viewtopic.php?f=27&t=408
+Pero no debería hacerte falta descargarlo de nuevo: tienes ambas cosas en /media/fat/rtl8188eu.
+Así que copiamos cada cosa a su sitio:
+
+cp rtl8188eufw.bin /lib/firmware/rtlwifi
+cp rtl8188eu.ko /lib/modules/4.19.0-socfpga-r1/
+
+Y ejecutamos esto:
+
+depmod -a
+modprobe rtl8188eu
+
+En este punto, podemos hacer iwconfig para ver que efectivamente el interface wifi nos aparece levantado.
+
+Ahora vamos a configurar la conexión WIFI en sí.
+
 Edita /media/fat/linux/wpa_supplicant.conf y pon ahí tu config wifi en el formato correcto, que es:
 ctrl_interface=/run/wpa_supplicant
 update_config=1
@@ -171,6 +189,8 @@ network={
         ssid="tu_ssid_aqui"
         psk="tu_clave_aqui"
 }
+
+Ahora es cosa de reiniciar, ejecutar wifi.sh y listo.
 
 ***********Montar el VHD de MSDOS (AO486) para la MiSTer********************************************************************************
 
