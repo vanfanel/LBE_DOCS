@@ -162,6 +162,9 @@ Tienes que ejecutar el comando para tener la IP estática.
 CONECTAR POR WIFI USANDO UN PINCHO USB WIFI SOPORTADO POR EL KERNEL
 ===================================================================
 
+¡¡CUIDADO!! Como el pincho que yo tengo no está soportado en el kernel, si se actualiza el kernel el pincho deja de funcionar
+porque se nos borran el firmware blob y el módulo del kernel, y toda reinstalarlos siguiendo las instrucciones que voy a dar ahora.
+
 LO PRIMERO, mi pincho WIFI está basado en el chipset RTL8188eu, que no viene soportado en el kernel.
 Así que hay que bajarse el firmware blob + módulo del kernel. Ambas cosas vienen en el archivo rtl8188eu.zip
 que he descargado de este hilo: https://misterfpga.org/viewtopic.php?f=27&t=408
