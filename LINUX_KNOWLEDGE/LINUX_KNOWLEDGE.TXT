@@ -960,7 +960,13 @@ https://sourceforge.net/projects/sc2/files/UQM/
 Descomprimimos los sources, y ejecutamos:
 ./build.sh uqm config
 Activamos y desactivamos lo que queramos, sobre todo lo de compilar una RELEASE en vez de una versión DEBUG.
-Editamos build.vars, y ahí añadimos las CFLAGS y CXXFLAGS de la Pi4:-march=armv8-a+crc+simd -mtune=cortex-a72
+
+Ahora editamos build.vars, y ahí añadimos las CFLAGS y CXXFLAGS de la Pi4:-march=armv8-a+crc+simd -mtune=cortex-a72
+
+Ahora editamos src/libs/sound/mixer/sdl/audiodrv_sdl.c, y cambiamos todas las ocurrencias de:
+desired.samples = 4096;
+por:
+desired.samples = 1024;
 
 Compilamos con:
 ./build.sh uqm
@@ -5124,7 +5130,7 @@ git submodule update --init --recursive
 Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
 cd b4
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" cmake -DCMAKE_BUILD_TYPE=Release ..
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release ..
 
 DEVILUTIONX, Diablo en Linux
 ============================
