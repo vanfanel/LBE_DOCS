@@ -975,7 +975,7 @@ Descomprimimos los sources, y ejecutamos:
 ./build.sh uqm config
 Activamos y desactivamos lo que queramos, sobre todo estas cosas:
 -Compilar una RELEASE en vez de una versión DEBUG.
--Usar libmikmod del sistema, NO el libmikmod incluido.
+-Usar libmikmod del sistema, NO el libmikmod incluido que como ya hemos dicho suena mal en la Pi.
 
 Ahora editamos build.vars, y ahí añadimos las CFLAGS y CXXFLAGS de la Pi4:
 -march=armv8-a+crc+simd -mtune=cortex-a72
@@ -3923,13 +3923,7 @@ Si queremos lanzar un juego directamente sin pasar por el lanzador, es con:
 
 Y si quieres tener música en keen1, gráficos mejorados, etc... te vas al directorio hqp que viene con los sources de gitlab,
 y copias el directorio hqp/global a ~/keen, y luego lo que hay en hqp/keen1 a ~/keen/games/keen1,
-lo que hay en hqp/keen2 a ~/keen/games/keen2, etc... 
-
-*************OMNISPEAK, motor de KEEN 4, 5 y 6 en la Raspberry Pi*************************************************************
-
-Entramos en src y compilamos con:
- 
-make RENDERER=sdl2 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -j4
+lo que hay en hqp/keen2 a ~/keen/games/keen2, etc...
 
 *************Doomretro en la Raspberry Pi*************************************************************************************
 
