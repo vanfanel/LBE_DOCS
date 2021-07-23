@@ -952,16 +952,36 @@ RIGHTSHOULDER - NEXT WEAPON
 BACK - MAP
 START - SHOW MENU
 
-*******Star Control 2 (Ur-Quan Masters) en la Pi**********************************
+*******StarControl 2 (Ur-Quan Masters o UQM) en la Pi**********************************
+
+Lo primero, vamos con una dependencia previa que tiene: libmikmod. La versión que viene incluida suena a rata en la Pi,
+instalar libmikmod-dev nos arrastra dependencias de pulseaudio, X11 y la hostia, etc. Así que sólo nos queda instalar
+nuestra propia build de libmikmod.
+Para ello, clonamos su repo, configuramos, compilamos e instalamos así:
+
+git clone --depth 1 https://github.com/sezero/mikmod.git
+cd libmikmod
+mkdir b4
+cd b4
+cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSE=0 -DENABLE_OSS=0 cmake -DENABLE_DOC=0 -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+sudo make install
+
+Y AHORA VAMOS A POR EL UQM EN SÍ:
 
 Bajamos los últimos sources estables de:
 https://sourceforge.net/projects/sc2/files/UQM/
 
 Descomprimimos los sources, y ejecutamos:
 ./build.sh uqm config
-Activamos y desactivamos lo que queramos, sobre todo lo de compilar una RELEASE en vez de una versión DEBUG.
+Activamos y desactivamos lo que queramos, sobre todo estas cosas:
+-Compilar una RELEASE en vez de una versión DEBUG.
+-Usar libmikmod del sistema, NO el libmikmod incluido.
 
-Ahora editamos build.vars, y ahí añadimos las CFLAGS y CXXFLAGS de la Pi4:-march=armv8-a+crc+simd -mtune=cortex-a72
+Ahora editamos build.vars, y ahí añadimos las CFLAGS y CXXFLAGS de la Pi4:
+-march=armv8-a+crc+simd -mtune=cortex-a72
+
+Ahora editamos src/libs/graphics/sdl/sdl2_pure.c, y en la llamada de SDL_CreateRenderer(), metemos los flags:
+SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
 
 Ahora editamos src/libs/sound/mixer/sdl/audiodrv_sdl.c, y cambiamos todas las ocurrencias de:
 desired.samples = 4096;
@@ -981,6 +1001,9 @@ Descargamos los datos del mismo sitio que los sources (con uqm-content.uqm es su
 ~/sc2/content/packages
 
 Y ya está.
+Para que no nos mande mensajes a la consola, lo podemos ejecutar con:
+./uqm --logfile=/dev/null
+Se sale del juego con F10 o F12.
 
 *******vkQuake en la Pi***********************************************************
 
