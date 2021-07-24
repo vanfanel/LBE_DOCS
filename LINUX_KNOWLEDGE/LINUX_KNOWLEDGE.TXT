@@ -738,13 +738,9 @@ sudo apt-get install libopusfile-dev --no-install-recommends
 mkdir b4
 cd b4
 
-Edita src/gui/sdlmain.cpp y añade SDL_RENDERER_PRESENTVSYNC a los flags de SDL_CreateRenderer()
-y por en parámetro de SDL_GL_SetSwapInterval() a 1.
-(Los muy retrasados han desactivado el vsync porque les suena mal cuando ejecutan juegos de 70Hz sobre un display de 60Hz).
-
 Configuramos con:
 CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" \
-meson .. -Duse_opengl=false
+meson .. -Duse_opengl=false -Duse_sdl2_net=false
 
 Compilamos con:
 ninja -j4
