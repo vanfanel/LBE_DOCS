@@ -3990,7 +3990,10 @@ cd b4
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_SDL2=ON -DENABLE_SOUND=ON -DENABLE_FLUIDSYNTH=ON -DOpenGL_GL_PREFERENCE=GLVND ..
 make -j4
 
-Ahora creamos ~/sshock y ahí dentro ~/sshock/res/data, donde metemos los datos del juego.
+Ahora creamos ~/sshock y ahí dentro:
+Copiamos el directorio shaders que viene con los sources a ~/sshock/shaders
+Metemos los datos del juego en ~/sshock/res/data
+
 Ejecutamos con:
 ./systemshock -nosplash
 
