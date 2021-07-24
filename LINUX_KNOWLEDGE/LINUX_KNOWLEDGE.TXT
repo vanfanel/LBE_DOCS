@@ -3977,6 +3977,23 @@ data graphics screenshots sounds xcf
 Puedes asignar el botón en src/base.h
 Para usar el 8bitdo SN30, usa JUMP_BUTTON 0.
 
+*************System Shock en la Pi con Shockolate****************************************************************************
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/Interrupt/systemshock.git
+
+Creamos el directorio de compilación, entramos, configuramos y compilamos:
+cd systemshock
+mkdir b4
+cd b4
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_SDL2=ON -DENABLE_SOUND=ON -DENABLE_FLUIDSYNTH=ON -DOpenGL_GL_PREFERENCE=GLVND ..
+make -j4
+
+Ahora creamos ~/sshock y ahí dentro ~/sshock/res/data, donde metemos los datos del juego.
+Ejecutamos con:
+./systemshock -nosplash
+
 *************Chocolate DOOM en la Raspberry Pi con SDL2**********************************************************************
 
 Usamos el branch sdl2-branch, que clonamos con:
