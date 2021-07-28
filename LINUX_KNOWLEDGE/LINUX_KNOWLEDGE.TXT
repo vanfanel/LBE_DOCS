@@ -2661,7 +2661,7 @@ mkdir b4
 cd b4
 
 Compilamos con GLES con:
-cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release ..
+cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release .. -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
 
 ***********Compilar RAZE, el engine de Duke Nukem, Blood, Exhumed, etc para Linux****************************************************************
 
