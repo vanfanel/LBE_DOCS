@@ -6210,7 +6210,7 @@ Los detalles sobre los dip switches están en dle21.txt, que acompaña a las rom
 Recuerda que ahí se cuentan los switches del 0 al 7. Se empieza de derecha a izquierda a contar.
 Por lo demás, el banco A es el 0, y el B es el 1.
 
-Para lanzar juegos de SINGE (es decir, conversiones nativas), tenemos que meter el directorio del juego que sea dentro de singe,
+Para lanzar juegos de SINGE (es decir, conversiones nativas), tenemos que meter el directorio del juego que sea dentro del directorio singe,
 y luego pasarle como parámetros el framefile del juego (como en cualquier juego de daphne) y el script del juego singe.
 Es decir, timegal quedaría metido en:
 ~/laserdisc/singe/timegal
