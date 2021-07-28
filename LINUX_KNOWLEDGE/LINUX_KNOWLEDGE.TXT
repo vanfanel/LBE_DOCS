@@ -3479,7 +3479,7 @@ git remote remove origin
 -Ahora le metemos un origin nuevo que incluya nuestro token, así:
 git remote add origin https://vanfanel:<TOKEN_DE_MIERDA>@github.com/vanfanel/LBE_DOCS.git
 
--Ahora ya podemos actualizar con git push o la mierda que sea.
+-Ahora ya podemos actualizar con git push las veces que quieras desde tu copia local ese repo.
 
 ************Actualizar repositorio github****************************************************************************************
 
