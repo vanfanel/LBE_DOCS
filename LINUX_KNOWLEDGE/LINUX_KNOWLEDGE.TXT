@@ -6229,7 +6229,7 @@ y luego pasarle como parámetros el framefile del juego (como en cualquier juego
 Es decir, timegal quedaría metido en:
 ~/laserdisc/singe/timegal
 Y luego lo ejecutaríamos como:
-./hypseus singe vldp -framefile singe/timegal/frame-timegal.txt -script singe/timegal/timegal.singe -fullscreen -nolog
+./hypseus singe vldp -framefile singe/timegal/timegal.txt -script singe/timegal/timegal.singe -fullscreen -nolog
 
 COMPILAR HYPSEUS (Daphne)
 ==========================
