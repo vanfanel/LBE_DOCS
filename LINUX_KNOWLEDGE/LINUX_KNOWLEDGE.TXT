@@ -6205,7 +6205,7 @@ KEY_START2 = 50 0 0
 KEY_BUTTON1 = 1073742048 0 1
 KEY_BUTTON2 = 1073742050 0 2
 KEY_BUTTON3 = 32 0 3
- 
+
 Los detalles sobre los dip switches están en dle21.txt, que acompaña a las roms del Dragon's Lair Enhanced 2.1
 Recuerda que ahí se cuentan los switches del 0 al 7. Se empieza de derecha a izquierda a contar.
 Por lo demás, el banco A es el 0, y el B es el 1.
