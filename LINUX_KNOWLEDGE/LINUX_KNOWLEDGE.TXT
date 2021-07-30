@@ -863,6 +863,34 @@ CAMBIA BOTONES O TECLAS
 
 Sacamos el mapper con CTRL+F1. Hacemos los cambios que queramos, y luego el fichero .map lo especificamos en el campo mapperfile del .conf que vayamos a usar.
 
+JUEGOS DE JAVA DE MÓVIL CON FREEJ2ME
+====================================
+
+LO PRIMERO es entender que necesitamos un JAR que nos permita a su vez cargar los JAR de los juegos con la máquina JAVA de nuestra máquina, y además necesitamos
+un interface SDL2 que va a pintar la pantalla de JAVA usando SDL2.
+
+Instalamos dependencias previas:
+sudo apt-get install ant
+
+Nos bajamos los últimos sources:
+git clone --depth 1 https://github.com/hex007/freej2me.git
+
+Entramos en freej2me y simplemente escribimos:
+ant
+Se nos generará build/freej2me-sdl.jar.
+Creamos el directorio ~/java, y copiamos el freej2me-sdl.jar que acabamos de generar a ~/java
+y metemos ahí los juegos que nos bajemos en .jar
+
+Ahora generamos el interface de gráficos SDL, llamado sdl_interface. Para ello, entramos en src/sdl2, y hacemos:
+make -j4
+sudo make install
+Esto simplemente nos mandará el interface de gráficos sdl_interface a /usr/local/bin
+
+Ejecutamos el juego que queramos con:
+java -jar freej2me-sdl.jar DoomRPG.jar 240 320 -i linear
+Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altura mayor, de 320.
+
+
 FS-UAE, EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
 ==================================================================
 
