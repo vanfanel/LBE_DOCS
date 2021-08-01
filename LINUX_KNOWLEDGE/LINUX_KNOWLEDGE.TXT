@@ -6275,22 +6275,22 @@ Para poner un buffer de audio más pequeño, puedes pasar el parámetro -sound_b
 Para configurar el joystick:
 Copia, al mismo directorio donde metas el ejecutable hypseus, el archivo docs/hypinput.ini,
 y ahí, para configurar el joystick, fíjate en el formato de cada línea. Por ejemplo:
-KEY_BUTTON1 = 1073742048 0 0
+KEY_BUTTON1 = SDLK_LCTRL 0 0
 ..significa que el botón 1 del juego está en el botón 0 del mando (último campo).
 Así que si queremos la espada en el botón 0 del mando, dejamos esa línea como:
-KEY_BUTTON1 = 1073742048 0 1
+KEY_BUTTON1 = SDLK_LCTRL 0 1
 ...ya que a los números de botón del mando hay que sumarle 1.
 Los números de botón del mando los puedes sacar de jstest, del paquete de Debian llamado "joystick".
 Recuerda que tienes que sumarle +1 a los números de botón que te da jstest!!!
 
 Yo tengo las líneas relevantes así:
-KEY_COIN1 = 53 54 7
-KEY_COIN2 = 54 53 0
-KEY_START1 = 49 0 8
-KEY_START2 = 50 0 0
-KEY_BUTTON1 = 1073742048 0 1
-KEY_BUTTON2 = 1073742050 0 2
-KEY_BUTTON3 = 32 0 3
+KEY_COIN1 = SDLK_5 0 7
+KEY_COIN2 = SDLK_6 0 0
+KEY_START1 = SDLK_1 0 8
+KEY_START2 = SDLK_2 0 0
+KEY_BUTTON1 = SDLK_LCTRL 0 1
+KEY_BUTTON2 = SDLK_LALT 0 2
+KEY_BUTTON3 = SDLK_SPACE 0 3
 
 Los detalles sobre los dip switches están en dle21.txt, que acompaña a las roms del Dragon's Lair Enhanced 2.1
 Recuerda que ahí se cuentan los switches del 0 al 7. Se empieza de derecha a izquierda a contar.
