@@ -112,7 +112,7 @@ git submodule update --init --recursive
 Configuramos y compilamos:
 mkdir b4
 cd b4
-cmake .. -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_FFMPEG=OFF -DUSE_MINIUPNPC=OFF -DUSE_DISCORD=OFF -DCMAKE_C_FLAGS="-DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-DEGL_NO_X11"
+cmake .. -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF -DCMAKE_C_FLAGS="-DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-DEGL_NO_X11"
 
 Si al compilar te da un error con la función strcasecmp(), aniade #include <strings.h> en el fichero donde lo da.
 
