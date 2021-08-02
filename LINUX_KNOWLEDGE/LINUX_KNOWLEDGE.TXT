@@ -3550,7 +3550,7 @@ Así que ejecuta sudo lddconfig -v y echa un vistazo. Mírate la parte de los ap
 Si te da un segfault al salir, pon  la llamada video.disable() en  quit_func(), que está en src/main/main.cpp, y quitas la llamada a  video.disable()
 de Video::~Video(void) en src/main/video.cpp , ya que no pinta nada en un destructor...
 
-============ACTUALIZAR UN REPOSITORIO DE GITHUB USANDO EL NUEVO Y ASQUEROSO SISTEMA DE PERSONAL ACCESS TOKENS (PAT)====================================
+============ACTUALIZAR UN REPOSITORIO DE GITHUB USANDO EL NUEVO Y ASQUEROSO SISTEMA DE PERSONAL ACCESS TOKENS (PAT)===============
 
 -Creamos un token nuevo. Para ello, nos vamos a la foto de perfil de github (arriba a la derecha), settings -> developer settings -> personal access tokens
  y generamos el token de los cojones. Es una cadena de caracteres de mierda. La copiamos y la guardamos. NO LA USES COMO PASSWORD, TE DEJA HACERLO UNA VEZ
