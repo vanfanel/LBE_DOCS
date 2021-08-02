@@ -114,6 +114,17 @@ mkdir b4
 cd b4
 cmake .. -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF -DCMAKE_C_FLAGS="-DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-DEGL_NO_X11"
 
+Si nos da un error al linkar relacionado con ffmpeg, tenemos que recompilar ffmpeg interno que trae, lo cual se hace con esta
+secuencia de comandos:
+
+pushd ../ffmpeg
+./linux_arm64.sh
+popd
+
+(Ese error ocurre porque, por defecto, intenta usar un FFMPEG que trae PRE-compilado contra otras libc.. normal que de error!)
+
+Ahora copiamos el directorio assets al mismo directorio del ejecutable PPSSPP
+
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
 Clonamos duckstation:
