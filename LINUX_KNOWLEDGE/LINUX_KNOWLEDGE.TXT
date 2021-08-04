@@ -921,13 +921,31 @@ Instalamos dependencias previas:
 sudo apt-get install gettext --no-install-recommends
 
 Clonamos su repo:
-https://github.com/FrodeSolheim/fs-uae.git
+git clone --depth 1 https://github.com/FrodeSolheim/fs-uae.git
 
 Ejecutamos el script bootstrap incluido con los sources, y ya podemos ejecutar ./configure
 
 Configuramos con:
 
-./configure --with-alsa --without-midi --without-libmpeg2
+./configure --with-alsa --without-midi --without-libmpeg2 --without-openal --without-x11 --disable-x86 --disable-qemu-cpu --disable-drivesound --disable-netplay --disable-slirp
+ 
+Editamos config.h, y ponemos WITH_OPENAL y WITH_X11 a 0. Podemos desactivar más cosas, como la emulación PPC, la emulación de bridgeboard x86, etc.
+
+Creamos el directorio ~/amiga, y ahí copiamos el ejecutable fs-uae y los directorios "data" y "fsemu" que viene con los sources.
+
+Para generar configuraciones, usamos fs-uae-launcher. Lo más fácil es instalarlo sin más:
+sudo apt-add-repository ppa:fengestad/stable
+sudo apt-get update
+sudo apt-get install fs-uae-launcher
+
+Las configuraciones generadas quedan en:
+~/Documents/FS-UAE/Configurations/
+
+Podemos por ejemplo correr fs-uae con una configuración de un 1200 con:
+./fs-uae configs/1200.fs-uae --fullscreen=1
+
+Puedes ver otras opciones de vídeo que le puedes pasar como parámetro al ejecutable en:
+https://fs-uae.net/video-options
 
 CORE DOSBOX PURE
 ================
@@ -1480,7 +1498,7 @@ Ahora ya podemos agregar contactos de whatsapp con normalidad!
 
 Si tienes problemas de conectividad, edita ~/.purple/accounts.xml y busca el servidor, versión de android, puerto...
 
-*******Compilar el Atari800 para la Raspberry Pi******************************************************************************************************
+*******Compilar el Atari800 para la Raspberry Pi********************************************************************
 
 Si te quieres ahorrar muchos pasos, tienes un parche contra la versión 3.1.0 en el correo, llamado atari800-refreshrate.patch
 Si lo aplicas, sólo te queda cambiar los CFLAGS en el Makefile tras hacer el ./configure --target=rpi --host=arm-linux
@@ -3552,9 +3570,10 @@ de Video::~Video(void) en src/main/video.cpp , ya que no pinta nada en un destru
 
 ============ACTUALIZAR UN REPOSITORIO DE GITHUB USANDO EL NUEVO Y ASQUEROSO SISTEMA DE PERSONAL ACCESS TOKENS (PAT)===============
 
--Creamos un token nuevo. Para ello, nos vamos a la foto de perfil de github (arriba a la derecha), settings -> developer settings -> personal access tokens
- y generamos el token de los cojones. Es una cadena de caracteres de mierda. La copiamos y la guardamos. NO LA USES COMO PASSWORD, TE DEJA HACERLO UNA VEZ
- Y LUEGO YA NO VALE Y TIENES QUE GENEARAR OTRA.
+-Creamos un token nuevo. Para ello, nos vamos a la foto de perfil de github (arriba a la derecha),
+settings -> developer settings -> personal access tokens
+y generamos el token de los cojones. Es una cadena de caracteres de mierda. La copiamos y la guardamos.
+NO LA USES COMO PASSWORD, TE DEJA HACERLO UNA VEZ Y LUEGO YA NO VALE Y TIENES QUE GENEARAR OTRA.
 
 -Nos metemos en el reposiorio que queremos actualizar y hacemos:
 git remote remove origin
