@@ -85,7 +85,7 @@ Depende de wayland, wlroots y xkbcommon.
 Puedes descargar y compilar wayland muy facilmente de aquí, vienen las instrucciones de compilación:
 https://github.com/wayland-project/wayland
 
-******Descargar contenidos de ITunes desde Linux sin ITunes*********************************************************************************************************************************
+******Descargar contenidos de ITunes desde Linux sin ITunes***************************************************************************
 
 El programa se llama tunesviewer.
 Si te da un error y no te deja buscar, dale a view y desactiva Request HTM5 Mode.
@@ -112,7 +112,7 @@ git submodule update --init --recursive
 Configuramos y compilamos:
 mkdir b4
 cd b4
-cmake .. -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF -DCMAKE_C_FLAGS="-DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-DEGL_NO_X11"
+cmake .. -DUSING_X11_VULKAN=OFF -DUSING_KMSDRM_VULKAN=ON -DUSING_GLES2=ON -DUSE_DISCORD=OFF -DCMAKE_C_FLAGS="-DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-DEGL_NO_X11"
 
 Si nos da un error al linkar relacionado con ffmpeg, tenemos que recompilar ffmpeg interno que trae, lo cual se hace con esta
 secuencia de comandos:
@@ -710,7 +710,13 @@ EndSection
 
 Reiniciamos el servidor gráfico. Magia!
 
-*******Comprimir un PDF****************************************************************************************************************************************
+*******Comprimir un ZIP partiéndolo en varias partes*********************************************************************
+
+Con esto creamos varios volúmenes de 1990 MB cada uno:
+
+zip -r -s 1990m pi4.zip pi4.img
+
+*******Comprimir un PDF**************************************************************************************************
 
 gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=xenon2-compressed.pdf Downloads/Xenon.2-Manual.pdf
 
@@ -722,7 +728,7 @@ Instalamos y arrancamos desde el disco duro. Si hemos instalado en modo CSM, deb
 Ya que estás, desactiva SECUREBOOT.
 Miseria y muerte a Microsoft y a todos los malnacidos que trabajan en ella.
 
-*******Guardar LOG de una ventana en el IRSSI*******************************************************************************************************************
+*******Guardar LOG de una ventana en el IRSSI***************************************************************************
 
 /lastlog -file <archivo>.log
 
