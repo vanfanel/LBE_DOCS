@@ -123,7 +123,7 @@ popd
 
 (Ese error ocurre porque, por defecto, intenta usar un FFMPEG que trae PRE-compilado contra otras libc.. normal que de error!)
 
-Ahora copiamos el directorio assets al mismo directorio del ejecutable PPSSPP
+Ahora copiamos el directorio "assets" al mismo directorio del ejecutable PPSSPP
 
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
@@ -165,8 +165,8 @@ sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 -Copiamos el rootfs a /opt/DEBIAN_ROOT, excluyendo home, con:
 sudo rsync -av --progress /media/manuel/DEBIAN_ROOT /opt/ --exclude DEBIAN_ROOT/home/pi
 
--Clonamos el repo:
-git clone --depth 1 https://github.com/stenzek/duckstation.git
+-Bajamos la última release estable de aquí:
+https://github.com/kivutar/swanstation/releases
 
 -Creamos en el raiz de los sources (o donde nos de la gana) el cmake toolchain file, donde le especificamos todo lo necesario
 para crosscompilar para aarch64.
@@ -3567,6 +3567,12 @@ Así que ejecuta sudo lddconfig -v y echa un vistazo. Mírate la parte de los ap
 
 Si te da un segfault al salir, pon  la llamada video.disable() en  quit_func(), que está en src/main/main.cpp, y quitas la llamada a  video.disable()
 de Video::~Video(void) en src/main/video.cpp , ya que no pinta nada en un destructor...
+
+============CLONAR UN REPOSITORIO DE GITHUB USANDO EL NUEVO Y ASQUEROSO SISTEMA DE PERSONAL ACCESS TOKENS (PAT)===============
+
+git clone --depth 1 https://<TOKEN_DE_MIERDA>@github.com/vanfanel/ppsspp.git
+
+Así ya no necesitamos meter username, ni contraseña, ni nada, al hacer updates.
 
 ============ACTUALIZAR UN REPOSITORIO DE GITHUB USANDO EL NUEVO Y ASQUEROSO SISTEMA DE PERSONAL ACCESS TOKENS (PAT)===============
 
