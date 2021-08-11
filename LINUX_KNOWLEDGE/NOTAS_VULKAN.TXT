@@ -1,0 +1,15 @@
+Cómo inicializar el contexto en VULKAN. Siempre es igual:
+
+-Creamos la Vulkan instance. Aquí es donde activamos extensiones, así que cuando creamos la instance le pasamos la lista de extensiones.
+Como nosotros normalmente queremos Vulkan sin las X11, necesitamos activar la extensión VK_KHR_display. Para ello,
+añadimos VK_KHR_DISPLAY_EXTENSION_NAME a la lista de extensiones, y luego ya llamamos a vkCreateInstance().
+
+
+-Creamos la Vulkan surface. Aquí, como no tenemos X11 ni wayland, a nosotros no nos viene un display del gestor de ventanas, así que
+tenemos que:
+	-Rellenar una estructura VkDisplaySurfaceCreateInfoKHR "a mano", para lo cual tenemos que conseguir el modo de vídeo que queremos,
+	 el tamaño de imágen que queremos, el plano que queremos...
+	-Llamar a vkCreateDisplayPlaneSurfaceKHR() pasándole esa estructura que describe las cosas de la surface que queremos.
+
+-Creamos un swapchain sobre esa surface. SIEMPRE ES ASÍ: PRIMERO NECESITAMOS LA SURFACE, Y SOBRE ELLA CREAMOS UNA SWAPCHAIN DE BUFFERS
+PARA PINTAR EN ELLOS E IRLOS INTERCAMBIANDO.
