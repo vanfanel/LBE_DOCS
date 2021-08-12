@@ -5618,6 +5618,10 @@ Copiamos los .ogg que vienen en MUSIC de una instalación del Heroes 2 de GOG a 
 ya que van de 01 a 42 y deberían ir de 02 a 43! Es sólo moverlas una posición adelante todas al renombrarlas, que tienes que renombrarlas a Track02.ogg, Track03.ogg, etc).
 (No hace falta que les cambies el nombre ni nada, con que lleven en el nombre el número de pista, le vale).
 
+El fichero de configuración es ~/.config/fheroes2/fheroes2.cfg
+Se genera cuando ejecutas el engine por primera vez.
+La opción para que no se reproduzca la intro es "show game intro = off"
+
 LIBOPENAL en la Raspberry Pi
 ============================
 
