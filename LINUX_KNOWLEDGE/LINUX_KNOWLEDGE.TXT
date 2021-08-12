@@ -122,6 +122,23 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 
 Ahora es tan simple como cargar el Maldita Castilla con:
 ./loader Maldita_Castilla.apk
+(Se usa la versión para Ouya que está en la página de Locomalito)
+
+Para Metroid am2r, tenemos que bajarnos la versión 1.1 y parchearla a la última versión que haya en ese momento:
+
+-Clonamos el repo de la última versión del auto-parcheador: git clone --depth 1 https://github.com/AM2R-Community-Developers/AM2R-Autopatcher-Linux
+
+-Descargamos el AM2R versión original 1.1 de aquí: https://archive.org/details/am2r1.1
+y lo guardamos dentro del directorio AM2R-Autopatcher-Linux como AM2R-Autopatcher-Linux/AM2R_11.zip
+
+-Instamos el parcheador xdelta: sudo apt install python xdelta3
+
+-Bajamos la última versión del parche de DISCORD:
+wget -O AM2R-Autopatcher-Linux/data/droid.xdelta https://cdn.discordapp.com/attachments/829714741471215667/874800076017504326/droid.xdelta
+wget -O AM2R-Autopatcher-Linux/data/android/AM2RWrapper.apk https://cdn.discordapp.com/attachments/829714741471215667/874800183181967400/AM2RWrapper.apk
+
+-Parcheamos!!
+cd AM2R-Autopatcher-Linux && python patcher.py
 
 ******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
 
