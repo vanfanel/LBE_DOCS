@@ -130,6 +130,7 @@ Para Metroid am2r, tenemos que bajarnos la versión 1.1 y parchearla a la últim
 
 -Descargamos el AM2R versión original 1.1 de aquí: https://archive.org/details/am2r1.1
 y lo guardamos dentro del directorio AM2R-Autopatcher-Linux como AM2R-Autopatcher-Linux/AM2R_11.zip
+(OJO: Bájalo por Torrent, ya sabes que todo lo de Archive se corta si te bajas el .zip directamente)
 
 -Instamos el parcheador xdelta: sudo apt install python xdelta3
 
@@ -139,6 +140,8 @@ wget -O AM2R-Autopatcher-Linux/data/android/AM2RWrapper.apk https://cdn.discorda
 
 -Parcheamos!!
 cd AM2R-Autopatcher-Linux && python patcher.py
+(Te preguntará por el tipo de parche: responde Android. Y no hace falta que instales el pack de sonido de alta calidad porque
+ocupa MUCHO más.)
 
 ******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
 
