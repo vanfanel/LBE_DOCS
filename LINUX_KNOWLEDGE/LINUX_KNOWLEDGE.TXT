@@ -1,4 +1,7 @@
-******LANZAR programas en sus propias CPUs (realtime, nada más puede ejecutarse ahí: garantia total probada con uso masivo de CPU de housekeeping simultáneo)*******
+============================================================================================================================================
+LANZAR programas en sus propias CPUs (realtime, nada más puede ejecutarse ahí: garantia total probada con uso masivo de CPU
+de housekeeping simultáneo)
+============================================================================================================================================
 
 HABIENDO AISLADO LAS CPUs DEL 1 al 3 CON "isolcpus=1-3" EN CMDLINE.TXT: 
 -Para lanzar algo como un emulador que no son multithread:
@@ -101,6 +104,24 @@ sudo apt update
 
 Se puede volcar y ver con:
 cat /sys/class/drm/card1-HDMI-A-0/edid | edid-decode
+
+******Cargar juegos de GameMaker (GM) de Android en GNU/Linux****************************************************************
+
+OJO!!! Se tiene que hacer con un Linux de 32bits (armhf).
+De momento no es compatible con Linux de 64bit (como aarch64) y cuando lo sea, sólo se podrán usar juegos que funcionen sobre
+un GMLoader de 64bit, con lo que no será compatible con juegos de GameMaker versión 2.x como el Maldita Castilla.
+
+Bueno, vamos al lio.
+Clonamos el repo:
+git clone --depth 1 https://github.com/JohnnyonFlame/droidports.git
+
+Creamos el directorio de compilación, configuramos y compilamos:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release
+
+Ahora es tan simple como cargar el Maldita Castilla con:
+./loader Maldita_Castilla.apk
 
 ******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
 
@@ -239,7 +260,7 @@ Makefile.in
 
 Y ya debería solucionarse. Sin instalar nada.
 
-******Llaves en LibreOffice*****************************************************************************************************************************************************************
+******Llaves en LibreOffice**********
 
 Antes de esto, aprende a trabajar con marcos de texto, de manera que puedas luego moverlos dentro de las laves y tal sin andar jugando con tabulaciones.
 Los marcos de texto se crean con Insert->Text Box. Así de fácil.
@@ -257,11 +278,11 @@ Ahora ya, lo de las llaves va así:
 10)Y luego cada uno elige la predeterminación que desea.
 11)Llave finalizada.
 
-******Medir la temperatura en Raspberry Pi*************************************************************************************************************************************************
+******Medir la temperatura en Raspberry Pi************
 
 vcgencmd measure_temp
 
-******Medir velocidad de la CPU en Raspberry pi**********************************************************************************************************************************************
+******Medir velocidad de la CPU en Raspberry Pi**********
 
 sudo cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
 vcgencmd get_config arm_freq
