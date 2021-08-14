@@ -5881,8 +5881,17 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 por
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
-mkdir b3
-cd b3
+Tenemos dos métodos para compilarlo:
+
+USANDO MAKE (RECOMENDADO):
+Editamos configure.ac, quitamos el -g de los CFLAGS, ejecutamos ./autogen.sh,
+y a continuación configuramos y compilamos:
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -fsigned-char" ./configure
+make -j4
+
+USANDO CMAKE (NO RECOMENDADO POR AHORA):
+mkdir b4
+cd b4
 cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -fsigned-char" -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
