@@ -119,6 +119,9 @@ Clonamos el repo:
 git clone --depth 1 https://github.com/JohnnyonFlame/droidports.git
 git submodule update --init --recursive
 
+Editamos ports/gmloader/sdl2_media.c y ponemos debajo de la llamada a SDL_CreateWindow():
+SDL_ShowCursor(SDL_DISABLE);
+
 Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
 cd b4
