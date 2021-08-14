@@ -727,4 +727,4 @@ CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" meso
 Compilamos e instalamos:
 ninja -j4
 
-(TODO: Instalar wlroots, y luego cage).
+(TODO: Instalar wayland-protocols, wlroots, y luego cage).
