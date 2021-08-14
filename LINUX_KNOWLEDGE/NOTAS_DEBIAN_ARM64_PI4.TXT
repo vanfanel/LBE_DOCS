@@ -712,3 +712,19 @@ sudo ldconfig
 
 Si quieres filtros por software, entra en gfx/video_filters y haz make, y copias los .so y los .filt a ~/.config/retroarch/filters/video/
 y luego los seleccionas en retroarch.
+
+INSTALAR WAYLAND
+================
+
+Bajamos la última release estable de:
+https://wayland.freedesktop.org/releases.html
+
+Configuramos:
+mkdir b4
+cd b4
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" meson -Ddtd_validation=false -Ddocumentation=false ..
+
+Compilamos e instalamos:
+ninja -j4
+
+(TODO: Instalar wlroots, y luego cage).
