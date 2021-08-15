@@ -573,16 +573,16 @@ mkdir b4
 cd b4
 
 COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms= -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro -Dglvnd=true -Dbuildtype=release ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro -Dglvnd=true -Dbuildtype=release ..
 
 SI QUISIERAS SÓLO GLES Y GLES2, SIN OPENGL COMPLETO:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms= -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=dri -Dplatforms=drm,x11 -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dglvnd=true -Dplatforms= -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dglvnd=true -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 PARA COMPILAR:
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
@@ -716,15 +716,148 @@ y luego los seleccionas en retroarch.
 INSTALAR WAYLAND
 ================
 
+Lo primero: para correr CAGE, necesitas WAYLAND y WLROOTS.
+A su vez, WLROORS necesita WAYLAND-PROTOCOLS y LIBSEAT
+
+PARTE 1: WAYLAND EN SÍ
+----------------------
 Bajamos la última release estable de:
 https://wayland.freedesktop.org/releases.html
 
-Configuramos:
+Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" meson -Ddtd_validation=false -Ddocumentation=false ..
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Ddtd_validation=false -Ddocumentation=false ..
 
-Compilamos e instalamos:
 ninja -j4
+sudo ninja install
 
-(TODO: Instalar wayland-protocols, wlroots, y luego cage).
+PARTE 2: WAYLAND-PROTOCOLS
+--------------------------
+Bajamos la ultima release estable de:
+https://wayland.freedesktop.org/releases.html
+
+Cofiguramos, compilamos e instalamos:
+mkdir b4
+cd b4
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dtests=false ..
+ninja -j4
+sudo ninja install
+
+PARTE 3: WLROOTS
+----------------
+-Previamente necesitamos KMS/DRM funcionando. Así que deberías ser capaz de ejecutar los tests de SDL2 sobre KMSDR.
+
+// BLOQUE PARA DEBIAN 11, QUE YA TIENE UN PAQUETE LIBSEAT Y SU VERSIÓN DE LIBINPUT ES ACTUAL, ASÍ QUE ES TODO MÁS SENCILLO:
+
+-Instalamos dependencias previas: sudo apt-get install libudev-dev libpixman-1-dev libxkbcommon-dev libinput-dev libseat-dev --no-install-recommends
+
+// FIN BLOQUE DEBIAN 11
+
+// BLOQUE SÓLO PARA DEBIAN 10, YA QUE NO TIENE EL PAQUETE LIBSEAT Y SU VERSIÓN DE LIBINPUT ES VIEJA
+
+-Instalamos dependencias previas: sudo apt-get install libudev-dev libpixman-1-dev libxkbcommon-dev --no-install-recommends
+-Instalamos manualmente la dependencia LIBSEAT, que no está como paquete en DEBIAN 10. Para ello:
+--Bajamos los últimos sources estables de aquí: https://git.sr.ht/~kennylevinsen/seatd
+--Configuramos, compilamos e instalamos:
+mkdir b4
+cd b4
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dexamples=disabled ..
+ninja -j4
+sudo ninja install
+
+-Instalamos manualmente la dependencia LIBINPUT, que la versión que trae DEBIAN 10 es vieja y no nos vale. Para ello:
+--Instalamos dependencias previas de LIBINPUT: sudo apt-get install libmtdev-dev
+--Bajamos los últimos sources estables de aquí: http://www.freedesktop.org/software/libinput
+--Configuramos, compilamos e instalamos:
+mkdir b4
+cd b4
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false ..
+ninja -j4
+sudo ninja install
+
+// FIN BLOQUE DEBIAN 10
+
+-Instalamos WLROOTS en sí. Para ello:
+--Bajamos los últimos sources estables de aquí: https://github.com/swaywm/wlroots/releases
+--Configuramos, compilamos e instalamos:
+mkdir b4
+cd b4
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled -Dx11-backend=disabled -Dxcb-errors=disabled ..
+ninja -j4
+sudo ninja install
+
+PARTE 4: CAGE
+-------------
+
+PARTE 5: WESTON (POR SI QUIERES UN ESCRITORIO COMPLETO)
+-------------------------------------------------------
+
+-Instalamos dependencias previas:
+sudo apt-get install libpam0g-dev libfontconfig1-dev
+
+-Instalamos manualmente su dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
+--Bajamos los últimos sources estables de aquí:
+https://gitlab.freedesktop.org/cairo/cairo/-/tags
+Configuramos, compilamos e instalamos:
+mkdir b4
+cd b4
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release ..
+
+-Instalamos WESTON en sí:
+Bajamos los últimos sources estables de:
+https://gitlab.freedesktop.org/wayland/weston/-/tags
+Configuramos, compilamos e instalamos:
+mkdir b4
+cd b4
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false -Dbackend-fbdev=false -Dxwayland=false -Dremoting=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false -Dcolor-management-lcms=false -Dcolor-management-colord=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false -Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false ..
+ninja -j4
+sudo ninja install
+
+Ahora hacemos setuid-root al ejecutable weston-launch, creamos el grupo weston-launch y añadimos al usuario al grupo weston-launch:
+sudo chmod 4755 /usr/local/bin/weston-launch
+sudo gropuadd weston-launch
+sudo usermod -a -G weston-launch pi
+
+Ahora creamos ~/.config/weston.ini con este contenido:
+
+#
+# Contenido de weston.ini
+#
+
+[core]
+idle-time=0
+
+[shell]
+locking=false
+animation=zoom
+startup-animation=fade
+
+[terminal]
+font=monospace
+font-size=18
+
+[launcher]
+icon=/usr/local/share/weston/terminal.png
+path=/usr/local/bin/weston-terminal
+
+[input-method]
+path=/usr/local/libexec/weston-keyboard
+
+[output]
+name=HDMI-A-1
+mode=current
+
+[keyboard]
+keymap_layout=es
+
+#
+# Aquí acaba el contenido de weston.ini
+#
+
+(RECUERDA que puedes ver los modos de vídeo disponibles con: modetest |grep -50 modes)
+
+Ahora lanzamos WESTON:
+export XDG_RUNTIME_DIR=/home/pi/.local/share
+weston-launch
+(Se sale con Ctrl+Alt+Backspace)
