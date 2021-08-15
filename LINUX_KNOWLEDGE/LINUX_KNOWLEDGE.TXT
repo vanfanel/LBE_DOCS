@@ -1359,11 +1359,14 @@ nameserver 8.8.8.8
 
 También es posible desconectar el cable, etc
 
-*******Mantener más o menos en hora sistemas que no tienen reloj interno (Rpi, Cubie2...)***************************************************************
-
+*******Mantener más o menos en hora sistemas que no tienen reloj interno (Rpi, Cubie2...)*********************************************
 en Debian, instala el paquete "fake-hwclock", pon el sistema en hora y reinicia. Ya guarda la hora del último aparago y más o menos nos vale para evitar clock skews.
 
-*******Cambiar el modo con xrandr*******************************************************************************************************************
+*******Ver los modos de vídeo disponibles usando el interface KMS/DRM*****************************************************************
+
+modetest |grep -50 modes
+
+*******Cambiar el modo con xrandr*****************************************************************************************************
 
 Listar modos de vídeo: xrandr -q
 Cambiar el modo de vídeo: 

@@ -820,6 +820,8 @@ sudo gropuadd weston-launch
 sudo usermod -a -G weston-launch pi
 
 Ahora creamos ~/.config/weston.ini con este contenido:
+(RECUERDA que puedes ver los modos de vídeo disponibles con: modetest |grep -50 modes
+ PERO lo mejor es poner mode=current y así no hay cambio de modo.)
 
 #
 # Contenido de weston.ini
@@ -855,9 +857,9 @@ keymap_layout=es
 # Aquí acaba el contenido de weston.ini
 #
 
-(RECUERDA que puedes ver los modos de vídeo disponibles con: modetest |grep -50 modes)
+Ahora añadimos esto a /etc/profile:
+export XDG_RUNTIME_DIR=/home/pi/.local/share
 
 Ahora lanzamos WESTON:
-export XDG_RUNTIME_DIR=/home/pi/.local/share
 weston-launch
 (Se sale con Ctrl+Alt+Backspace)
