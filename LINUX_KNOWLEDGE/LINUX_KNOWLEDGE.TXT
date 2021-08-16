@@ -160,7 +160,7 @@ git submodule update --init --recursive
 Configuramos y compilamos:
 mkdir b4
 cd b4
-cmake .. -DUSING_X11_VULKAN=OFF -DUSING_KMSDRM_VULKAN=ON -DUSING_GLES2=ON -DUSE_DISCORD=OFF -DCMAKE_C_FLAGS="-DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-DEGL_NO_X11"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72"
 
 Si nos da un error al linkar relacionado con ffmpeg, tenemos que recompilar ffmpeg interno que trae, lo cual se hace con esta
 secuencia de comandos:
