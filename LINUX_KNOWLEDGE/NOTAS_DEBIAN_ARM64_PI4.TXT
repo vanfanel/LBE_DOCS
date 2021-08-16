@@ -863,3 +863,14 @@ export XDG_RUNTIME_DIR=/home/pi/.local/share
 Ahora lanzamos WESTON:
 weston-launch
 (Se sale con Ctrl+Alt+Backspace)
+
+Si queremos que se autoarranque al hacerse nuestro típco autologin en la TTY1 (mirar cómo hacer el autologin en la TTY1 y la TTY2),
+simplemente tenemos que añadir esto al fichero ~/.profile del usuario para el cual está hecho el autologin:
+
+#Start Weston automatically
+if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/tty1 ]]; then
+	weston-launch
+	logout
+fi
+
+(En teroría, es posible autologuearse con el propio weston-launch pasándole --user, pero eso queda pendiente de investigación).
