@@ -184,11 +184,11 @@ git clone --depth 1 https://github.com/stenzek/duckstation.git
 
 Instalamos dependencias previas:
 
-sudo apt-get install libevdev-dev --no-install-recommends
+sudo apt-get install libevdev-dev extra-cmake-modules --no-install-recommends
 
 Configuramos con:
 
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=OFF -DUSE_SDL2=ON ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=ON -DUSE_SDL2=ON ..
 
 (Hay que dejar el soporte de SDL2 porque EVDEV no implementa aún los ejes de los mandos)
 
