@@ -249,4 +249,6 @@ http://www.pc98.org/main.html
 
 -Pones el LHA de la actualización en fat/games/amiga/shared
 -Ahora arrancas el AGS+, cargas el ADF llamado INSTALLRTG.ADF, y dentro de él ejecutas INSTALLSHARE, que montará el directorio fat/games/amiga/shared, haciéndolo accesible desde Amiga.
--Abres el LHA de actualización, y dentro hay un script de actualización. Se ejecuta y ya.
+RECUERDA que tienes que marcar lo de VENTANA->MOSTRAR->TODOS LOS FICHEROS para poder ver los archivos de la carpeta SHARED.
+-Abres el LHA de actualización con el mARK (en la barra de arriba), lo descomprimes a RAM:, y dentro hay un script de actualización.
+Se ejecuta y ya.
