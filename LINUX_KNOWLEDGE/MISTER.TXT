@@ -244,3 +244,9 @@ https://www.vector.co.jp/download/file/win95/util/fh212773.html
 Tienes muchos juegos ya traducidos y de todo en:
 http://www.pc98.org/main.html
 ...Pero están en .HDI y se necesita que estén en HDF. Así que no te valen por ahora.
+
+********ACTUALIZAR LA DISTRO AMIGA AGS+**************************************************
+
+-Pones el LHA de la actualización en fat/games/amiga/shared
+-Ahora arrancas el AGS+, cargas el ADF llamado INSTALLRTG.ADF, y dentro de él ejecutas INSTALLSHARE, que montará el directorio fat/games/amiga/shared, haciéndolo accesible desde Amiga.
+-Abres el LHA de actualización, y copias su contenido al disco de AGS+, sobreescribiendo su contenido.

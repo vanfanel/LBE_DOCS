@@ -6595,8 +6595,8 @@ sudo hcitool scan
 
 Si aparece el nuestro, nos podemos conectar con:
 
-hcitool cc E4:17:D8:15:0D:79
-hcitool lecc E4:17:D8:15:0D:79
+hcitool cc 30:23:18:DA:8A:AE
+hcitool lecc 30:23:18:DA:8A:AE
 
 Listamos las conexiones hechas con:
 
@@ -6609,8 +6609,8 @@ O bien deshabilitar el WIFI en el inicio con:
 dtoverlay=pi3-disable-wifi
 
 hcitool con (para verificar que está conectado!)
-sudo hcitool enc E4:17:D8:15:0D:79 off
-sudo hcitool sr E4:17:D8:15:0D:79 slave
+sudo hcitool enc 30:23:18:DA:8A:AE off
+sudo hcitool sr 30:23:18:DA:8A:AE slave
 
 ADVENTURE ORIGINAL EN LA PI USANDO SIMH
 =======================================
