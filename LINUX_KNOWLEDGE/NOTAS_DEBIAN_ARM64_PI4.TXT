@@ -872,7 +872,7 @@ ExecStart=/usr/bin/sudo -E -- /bin/openvt --console=7 -v -w -s -- su pi -c "/usr
 [Install]
 WantedBy=multi-user.target
 
-# Service ends here.
+# Service file ends here.
 
 Ahora hacemos sudo systemctl enable weston.service (lo que nos creará un symlink en /etc/systemd/system/multiuser.want/, ya que
 es necesario para el target "multiuser").
