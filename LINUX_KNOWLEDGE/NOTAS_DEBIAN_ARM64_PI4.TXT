@@ -133,10 +133,15 @@ cuando ejecutaste debootstrap en el host al principio para empezar):
 Aprovecha para:
 
 -Crear el /etc/fstab con el contenido:
-proc    /proc                   proc    defaults                                0       0
-#PARTUUID=db375d88-08  /boot           vfat    defaults,noatime,nodiratime      0       2
-PARTUUID=db375d88-09  /               ext4    defaults,noatime,nodiratime       0       1
+
+proc                    /proc           proc            defaults                0       0
+PARTUUID=521a4163-0a    /boot           vfat            defaults                0       2
+PARTUUID=521a4163-0b    /               ext4            defaults,noatime        0       1
+# Keep /tmp in RAM(=tmpfs)
+tmpfs                   /tmp            tmpfs           defaults,noatime,nosuid,nodev,mode=1777,size=10M 0 0
+
 (el PARTUUID lo puedes obtener con sudo blkid /dev/...)
+
 -Ajustar el PARTUUID en cmdline.txt de la partición de boot.
 -Instalar el VIM, sudo, net-tools, sshd... (sí, ¡funciona con la red del host!):
 apt install vim sudo net-tools 
@@ -194,11 +199,9 @@ LANG=C.UTF-8 sudo chroot /media/manuel/CUSTOM_ROOT qemu-aarch64-static /bin/bash
 ***
 !!!!!!!!!!!!!!!!!!!!!!!!
 
-OJO A ESTO QUE SIGUE: SI NO VES NADA EN LA PANTALLA HASTA EL LOGIN, NO ES QUE TE FALTE NADA EN /dev. SI TIENES console=tty1 EN CMDLINE.TXT SE TIENE QUE
-VER. EL PROBLEMA ES QUE SYSTEMD LIMPIA LA CONSOLA TAN RÁPIDO ANTES DEL LOGIN, QUE PARECE QUE NO SALE NADA EN PANTALLA PERO ES MENTIRA.
-¡¡NO NECESITAS FICHEROS PERMANENTES EN /dev PARA VER LOS MENSAJES DEL KERNEL Y DE SYSTEMD EN EL INICIO!!! NO TE RAYES. ¡¡¡NO NECESITAS NINGÚN FICHERO
-PERMANENTE EN /dev, CON LOS QUE CREA UDEV EN EL ARRANQUE ES SUFICIENTE!!! (QUE SON INVISIBLES SI HACES UN CHROOT AL ROOTFS EN VEZ DE ARRANCAR 
-EN ÉL DE VERDAD) 
+OJO A ESTO QUE SIGUE: SI NO VES NADA EN LA PANTALLA HASTA EL LOGIN, NO ES QUE TE FALTE NADA EN /dev. SI TIENES console=tty1 EN CMDLINE.TXT SE TIENE QUE VER.
+EL PROBLEMA ES QUE SYSTEMD LIMPIA LA CONSOLA TAN RÁPIDO ANTES DEL LOGIN, QUE PARECE QUE NO SALE NADA EN PANTALLA PERO ES MENTIRA.
+¡¡NO NECESITAS FICHEROS PERMANENTES EN /dev PARA VER LOS MENSAJES DEL KERNEL Y DE SYSTEMD EN EL INICIO!!! NO TE RAYES. ¡¡¡NO NECESITAS NINGÚN FICHERO PERMANENTE EN /dev, CON LOS QUE CREA UDEV EN EL ARRANQUE ES SUFICIENTE!!! (QUE SON INVISIBLES SI HACES UN CHROOT AL ROOTFS EN VEZ DE ARRANCAR EN ÉL DE VERDAD) 
 Ahora hacemos que systemd deje de borrarnos la consola en el incio, o no veremos nada del arranque (ni del kernel ni de los procesos que va levantando systemd):
 Para ello creamos el fichero:
 /etc/systemd/system/getty@.service.d/noclear.conf
@@ -263,24 +266,6 @@ sudo apt-get install --download-only alsa-utils
 cd /var/cache/apt/archives
 sudo dpkg -i *
 AHORA PASA A CREAR /etc/asound.conf, cuyo contenido varía si usas la HIFIBERRY o si no la usas:
-
-
-Si NO usas la hifiberry y quieres que el audio salga por HDMI, en config.txt tienes que tener:
-dtparam=audio=on
-hdmi_drive=2
-force_hdmi_open=1
-config_hdmi_boost=4
-
-Y en /etc/asound.conf:
-pcm.!default {
-    type hw
-    card ALSA
-}
-
-ctl.!default {
-    type hw    
-    card ALSA
-}
 
 -Si usas la hifiberry, acuérdate que en config.txt tienes que tener para que funcione:
 dtoverlay=hifiberry-dacplus
@@ -864,7 +849,41 @@ Ahora lanzamos WESTON:
 weston-launch
 (Se sale con Ctrl+Alt+Backspace)
 
-Si queremos que se autoarranque al hacerse nuestro típco autologin en la TTY1 (mirar cómo hacer el autologin en la TTY1 y la TTY2),
+Si queremos que se autoarranque, tenemos dos opciones:
+1) FORMA MÁS ELEGANTE: creamos el fichero /etc/systemd/system/weston.service, con el contenido:
+
+# Service to launch Weston on boot, on the first available tty using openvt
+# REMEMBER that the openvt "--console=..." parameter specifies a TTY.
+# Don't use a TTY on which you have setup getty autologin, it won't work.
+
+[Unit]
+Description=Weston Wayland compositor startup
+RequiresMountsFor=/run
+
+[Service]
+User=pi
+EnvironmentFile=-/etc/default/weston
+Environment="XDG_RUNTIME_DIR=/run/user/1000"
+ExecStartPre=/usr/bin/sudo /bin/mkdir -p /run/user/1000
+ExecStartPre=/usr/bin/sudo /bin/chown pi:pi /run/user/1000
+ExecStartPre=/bin/chmod 0700 /run/user/1000
+ExecStart=/usr/bin/sudo -E -- /bin/openvt --console=7 -v -w -s -- su pi -c "/usr/local/bin/weston-launch -- $OPTARGS 2>~/.weston-errors"
+
+[Install]
+WantedBy=multi-user.target
+
+# Service ends here.
+
+Ahora hacemos sudo systemctl enable weston.service (lo que nos creará un symlink en /etc/systemd/system/multiuser.want/, ya que
+es necesario para el target "multiuser").
+
+OJO!! NO es compatible con tener autologin en la TTY en la que lanzamos el WESTON. Por ejemplo, si lo lanzásemos en la TTY1 o TTY2,
+tendríamos que deshabilitar el autologin en la TTY1 o en la TTY2, ya que NO ES COMPATIBLE con este método y el servicio falla si lo tienes activo.
+sudo systemctl mask getty@tty1
+sudo systemctl mask getty@tty2
+PARA UN SISTEMA EMBEDIDO, lo interesante sería NO tener ningún getty en ninguna TTY y que directamente WESTON corra en la TTY1, y listo. 
+
+2) FORMA MÁS CHAPUCERA: Que se autoarranque al hacerse nuestro típco autologin en la TTY1 (mirar cómo hacer el autologin en la TTY1 y la TTY2),
 simplemente tenemos que añadir esto al fichero ~/.profile del usuario para el cual está hecho el autologin:
 
 #Start Weston automatically
@@ -873,4 +892,6 @@ if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/tty1 ]]; then
 	logout
 fi
 
-(En teroría, es posible autologuearse con el propio weston-launch pasándole --user, pero eso queda pendiente de investigación).
+############################################################
+# SI NECESITAS AYUDA CON WAYLAND: #wayland en irc.oftc.net #
+############################################################

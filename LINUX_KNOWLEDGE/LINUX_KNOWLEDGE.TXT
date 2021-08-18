@@ -260,9 +260,6 @@ NOTAS ADICIONALES para el core:
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
-Añade en config.txt: hdmi_enable_4kp60=1
-Se supone que hace que la GPU vaya un pelín más rápido...
-
 ******Juegos JAVA que usan GL/GLES en la Raspberry Pi***************************************************************
 
 Lo primero sería compilar esta librería:
@@ -1366,7 +1363,7 @@ en Debian, instala el paquete "fake-hwclock", pon el sistema en hora y reinicia.
 
 *******Ver los modos de vídeo disponibles usando el interface KMS/DRM*****************************************************************
 
-modetest |grep -50 modes
+modetest |grep -50 modes |more
 
 *******Cambiar el modo con xrandr*****************************************************************************************************
 
