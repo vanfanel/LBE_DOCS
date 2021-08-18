@@ -1735,8 +1735,16 @@ Y luego, hacer un:
 sudo update-initramfs -u
 
 
-**********Cuestiones de modo de vídeo en plataformas con KMS (IFC6413, etc)********************************************************************
+**********Establecer un modo de video físico en el arranque en sistemas con KMS****************************************************************
 
+Habría que pasarle una línea de este estilo al kernel:
+
+video="HDMI-A-1:1360x768@60"
+
+En la Raspberry Pi, eso se añadiría a cmdline.txt (antes se hacía con parámetros hdmi_* en config.txt, pero esos parámetros
+son ignorados en modo KMS).
+
+**********Cuestiones de modo de vídeo en plataformas con KMS (IFC6413, etc)********************************************************************
 
 Miramos cual es el conector activo, mirando en
 /sys/class/drm/card0-*
@@ -1749,7 +1757,6 @@ video="HDMI-A-1:800x600"
 video=DVI-I-1:1024x768@60
 
 y luego hacemos un update-grub.
-
 
 Información completa en:
 http://nouveau.freedesktop.org/wiki/KernelModeSetting/

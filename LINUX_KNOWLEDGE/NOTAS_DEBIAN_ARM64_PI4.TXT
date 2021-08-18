@@ -369,6 +369,9 @@ max locked memory (kbytes, -l) unlimited
 	-En config.txt
 		dtoverlay=vc4-kms-v3d
 		#dtparam=audio=on <---SE DEBE deshabilitar la carga de bcm2835.
+	 RECUERDA que ninguno de los parámetros hdmi_* de config.txt funciona en modo KMS! El modo de vídeo, por ejemplo,
+	 se establecería añadiendo a cmdline.txt algo como:
+	 video="HDMI-A-1:1360x768@60"
 	-Si falla speakertest, mira que tengas en /usr/share/alsa/cards/vc4-hdmi.conf lo que pone en el post de DOM en
 	 https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769&p=1636828#p1636828
 	 OJO! PARECE QUE SEGÚN SE ACTUALIZA EL KERNEL, LOS CONTENIDOS DE /usr/share/alsa/cards/vc4-hdmi.conf hay que irlos cambiando
