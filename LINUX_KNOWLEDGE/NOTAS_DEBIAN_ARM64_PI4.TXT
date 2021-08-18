@@ -850,7 +850,10 @@ weston-launch
 (Se sale con Ctrl+Alt+Backspace)
 
 Si queremos que se autoarranque, tenemos dos opciones:
-1) FORMA MÁS ELEGANTE: creamos el fichero /etc/systemd/system/weston.service, con el contenido:
+
+1) FORMA MÁS ELEGANTE: USANDO UN SERVICIO DE SYSTEMD.
+
+Creamos el fichero /etc/systemd/system/weston.service, con el contenido:
 
 # Service to launch Weston on boot, on the first available tty using openvt
 # REMEMBER that the openvt "--console=..." parameter specifies a TTY.
