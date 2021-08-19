@@ -4113,6 +4113,8 @@ Y si quieres tener música en keen1, gráficos mejorados, etc... te vas al direc
 y copias el directorio hqp/global a ~/keen, y luego lo que hay en hqp/keen1 a ~/keen/games/keen1,
 lo que hay en hqp/keen2 a ~/keen/games/keen2, etc...
 
+También puedes editar cgenius.cfg, y poner EnableLogfile=false para que no te genere un log en HTML cada vez que se ejecuta el juego.
+
 *************Doomretro en la Raspberry Pi*************************************************************************************
 
 Bajamos la última stable de https://github.com/bradharding/doomretro/releases
