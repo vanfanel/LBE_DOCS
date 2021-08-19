@@ -173,8 +173,12 @@ popd
 
 Ahora copiamos el directorio "assets" al mismo directorio del ejecutable PPSSPP
 
-Para compilar una versión LIBRETRO, sería algo como:
-CMAKE_ARGS="-DUSING_GLES2=ON -DUSE_FFMPEG=ON -DUSE_SYSTEM_FFMPEG=ON -DUSE_SYSTEM_LIBZIP=ON -DVULKAN=ON -DUSE_DISCORD=OFF -DUSE_MINIUPNPC=OFF -DUSE_VULKAN_DISPLAY_KHR=ON -DUSING_X11_VULKAN=OFF" ./b.sh --rpi64 --libretro --release
+Para compilar una versión LIBRETRO, entramos en el directorio "libretro" de los sources y:
+-Editamos Makefile.common y comentamos la línea:
+COREFLAGS += -DVK_USE_PLATFORM_XLIB_KHR
+-Editamos Makefile, buscamos la platform llamada arm64, y en CPUFLAGS añadimos los flags: "-march=armv8-a+crc+simd -mtune=cortex-a72"
+-Compilamos con:
+make -j4 platform=arm64
 
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
