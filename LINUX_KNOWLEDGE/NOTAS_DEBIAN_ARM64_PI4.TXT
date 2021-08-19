@@ -845,8 +845,17 @@ keymap_layout=es
 # Aquí acaba el contenido de weston.ini
 #
 
-Ahora añadimos esto a /etc/profile:
-export XDG_RUNTIME_DIR=/home/pi/.local/share
+Ahora añadimos esto a /etc/profile
+
+# Prepare the runtime dir if we haven't done so yet.
+if test -z "${XDG_RUNTIME_DIR}"; then
+    export XDG_RUNTIME_DIR=/run/user/1000
+    if ! test -d "${XDG_RUNTIME_DIR}"; then
+        sudo mkdir -p "${XDG_RUNTIME_DIR}"
+        sudo chown pi:pi "${XDG_RUNTIME_DIR}"
+        chmod 0700 "${XDG_RUNTIME_DIR}"
+    fi  
+fi
 
 Ahora lanzamos WESTON:
 weston-launch
@@ -892,12 +901,27 @@ PARA UN SISTEMA EMBEDIDO, lo interesante sería NO tener ningún getty en ningun
 2) FORMA MÁS CHAPUCERA: Que se autoarranque al hacerse nuestro típco autologin en la TTY1 (mirar cómo hacer el autologin en la TTY1 y la TTY2),
 simplemente tenemos que añadir esto al fichero ~/.profile del usuario para el cual está hecho el autologin:
 
-#Start Weston automatically
+# Prepare the runtime dir if we haven't done so yet.
+if test -z "${XDG_RUNTIME_DIR}"; then
+    export XDG_RUNTIME_DIR=/run/user/1000
+    if ! test -d "${XDG_RUNTIME_DIR}"; then
+        sudo mkdir -p "${XDG_RUNTIME_DIR}"
+        sudo chown pi:pi "${XDG_RUNTIME_DIR}"
+        chmod 0700 "${XDG_RUNTIME_DIR}"
+    fi  
+fi
+
+# Start Weston automatically.
 if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/tty1 ]]; then
 	weston-launch
 	logout
 fi
 
 ############################################################
-# SI NECESITAS AYUDA CON WAYLAND: #wayland en irc.oftc.net #
+# SI NECESITAS AYUDA CON WAYLAND:                          #
+# -https://gitlab.freedesktop.org/wayland/weston/-/issues  #
+# -Canal #wayland en irc.oftc.net                          #
 ############################################################
+
+Investigar si se puede hacer simplemente:
+sudo -E weston-launch -t /dev/tty7 -u pi &
