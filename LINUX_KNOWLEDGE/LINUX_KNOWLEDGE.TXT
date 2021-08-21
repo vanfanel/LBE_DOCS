@@ -1075,6 +1075,8 @@ Clonamos su repo de:
 git clone --depth 1 https://github.com/jonof/jfduke3d.git
 git submodule update --init
 
+Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 1024, comentando el while que hay debajo.
+
 Compilamos con:
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GLES2
 
@@ -1088,8 +1090,8 @@ Para tener música con .ogg: Mete los ogg en ./music o en ~/.jfduke3d/music
 
 Para tener música con fluidsynth (NO RECOMENDADO): pon en ~/.jfduke3d/duke3d.cfg, en la sección [Sound Setup]:
 MusicDevice = 6
-MusicParams = "audio.driver=alsa synth.default-soundfont=/usr/share/sounds/sf2/fluid.sf2"
-(la fuente que sea debe estar en /usr/share/sounds/sf2/ o no la encuentra...)
+MusicParams = "audio.driver=alsa synth.default-soundfont=/home/pi/duke3d/UHD3.sf2"
+(La ruta que le demos debe ser siempre absoluta, NADA de ~ ni nada de eso).
 
 LOS CONTROLES CON 8BitDo SN30 Pro
 --LOS EJES--
