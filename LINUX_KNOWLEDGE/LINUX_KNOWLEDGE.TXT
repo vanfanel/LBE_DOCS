@@ -177,6 +177,7 @@ Para compilar una versión LIBRETRO, entramos en el directorio "libretro" de los
 cmake .. -DLIBRETRO=ON -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72"
 
 (Compilar la versión LIBRETRO usando el Makefile del directorio "libretro" actualmente NO funciona).
+(El resultado sólo funciona desde Wayland y es más lento que la versión standalone usando GLES2).
 
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
