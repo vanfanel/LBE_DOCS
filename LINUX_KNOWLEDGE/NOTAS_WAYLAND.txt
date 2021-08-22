@@ -239,6 +239,8 @@ NOTA PREVIA: Mucha de la información viene de aquí: https://github.com/natpen/
 
 -Elegimos un compositor que sea stacking, no tiling.
 Por ahora, Weston es el que instalamos. Pero para el tema de los atajos de teclado nos puede interesar waybox o labwc.
+Si insistes en usar Weston, puedes añadir nuevos keyboard shortcuts con esto:
+https://github.com/tarvi-verro/weston-binder
 
 -Compilamos un toolkit que soporte Wayland.
 Básicamente elegimos entre GTK y QT. GTK es más ligero y sencillo de compilar (QT son varios paquetes).
