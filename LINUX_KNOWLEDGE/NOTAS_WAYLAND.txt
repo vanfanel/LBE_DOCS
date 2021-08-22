@@ -238,7 +238,7 @@ CONSTRUIR UN ESCRITORIO COMPLETO BASADO EN WAYLAND
 NOTA PREVIA: Mucha de la información viene de aquí: https://github.com/natpen/awesome-wayland
 
 -Elegimos un compositor que sea stacking, no tiling.
-Por ahora, Weston es el que instalamos. Pero para el tema de los atajos de teclado nos puede interesar dwl, waybox o labwc.
+Por ahora, Weston es el que instalamos. Pero para el tema de los atajos de teclado nos puede interesar waybox o labwc.
 
 -Compilamos un toolkit que soporte Wayland.
 Básicamente elegimos entre GTK y QT. GTK es más ligero y sencillo de compilar (QT son varios paquetes).
