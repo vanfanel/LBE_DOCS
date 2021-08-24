@@ -256,7 +256,7 @@ https://github.com/tarvi-verro/weston-binder
 Básicamente elegimos entre GTK y QT. GTK es más ligero y sencillo de compilar (QT son varios paquetes).
 
 Para compilar GTK (la versión más compatible con programas actualmente y que a la vez tiene soporte WAYLAND es GTK3)
--Bajamos los últimos estables de: https://download.gnome.org/sources/gtk/
+-Bajamos los últimos sources estables de: https://download.gnome.org/sources/gtk/
 -Configuramos como:
 mkdir b4
 cd b4
@@ -269,4 +269,11 @@ sudo ninja install
 
 ---PARTE 3 - LAS APLICACIONES---
 
--Compilamos un file browser que soporte GTK. Elegimos pcmanfm, que soporta tanto GTK como QT.
+-Compilamos un file browser que soporte GTK. Elegimos pcmanfm, que soporta tanto GTK como QT. Otra alternativa sería thunar.
+Para compilar PCMANFM:
+
+Empezamos con una dependencia, libfm:
+-Bajamos los últimos sources estables de: https://github.com/lxde/libfm/releases
+
+Ahora vamos con PCMANFM en sí:
+-Bajamos los últimos sources estables de: https://github.com/lxde/pcmanfm/releases
