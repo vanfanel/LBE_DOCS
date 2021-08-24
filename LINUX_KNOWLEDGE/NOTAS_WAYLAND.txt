@@ -57,7 +57,8 @@ sudo ninja install
 --Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false ..
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dlibwacom=false \
+-Ddebug-gui=false -Dtests=false -Ddocumentation=false ..
 ninja -j4
 sudo ninja install
 
@@ -88,6 +89,8 @@ Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release ..
+ninja -h4
+sudo ninja install
 
 -Instalamos WESTON en sí:
 Bajamos los últimos sources estables de:
@@ -95,7 +98,10 @@ https://gitlab.freedesktop.org/wayland/weston/-/tags
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false -Dbackend-fbdev=false -Dxwayland=false -Dremoting=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false -Dcolor-management-lcms=false -Dcolor-management-colord=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false -Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false ..
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dbackend-headless=false \
+-Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false -Dbackend-fbdev=false -Dxwayland=false -Dremoting=false -Dsystemd=false -Dpipewire=false \
+-Dshell-ivi=false -Dcolor-management-lcms=false -Dcolor-management-colord=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false \
+-Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false ..
 ninja -j4
 sudo ninja install
 
@@ -237,12 +243,30 @@ CONSTRUIR UN ESCRITORIO COMPLETO BASADO EN WAYLAND
 
 NOTA PREVIA: Mucha de la información viene de aquí: https://github.com/natpen/awesome-wayland
 
+---PARTE 1 - EL COMPOSITOR---
+
 -Elegimos un compositor que sea stacking, no tiling.
 Por ahora, Weston es el que instalamos. Pero para el tema de los atajos de teclado nos puede interesar waybox o labwc.
 Si insistes en usar Weston, puedes añadir nuevos keyboard shortcuts con esto:
 https://github.com/tarvi-verro/weston-binder
 
+---PARTE 2 - EL TOOLKIT---
+
 -Compilamos un toolkit que soporte Wayland.
 Básicamente elegimos entre GTK y QT. GTK es más ligero y sencillo de compilar (QT son varios paquetes).
+
+Para compilar GTK (la versión más compatible con programas actualmente y que a la vez tiene soporte WAYLAND es GTK3)
+-Bajamos los últimos estables de: https://download.gnome.org/sources/gtk/
+-Configuramos como:
+mkdir b4
+cd b4
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson .. -Dbuildtype=release \
+-Dwayland-backend=true -Dx11-backend=false -Dmedia-ffmpeg=false -Dmedia-gstreamer=false \
+-Dprint-cups=false -Dprint-cloudprint=false -Dvulkan=true -Dxinerama=false -Dintrospection=false \
+-Dbuild_demos=false -Dbuild_examples=false -Dbuild-tests=false 
+ninja -j4
+sudo ninja install
+
+---PARTE 3 - LAS APLICACIONES---
 
 -Compilamos un file browser que soporte GTK. Elegimos pcmanfm, que soporta tanto GTK como QT.
