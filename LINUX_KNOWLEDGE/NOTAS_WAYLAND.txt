@@ -92,6 +92,12 @@ meson .. --buildtype=release
 ninja -j4
 sudo ninja install
 
+Lanzaríamos el programa que queramos con:
+cage <nombre_ejecutable>
+
+Y si es con parámetros, usamos -- entre cage y el nombre del ejecutable, así:
+cage -- <nombre_ejecutable> <parámetros>
+
 PARTE 5: WESTON (POR SI QUIERES UN ESCRITORIO COMPLETO)
 -------------------------------------------------------
 
