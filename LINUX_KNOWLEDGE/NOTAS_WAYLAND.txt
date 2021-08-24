@@ -186,6 +186,8 @@ ExecStartPre=/usr/bin/sudo /bin/mkdir -p /run/user/1000
 ExecStartPre=/usr/bin/sudo /bin/chown pi:pi /run/user/1000
 ExecStartPre=/bin/chmod 0700 /run/user/1000
 ExecStart=/usr/bin/sudo -E /usr/local/bin/weston-launch -t /dev/tty7 -u pi
+# This is like a 'cd' for the service so the terminal emulator starts there.
+WorkingDirectory=/home/pi
 # These are so Weston restarts an unlimited number of times when we close it.
 Restart=always
 StartLimitIntervalSec=0
