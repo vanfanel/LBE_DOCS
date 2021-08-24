@@ -69,12 +69,28 @@ sudo ninja install
 --Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled -Dx11-backend=disabled -Dxcb-errors=disabled ..
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
+meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled -Dx11-backend=disabled -Dxcb-errors=disabled ..
+
 ninja -j4
 sudo ninja install
 
 PARTE 4: CAGE
 -------------
+
+Bajamos los últimos sources estables de:
+https://github.com/Hjdskes/cage/releases
+
+Compilamos con:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
+meson .. --buildtype=release
+
+ninja -j4
+sudo ninja install
 
 PARTE 5: WESTON (POR SI QUIERES UN ESCRITORIO COMPLETO)
 -------------------------------------------------------
