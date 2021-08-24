@@ -138,7 +138,7 @@ proc                    /proc           proc            defaults                
 PARTUUID=521a4163-0a    /boot           vfat            defaults                0       2
 PARTUUID=521a4163-0b    /               ext4            defaults,noatime        0       1
 # Keep /tmp in RAM(=tmpfs)
-tmpfs                   /tmp            tmpfs           defaults,noatime,nosuid,nodev,mode=1777,size=10M 0 0
+tmpfs                   /tmp            tmpfs           defaults,noatime,nosuid,nodev,mode=1777,size=50M 0 0
 
 (el PARTUUID lo puedes obtener con sudo blkid /dev/...)
 
