@@ -333,7 +333,9 @@ Clonamos:
 git clone --depth 1 https://github.com/libsdl-org/SDL.git
 
 Ahora ya configuramos:
-./configure --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-dbus --disable-ime --enable-video-kmsdrm
+./configure --enable-video-x11 --disable-video-wayland --disable-dbus --disable-diskaudio --disable-oss \
+--disable-pulseaudio --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl \
+--enable-libudev --disable-dbus --disable-ime --enable-video-kmsdrm
 
 Fíjate que en el resúmen al acabar del configure, te tiene que indicar que el soporte KMSDRM está activado, para ello se requiere que las librerías necesarias estén en el sistema (libgbm y libdrm).
 Ahora borra las librerías libSDL2* que vienen instaladas en la mayoría de las distros en /usr/lib/x86_64-linux-gnu/, e instala las que acabas de compilar, que acabarán en /usr/lib.
