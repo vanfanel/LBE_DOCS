@@ -6376,13 +6376,13 @@ Clonamos el repo (usando el branch RetroPie, esto es importante para que se use 
 
 git clone --depth 1 -b RetroPie https://github.com/DirtBagXon/hypseus-singe.git
 
-Ahora, creamos directorio de compilación dentro de src, y usamos cmake y luego make:
+Ahora, configuramos pasándole a CMAKE el directorio src desde nuestro directorio de compilación (OJO que esto es
+distinto a como se suele hacer!!!):
 
-cd src
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
+cmake ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
  -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
 
 make -j4
