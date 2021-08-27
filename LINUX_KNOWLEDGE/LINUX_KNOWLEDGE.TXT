@@ -1077,6 +1077,7 @@ git clone --depth 1 https://github.com/jonof/jfduke3d.git
 git submodule update --init
 
 Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 1024, comentando el while que hay debajo.
+Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(), en la llamada a SDL_SetHint(), "nearest" por "linear".
 
 Compilamos con:
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GLES2
@@ -6757,8 +6758,7 @@ INSTALAR LIBREELEC EN UNA SD CON NOOBS QUE YA TIENE OTROS SISTEMAS INSTALADOS
 Es igual que lo de instalar un sistema custom tuyo, solo que lo vamos a ver de manera más resumida.
 -Creamos con GPARTED las dos particiones necesarias en la SD donde haya espacio libre: una de FAT32 de 512MB llamada LIBREELEC y otra en EXT4 del tamaño que puedas llamada STORAGE.
  No hay que cambiar nada en gparted al crearlas, los tipos por defecto fata FAT32 y EXT4 nos valen.
--Copiamos los contenidos de la partición LIBREELEC de la imágen descargada de LibreeElec para Raspberry Pi a nuestra partición LIBREELEC de la tarjeta (tienes en este mismo
- documento cómo montar una partición individual de una imágen con varias particiones, es muy fácil).
+-Copiamos los contenidos de la partición LIBREELEC de la imágen descargada de LibreeElec para Raspberry Pi a nuestra partición LIBREELEC de la tarjeta (tienes en este mismo documento cómo montar una partición individual de una imágen con varias particiones, es muy fácil).
  La partición STORAGE la dejamos vacía totalmente.
 -MUY IMPORTANTE: ajustamos los parámetros boot= y disk= de cmdline.txt en la partición LIBREELEC de la tarjeta, poniendo los UUID de las dos particiones LIBREELEC y STORAGE
  que puedes conseguir en gparted, mirando INFORMATION de cada una de las particiones.
