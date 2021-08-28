@@ -92,9 +92,11 @@ meson .. --buildtype=release
 ninja -j4
 sudo ninja install
 
-Lanzaríamos el programa que queramos con:
+Lanzaríamos el programa que queramos así:
+-Lo primero, lanzamos el seatd, para loguear al usuario Pi en un asiento y poder lanzar el cage:
+sudo seatd -u pi
+-Ahora lanzamos el cage y le pasamos el ejecutable que queramos:
 cage <nombre_ejecutable>
-
 Y si es con parámetros, usamos -- entre cage y el nombre del ejecutable, así:
 cage -- <nombre_ejecutable> <parámetros>
 
