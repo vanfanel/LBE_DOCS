@@ -167,13 +167,30 @@ CONECTAR POR WIFI USANDO UN PINCHO USB WIFI SOPORTADO POR EL KERNEL
 porque se nos borran el firmware blob y el módulo del kernel, y toda reinstalarlos siguiendo las instrucciones que voy a dar ahora.
 
 LO PRIMERO, mi pincho WIFI está basado en el chipset RTL8188eu, que no viene soportado en el kernel.
-Así que hay que bajarse el firmware blob + módulo del kernel. Ambas cosas vienen en el archivo rtl8188eu.zip
-que he descargado de este hilo: https://misterfpga.org/viewtopic.php?f=27&t=408
-Pero no debería hacerte falta descargarlo de nuevo: tienes ambas cosas en /media/fat/rtl8188eu.
-Así que copiamos cada cosa a su sitio:
+Así que hay que proporcionar el módulo del kernel.
 
-cp rtl8188eufw.bin /lib/firmware/rtlwifi
-cp rtl8188eu.ko /lib/modules/4.19.0-socfpga-r1/
+PUEDE QUE TENGAMOS QUE COMPILAR EL MÓDULO DEL KERNEL O PUEDE QUE NO.
+
+CASO 1: NO HACE FALTA COMPILARLO
+NORMALMENTE, SI NO CAMBIA LA VERSIÓN DEL KERNEL, TIENES EL MÓDULO YA PREPARADO Y SÓLO ES HACER:
+cp rtl8188eu.ko /lib/modules/5.13-MiSTer/
+
+CASO 2: NOS TOCA COMPILARLO PORQUE HA CAMBIADO LA VERSIÓN DEL KERNEL
+Se hace así:
+-Instalamos dependencias previas: apt-get install gcc-arm-linux-gnueabihf build-essential
+-Clona el directorio del driver wifi: git clone --depth 1 https://github.com/ulli-kroll/rtl8188eu.git
+-Clona el directorio de los sources del kernel de la MiSTer: git clone --depth 1 https://github.com/MiSTer-devel/Linux-Kernel_MiSTer.git
+-De ambos directorios, borra su .git
+-Entra en el directorio de los sources del kernel y haz:
+make ARCH=arm mrproper && make ARCH=arm MiSTer_defconfig && make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- EXTRAVERSION=-MiSTer modules_prepare
+-Ahora entra en el directorio de los sources del módulo wifi y haz:
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- clean && make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KSRC=/home/manuel/src/mister/Linux-Kernel_MiSTer modules
+
+FIN CASOS POSIBLES, LO QUE VIENE AHORA YA ES SIEMPRE IGUAL.
+
+Ahora lo subimos a la MiSTer y lo copiamos a su sitio:
+
+cp rtl8188eu.ko /lib/modules/5.13-MiSTer/
 
 Y ejecutamos esto:
 
