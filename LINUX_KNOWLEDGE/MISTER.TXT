@@ -149,13 +149,14 @@ http://d-bug.mooo.com/klaz/
 IP ESTÁTICA EN LA MISTER (AL FIN!!!!)
 =====================================
 
-La información original viende aquí: https://github.com/MiSTer-devel/Main_MiSTer/wiki/Network-access
 Créate un script en /Scripts, yo lo he llamado static_ip.sh, con este contenido y permisos de ejecución:
 
-connmanctl config ethernet_020304050607_cable --ipv4 manual 192.168.1.39 255.255.255.0 192.168.1.7
-connmanctl config ethernet_020304050607_cable --nameservers 192.168.1.1 8.8.8.8
+ifconfig eth0 up
+ip addr add 192.168.1.39/24 dev eth0
+ip route add default via 192.168.1.7
+echo "nameserver 8.8.8.8" > /etc/resolv.conf
 
-...Donde 192.168.1.7 es la IP del ordenador desde el que sales, y que como ves hace de puerta de enlace y de servidor DNS.
+...Donde 192.168.1.7 es la IP del ordenador desde el que sales.
 Tienes que tener una conexión cableada con IP estática en esa IP en el ordenador,
 y tener el ordenador preparado para compartir la conexión WIFI, como haces para la Raspberry Pi (Ver en LINUX_KNOWLEDGE.TXT)
 Tienes que ejecutar el comando para tener la IP estática.
