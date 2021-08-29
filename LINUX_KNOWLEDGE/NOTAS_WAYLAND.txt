@@ -340,6 +340,10 @@ exec=weston-terminal
 
 NOTA: Si alguna vez el weston keybinder deja de funcionar, puedes añadir key bindings a mano en los sources de weston.
 Se definen en: weston/src/shell.c, en la función shell_add_bindings().
+Mira un ejemplo aquí:
+https://github.com/tarvi-verro/weston-binder/commit/40b3112f221ef3a1c42f536d8047b8565ee3f2d8
+(Hay mucho más código del necesario ahí porque tiene que parsear las opciones del .ini, etc.
+ Fíjate sólo en binder_add_bindings() y binder_callback_alt(). ).
  
 CONSTRUIR UN ESCRITORIO COMPLETO BASADO EN WAYLAND
 ==================================================

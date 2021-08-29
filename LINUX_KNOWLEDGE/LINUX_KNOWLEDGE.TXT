@@ -1195,7 +1195,7 @@ Y poner como resolución 720x400, que mantiene el ratio original, ocupando así 
 Los pak0.pak y pak1.pak van en ./id1
 La música en OGG y con nombres de archivo como track01.ogg.. track11.ogg, va en ./id1/music
 
-*******Core TYRQUAKE, que no salva la configuración interna del QUAKE cuando salimos************
+*******Core TYRQUAKE en RetroArch************
 
 Copia el core a ~/.config/retroarch/cores
 Los datos del juego (los .PAK) van en un subir llamado id1, así en minúsculas. La música, en ogg, va en id1/music.
