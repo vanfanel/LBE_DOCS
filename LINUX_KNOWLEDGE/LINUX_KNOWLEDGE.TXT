@@ -1197,9 +1197,17 @@ La música en OGG y con nombres de archivo como track01.ogg.. track11.ogg, va en
 
 *******Core TYRQUAKE, que no salva la configuración interna del QUAKE cuando salimos************
 
+Copia el core a ~/.config/retroarch/cores
 Los datos del juego (los .PAK) van en un subir llamado id1, así en minúsculas. La música, en ogg, va en id1/music.
-Y para cambiar cosas del juego y que se conserven los cambios, mételos en id1/autoexec.cfg. Por ejemplo, con esto queda muy a mi gusto el tamaño de pantalla, escalado
-de texturas, animaciones suaves, volúmen...
+
+Se lanza con:
+retroarch -L ~/.config/retroarch/cores/tyrquake_libretro.so id1
+
+Nada más empezar, los controles no te responderán. Para arreglarlo, ve a "controls->port 1 controls"
+y "Device Type" ponlo a "Gamepad Classic". 
+
+Y para cambiar cosas del juego y que se conserven los cambios, mételos en id1/autoexec.cfg.
+Por ejemplo, con esto queda muy a mi gusto el tamaño de pantalla, escalado de texturas, animaciones suaves, volúmen...
 
 viewsize 120 
 r_lerpmodels 1.00
