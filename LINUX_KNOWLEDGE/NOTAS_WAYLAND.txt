@@ -338,6 +338,9 @@ Y un atajo de teclado sería por ejemplo:
 key=ctrl+alt+t
 exec=weston-terminal
 
+NOTA: Si alguna vez el weston keybinder deja de funcionar, puedes añadir key bindings a mano en los sources de weston.
+Se definen en: weston/src/shell.c, en la función shell_add_bindings().
+ 
 CONSTRUIR UN ESCRITORIO COMPLETO BASADO EN WAYLAND
 ==================================================
 
