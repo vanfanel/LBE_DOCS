@@ -1213,6 +1213,25 @@ bind F1 ""
 Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake
 te mande al menú de RA.
 
+*******TYRQUAKE standalone en la Raspberry Pi****************************************************************************************************
+
+clonamos su repo:
+git clone --depth 1 git://disenchant.net/tyrquake
+
+Editamos el Makefile y cambiamos:
+GL_LIBS     += GL
+por:
+GL_LIBS     += OpenGL
+
+Compilamos con:
+make USE_SDL=Y OPTIMIZED_CFLAGS=Y DEBUG=N -j4
+
+POR DEFECTO compila tanto el motor software como el modotor GL, pero podemos compilar sólo uno de ellos:
+-Si sólo quisiéramos el motor por software, haríamos:
+make bin/tyr-quake USE_SDL=Y OPTIMIZED_CFLAGS=Y DEBUG=N -j4
+-Si sólo quisiéramos el motor GL haríamos:
+make bin/tyr-glquake USE_SDL=Y OPTIMIZED_CFLAGS=Y DEBUG=N -j4
+
 *******EN RASPBIAN NO PUEDO DEBUGEAR PROGRAMAS EN C++ QUE HAN SIDO COMPILADOS CON DISTCC*********************************************************
 Da todo el rato "no symbol <loquesea> in current context".
 Hay que actualizar gdb...
