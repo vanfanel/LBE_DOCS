@@ -1204,7 +1204,8 @@ Se lanza con:
 retroarch -L ~/.config/retroarch/cores/tyrquake_libretro.so id1
 
 Nada más empezar, los controles no te responderán. Para arreglarlo, ve a "controls->port 1 controls"
-y "Device Type" ponlo a "Gamepad Classic". 
+y "Device Type" ponlo a "Gamepad Classic", y dale a "save core remap file".
+O puedes tener controles tipo HALO: para ello, pon "Devide Type" a "Gamepad Modern" y luego en "Options" activar el "Invert Y Axis".
 
 Y para cambiar cosas del juego y que se conserven los cambios, mételos en id1/autoexec.cfg.
 Por ejemplo, con esto queda muy a mi gusto el tamaño de pantalla, escalado de texturas, animaciones suaves, volúmen...
