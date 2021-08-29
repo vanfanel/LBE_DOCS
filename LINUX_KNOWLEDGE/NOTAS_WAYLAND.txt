@@ -192,7 +192,54 @@ Si queremos que se autoarranque, tenemos dos opciones:
 
 1) FORMA MÁS ELEGANTE: USANDO UN SERVICIO DE SYSTEMD.
 
-Creamos el fichero /etc/systemd/system/weston.service, con el contenido:
+ESTO A SU VEZ SE PUEDE HACER DE DOS MANERAS:
+
+1.1) OPCIÓN 1
+
+Añadimos esto a /etc/profile (que se ejecutará al ejecutarse weston-launch,
+ya que se loguea como el usuario que le pasamos a weston-launch con la opción -u):
+
+# Prepare the runtime dir if we haven't done so yet.
+if test -z "${XDG_RUNTIME_DIR}"; then
+    export XDG_RUNTIME_DIR=/run/user/1000
+    if ! test -d "${XDG_RUNTIME_DIR}"; then
+        sudo mkdir -p "${XDG_RUNTIME_DIR}"
+        sudo chown pi:pi "${XDG_RUNTIME_DIR}"
+        chmod 0700 "${XDG_RUNTIME_DIR}"
+    fi  
+fi
+
+Creamos el fichero /etc/systemd/system/weston.service mínimo (ya que lo hacemos todo en el /etc/profile), con el contenido:
+
+# Service to launch Weston on boot, on the TTY specified to weston-launch.
+
+[Unit]
+Description=Weston Wayland compositor startup
+RequiresMountsFor=/run
+
+[Service]
+User=pi
+EnvironmentFile=-/etc/default/weston
+ExecStart=/usr/bin/sudo -E /usr/local/bin/weston-launch -t /dev/tty7 -u pi
+
+# This is like a 'cd' for the service so the terminal emulator starts there.
+WorkingDirectory=/home/pi
+
+# These are so Weston restarts an unlimited number of times when we close it.
+Restart=always
+StartLimitIntervalSec=0
+StartLimitBurst=0
+
+[Install]
+WantedBy=multi-user.target
+
+# Service file ends here.
+
+1.2) OPCIÓN 2
+
+NO añadimos nada a /etc/profile, pero creamos este fichero /etc/systemd/system/weston.service,
+que es mucho más grande porque se hace en él lo que haríamos en el /etc/profile.
+Además, si te fijas, se usa openvt y en la otra opción no se usa:
 
 # Service to launch Weston on boot, on the first available tty using openvt
 # REMEMBER that the openvt "--console=..." parameter specifies a TTY.
@@ -209,9 +256,11 @@ Environment="XDG_RUNTIME_DIR=/run/user/1000"
 ExecStartPre=/usr/bin/sudo /bin/mkdir -p /run/user/1000
 ExecStartPre=/usr/bin/sudo /bin/chown pi:pi /run/user/1000
 ExecStartPre=/bin/chmod 0700 /run/user/1000
-ExecStart=/usr/bin/sudo -E /usr/local/bin/weston-launch -t /dev/tty7 -u pi
+ExecStart=/usr/bin/sudo -E -- /bin/openvt -v -w -s -- su pi -l -c "XDG_RUNTIME_DIR=/run/user/1000 /usr/local/bin/weston-launch -- $OPTARGS 2>~/.weston-errors"
+
 # This is like a 'cd' for the service so the terminal emulator starts there.
 WorkingDirectory=/home/pi
+
 # These are so Weston restarts an unlimited number of times when we close it.
 Restart=always
 StartLimitIntervalSec=0
@@ -222,19 +271,22 @@ WantedBy=multi-user.target
 
 # Service file ends here.
 
-OJO!! Para lanzar otro compositor que no permitiese pasarle el usuario (weston sí lo permite, lo cual nos facilita las cosas porque
-actúa como login manager), podríamos tirar de "su" y pasarle el comando:
-su pi -c "/usr/local/bin/<ejecutable_compositor>"
+FIN DE OPCIONES: DE AQUÍ EN ADELANTE ES TODO COMÚN.
 
 Ahora hacemos sudo systemctl enable weston.service (lo que nos creará un symlink en /etc/systemd/system/multiuser.want/, ya que
 es necesario para el target "multiuser").
 
 OJO!! NO es compatible con tener autologin en la TTY en la que lanzamos el WESTON. Aunque como nosotros lo lanzamos en TTY7 no hay problema.
-PERO por ejemplo, si lo lanzásemos en la TTY1 o TTY2,
-tendríamos que deshabilitar el autologin en la TTY1 o en la TTY2, ya que NO ES COMPATIBLE con este método y el servicio falla si lo tienes activo.
-sudo systemctl mask getty@tty1
-sudo systemctl mask getty@tty2
-PARA UN SISTEMA EMBEDIDO, lo interesante sería NO tener ningún getty en ninguna TTY y que directamente WESTON corra en la TTY1, y listo. 
+PERO por ejemplo, si lo lanzásemos en la TTY1 o TTY2, tendríamos que deshabilitar el autologin en la TTY1 o en la TTY2,
+ya que NO ES COMPATIBLE con este método y el servicio falla si lo tienes activo.
+sudo systemctl disable getty@tty1
+sudo systemctl disable getty@tty2
+
+RECUERDA que si te quedas sin acceso al sistema porque WESTON no arranca y no tienes manera de restablecer el autologin desde la propia Pi,
+puedes restablecer los servicios de autologin a mano creando sendos links simbólicos en el directorio del target multiuser, así:
+sudo ln -s getty@tty1.service.d multi-user.target.wants/getty@tty1.service
+sudo ln -s getty@tty2.service.d multi-user.target.wants/getty@tty2.service
+(En realidad, lo único que hace systemctl enable o disable es crear o borrar estos links simbólicos).
 
 2) FORMA MÁS CHAPUCERA: Que se autoarranque al hacerse nuestro típco autologin en la TTY1 (mirar cómo hacer el autologin en la TTY1 y la TTY2),
 simplemente tenemos que añadir esto al fichero ~/.profile del usuario para el cual está hecho el autologin:
@@ -263,6 +315,28 @@ fi
 
 Investigar si se puede hacer simplemente:
 sudo -E weston-launch -t /dev/tty7 -u pi
+
+AÑADIR NUEVOS ATAJOS DE TECLADO A WESTON
+========================================
+
+Compila e instala el "weston keybinder": es muy sencillo.
+
+git clone --depth 1 https://github.com/tarvi-verro/weston-binder.git
+make -j4
+sudo make install
+
+Y ahora sólo queda añadir a ~/.config/weston.ini la carga del módulo keybinder que acabas de compilar, así como los atajos que quieras. 
+
+Para cargar el módulo:
+
+[core]
+modules=binder.so
+
+Y un atajo de teclado sería por ejemplo:
+
+[keybind]
+key=ctrl+alt+t
+exec=weston-terminal
 
 CONSTRUIR UN ESCRITORIO COMPLETO BASADO EN WAYLAND
 ==================================================
