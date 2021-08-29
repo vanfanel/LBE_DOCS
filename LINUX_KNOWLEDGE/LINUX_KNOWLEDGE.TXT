@@ -1195,7 +1195,7 @@ Y poner como resolución 720x400, que mantiene el ratio original, ocupando así 
 Los pak0.pak y pak1.pak van en ./id1
 La música en OGG y con nombres de archivo como track01.ogg.. track11.ogg, va en ./id1/music
 
-*******Core TYRQUAKE, que no salva la configuración interna del QUAKE cuando salimos***************************************************************************
+*******Core TYRQUAKE, que no salva la configuración interna del QUAKE cuando salimos************
 
 Los datos del juego (los .PAK) van en un subir llamado id1, así en minúsculas. La música, en ogg, va en id1/music.
 Y para cambiar cosas del juego y que se conserven los cambios, mételos en id1/autoexec.cfg. Por ejemplo, con esto queda muy a mi gusto el tamaño de pantalla, escalado
@@ -1210,7 +1210,8 @@ bgmvolume "0.500000"
 volume "0.200000"
 bind F1 ""
 
-Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake te mande al menú de RA.
+Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake
+te mande al menú de RA.
 
 *******EN RASPBIAN NO PUEDO DEBUGEAR PROGRAMAS EN C++ QUE HAN SIDO COMPILADOS CON DISTCC*********************************************************
 Da todo el rato "no symbol <loquesea> in current context".
