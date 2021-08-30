@@ -362,15 +362,25 @@ https://github.com/tarvi-verro/weston-binder
 -Compilamos un toolkit que soporte Wayland.
 Básicamente elegimos entre GTK y QT. GTK es más ligero y sencillo de compilar (QT son varios paquetes).
 
-Para compilar GTK (la versión más compatible con programas actualmente y que a la vez tiene soporte WAYLAND es GTK3)
+Para compilar GTK3 (la versión más compatible con programas actualmente y que a la vez tiene soporte WAYLAND es GTK3)
 -Bajamos los últimos sources estables de: https://download.gnome.org/sources/gtk/
 -Configuramos como:
 mkdir b4
 cd b4
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson .. -Dbuildtype=release \
--Dwayland-backend=true -Dx11-backend=false -Dmedia-ffmpeg=false -Dmedia-gstreamer=false \
--Dprint-cups=false -Dprint-cloudprint=false -Dvulkan=true -Dxinerama=false -Dintrospection=false \
--Dbuild_demos=false -Dbuild_examples=false -Dbuild-tests=false 
+-Dwayland-backend=true -Dx11-backend=false -Dmedia-ffmpeg=disabled -Dmedia-gstreamer=disabled -Dprint-cups=disabled \
+-Dprint-cloudprint=disabled -Dvulkan=enabled -Dxinerama=disabled -Dintrospection=disabled -Ddemos=false \
+-Dbuild-examples=false -Dbuild-tests=false
+ninja -j4
+sudo ninja install
+
+Para compilar GTK4 sería:
+-Bajamos los últimos sources estables de: https://download.gnome.org/sources/gtk/
+mkdir b4
+cd b4
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson .. -Dbuildtype=release \
+-Dwayland-backend=true -Dx11-backend=false -Dmedia-ffmpeg=disabled -Dmedia-gstreamer=disabled -Dprint-cups=disabled \
+-Dvulkan=enabled -Dintrospection=disabled -Ddemos=false -Dbuild-examples=false -Dbuild-tests=false 
 ninja -j4
 sudo ninja install
 
