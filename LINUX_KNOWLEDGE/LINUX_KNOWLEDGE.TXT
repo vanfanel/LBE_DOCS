@@ -5833,7 +5833,7 @@ DUNGEON CRAWL STONE SOUP EN LA PI
 =================================
 
 Instalamos una dependencia previa (se puede compilar contra LUA o contra LUA-JIT, que es más rápido en la Pi):
-udo apt-get install libluajit-5.1-dev
+sudo apt-get install libluajit-5.1-dev
 
 Bajamos los útimos estables de:
 https://github.com/crawl/crawl/releases
@@ -7357,3 +7357,44 @@ EJECUTAR VKCUBE SIN LAS X
 
 vkcube -m khr -k 0:0:0
 (display 0, modo 0, plano 0. Usa --help para más información).
+
+ACELERACIÓN DE VÍDEO EN LA PI4 CON MPV
+======================================
+
+Un hilo interesante sobre el asunto: https://www.raspberrypi.org/forums/viewtopic.php?t=316381
+
+Instalamos dependencias previas:
+sudo apt-get install libv4l-dev --no-install-recommends
+
+PARTE 1: ffmpeg
+-Clonamos su repo: git clone --depth 1 https://git.ffmpeg.org/ffmpeg.git
+-Configuramos con:
+
+./configure --enable-libv4l2 --disable-network --disable-debug --disable-encoders --disable-muxers --disable-indevs \
+--disable-outdev=fbdev --disable-outdev=oss
+
+Llegados a este este punto, podemos reproducir vídeos con ffplay, para ello:
+
+Lo primero, vermos qué codecs puede hacer desde hardware la Pi: ffmpeg -codecs | grep v4l2m2m
+
+Y ahora elegimos un codec y reproducimos el vídeo usándolo: ffplay -codec:v h264_v4l2m2m -fs <fichero_vídeo> 
+
+PARTE 2: MPV
+
+-Instalamos dependencias previas: sudo apt-get install libass-dev --no-install-recommends
+-Clonamos su repo: git clone --depth 1 https://github.com/mpv-player/mpv.git
+-Ejecutamos:
+./bootstrap.py
+-Ahora vemos lo que podemos activar y desactivar con:
+./waf configure --help
+-Ahora configuramos:
+CFLAGS="-DEGL_NO_X11" CXXFLAGS="-DEGL_NO_X11" ./waf configure --disable-rpi-mmal --enable-ffmpeg-strict-abi
+-Y ahora compilamos e instalamos:
+./waf build -j4
+sudo ./waf install
+
+Para usar wayland:
+mpv -fs --vo=gpu --hwdec=v4l2m2m-copy --gpu-context=wayland <fichero_vídeo>
+
+Y sin wayland:
+mpv -fs --vo=gpu --hwdec=v4l2m2m-copy --gpu-context=drm --drm-connector=1.HDMI-A-1 <fichero_vídeo>
