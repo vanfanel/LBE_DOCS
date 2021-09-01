@@ -167,6 +167,7 @@ mode=current
 
 [keyboard]
 keymap_layout=es
+vt-switching=false
 
 #
 # Aquí acaba el contenido de weston.ini
