@@ -1,7 +1,7 @@
 INSTALAR WAYLAND
 ================
 
-Lo primero: para correr CAGE (o cualquier otro compositor), necesitas WAYLAND y WLROOTS.
+Lo primero: para correr WAYBOX, CAGE, o cualquier otro compositor, necesitas WAYLAND y WLROOTS.
 A su vez, WLROORS necesita WAYLAND-PROTOCOLS y LIBSEAT
 
 PARTE 1: WAYLAND EN SÍ
@@ -12,6 +12,7 @@ https://wayland.freedesktop.org/releases.html
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
+
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dbuildtype=release -Ddtd_validation=false -Ddocumentation=false ..
@@ -27,9 +28,11 @@ https://wayland.freedesktop.org/releases.html
 Cofiguramos, compilamos e instalamos:
 mkdir b4
 cd b4
+
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dbuildtype=release -Dtests=false ..
+
 ninja -j4
 sudo ninja install
 
@@ -51,9 +54,11 @@ PARTE 3: WLROOTS
 --Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
+
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dbuildtype=release -Dexamples=disabled ..
+
 ninja -j4
 sudo ninja install
 
@@ -63,10 +68,11 @@ sudo ninja install
 --Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
+
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-meson -Dbuildtype=release -Dlibwacom=false \
--Ddebug-gui=false -Dtests=false -Ddocumentation=false ..
+meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false ..
+
 ninja -j4
 sudo ninja install
 
@@ -85,33 +91,8 @@ meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled -Dx11-backend=dis
 ninja -j4
 sudo ninja install
 
-PARTE 4: CAGE
--------------
-
-Bajamos los últimos sources estables de:
-https://github.com/Hjdskes/cage/releases
-
-Compilamos con:
-mkdir b4
-cd b4
-
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-meson .. --buildtype=release
-
-ninja -j4
-sudo ninja install
-
-Lanzaríamos el programa que queramos así:
--Lo primero, lanzamos el seatd, para loguear al usuario Pi en un asiento y poder lanzar el cage:
-sudo seatd -u pi
--Ahora lanzamos el cage y le pasamos el ejecutable que queramos:
-cage <nombre_ejecutable>
-Y si es con parámetros, usamos -- entre cage y el nombre del ejecutable, así:
-cage -- <nombre_ejecutable> <parámetros>
-
-PARTE 5: WESTON (POR SI QUIERES UN ESCRITORIO COMPLETO)
--------------------------------------------------------
+PARTE 4: WESTON (EL COMPOSITOR DE REFERENCIA, PARA UN DESCRITORIO COMPLETO USA WAYBOX)
+--------------------------------------------------------------------------------------
 
 -Instalamos dependencias previas:
 sudo apt-get install libpam0g-dev libfontconfig1-dev libevdev-dev --no-insta--recommends
@@ -136,12 +117,14 @@ https://gitlab.freedesktop.org/wayland/weston/-/tags
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
+
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false -Dbackend-fbdev=false \
 -Dxwayland=false -Dremoting=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
 -Dcolor-management-lcms=false -Dcolor-management-colord=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false \
 -Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false ..
+
 ninja -j4
 sudo ninja install
 
@@ -415,3 +398,28 @@ Empezamos con una dependencia, libfm:
 
 Ahora vamos con PCMANFM en sí:
 -Bajamos los últimos sources estables de: https://github.com/lxde/pcmanfm/releases
+
+CAGE, UN COMPOSITOR PARA APLICACIONES EMBEDIDAS
+-----------------------------------------------
+
+Bajamos los últimos sources estables de:
+https://github.com/Hjdskes/cage/releases
+
+Compilamos con:
+mkdir b4
+cd b4
+
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson .. --buildtype=release
+
+ninja -j4
+sudo ninja install
+
+Lanzaríamos el programa que queramos así:
+-Lo primero, lanzamos el seatd, para loguear al usuario Pi en un asiento y poder lanzar el cage:
+sudo seatd -u pi
+-Ahora lanzamos el cage y le pasamos el ejecutable que queramos:
+cage <nombre_ejecutable>
+Y si es con parámetros, usamos -- entre cage y el nombre del ejecutable, así:
+cage -- <nombre_ejecutable> <parámetros>
