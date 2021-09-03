@@ -230,6 +230,10 @@ Restart=always
 StartLimitIntervalSec=0
 StartLimitBurst=0
 
+# Or, if you prefer, comment out the previous block and uncomment this one
+# so system reboots after you close Weston via CTRL+ALT+BACKSPACE.
+# ExecStopPost=/usr/bin/sudo -E /sbin/reboot
+
 [Install]
 WantedBy=multi-user.target
 
@@ -265,6 +269,10 @@ WorkingDirectory=/home/pi
 Restart=always
 StartLimitIntervalSec=0
 StartLimitBurst=0
+
+# Or, if you prefer, comment out the previous block and uncomment this one
+# so system reboots after you close Weston via CTRL+ALT+BACKSPACE.
+# ExecStopPost=/usr/bin/sudo -E /sbin/reboot
 
 [Install]
 WantedBy=multi-user.target
