@@ -499,7 +499,10 @@ mkdir b4
 cd b4
 
 Configuramos libdrm con esto:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false -Dinstall-test-programs=true ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false \
+-Dinstall-test-programs=true ..
 
 Compilamos e instalamos:
 ninja -j4
@@ -525,7 +528,8 @@ SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, PUES TIENES QUE INSTALAR LIBG
 git clone --depth 1 https://gitlab.freedesktop.org/glvnd/libglvnd.git
 mkdir b4
 cd b4
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dx11=disabled ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dglx=disabled -Dx11=disabled ..
 ninja -4
 sudo ninja install
 (Y "sudo ninja uninstall" para desinstalar)
@@ -561,16 +565,25 @@ mkdir b4
 cd b4
 
 COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro -Dglvnd=true -Dbuildtype=release ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro \
+-Dglvnd=true -Dbuildtype=release ..
 
 SI QUISIERAS SÓLO GLES Y GLES2, SIN OPENGL COMPLETO:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=dri -Dplatforms=drm,x11 -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dglx=dri -Dplatforms=drm,x11 -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dglx=disabled -Dglvnd=true -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dglx=disabled -Dglvnd=true -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 PARA COMPILAR:
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
@@ -611,16 +624,12 @@ git clone --depth 1 https://github.com/libsdl-org/SDL.git
 Ahora, para configurar:
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA, PERO EN MODO DEBUG:
 CFLAGS="-O0 -ggdb -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
-
-SÓLO CON GLES1 y GLES2:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --disable-video-opengl --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate --disable-video-vulkan
-
-CON OPENGL COMPLETO, GLES1 y GLES2
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate --disable-video-vulkan 
 
 (LO DE -DMESA_EGL_NO_X11_HEADERS LO HEMOS SACADO DE /usr/lib/pkgconfig/egl.pc. Como el viejo buildsystem de las SDL2 basado en configure y make no usa pkgconfig para saber qué flags tiene que pasar cuando
 se compile eglplatform.h, parte de EGL de MESA, que es donde  MESA_EGL_NO_X11_HEADERS evita intentar incluir las headers de X11, pues se lo tenemos que pasar nosotros a mano. El buildsystem de las SDL2 basado en CMAKE sí
@@ -649,10 +658,13 @@ Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sa
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
 Para SDL2_Mixer (instalar antes libmpg123-dev, libogg-dev y libflac-dev):
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
 Para SDL2_Image o SDL2_ttf:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --without-x
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure --without-x
 
 INSTALAR RETROARCH
 ===================
@@ -662,11 +674,9 @@ sudo apt-get install glslang-dev glslang-tools spirv-tools
 
 Para configurar RetroArch con soporte de GLES y VULKAN, como lo venimos haciendo:
 
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --enable-egl --enable-opengles --enable-opengles3 --enable-vulkan
-
-O sólo con GLES:
-
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" ./configure --disable-videocore --disable-vulkan --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-glslang --disable-builtinglslang --disable-rpiled --enable-egl --enable-opengles --enable-opengles3
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-builtinglslang --disable-rpiled --enable-egl --enable-opengles --enable-opengles3 --enable-vulkan
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 

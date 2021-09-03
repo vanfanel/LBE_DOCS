@@ -12,7 +12,9 @@ https://wayland.freedesktop.org/releases.html
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Ddtd_validation=false -Ddocumentation=false ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dbuildtype=release -Ddtd_validation=false -Ddocumentation=false ..
 
 ninja -j4
 sudo ninja install
@@ -25,7 +27,9 @@ https://wayland.freedesktop.org/releases.html
 Cofiguramos, compilamos e instalamos:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dtests=false ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dbuildtype=release -Dtests=false ..
 ninja -j4
 sudo ninja install
 
@@ -47,7 +51,9 @@ PARTE 3: WLROOTS
 --Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dexamples=disabled ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dbuildtype=release -Dexamples=disabled ..
 ninja -j4
 sudo ninja install
 
@@ -57,7 +63,9 @@ sudo ninja install
 --Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dlibwacom=false \
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dbuildtype=release -Dlibwacom=false \
 -Ddebug-gui=false -Dtests=false -Ddocumentation=false ..
 ninja -j4
 sudo ninja install
@@ -70,7 +78,8 @@ sudo ninja install
 mkdir b4
 cd b4
 
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled -Dx11-backend=disabled -Dxcb-errors=disabled ..
 
 ninja -j4
@@ -86,7 +95,8 @@ Compilamos con:
 mkdir b4
 cd b4
 
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson .. --buildtype=release
 
 ninja -j4
@@ -112,7 +122,11 @@ https://gitlab.freedesktop.org/cairo/cairo/-/tags
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release ..
+
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dbuildtype=release ..
+
 ninja -h4
 sudo ninja install
 
@@ -122,9 +136,11 @@ https://gitlab.freedesktop.org/wayland/weston/-/tags
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dbuildtype=release -Dbackend-headless=false \
--Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false -Dbackend-fbdev=false -Dxwayland=false -Dremoting=false -Dsystemd=false -Dpipewire=false \
--Dshell-ivi=false -Dcolor-management-lcms=false -Dcolor-management-colord=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false \
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false -Dbackend-fbdev=false \
+-Dxwayland=false -Dremoting=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
+-Dcolor-management-lcms=false -Dcolor-management-colord=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false \
 -Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false ..
 ninja -j4
 sudo ninja install
@@ -368,7 +384,9 @@ Para compilar GTK3 (la versión más compatible con programas actualmente y que 
 -Configuramos como:
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson .. -Dbuildtype=release \
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson .. -Dbuildtype=release \
 -Dwayland-backend=true -Dx11-backend=false -Dmedia-ffmpeg=disabled -Dmedia-gstreamer=disabled -Dprint-cups=disabled \
 -Dprint-cloudprint=disabled -Dvulkan=enabled -Dxinerama=disabled -Dintrospection=disabled -Ddemos=false \
 -Dbuild-examples=false -Dbuild-tests=false
@@ -379,7 +397,9 @@ Para compilar GTK4 sería:
 -Bajamos los últimos sources estables de: https://download.gnome.org/sources/gtk/
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" meson .. -Dbuildtype=release \
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson .. -Dbuildtype=release \
 -Dwayland-backend=true -Dx11-backend=false -Dmedia-ffmpeg=disabled -Dmedia-gstreamer=disabled -Dprint-cups=disabled \
 -Dvulkan=enabled -Dintrospection=disabled -Ddemos=false -Dbuild-examples=false -Dbuild-tests=false 
 ninja -j4

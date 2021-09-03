@@ -160,7 +160,9 @@ git submodule update --init --recursive
 Configuramos y compilamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 Si nos da un error al linkar relacionado con ffmpeg, tenemos que recompilar ffmpeg interno que trae, lo cual se hace con esta
 secuencia de comandos:
@@ -174,7 +176,9 @@ popd
 Ahora copiamos el directorio "assets" al mismo directorio del ejecutable PPSSPP
 
 Para compilar una versión LIBRETRO, entramos en el directorio "libretro" de los sources y:
-cmake .. -DLIBRETRO=ON -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72"
+cmake .. -DLIBRETRO=ON -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 (Compilar la versión LIBRETRO usando el Makefile del directorio "libretro" actualmente NO funciona).
 (El resultado sólo funciona desde Wayland y es más lento que la versión standalone usando GLES2).
@@ -193,7 +197,7 @@ sudo apt-get install extra-cmake-modules --no-install-recommends
 
 Configuramos con:
 
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=OFF -DUSE_SDL2=ON ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" -DCMAKE_CXX_FLAGS="--march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=ON -DUSE_SDL2=ON ..
 
 (Hay que dejar el soporte de SDL2 porque EVDEV no implementa aún los ejes de los mandos)
 
@@ -209,7 +213,9 @@ ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
 *******Compilar el core libretro duckstation*********************************************************************
 
 PARA COMPILAR directamente en la máquina para Pi4:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 
 PARA CROSSCOMPILAR
 
@@ -252,7 +258,9 @@ mkdir build
 cd build
 
 -Configuramos pasándole el cmake toolchain file así:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ..
 
 -Compilamos con make, y comprobamos el ejecutable, que sea aarch64:
 file duckstation_libretro.so
@@ -274,7 +282,8 @@ Clonamos su repo:
 git clone --recursive https://github.com/nesbox/TIC-80 --depth 1
 
 Configuramos con:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 
 Los juegos están en:
 https://tic80.com/play?cat=0
@@ -453,7 +462,7 @@ Editamos configure.ac y quitamos el -g.
 Ejecutamos ./autogen.sh
 Configuramos con:
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ./configure
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure
 
 Copiamos el directorio "src/base" tal cual (tiene wads dentro para el engine) a ~/doom
 cp -R src/base ~/doom/
@@ -534,7 +543,7 @@ Editamos Makefile y:
 -Quitamos el -Werror para que no trate los warnings como errores.
 -Comentamos la línea de STRIP debajo de "ifdef BUILD_LINUX"
 -Quitamos el -g de la segunda línea de CFLAGS que hay al inicio de la sección Compiler Flags, y ahí mismo
- añadimos los CFLAGS de la Pi4 si vamos a ocmpilar para ella: -march=armv8-a+crc+simd -mtune=cortex-a72
+ añadimos los CFLAGS de la Pi4 si vamos a ocmpilar para ella: -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 -Para que cuando compilemos veamos los flags, nos vamos a la sección "Rules to manage Files and Libraries for SDL"
  y debajo del "@echo Compiling" de los .c, metemos: @echo $(CC) $(CFLAGS) -c $<
 
@@ -572,7 +581,7 @@ Y ya puedes hacer "./OpenBOR Paks/bor.pak" y te lanzará el juego desempaquetado
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
-Los CXXFLAGS son: -O2 -march=armv8-a+crc+simd -mtune=cortex-a72
+Los CXXFLAGS son: -O2 -march=-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 Y añade la línea de optimiación agresiva debajo de la original de CFLAGS:
 CXXFLAGS += -flto -fomit-frame-pointer
 (NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
@@ -584,7 +593,7 @@ Lanzamos con:
 ./rawgl --language=us --render=software --fullscreen-ar --datapath=data_dos
 (usar --render=original provoca errores como tiras en las piernas de los enemigos en lugar de ser sólidas).
 
-******FLASHBACK en la Rasberry Pi***************************************************************************************************************************************
+******FLASHBACK en la Rasberry Pi*********
 
 Bajamos los sources de:
 http://cyxdown.free.fr/reminiscence/
@@ -594,7 +603,7 @@ apt-get install libmodplug-dev --no-install-recommends
 
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
-CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=armv8-a+crc+simd -mtune=cortex-a72
+CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 
 Editamos sdl_systemstub.cpp y cambiamos:
 desired.samples = 2048;
@@ -625,7 +634,7 @@ Editamos src/sdl2/video.c y:
 
 Entramos en el directorio linux, editamos Makefile y añadimos a los CFLAGS:
 
--O2 -march=armv8-a+crc+simd -mtune=cortex-a72
+-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 
 Compilamos con make -j4
 
@@ -823,7 +832,8 @@ mkdir b4
 cd b4
 
 Configuramos con:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" \
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson .. -Duse_opengl=false -Duse_sdl2_net=false
 
 Compilamos con:
@@ -846,14 +856,14 @@ https://www.vogons.org/viewtopic.php?f=41&t=34770&start=120
 patch -p0 < parche.patch
 
 Editamos el configure, y cambiamos "-g -O2" por los flags:
--O2 -march=armv8-a+crc+simd -mtune=cortex-a72
+-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 porque si no algunos Makefiles van a tener los flags antiguos.
 
 Editamos configure y ponemos a "no" todos los have... relacionados con opengl y x11.
 
 Configuraríamos para SDL2. 
 
-CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure
 
 Cambiamos "AR = ar" por "AR = gcc-ar" y "RANLIB = ranlib" por "RANLIB = gcc-ranlib" en todos los Makefile (hay varios, en distintos subdirectorios) y forzamos los CFLAGS
 que nos interesan en ellos, ya que no llegan desde el configure a algunos Makefiles, con:
@@ -1080,7 +1090,8 @@ Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 1024, comentando 
 Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(), en la llamada a SDL_SetHint(), "nearest" por "linear".
 
 Compilamos con:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GLES2
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GLES2
 
 Mete el duke3d.grp en el mismo directorio que el ejecutable.
 Para tener música con .ogg: Mete un zip con la música en el mismo directorio donde tengas el duke3d.grp.
@@ -1120,7 +1131,8 @@ git clone --depth 1 https://github.com/sezero/mikmod.git
 cd libmikmod
 mkdir b4
 cd b4
-cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSE=0 -DENABLE_OSS=0 cmake -DENABLE_DOC=0 -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSE=0 -DENABLE_OSS=0 cmake -DENABLE_DOC=0 \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 sudo make install
 
 Y AHORA VAMOS A POR EL UQM EN SÍ:
@@ -1135,7 +1147,7 @@ Activamos y desactivamos lo que queramos, sobre todo estas cosas:
 -Usar libmikmod del sistema, NO el libmikmod incluido que como ya hemos dicho suena mal en la Pi.
 
 Ahora editamos build.vars, y ahí añadimos las CFLAGS y CXXFLAGS de la Pi4:
--march=armv8-a+crc+simd -mtune=cortex-a72
+-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 
 Ahora editamos src/libs/graphics/sdl/sdl2_pure.c, y en la llamada de SDL_CreateRenderer(), metemos los flags:
 SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
@@ -1173,7 +1185,7 @@ Editamos Makefile y quitamos -lX11, y ponemos MP3LIB=mad a MP3LIB=mpg123 (para n
 
 make -j4
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
 
 *******Quakespasm en la Pi*******************************************************
 
@@ -1184,7 +1196,7 @@ git clone --depth 1 https://github.com/sezero/quakespasm.git
 
 Entramos en el directorio Quake, editamos Makefile para cambiar -lGL por -lOpenGL, y compilamos con:
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make -j4 USE_SDL2=1 USE_CODEC_MP3=0 USE_CODEC_WAVE=0
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4 USE_SDL2=1 USE_CODEC_MP3=0 USE_CODEC_WAVE=0
 
 OJO: Guarda su configuración en el subdirectorio id1 de donde tengas el ejecutable!
 Para tener 60FPS constantes, puedes editar id1/config.cfg y poner:
@@ -2847,7 +2859,8 @@ git submodule update --init --recursive
 Creamos el dir de compilación, entramos, configuramos y compilamos:
 mkdir b3
 cd b3
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 make -j4
 
 ***********RIGEL, el engine de Duke Nukem II************************************************************
@@ -2863,7 +2876,9 @@ mkdir b4
 cd b4
 
 Compilamos con GLES con:
-cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release .. -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 
 ***********Compilar RAZE, el engine de Duke Nukem, Blood, Exhumed, etc para Linux****************************************************************
 
@@ -2883,7 +2898,7 @@ https://github.com/coelckers/ZMusic/releases
 Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 make -j4
 sudo make install
 
@@ -2894,7 +2909,7 @@ git clone --depth 1 https://github.com/coelckers/Raze.git
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 make -j4
 
 Ahora, creamos ~/raze y metemos allí el ejecutable resultante ("raze"), raze.pk3, el directorio soundfonts, y el duke3d.rgp
@@ -2921,7 +2936,8 @@ Compilamos con:
 (Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
 Funciona con aceleración GLES, por cierto, usando POLYMOST, y bastante bien además.
 
-make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=0 USE_LIBVPX=0 HAVE_FLAC=0 LTO=0 OPTOPT="-march=armv8-a+crc+simd -mtune=cortex-a72"
+make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=0 USE_LIBVPX=0 HAVE_FLAC=0 LTO=0 \
+OPTOPT="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
@@ -3003,7 +3019,7 @@ justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
-cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 (PARA compilar en modo verbose, haz make VERBOSE=1)
 
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
@@ -3027,7 +3043,7 @@ Al final, mi script wolf3d contiene esta línea para lanzar el ECWOLF a mi gusto
 NOTA: SI USAS EL CORE DE RETROARCH, pon los datos y el EXE de la versión de ACTIVISION, NO la original de Apogee, y a Retroarch, además del core, le pasas el WOLF3D.EXE.
 Y se compila con:
 
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72"  cmake -DLIBRETRO=1 ..
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" cmake -DLIBRETRO=1 ..
 
 ***********XASH3D para Raspberry Pi (GLES) **********************************************************************************************
 
@@ -3314,7 +3330,8 @@ https://github.com/FluidSynth/fluidsynth/releases
 
 Y configuramos desde un directorio de build que creamos nosotros:
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
 
 Y compilamos con make -j4, e instalamos con:
 sudo make install
@@ -3575,7 +3592,7 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 Hay que leer el INSTALL para saber cómo se compila, pero esencialmente:
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_BACKEND=SDL2 -DOPENGL_BACKEND=None -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_BACKEND=SDL2 -DOPENGL_BACKEND=None -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 make -j4
 
@@ -4024,7 +4041,7 @@ mkdir b4
 cd b4
 
 Configuramos y compilamos con:
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 make -j4
 
 Creamos el directorio ~/cc, y metemos ahí los datos del juego.
@@ -4073,7 +4090,7 @@ SI estamos compilando el Sonic-1-2:
 	
 Compilamos con:
 
-CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" make -j4
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
 
 Ahora, para ejecutarlo, necesitamos Data.rsdk (preferiblemente de la versión de PC)
 y el directorio "videos" que contendrá unos vídeos .ogv. Por ahora, los vídeos tienen que empezar por mayúscula la primera letra
@@ -4099,7 +4116,9 @@ Editamos src/sdl2/audio.c y:
 Compilamos con:
 mkdir b4
 cd b4
-cmake -DUSE_SDL2=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DUSE_SDL2=ON -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 make -j4
 
 Copiamos el directorio data que viene con los sources al mismo directorio donde metamos el ejecutable.
@@ -4125,7 +4144,8 @@ cd b4
 
 Ahora configuramos:
 
-cmake -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
@@ -4150,7 +4170,7 @@ También puedes editar cgenius.cfg, y poner EnableLogfile=false para que no te g
 
 Bajamos la última stable de https://github.com/bradharding/doomretro/releases
 Entramos en src, editamos doomdef.h y ponemos SCREENSCALE a 1.
-Editamos el Makefile y ponemos los CFLAGs  "-march=armv8-a+crc+simd -mtune=cortex-a72", y quitamos el -g.
+Editamos el Makefile y ponemos los CFLAGs "-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer", y quitamos el -g.
 Compilar y listo.
 
 En doomretro.cfg, ponemos:
@@ -4208,7 +4228,7 @@ Creamos el directorio de compilación, entramos, configuramos y compilamos:
 cd systemshock
 mkdir b4
 cd b4
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_SDL2=ON -DENABLE_SOUND=ON -DENABLE_FLUIDSYNTH=ON -DOpenGL_GL_PREFERENCE=GLVND ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_SDL2=ON -DENABLE_SOUND=ON -DENABLE_FLUIDSYNTH=ON -DOpenGL_GL_PREFERENCE=GLVND ..
 make -j4
 
 Ahora creamos ~/sshock y ahí dentro:
@@ -4284,7 +4304,7 @@ así que irá a unos 30FPS suaves que no está mal).
 -Añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear"); antes de la llamada a SDL_CreateRenderer()
 
 Editamos Makefile y añadimos al lado de -O2 los flags de la Pi4:
--march=armv8-a+crc+simd -mtune=cortex-a72
+-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 
 Compilamos con:
 make -j4
@@ -4531,7 +4551,7 @@ Ahora actualiza el config.guess, que el que trae el rogue es viejo y no detecta 
 wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' -O config.guess
 
 Configurar y compilar:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure
 make -j4
 
 Ayuda de teclas con shift+?
@@ -5177,7 +5197,7 @@ No hace falta que quites los directorios de los includes, esos dan igual.
 Editamos Makefile y dejamos la platform definition de la pi4 asi:
 
    else ifneq (,$(findstring rpi4,$(platform)))
-      PLATFORM_DEFINES := -march=armv8-a+crc+simd -mtune=cortex-a72
+      PLATFORM_DEFINES := -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
    endif
 
 Ahora hacemos un 
@@ -5388,7 +5408,7 @@ git submodule update --init --recursive
 Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
 cd b4
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release ..
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release ..
 
 DEVILUTIONX, Diablo en Linux
 ============================
@@ -5401,7 +5421,8 @@ Bajamos la última estable de:
 https://github.com/diasurgical/devilutionX/releases
 
 Configuramos con:
-cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 
 Compilamos y metemos en el directorio ~/diablo el ejecutable, junto con diabdat.mpq y con la fuente CharisSILB.ttf que viene incluida en los sources.
 
@@ -5443,7 +5464,7 @@ Si aun así da error, borra el fichero con el que da error (el tool que da el er
 
 Se compila para la Pi con:
 
-make TARGET_RPI=1 HIGH_FPS_PC=1 BETTERCAMERA=0 -j4
+make TARGET_RPI=1 HIGH_FPS_PC=1 RUMBLE_FEEDBACK=1 BETTERCAMERA=0 -j4
 
 El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
 
@@ -5459,7 +5480,8 @@ git clone --depth 1 https://github.com/flareteam/flare-game.git
 creamos el directorio de compilación, entramos en él, configuramos y compilamos:
 mkdir b3
 cd b3
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -flto -fwhole-program" cmake -DCMAKE_BUILD_TYPE=Release ..
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -flto -fwhole-program" \
+cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
 creamos ~/flare y mandamos el ejecutable flare allí.
@@ -5486,7 +5508,8 @@ en screen/Screen.cpp, justo antes de SDL_CreateWindowAndRenderer()
 
 Configuramos así:
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --disable-debug
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure --disable-debug
 
 Compilamos:
 
@@ -5529,7 +5552,9 @@ Ejecutamos el autogen.sh
 
 Configuramos con:
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa --enable-lto --with-optimization=normal
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa --enable-lto --with-optimization=normal
 
 SI EL EJECUTABLE QUE OBTIENES DA SEGFAULTS, PON --with-optimization=normal EN VEZ DE --with-optimization=heavy
 
@@ -5589,7 +5614,8 @@ sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libthe
 La otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarlas).
 
 Configuramos love con:
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 
 Instala copiando el ejecutable love donde quieras.
 
@@ -5678,7 +5704,9 @@ Instalamos esta dependencia previa si queremos ratón en la consola:
 sudo apt-get install gpm libgpm-dev --no-install-recommends
 
 Configuramos e instalamos:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --prefix=/usr --enable-hw-tty=yes  --enable-hw-x11=no 
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+./configure --prefix=/usr --enable-hw-tty=yes  --enable-hw-x11=no 
 make -j4
 sudo make install
 
@@ -5698,7 +5726,8 @@ Compilamos con:
 WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
 
 Para Raspberry Pi 4:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
 
 SI TIENES MOVIMIENTO ERRÁTICO DEL RATÓN: Desconecta el mando USB.
 
@@ -5722,7 +5751,9 @@ LIBOPENAL en la Raspberry Pi
 Por si alguna vez lo necesitas para algo.
 Bajamos la última release de: https://github.com/kcat/openal-soft/releases
 Configuramos así:
-cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 
 STUNT CAR RACER EN LA RASPBERRY PI (NO COMPILA POR PROBLEMAS CON OPENGL)
 =====================================================================
@@ -5748,7 +5779,9 @@ git clone --depth 1 https://github.com/ptitSeb/Eldritch.git
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir Code/b4
 cd Code/b4
-cmake -DGLES=ON -DWITH_SDL2=on -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DGLES=ON -DWITH_SDL2=on -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 make -j4
 
 Para instalar el juego:
@@ -5782,7 +5815,7 @@ https://github.com/coelckers/ZMusic/releases
 Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 make -j4
 sudo make install
 
@@ -5802,7 +5835,9 @@ justo antes de SDL_CreateWindow(), como siempre.
 
 También debes poner a SDL_FALSE las llamadas de SDL_ShowCursor() en vim src/common/platform/posix/sdl/i_gui.cpp
 
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"  -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j4
 
@@ -5840,7 +5875,9 @@ https://github.com/crawl/crawl/releases
 
 Descomprimimos y nos vamos al directorio sources.
 Compilamos con:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" make -j4 TILES=y LUAJIT=y
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+make -j4 TILES=y LUAJIT=y
 
 Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
 Ahora copiamos el directorio "dat" que viene dentro de "sources" a ~/crawl
@@ -5875,7 +5912,10 @@ por esto:
 Configuramos y compilamos con:
 mkdir b4
 cd b4
-EDITOR_ENABLED=0 cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DFMOD_ENABLED=OFF -DOPENAL_ENABLED=ON -DCMAKE_BUILD_TYPE=Release -Wno-dev ..
+EDITOR_ENABLED=0 cmake -DCMAKE_BUILD_TYPE=Release -Wno-dev \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DFMOD_ENABLED=OFF -DOPENAL_ENABLED=ON  ..
 make -j4
 
 CSBWin, UN PORT DEL DUNGEON MASTER DE ATARI ST PARA LINUX
@@ -5900,7 +5940,7 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
  antes de SDL_CreateWindow()
 
 Editamos makefile y añadimos en el options de "ifeq ($(target), Ubuntu_SDL20)"
--O2 -march=armv8-a+crc+simd -mtune=cortex-a72
+-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 
 Compilamos con:
 make target=Ubuntu_SDL20 -j4
@@ -5932,13 +5972,14 @@ Tenemos dos métodos para compilarlo:
 USANDO MAKE (RECOMENDADO):
 Editamos configure.ac, quitamos el -g de los CFLAGS, ejecutamos ./autogen.sh,
 y a continuación configuramos y compilamos:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -fsigned-char" ./configure
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -fsigned-char" ./configure
 make -j4
 
 USANDO CMAKE (NO RECOMENDADO POR AHORA):
 mkdir b4
 cd b4
-cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -fsigned-char" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -fsigned-char" \
+-DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
@@ -6131,7 +6172,9 @@ O bien usamos la 0.87 que traen los sources de los juegos, ya que en algunos cas
 CXXFLAGS="-fpermissive" ./configure --enable-static
 make -j8
 
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" ./configure --enable-static
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+./configure --enable-static
 
 Buscamos libmodplug.a
 find ./ -name 'libmodplug.a'
@@ -6166,7 +6209,9 @@ Bajamos la última versión estable de libepoxy desde:
 https://github.com/anholt/libepoxy/releases
 
 Configuramos, compilamos e instalamos:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72" meson -Dx11=false ..
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dx11=false ..
 ninja -j4
 sudo ninja install
 
@@ -6177,7 +6222,9 @@ cd Hurrican/Hurrican
 Configuramos y compilamos:
 mkdir b4
 cd b4
-cmake -DCMAKE_BUILD_TYPE=Release -DRENDERER=GLES2 -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DRENDERER=GLES2 \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 (Hay otros renderers disponibles, mira en el README)
 make -j4 
 
@@ -6414,8 +6461,9 @@ distinto a como se suele hacer!!!):
 mkdir b4
 cd b4
 
-cmake ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
- -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+cmake ../src -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 make -j4
 
@@ -6467,8 +6515,9 @@ cd src
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" \
- -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72"
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 make -j4
 
@@ -6584,7 +6633,7 @@ Empezamos compilando libjpeg-turbo, que nos va a hacer falta la versión estáti
 https://github.com/libjpeg-turbo/libjpeg-turbo/releases
 
 Ahora creamos directorio de compilación, entramos, y configuramos con CMAKE así:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" cmake -DCMAKE_BUILD_TYPE=Release ..
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" cmake -DCMAKE_BUILD_TYPE=Release ..
 
 Ahora, clonamos el repo del FROTZ:
 git clone --depth 1 https://github.com/DavidGriffith/frotz.git
@@ -7008,7 +7057,7 @@ Bajamos la última versión de los sources de:
 http://cyxdown.free.fr/hode/
 
 Editamos el Makefile:
--Quitamos el -g y añadimos en su lugar los FLAGS: -O2 -march=armv8-a+crc+simd -mtune=cortex-a72
+-Quitamos el -g y añadimos en su lugar los FLAGS: -O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 
 Editamos system_sdl2.cpp  y:
 
@@ -7071,13 +7120,15 @@ widescreen=false
 Las teclas son las flechas F, G y H.
 
 Neverball en la Raspberry Pi
-=====================
+============================
 
 Clonamos su repo en:
 git clone --depth 1 https://github.com/Neverball/neverball.git
 
 Compilamos con
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4
 
 VVVVVV en la Raspberry Pi
 =====================
@@ -7088,7 +7139,9 @@ git clone --depth 1 https://github.com/TerryCavanagh/VVVVVV.git
 
 Entramos en desktop_version, creamos b4 y configuramos con:
 
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-DNDEBUG -march=armv8-a+crc+simd -mtune=cortex-a72" -DCMAKE_CXX_FLAGS="-DNDEBUG -march=armv8-a+crc+simd -mtune=cortex-a72" ..
+cmake -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-DNDEBUG -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-DNDEBUG -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 
 Bajamos el data.zip que viene con la versión Windows del VVVVVV, disponible aquí:
 https://thelettervsixtim.es/makeandplay/
@@ -7280,7 +7333,8 @@ mkdir ~/.q3a
 mkdir ~/.q3a/baseq3
 
 Entramos en los sources y, sin más, hacemos:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DSDL_DISABLE_IMMINTRIN_H" CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -DSDL_DISABLE_IMMINTRIN_H" make -j4
+CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DSDL_DISABLE_IMMINTRIN_H" \
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DSDL_DISABLE_IMMINTRIN_H" make -j4
 
 En X86_64, con hacer make -j4, vale.
 
