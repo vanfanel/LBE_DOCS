@@ -5442,14 +5442,15 @@ SM64EX, port del Mario64 para GNU/Linux
 Clonamos los surces, y el repo de los parches:
 git clone --depth 1 https://github.com/AloXado320/sm64ex-alo.git
 
-Editamos src/pc/gfx/gfx_sdl2.c, y dejamos la función "void gfx_sdl_set_vsync" simplemente con este contenido:
-SDL_GL_SetSwapInterval(1);
+Editamos src/pc/gfx/gfx_sdl2.c y: 
+-Añadimos SDL_WINDOW_FULLSCREEN_DESKTOP a los flags de SDL_CreateWindow()
+-Comentamos la llamada a gfx_sdl_set_fullscreen() que hay justo debajo y en su lugar ponemos SDL_ShowCursor(SDL_DISABLE)
 
 Hay que tener baserom.us.z64 en el directorio raiz.
 
 Pide algunas dependencias que sólo necesita en la máquina donde se extraen los datos del juego, que puede ser un PC de escritorio
 y luego compilar en la Pi.
-Al compilar en la Pi te dará errores con las tools que se hayan compilado antes en X86_64, así que haz:
+Si al compilar en la Pi te da errores con las tools que se hayan compilado antes en X86_64, haz todo esto:
 
 rm tools/aifc_decode
 rm tools/aiff_extract_codebook
