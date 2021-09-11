@@ -161,7 +161,7 @@ Configuramos y compilamos:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 Si nos da un error al linkar relacionado con ffmpeg, tenemos que recompilar ffmpeg interno que trae, lo cual se hace con esta
@@ -585,7 +585,7 @@ Y ya puedes hacer "./OpenBOR Paks/bor.pak" y te lanzará el juego desempaquetado
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
-Los CXXFLAGS son: -O2 -march=-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
+Los CXXFLAGS son: -O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 Y añade la línea de optimiación agresiva debajo de la original de CFLAGS:
 CXXFLAGS += -flto -fomit-frame-pointer
 (NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
@@ -6447,6 +6447,28 @@ Nos deja el FNA.dll en bin/Release/FNA.dll
 
 AMBERMOON.NET EN LINUX
 ======================
+
+Necesitamos un sistema Wayland funcionando, e instalar GLFW.
+Nos bajamos la última estable de GLFW de:
+https://www.glfw.org/
+
+Y configuramos, compilamos e instalamos GLFW:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DGLFW_USE_WAYLAND=1 \
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
+
+make -j4
+sudo make install
+
+OPCIÓN 1: BAJARNOS LOS BINARIOS PRECOMPILADOS PARA AARCH64 Y USARLO DIRECTAMENTE:
+
+Nos bajamos los últimos binarios compilados de:
+https://github.com/Pyrdacor/Ambermoon.net/releases
+
+OPCIÓN 2: COMPILARLO NOSOTROS
 
 Clonamos su repo:
 
