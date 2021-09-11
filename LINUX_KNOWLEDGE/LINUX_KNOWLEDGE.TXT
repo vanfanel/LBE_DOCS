@@ -6456,9 +6456,8 @@ Y configuramos, compilamos e instalamos GLFW:
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DGLFW_USE_WAYLAND=1 \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DGLFW_USE_WAYLAND=1 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 make -j4
 sudo make install
