@@ -5869,6 +5869,20 @@ Queda pendiente investigar el setting de lzdoom.ini: gl_es
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
 
+NETHACK EN LA RASPBERRY PI
+==========================
+
+Se instala con:
+
+sudo apt-get install nethack-common
+
+Ahora creamos el fichero ~/.nethackrc con el contenido:
+OPTIONS=name:Manuel
+OPTIONS=number_pad:1
+
+Eso es para que el jugador se llame Manuel, y que se use el numpad para jugar con diagonales y todo: las flechas no se deben usar
+porque Nethack necesita que nos movamos en diagonal (o se gasta comida innecesariamente y no se puede ganar).
+
 DUNGEON CRAWL STONE SOUP EN LA PI
 =================================
 
