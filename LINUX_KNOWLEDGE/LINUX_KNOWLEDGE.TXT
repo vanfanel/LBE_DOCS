@@ -5872,16 +5872,16 @@ Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus
 DUNGEON CRAWL STONE SOUP EN LA PI
 =================================
 
-Instalamos una dependencia previa (se puede compilar contra LUA o contra LUA-JIT, que es más rápido en la Pi):
-sudo apt-get install libluajit-5.1-dev
+Instalamos una dependencias previas (se puede compilar contra LUA o contra LUA-JIT, que es más rápido en la Pi):
+sudo apt-get install libluajit-5.1-dev python3-yaml
 
-Bajamos los útimos estables de:
-https://github.com/crawl/crawl/releases
+Clonamos su repo (no se puede compilar desde release por el tema de las dependencias incluidas que lleva como submódulos):
+git clone --depth 1 https://github.com/crawl/crawl.git
+git submodule update --init
 
-Descomprimimos y nos vamos al directorio sources.
-Compilamos con:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+Descomprimimos y nos vamos al directorio crawl-ref/source, y compilamos con:
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 make -j4 TILES=y LUAJIT=y
 
 Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
@@ -5912,7 +5912,7 @@ por esto:
 		message(STATUS "Using GLVND for OpenGL")
 		FIND_LIBRARY(OpenGL_LIBRARY OpenGL)
 		SET(EXTRA_LIBS ${OpenGL_LIBRARY})
-        ENDIF(OpenGL_FOUND
+    ENDIF(OpenGL_FOUND)
 
 Configuramos y compilamos con:
 mkdir b4
@@ -6177,8 +6177,8 @@ O bien usamos la 0.87 que traen los sources de los juegos, ya que en algunos cas
 CXXFLAGS="-fpermissive" ./configure --enable-static
 make -j8
 
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 ./configure --enable-static
 
 Buscamos libmodplug.a
@@ -6214,8 +6214,8 @@ Bajamos la última versión estable de libepoxy desde:
 https://github.com/anholt/libepoxy/releases
 
 Configuramos, compilamos e instalamos:
-CFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dx11=false ..
 ninja -j4
 sudo ninja install
