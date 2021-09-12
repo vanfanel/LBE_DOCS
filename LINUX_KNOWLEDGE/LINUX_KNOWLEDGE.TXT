@@ -5448,7 +5448,8 @@ git clone --depth 1 https://github.com/AloXado320/sm64ex-alo.git
 
 Editamos src/pc/gfx/gfx_sdl2.c y: 
 -Añadimos SDL_WINDOW_FULLSCREEN_DESKTOP a los flags de SDL_CreateWindow()
--Comentamos la llamada a gfx_sdl_set_fullscreen() que hay justo debajo y en su lugar ponemos SDL_ShowCursor(SDL_DISABLE)
+-Añadimos "SDL_ShowCursor(SDL_DISABLE);" justo debajo de la llamada a SDL_CreateWindow()
+-Comentamos la llamada a gfx_sdl_set_fullscreen() que hay justo debajo.
 
 Hay que tener baserom.us.z64 en el directorio raiz.
 
@@ -6456,7 +6457,7 @@ Y configuramos, compilamos e instalamos GLFW:
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DGLFW_USE_WAYLAND=1 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DGLFW_USE_WAYLAND=1 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
 -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 make -j4
