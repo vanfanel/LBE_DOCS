@@ -437,7 +437,8 @@ Creamos el directorio donde va a ir el juego, por ejemplo ~/abadia
 Y ahí copiamos los directorios "roms", "fonts" y "res" que vienen con los sources en su directorio "build".
 Copiamos también el ejecutable "abbey", y ya debería ir. No necesitas nada más externo.
 
-******RussianDoom, un sourceport peculiar en ruso**************************************************************************************
+RussianDoom / RussianHeretic, un sourceport peculiar en ruso
+============================================================
 
 Bajamos la última estable de:
 
@@ -447,34 +448,26 @@ En src/i_video.h, desactivamos el modo hires, dejando la línea del define así:
 #define hires a 0
 También descomentamos el #define WIDESCREEN
 
-En src/i_video.c, ponemos el escalado de la "intermediate texture" a linear, para lo cual ponemos a linear la llamada a SDL_SetHint() debajo de este comentario:
- 
-// Set the scaling quality for rendering the intermediate texture into
-// the upscaled texture to "nearest", which is gritty and pixelated and
-// resembles software scaling pretty well.
+Editamos src/i_video.c, y cambiamos todas las ocurrencias de "nearest" a "linear".
 
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+Compilamos con CMAKE:
+mkdir b4
+cd b4
 
-ESTO YA NO HACE FALTA:
-Desactivamos el uso de la función de SDL2 para resampleo de efectos de sonido. Para ello, editamos src/i_sdlsound.c y cambiamos el if que empieza aquí:
-if (samplerate <= mixer_freq
-por simplemente
-if (false)
-De ese modo se usa la rutina built-in para convertir los sonidos, en vez de la lentísima SDL_BuildAudioCVT()
+cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -fsigned-char" \
+-DCMAKE_BUILD_TYPE=Release ..
 
-Editamos configure.ac y quitamos el -g.
-Ejecutamos ./autogen.sh
-Configuramos con:
+make -j4
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure
-
-Copiamos el directorio "src/base" tal cual (tiene wads dentro para el engine) a ~/doom
-cp -R src/base ~/doom/
+Copiamos el directorio "src/base" tal cual (tiene wads dentro para el engine) a ~/heretic
+cp -R src/base ~/heretic/
 
 Copiamos los ejecutables russian* (que están en src) a ~/doom
-cp src/russian-* ~/doom/
+cp src/russian-* ~/heretic/
 
-Configuramos el juego en sí con ./russian-setup, donde pulsaremos F4 para ver el menú en inglés.
+Ejecutamos el juego por primera vez para que nos genere russian-heretic.ini.
+Editamos russian-heretic.ini y ponemos:
+english_language	1
 
 Para tener música que no sea la emulada por OPL, metemos en un WAD tal cual sin directorios los FLAC o los OGG  de aquí, PERO MUY IMPORTANTE, SIN EXTENSIÓN, en plan E1M3 sin más:
 https://forum.zdoom.org/viewtopic.php?f=19&t=48937
@@ -5991,17 +5984,17 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 Tenemos dos métodos para compilarlo:
 
-USANDO MAKE (RECOMENDADO):
-Editamos configure.ac, quitamos el -g de los CFLAGS, ejecutamos ./autogen.sh,
-y a continuación configuramos y compilamos:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -fsigned-char" ./configure
-make -j4
-
-USANDO CMAKE (NO RECOMENDADO POR AHORA):
+USANDO CMAKE (RECOMENDADO):
 mkdir b4
 cd b4
 cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -fsigned-char" \
 -DCMAKE_BUILD_TYPE=Release ..
+make -j4
+
+USANDO MAKE (RECOMENDADO SI FALLA CMAKE):
+Editamos configure.ac, quitamos el -g de los CFLAGS, ejecutamos ./autogen.sh,
+y a continuación configuramos y compilamos:
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -fsigned-char" ./configure
 make -j4
 
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
