@@ -5464,7 +5464,7 @@ Si aun así da error, borra el fichero con el que da error (el tool que da el er
 
 Se compila para la Pi con:
 
-make TARGET_RPI=1 HIGH_FPS_PC=1 RUMBLE_FEEDBACK=1 BETTERCAMERA=0 -j4
+make TARGET_RPI=1 HIGH_FPS_PC=1 RUMBLE_FEEDBACK=0 BETTERCAMERA=0 -j4
 
 El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
 

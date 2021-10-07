@@ -19,37 +19,17 @@ Al pasarle como host la Raspberry Pi (--host=raspberrypi), compilará contra SDL
 
 Para compilación rápida de prueba, sólo con engine SCUMMVM:
 
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,agi,cge,made,mohawk,groovie,cine,cruise,gob,dreamweb,kyra,neverhood,agos,sci,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab,fullpipe,gnap,plumbers,adl
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,zvision,dragons,griffon,ultima,director,trecision,ngi,petka
 
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
 
 *********COMPILAR SCUMMVM EN LOCAL EN LA PI***************
 
-===EN LOCAL: Cambia sdl-config a sdl2-config en configure.===
-
-En local y con los engines que sueles usar:
-
-./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-nuked-opl --disable-fluidsynth --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,gnap,adl,gob,mohawk,lab,titanic,fullpipe,plumbers
-
-En local de pueba con scumm solo:
-
-./configure --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-nuked-opl --disable-fluidsynth --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access,lab,agi,agos,dreamweb,kyra,neverhood,saga,sci,titanic,fullpipe,plumbers,adl,gnap,gob,mohawk,plumbers
-
 ==PARA RELEASE, CON PLUGINS DINÁMICOS==
 
 Para hacer una release (engines como plugins dinámicos, todos los que vienen activados por defecto estarán activados, necesitarás libjpeg-dev, libpng-dev y libvorbis-dev, aunque estos no tienen por qué ser sus nombres exatctos, para engines como Sword 2.5 o Wintermute):
 
-En local, con plugins dinámicos y mis engines selectos, y con ogg (vorbis), y optimizado para Raspberry Pi 3, cambia optimization_level a 3 en configure :
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-./configure --disable-debug --enable-release --enable-optimizations --disable-eventrecorder --disable-savegame-timestamp --disable-mt32emu --disable-nuked-opl --disable-fluidsynth --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-plugins --enable-vorbis --disable-theoradec --disable-png --default-dynamic --disable-engine=xeen,hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,lure,cge2,mortevielle,voyeur,zvision,gnap,mads,bbvs,sherlock,access,lab,titanic,fullpipe,plumbers,illusions
-
-En local, con plugins dinámicos y mis engines selectos, y con ogg (vorbis), y optimizado para Raspberry Pi 3 en modo 64bits y con LTO (hay que pasarle el AR, NM y RANLIB, si no falla al compilar con LTO).
-Tienes que hacer un par de cambios en el script configure:
--cambia optimization_level a 3
--ve a sección "Check for endianness" y pon _endian=little sin que se haga la comprobación (el problema es que el objeto generado para testear ahí el endianness,
-si lo compilas con -flto, no contendrá las cadenas que se buscan. No lo vamos a arreglar, así que ponemos el endianness manualmente y listo.
 Ahora ya puedes configurar con:
 
 COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
@@ -57,7 +37,7 @@ COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
 
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-./configure --disable-debug --enable-release --enable-optimizations --opengl-mode=none --disable-eventrecorder --disable-cloud --disable-savegame-timestamp --enable-mt32emu --enable-nuked-opl --disable-flac --disable-mad --disable-tremor --disable-lua --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-vorbis --disable-theoradec --disable-png --disable-sdlnet --enable-plugins --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,fullpipe,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,zvision,dragons,ultima,griffon
+./configure --disable-debug --enable-release --enable-optimizations --opengl-mode=none --disable-eventrecorder --disable-cloud --disable-savegame-timestamp --enable-mt32emu --enable-nuked-opl --disable-flac --disable-mad --disable-tremor --disable-lua --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-vorbis --disable-theoradec --disable-png --disable-sdlnet --enable-plugins --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,zvision,dragons,griffon,ultima,director,trecision,ngi,petka
 
 Para que no salga el cursor de sistema, editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse comentamos todo el "if" y lo que hay dentro.
 
@@ -67,9 +47,10 @@ Para poner un buffer de audio más pequeño, editamos backends/mixer/sdl/sdl-mix
 samples = freq / (1000.0 / 54);
 (Por si quieres usarlo en otros sources, eso luego se usa en SDL_OpenAudio(). Por ahí tienes que mirar qué latencia hay configurada).
 
-Para quitar el WARNING de los EOB (Eye of the Beholder), editamos
-engines/advancedDetector.cpp
-y ponemos showTestingWarning a false en el ifdef de release.
+Para compilar con LTO (hay que pasarle el AR, NM y RANLIB, si no falla al compilar con LTO).
+Tienes que hacer un par de cambios en el script configure:
+-ve a sección "Check for endianness" y pon _endian=little sin que se haga la comprobación (el problema es que el objeto generado para testear ahí el endianness,
+si lo compilas con -flto, no contendrá las cadenas que se buscan. No lo vamos a arreglar, así que ponemos el endianness manualmente y listo.
 
 *************Compilar con SDL2 estáticas en lugar de dinámicas*****************************************************************************
 
@@ -98,7 +79,7 @@ Ya sólo es ejecutar el configure como lo hagas normalmente, make, y debería fu
 
 Si le haces un ldd al ejecutable de scummvm resultante, verás que ya no depende de ninguna librería externa de las SDL2.
 
-*********Compilar contra librerías externas (libfluidsynth, libjpeg...)*************************************************************************************
+*********Compilar contra librerías externas (libfluidsynth, libjpeg...)**************
 
 En la versión publicada del scummvm, no he tenido en cuenta esta posibilidad porque, primero, en principio no hacia falta ya que se prefiere el sonido
 original de los juegos, y en segundo lugar, como le pasamos rutas de includes que se necesitan para estas librerías (/usr/include/arm-linux-gnueabihf)
@@ -120,7 +101,7 @@ _use_cxx11="yes"
 
 Luego configuraríamos con algo como:
 
-./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword1,sword2,sword25,tinsel,pegasus,toon,sky,queen,saga2,cge,made,groovie,cine,cruise,neverhood,lure,saga,cge2,mortevielle,voyeur,zvision,mads,bbvs,sherlock,access
+./configure --host=raspberrypi --with-sdl-prefix=/opt/rpi_root/usr --disable-debug --enable-release --enable-optimizations --disable-mt32emu --disable-flac --disable-mad --disable-vorbis --disable-tremor --disable-taskbar --disable-timidity --disable-alsa --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,zvision,dragons,griffon,ultima,director,trecision,ngi,petka
 
 (Como puedes ver, no hace falta pasarle nada para activar el soporte de fluidsynth: por defecto, si se detectan las cabeceras y libs de fluidsynth, el soporte se activa solo).
 
