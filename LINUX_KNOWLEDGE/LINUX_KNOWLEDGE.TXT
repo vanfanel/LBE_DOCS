@@ -1637,7 +1637,7 @@ por
 
 El nuevo valor de Atari800_FPS_NTSC se ha obtenido de RetroArch.
 
-*********NO funciona la conexión con una tarjeta de broadcom (módulo b43)*************************************************************************************
+*********NO funciona la conexión con una tarjeta de broadcom (módulo b43)***********
 
 Si miras 
 dmesg | grep err
@@ -3116,7 +3116,13 @@ https://github.com/FWGS/cs16-client/releases
 
 ************Parchear con XDelta en Linux************************************************************************************************
 
-Tienes que usar el comando xdelta3, NO el xdelta.
+SI ES UN PARCHE XDELTA (como el del Xenogears al castellano):
+xdelta patch parche_CD1_con_videos.xdt Xenogears\ \(USA\)\ \(Disc\ 1\).bin Xeno1.bin
+
+
+SI ES UN PARCHE XDELTA3:
+
+En este caso, tienes que usar el comando xdelta3, NO el xdelta.
 xdelta3 -d -s original parche resultado
 
 ************Wolf4SDL (Wolfenstein 3D) en la Raspberry Pi*********************************************************************************
