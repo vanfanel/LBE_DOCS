@@ -5081,6 +5081,15 @@ sudo udevadm control --reload-rules
 sudo chmod 666 /dev/input/event*
 o simplemente reiniciar.
 
+*********Configurar RETROARCH para que cuando usas el driver de video VULKAN no cambie la resolución********
+
+En retroarch.cfg, pon el modo de vídeo que usa el sistema en los parámetros:
+
+video_fullscreen = "true"
+video_fullscreen_x = "1280"
+video_fullscreen_y = "720"
+
+Y así ya no cambiará el modo de vídeo.
 
 ****************************Cómo compilar libmodplug*******************************
 
