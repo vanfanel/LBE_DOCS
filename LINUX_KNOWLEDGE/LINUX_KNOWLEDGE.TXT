@@ -215,11 +215,18 @@ PARA LANZAR LOS JUEGOS tienes que pasarle la ruta COMPLETA del .cue, no vale que
 ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
 
 *******Compilar el core libretro duckstation*********************************************************************
+(OJO: en el repo oficial de ducktstation tienes cores ya compilados, pero NO funcionan cuando Retrorch funciona sobre KMSDRM.
+NO te molestes en reportarlo, porque el autor de duckstation es un poco gilipollas.)
+
+Clonamos el repo donde mantienen la versión no oficial:
+git clone --depth 1 https://github.com/libretro/swanstation.git
 
 PARA COMPILAR directamente en la máquina para Pi4:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON \
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON \
 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 PARA CROSSCOMPILAR
 
