@@ -183,52 +183,28 @@ cmake .. -DLIBRETRO=ON -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DCMAKE_BUILD
 (Compilar la versión LIBRETRO usando el Makefile del directorio "libretro" actualmente NO funciona).
 (El resultado sólo funciona desde Wayland y es más lento que la versión standalone usando GLES2).
 
-******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
+*******Compilar el core libretro Duckstation***********
 
-Clonamos duckstation:
-
-git clone --depth 1 https://github.com/stenzek/duckstation.git
-
-Instalamos dependencias previas:
-
-sudo apt-get install libevdev-dev --no-install-recommends
-Y si vas a compilar con soporte para wayland, también esto:
-sudo apt-get install extra-cmake-modules --no-install-recommends
-
-Configuramos con:
-
-cmake .. \
--DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
--DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
--DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON \
--DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=ON -DUSE_SDL2=ON ..
-
-(Hay que dejar el soporte de SDL2 porque EVDEV no implementa aún los ejes de los mandos)
-
-Copia todo el contenido de bin a ~/psx. No copies sólo el ejecutable, o te dará un segfault cuando lo ejecutes.
-
-Si  el ejecutable resultante te da un error con que no puede abrir card1, edita src/common/drm_display.h y cambia card = 1 por card = 0.
-
-La BIOS va en ~/.local/share/duckstation/bios/
-
-PARA LANZAR LOS JUEGOS tienes que pasarle la ruta COMPLETA del .cue, no vale que le pases una ruta relativa a donde estás,
-ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
-
-*******Compilar el core libretro duckstation*********************************************************************
 (OJO: en el repo oficial de ducktstation tienes cores ya compilados, pero NO funcionan cuando Retrorch funciona sobre KMSDRM.
 NO te molestes en reportarlo, porque el autor de duckstation es un poco gilipollas.)
 
 Clonamos el repo donde mantienen la versión no oficial:
 git clone --depth 1 https://github.com/libretro/swanstation.git
 
-PARA COMPILAR directamente en la máquina para Pi4:
+
+Editamos src/duckstation-libretro/libretro_host_interface.cpp y comentamos el contenido de la función
+LibretroHostInterface::UpdateGeometry(), dejándola inutilizada por completo.
+(Esto evita las ralentizaciones cuando el WipeOut hace el efecto de terremoto de pantalla al sufrir un ataque enemigo).
+OJO!!! RECUERDA que debes poner en las opciones del core el ratio a 4:3 porque al comentar UpdateGeometry() no se puede establecer
+bien automáticamente.
+
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON \
 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
-PARA CROSSCOMPILAR
+********CROSSCOMPILAR el core libretro Duckstation************
 
 Puede ser interesante porque no compila en Pi3 con 1GB ni con swap. Crosscompilamos en local.
 
@@ -282,6 +258,38 @@ NOTAS ADICIONALES para el core:
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
+******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
+
+Clonamos duckstation:
+
+git clone --depth 1 https://github.com/stenzek/duckstation.git
+
+Instalamos dependencias previas:
+
+sudo apt-get install libevdev-dev --no-install-recommends
+Y si vas a compilar con soporte para wayland, también esto:
+sudo apt-get install extra-cmake-modules --no-install-recommends
+
+Configuramos con:
+
+cmake .. \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+-DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON \
+-DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=ON -DUSE_SDL2=ON ..
+
+(Hay que dejar el soporte de SDL2 porque EVDEV no implementa aún los ejes de los mandos)
+
+Copia todo el contenido de bin a ~/psx. No copies sólo el ejecutable, o te dará un segfault cuando lo ejecutes.
+
+Si  el ejecutable resultante te da un error con que no puede abrir card1, edita src/common/drm_display.h y cambia card = 1 por card = 0.
+
+La BIOS va en ~/.local/share/duckstation/bios/
+
+PARA LANZAR LOS JUEGOS tienes que pasarle la ruta COMPLETA del .cue, no vale que le pases una ruta relativa a donde estás,
+ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
+
+
 ******Juegos JAVA que usan GL/GLES en la Raspberry Pi***************************************************************
 
 Lo primero sería compilar esta librería:
@@ -299,7 +307,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_N
 Los juegos están en:
 https://tic80.com/play?cat=0
 
-******Error tonto: ACLOCAL is missing on your system**************************************************************************************************************
+******Error tonto: ACLOCAL is missing on your system********
 
 No te falta nada realmente. Sencillamente, hazle un touch a:
 aclocal.m4
@@ -1003,7 +1011,10 @@ Ejecutamos el script bootstrap incluido con los sources, y ya podemos ejecutar .
 Configuramos con:
 
 ./configure --with-alsa --without-midi --without-libmpeg2 --without-openal --without-x11 --disable-x86 --disable-qemu-cpu --disable-drivesound --disable-netplay --disable-slirp
- 
+
+Editamos src/fsemu-background.c y comentamos la línea:
+#define FSEMU_WITH_BACKGROUND 1
+
 Editamos config.h, y ponemos WITH_OPENAL y WITH_X11 a 0. Podemos desactivar más cosas, como la emulación PPC, la emulación de bridgeboard x86, etc.
 
 Creamos el directorio ~/amiga, y ahí copiamos el ejecutable fs-uae y los directorios "data" y "fsemu" que viene con los sources.
