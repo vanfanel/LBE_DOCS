@@ -5075,8 +5075,6 @@ Ahora usamos el pyrit para romper una contraseña:
 
 pyrit -r “84:9C:A6:A3:8E:8F-01.cap” -b "84:9C:A6:A3:8E:8F" -e "Orange-8E8D" -i <diccionario.txt> attack_passthrough
 
-
-
 **************************Tirar el servidor gráfico (Xorg) en Lubuntu************************************
 
 sudo service lightdm stop
@@ -5101,6 +5099,25 @@ video_fullscreen_x = "1280"
 video_fullscreen_y = "720"
 
 Y así ya no cambiará el modo de vídeo.
+
+
+**********Configurar un shader de scanlines sencillo para RetroArch************
+
+SONIDO:
+Driver ALSATHREAD con 45ms de latencia a 480000Hz
+
+VIDEO:
+Driver Vulkan con VSYNC, MAX SWAPCHAIN 1, e INTEGER SCALE con el ASPECT RATIO a "CORE PROVIDED"
+
+SHADER:
+
+Usamos el shader ZFast, que está en /CRT, con los parámetros:
+Blur amount: 0.30
+Scanline Darkness - Low: 6
+Scanline Darkness - High: 8
+Dark pixel brightnes boost: 1.25
+Mask effect amount: 0.25
+Mask/Scanline fade: 0.80
 
 ****************************Cómo compilar libmodplug*******************************
 
