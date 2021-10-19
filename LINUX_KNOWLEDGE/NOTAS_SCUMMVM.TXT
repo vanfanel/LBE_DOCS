@@ -41,6 +41,9 @@ SDL_GL_SetSwapInterval(1);
 
 Para que no salga el cursor de sistema, editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse comentamos todo el "if" y lo que hay dentro.
 
+Para tener un tema, copia el directorio gui/themes/scummremastered que viene con los sources a ~/scummvm/themes,
+y en el scummvm pon en PATHS el path de los themes apuntando a gui/themes, y luego en MISC selecciona el tema.
+
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
 
 Para poner un buffer de audio más pequeño, editamos backends/mixer/sdl/sdl-mixer.cpp y ponemos el número de milisegundos que queramos en la línea:
