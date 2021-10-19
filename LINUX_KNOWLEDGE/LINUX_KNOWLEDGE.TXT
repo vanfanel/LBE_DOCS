@@ -203,7 +203,6 @@ NO te molestes en reportarlo, porque el autor de duckstation es un poco gilipoll
 Clonamos el repo donde mantienen la versión no oficial:
 git clone --depth 1 https://github.com/libretro/swanstation.git
 
-
 Editamos src/duckstation-libretro/libretro_host_interface.cpp y comentamos el contenido de la función
 LibretroHostInterface::UpdateGeometry(), dejándola inutilizada por completo.
 (Esto evita las ralentizaciones cuando el WipeOut hace el efecto de terremoto de pantalla al sufrir un ataque enemigo).
