@@ -36,6 +36,12 @@ CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 ./configure --disable-debug --enable-release --enable-optimizations --opengl-mode=gles2 --disable-eventrecorder --disable-cloud --disable-savegame-timestamp --enable-mt32emu --enable-nuked-opl --disable-flac --disable-mad --disable-tremor --disable-taskbar --disable-timidity --disable-hq-scalers --disable-alsa --enable-vorbis --disable-theoradec --disable-sdlnet --enable-plugins --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,private,twine,stark
 
+Para tener VSYNC con los gráficos OpenGL, editamos backends/graphics/openglsdl/openglsdl-graphics.cpp y en el método OpenGLSdlGraphicsManager::OpenGLSdlGraphicsManager, justo encima del comentario "Retrieve a list of working fullscreen modes" ponemos:
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        SDL_GL_SetSwapInterval(1);
+#endif
+
 Para que no salga el cursor de sistema, editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse comentamos todo el "if" y lo que hay dentro.
 
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
