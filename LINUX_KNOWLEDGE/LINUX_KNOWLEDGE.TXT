@@ -183,6 +183,18 @@ cmake .. -DLIBRETRO=ON -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DCMAKE_BUILD
 (Compilar la versión LIBRETRO usando el Makefile del directorio "libretro" actualmente NO funciona).
 (El resultado sólo funciona desde Wayland y es más lento que la versión standalone usando GLES2).
 
+*******Compilar el core libretro Yabause***********
+
+Clonamos su repo:
+
+git clone --depth 1 -b kronos https://github.com/libretro/yabause.git
+
+entramos en yabause/src/libretro
+
+make -j4
+
+(OJO: requiere OpenGL 4.1 o algo así, olvídate de que funcione en la Raspberry Pi).
+
 *******Compilar el core libretro Duckstation***********
 
 (OJO: en el repo oficial de ducktstation tienes cores ya compilados, pero NO funcionan cuando Retrorch funciona sobre KMSDRM.
@@ -5530,7 +5542,7 @@ git clone --depth 1 https://github.com/flareteam/flare-game.git
 creamos el directorio de compilación, entramos en él, configuramos y compilamos:
 mkdir b3
 cd b3
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -flto -fwhole-program" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -flto" \
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
