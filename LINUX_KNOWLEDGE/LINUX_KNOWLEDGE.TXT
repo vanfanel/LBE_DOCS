@@ -5111,7 +5111,6 @@ video_fullscreen_y = "720"
 
 Y así ya no cambiará el modo de vídeo.
 
-
 **********Configurar un shader de scanlines sencillo para RetroArch************
 
 SONIDO:
@@ -5129,6 +5128,11 @@ Scanline Darkness - High: 8
 Dark pixel brightnes boost: 1.25
 Mask effect amount: 0.25
 Mask/Scanline fade: 0.80
+
+************Configuración RetroArch 351elec****************************************
+
+VIDEO: driver GL, VSYNC off, MAX_SWAPCHAIN 1
+AUDIO: driver ALSA, 32 ms, resampler quality normal
 
 ****************************Cómo compilar libmodplug*******************************
 
