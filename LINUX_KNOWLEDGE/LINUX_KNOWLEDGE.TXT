@@ -5129,12 +5129,6 @@ Dark pixel brightnes boost: 1.25
 Mask effect amount: 0.25
 Mask/Scanline fade: 0.80
 
-************Configuración RetroArch 351elec****************************************
-
-VIDEO: driver GL, VSYNC off, MAX_SWAPCHAIN 1
-AUDIO: driver ALSA, 44100 Hz, 32 ms, resampler quality normal (y en las opciones específicas del FBNeo,
-       ajusta el sonido a 44100 también, que viene a 48000)
-
 ****************************Cómo compilar libmodplug*******************************
 
 Cambia automake-1.13 a automake-1.11 en el Makefile.
@@ -5535,12 +5529,6 @@ make TARGET_RPI=1 HIGH_FPS_PC=1 RUMBLE_FEEDBACK=0 BETTERCAMERA=0 -j4
 El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
 
 Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo. Pero vamos, viene en 512, si lo tocas será para subirlo a 1024.
-
-Para que funcionen los controles en la RG351MP, tienes que actualizar el gamecontrollerdb.txt.
-Puedes descargar uno para la RG351MP aquí:
-https://www.reddit.com/r/rg351v/comments/mnu9i7/mario_64_port_on_the_v_with_remapped_controls/
-Y se actualiza así:
-cp gamecontrollerdb.txt /media/manuel/GAMES/ports/sm64/controller/gamecontrollerdb.txt
 
 FLARE, un engine RPG libre en la Raspberry Pi
 =============================================
