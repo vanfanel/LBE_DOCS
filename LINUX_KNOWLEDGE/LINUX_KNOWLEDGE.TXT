@@ -5132,7 +5132,8 @@ Mask/Scanline fade: 0.80
 ************Configuración RetroArch 351elec****************************************
 
 VIDEO: driver GL, VSYNC off, MAX_SWAPCHAIN 1
-AUDIO: driver ALSA, 32 ms, resampler quality normal
+AUDIO: driver ALSA, 44100 Hz, 32 ms, resampler quality normal (y en las opciones específicas del FBNeo,
+       ajusta el sonido a 44100 también, que viene a 48000)
 
 ****************************Cómo compilar libmodplug*******************************
 
