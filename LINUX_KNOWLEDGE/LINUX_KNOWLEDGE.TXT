@@ -5536,6 +5536,12 @@ El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
 
 Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo. Pero vamos, viene en 512, si lo tocas será para subirlo a 1024.
 
+Para que funcionen los controles en la RG351MP, tienes que actualizar el gamecontrollerdb.txt.
+Puedes descargar uno para la RG351MP aquí:
+https://www.reddit.com/r/rg351v/comments/mnu9i7/mario_64_port_on_the_v_with_remapped_controls/
+Y se actualiza así:
+cp gamecontrollerdb.txt /media/manuel/GAMES/ports/sm64/controller/gamecontrollerdb.txt
+
 FLARE, un engine RPG libre en la Raspberry Pi
 =============================================
 
