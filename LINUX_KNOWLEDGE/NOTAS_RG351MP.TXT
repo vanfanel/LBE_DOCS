@@ -5,6 +5,7 @@ VIDEO: driver GL, VSYNC off, MAX_SWAPCHAIN 1
 AUDIO: driver ALSA, 44100 Hz, 32 ms, resampler quality normal (y en las opciones específicas del FBNeo,
        ajusta el sonido a 44100 también, que viene a 48000)
 
+Los shaders custom los puedes meter en STORAGE/shaders
 
 RAINBOW ISLANDS BIEN
 ====================
@@ -30,3 +31,9 @@ Entonces vamos a SETTINGS->USER INTERFACE->MENU ITEM VISIBILITY->QUICK MENU y ah
 le damos a MAIN MENU->CONFIGURATION FILE-SAVE CURRENT CONFIGURATION
 
 Y ya podemos salvar el override en MAIN MENU->QUICK MENU->OVERRIDES->SAVE CORE OVERRIDES una vez que hayamos puesto el buffer a 64ms.
+
+PRINCE BIEN
+===========
+
+Para configurarlo y poner fuzzy filtering, como los settings no se salvan al salir, editamos:
+STORAGE/.config/distribution/configs/SDLPoP/SDLPoP.ini
