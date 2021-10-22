@@ -1061,6 +1061,13 @@ Y recuerda que puedes quitar todas las hotkeys una a una poniéndote encima de e
 Los juegos que se usan (en ZIP) son los de la colección EXODOS, que está aquí:
 https://exodos.the-eye.us/
 
+CORES RETROARCH A LOS QUE HAY QUE TOCARLE EL TAMAÑO DEL BUFFER DE AUDIO
+=======================================================================
+
+mGBA: edita src/platform/libretro/libretro.c y pon SAMPLES a 256
+
+TYRQUAKE: edit common/libretro.c y pon AUDIO_BUFFER_SIZE a 256
+
 CORE DOSBOX RETROARCH: ACTIVAR DYNREC
 =======================================
 
