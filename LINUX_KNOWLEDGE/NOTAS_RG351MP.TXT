@@ -35,5 +35,8 @@ Y ya podemos salvar el override en MAIN MENU->QUICK MENU->OVERRIDES->SAVE CORE O
 PRINCE BIEN
 ===========
 
-Para configurarlo y poner fuzzy filtering, como los settings no se salvan al salir, editamos:
+Para que las configuraciones se guarden, borra estos archivos:
 STORAGE/.config/distribution/configs/SDLPoP/SDLPoP.ini
+STORAGE/.config/distribution/configs/SDLPoP/SDLPoP.cfg
+
+Ahora lanza de nuevo el juego, configúralo y salva los settings que quieras, y ya debería salvarlos.
