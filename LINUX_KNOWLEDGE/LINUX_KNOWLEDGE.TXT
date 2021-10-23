@@ -5099,7 +5099,24 @@ sudo service lightdm stop
 
 y para volver, obviamente, start.
 
-*************************Notas de RetroArch en x86**********************************************
+
+**********Configuración óptima de RetroArch************
+
+VIDEO: driver VULKAN, VSYNC off, MAX_SWAPCHAIN 1
+AUDIO: driver ALSA, 48000 Hz, 32 ms, resampler quality normal, AUDIO SYNCHRONIZATION OFF 
+(Si bajas el audio a 44100, bájalo también en las opciones del core FBNeo)
+
+SHADER:
+
+Usamos el shader ZFast, que está en /CRT, con los parámetros:
+Blur amount: 0.30
+Scanline Darkness - Low: 6
+Scanline Darkness - High: 8
+Dark pixel brightnes boost: 1.25
+Mask effect amount: 0.25
+Mask/Scanline fade: 0.80
+
+*********No funcionan los input en RetroArch**********
 
 PARA que haya input con el driver udev (input_driver = "udev") debemos crear /etc/udev/rules.d/99-evdev.rules con el contenido:
 KERNEL=="event*", NAME="input/%k", MODE="666"
@@ -5117,24 +5134,6 @@ video_fullscreen_x = "1280"
 video_fullscreen_y = "720"
 
 Y así ya no cambiará el modo de vídeo.
-
-**********Configurar un shader de scanlines sencillo para RetroArch************
-
-SONIDO:
-Driver ALSATHREAD con 45ms de latencia a 480000Hz
-
-VIDEO:
-Driver Vulkan con VSYNC, MAX SWAPCHAIN 1, e INTEGER SCALE con el ASPECT RATIO a "CORE PROVIDED"
-
-SHADER:
-
-Usamos el shader ZFast, que está en /CRT, con los parámetros:
-Blur amount: 0.30
-Scanline Darkness - Low: 6
-Scanline Darkness - High: 8
-Dark pixel brightnes boost: 1.25
-Mask effect amount: 0.25
-Mask/Scanline fade: 0.80
 
 ****************************Cómo compilar libmodplug*******************************
 
