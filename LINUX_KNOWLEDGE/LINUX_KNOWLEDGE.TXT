@@ -160,7 +160,14 @@ git submodule update --init --recursive
 Configuramos y compilamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
+
+PARA WAYLAND:
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSE_VULKAN_DISPLAY_KHR=OFF -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
+
+PARA KMSDRM:
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=OFF -DUSE_VULKAN_DISPLAY_KHR=ON -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
 -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
@@ -175,13 +182,14 @@ popd
 
 Ahora copiamos el directorio "assets" al mismo directorio del ejecutable PPSSPP
 
-Para compilar una versión LIBRETRO, entramos en el directorio "libretro" de los sources y:
-cmake .. -DLIBRETRO=ON -DUSE_WAYLAND_WSI=ON -DUSING_X11_VULKAN=OFF -DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
+Para compilar una versión LIBRETRO:
+
+mkdir b4
+cd b4
+cmake .. -DLIBRETRO=ON -DUSE_VULKAN_DISPLAY_KHR=ON -DUSE_WAYLAND_WSI=OFF -DUSING_X11_VULKAN=OFF \
+-DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
 -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
-
-(Compilar la versión LIBRETRO usando el Makefile del directorio "libretro" actualmente NO funciona).
-(El resultado sólo funciona desde Wayland y es más lento que la versión standalone usando GLES2).
 
 *******Compilar el core libretro Yabause***********
 
@@ -1008,8 +1016,8 @@ java -jar freej2me-sdl.jar DoomRPG.jar 240 320 -i linear
 Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altura mayor, de 320.
 
 
-FS-UAE, EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
-==================================================================
+FS-UAE (FSUAE), EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
+==========================================================================
 
 Instalamos dependencias previas:
 sudo apt-get install gettext --no-install-recommends
