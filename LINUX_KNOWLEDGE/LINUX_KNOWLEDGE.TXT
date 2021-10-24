@@ -447,14 +447,25 @@ y destino el que queramos.
 -En Advanced nos aseguramos de que "Separated BIOS sets" está sin marcar.
 Pues ya está, le damos a Rebuild.
 
-Cuando acabe, las ROMs que queramos del directorio de destino las copiamos a nuestro dispositivo, pero MUY IMPORTANTE,
-QUE EL DIRECTORIO DONDE LAS METAMOS SE LLAME "nes". Tal cual.
+Ahora, para cargar la rom que queramos tenemos que pasar el parámetro --subsystem, así:
+retroarch -L ~/.config/retroarch/cores/fbneo_libretro.so --subsystem=nes nes/mario.zip
 
-Ahora, en el dispositivo, en RetroArch, nos vamos a "load content", cargamos el .zip que queramos y elegimos el core FBNeo.
-Y tiene que ir.  
+O bien en el RetroArch, nos vamos a "load core", cargamos el core FBNeo, y luego vamos a "load content" y nos aparecerá
+"subsystem", allí elegimos NES, y luego volvemos a "subsystem" y le damos a "start content" y elegimos otra vez NES.
 
 Si quieres emular FDS, necesitas fdsbios.zip que contiene disksys.rom.
 PERO no te compliques: usa www.retroroms.info, o en los torrents de ROMsets de FBNeo viene todo lo de FDS listo.
+
+******MSX en el core FBNEO***************************************************************************************
+
+Los juegos los podemos bajar de aquí, que ya están preparados para el core FBNeo: www.retroroms.info
+Los metemos en un directorio junto con el msx.zip que lleva las BIOS del MSX.
+
+Ahora, para cargar la rom que queramos tenemos que pasar el parámetro --subsystem, así:
+retroarch -L ~/.config/retroarch/cores/fbneo_libretro.so --subsystem=msx msx/pengadv.zip
+
+O bien en el RetroArch, nos vamos a "load core", cargamos el core FBNeo, y luego vamos a "load content" y nos aparecerá
+"subsystem", allí elegimos MSX, y luego volvemos a "subsystem" y le damos a "start content" y elegimos otra vez MSX.
 
 ******LA ABADÍA DEL CRIMEN, nativo en LINUX**********************************************************************
 
