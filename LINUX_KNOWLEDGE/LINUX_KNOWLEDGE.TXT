@@ -5122,7 +5122,7 @@ y para volver, obviamente, start.
 **********Configuración óptima de RetroArch************
 
 VIDEO: driver VULKAN, VSYNC off, MAX_SWAPCHAIN 1
-AUDIO: driver ALSA, 48000 Hz, 32 ms, resampler quality normal, AUDIO SYNCHRONIZATION OFF 
+AUDIO: driver ALSA, 48000 Hz, 40 ms, resampler quality normal
 (Si bajas el audio a 44100, bájalo también en las opciones del core FBNeo)
 
 SHADER:
