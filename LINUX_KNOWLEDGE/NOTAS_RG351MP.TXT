@@ -8,6 +8,13 @@ AUDIO: driver ALSA, 44100 Hz, 40 ms, resampler quality normal
 
 Los shaders custom los puedes meter en STORAGE/shaders
 
+NES BIEN
+========
+
+Para no tener shimmering ni deformación de ratio, con pantalla completa, en las opciones del NESTOPIA elige el ratio 4:3 y
+desactiva el CROP OVERSCAN vertical y horizontal.
+
+
 RAINBOW ISLANDS BIEN
 ====================
 
