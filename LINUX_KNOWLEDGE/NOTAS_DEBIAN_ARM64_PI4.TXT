@@ -466,6 +466,15 @@ sin deber hacerlo...
 sudo chmod 4755 /bin/ping
 Y ya te irá perfectamente.
 
+KERNEL REALTIME
+===============
+
+Instala la última versión LOW_LATENCY de aquí:
+https://github.com/kdoren/linux/releases/
+
+Siguiendo estas instrucciones de aquí:
+https://github.com/kdoren/linux/wiki/Installation-of-kernel-from-deb-package-%28Raspberry-Pi-OS%29
+
 INSTALAR MESA
 ==============
 
