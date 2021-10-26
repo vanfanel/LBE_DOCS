@@ -466,14 +466,33 @@ sin deber hacerlo...
 sudo chmod 4755 /bin/ping
 Y ya te irá perfectamente.
 
-KERNEL REALTIME
-===============
+KERNEL REALTIME PRECOMPILADO
+============================
 
 Instala la última versión LOW_LATENCY de aquí:
 https://github.com/kdoren/linux/releases/
 
 Siguiendo estas instrucciones de aquí:
 https://github.com/kdoren/linux/wiki/Installation-of-kernel-from-deb-package-%28Raspberry-Pi-OS%29
+
+ACTUALIZAR RASPBERRY PI OS SIN ACTUALIZAR EL KERNEL
+===================================================
+
+Útil para cuando tenemos un kernel especial instalado, como por ejemplo el kernel realtime de: https://github.com/kdoren/linux/releases/
+
+Se hace poniendo el paquete raspberrypi-kernel en "hold", tal que así:
+
+-Actualizamos el índice de paquetes como siempre:
+sudo apt-get update
+
+-Ponemos el paquete del kernel en hold:
+sudo apt-mark hold raspberrypi-kernel
+
+-Actualizamos los paquetes normalmente. Como el paquete del kernel está en holdo, no se actualizará:
+sudo apt-get upgrade
+
+Opcionalmente, si quieres, puedes quitar el hold del paquete del kernel al acabar, haciendo:
+sudo apt-mark unhold raspberrypi-kernel
 
 INSTALAR MESA
 ==============
