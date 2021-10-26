@@ -57,7 +57,7 @@ STAGE 2: exec sh
 	
 PEROOOO ENTONCES, ¿qué pasa cuando escribo "exit" en sh? Porque si lo he entendido bien, eso hace que el sh del segundo stage muera,
 que es el que tenía el PID 1 porque lo heredó del sh del primer stage, que ya está muerto. Entonces, al morir el proceso con PID 1,
-el kernel paniqueará!! Y no se ejecutarán los comandos de apagado ordenad (desmontaje del raiz, poweroff, etc) Pues sí, así es.
+el kernel paniqueará!! Y no se ejecutarán los comandos de apagado ordenado (desmontaje del raiz, poweroff, etc) Pues sí, así es.
 Así que tenemos dos opciones:
 -OPCIÓN 1: Si en el STAGE 1 quitamos el exec del principio, el primer "sh" va a ser un poceso con un nuevo PID, pero en una nueva sesión.
  Entonces, cuando escribamos "exit", muere el proceso con PID 2, acaba la segunda sesión, y se siguen ejecutando los comandos
