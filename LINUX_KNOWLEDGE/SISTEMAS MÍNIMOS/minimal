@@ -47,7 +47,7 @@ export HOME=/root
 # y en el STAGE 2 exec ejecuta otro sh con el mismo PID que el sh anterior,
 # que tiene PID 1 (Siempre hay que tener un PID 1 o el kernel da un panic
 # por matar el proceso init). La entrada y salida de este segundo sh
-# es redireccionada a tty1,
+# es redireccionada a tty1.
 # Setupcon configura la fuente y el teclado de la consola,
 # leyendo la configuración de /etc/default/console-setup y /etc/default/keyboard.
 # Se puede usar bash en lugar de sh.

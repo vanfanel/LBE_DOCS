@@ -24,7 +24,7 @@ echo $SDL_VIDEO_DOUBLE_BUFFER
 
 Con el comando showkeys
 
-******Conectar a una red WIFI desde la Raspberry PI 3 usando el WIFI interno*********************************************
+******Conectar a una red WIFI desde la Raspberry PI usando el WIFI interno*********************************************
 
 PUEDE QUE NECESITES BAJAR MANUALMENTE EL FIRMWARE DEL WIFI SI AL HACER MODPROBE AL brcmfmac NO TE CREA EL INTERFACE WLAN0.
 Si es así, tienes que bajarte los archivos:
