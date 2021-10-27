@@ -1,0 +1,66 @@
+INSTALAR DEVUAN EN LA RASPBERRY PI
+==================================
+
+Puedes bajar la última versión arm64 para Pi4 desde aquí:
+https://arm-files.devuan.org/
+
+Para pedir ayuda usa el canal #devuan en irc.libera.chat
+
+Usuario/password por defecto: root/toor
+
+CONFIGURACIÓN DEL SISTEMA
+=========================
+
+-Configuramos la consola, el teclado y los locales. Para ello simplemente ejecuta, nada más arrancar por primera vez:
+run-setup
+(generamos sólo en_US.UTF-8, y dejamos puesto por defecto ese antes de salir. Tenemos que comprobar con el comando locale que todo sale puesto a en_US.UTF-8 y NO a POSIX)
+Tras reiniciar (sí, hay que reiniciar), ya tendría que ir la Ñ, los acentos y todo eso.
+Si queremos cambiar la distribución del teclado de nuevo (porque cambiamos de sistema y/o teclado) basta con volver a hacer:
+sudo dpkg-reconfigure keyboard-configuration
+Eso sí, asegúrate antes de que el comando "locale" nos dice que está todo a en_US.UTF-8.
+(OJO!!!! NO LO HAGAS POR SSH, o fallará por culpa de los LOCALE de la máquina desde la que te conectas
+y perderás un buen rato)
+
+-El init manager en Devuan es SysVinit (también se puede usar runit).
+Puedes ver los servicios activos con:
+service --status-all
+
+-PARA ADMINISTRAR SERVICIOS, LO PRIMERO ES SABER SON ESTAS COSAS:
+QUE UN SERVICIO ESTÉ ACTIVO simplemente significa que hay un symlink en /etc/rcX.d, donde X es el runlevel en el que corre el servicio,
+apuntando al script real del servicio que está en /etc/init.d/
+TAMBIÉN PUEDES VER A QUÉ PAQUETE PERTENECE UN SCRIPT DE /etc/init.d HACIENDO:
+dpkg -S <nombre_script>
+...Y AL DESISNTALAR ESE PAQUETE, SE DESINSTALA EL SERVICIO LIMPIAMENTE.
+
+¿ENTONCES CÓMO ES PREFERIBLE DESHABILITAR SERVICIOS?
+--->>>El "workflow" es buscar qué paquete instala el script, y desinstalar ese paquete:
+Por ejemplo, tenemos /etc/init.d/networking y /etc/init.d/networking-routes
+Pues hacemos:
+dpkg -S /etc/init.d/networking
+dpkg -S /etc/init.d/networking-routes
+...Y obtenemos que para librarnos de esos servicios debemos desinstalar:
+apt-get purge ifupdown-extra
+apt-get purge ifupdown
+...Ahora puedes hacer lo mismo con cron, dbus, rsyslog, etc (Recuerda que para quitar CRON tenemos que hacer: apt-get purge cron anacron, para que elimine cron y NO trate de instalar anacron en su lugar)
+Si un servicio no lo encuentra dpkg -S, prueba con apt-cache search <nombre>, como por ejemplo:
+apt-cache search zram
+...Que nos dice que tendríamos que desinstalar zram-tools.
+Y YA, COMO ÚLTIMA OPCIÓN, si ni "dpkg -S" ni "apt-cache search" localizan a qué paquete pertenece el script, pues desactiva el servicio con:
+update-rc.d <nombre> disable
+Y luego borra el script de /etc/init.d.
+Si al arrancar se queja, busca los symlinks que queden en los directorios /etc/rcX.d, y los borras también.
+Esto último pasa con bthelper y con pwrledoff, que son scripts propios de la Pi y no vienen en ningún paquete.
+
+--->>>Otra opción que NO funciona bien es simplemente deshabilitar el servicio sin desinstalar su paquete, usando update-rc (insserv no se debe usar nunca directamente), haciendo:
+update-rc.d -f <nombre_servicio> disable
+
+
+AUTOLOGIN EN DEVUAN
+===================
+
+Editamos /etc/inittab y en las líneas donde lanza las terminales metemos el autologin.
+O sea, buscamos la línea que empieza así:
+c1:12345:respawn:/sbin/agetty
+Y la dejamos así:
+c1:12345:respawn:/sbin/agetty --autologin <username> --noclear 38400 tty1 linux
+..Y podemos hacer lo mismo con las demás terminales.

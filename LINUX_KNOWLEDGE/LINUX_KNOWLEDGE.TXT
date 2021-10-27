@@ -784,7 +784,7 @@ Lo hacemos con el UIPS, un parcheador hecho en C de Neil Corlett (sí, el traduc
 Clonamos este repo: https://github.com/chungy/cmdpack.git
 Compilamos y a correr.
 
-*******Cambiar las fuentes de tamaño en Debian/Lubuntu cuando dpkg-reconfigure console-setup falla************************************************************************
+*******Cambiar las fuentes de tamaño en Debian/Lubuntu cuando dpkg-reconfigure console-setup falla*******************************************
 El problema es que /lib/udev/console-setup-tty está jodido.
 Si hacemos strace /lib/udev/console-setup-tty fbcon, vemos que está buscando un fichero de fuente en /etc/console-setup que no existe, y además lo busca en PSF y nosotros
 los tenemos en .psf.gz. Así que ajustamos cosas en /etc/default/console-setup para que busque una fuente que tengamos en /etc/console-setup y se la ponemos ahí.
