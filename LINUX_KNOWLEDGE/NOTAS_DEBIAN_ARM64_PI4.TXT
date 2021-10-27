@@ -521,9 +521,6 @@ FIN NOCIONES PREVIAS
 ¡¡¡OJO!!! LO PRIMERO EN LA PI4, AÑADE AL USUARIO "pi" AL GRUPO RENDER, O TE VOLVERÁS LOCO PORQUE GLES NO IRÁ PERO DRM SÍ (o sea, modetest funciona pero MESA no puede cargar GLES). PARA ELLO, HAZ:
 sudo usermod -a -G render pi
 
-TAMBIÉN, ACTUALIZA AL ÚLTIMO KERNEL DEL BRANCH NEXT:
-sudo BRANCH=next rpi-update
-
 Empezamos con libDRM:
 Instalamos estas dependencias previas: 
 sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ meson --no-install-recommends
@@ -544,7 +541,7 @@ ninja -j4
 sudo ninja install
 
 En este punto, puedes probar si libdrm te funciona bien haciendo:
-modetest -s 32:1360x768
+modetest -s 32:1280x720
 (donde 32 es un ID de conector válido: puedes ver los conectores con modetest|more).
 
 DEPENDENCIAS PREVIAS DE MESA:
@@ -602,23 +599,26 @@ cd b4
 COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro \
+meson -Dglx=disabled -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro \
 -Dglvnd=true -Dbuildtype=release ..
+(SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
+
+SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dglx=disabled -Dglvnd=true -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
+(SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
 
 SI QUISIERAS SÓLO GLES Y GLES2, SIN OPENGL COMPLETO:
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
+meson -Dglx=disabled -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
+(SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=dri -Dplatforms=drm,x11 -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
-
-SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-meson -Dglx=disabled -Dglvnd=true -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 PARA COMPILAR:
 ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
