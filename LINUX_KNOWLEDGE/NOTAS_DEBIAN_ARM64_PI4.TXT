@@ -137,10 +137,16 @@ Aprovecha para:
 proc                    /proc           proc            defaults                0       0
 PARTUUID=521a4163-0a    /boot           vfat            defaults                0       2
 PARTUUID=521a4163-0b    /               ext4            defaults,noatime        0       1
-# Keep /tmp in RAM(=tmpfs)
-tmpfs                   /tmp            tmpfs           defaults,noatime,nosuid,nodev,mode=1777,size=50M 0 0
+# Keep /tmp and /var/log in RAM(=tmpfs)
+tmpfs					/tmp			tmpfs			defaults,nosuid			0		0
+tmpfs					/var/log		tmpfs			defaults,nosuid			0		0
 
 (el PARTUUID lo puedes obtener con sudo blkid /dev/...)
+(NUNCA pongas en TMPFS todo /var, porque de verdad que ahí hay cosas que los programas instalan y dejan fijas, como configuraciones
+y bases de datos como por ejemplo los metadatos de apt-get!! Así que borrar todo /var es liarla MUY gorda).
+
+-Como ya tienes tanto /tmp como /var/log montados en TMPS, es decir que están en RAM, ya no te hace falta el servicio que los limpia en cada reinicio.
+(Ese servicio se llamará algo como *bootclean, al menos así es en devuan, no sé cuál es en sistemas con systemd). 
 
 -Ajustar el PARTUUID en cmdline.txt de la partición de boot.
 -Instalar el VIM, sudo, net-tools, sshd... (sí, ¡funciona con la red del host!):
@@ -311,7 +317,8 @@ y perderás un buen rato):
 sudo apt-get install locales console-setup console-data keyboard-configuration
 sudo dpkg-reconfigure console-setup
 sudo dpkg-reconfigure locales
-(generamos sólo en_US.UTF-8, y dejamos puesto por defecto ese antes de salir. Tenemos que comprobar con el comando locale que todo sale puesto a en_US.UTF-8 y NO a POSIX)
+(Elegimos que se generen en_US.UTF8 y es_ES.UTF, y dejamos puesto en_US.UTF8. ESTO nos quita errores de teclado a través de SSH,
+ya que necesitamos los LOCALES de la máquina cliente también).
 sudo dpkg-reconfigure keyboard-configuration
 Tras reiniciar (sí, hay que reiniciar), ya tendría que ir la Ñ, los acentos y todo eso.
 Si queremos cambiar la distribución del teclado de nuevo (porque cambiamos de sistema y/o teclado) basta con volver a hacer:

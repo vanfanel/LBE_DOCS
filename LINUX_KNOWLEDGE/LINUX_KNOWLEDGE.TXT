@@ -46,7 +46,7 @@ sudo modprobe brcmfmac
 Ahora levantamos el interface wlan0
 sudo ifconfig wlan0 up
 
-Ahora tenemos que dejar /etc/wpa_supplican/wpa_supplican.conf así:
+Ahora tenemos que dejar /etc/wpa_supplicant/wpa_supplicant.conf así:
 
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
@@ -2170,7 +2170,8 @@ ANTES DE LEER ESTO: Son casi todo pistas, no es para seguirlo paso a paso. CON Q
 son necesarios en "systemd-analyze blame" y lo que tienes que gestionar desde rc.local por tu cuenta, es suficiente (excepto los apuntes de DBUS, que hay que quitarlo como servicio pero no desinstalarlo del sistema porque OMXplayer lo usa).
 
 -Ponemos la fuente de la consola: dpkg-reconfigure console-setup
--Ponemos los LOCALES con: dpkg-reconfigure locales. Elegimos que se genere SÓLO en_US.UTF8, y dejamos ese puesto. ESTO nos quita errores de teclado a través de SSH.
+-Ponemos los LOCALES con: dpkg-reconfigure locales. Elegimos que se generen en_US.UTF8 y es_ES.UTF, y dejamos puesto en_US.UTF8.
+ESTO nos quita errores de teclado a través de SSH, ya que necesitamos los LOCALES de la máquina cliente también.
 -Ponemos el idioma del teclado con raspi-config, y expandimos el filesystem, overclocking y demás movidas. El layout del teclado no se cambia hasta reboot.
 -Ponemos una IP estática. Para ello:
 	-Eliminamos del sistema estas cosas para que no se sobreescriba resolv.conf en cada arranque:
@@ -2207,7 +2208,7 @@ consoleblank=0
  usbhid.jspoll=1 es un buen valor, resultando en 1000Hz de polling rate... lo que ya está muy bien.
  Se puede comprobar una vez arrancado el sistema con evhz, un programa que se baja de aquí: git clone --depth 1 https://gitlab.com/iankelling/evhz
 RECUERDA que tienes que poder PRIMERO quiet, y luego loglevel: EN ESE PRECISO ÓRDEN, o el valor de loglevel será IGNORADO. Tengo cmdline.txt así:
-dwc_otg.lpm_enable=0 smsc95xx.turbo_mode=N console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=noop rootwait consoleblank=0 quiet loglevel=3 fastboot logo.nologo
+dwc_otg.lpm_enable=0 smsc95xx.turbo_mode=N console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=noop rootwait consoleblank=0 quiet loglevel=3 fastboot logo.nologo noswap
 
 -Empezamos a eliminar mierda, que se hace en varias fases porque al eliminar libgtk* se instalan más mierdas:
 sudo apt-get purge avahi-daemon triggerhappy dbus plymouth ntp dphys-swapfile rsyslog openresolv dhcpcd5 libreoffice* webkit* libgtk* libreoffice*
@@ -2330,8 +2331,9 @@ Reiniciamos y ya no debería estar.
 -Para quitar el lastlogin, editamos sudo vim /etc/pam.d/login y comentamos la línea:
 session optional pam_lastlog.so
 En este mismo fichero, puedes quitar otros mensajes del login, como la versión del kernel y tal.
-Para ello comenta las dos líneas siguientes a esta del lastlogin.
--Para quitar el delay de login editamos /etc/pam.d/common-auth y dejamos la primera línea que viene descomentada así:
+Para ello comenta las dos líneas siguientes a esta de lastlog.
+-Para quitar el delay de login editamos /etc/pam.d/common-auth y añadimos a la línea de pam_unix el "nodelay",
+ dejando la línea de pam_unix.so así:
 auth        required      pam_unix.so nodelay
 -Para quitar la frase donde dice la versión de DEBIAN y tal, borra /etc/issue o pon allí lo que quieras que salga.
 
@@ -4483,7 +4485,7 @@ En DEBIAN como ROOT, edita /usr/share/vim/vim81/defaults.vim y comenta lo del mo
 
 ===========================================================
 
-Para que VIM no entre en modo VISUAL cada vez que pinchamos con el ratón, editamos usr/share/vim/vim81/defaults.vim y
+Para que VIM no entre en modo VISUAL cada vez que pinchamos con el ratón, editamos /usr/share/vim/vim81/defaults.vim y
 cambiamos
 set mouse=a
 por

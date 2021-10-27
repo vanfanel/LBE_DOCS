@@ -8,12 +8,14 @@ Para pedir ayuda usa el canal #devuan en irc.libera.chat
 
 Usuario/password por defecto: root/toor
 
-CONFIGURACIÓN DEL SISTEMA
-=========================
+CONFIGURACIÓN INICIAL DEL SISTEMA
+=================================
 
--Configuramos la consola, el teclado y los locales. Para ello simplemente ejecuta, nada más arrancar por primera vez:
+-Configuramos el teclado y los locales. Para ello simplemente ejecuta, nada más arrancar por primera vez:
 run-setup
-(generamos sólo en_US.UTF-8, y dejamos puesto por defecto ese antes de salir. Tenemos que comprobar con el comando locale que todo sale puesto a en_US.UTF-8 y NO a POSIX)
+(Elegimos que se generen en_US.UTF8 y es_ES.UTF, y dejamos puesto en_US.UTF8. ESTO nos quita errores de teclado a través de SSH,
+ya que necesitamos los LOCALES de la máquina cliente también).
+Tenemos que comprobar con el comando locale que todo sale puesto a en_US.UTF-8 y NO a POSIX.
 Tras reiniciar (sí, hay que reiniciar), ya tendría que ir la Ñ, los acentos y todo eso.
 Si queremos cambiar la distribución del teclado de nuevo (porque cambiamos de sistema y/o teclado) basta con volver a hacer:
 sudo dpkg-reconfigure keyboard-configuration
@@ -21,9 +23,23 @@ Eso sí, asegúrate antes de que el comando "locale" nos dice que está todo a e
 (OJO!!!! NO LO HAGAS POR SSH, o fallará por culpa de los LOCALE de la máquina desde la que te conectas
 y perderás un buen rato)
 
--El init manager en Devuan es SysVinit (también se puede usar runit).
-Puedes ver los servicios activos con:
-service --status-all
+-Configuramos la fuente de letra con: dpkg-reconfigure console-setup
+
+-Ponemos el modo de vídeo deseado en cmdline.txt con: video="HDMI-A-1:1280x720@60"
+(RECUERDA que ninguno de los parámetros hdmi_* de config.txt funciona en modo KMS!)
+
+-Añadimos "rw" en cmdline.txt, porque luego vamos a quitar los scripts que checkean el rootfs, y el kernel si no le dices nada
+monta el rootfs como read-only para que esos programas de checkeo lo remonten luego como rw.
+
+-Instala el bash-autocompletion: apt-get install bash-completion
+
+-Edita /usr/local/bin/governor y quita toda referencia a sudo, para que luego al desisntalar el paquete sudo no te empieze a fallar
+ el script /etc/init.d/governor, que a su ver usa /usr/local/bin/governor.
+
+GESTIÓN DE SERVICIOS
+====================
+
+-INFO INICIAL: El init manager en Devuan es SysVinit (también se puede usar runit).
 
 -PARA ADMINISTRAR SERVICIOS, LO PRIMERO ES SABER SON ESTAS COSAS:
 QUE UN SERVICIO ESTÉ ACTIVO simplemente significa que hay un symlink en /etc/rcX.d, donde X es el runlevel en el que corre el servicio,
@@ -32,7 +48,14 @@ TAMBIÉN PUEDES VER A QUÉ PAQUETE PERTENECE UN SCRIPT DE /etc/init.d HACIENDO:
 dpkg -S <nombre_script>
 ...Y AL DESISNTALAR ESE PAQUETE, SE DESINSTALA EL SERVICIO LIMPIAMENTE.
 
-¿ENTONCES CÓMO ES PREFERIBLE DESHABILITAR SERVICIOS?
+Puedes ver los servicios activos y en qué runlevels van, mirando en qué directorios /etc/rcX.d hay symlinks, con:
+ls /etc/rc*.d
+O bien pueds usar esto, que no es demasiado claro y enseguida se come pantalla y no ves bien la salida si no es por ssh:
+service --status-all
+Y una vez que tengas la red levantada, puedes instalar rcconf o bien sysv-rc-conf, y ejecutando esos comandos tienes un menú
+muy chulo con ncurses para admimistrarlos.
+
+¿ENTONCES CÓMO ES PREFERIBLE DESHABILITAR LOS SERVICIOS?
 --->>>El "workflow" es buscar qué paquete instala el script, y desinstalar ese paquete:
 Por ejemplo, tenemos /etc/init.d/networking y /etc/init.d/networking-routes
 Pues hacemos:
@@ -48,12 +71,39 @@ apt-cache search zram
 Y YA, COMO ÚLTIMA OPCIÓN, si ni "dpkg -S" ni "apt-cache search" localizan a qué paquete pertenece el script, pues desactiva el servicio con:
 update-rc.d <nombre> disable
 Y luego borra el script de /etc/init.d.
-Si al arrancar se queja, busca los symlinks que queden en los directorios /etc/rcX.d, y los borras también.
+Si al arrancar se queja, busca los symlinks que queden en los directorios /etc/rcX.d (usando find), y los borras también.
 Esto último pasa con bthelper y con pwrledoff, que son scripts propios de la Pi y no vienen en ningún paquete.
+ESTO ES SÓLO PARA SCRIPTS PROPIOS DE LA DISTRO PARA RASPBERRY, NO LO HAGAS CON SCRIPTS QUE PERTENEZCAN A PAQUETES NUNCA.
 
 --->>>Otra opción que NO funciona bien es simplemente deshabilitar el servicio sin desinstalar su paquete, usando update-rc (insserv no se debe usar nunca directamente), haciendo:
 update-rc.d -f <nombre_servicio> disable
 
+NETWORKING
+==========
+
+Para levantar la WIFI, dejamos así /etc/wpa_supplicant/wpa_supplicant.conf:
+
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=ES
+
+network={
+        ssid="LastCabra"
+        psk="mirador1"
+        key_mgmt=WPA-PSK
+}
+
+Y creamos el script /usr/local/bin/wifiup así:
+
+wpa_supplicant -d -Dnl80211 -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -B
+sleep 2
+dhclient wlan0
+/etc/init.d/ssh start
+
+Y editamos /etc/ssh/sshd_config y dejamos la línea de PermitRootLogin así:
+PermitRootLogin yes
+
+Y le damos permisos de ejcución al script y lo ejecutamos.
 
 AUTOLOGIN EN DEVUAN
 ===================
@@ -64,3 +114,51 @@ c1:12345:respawn:/sbin/agetty
 Y la dejamos así:
 c1:12345:respawn:/sbin/agetty --autologin <username> --noclear 38400 tty1 linux
 ..Y podemos hacer lo mismo con las demás terminales.
+
+AUDIO EN DEVUAN
+===============
+
+-Para configurar el audio con el driver de audio HDMI del lado de ARM (que es como lo venimos haciendo en 2020):
+	-En config.txt
+		dtoverlay=vc4-kms-v3d
+		#dtparam=audio=on <---SE DEBE deshabilitar la carga de bcm2835.
+	 RECUERDA que ninguno de los parámetros hdmi_* de config.txt funciona en modo KMS! El modo de vídeo, por ejemplo,
+	 se establecería añadiendo a cmdline.txt algo como:
+	 video="HDMI-A-1:1280x720@60"
+	-Si falla speakertest, mira que tengas en /usr/share/alsa/cards/vc4-hdmi.conf lo que pone en el post de DOM en
+	 https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769&p=1636828#p1636828
+	 OJO! PARECE QUE SEGÚN SE ACTUALIZA EL KERNEL, LOS CONTENIDOS DE /usr/share/alsa/cards/vc4-hdmi.conf hay que irlos cambiando
+	 a veces. Así que si no te va, mira o pregunta en ese hilo.	
+	-Si falla algo, pregunta en este hilo a dom:https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769
+     Y YA. CON ESTO TIENE QUE FUNCIONAR SÍ O SÍ. 
+
+TOQUES FINALES
+==============
+
+-Borra por completo /opt/vc
+-Para quitar lo de la temperatura y demás, edita o borra los scripts en /etc/update-motd.d/
+-Para quitar el lastlogin, editamos vim /etc/pam.d/login y comentamos la línea:
+session optional pam_lastlog.so
+En este mismo fichero, puedes quitar otros mensajes del login, como la versión del kernel y tal.
+Para ello comenta las dos líneas siguientes a esta de lastlog.
+-Para quitar el delay de login editamos /etc/pam.d/common-auth y añadimos el "nodelay" a la línea de pam_unix.so, quedando la línea así:
+auth    [success=1 default=ignore]      pam_unix.so nullok nodelay
+-Para que no carge el módulo aes-neon-bs, borra /etc/modules-load.d/aes-neon.conf
+-Para deshabilitar ipv6, crea /etc/modprobe.d/blacklist.conf con el contenido: blacklist ipv6
+-El directorio /tmp en devuan la viene en TMPFS, es decir, en RAM. Pero también podemos tener en RAM el /var/log, añadiendo a /etc/fstab:
+tmpfs		/var/log		tmpfs			defaults,nosuid			0		0
+(NUNCA pongas en TMPFS todo /var, porque de verdad que ahí hay cosas que los programas instalan y dejan fijas, como configuraciones
+y bases de datos como por ejemplo los metadatos de apt-get!! Así que borrar todo /var es liarla MUY gorda).
+
+-Como ya tienes tanto /tmp como /var/log montados en TMPS, es decir que están en RAM, ya no te hace falta el servicio que los limpia en cada reinicio.
+
+Para ello, hazlo SIEMPRE POR LAS BUENAS:
+
+update-rc.d -f checkroot.sh disable
+update-rc.d -f checkroot-bootclean.sh disable
+update-rc.d -f checkfs.sh disable
+
+¡¡¡OJO!!! SI NO HAS AÑADIDO "rw" EN CMDLINE.TXT, LLEGARÁ UN MOMENTO EN QUE TE ENCONTRARÁS QUE EL SISTEMA / ESTÁ MONTADO COMO READ-ONLY.
+AÑÁDELO. LA EXPLICACIÓN ESTÁ EN LA SECCIÓN DE CONFIGURACIÓN INICIAL.
+¡¡¡OJO!!! SI TE CARGAS ALGO, PUEDES REINSTALAR EL PAQUETE AL QUE PERTENECÍA ESE ALGO, JUNTO CON LA CONFIGURACIÓN POR DEFECTO, CON:
+apt-get install --reinstall initscripts -o Dpkg::Options::="--force-confask,confnew,confmiss"
