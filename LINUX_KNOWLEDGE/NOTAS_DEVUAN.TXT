@@ -36,10 +36,15 @@ monta el rootfs como read-only para que esos programas de checkeo lo remonten lu
 -Edita /usr/local/bin/governor y quita toda referencia a sudo, para que luego al desisntalar el paquete sudo no te empieze a fallar
  el script /etc/init.d/governor, que a su ver usa /usr/local/bin/governor.
 
+-Edita /etc/fstab y en la línea de montaje del rootfs, quita el commit=... y en su lugar pon la opción "sync" (las escrituras se hacen
+inmediatamente, si no ponemos la opción sync y no ponemos nada en commit=... el tiempo de sync son 5 segundos por defecto)
+
 GESTIÓN DE SERVICIOS
 ====================
 
 -INFO INICIAL: El init manager en Devuan es SysVinit (también se puede usar runit).
+Puedes averiguar qué gestor de procesos estás usando en tu sistema con:
+ps --no-headers -o comm 1
 
 -PARA ADMINISTRAR SERVICIOS, LO PRIMERO ES SABER SON ESTAS COSAS:
 QUE UN SERVICIO ESTÉ ACTIVO simplemente significa que hay un symlink en /etc/rcX.d, donde X es el runlevel en el que corre el servicio,
