@@ -6532,7 +6532,11 @@ Nos deja el FNA.dll en bin/Release/FNA.dll
 GLEW EN LA RASPBERRY PI
 =======================
 
-Sólo conoce de OpenGL/ES, no sabe nada de sistemas de ventanas (X11, Wayland, KMSDRM).
+GLEW es usado por los Sonic-1-2-2013 y SonicCD decompilation projects, por Scummvm para el render OpenGL de los juegos 3D
+(NO para el modo OpenGL de los juegos 2D, y a parte para el render de los juegos 3D también se puede usar GLES2, así que
+glew no es necesario ni para juegos 2D ni para aceleración de juegos 3D en Scummvm) y por otros programas que no recuerdo ahora. 
+
+GLWE sólo conoce de OpenGL/ES, no sabe nada de sistemas de ventanas (X11, Wayland, KMSDRM).
 
 Dependencias previas:
 
