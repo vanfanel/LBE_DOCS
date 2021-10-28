@@ -6529,6 +6529,33 @@ git submodule update --init --recursive
 make release -j4
 Nos deja el FNA.dll en bin/Release/FNA.dll
 
+GLEW EN LA RASPBERRY PI
+=======================
+
+Sólo conoce de OpenGL/ES, no sabe nada de sistemas de ventanas (X11, Wayland, KMSDRM).
+
+Dependencias previas:
+
+apt-get install python
+
+Clonamos su repo:
+
+git clone --deph 1 
+
+Entramos en el raiz de los sources y hacemos:
+
+make extensions
+
+Y compilamos e instalamos con un solo comando, así:
+
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+make SYSTEM=linux-egl-glvnd -j4 install
+
+AHORA EDITA /usr/local/include/GL/glew.h y ELIMINA TODO EL BLOQUE GLU, es decir, busca "GLEW_NO_GLU"
+y elimina todo lo que hay en el bloque donde está eso.
+SI NO HACES ESTO, los programas que usen GLEW los tienes que compilar siempre pasándole al compilador "-DGLEW_NO_GLU"
+
 AMBERMOON.NET EN LINUX
 ======================
 
