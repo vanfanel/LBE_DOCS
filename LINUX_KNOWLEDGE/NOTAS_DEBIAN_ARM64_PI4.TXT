@@ -692,7 +692,7 @@ Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sa
  y la aniades en /etc/profile usando la variable de entorno SDL_GAMECONTROLLERCONFIG, tal que así:
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
-Para SDL2_Mixer (instalar antes libmpg123-dev, libogg-dev y libflac-dev):
+Para SDL2_Mixer (instalar antes estas dependencias: apt-get install libmpg123-dev libogg-dev libflac-dev libmodplug-dev):
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
@@ -719,6 +719,7 @@ CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomi
 --enable-egl --enable-opengles --enable-opengles3 --enable-vulkan
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
+(SI TE DA ERROR AL LINKAR por funciones de slang, no le pases --disable-builtinglslang)
 
 Compilar y listo.
 

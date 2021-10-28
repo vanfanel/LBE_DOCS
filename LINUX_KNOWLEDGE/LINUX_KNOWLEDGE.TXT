@@ -577,6 +577,8 @@ sudo make install
 
 ******Compilando OpenBOR*********************************************************************
 
+Dependencias previas: sudo apt-get install libvpx-dev
+
 Clonamos los sources de:
 git clone --depth 1 https://github.com/DCurrent/openbor.git
 
@@ -683,7 +685,7 @@ Compilamos con make -j4
 Copiamos el contenido del directorio resources, tal cual, a ~/supaplex, junto con el ejecutable.
 
 
-********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)**********************************************************************************************************
+********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)***************************************************
 
 Los archivos que necesitamos están en este hilo:
 http://forums.rockbox.org/index.php/topic,43630.0.html
@@ -1140,7 +1142,6 @@ git submodule update --init
 
 Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 1024, comentando el while que hay debajo.
 Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(), en la llamada a SDL_SetHint(), "nearest" por "linear".
-Editamos src/config.c, y cambiamos "long dummy;" por "int dummy;".
 
 Compilamos con:
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
@@ -4132,7 +4133,7 @@ SI estamos compilando el SonicCD:
 	Y cambiamos
 	#define AUDIO_SAMPLES   (0x800)
 	por
-	#define AUDIO_SAMPLES   (0x400)
+	#define AUDIO_SAMPLES   (0x200)
 	
 	Editamos RSDKv3/RetroEngine.hpp y ponemos el define RETRO_USE_MOD_LOADER a 0.
 	De lo contrario, nos da errores al linkar en Raspbian por la versión de GCC.
@@ -4142,7 +4143,7 @@ SI estamos compilando el Sonic-1-2:
 	-Cambiamos las menciones a "nearest" por "linear".
 
 	Editamos RSDKv4/Audio.cpp
-	Y cambiamos spec.samples a 1024.
+	Y cambiamos spec.samples a 512.
 
 	Editamos RSDKv4/RetroEngine.hpp y ponemos el define RETRO_USE_MOD_LOADER a 0.
 	De lo contrario, nos da errores al linkar en Raspbian por la versión de GCC.
@@ -4205,8 +4206,8 @@ cd b4
 
 Ahora configuramos:
 
-cmake -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+cmake .. -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
@@ -5843,8 +5844,8 @@ cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=
 -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 
-STUNT CAR RACER EN LA RASPBERRY PI (NO COMPILA POR PROBLEMAS CON OPENGL)
-=====================================================================
+STUNT CAR RACER EN LA RASPBERRY PI
+==================================
 
 Instalamos una dependencia previa (a parte de openal, justo encima lo tienes):
 sudo apt-get install libglm-dev
@@ -7256,7 +7257,7 @@ CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomi
 make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4
 
 VVVVVV en la Raspberry Pi
-=====================
+=========================
 
 Entramos en su repo y clonamos
 
