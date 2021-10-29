@@ -6529,6 +6529,62 @@ git submodule update --init --recursive
 make release -j4
 Nos deja el FNA.dll en bin/Release/FNA.dll
 
+COMPILAR NUESTRA PROPIA VERSIÓN DE WPA_SUPPLICANT
+=================================================
+
+La versión que viene en Debian depende de systemd para funcionar (falla si no tenemos systemd corriendo),
+así que para tener un sistema mínimo sin init necesitamos compilar nuestra propria versión de WPA_SUPPLICANT.
+
+Las instrucciones para compilar wpa_supplicant desde sus sources se han obtenido de:
+https://www.linuxfromscratch.org/blfs/view/svn/basicnet/wpa_supplicant.html
+
+¡EMPEZEMOS!
+
+Dependencias previas:
+apt-get install libnl-3-dev libnl-genl-3-dev libreadline-dev 
+
+Bajamos la última estable de aquí (busca "source" en esa página):
+https://w1.fi/wpa_supplicant/
+
+Descomprimimos, entramos en el directorio wpa_supplicant, y creamos un fichero de configuración para la compilación que contenga
+las opciones básicas para poder establecer una conexión estándar:
+
+cat > .config << "EOF"
+CONFIG_BACKEND=file
+CONFIG_CTRL_IFACE=y
+CONFIG_DEBUG_FILE=n
+CONFIG_DEBUG_SYSLOG=n
+CONFIG_DRIVER_NL80211=y
+CONFIG_DRIVER_WEXT=y
+CONFIG_DRIVER_WIRED=y
+CONFIG_EAP_GTC=y
+CONFIG_EAP_LEAP=y
+CONFIG_EAP_MD5=y
+CONFIG_EAP_MSCHAPV2=y
+CONFIG_EAP_OTP=y
+CONFIG_EAP_PEAP=y
+CONFIG_EAP_TLS=y
+CONFIG_EAP_TTLS=y
+CONFIG_IEEE8021X_EAPOL=y
+CONFIG_IPV6=n
+CONFIG_LIBNL32=y
+CONFIG_PEERKEY=y
+CONFIG_PKCS12=y
+CONFIG_READLINE=y
+CONFIG_SMARTCARD=n
+CONFIG_WPS=n
+CFLAGS += -I/usr/include/libnl3
+EOF
+
+PARA SABER QUÉ SIGNIFICA CADA OPCIÓN, EDITA EL FICHERO LLAMADO "defconfig" Y AHÍ VIENEN DESCRITAS TODAS.
+
+Compilamos e instalamos con:
+make BINDIR=/usr/local/sbin LIBDIR=/usr/local/lib -j4
+make install
+
+Para desinstalar, es a mano porque no hay uninstall, y se haría con:
+rm /usr/local/sbin/wpa_*
+
 GLEW EN LA RASPBERRY PI
 =======================
 

@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Para que vayan gráficos y audio, es necesario tener sysfs y proc.
-# Y para que arranque el servicio udev, y para poder configurar el governor a mano.
+# Y para que arranque el servicio udev/eudev/mdev, y para poder configurar el governor a mano.
 # Se supone que el kernel tiene las opciones CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y,
-# por lo que en /dev el propio kernel tiene ya montado el devtmpfs que es donde udev o mdev
+# por lo que en /dev el propio kernel tiene ya montado el devtmpfs que es donde udev/eudev/mdev
 # crean los nodos de /dev.
 mount -t sysfs sysfs /sys
 mount -t proc proc /proc
@@ -17,24 +17,15 @@ echo performance > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 # Re-montamos el root como lectura/escritura.
 mount -o remount,rw /
 
-# OPCIONAL: Lanzamos udev para que nos detecte lo que conectemos dinámicamene,
+# OPCIONAL: Lanzamos udev/eudev para que nos detecte lo que conectemos dinámicamene,
 # carge los modulos correspondientes y cree los nodos en /dev.
+# RECUERDA que en sistemas sin systemd no existe udev, sino eudev, pero se usa igual..
 /etc/init.d/udev start >> /dev/null
-
-# Si queremos levantar la red, descomentar esto. Ojo que será necesario tener
-# cargados los módulos para el hardware de red de nuestra máquina.
-# En la Pi4, con la lista mínima de módulos que cargamos manualmente
-# no hace falta nada más.
-#ifconfig eth0 up
-#ip addr add 192.168.1.8/24 dev eth0
-#ip route add default via 192.168.1.7
+#/etc/init.d/eudev start >> /dev/null
 
 # Esto de devpst es para poder conectar por ssh, si no no nos podrá dar una PTY.
 #mkdir /dev/pts
 #mount -t devpts none /dev/pts -o gid=4,mode=620
-
-# Levantamos si queremos el servidor SSH.
-#/etc/init.d/dropbear start
 
 # MUY IMPORTANTE exportar $HOME o las configuraciones de los programas
 # se empezarán a guardar en /. Así que esto hay que hacerlo SIEMPRE.
@@ -50,18 +41,19 @@ export HOME=/root
 # es redireccionada a tty1.
 # Setupcon configura la fuente y el teclado de la consola,
 # leyendo la configuración de /etc/default/console-setup y /etc/default/keyboard.
-# Se puede usar bash en lugar de sh.
+# Se puede usar bash o bien sh.
 hostname minimal
 setupcon
-setsid sh -c 'cd /root;exec sh </dev/tty1 >/dev/tty1 2>&1'
+setsid sh -c 'cd /root;exec bash </dev/tty1 >/dev/tty1 2>&1'
 
 # En caso de querer un único programa corriendo:
 # setsid sh -c 'exec /usr/local/bin/retroarch </dev/tty1 >/dev/tty1 2>&1'
 
-# Una vez que se sale del programa único, paramos udev (si es que lo hemos lanzado)
-# y montamos el root como readonly.
+# Una vez que se sale del programa único, paramos udev/eudev (si es que lo
+# hemos lanzado) y montamos el root como readonly.
 # El desmontaje conlleva la sincronización de los discos.
 /etc/init.d/udev stop >> /dev/null
+#/etc/init.d/eudev stop >> /dev/null
 mount / -o remount,ro
 
 # Dependiendo de si quieres reiniciar o apagar al salir, usa una o la otra.
