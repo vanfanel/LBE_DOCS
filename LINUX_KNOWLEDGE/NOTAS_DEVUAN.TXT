@@ -150,10 +150,13 @@ Para ello comenta las dos líneas siguientes a esta de lastlog.
 auth    [success=1 default=ignore]      pam_unix.so nullok nodelay
 -Para que no carge el módulo aes-neon-bs, borra /etc/modules-load.d/aes-neon.conf
 -Para deshabilitar ipv6, crea /etc/modprobe.d/blacklist.conf con el contenido: blacklist ipv6
--El directorio /tmp en devuan la viene en TMPFS, es decir, en RAM. Pero también podemos tener en RAM el /var/log, añadiendo a /etc/fstab:
+-Editamos /etc/fstab y añadimos esto para que /var/log esté en RAM (/tmp ya viene puesto en RAM):
 tmpfs		/var/log		tmpfs			defaults,nosuid			0		0
 (NUNCA pongas en TMPFS todo /var, porque de verdad que ahí hay cosas que los programas instalan y dejan fijas, como configuraciones
 y bases de datos como por ejemplo los metadatos de apt-get!! Así que borrar todo /var es liarla MUY gorda).
+-También en /etc/fstab ponemos la opción "sync" a la línea de montaje del rootfs, y quitamos el commit ese, quedando así los
+parámetros de montaje del rootfs: defaults,noatime,nodiratime,sync
+(Queremos tiempo real, NO escrituras retardadas estilo escritorio).
 
 -Como ya tienes tanto /tmp como /var/log montados en TMPS, es decir que están en RAM, ya no te hace falta el servicio que los limpia en cada reinicio.
 
@@ -167,3 +170,6 @@ update-rc.d -f checkfs.sh disable
 AÑÁDELO. LA EXPLICACIÓN ESTÁ EN LA SECCIÓN DE CONFIGURACIÓN INICIAL.
 ¡¡¡OJO!!! SI TE CARGAS ALGO, PUEDES REINSTALAR EL PAQUETE AL QUE PERTENECÍA ESE ALGO, JUNTO CON LA CONFIGURACIÓN POR DEFECTO, CON:
 apt-get install --reinstall initscripts -o Dpkg::Options::="--force-confask,confnew,confmiss"
+
+-La línea de comandos del kernel en cmdline.txt, una vez listo todo, queda así:
+video="HDMI-A-1:1280x720@60" console=tty1 root=PARTUUID=2dd3f9ce-02 rootfstype=ext4 rw rootwait quiet fastboot logo.nologo noswap loglevel=3 usbhid.jspoll=2
