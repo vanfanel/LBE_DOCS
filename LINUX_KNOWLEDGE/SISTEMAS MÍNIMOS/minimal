@@ -16,6 +16,7 @@ echo performance > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
 echo performance > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 
 # Re-montamos el root como lectura/escritura.
+# Podemos añadir la opción "sync" después de otra coma, para que las escrituras sean inmediatas.
 mount -o remount,rw /
 
 # Montamos /tmpfs y /var/log en RAM, para que no se escriban temporales ni logs
