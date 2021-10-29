@@ -154,9 +154,12 @@ auth    [success=1 default=ignore]      pam_unix.so nullok nodelay
 tmpfs		/var/log		tmpfs			defaults,nosuid			0		0
 (NUNCA pongas en TMPFS todo /var, porque de verdad que ahí hay cosas que los programas instalan y dejan fijas, como configuraciones
 y bases de datos como por ejemplo los metadatos de apt-get!! Así que borrar todo /var es liarla MUY gorda).
--También en /etc/fstab ponemos la opción "sync" a la línea de montaje del rootfs, y quitamos el commit ese, quedando así los
-parámetros de montaje del rootfs: defaults,noatime,nodiratime,sync
+-También en /etc/fstab ponemos la opción "sync" a la línea de montaje del rootfs, y quitamos el commit ese, quedando la línea así:
+UUID=<UUID_DE_LA_PARTICIÓN_ROOTFS>	/	ext4	defaults,noatime,nodiratime,sync 0 1
 (Queremos tiempo real, NO escrituras retardadas estilo escritorio).
+-También en /etc/fstab ponemos la opción "sync" y las opciones "noatime" y "nodiratime" a la línea de montaje de la partición BOOT, si quieres,
+quedando la línea así:
+UUID=<LA_UUID_DE_LA_PARTICIÓN_BOOT>	/boot	vfat	defaults,sync,noatime,nodiratime 0 2
 
 -Como ya tienes tanto /tmp como /var/log montados en TMPS, es decir que están en RAM, ya no te hace falta el servicio que los limpia en cada reinicio.
 
@@ -172,4 +175,7 @@ AÑÁDELO. LA EXPLICACIÓN ESTÁ EN LA SECCIÓN DE CONFIGURACIÓN INICIAL.
 apt-get install --reinstall initscripts -o Dpkg::Options::="--force-confask,confnew,confmiss"
 
 -La línea de comandos del kernel en cmdline.txt, una vez listo todo, queda así:
-video="HDMI-A-1:1280x720@60" console=tty1 root=PARTUUID=2dd3f9ce-02 rootfstype=ext4 rw rootwait quiet fastboot logo.nologo noswap loglevel=3 usbhid.jspoll=2
+video="HDMI-A-1:1280x720@60" console=tty1 root=PARTUUID=2dd3f9ce-02 rootfstype=ext4 rootflags=sync,noatime,nodiratime rw rootwait quiet fastboot logo.nologo noswap loglevel=3 usbhid.jspoll=2
+
+(¡¡ATENCIÓN!!: PUEDES COMPROBAR QUE EL ROOTFS SE HA MONTADO CON LOS PARÁMETROS QUE QUIERAS (te suele gustar montarlo con "sync" para que las
+escrituras sean inmediatas) SIMPLEMENTE MIRANDO LA SALIDA DEL COMANDO "mount" UNA VEZ ARRANCADO EL SISTEMA).
