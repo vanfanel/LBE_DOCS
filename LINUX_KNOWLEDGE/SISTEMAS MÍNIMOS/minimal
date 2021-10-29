@@ -9,11 +9,7 @@
 mount -t sysfs sysfs /sys
 mount -t proc proc /proc
 
-# Al no tener un init como tal, el /etc/inittab es ignorado, así que si quieremos desactivar el
-# three-finger-salute se hace aquí.
-# sysctl -w kernel.ctrl-alt-del=0 -q
-
-# Ponemos a punto el governor
+# Ponemos a punto el governor, ahora que ya tenemos el sysfs preparado.
 echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 echo performance > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
 echo performance > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
