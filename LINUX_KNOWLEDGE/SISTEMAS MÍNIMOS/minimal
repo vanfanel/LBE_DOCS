@@ -5,6 +5,7 @@
 # Se supone que el kernel tiene las opciones CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y,
 # por lo que en /dev el propio kernel tiene ya montado el devtmpfs que es donde udev/eudev/mdev
 # crean los nodos de /dev.
+# En algunos kernels, como el de Devuan, ya viene montado /sys, así que se puede comentar eso.
 mount -t sysfs sysfs /sys
 mount -t proc proc /proc
 
@@ -72,5 +73,5 @@ mount / -o remount,ro
 # Dependiendo de si quieres reiniciar o apagar al salir, usa una o la otra.
 # Poweroff va con dos -f, sí, no es un error, es para que no contacte con el
 # gestor de procesos, que no existe.
-#reboot -f
+reboot -f
 #poweroff -f -f
