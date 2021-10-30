@@ -1032,6 +1032,9 @@ Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altur
 FS-UAE (FSUAE), EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
 ==========================================================================
 
+INSTRUCCIONES ESPECÍFICAS PARA PI4 QUE NO DEBES PERDER DE VISTA:
+https://github.com/FrodeSolheim/fs-uae/blob/master/docs/raspberry-pi-4.md
+
 Instalamos dependencias previas:
 sudo apt-get install gettext --no-install-recommends
 
