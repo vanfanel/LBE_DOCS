@@ -1505,6 +1505,10 @@ Y ahora, podemos deshabilitar el ctrl-alt-sup así: sysctl -w kernel.ctrl-alt-de
 TAMBIÉN PODRÍAMOS editar /etc/sysctl.conf y añadir allí kernel.ctrl-alt-del=0, o incluso hacer:
 echo 0 > /proc/sys/kernel/ctrl-alt-del
 
+OJO: Al deshabilitarlo, en un sistema sin init es probable que tengamos kernel panic al matar el proceso con PID1 (es decir,
+al acabar nuestro script de inicio). Supongo que porque el kernel usa el mismo vector para el ctrl-alt-sup que para reiniciar
+mediante el comando reboot. Ni idea.
+
 *******Preparar el portátil como router para salir a internet desde la Raspberry Pi u otra placa conectada a él por ethernet************
 
 Al router (el portátil, por ejemplo, que es el que se conecta a internet) le ponemos una IP fija en el mismo rango que el cliente. En Lubuntu o Debian es tan fácil
