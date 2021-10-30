@@ -1480,7 +1480,7 @@ Haced un ping o un nslookup a thepiratebay.se, tendreis la IP, los filtros de la
 
 Sustituid la IP que os salga por la URL en el navegador y ya ;) muahahahaha... 
 
-*******Imágenes de CD: cambios de formato, etc*******************************************************************************************************
+*******Imágenes de CD: cambios de formato, etc**********
 
 Para pasar de una combinación CUE+WAV+ISO a CUE+BIN, usamos el CDMage en Wine. Es un programa MUY antiguo, pero funciona. 
 Simplemente abrimos el CUE del combo CUE+WAV+ISO, y luego le damos a SAVE AS... y el programa lo guarda como CUE/BIN!!
@@ -1488,12 +1488,24 @@ Simplemente abrimos el CUE del combo CUE+WAV+ISO, y luego le damos a SAVE AS... 
 Para hacer lo contrario, ripear de CUE/BIN a CUE+WAV+ISOS, usamos otro programa de Windows: el BINCHUNK.EXE.
 Viene en el parche del Castlevania Rondo of Blood al inglés.
 
-*******Las tildes de Libreoffice no funcionan tras cambiar entre libreoffice y otro programa**************************************************************
+*******Las tildes de Libreoffice no funcionan tras cambiar entre libreoffice y otro programa********
 
 Instala el paquete libreoffice-gtk, y arreglado.
 Recuerda: libreoffice-gtk. Es un paquete de integración.
 
-*******Preparar el portátil como router para salir a internet desde la Raspberry Pi u otra placa conectada a él por ethernet*********************************
+*******Deshabilitar el three-finger salute (ctrl-alt-sup)**********
+
+En algunos casos puede ser importante: por seguridad, o porque arrancas con un script mínimo custom y hacer ctrl-alt-sup implica
+un reinicio inmediato sin sincronizar los discos.
+
+Para ello, podemos ver el estado de las variables de configuración del kernel con: sysctl -a
+Podemos ver el estado de la variable que nos interesa: sysctl kernel.ctrl-alt-del
+Y ahora, podemos deshabilitar el ctrl-alt-sup así: sysctl -w kernel.ctrl-alt-del=0
+
+TAMBIÉN PODRÍAMOS editar /etc/sysctl.conf y añadir allí kernel.ctrl-alt-del=0, o incluso hacer:
+echo 0 > /proc/sys/kernel/ctrl-alt-del
+
+*******Preparar el portátil como router para salir a internet desde la Raspberry Pi u otra placa conectada a él por ethernet************
 
 Al router (el portátil, por ejemplo, que es el que se conecta a internet) le ponemos una IP fija en el mismo rango que el cliente. En Lubuntu o Debian es tan fácil
 como crear una conexión ethernet nueva en el gestor de redes. 
