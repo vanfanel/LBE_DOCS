@@ -1495,8 +1495,10 @@ Recuerda: libreoffice-gtk. Es un paquete de integración.
 
 *******Deshabilitar el three-finger salute (ctrl-alt-sup)**********
 
-En algunos casos puede ser importante: por seguridad, o porque arrancas con un script mínimo custom y hacer ctrl-alt-sup implica
-un reinicio inmediato sin sincronizar los discos.
+En algunos casos puede ser importante por seguridad, o porque arrancas con un script mínimo custom, sin sistema init.
+En ese caso el kernel no sabe hacer nada a parte de "botonazo" al recibir la señal: normalmente el tratamiento
+de de la señal se especifica en /etc/inittab pero sin un proceso init ese fichero no lo lee ni el gato, por lo que hacer
+ctrl-alt-sup implica un reinicio inmediato sin sincronizar los discos.
 
 Para ello, podemos ver el estado de las variables de configuración del kernel con: sysctl -a
 Podemos ver el estado de la variable que nos interesa: sysctl kernel.ctrl-alt-del
