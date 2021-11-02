@@ -179,3 +179,11 @@ video="HDMI-A-1:1280x720@60" console=tty1 root=PARTUUID=2dd3f9ce-02 rootfstype=e
 
 (¡¡ATENCIÓN!!: PUEDES COMPROBAR QUE EL ROOTFS SE HA MONTADO CON LOS PARÁMETROS QUE QUIERAS (te suele gustar montarlo con "sync" para que las
 escrituras sean inmediatas) SIMPLEMENTE MIRANDO LA SALIDA DEL COMANDO "mount" UNA VEZ ARRANCADO EL SISTEMA).
+
+-Si quieres colores en la consola y un prompt sencillo, edita ~/.bashrc (el fichero viene comentado entero) y añade estas líneas al final:
+
+PS1='\w\$ '
+TERM=xterm-256color
+color_prompt=yes
+export LS_OPTIONS='--color=auto'
+alias ls='ls $LS_OPTIONS'
