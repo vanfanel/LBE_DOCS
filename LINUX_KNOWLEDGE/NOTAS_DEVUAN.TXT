@@ -100,6 +100,8 @@ network={
 
 Y creamos el script /usr/local/bin/wifiup así:
 
+modprobe brcmfmac
+sleep 1
 wpa_supplicant -d -Dnl80211 -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -B
 sleep 2
 dhclient wlan0
@@ -149,7 +151,13 @@ Para ello comenta las dos líneas siguientes a esta de lastlog.
 -Para quitar el delay de login editamos /etc/pam.d/common-auth y añadimos el "nodelay" a la línea de pam_unix.so, quedando la línea así:
 auth    [success=1 default=ignore]      pam_unix.so nullok nodelay
 -Para que no carge el módulo aes-neon-bs, borra /etc/modules-load.d/aes-neon.conf
--Para deshabilitar ipv6, crea /etc/modprobe.d/blacklist.conf con el contenido: blacklist ipv6
+-Para deshabilitar ipv6 y otras cosas, crea /etc/modprobe.d/blacklist.conf con el contenido:
+
+blacklist ipv6
+blacklist uio_pdrv_genirq
+blacklist brcmfmac
+(NOTA: El múdulo brcmfmac se cargará manualmente con modprobe en el script donde levantas la WIFI, ya que si no, no hay interface wlan0).
+
 -Editamos /etc/fstab y añadimos esto para que /var/log esté en RAM (/tmp ya viene puesto en RAM):
 tmpfs		/var/log		tmpfs			defaults,nosuid			0		0
 (NUNCA pongas en TMPFS todo /var, porque de verdad que ahí hay cosas que los programas instalan y dejan fijas, como configuraciones
