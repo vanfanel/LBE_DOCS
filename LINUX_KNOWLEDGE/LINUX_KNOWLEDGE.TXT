@@ -100,6 +100,28 @@ sudo rm /etc/apt/sources.list.d/vscode.list
 sudo rm /etc/apt/trusted.gpg.d/microsoft.gpg
 sudo apt update
 
+******Probar los dispositivos de audio con speaker-test**********************************************************************
+
+Puedes ver los dispositivos disponibles con: aplay -L
+Tiene que ser -L mayúscula.
+
+Ten en cuenta que cada dispositivo puede tener una o varias tarjetas.
+Le puedes pasar el dispositivo que quieras a speaker-test en formato dispositivo:tarjeta_que_quieras_de_ese_dispositivo
+
+Por ejemplo, en la Pi4, verás uno de los primeros así:
+
+hw:CARD=vc4hdmi0,DEV=0
+    vc4-hdmi-0, MAI PCM i2s-hifi-0
+    Direct hardware device without any conversions
+
+Pues puedes pasárselo a speaker-test así:
+speaker-test -Dhw:vc4hdmi0
+Donde estás diciéndole a speaker-test que use el dispositivo "hw" y dentro de ese dispositivo la tarjeta "vc4hdmi0".
+
+Ten en cuenta que ese dispositivo es directamente "Direct hardware device without any conversions" y lo malo es que sólo acepta
+un formato llamado IEC958_SUBFRAME_LE, así que no funciona directamente con speaker-test porque speaker-test no puede generar
+audio en formato IEC958_SUBFRAME_LE.
+
 ******Ver los modos soportados de una pantalla/monitor (EDID)****************************************************************
 
 Se puede volcar y ver con:
