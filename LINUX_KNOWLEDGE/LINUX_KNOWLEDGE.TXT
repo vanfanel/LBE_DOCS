@@ -118,9 +118,9 @@ Pues puedes pasárselo a speaker-test así:
 speaker-test -Dhw:vc4hdmi0
 Donde estás diciéndole a speaker-test que use el dispositivo "hw" y dentro de ese dispositivo la tarjeta "vc4hdmi0".
 
-Ten en cuenta que ese dispositivo es directamente "Direct hardware device without any conversions" y lo malo es que sólo acepta
-un formato llamado IEC958_SUBFRAME_LE, así que no funciona directamente con speaker-test porque speaker-test no puede generar
-audio en formato IEC958_SUBFRAME_LE.
+Ten en cuenta que ese dispositivo es directamente "Direct hardware device without any conversions", sin DMIX, y lo malo es
+que sólo acepta un formato llamado IEC958_SUBFRAME_LE, así que no funciona directamente con speaker-test porque speaker-test
+no puede generar audio en formato IEC958_SUBFRAME_LE. De hecho, ningún programa, en general, puede hacer eso.
 
 ******Ver los modos soportados de una pantalla/monitor (EDID)****************************************************************
 
