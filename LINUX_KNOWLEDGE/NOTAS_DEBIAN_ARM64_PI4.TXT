@@ -440,9 +440,10 @@ ExecStart=-/usr/bin/amixer set PCM 230
 			}					
 		Deshabilita el servicio alsa-restore.service, y pon en .profile:
 		amixer set Digital 85% -q
-		Esto lo que hace es que te pone el control llamado Digital a 55 (no a 85 como podría parecer). Puedes ver los controles con "amixer scontrols".
-		Vamos, que esto lo que hace es que pongas a mano el valor que quieras para cada control de la tarjeta por defecto (también se puede elegir tarjeta y tal, mira "man amixer"
-		si ves que te hace falta).
+		Esto lo que hace es que te pone el control llamado Digital a 55 (no a 85 como podría parecer).
+		Puedes ver los controles con "amixer scontrols".
+		Vamos, que esto lo que hace es que pongas a mano el valor que quieras para cada control de la tarjeta por defecto
+		(también se puede elegir tarjeta y tal, mira "man amixer" si ves que te hace falta).
 
 	-EXPERIMENTAL, NO FUNCIONA: Sería la más recomemdada: soluciona los problemas de ordering, porque tienes dos tarjetas. Para ello, crea /etc/modprobe.d/alsa-base.conf con:
 		options snd_soc_hifiberry_dacplus index=0
