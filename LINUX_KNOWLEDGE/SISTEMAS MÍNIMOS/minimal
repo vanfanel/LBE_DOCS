@@ -39,12 +39,6 @@ mount -t tmpfs tmpfs /var/log
 #mkdir /dev/pts
 #mount -t devpts none /dev/pts -o gid=4,mode=620
 
-# Le hacemos un trap a la señal SIGINT, que es la que normalmente se produce cuando
-# pulsamos ctrl+C, pero que en el proceso con PID 1 (este script) se produce con
-# ctrl+alt+sup. Así interceptamos ctrl+alt+sup y hacemos lo que queramos con él.
-# El 2 es la señal SIGINT. Puedes ver los números de todas las señales con "trap -l".
-trap 'echo ctrl-alt-sup executed, not rebooting.' 2
-
 # MUY IMPORTANTE exportar $HOME o las configuraciones de los programas
 # se empezarán a guardar en /. Así que esto hay que hacerlo SIEMPRE.
 export HOME=/root

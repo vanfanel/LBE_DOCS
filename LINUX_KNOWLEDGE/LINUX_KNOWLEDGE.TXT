@@ -4472,6 +4472,7 @@ set expandtab
 set number
 set ls=2
 set sw=1
+set noswapfile
 
 filetype plugin on
 set tags+=~/.vim/tags/INC
