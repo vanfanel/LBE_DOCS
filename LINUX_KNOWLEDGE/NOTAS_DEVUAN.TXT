@@ -191,7 +191,9 @@ AÑÁDELO. LA EXPLICACIÓN ESTÁ EN LA SECCIÓN DE CONFIGURACIÓN INICIAL.
 apt-get install --reinstall initscripts -o Dpkg::Options::="--force-confask,confnew,confmiss"
 
 -La línea de comandos del kernel en cmdline.txt, una vez listo todo, queda así:
-video="HDMI-A-1:1280x720@60" mitigations=off console=tty1 root=PARTUUID=2dd3f9ce-02 rootfstype=ext4 rootflags=sync,noatime,nodiratime rw rootwait quiet fastboot logo.nologo noswap loglevel=3 usbhid.jspoll=2
+video="HDMI-A-1:1280x720@60" mitigations=off elevator=noop console=tty1
+root=PARTUUID=2dd3f9ce-02 rootfstype=ext4 rootflags=sync,noatime,nodiratime rw rootwait
+quiet fastboot logo.nologo noswap loglevel=3 usbhid.jspoll=2
 
 (¡¡ATENCIÓN!!: PUEDES COMPROBAR QUE EL ROOTFS SE HA MONTADO CON LOS PARÁMETROS QUE QUIERAS (te suele gustar montarlo con "sync" para que las
 escrituras sean inmediatas) SIMPLEMENTE MIRANDO LA SALIDA DEL COMANDO "mount" UNA VEZ ARRANCADO EL SISTEMA).
