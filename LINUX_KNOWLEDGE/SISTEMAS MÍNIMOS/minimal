@@ -79,6 +79,9 @@ umount /boot
 # así que lo re-montamos como sólo lectura (dentro de un bucle de espera) y así
 # el kernel puede seguir usándolo aunque ya no se pueda escribir en él.
 # (Una alternativa sería hacer un swicth_root a un rootfs en initramfs).
+# IMPORTANTE: El re-montaje falla SIEMPRE si has editado este fichero mientras el
+# sistema lo estaba usando. Para confirmar que sigue abierto usa "lsof|grep minimal".
+# ¡¡NO LE ECHES LA CULPA A NADA MÁS SI TE DICE QUE EL FILESYSTEM / ESTÁ OCUPADO!!
 busy=true
 while $busy
 do
