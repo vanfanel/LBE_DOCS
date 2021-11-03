@@ -18,7 +18,10 @@ echo performance > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 # Re-montamos el root como lectura/escritura.
 # Añadimos la opción "sync" después de otra coma para que las escrituras sean inmediatas,
 # lo que mejora mucho la predictibilidad del sistema al no haber escrituras retardadas.
-mount -o remount,rw,sync /
+mount -o remount,rw,sync,noatime,nodiratime /
+
+# Montamos también la partición de BOOT
+mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
 
 # Montamos /tmpfs y /var/log en RAM, para que no se escriban temporales ni logs
 # en disco.
@@ -70,6 +73,7 @@ umount /sys
 umount /proc
 umount /tmp
 umount /var/log
+umount /boot
 mount / -o remount,ro
 
 # Dependiendo de si quieres reiniciar o apagar al salir, usa una o la otra.

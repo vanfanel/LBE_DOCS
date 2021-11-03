@@ -100,8 +100,6 @@ network={
 
 Y creamos el script /usr/local/bin/wifiup así:
 
-modprobe brcmfmac
-sleep 1
 wpa_supplicant -d -Dnl80211 -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -B
 sleep 2
 dhclient wlan0
@@ -110,7 +108,9 @@ dhclient wlan0
 Y editamos /etc/ssh/sshd_config y dejamos la línea de PermitRootLogin así:
 PermitRootLogin yes
 
-Y le damos permisos de ejcución al script y lo ejecutamos.
+Y le damos permisos de ejcución al script.
+
+Y editamos /boot/config.txt y comentamos la línea: dtoverlay=disable-wifi
 
 AUTOLOGIN EN DEVUAN
 ===================
@@ -135,7 +135,10 @@ AUDIO EN DEVUAN
 	-Si falla speakertest, mira que tengas en /usr/share/alsa/cards/vc4-hdmi.conf lo que pone en el post de DOM en
 	 https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769&p=1636828#p1636828
 	 OJO! PARECE QUE SEGÚN SE ACTUALIZA EL KERNEL, LOS CONTENIDOS DE /usr/share/alsa/cards/vc4-hdmi.conf hay que irlos cambiando
-	 a veces. Así que si no te va, mira o pregunta en ese hilo.	
+	 a veces. Así que si no te va, mira o pregunta en ese hilo.
+	 (NOTA: Puedes acceder directamente al vc4-hdmi SIN DMIX de por medio mediante la combinación de dispositivo:tarjeta
+	 hw:vc4hdmi0, como en speaker-test con "speaker-test -Dhw:vc4hdmi0", pero no se puede usar directamente porque sólo
+	 acepta un formato llamado IEC958_SUBFRAME_LE).
 	-Si falla algo, pregunta en este hilo a dom:https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769
      Y YA. CON ESTO TIENE QUE FUNCIONAR SÍ O SÍ. 
 
@@ -155,8 +158,13 @@ auth    [success=1 default=ignore]      pam_unix.so nullok nodelay
 
 blacklist ipv6
 blacklist uio_pdrv_genirq
-blacklist brcmfmac
-(NOTA: El múdulo brcmfmac se cargará manualmente con modprobe en el script donde levantas la WIFI, ya que si no, no hay interface wlan0).
+(NOTA: Dejamos que el módulo brcmfmac se cargue, no lo blacklisteamos. En lugar de eso, para evitar los kthreads de la WIFI deshabilitamos
+la WIFI en config.txt, y de ese modo, cuando queramos predictibilidad, no se carga el módulo ni se activa en el kernel).
+
+-Editamos /boot/config.txt y descomentamos las líneas:
+dtoverlay=disable-wifi
+dtoverlay=disable-bt
+(NOTA: Cuando queramos WIFI, comentamos la línea dtoverlay=disable-wifi y reiniciamos).
 
 -Editamos /etc/fstab y añadimos esto para que /var/log esté en RAM (/tmp ya viene puesto en RAM):
 tmpfs		/var/log		tmpfs			defaults,nosuid			0		0

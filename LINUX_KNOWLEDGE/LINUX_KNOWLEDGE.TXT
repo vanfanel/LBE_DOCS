@@ -846,11 +846,11 @@ Con esto creamos varios volúmenes de 1990 MB cada uno:
 
 zip -r -s 1990m pi4.zip pi4.img
 
-*******Comprimir un PDF**************************************************************************************************
+*******Comprimir un PDF*********
 
 gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=xenon2-compressed.pdf Downloads/Xenon.2-Manual.pdf
 
-******Arrancar, instalar y arrancar una instalación de Linux en un Toshiba C50-B (o en cualquier cagarro de PC moderno con UEFI)*************************************
+******Arrancar e instalar una instalación de Linux en un Toshiba C50-B (o en cualquier cagarro de PC moderno con UEFI)*********
 
 Entramos en el menú UEFI manteniendo presionado F2 al encender. Ponemos como primera unidad de arranque el USB.
 Cambiamos el modo de arranque a CSM.
@@ -858,11 +858,11 @@ Instalamos y arrancamos desde el disco duro. Si hemos instalado en modo CSM, deb
 Ya que estás, desactiva SECUREBOOT.
 Miseria y muerte a Microsoft y a todos los malnacidos que trabajan en ella.
 
-*******Guardar LOG de una ventana en el IRSSI***************************************************************************
+*******Guardar LOG de una ventana en el IRSSI********
 
 /lastlog -file <archivo>.log
 
-*******SDL1 en la Raspberry Pi**********************************************************************************************************************************
+*******SDL1 en la Raspberry Pi**********
 
 SDL1 está roto en la Rpi hasta el punto de que con versiones recientes del hardware, a veces tenemos pantallazo negro.
 Para evitarlo, bajamos los dos tar.gz de aquí:
