@@ -80,11 +80,24 @@ umount /proc
 umount /tmp
 umount /var/log
 umount /boot
+
 # El desmontaje del rootfs de un kernel en ejecución no se supone que sea posible,
-# así que lo re-montamos como sólo lectura y así el kernel puede seguir usándolo,
-# aunque ya no se pueda escribir en él.
-# Una alternativa sería hace un swicth_root a un rootfs en initramfs.
-mount / -o remount,ro
+# así que lo re-montamos como sólo lectura (dentro de un bucle de espera) y así
+# el kernel puede seguir usándolo aunque ya no se pueda escribir en él.
+# (Una alternativa sería hacer un swicth_root a un rootfs en initramfs).
+busy=true
+while $busy
+do
+  sudo mount / -o remount,ro 2> /dev/null
+  if [ $? -eq 0 ] 
+  then
+   busy=false
+   echo Filesystem umount successfull.
+  else
+   echo -n '.'  # output to show that the script is alive
+   sleep 1      # wait for 1 second for retry
+  fi  
+done
 
 # Dependiendo de si quieres reiniciar o apagar al salir, usa una o la otra.
 # Poweroff va con dos -f, sí, no es un error, es para que no contacte con el
