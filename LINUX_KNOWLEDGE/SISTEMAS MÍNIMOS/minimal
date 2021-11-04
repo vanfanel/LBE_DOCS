@@ -43,29 +43,38 @@ mount -t tmpfs tmpfs /var/log
 # se empezarán a guardar en /. Así que esto hay que hacerlo SIEMPRE.
 export HOME=/root
 
-# En caso de querer consola en vez de un único programa corriendo,
-# descomentar este bloque entero.
-# El lanzamiento de sh se hace mediante setsid y exec en dos stages:
+# Setupcon configura la fuente y el teclado de la consola,
+# leyendo la configuración de /etc/default/console-setup y /etc/default/keyboard.
+hostname minimal
+setupcon
+
+# Restablecemos la última fecha conocida de /etc/fake-hwclock.data, para que
+# al menos no estemos en los 70s. Importante para qie GIT funcione.
+fake-hwclock load >> /dev/null
+
+# El lanzamiento del bash se hace mediante setsid y exec en dos stages:
 # En el STAGE 1, setsid inicia una nueva sesión y manda un primer sh ahí,
 # y en el STAGE 2 exec ejecuta otro sh con el mismo PID que el sh anterior,
 # que tiene PID 1 (Siempre hay que tener un PID 1 o el kernel da un panic
 # por matar el proceso init). La entrada y salida de este segundo sh
 # es redireccionada a tty1.
-# Setupcon configura la fuente y el teclado de la consola,
-# leyendo la configuración de /etc/default/console-setup y /etc/default/keyboard.
 # Se puede usar bash o bien sh. Si usamos bash, hay que pasarle el --login
 # porque si no, no lee /etc/profile y nos faltan cosas en el $PATH.
-hostname minimal
-setupcon
 setsid sh -c 'cd /root;exec bash --login </dev/tty1 >/dev/tty1 2>&1'
 
 # En caso de querer un único programa corriendo:
 # setsid sh -c 'exec /usr/local/bin/retroarch </dev/tty1 >/dev/tty1 2>&1'
 
-# Una vez que se sale del programa único, paramos udev/eudev (si es que lo
-# hemos lanzado.
+# Salvamos la última fecha conocida, que va al fichero /etc/fake-hwclock.data
+fake-hwclock save
+
+# Paramos udev/eudev (si es que lo hemos lanzado).
 #/etc/init.d/udev stop >> /dev/null
 /etc/init.d/eudev stop >> /dev/null
+
+# Matamos todos los procesos que se han lanzado desde este script,
+# para que no haya nada accediendo a directorios que cuelguen del rootfs.
+pkill -P 1
 
 # Desmontamos todo lo que hemos montado.
 # El desmontaje conlleva la sincronización de los discos.
@@ -76,12 +85,14 @@ umount /var/log
 umount /boot
 
 # El desmontaje del rootfs de un kernel en ejecución no se supone que sea posible,
-# así que lo re-montamos como sólo lectura (dentro de un bucle de espera) y así
-# el kernel puede seguir usándolo aunque ya no se pueda escribir en él.
+# así que lo re-montamos como sólo lectura y así el kernel puede seguir usándolo aunque
+# ya no se pueda escribir en él.
 # (Una alternativa sería hacer un swicth_root a un rootfs en initramfs).
+# NOTA: El bucle de espera en realidad no debería ser necesario porque ahí arriba has matado
+# todos los procesos lanzados por este script así que no debe haber nada accediendo a
+# directorios que cuelguen de /, pero se deja a modo de documentación.
 # IMPORTANTE: El re-montaje falla SIEMPRE si has editado este fichero mientras el
 # sistema lo estaba usando. Para confirmar que sigue abierto usa "lsof|grep minimal".
-# ¡¡NO LE ECHES LA CULPA A NADA MÁS SI TE DICE QUE EL FILESYSTEM / ESTÁ OCUPADO!!
 busy=true
 while $busy
 do

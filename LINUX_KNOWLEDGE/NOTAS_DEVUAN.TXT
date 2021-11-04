@@ -103,6 +103,10 @@ Y creamos el script /usr/local/bin/wifiup así:
 wpa_supplicant -d -Dnl80211 -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -B
 sleep 2
 dhclient wlan0
+# Actualizamos a la hora de red para que GIT y APT vayan bien.
+# ntpdate pertenece a un paquete del mismo nombre.
+ntpdate -b -p 1 hora.roa.es
+# Iniciamos el servidor SSH.
 /etc/init.d/ssh start
 
 Y editamos /etc/ssh/sshd_config y dejamos la línea de PermitRootLogin así:

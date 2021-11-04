@@ -4684,6 +4684,7 @@ ya que el primer -- indica a rm que no se le van a pasar mas parámetros, por lo
 archivo como tales.
 
 ***************Configurar la salida de audio de la Raspberry para que use el jack*****************************
+
 sudo amixer cset numid=3 1
 
 Lo pones una vez y ya queda configurado en los valores de ALSA.
@@ -4691,6 +4692,38 @@ Lo pones una vez y ya queda configurado en los valores de ALSA.
 Y para el audio por HDMI otra vez:
 
 amixer cset numid=3 2
+
+***************Gestión avanzada de acceso a ficheros en Linux********************************************
+
+Para ver qué procesos tienen algún fichero abierto en un directorio, a quién pertenecen, etc:
+
+lsof +D /var
+lsof +D /etc
+...
+
+Para ver los números de los procesos que tienen algún fichero abierto en un directorio, a quién pertenecen, etc:
+
+lsof -t +D /var
+lsof -t +D /etc
+...
+
+Para matar los procesos que tienen algún fichero abierto en un directorio:
+
+lsof -t +D /var | xargs kill
+lsof -t +D /etc | xargs kill
+...
+
+Para matar todos los procesos de un usuario:
+
+killall -u <usuario>
+
+Para matar todos los procesos lanzados por un proceso (por ejemplo todos los procesos lanzados por un script):
+
+pkill -P <PID_del_proceso_padre>
+
+Por ejemplo, yo mato todos los procesos lanzados por el proceso con PID 1, que es mi script mínimo de inicio, con:
+
+pkill -P 1
 
 ***************Sidplay no encuentra /dev/dsp*************************************************************
 
@@ -5006,22 +5039,17 @@ nameserver 8.8.8.8
 
 Mola más este segundo estilo, ya que lo dejamos todo más sencillo y más estándar.
 
-
-
 ****************Usar SUDO sin password***************************
 
 Hacemos sudo visudo y la línea del grupo sudo la dejamos así:
 
 %sudo ALL=NOPASSWD: ALL 
 
-
 *****************Desactivar tarjeta gráfica ATI********************
 
 En /etc/rc.local:
 
 echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
-
-
 
 *****************Configurar un servidor SAMBA y un share. Montar el share.********************
 
@@ -5658,7 +5686,7 @@ En ~/.nuvierc tenemos que poner el gamedir apuntando a ./ultima6data
 Si queremos ajustar cosas, en ~/.nuvierc (puedes poner <show_console> a "no", por ejemplo...)
 
 EXULT, Ultima VII en la Raspberry Pi
-==============================
+====================================
 
 Cosas que debemos instalar previamente:
 sudo apt-get install autoconf automake libtool
