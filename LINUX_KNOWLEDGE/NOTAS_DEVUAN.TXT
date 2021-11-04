@@ -218,3 +218,7 @@ TERM=xterm-256color
 color_prompt=yes
 export LS_OPTIONS='--color=auto'
 alias ls='ls $LS_OPTIONS'
+
+-Si usas un script de inicio (es decir, no usas un init como tal), debes poner en /etc/hostname y en /etc/hosts el nombre del script de inicio
+en lugar de raspberry o lo que venga puesto ahí.
+Por ejemplo, si el scrip de inicio es /etc/minimal, pues pondrías minimal ahí.
