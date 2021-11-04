@@ -100,6 +100,9 @@ network={
 
 Y creamos el script /usr/local/bin/wifiup así:
 
+# Lo primero es cargar el módulo de la WIFI.
+modprobe brcmfmac
+sleep 1
 wpa_supplicant -d -Dnl80211 -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -B
 sleep 2
 dhclient wlan0
@@ -108,6 +111,13 @@ dhclient wlan0
 ntpdate -b -p 1 hora.roa.es
 # Iniciamos el servidor SSH.
 /etc/init.d/ssh start
+
+Y también podemos crear /usr/local/bin/wifidown así:
+
+/etc/init.d/ssh stop
+pkill dhclient
+pkill wpa_supplicant
+rmmod brcmfmac
 
 Y editamos /etc/ssh/sshd_config y dejamos la línea de PermitRootLogin así:
 PermitRootLogin yes
@@ -160,10 +170,11 @@ auth    [success=1 default=ignore]      pam_unix.so nullok nodelay
 -Para que no carge el módulo aes-neon-bs, borra /etc/modules-load.d/aes-neon.conf
 -Para deshabilitar ipv6 y otras cosas, crea /etc/modprobe.d/blacklist.conf con el contenido:
 
+blacklist brcmfmac
 blacklist ipv6
 blacklist uio_pdrv_genirq
-(NOTA: Dejamos que el módulo brcmfmac se cargue, no lo blacklisteamos. En lugar de eso, para evitar los kthreads de la WIFI deshabilitamos
-la WIFI en config.txt, y de ese modo, cuando queramos predictibilidad, no se carga el módulo ni se activa en el kernel).
+(NOTA: Dejar la WIFI activada en config.txt pero sin cargar el módulo NO crea kworkers nuevos en sí mismo, eso pasa
+cuando cargamos manualmente el módulo en nuestro propio script "wifiup").
 
 -Editamos /boot/config.txt y descomentamos las líneas:
 dtoverlay=disable-wifi
