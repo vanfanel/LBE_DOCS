@@ -156,6 +156,20 @@ AUDIO EN DEVUAN
 	-Si falla algo, pregunta en este hilo a dom:https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769
      Y YA. CON ESTO TIENE QUE FUNCIONAR SÍ O SÍ. 
 
+
+ACTUALIZACIÓN DEL KERNEL Y EL FIRMWARE DE LA RASPBERRY EN DEVUAN
+================================================================
+
+Se usa el comando:
+fetch -u
+...y te da opciones para actualizar lo que quieras.
+Por ejemplo, para actualizar al útimo kernel sería con:
+fetch -1
+Al actualizarse el kernel también se actualiza en fw, los dtbs, etc.. que hay en /boot
+
+Para no liarte: verás que existe el paqueta raspberrypi-linux-image (si haces un dpkg -S /boot/vmlinuz... verás que pertenece a ese paquete),
+pues bien, ese paquete se actualiza con fetch, precisamente.
+
 TOQUES FINALES
 ==============
 
