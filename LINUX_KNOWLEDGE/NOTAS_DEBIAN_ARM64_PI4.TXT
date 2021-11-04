@@ -408,11 +408,9 @@ Description=Restore volume
 [Service]
 Type=oneshot
 RemainAfterExit=false
-ExecStartPre=-/usr/bin/aplay /usr/local/share/silence.wav
-ExecStart=-/usr/bin/amixer set PCM 230
+ExecStartPre=-/usr/bin/aplay /dev/zero -s 1 -q
+ExecStart=-/usr/bin/amixer set PCM 230 -q
        
-       ...donde silent.wav es un fichero de silencio que puedes crear en Audacity con Generate->Silence, marca el mínimo tiempo posible
-       y lo exportas a WAV.
        El valor 230 NO se corresponde linealmente con un volúmen de 0 a 100, es 80%. Ya sabes, las cosas del audio.
 
        CADA VEZ que quieras ajustar el volúmen guardado, te toca hacer: sudo systemctl edit --full alsa-restore.service
