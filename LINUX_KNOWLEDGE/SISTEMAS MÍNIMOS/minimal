@@ -31,7 +31,7 @@ mount -t tmpfs tmpfs /var/log
 
 # OPCIONAL: Lanzamos udev/eudev para que nos detecte lo que conectemos dinámicamene,
 # carge los modulos correspondientes y cree los nodos en /dev.
-# RECUERDA que en sistemas sin systemd no existe udev, sino eudev, pero se usa igual..
+# RECUERDA que en sistemas SIN SYSTEMD no se puede usar UDEV, sino que se usa EUDEV.
 #/etc/init.d/udev start >> /dev/null
 /etc/init.d/eudev start >> /dev/null
 
