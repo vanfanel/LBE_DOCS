@@ -5235,6 +5235,25 @@ Cambia automake-1.13 a automake-1.11 en el Makefile.
 Configura con: 
 CFLAGS="-O2 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O2 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --enable-static
 
+****************************Cambiar la resolución al vuelo en KMSDRM*******************
+
+Se haría con switchres, que puede ser un programa que tienes aquí para bajar y compilar:
+
+git clone --depth 1 https://github.com/antonioginer/switchres.git
+
+Editamos custom_video_drmkms.cpp y ponemos drm_name[15] a "/dev/dri/card1" y más abajo comentamos la línea donde hace
+drm_name[13] = '0' + num;
+
+También podemos comentar el drmDropMaster() más abajo para que no nos diga "[ERROR] limited DRM rights on this screen"
+(aunque funciona igual, vamos).
+
+Y luego es simplemente:
+switchres 1280 720 50 -s -k
+(OJO!! -k hace los cambios permanentes!!)
+
+...O bien compilando RetroArch con soporte para SwitchRes y luego configurando la resolución que queramos en:
+Settings->Video->CRT SwitchRes
+
 ****************************Milkytracker en la Raspberry Pi****************************
 
 Para evitar undefined symbols en tiempo de linkado, hacemos:
