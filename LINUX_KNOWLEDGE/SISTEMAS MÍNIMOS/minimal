@@ -9,11 +9,11 @@
 mount -t sysfs sysfs /sys
 mount -t proc proc /proc
 
-# Ponemos a punto el governor, ahora que ya tenemos el sysfs preparado.
-echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-echo performance > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
-echo performance > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
-echo performance > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+# Ponemos a punto el governor de cada core, ahora que ya tenemos el sysfs preparado.
+for numcore in 0 1 2 3
+do
+ echo performance > /sys/devices/system/cpu/cpu$numcore/cpufreq/scaling_governor
+done
 
 # Re-montamos el root como lectura/escritura.
 # Añadimos la opción "sync" después de otra coma para que las escrituras sean inmediatas,
