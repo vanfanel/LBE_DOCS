@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Para que vayan gráficos y audio, es necesario tener sysfs y proc.
-# Y para que arranque el servicio udev/eudev/mdev, y para poder configurar el governor a mano.
+# Y para que arranque el servicio udev/mdev, y para poder configurar el governor a mano.
 # Se supone que el kernel tiene las opciones CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y,
-# por lo que en /dev el propio kernel tiene ya montado el devtmpfs que es donde udev/eudev/mdev
+# por lo que en /dev el propio kernel tiene ya montado el devtmpfs que es donde udev/mdev
 # crean los nodos de /dev.
 # En algunos kernels, como el de Devuan, ya viene montado /sys, así que se puede comentar eso.
 mount -t sysfs sysfs /sys
@@ -31,7 +31,13 @@ mount -t tmpfs tmpfs /var/log
 
 # OPCIONAL: Lanzamos udev/eudev para que nos detecte lo que conectemos dinámicamene,
 # carge los modulos correspondientes y cree los nodos en /dev.
-# RECUERDA que en sistemas SIN SYSTEMD no se puede usar UDEV, sino que se usa EUDEV.
+# UDEV puede correr sin SYSTEMD, pero los scripts de inicio de UDEV en algunos sistemas
+# requieren SYSTEMD.
+# POR AHORA se puede usar EUDEV, pero EUDEV va a ser retirado en 2022.
+# Así que en sistemas con SYSTEMD habría que instalar BUSYBOX, que lleva MDEV.
+# MDEV no carga los módulos automáticamente, tienes que tenerlos añadidos en
+# ficheros .conf dentro de /etc/modules-load.d/
+# Más info para el futuro sobre configurar MDEV: https://wiki.gentoo.org/wiki/Mdev
 #/etc/init.d/udev start >> /dev/null
 /etc/init.d/eudev start >> /dev/null
 
