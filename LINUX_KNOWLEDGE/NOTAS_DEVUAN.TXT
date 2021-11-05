@@ -173,7 +173,7 @@ pues bien, ese paquete se actualiza con fetch, precisamente.
 TOQUES FINALES
 ==============
 
--Borra por completo /opt/vc
+-Borra por completo /opt/vc (si necesitas ejecutar alguna de las mierdas de ahí, puedes reinstalarlo con "fetch -U").
 -Para quitar lo de la temperatura y demás, edita o borra los scripts en /etc/update-motd.d/
 -Para quitar el lastlogin, editamos vim /etc/pam.d/login y comentamos la línea:
 session optional pam_lastlog.so
