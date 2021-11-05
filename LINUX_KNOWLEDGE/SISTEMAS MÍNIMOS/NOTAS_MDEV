@@ -25,11 +25,10 @@ cuando conectes algo en caliente:
 
 $MODALIAS=.* 0:0 660 @modprobe "$MODALIAS"
 
-ADEMÁS, para que funcione, deberías tener los nodos del sistema gráfico. Se han de crear manualmente con:
+ADEMÁS, para que funcione, deberías tener los nodos del sistema gráfico. Son
+/dev/dri/card0
+/dev/dri/card1
+/dev/dri/renderD128
+..Y los debería crear el módulo VC4 al cargarse.
 
-mkdir -p /dev/dri
-mknod -m 660 /dev/dri/card0 c 226 0
-mknod -m 660 /dev/dri/card1 c 226 1
-mknod -m 660 /dev/dri/renderD128 c 226 128
-
-(VER NOTAS DEL FICHERO "CREACIÓN MANUAL DE NODOS")
+(En caso de no crearse, VER NOTAS DEL FICHERO "CREACIÓN MANUAL DE NODOS")
