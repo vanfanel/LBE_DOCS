@@ -1066,7 +1066,8 @@ git clone --depth 1 https://github.com/FrodeSolheim/fs-uae.git
 Ejecutamos el script bootstrap incluido con los sources, y ya podemos ejecutar ./configure
 
 Configuramos con:
-
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 ./configure --with-alsa --without-midi --without-libmpeg2 --without-openal --disable-x86 --disable-qemu-cpu --disable-drivesound --disable-netplay --disable-slirp
 
 Editamos src/fsemu-background.c y comentamos la línea:
