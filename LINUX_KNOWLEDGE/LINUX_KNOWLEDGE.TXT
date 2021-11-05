@@ -1067,7 +1067,7 @@ Ejecutamos el script bootstrap incluido con los sources, y ya podemos ejecutar .
 
 Configuramos con:
 
-./configure --with-alsa --without-midi --without-libmpeg2 --without-openal --without-x11 --disable-x86 --disable-qemu-cpu --disable-drivesound --disable-netplay --disable-slirp
+./configure --with-alsa --without-midi --without-libmpeg2 --without-openal --disable-x86 --disable-qemu-cpu --disable-drivesound --disable-netplay --disable-slirp
 
 Editamos src/fsemu-background.c y comentamos la línea:
 #define FSEMU_WITH_BACKGROUND 1
