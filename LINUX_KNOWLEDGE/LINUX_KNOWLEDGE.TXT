@@ -765,7 +765,7 @@ Skin_file = skin_modern.png
 Lanzamos con:
 ./grafx2-sdl2 -mode 640x360
 
-******Compilar VICE en la Raspberry Pi*************************************************************************************************************************************
+******Compilar VICE en la Raspberry Pi*********
 Necesitaremos tener instalados los paquetes flex y bison durante la configuración.
 Configuramos con:
 
@@ -4172,7 +4172,7 @@ https://github.com/Rubberduckycooly/Sonic-1-2-2013-Decompilation.git
 
 Instalamos unas dependencias previas...
 
-sudo apt install libvorbis-dev libogg-dev libtheora-dev
+sudo apt install libvorbis-dev libogg-dev libtheora-dev libtinyxml2-dev libstb-dev
 
 Clonamos su repo:
 
@@ -4187,21 +4187,16 @@ SI estamos compilando el SonicCD:
 	#define AUDIO_SAMPLES   (0x800)
 	por
 	#define AUDIO_SAMPLES   (0x200)
-	
-	Editamos RSDKv3/RetroEngine.hpp y ponemos el define RETRO_USE_MOD_LOADER a 0.
-	De lo contrario, nos da errores al linkar en Raspbian por la versión de GCC.
-	
+		
 SI estamos compilando el Sonic-1-2: 
 	Editamos RSDKv4/Drawing.cpp y ahí:
 	-Cambiamos las menciones a "nearest" por "linear".
 
 	Editamos RSDKv4/Audio.cpp
 	Y cambiamos spec.samples a 512.
-
-	Editamos RSDKv4/RetroEngine.hpp y ponemos el define RETRO_USE_MOD_LOADER a 0.
-	De lo contrario, nos da errores al linkar en Raspbian por la versión de GCC.
-	Si a pesar de todo queremos el MOD_LOADER, añadimos en el Makefile esto: -lstdc++fs
-	...Y de ese modo no hay que desactivarlo.
+	
+	Editamos RSDKv4/RetroEngine.hpp y comentamos la línea:
+	#define RETRO_USE_NETWORKING (!RETRO_USE_ORIGINAL_CODE && 1)
 	
 Compilamos con:
 
