@@ -3764,13 +3764,16 @@ editar el makefile para añadir los cflags. Compilar y listo.
 
 Necesitamos libboost, eso lo primero. Concretamente, te vale con libboost-dev
 sudo apt-get install libboost-dev --no-install-recommends
+AL ACABAR DE COMPILAR, PUEDES DESINSTALAR LIBBOOST:
+sudo apt-get purge libboost-dev && sudo apt-get autoremove && sudo apt-get clean
 
-Comenta la línea del delay de SDL para control de framerate, que sobra porque nosotros sincronizamos en vsync. Está en src/main/main.cpp
-y tiene esta pinta:
+Edita src/main/main.cpp y comenta la línea del delay de SDL para control de framerate, que sobra porque nosotros sincronizamos en vsync. 
+Para ello busca la línea donde se llama a SDL_Delay() y comenta todo ese bloque.
 
-SDL_Delay((Uint32) (deltatime - t));
-
-Comenta todo ese bloque, el if y todo si quieres, no nos hace falta.
+MIENTRAS MERGEN LOS CAMBIOS: Edita src/main/sdl2/rendergl.cpp y src/main/sdl2/rendergles.cpp en Render::supports_vsync cambia:
+return SDL_GL_GetSwapInterval() == 1;
+por:
+return SDL_GL_SetSwapInterval(1) == 0;
 
 Para que no ande bajando el volúmen de los WAVs, usa los que tienes que ya tienen el volúmen bajado, y vete a Audio::load_wav en
 src/main/sdl2/audio.cpp y deja entre el LockAudio y el UnlockAudio sólo esto:
@@ -3788,11 +3791,15 @@ src/main/sdl2/audio.cpp y deja entre el LockAudio y el UnlockAudio sólo esto:
 
 mkdir build
 cd build
-cmake ../cmake -DTARGET=sdl2_rpi  -DCMAKE_BUILD_TYPE=Release
+cmake ../cmake -DTARGET=pi4-opengles.cmake -DCMAKE_BUILD_TYPE=Release
 
-La eprom que falta es del set B
-Copia el res/config.xml al mismo directorio donde tienes el ejecutable del cannonball
-
+-Copiamos el ejecutable "cannonball" a ~/outrun
+-Creamos el directorio ~/outrun/roms y metemos ahí las ROMs del OutRun de MAME descomprimidas.
+(Si te falta una eprom, es del SET B)
+-Copiamos el directorio "res" que viene con los sources a ~/outrun/res
+-Movemos res/config.xml a ~/outrun (es decir, lo sacamos de ~/outrun/res y lo movemos a ~/outrun, para que el ejecutable lo encuentre).
+-Editamos config.xml a nuestro gusto.
+-Hacemos un "touch hiscores.xml" para que no se queje de que no existe.
 
 SI al ejecutarlo te sale que no encuentra las SDL, mira con un ldd sobre el ejecutable, y si efectivamente no las encuentra, es que las has instalado
 en una ruta que no está en los path que usa el sistema para buscar libs en tiempo de ejecución.
