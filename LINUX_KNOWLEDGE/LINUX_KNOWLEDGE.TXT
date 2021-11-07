@@ -5597,7 +5597,6 @@ DEVILUTIONX, Diablo en Linux
 
 Dependencias previas:
 sudo apt-get install libsodium-dev --no-install-recommends
-También necesita SDL_ttf.
 
 Bajamos la última estable de:
 https://github.com/diasurgical/devilutionX/releases
@@ -5606,7 +5605,11 @@ Configuramos con:
 cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF \
 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 
-Compilamos y metemos en el directorio ~/diablo el ejecutable, junto con diabdat.mpq y con la fuente CharisSILB.ttf que viene incluida en los sources.
+Compilamos y metemos en el directorio ~/diablo:
+-El ejecutable "devilutionx"
+-El fichero "devilutionx.mpq" que se descarga de aquí:
+https://github.com/diasurgical/devilutionx-assets/releases
+-El fichero de los datos del juego, que se llama "diabdat.mpq" y que tienes que conseguir por tu cuenta.
 
 La primera vez que ejecutemos el juego, se creará el fichero de configuración en ~/.local/share/diasurgical/diablo.ini
 Para saber más de su contenido, mira esto: https://github.com/diasurgical/devilutionX/wiki/DevilutionX-diablo.ini-configuration-guide
