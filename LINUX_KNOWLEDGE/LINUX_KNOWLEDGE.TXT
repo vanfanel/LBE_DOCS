@@ -5611,7 +5611,7 @@ Compilamos y metemos en el directorio ~/diablo:
 https://github.com/diasurgical/devilutionx-assets/releases
 -El fichero de los datos del juego, que se llama "diabdat.mpq" y que tienes que conseguir por tu cuenta.
 
-La primera vez que ejecutemos el juego, se creará el fichero de configuración en ~/.local/share/diasurgical/diablo.ini
+La primera vez que ejecutemos el juego, se creará el fichero de configuración en ~/.local/share/diasurgical/devilution/diablo.ini
 Para saber más de su contenido, mira esto: https://github.com/diasurgical/devilutionX/wiki/DevilutionX-diablo.ini-configuration-guide
 
 Si quieres que vaya a 16:9, pon "Fit to Screen=1"
