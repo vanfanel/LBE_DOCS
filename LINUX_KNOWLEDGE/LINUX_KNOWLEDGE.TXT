@@ -5614,9 +5614,10 @@ https://github.com/diasurgical/devilutionx-assets/releases
 La primera vez que ejecutemos el juego, se creará el fichero de configuración en ~/.local/share/diasurgical/devilution/diablo.ini
 Para saber más de su contenido, mira esto: https://github.com/diasurgical/devilutionX/wiki/DevilutionX-diablo.ini-configuration-guide
 
-Si quieres que vaya a 16:9, pon "Fit to Screen=1"
-
-En 16:9 usa un 10% más de CPU, y upscaling es por hardware así que no usa nada de CPU extra.
+-Puedes poner Scaling Quality a 1, que es BILINEAR simplemente (viene a 2 que es anisotrópico).
+-Puedes poner Buffer Size a 1024
+-Si quieres que vaya a 16:9, pon "Fit to Screen=1"
+(En 16:9 usa un 10% más de CPU, y upscaling es por hardware así que no usa nada de CPU extra).
 
 Si nos da un error repetido de "Unhandled SDL Event: SDL_AUDIODEVICEADDED", ni caso. No es por el sistema sino porque el código del juego imprime eventos que no usa.
 Manda la salida a /dev/null y fuera.
