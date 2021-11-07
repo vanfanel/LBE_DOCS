@@ -3767,9 +3767,6 @@ sudo apt-get install libboost-dev --no-install-recommends
 AL ACABAR DE COMPILAR, PUEDES DESINSTALAR LIBBOOST:
 sudo apt-get purge libboost-dev && sudo apt-get autoremove && sudo apt-get clean
 
-Edita src/main/main.cpp y comenta la línea del delay de SDL para control de framerate, que sobra porque nosotros sincronizamos en vsync. 
-Para ello busca la línea donde se llama a SDL_Delay() y comenta todo ese bloque.
-
 MIENTRAS MERGEN LOS CAMBIOS: Edita src/main/sdl2/rendergl.cpp y src/main/sdl2/rendergles.cpp en Render::supports_vsync cambia:
 return SDL_GL_GetSwapInterval() == 1;
 por:
@@ -3778,15 +3775,16 @@ return SDL_GL_SetSwapInterval(1) == 0;
 Para que no ande bajando el volúmen de los WAVs, usa los que tienes que ya tienen el volúmen bajado, y vete a Audio::load_wav en
 src/main/sdl2/audio.cpp y deja entre el LockAudio y el UnlockAudio sólo esto:
 
-       SDL_LockAudio();
+SDL_LockAudio();
 
-        wavfile.data = (int16_t*) data;
-        wavfile.length = length / 2;
-        wavfile.pos = 0;
-        wavfile.loaded = 2;
+	wavfile.data = (int16_t*) data;
+	wavfile.length = length / 2;
+	wavfile.pos = 0;
+	wavfile.loaded = 2;
 
-        resume_audio();
-        SDL_UnlockAudio();
+	resume_audio();
+
+SDL_UnlockAudio();
 
 
 mkdir build
@@ -5614,7 +5612,7 @@ cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=O
 
 Compilamos y metemos en el directorio ~/diablo:
 -El ejecutable "devilutionx"
--El fichero "devilutionx.mpq" que se descarga de aquí:
+-La versión actual del fichero "devilutionx.mpq" que se descarga de aquí:
 https://github.com/diasurgical/devilutionx-assets/releases
 -El fichero de los datos del juego, que se llama "diabdat.mpq" y que tienes que conseguir por tu cuenta.
 
