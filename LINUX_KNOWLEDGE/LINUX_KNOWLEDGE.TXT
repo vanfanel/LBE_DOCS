@@ -3798,6 +3798,7 @@ cmake ../cmake -DTARGET=pi4-opengles.cmake -DCMAKE_BUILD_TYPE=Release
 -Movemos res/config.xml a ~/outrun (es decir, lo sacamos de ~/outrun/res y lo movemos a ~/outrun, para que el ejecutable lo encuentre).
 -Editamos config.xml a nuestro gusto.
 -Hacemos un "touch hiscores.xml" para que no se queje de que no existe.
+-La música custom va en wav, en ~/outrun/res, y sólo tienes que activarla en el config.xml
 
 SI al ejecutarlo te sale que no encuentra las SDL, mira con un ldd sobre el ejecutable, y si efectivamente no las encuentra, es que las has instalado
 en una ruta que no está en los path que usa el sistema para buscar libs en tiempo de ejecución.
