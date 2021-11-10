@@ -331,6 +331,23 @@ PARA LANZAR LOS JUEGOS tienes que pasarle la ruta COMPLETA del .cue, no vale que
 ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
 
 
+******Space Cadet pinball en la Raspberry Pi*********
+
+Bajamos los últimos sources estables de aquí:
+
+https://github.com/k4zmu2a/SpaceCadetPinball/releases
+
+Configuramos y compilamos con:
+mkdir b4
+cd b4
+cmake .. \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+make -j4
+
+Copiamos el ejecutable y los datos del juego (que los tienes ya preparados en el disco duro de backup) y a jugar.
+Puedes ajustar la configuración (fullscreen, uncapped framerate, etc..) usando ~/.local/share/SpaceCadetPinball/imgui_pb.ini
+
 ******Juegos JAVA que usan GL/GLES en la Raspberry Pi***************************************************************
 
 Lo primero sería compilar esta librería:
@@ -3763,9 +3780,9 @@ editar el makefile para añadir los cflags. Compilar y listo.
 *************Compilar Cannonball (OutRun engine) en Rpi***************************************************************************
 
 Necesitamos libboost, eso lo primero. Concretamente, te vale con libboost-dev
-sudo apt-get install libboost-dev --no-install-recommends
+sudo apt-get -y install libboost-dev --no-install-recommends
 AL ACABAR DE COMPILAR, PUEDES DESINSTALAR LIBBOOST:
-sudo apt-get purge libboost-dev && sudo apt-get autoremove && sudo apt-get clean
+sudo apt-get -y purge libboost-dev && sudo apt-get -y autoremove && sudo apt-get -y clean
 
 MIENTRAS MERGEN LOS CAMBIOS: Edita src/main/sdl2/rendergl.cpp y src/main/sdl2/rendergles.cpp en Render::supports_vsync cambia:
 return SDL_GL_GetSwapInterval() == 1;
