@@ -8,6 +8,35 @@ AUDIO: driver ALSA, 44100 Hz, 32 ms, resampler quality normal
 
 Los shaders custom los puedes meter en STORAGE/shaders
 
+En el menú de Emulation Station:
+INTEGER SCALING: ON
+GAME ASPECT RATIO: CORE PROVIDED
+SHADER SET: CRT/ZFAS-CRT.GLSLP
+Y en PER SYSTEM ADVANVCED CONFIGURATION:
+-Fuerza el GAME ASPECT RATIO a 4:3 para MEGADRIVE (MASTER SYSTEM no es 4:3, es más aplastada).
+
+GAME GEAR, GAMEBOY Y GAMEBOY COLOR BIEN
+=======================================
+
+OPCIONES EN "ADVANCED PER SYSTEM CONFIGURATION"
+-Selecciona como emulador el Gambatte para Gameboy/Gameboy Color, y Genesis Plus GX para GameGear.
+-Pon el SHADER SET a NONE (porque lo vamos a controlar desde RetroArch mediante overrides).
+-Pon el aspect ratio en AUTO (porque lo vamos a controlar desde RetroArch mediante overrides).
+
+OVERRIDES DE VÍDEO:
+Todo lo de esta parte tienes que guardarlo como override en QUICK MENU->OVERRIDES->SAVE CONTENT DIRECTORY OVERRIDES.
+
+-Usa INTEGER SCALE. En ASPECT RATIO pon CUSTOM y selecciona (3x) de ancho y (3x) de alto.
+ Si activas la GAME GEAR EXTENDED SCREEN, tienes que reajustar el tamaño, porque cambia qué corresponde a 3x al cambiar el tamaño de pantalla.
+-Como shader, usa CRT/CRT-PI con SCANLINE GAP BRIGHTNESS a 85 y BLOOM FACTOR a 1.20 (resto de parámetros como vienen).
+
+OPCIONES DEL EMULADOR:
+-Pon BORDERS a OFF (de lo contrario, los bordes de la GG hacen que se vea una imágen pequeña en el centro rodeada de bordes).
+
+SI QUIERES bordes en la MegaDrive (que es como se veía en la tele), y como no quieres bordes en GG ni SMS (porque se ven mal)
+lo que tienes que hacer es activar los bordes con un juego de MegaDrive cargado y luego te vas a las opciones del core otra vez,
+MANAGE CORE OPTIONS y SAVE CONTENT DIRECTORY OPTIONS.
+
 RAINBOW ISLANDS BIEN
 ====================
 
@@ -41,3 +70,10 @@ STORAGE/.config/distribution/configs/SDLPoP/SDLPoP.ini
 STORAGE/.config/distribution/configs/SDLPoP/SDLPoP.cfg
 
 Ahora lanza de nuevo el juego, configúralo y salva los settings que quieras, y ya debería salvarlos.
+
+LYNX BIEN
+=========
+
+-Cambia el emulador al beetle-lynx.
+-Mete lynxboot.img en roms/bios
+-Las ROMS que te valen son las mismas que las que usas en la MiSTer.
