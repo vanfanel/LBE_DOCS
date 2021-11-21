@@ -225,7 +225,7 @@ make -j4
 
 (OJO: requiere OpenGL 4.1 o algo así, olvídate de que funcione en la Raspberry Pi).
 
-*******Compilar el core libretro Duckstation***********
+*******Compilar el core libretro Duckstation (Swanstation)***********
 
 (OJO: en el repo oficial de ducktstation tienes cores ya compilados, pero NO funcionan cuando Retrorch funciona sobre KMSDRM.
 NO te molestes en reportarlo, porque el autor de duckstation es un poco gilipollas.)
@@ -1452,7 +1452,7 @@ If you want to change it, you can
 sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 
-*******Profiling de programas usando OPROFILE*****************************************************************************************************************
+*******Profiling de programas usando OPROFILE*********
 
 Puede que necesitemos activado el soporte de Oprofile en el kernel: PARA PROGRAMAS NORMALES NO PARECE HACER FALTA ESTO.
 General Options, casi abajo del todo, Profiling y dentro de eso Oprofile.
