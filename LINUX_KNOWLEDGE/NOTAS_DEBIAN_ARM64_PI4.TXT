@@ -590,6 +590,9 @@ SATISFECHAS SUS DEPENDENCIAS, PASAMOS A LA COMPILACIÓN DE MESA COMO TAL:
 
 Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
+
+Editamos src/broadcom/vulkan/v3dv_device.c y buscamos "destroy dumb object" y comentamos el fprintf() que lo contiene.
+
 Las instrucciones para compilar con MESON se pueden ver en: https://www.mesa3d.org/meson.html
 Pero yo ya lo tengo resuelto a continuación...
 
