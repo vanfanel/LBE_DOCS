@@ -24,6 +24,17 @@ echo $SDL_VIDEO_DOUBLE_BUFFER
 
 Con el comando showkeys
 
+******Hacer que se lean los diagnostics del bootloader de la Raspberry Pi 4 incluso cuando arranca correctamente*******
+
+Editamos los parámetros de configuración del bootloader con:
+rpi-eeprom-config --edit
+
+Y añadimos ahí:
+HDMI_DELAY=0
+
+Más info sobre parámetros del bootloader aquí:
+https://gitee.com/jikexianfeng/documentation/blob/master/hardware/raspberrypi/bcm2711_bootloader_config.md#/jikexianfeng/documentation/blob/master/hardware/raspberrypi/boot_diagnostics.md
+
 ******Conectar a una red WIFI desde la Raspberry PI usando el WIFI interno*********************************************
 
 PUEDE QUE NECESITES BAJAR MANUALMENTE EL FIRMWARE DEL WIFI SI AL HACER MODPROBE AL brcmfmac NO TE CREA EL INTERFACE WLAN0.

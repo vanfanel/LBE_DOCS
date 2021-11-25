@@ -103,9 +103,12 @@ Y creamos el script /usr/local/bin/wifiup así:
 # Lo primero es cargar el módulo de la WIFI.
 modprobe brcmfmac
 sleep 1
-wpa_supplicant -d -Dnl80211 -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -B
+# Buscamos el nombre del interface WIFI, ya que en la Pi4 es WLAN0 y en la Pi400 es WLAN1.
+WLAN_IFACE_NAME=$(ls /sys/class/net | grep wl) 
+# Conectamos a la SSID que tengamos configurada en wpa_supplicant.conf
+wpa_supplicant -d -Dnl80211 -i$WLAN_IFACE_NAME -c/etc/wpa_supplicant/wpa_supplicant.conf -B
 sleep 2
-dhclient wlan0
+dhclient $WLAN_IFACE_NAME
 # Actualizamos a la hora de red para que GIT y APT vayan bien.
 # ntpdate pertenece a un paquete del mismo nombre.
 ntpdate -b -p 1 hora.roa.es
