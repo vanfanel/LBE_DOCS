@@ -1,0 +1,9 @@
+PARA COMPILAR LOS EJEMPLOS DEL DIRECTORIO EXAMPLES
+==================================================
+
+-En examples/Makefile, quita -nostdlib
+-En el Makefile de cada uno de los ejemplos (examples/SmallPT/Makefile, examples/Buddha/Makefile, etc...)
+ deja la línea:
+TARGETDIR := ../../Build
+como:
+TARGETDIR := Build
