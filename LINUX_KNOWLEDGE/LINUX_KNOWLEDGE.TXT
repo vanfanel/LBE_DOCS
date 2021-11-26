@@ -4276,7 +4276,22 @@ Copiamos el directorio data que viene con los sources al mismo directorio donde 
 Para que se ejecute en modo fullscreen, sin cambiar resolución, sin escalado XBRZ y con escalado 1x, ejecutamos con:
 ./hcl -f -d -x1 --no-xbrz
 
-*************Commander Genius en la Raspberry Pi**********************************************************************************
+
+*************CELESTE nativo en la Raspberry Pi***************
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/lemon32767/ccleste.git
+
+Editamos el Makefile, y en la línea de las CFLAGS quitamos el -g y ponemos los flags de la Pi4, que son:
+-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
+
+Compilamos, y copiamos el ejecutable a ~/celeste/
+Copiamos también el directorio "data" que viene con los sources a ~/celeste/
+
+Lo lanzamos con:
+CCLESTE_START_FULLSCREEN=1 ./ccleste
+
+*************Commander Genius en la Raspberry Pi*************
 
 Podemos bajarnos una release (lo más recomendado), la última de aquí:
 
