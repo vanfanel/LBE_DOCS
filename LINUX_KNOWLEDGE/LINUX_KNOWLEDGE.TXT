@@ -4285,11 +4285,62 @@ git clone --depth 1 https://github.com/lemon32767/ccleste.git
 Editamos el Makefile, y en la línea de las CFLAGS quitamos el -g y ponemos los flags de la Pi4, que son:
 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
 
+Editamos sdl12main.c y allí:
+-Comentamos toda la sección donde aparece SDL_Delay(), todo el bloque de principio a fin.
+
+Editamos sdl20compat.inc.c y allí:
+-En SDL_Flip(), duplicamos el bloque:
+  SDL_RenderClear(sdl2_rendr);
+  SDL_RenderCopy(sdl2_rendr, sdl2_screen_tex, NULL, NULL);
+  SDL_RenderPresent(sdl2_rendr);
+(Para que el juego vaya a 30FPS pero sincronizados con el VSYNC).
+-Añadimos como único flag SDL_WINDOW_FULLSCREEN_DESKTOP a SDL_CreateWindow(), quitamos cualquier otro que haya.
+-Añadimos antes de la llamada a SDL_CreateRenderer(): SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+-Añadimos estos flags a SDL_CreateRenderer(): SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+
 Compilamos, y copiamos el ejecutable a ~/celeste/
 Copiamos también el directorio "data" que viene con los sources a ~/celeste/
 
 Lo lanzamos con:
 CCLESTE_START_FULLSCREEN=1 ./ccleste
+
+Se sale con la tecla DELETE
+
+*************MightyMike en la Raspberry Pi*********************
+
+git clone --recurse-submodules --depth 1 https://github.com/jorio/MightyMike.git
+
+Editamos src/Heart/Window.c y allí metemos todo el bloque de
+SDL_UpdateTexture, SDL_RenderClear, SDL_RenderCopy y SDL_RenderPresent dentro de esta condición:
+if (gSDLTexture && gSDLRenderer) { }
+
+Configuramos y compilamos:
+mkdir b4
+cd b4
+
+cmake .. \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
+
+Copiamos el ejecutable MightyMike y el directorio "Data" que viene con los sources a ~/mightymike
+
+*************Nanosaur en la Raspberry Pi*********************
+
+Clonamos su repo:
+
+git clone --recurse-submodules --depth 1 https://github.com/jorio/Nanosaur.git
+
+Configuramos y compilamos:
+mkdir b4
+cd b4
+
+cmake .. \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
+
+Copiamos el ejecutable Nanosaur y el directorio "Data" que viene con los sources a ~/nanosaur
 
 *************Commander Genius en la Raspberry Pi*************
 
