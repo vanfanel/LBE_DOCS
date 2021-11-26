@@ -3002,9 +3002,6 @@ make -j4
 
 ***********RIGEL, el engine de Duke Nukem II************************************************************
 
-Dependencias previas (sólo necesarias para compilar, luego lo puedes desinstalar):
-libboost-program-options-dev
-
 Clonamos tu repo:
 git clone --depth 1 https://github.com/lethal-guitar/RigelEngine.git
 git submodule update --init --recursive
@@ -4197,44 +4194,53 @@ Creamos el directorio ~/cc, y metemos ahí los datos del juego.
 
 Copiamos el ejecutable (vanillatd para el C&C original, o vanillara para el RED ALERT) al directorio del juego, y listo!
 
-*************SONIC CD NATIVO en la Raspberry Pi***********************************************************************************
-
-NOTA: Esto vale para el repo de SonicCD:
-https://github.com/Rubberduckycooly/Sonic-CD-11-Decompilation.git
-O para el de Sonic 1 y Sonic 2:
-https://github.com/Rubberduckycooly/Sonic-1-2-2013-Decompilation.git
+*************SONIC CD Y SONIC 1/2 NATIVOS en la Raspberry Pi***********************************************************************************
 
 Instalamos unas dependencias previas...
 
-sudo apt install libvorbis-dev libogg-dev libtheora-dev libtinyxml2-dev libstb-dev
+sudo apt install libvorbis-dev libogg-dev libtheora-dev libtinyxml2-dev
+
+--COMPILANDO EL SONIC CD--
 
 Clonamos su repo:
-
 git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-11-Decompilation.git
 
-SI estamos compilando el SonicCD:
-	Editamos RSDKv3/Drawing.cpp y ahí:
+Editamos RSDKv3/Drawing.cpp y ahí:
 	-Cambiamos las menciones a "nearest" por "linear".
 	
-	Editamos RSDKv3/Audio.cpp
+Editamos RSDKv3/Audio.cpp
 	Y cambiamos
 	#define AUDIO_SAMPLES   (0x800)
 	por
 	#define AUDIO_SAMPLES   (0x200)
-		
-SI estamos compilando el Sonic-1-2: 
-	Editamos RSDKv4/Drawing.cpp y ahí:
+
+Compilamos con:
+CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
+
+El ejecutable queda en bin/RSDKv3
+
+--COMPILANDO SONIC-1-2-2013--
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-1-2-2013-Decompilation.git
+
+Clonamos stb, que es una dependencia que NO soporta pkg-config y por eso tenemos que dársela a mano:
+cd dependencies/all
+git clone --depth 1 https://github.com/nothings/stb.git stb-image
+
+Editamos RSDKv4/Drawing.cpp y ahí:
 	-Cambiamos las menciones a "nearest" por "linear".
 
-	Editamos RSDKv4/Audio.cpp
+Editamos RSDKv4/Audio.cpp
 	Y cambiamos spec.samples a 512.
 	
-	Editamos RSDKv4/RetroEngine.hpp y comentamos la línea:
+Editamos RSDKv4/RetroEngine.hpp y comentamos la línea:
 	#define RETRO_USE_NETWORKING (!RETRO_USE_ORIGINAL_CODE && 1)
 	
 Compilamos con:
-
 CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
+
+El ejecutable queda en bin/RSDKv4
 
 Ahora, para ejecutarlo, necesitamos Data.rsdk (preferiblemente de la versión de PC)
 y el directorio "videos" que contendrá unos vídeos .ogv. Por ahora, los vídeos tienen que empezar por mayúscula la primera letra
