@@ -5313,7 +5313,17 @@ AUDIO: driver ALSA, 44100 Hz, 32ms, resampler quality normal
 
 SHADER:
 
-Usamos el shader ZFast, que está en /CRT, con los parámetros:
+Usamos el shader crt-pi, que está en /crt, con los parámetros:
+Curvature horizontal 10
+Curvature vertical 15
+Mask brightness 0.60
+Scanline weight 6.00
+Scanline gap brightness 0.75
+Bloom factor 1.20
+Input gamma 2.40
+Output gamma 2.20
+
+O bien usamos el shader ZFast, que está en /crt, con los parámetros:
 Blur amount: 0.30
 Scanline Darkness - Low: 6
 Scanline Darkness - High: 8
