@@ -539,10 +539,6 @@ Bajamos la última estable de:
 
 https://github.com/JNechaevsky/russian-doom/releases
 
-En src/i_video.h, desactivamos el modo hires, dejando la línea del define así:
-#define hires a 0
-También descomentamos el #define WIDESCREEN
-
 Editamos src/i_video.c, y cambiamos todas las ocurrencias de "nearest" a "linear".
 
 Compilamos con CMAKE:
@@ -3792,25 +3788,7 @@ sudo apt-get -y install libboost-dev --no-install-recommends
 AL ACABAR DE COMPILAR, PUEDES DESINSTALAR LIBBOOST:
 sudo apt-get -y purge libboost-dev && sudo apt-get -y autoremove && sudo apt-get -y clean
 
-MIENTRAS MERGEN LOS CAMBIOS: Edita src/main/sdl2/rendergl.cpp y src/main/sdl2/rendergles.cpp en Render::supports_vsync cambia:
-return SDL_GL_GetSwapInterval() == 1;
-por:
-return SDL_GL_SetSwapInterval(1) == 0;
-
-Para que no ande bajando el volúmen de los WAVs, usa los que tienes que ya tienen el volúmen bajado, y vete a Audio::load_wav en
-src/main/sdl2/audio.cpp y deja entre el LockAudio y el UnlockAudio sólo esto:
-
-SDL_LockAudio();
-
-	wavfile.data = (int16_t*) data;
-	wavfile.length = length / 2;
-	wavfile.pos = 0;
-	wavfile.loaded = 2;
-
-	resume_audio();
-
-SDL_UnlockAudio();
-
+Editamos cmake/pi4-opengles.cmake, y ponemos USE_GLES a 0.
 
 mkdir build
 cd build
@@ -3829,8 +3807,22 @@ SI al ejecutarlo te sale que no encuentra las SDL, mira con un ldd sobre el ejec
 en una ruta que no está en los path que usa el sistema para buscar libs en tiempo de ejecución.
 Así que ejecuta sudo lddconfig -v y echa un vistazo. Mírate la parte de los apuntes de SDL1.2.x
 
-Si te da un segfault al salir, pon  la llamada video.disable() en  quit_func(), que está en src/main/main.cpp, y quitas la llamada a  video.disable()
-de Video::~Video(void) en src/main/video.cpp , ya que no pinta nada en un destructor...
+Si te da un segfault al salir, pon la llamada video.disable() en quit_func(), que está en src/main/main.cpp, y quita la llamada a video.disable()
+de Video::~Video(void) en src/main/video.cpp, ya que no pinta nada en un destructor...
+
+Si no quieres que ande bajando el volúmen de los WAVs, usa los que tienes que ya tienen el volúmen bajado, y vete a Audio::load_wav en
+src/main/sdl2/audio.cpp y deja entre el LockAudio y el UnlockAudio sólo esto:
+
+SDL_LockAudio();
+
+	wavfile.data = (int16_t*) data;
+	wavfile.length = length / 2;
+	wavfile.pos = 0;
+	wavfile.loaded = 2;
+
+	resume_audio();
+
+SDL_UnlockAudio();
 
 ============CLONAR UN REPOSITORIO DE GITHUB USANDO EL NUEVO Y ASQUEROSO SISTEMA DE PERSONAL ACCESS TOKENS (PAT)===============
 
@@ -4205,11 +4197,11 @@ sudo apt install libvorbis-dev libogg-dev libtheora-dev libtinyxml2-dev
 Clonamos su repo:
 git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-11-Decompilation.git
 
-Editamos RSDKv3/Drawing.cpp y ahí:
-	-Cambiamos las menciones a "nearest" por "linear".
-	
-Editamos RSDKv3/Audio.cpp
-	Y cambiamos
+Editamos RSDKv3/Drawing.cpp, y añadimos SDL_ShowCursor(false) justo antes de la llamada a SDL_CreateWindow().
+
+Editamos RSDKv3/Input.cpp, y ponemos todas las llamadas de SDL_ShowCursor(true) a SDL_ShowCursor(false).
+
+Editamos RSDKv3/Audio.cpp y ahí cambiamos:
 	#define AUDIO_SAMPLES   (0x800)
 	por
 	#define AUDIO_SAMPLES   (0x200)
@@ -4228,11 +4220,8 @@ Clonamos stb, que es una dependencia que NO soporta pkg-config y por eso tenemos
 cd dependencies/all
 git clone --depth 1 https://github.com/nothings/stb.git stb-image
 
-Editamos RSDKv4/Drawing.cpp y ahí:
-	-Cambiamos las menciones a "nearest" por "linear".
-
-Editamos RSDKv4/Audio.cpp
-	Y cambiamos spec.samples a 512.
+Editamos RSDKv4/Audio.cpp y ahí:
+	-Cambiamos spec.samples a 512.
 	
 Editamos RSDKv4/RetroEngine.hpp y comentamos la línea:
 	#define RETRO_USE_NETWORKING (!RETRO_USE_ORIGINAL_CODE && 1)
@@ -5751,8 +5740,16 @@ Editamos src/pc/gfx/gfx_sdl2.c y:
 
 Hay que tener baserom.us.z64 en el directorio raiz.
 
-Pide algunas dependencias que sólo necesita en la máquina donde se extraen los datos del juego, que puede ser un PC de escritorio
-y luego compilar en la Pi.
+Se compila para la Pi con:
+
+make TARGET_RPI=1 HIGH_FPS_PC=1 RUMBLE_FEEDBACK=0 BETTERCAMERA=0 -j4
+
+El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
+
+Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo. Pero vamos, viene en 512, si lo tocas será para subirlo a 1024.
+
+Las versiones más antiguas, como el sm64-ex original, piden algunas dependencias que sólo necesita en la máquina donde se extraen
+los datos del juego, que puede ser un PC de escritorio y luego compilar en la Pi.
 Si al compilar en la Pi te da errores con las tools que se hayan compilado antes en X86_64, haz todo esto:
 
 rm tools/aifc_decode
@@ -5765,14 +5762,6 @@ rm tools/n64cksum
 rm tools/audiofile/libaudiofile.a
 make clean
 Si aun así da error, borra el fichero con el que da error (el tool que da el error seguramente ya lo hayas borrado antes).
-
-Se compila para la Pi con:
-
-make TARGET_RPI=1 HIGH_FPS_PC=1 RUMBLE_FEEDBACK=0 BETTERCAMERA=0 -j4
-
-El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
-
-Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo. Pero vamos, viene en 512, si lo tocas será para subirlo a 1024.
 
 FLARE, un engine RPG libre en la Raspberry Pi
 =============================================
