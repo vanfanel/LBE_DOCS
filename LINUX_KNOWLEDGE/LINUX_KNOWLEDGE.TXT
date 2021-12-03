@@ -539,14 +539,15 @@ Bajamos la última estable de:
 
 https://github.com/JNechaevsky/russian-doom/releases
 
-Editamos src/i_video.c, y cambiamos todas las ocurrencias de "nearest" a "linear".
+Editamos src/i_video.c, y en la SDL_SetHint() que hay en el bloque de "Set the scaling quality for rendering the intermediate texture"...
+ponemos el "nearest" a "linear". Sólo en ese.
 
 Compilamos con CMAKE:
 mkdir b4
 cd b4
 
 cmake -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -fsigned-char" \
--DCMAKE_BUILD_TYPE=Release ..
+-DCMAKE_BUILD_TYPE=Release -DBUILD_PORTABLE=ON ..
 
 make -j4
 
@@ -560,7 +561,8 @@ Ejecutamos el juego por primera vez para que nos genere russian-heretic.ini.
 Editamos russian-heretic.ini y ponemos:
 english_language	1
 
-Para tener música que no sea la emulada por OPL, metemos en un WAD tal cual sin directorios los FLAC o los OGG  de aquí, PERO MUY IMPORTANTE, SIN EXTENSIÓN, en plan E1M3 sin más:
+Para tener música que no sea la emulada por OPL, metemos en un WAD tal cual sin directorios los FLAC o los OGG  de aquí,
+PERO MUY IMPORTANTE, SIN EXTENSIÓN, en plan E1M3 sin más:
 https://forum.zdoom.org/viewtopic.php?f=19&t=48937
 Bájate el PK3, o sea, la versión preparada para GZDoom y tal, y sacas los OGG y les quitas la extensión.
 Le puedes quitar la extensión OGG a todos los archivos de un directorio con:
@@ -3803,12 +3805,11 @@ cmake ../cmake -DTARGET=pi4-opengles.cmake -DCMAKE_BUILD_TYPE=Release
 -Hacemos un "touch hiscores.xml" para que no se queje de que no existe.
 -La música custom va en wav, en ~/outrun/res, y sólo tienes que activarla en el config.xml
 
-SI al ejecutarlo te sale que no encuentra las SDL, mira con un ldd sobre el ejecutable, y si efectivamente no las encuentra, es que las has instalado
+Si al ejecutarlo te sale que no encuentra las SDL, mira con un ldd sobre el ejecutable, y si efectivamente no las encuentra, es que las has instalado
 en una ruta que no está en los path que usa el sistema para buscar libs en tiempo de ejecución.
 Así que ejecuta sudo lddconfig -v y echa un vistazo. Mírate la parte de los apuntes de SDL1.2.x
 
-Si te da un segfault al salir, pon la llamada video.disable() en quit_func(), que está en src/main/main.cpp, y quita la llamada a video.disable()
-de Video::~Video(void) en src/main/video.cpp, ya que no pinta nada en un destructor...
+Si te da un segfault al salir, quita la llamada a renderer->disable() de Video::~Video() en src/main/video.cpp, ya que no pinta nada en un destructor... Y pon esa llamada a renderer->disable() en quit_func(), que está en src/main/main.cpp
 
 Si no quieres que ande bajando el volúmen de los WAVs, usa los que tienes que ya tienen el volúmen bajado, y vete a Audio::load_wav en
 src/main/sdl2/audio.cpp y deja entre el LockAudio y el UnlockAudio sólo esto:
