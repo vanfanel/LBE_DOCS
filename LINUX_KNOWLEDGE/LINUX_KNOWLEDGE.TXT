@@ -3790,7 +3790,7 @@ sudo apt-get -y install libboost-dev --no-install-recommends
 AL ACABAR DE COMPILAR, PUEDES DESINSTALAR LIBBOOST:
 sudo apt-get -y purge libboost-dev && sudo apt-get -y autoremove && sudo apt-get -y clean
 
-Editamos cmake/pi4-opengles.cmake, y ponemos USE_GLES a 0.
+Editamos cmake/pi4-opengles.cmake, y ponemos el "set(OPENGLES 1)" a 0.
 
 mkdir build
 cd build
