@@ -3785,12 +3785,13 @@ editar el makefile para añadir los cflags. Compilar y listo.
 
 *************Compilar Cannonball (OutRun engine) en Rpi***************************************************************************
 
+Clonamos su repo:
+git clone --depth 1 https://github.com/djyt/cannonball.git
+
 Necesitamos libboost, eso lo primero. Concretamente, te vale con libboost-dev
 sudo apt-get -y install libboost-dev --no-install-recommends
 AL ACABAR DE COMPILAR, PUEDES DESINSTALAR LIBBOOST:
 sudo apt-get -y purge libboost-dev && sudo apt-get -y autoremove && sudo apt-get -y clean
-
-Editamos cmake/pi4-opengles.cmake, y ponemos el "set(OPENGLES 1)" a 0.
 
 mkdir build
 cd build
@@ -6211,14 +6212,14 @@ que está debajo de
 ELSE (APPLE)
 por esto:
 	find_package(OpenGL QUIET)
-	IF(OpenGL_FOUND)
+	if(OpenGL_FOUND)
 		message(STATUS "Using OpenGL GLX for OpenGL")
-	ELSE(OpenGL_FOUND)
+	else(OpenGL_FOUND)
 		# If we couldn't find old GLX package, try to use modern libglvnd libOpenGL.so instead.
 		message(STATUS "Using GLVND for OpenGL")
 		FIND_LIBRARY(OpenGL_LIBRARY OpenGL)
 		SET(EXTRA_LIBS ${OpenGL_LIBRARY})
-    ENDIF(OpenGL_FOUND)
+    endif(OpenGL_FOUND)
 
 Configuramos y compilamos con:
 mkdir b4
