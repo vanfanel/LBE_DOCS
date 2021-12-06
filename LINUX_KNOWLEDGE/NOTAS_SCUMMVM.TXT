@@ -133,3 +133,10 @@ DÓNDE ENCONTRAR LOS JUEGOS DE SCUMMVM
 =======================================
 
 http://the-eye.eu/public/Games/ScummVM/Working/
+
+MYST EN ESPAÑOL
+================
+
+A la versión de MYST-ME que tienes le quitaste los demás idiomas, así que como sólo tiene inglés y español, el SCUMMVM no detecta los idiomas
+y no te deja elegir el español.
+La solución es tan simple como editar el scummvm.ini y cambiar "en" por "es" en la entrada del myst-me.

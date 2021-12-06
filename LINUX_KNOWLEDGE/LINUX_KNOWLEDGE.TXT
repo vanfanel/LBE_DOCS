@@ -1194,6 +1194,12 @@ Compilamos con:
 
 make -f Makefile.libretro -j8 platform=rpi2
 
+*******OpenXComm, el UFO para la Pi***********************************************
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/OpenXcom/OpenXcom.git
+(...no está listo para compilar contra SDL2 aún).
+
 *******jfduke3d, el port güeno del duke3d para Pi*********************************
 
 Es el port original en el que colabora Ken Silverman!
@@ -6016,10 +6022,6 @@ HEROES OF MIGHT AND MAGIC II (fheroes2) en Linux
 Bajamos la última estable de:
 https://github.com/ihhub/fheroes2/releases
 
-Editamos src/engine/screen.cpp, buscamos SDL_RENDERER_ACCELERATED y lo dejamos como:
-(SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)
-NO te olvides de los paréntesis!!!!
-
 Compilamos con:
 WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
 
@@ -6036,13 +6038,13 @@ Copiamos el directorio files que viene con los sources a ~/heroes2, quedando ~/h
 Copiamos el archivo heroes2.key que viene con los sources a ~/heroes2
 Creamos ~/heroes2/data y metemos ahí el contenido de DATA de una instalación del Heroes 2 de GOG
 Creamos ~/heroes2/maps y metemos ahí el contenido de MAPS de una instalación del Heroes 2 de GOG
-Copiamos los .ogg que vienen en MUSIC de una instalación del Heroes 2 de GOG a ~/heroes2/files/music (los de GOG vienen desordenados,
+Copiamos los .ogg que vienen en MUSIC de una instalación del Heroes 2 de GOG a ~/heroes2/music (los de GOG vienen desordenados,
 ya que van de 01 a 42 y deberían ir de 02 a 43! Es sólo moverlas una posición adelante todas al renombrarlas, que tienes que renombrarlas a Track02.ogg, Track03.ogg, etc).
 (No hace falta que les cambies el nombre ni nada, con que lleven en el nombre el número de pista, le vale).
 
 El fichero de configuración es ~/.config/fheroes2/fheroes2.cfg
 Se genera cuando ejecutas el engine por primera vez.
-La opción para que no se reproduzca la intro es "show game intro = off"
+Ahí puedes ponerlo a pantalla completa, activar el vsync, hacer que no salga la cutre-intro con "show game intro = off", etc.
 
 LIBOPENAL en la Raspberry Pi
 ============================
