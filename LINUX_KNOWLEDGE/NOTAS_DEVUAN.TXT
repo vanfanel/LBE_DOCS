@@ -231,7 +231,14 @@ video="HDMI-A-1:1280x720@60" mitigations=off elevator=noop console=tty1 root=PAR
 (¡¡ATENCIÓN!!: PUEDES COMPROBAR QUE EL ROOTFS SE HA MONTADO CON LOS PARÁMETROS QUE QUIERAS (te suele gustar montarlo con "sync" para que las
 escrituras sean inmediatas) SIMPLEMENTE MIRANDO LA SALIDA DEL COMANDO "mount" UNA VEZ ARRANCADO EL SISTEMA).
 
--Si quieres colores en la consola y un prompt sencillo, edita ~/.bashrc (el fichero viene comentado entero) y añade estas líneas al final:
+-Si quieres colores en la consola, un prompt sencillo y un mensaje de bienvenida, edita ~/.bashrc (el fichero viene comentado entero)
+y déjalo así (la parte de "...If not runnin interactively..." es necesaria para que el mensaje de bienvenida no interfiera con el scp):
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
 
 PS1='\w\$ '
 TERM=xterm-256color
@@ -239,6 +246,8 @@ color_prompt=yes
 export LS_OPTIONS='--color=auto'
 alias ls='ls $LS_OPTIONS'
 
--Si usas un script de inicio (es decir, no usas un init como tal), debes poner en /etc/hostname y en /etc/hosts el nombre del script de inicio
-en lugar de raspberry o lo que venga puesto ahí.
-Por ejemplo, si el scrip de inicio es /etc/minimal, pues pondrías minimal ahí.
+echo " ^_^    Welcome to GNU/Linux arm64."
+echo "(O,O)   No init manager is installed or needed, add any startup commands to /etc/minimal."
+echo "/)_)    Have fun!"
+echo " ¨ ¨ "
+
