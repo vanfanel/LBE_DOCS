@@ -166,8 +166,11 @@ ACTUALIZACIÓN DEL KERNEL Y EL FIRMWARE DE LA RASPBERRY EN DEVUAN
 Se usa el comando:
 fetch -u
 ...y te da opciones para actualizar lo que quieras.
-Por ejemplo, para actualizar al útimo kernel sería con:
+Por ejemplo, para actualizar al útimo kernel estable sería con:
 fetch -1
+Y para actualizar al último kernel inestable:
+fetch -2
+
 Al actualizarse el kernel también se actualiza en fw, los dtbs, etc.. que hay en /boot
 
 Para no liarte: verás que existe el paqueta raspberrypi-linux-image (si haces un dpkg -S /boot/vmlinuz... verás que pertenece a ese paquete),

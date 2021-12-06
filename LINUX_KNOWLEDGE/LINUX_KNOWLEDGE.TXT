@@ -1201,7 +1201,7 @@ Clonamos su repo de:
 git clone --depth 1 https://github.com/jonof/jfduke3d.git
 git submodule update --init
 
-Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 1024, comentando el while que hay debajo.
+Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 512, comentando el while que hay debajo.
 Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(), en la llamada a SDL_SetHint(), "nearest" por "linear".
 
 Compilamos con:
@@ -1222,7 +1222,7 @@ LOS CONTROLES CON 8BitDo SN30 Pro
 LEFT X - STRAFING - 50
 LEFT Y - MOVING - 50
 RIGHT X - TURNING - 12
-RIGHT Y - LOOKINGUPANDOWN - (-12) (Va en negativo para que NO invierta los ejes... ¡No estamos en un simulador de vuelo!)
+RIGHT Y - LOOKINGUPANDOWN - 12
 RIGHT TRIGGER - (+)FIRE
 --LOS BOTONES--
 A - JUMP
@@ -3045,6 +3045,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -
 make -j4
 
 Ahora, creamos ~/raze y metemos allí el ejecutable resultante ("raze"), raze.pk3, el directorio soundfonts, y el duke3d.rgp
+
+Para ejecutarlo con el renderer VULKAN, lo lanzamos con: +vid_preferbackend 1
+Puedes desactivar TODO el antialiasing, poner FPS a UNLIMITED, etc
 
 ***********EDUKE32: Duke Nukem 3D en la Raspberry Pi*********************************************************************************************
 
