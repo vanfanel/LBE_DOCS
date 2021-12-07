@@ -1,0 +1,18 @@
+ACTUALIZAR NUESTRO REPO ELIGIENDO COMMITS INDIVIDUALES DE OTRO REPO
+===================================================================
+
+Hemos clonado nuestro repo lo primero.
+Ahora:
+
+-Añadimos un nuevo branch en el que trabajaremos, al que llamo "updates", y nos cambiamos a ese branch:
+git branch updates master
+git checkout updates
+
+-Añadimos un remote, del que nos traeremos los cambios. Al remote lo llamo "upstream":
+git remote add upstream https://github.com/djyt/cannonball.git
+
+-Nos bajamos los sources del remote "upstream"
+git fetch upstream
+
+-Vamos haciendo cherry-picking de los cambios que queramos, uno a uno, por su hash:
+git cherry-pick $COMMIT_D
