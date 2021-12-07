@@ -6938,10 +6938,15 @@ Y luego lo ejecutaríamos como:
 ./hypseus singe vldp -framefile singe/timegal/timegal.txt -script singe/timegal/timegal.singe -fullscreen -nolog
 
 Si quieres juegos SINGE con buena calidad, están aquí: https://archive.org/details/@dirtbagxon
-Pero recuerda que si están en HD, como la Pi no descomprime mpeg2 por hardware, tienes que convetir su fichero de vídeo con algo como esto,
-siempre recurdando que ambas dimensiones sean divisoras de las originales (en este ejemplo, el vídeo de entrada era de 1440x1080):
+Pero recuerda que si están en HD, como la Pi no descomprime mpeg2 por hardware, tienes que convetir su fichero de vídeo con algo como esto:
 
-ffmpeg -i maddog.m2v -an -qscale:v 4 -b:v 6000k -vf scale=720:540 -codec:v mpeg2video maddogsd.m2v
+ffmpeg -i maddog.m2v -an -qscale:v 4 -b:v 6000k -vf scale=640:480 -codec:v mpeg2video maddogsd.m2v
+
+Lo ideal sería que ambas dimensiones de salida fueran divisoras de las originales, pero la Pi4 no puede con más de 640x480,
+ya que libmpeg2 no tiene forma de usar aceleración de descompresión de vídeo (la última version de libmpeg2 es de 2008 y no tiene ninguna
+optimización para ARM: para tener aceleración sería con libffmpeg).
+
+Para ajustar cosas del Maddog, puedes hacerlo durante el juego pulsando 9, o editando maddog.cfg
 
 COMPILAR HYPSEUS (Daphne)
 ==========================
