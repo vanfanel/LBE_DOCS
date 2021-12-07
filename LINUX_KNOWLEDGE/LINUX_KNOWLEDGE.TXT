@@ -6937,6 +6937,12 @@ Es decir, timegal quedaría metido en:
 Y luego lo ejecutaríamos como:
 ./hypseus singe vldp -framefile singe/timegal/timegal.txt -script singe/timegal/timegal.singe -fullscreen -nolog
 
+Si quieres juegos SINGE con buena calidad, están aquí: https://archive.org/details/@dirtbagxon
+Pero recuerda que si están en HD, como la Pi no descomprime mpeg2 por hardware, tienes que convetir su fichero de vídeo con algo como esto,
+siempre recurdando que ambas dimensiones sean divisoras de las originales (en este ejemplo, el vídeo de entrada era de 1440x1080):
+
+ffmpeg -i maddog.m2v -an -qscale:v 4 -b:v 6000k -vf scale=720:540 -codec:v mpeg2video maddogsd.m2v
+
 COMPILAR HYPSEUS (Daphne)
 ==========================
 
