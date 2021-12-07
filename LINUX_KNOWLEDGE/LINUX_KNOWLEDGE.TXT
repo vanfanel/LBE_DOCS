@@ -6651,6 +6651,15 @@ ConditionPathExistsGlob=
 
 Salvamos, reiniciamos, y alsamixer debería restaurar los niveles sin problemas. Comprueba que "systemctl status alsa-restore.service" se ha iniciado correctamente ahora.
 
+CONVERTIR VÍDEO MPEG2 A MENOS RESOLUCIÓN SIN PERDER CALIDAD
+============================================================
+
+El vídeo de entrada era de 1440x1080, así que lo convierto a 720x540, que es exactamente la mitad, y así mantengo el aspect ratio.
+
+ffmpeg -i maddog.m2v -an -qscale:v 4 -b:v 6000k -vf scale=720:540 -codec:v mpeg2video maddogsd.m2v
+
+Más ejemplos en: https://github.com/DirtBagXon/hypseus_singe_data
+
 FFMPEG con aceleración MMAL en aarch64
 ======================================
 
