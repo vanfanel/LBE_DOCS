@@ -5322,11 +5322,12 @@ Scanline gap brightness 0.75
 Bloom factor 1.20
 Input gamma 2.40
 Output gamma 2.20
+(OJO!!! Edita el shader y comentar "#define CURVATURE" para los cores más exigentes, como el de GBA!)
 
 O bien usamos el shader ZFast, que está en /crt, con los parámetros:
 Blur amount: 0.30
-Scanline Darkness - Low: 6
-Scanline Darkness - High: 8
+Scanline Darkness - Low: 4.00
+Scanline Darkness - High: 5.00
 Dark pixel brightnes boost: 1.25
 Mask effect amount: 0.25
 Mask/Scanline fade: 0.80
