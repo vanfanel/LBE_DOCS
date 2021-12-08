@@ -4112,7 +4112,7 @@ MUY IMPORTANTE: podemos localizar en qué paquete está un fichero, de manera qu
 Edita /etc/profile y deja la línea
 export PATH
 como
-export PATH:.
+export PATH=$PATH:.
 
 *************Obtener información sobre los paquetes*******************************************************************************
 
