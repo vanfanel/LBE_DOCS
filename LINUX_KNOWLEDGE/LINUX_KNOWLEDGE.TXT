@@ -256,6 +256,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON \
 -DCMAKE_CXX_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
 -DCMAKE_C_FLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer"
 
+ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
+
 ********CROSSCOMPILAR el core libretro Duckstation************
 
 Puede ser interesante porque no compila en Pi3 con 1GB ni con swap. Crosscompilamos en local.
@@ -5331,6 +5333,8 @@ Scanline Darkness - High: 5.00
 Dark pixel brightnes boost: 1.25
 Mask effect amount: 0.25
 Mask/Scanline fade: 0.80
+
+PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 
 *********No funcionan los input en RetroArch**********
 
