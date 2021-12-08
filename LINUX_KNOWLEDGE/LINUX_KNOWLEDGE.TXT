@@ -138,6 +138,12 @@ no puede generar audio en formato IEC958_SUBFRAME_LE. De hecho, ningún programa
 Se puede volcar y ver con:
 cat /sys/class/drm/card1-HDMI-A-0/edid | edid-decode
 
+******Sangre roja en el Metal Slug de Neo Geo*********************************************************************************
+
+En QUICK MENU->OPTIONS, ponemos NEO-GEO MODE a UNIBIOS.
+Ahora, una vez dentro del juego, mantenemos pulsado START y nos sale un menú donde podemos activar varias cosas,
+entre ellas la sangre roja o poner el juego en idiomas locos.
+
 ******Cargar juegos de GameMaker (GM) de Android en GNU/Linux****************************************************************
 
 OJO!!! Se tiene que hacer con un Linux de 32bits (armhf).
