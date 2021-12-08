@@ -48,7 +48,7 @@ CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomi
 --enable-mt32emu --enable-nuked-opl --disable-timidity --disable-flac --disable-alsa \
 --enable-vorbis --disable-mad --disable-tremor --disable-theoradec \
 --disable-taskbar --disable-sdlnet --disable-libcurl --enable-plugins --default-dynamic \
---disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,private,stark,ags,asylum
+--disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,private,stark,ags,asylum,twine
 
 Si no le pasas -force-opengl-game-es2, intentará usar OpenGL normal para el OpenGL-in-game, así que tendrías que editar el configure
 y cambiar -lGL por -lOpenGL.
@@ -68,6 +68,55 @@ Para compilar con LTO (hay que pasarle el AR, NM y RANLIB, si no falla al compil
 Tienes que hacer un par de cambios en el script configure:
 -ve a sección "Check for endianness" y pon _endian=little sin que se haga la comprobación (el problema es que el objeto generado para testear ahí el endianness,
 si lo compilas con -flto, no contendrá las cadenas que se buscan. No lo vamos a arreglar, así que ponemos el endianness manualmente y listo.
+
+
+*************Compilar core Scummvm para RetroArch******************************************************************************************
+
+-Clonamos el repo de Scummvm upstream:
+git clone --depth 1 https://github.com/scummvm/scummvm.git
+
+-Nos metemos en scummvm/backends/platform, y clonamos el repo del backend libretro en el directorio "libretro", y entramos en el directorio
+de compilación:
+cd scummvm/backends/platform
+git clone --depth 1 https://github.com/diablodiab/libretro-scummvm-backend.git libretro
+cd libretro/build
+
+-Creamos nuestra lista personal de engines que queremos tener activos, y la llamaremos custom.config
+(si necesitas activar otros engines, te puedes traer la línea correspondiente de otro .config de los que vienen incluidos):
+ENABLE_ADL = $(ENABLED)
+ENABLE_AGI = $(ENABLED)
+ENABLE_AGOS = $(ENABLED)
+ENABLE_DRASCULA = $(ENABLED)
+ENABLE_DREAMWEB = $(ENABLED)
+ENABLE_EOB = $(ENABLED)
+ENABLE_GOB = $(ENABLED)
+ENABLE_GLK = $(ENABLED)
+ENABLE_GRIM = $(ENABLED)
+ENABLE_GROOVIE = $(ENABLED)
+ENABLE_KYRA = $(ENABLED)
+ENABLE_LOL = $(ENABLED)
+ENABLE_MADE = $(ENABLED)
+ENABLE_MOHAWK = $(ENABLED)
+ENABLE_MYST = $(ENABLED)
+ENABLE_MYSTME = $(ENABLED)
+ENABLE_NEVERHOOD = $(ENABLED)
+ENABLE_RIVEN = $(DISABLED)
+ENABLE_SAGA = $(ENABLED)
+ENABLE_SCI = $(ENABLED)
+ENABLE_SCUMM = $(ENABLED)
+ENABLE_SCUMM_7_8 = $(ENABLED)
+ENABLE_SKY = $(ENABLED)
+ENABLE_SWORD1 = $(ENABLED)
+ENABLE_SWORD2 = $(ENABLED)
+ENABLE_TOON = $(ENABLED)
+ENABLE_ULTIMA = $(ENABLED)
+ENABLE_XEEN = $(ENABLED)
+
+-Editamos Makefile.common, y en vez de dejar que se haga include de otros .config, quitamos todo eso y que se haga include
+sólo de nuestro config custom:
+include $(LIBRETRO_DIR)/build/custom.config
+
+-Compilamos: make -j4
 
 *************Compilar con SDL2 estáticas en lugar de dinámicas*****************************************************************************
 
