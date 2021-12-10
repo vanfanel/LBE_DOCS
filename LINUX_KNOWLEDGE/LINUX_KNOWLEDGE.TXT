@@ -5332,7 +5332,6 @@ fi
 
 -Si ves que al cargar varios juegos tienes errores de EGL, pon gpu_mem=256 en el config.txt
 
-
 ****************************Retroarch*******************************
 
 Para PC:
@@ -6551,7 +6550,13 @@ El vídeo de entrada era de 1440x1080, así que lo convierto a 720x540, que es e
 
 ffmpeg -i maddog.m2v -an -qscale:v 4 -b:v 6000k -vf scale=720:540 -codec:v mpeg2video maddogsd.m2v
 
+La parte de "-qscale:v 4" es para un variable bitrate de calidad 4 (1 es la máxima, 31 la mínima).
+La parte de "-b:v 6000k" es para un bitrate constante máximo de 6000k, que el bitrate variable no superará.
+Así que si quito "-qscale:v 4", me quedaría un bitrate constante de 6000k.
+
+Más información: https://trac.ffmpeg.org/wiki/Encode/MPEG-4
 Más ejemplos en: https://github.com/DirtBagXon/hypseus_singe_data
+Más juegos: https://archive.org/details/@dirtbagxon
 
 FFMPEG con aceleración MMAL en aarch64
 ======================================
