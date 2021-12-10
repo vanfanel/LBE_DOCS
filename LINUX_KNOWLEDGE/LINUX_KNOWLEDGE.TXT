@@ -275,10 +275,11 @@ c:
 #####################
 
 El tema del teclado: para que las teclas se lean todas desde DOS, sin liarse con las hotkeys de RETROARCH,
-debes tener un HOTKEY ENABLE en SETTINGS->INPUT
+debes tener un "HOTKEY ENABLE" en "SETTINGS->INPUT"
 (yo tengo puestas las comillas simples) para que así al pulsar las teclas no se activen cosas del RetroArch a no ser que pulses
-el HOTKEY ENABLE que tengas configurado.
-SI SE ATASCAN LAS TECLAS DE DIRECCIÓN MIENTRAS JUEGAS CON TECLADO: Vete a SETTINGS->INPUT->PORT 1 CONTROLS y pon el DEVICE TYPE a KEYBOARD+MOUSE.
+el "HOTKEY ENABLE" que tengas configurado.
+PARA QUE NO SE ATASQUEN LAS TECLAS DE DIRECCIÓN MIENTRAS JUEGAS CON TECLADO: Vete a "QUICK MENU->CONTROLS->PORT 1 CONTROLS"
+y pon el DEVICE TYPE a "KEYBOARD+MOUSE", y dale a "SAVE CORE REMAP FILE".
 
 Juegos de DOS para bajar: te enganchas el TORRENT y bajas sólo los que vayas queriendo: https://www.retro-exo.com/exodos.html
 
