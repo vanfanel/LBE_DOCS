@@ -261,6 +261,8 @@ En TIMING->FRAME TIMING MODE->EXTERNAL
 La configuración general (ciclos, emulación de la CPU usada, tarjetas de vídeo y audio, etc) se hace desde las OPTIONS del core.
 Y luego, para que en el inicio monte un directorio y se meta en él, debes pasarle un .conf que sólo haga eso, así:
 
+Para el aspect ratio: Lo de siempre para todos los cores en general: en SETTINGS->VIDEO se pone en 4:3 para todo y fuera.  
+
 #######################
 # EMPIEZA EL DOS.CONF #
 #######################
