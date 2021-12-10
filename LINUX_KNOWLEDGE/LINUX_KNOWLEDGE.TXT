@@ -242,6 +242,46 @@ make -j4
 
 (OJO: requiere OpenGL 4.1 o algo así, olvídate de que funcione en la Raspberry Pi).
 
+*******Compilar el core DOSBOX-CORE**********************************
+
+Este sí sincroniza el vídeo bien (al fin).
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/realnc/dosbox-core.git
+
+Entramos en libretro y hacemos:
+
+make -j4 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0
+(Desactivo FLUIDSYNTH porque compila un montón de mierdas como libsndfile y demás que consumen CPU, con la emulación de GRAVIS vas que chutas en DOS).
+
+Para que todo vaya suave, en OPTIONS del core:
+En TIMING->FRAME TIMING MODE->EXTERNAL
+
+La configuración general (ciclos, emulación de la CPU usada, tarjetas de vídeo y audio, etc) se hace desde las OPTIONS del core.
+Y luego, para que en el inicio monte un directorio y se meta en él, debes pasarle un .conf que sólo haga eso, así:
+
+#######################
+# EMPIEZA EL DOS.CONF #
+#######################
+
+[autoexec]
+
+mount c: /home/manuel/dos/juegos
+c:
+
+#####################
+# ACABA EL DOS.CONF #
+#####################
+
+El tema del teclado: para que las teclas se lean todas desde DOS, sin liarse con las hotkeys de RETROARCH,
+debes tener un HOTKEY ENABLE en SETTINGS->INPUT
+(yo tengo puestas las comillas simples) para que así al pulsar las teclas no se activen cosas del RetroArch a no ser que pulses
+el HOTKEY ENABLE que tengas configurado.
+SI SE ATASCAN LAS TECLAS DE DIRECCIÓN MIENTRAS JUEGAS CON TECLADO: Vete a SETTINGS->INPUT->PORT 1 CONTROLS y pon el DEVICE TYPE a KEYBOARD+MOUSE.
+
+Juegos de DOS para bajar: te enganchas el TORRENT y bajas sólo los que vayas queriendo: https://www.retro-exo.com/exodos.html
+
 *******Compilar el core libretro Duckstation (Swanstation)***********
 
 (OJO: en el repo oficial de ducktstation tienes cores ya compilados, pero NO funcionan cuando Retrorch funciona sobre KMSDRM.
@@ -6845,6 +6885,24 @@ Libmpeg2 no tiene forma de usar aceleración de descompresión de vídeo (la úl
 optimización para ARM: para tener aceleración sería con libffmpeg).
 
 Para ajustar cosas del Maddog, puedes hacerlo durante el juego pulsando 9, o editando maddog.cfg
+
+EL CARGADOR para el Maddog para evitar desincronizaciones de audio al principio, y con los parámetros necesariospara que vaya bien, es así:
+
+########################
+#INICIO CARGARDO MADDOG#
+########################
+
+sync
+
+# Send the code and the audio to the cache to avoid initial desync problems.
+cat singe/maddog-hd/*.singe > /dev/null
+cat singe/maddog-hd/*.ogg > /dev/null
+
+./hypseus singe vldp -framefile singe/maddog-hd/maddog-hd.txt -script singe/maddog-hd/maddog-hd.singe -fullscreen -nolog -oversize_overlay -manymouse -blend_sprites
+
+#####################
+#FIN CARGARDO MADDOG#
+#####################
 
 COMPILAR HYPSEUS (Daphne)
 ==========================
