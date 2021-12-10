@@ -1151,13 +1151,6 @@ Y recuerda que puedes quitar todas las hotkeys una a una poniéndote encima de e
 Los juegos que se usan (en ZIP) son los de la colección EXODOS, que está aquí:
 https://exodos.the-eye.us/
 
-CORES RETROARCH A LOS QUE HAY QUE TOCARLE EL TAMAÑO DEL BUFFER DE AUDIO
-=======================================================================
-
-mGBA: edita src/platform/libretro/libretro.c y pon SAMPLES a 256
-
-TYRQUAKE: edit common/libretro.c y pon AUDIO_BUFFER_SIZE a 256
-
 CORE DOSBOX RETROARCH: ACTIVAR DYNREC
 =======================================
 
@@ -1405,76 +1398,6 @@ sudo make install -j8
 
 Y listo. Con el nuevo gdb ya podemos debugear cosas compiladas con el distcc, ya que encuentra los debug simbols sin problemas y podemos ir línea a línea y todo eso.
 
-*******ACTUALIZAR GCC a 4.9 en RASPBIAN**********************************************************************************************************************
-
-Estas instrucciones son cojonudas porque nos permiten actualizar el compilador y librerías asociadas sin pasar todo el sistema a jessie!
-Las he sacado de: http://somewideopenspace.wordpress.com/2014/02/28/gcc-4-8-on-raspberry-pi-wheezy/
-Originalmente eran para actualizar a 4.8, pero naturalmente ahora ya se puede actualizar a 4.9.
-
-Ever needed gcc/g++ 4.9 on your wheezy? Then do
-
-sudo nano /etc/apt/sources.list
-
-Change content to
-
-deb http://mirrordirector.raspbian.org/raspbian/ wheezy main contrib non-free rpi
-deb http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi
-# Source repository to add
-deb-src http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi
-deb http://mirrordirector.raspbian.org/raspbian/ jessie main contrib non-free rpi
-deb http://archive.raspbian.org/raspbian jessie main contrib non-free rpi
-# Source repository to add
-deb-src http://archive.raspbian.org/raspbian jessie main contrib non-free rpi
-
-Add preferences file
-
-sudo nano /etc/apt/preferences
-
-and insert
-
-Package: *
-Pin: release n=wheezy
-Pin-Priority: 900
-Package: *
-Pin: release n=jessie
-Pin-Priority: 300
-Package: *
-Pin: release o=Raspbian
-Pin-Priority: -10
-
-update package list
-
-sudo apt-get update
-
-Install gcc/g++ 4.9 from jessie repositories
-
-sudo apt-get install -t jessie gcc-4.9 g++-4.9
-sudo apt-get install -t jessie gdb
-
-To remove gcc/g++ alternative configuration (if there is any, there is none by default)
-
-sudo update-alternatives --remove-all gcc 
-sudo update-alternatives --remove-all g++
-
-sudo apt-get purge gcc-4.7
-sudo apt-get purge gcc-4.6
-..etc...
-
-Install alternatives
-
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 50
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 50
-sudo update-alternatives --install /usr/bin/cpp cpp /usr/bin/g++-4.9 50
-
-Now 4.9 is your default compiler. You can verify it by
-
-sudo gcc --version
-
-If you want to change it, you can
-
-sudo update-alternatives --config gcc
-sudo update-alternatives --config g++
-
 *******Profiling de programas usando OPROFILE*********
 
 Puede que necesitemos activado el soporte de Oprofile en el kernel: PARA PROGRAMAS NORMALES NO PARECE HACER FALTA ESTO.
@@ -1502,7 +1425,7 @@ Si te salen cosas como
 eso quiere decir que el 69% de la CPU se está usando en una función de libc, pero como no tienes los debug symbols de libc instalados, no te la muestra.
 Así que instala libc6-dbg y te saldrán todas las llamadas.
 
-*******Añadir username, hostname  y ruta actual al prompt del bash***********************************************************************************************
+*******Añadir username, hostname  y ruta actual al prompt del bash************************************************
 Añade esto a .bash_profile:
 
 PS1="\u@\H\w$ "
@@ -1750,41 +1673,6 @@ pw: ymcAunpgwsfsdDFHK4FSHPHJqxM=
 Ahora ya podemos agregar contactos de whatsapp con normalidad!
 
 Si tienes problemas de conectividad, edita ~/.purple/accounts.xml y busca el servidor, versión de android, puerto...
-
-*******Compilar el Atari800 para la Raspberry Pi********************************************************************
-
-Si te quieres ahorrar muchos pasos, tienes un parche contra la versión 3.1.0 en el correo, llamado atari800-refreshrate.patch
-Si lo aplicas, sólo te queda cambiar los CFLAGS en el Makefile tras hacer el ./configure --target=rpi --host=arm-linux
-
-¡¡CUIDADO, si usas tu backend dispmanx, has de poner:  ./configure --target=rpi-dispmanx --host=arm-linux
-
-Este parche incluye los arreglos a configure y configure.ac para que no intente cross-compilar.
-Ahora bien: si quieres hacer las cosas por las malas, sigue debajo de esta línea...
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Como queremos ajustar la frecuencia de refresco del emulador, nos toca recompilarlo. Para ello, leemos DOC/BUILD.RPI que hay que hacer:
-./configure --target=rpi --host=arm-linux
-
-PERO ANTES tenemos que retocar el configure.ac, para que no intente cross-compilar. Así que cambiamos la seccion correspondiente dejándola así:
-TAMBIÉN EDITAMOS configure, y cambiamos lo mismo.
-
-if [[ "$a8_target" = "rpi" ]]; then
-     CC="gcc"
-     CFLAGS="$CFLAGS -I/opt/vc/include -I/usr/include/SDL -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads"
-     LDFLAGS="$LDFLAGS -Wl,--unresolved-symbols=ignore-in-shared-libs -L/opt/vc/lib"
-fi
-
-Ahora ya ejecutamos el ./autogen.sh y después, con nuestro nuevo configure, hacemos:
-./configure --target=rpi --host=arm-linux
-Y ya podemos compilar.
-
-Nos dará un error en una línea que llama a SDL_GetPixelFormat(). Comentamos la línea y a correr.
-
-Ajustamos el framerate, editando para ello el atari.h y cambiando 
-#define Atari800_FPS_NTSC 59.9227434
-por
-#define Atari800_FPS_NTSC 60.002399
-
-El nuevo valor de Atari800_FPS_NTSC se ha obtenido de RetroArch.
 
 *********NO funciona la conexión con una tarjeta de broadcom (módulo b43)***********
 
@@ -5552,12 +5440,6 @@ Se usa un opensource que se llama idevicerestore. Tiene dependencias y mierdas v
 
 sudo idevicerestore iPad2\,5_9.3.3_13G34_Restore.ipsw
 
-Retroarch en Cubieboard2
-======================
-
-./configure --enable-gles --enable-mali_fbdev --disable-x11 --disable-sdl2 --enable-floathard --disable-ffmpeg --disable-netplay --enable-udev --disable-sdl --disable-pulse\ 
---disable-oss --disable-freetype --disable-7zip --disable-libxml2
-
 LA PESADILLA SYSTEMD: COMO LIBRARNOS DE ELLA
 =============================================
 
@@ -7431,7 +7313,7 @@ fwupdmgr get-updates
 Y si hay algo nuevo, pues se actualizará. Más fácil imposible.
 
 Poner RETROARCH en el arranque de una manera moderna, basado en systemd
-=============================================================
+=======================================================================
 
 Creamos el fichero del servicio en etc/systemd/system/retroarch.service, con este contenido:
 
