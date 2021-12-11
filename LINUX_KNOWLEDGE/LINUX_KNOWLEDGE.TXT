@@ -7356,8 +7356,8 @@ Ahora ya sobreescribe los archivos desde el anvil o desde el zip de la actualiza
 
 Copiamos desde el Anvil of Down los archivos LOADPATS.EXE y PATCHES.INI
 
-Ahora, en el dosbox.conf, tenemos que poner como modelo una sounblaster inferior, la sb1 o la sb2 o la sbpro valen... la sb16 NO, porque no se oirá
-a la vez que la música MIDI de la GUS.
+Ahora, en el dosbox.conf, tenemos que poner como modelo una sounblaster inferior, la sb1 o la sb2 o la sbpro valen... la sb16 NO,
+porque no se oirá a la vez que la música MIDI de la GUS.
 También tenemos que poner la Sound Blaster en la dirección 240 y la GUS en la 220, o no funcionará el MIDI de la GUS.
 
 En el setup del dm2, dejamos que detecte la sound blaster, y luego seleccionamos como MIDI la GUS, sólo como MIDI!
