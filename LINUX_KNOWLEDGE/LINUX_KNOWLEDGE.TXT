@@ -245,6 +245,9 @@ make -j4
 *******Compilar el core DOSBOX-CORE**********************************
 
 Este sí sincroniza el vídeo bien (al fin).
+(OJO! ¡¡Si estás haciendo experimentos en una TTY con RetroArch en KMS/DRM, mientras tienes las X11 corriendo en otra TTY,
+haz de vez en cuando un EXIT en la TTY en la que corres RetroArch, o empezará a ir todo a tirones al cabo de unas cuantas
+ejecuciones del RetroArch, y TE VOLVERÁS LOCO BUSCANDO LA EXPLICACIÓN!!)
 
 Clonamos su repo:
 
@@ -257,6 +260,8 @@ make -j4 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 WITH_FLUIDSYNTH=0 BUNDLED
 
 Para que todo vaya suave, en OPTIONS del core:
 En TIMING->FRAME TIMING MODE->EXTERNAL
+Y para que los juegos a 70HZ también vayan suaves, "SETTINGS->AUDIO->SYNCHRONIZATION->MAXIUM TIMING SKEW" a 20% o más,
+para que resamplee de los 70HZ a los ~60HZ de nuestro monitor (a cambio de la suavidad, el se oirá sonido un poco ralentizaaaaaado).
 
 La configuración general (ciclos, emulación de la CPU usada, tarjetas de vídeo y audio, etc) se hace desde las OPTIONS del core.
 Y luego, para que en el inicio monte un directorio y se meta en él, debes pasarle un .conf que sólo haga eso, así:
