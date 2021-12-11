@@ -6548,6 +6548,12 @@ lavc:h264_mmal
 en la lista de decoders si hacemos:
 mpv --vd=help
 
+SELECCIONAR LA SALIDA DE AUDIO CON MPV
+======================================
+
+Podemos ver los dispositivos de salida con: mpv --audio-device=help
+Y elegit el que queramos de la lista con: mpv --audio-device=<NOMBRE_DISPOSITIVO>
+
 PROBLEMA: UN PROGRAMA NO ENCUENTRA UNA LIBRERÍA QUE SÍ ESTÁ INSTALADA Y CONTRA LA QUE SE HA LINKADO DINÁMICAMENTE SIN PROBLEMAS
 ================================================================================================================================
 
