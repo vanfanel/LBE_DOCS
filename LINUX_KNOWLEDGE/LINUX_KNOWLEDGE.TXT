@@ -7816,6 +7816,21 @@ https://www.lwjgl.org/customize
 Generamos el paquete, y en los *natives de cada librería tienes los .so que necesitas.
 SUSTUTUYE las versiones que trae el juego con las que acabas de generar.
 
+ACCEDER A DISPOSITIVOS USB DESDE ORACLE VIRTUALBOX
+==================================================
+
+-Añadir al usuario al grupo vboxusers:
+sudo usermod -a -G vboxusers manuel
+
+-Instalar, en el VirtualBox, las "Oracle VM Virtual Box Extension Pack", correspondiente a la versión de VirtualBox que tengas instalada
+y que puedes descargar aquí:
+https://download.virtualbox.org/virtualbox
+
+-Instalar, en la máquina virtual, las "Virtual Box Guess Additions", que vienen en una ISO llamada "VBoxGuestAdditions.iso"
+correspondiente a la versión de VirtualBox que tengamos instalada, y que puedes descargar aquí:
+https://download.virtualbox.org/virtualbox/
+Tienes que montar la ISO desde la barra superior cuando estés ejecutando la máquina, en DEVICES->OPTICAL DRIVES.
+
 AMS (Advanced Mac Substitute) en LINUX
 =======================================
 

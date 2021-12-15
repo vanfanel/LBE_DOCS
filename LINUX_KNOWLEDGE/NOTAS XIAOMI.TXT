@@ -1,0 +1,27 @@
+ACTIVAR DEVELOPER MODE
+======================
+
+Settings->About Phone->MIUI Version (7 veces)
+
+Y las opciones de desarrollo están en:
+Settings->Additional settings->Developer options
+
+Y ahí activamos:
+OEM UNLOCKING (para poder instalar el bootloader que nos salga de los cojones) 
+USB Debugging
+
+Y ahora DESBLOQUEAMOS EL BOOTLOADER DE VERDAD:
+-Nos registramos en XIAOMI con una cuenta aquí: https://account.xiaomi.com/pass/serviceLogin
+ Nos vamos a Settings->Additional settings->Developer options->"MI unlocking status" y ahí dale a "add account and device",
+ de manera que emparejemos el teléfono con la cuenta MI.
+
+-Bajamos la tool cross-platform (xiaomitool v2) de aquí: https://xiaomitool.com/V2/latest
+
+-Con el móvil iniciado normalmente, ejecutamos xiaomitool y seguimos las instrucciones en pantalla:
+
+
+
+SI HAY QUE REINICIAR EL MODO FASTOOT PARA ALGO
+==============================================
+-Reiniciamos en modo fastboot (pulsar "bajar volúmen" durante el reinicio)
+-PARA SALIR DE MODO FASTBOOT: Mantener pulsado el botón de encendido y "bajar volúmen" durante 20 segundos hasta que el móvil se reinicie.
