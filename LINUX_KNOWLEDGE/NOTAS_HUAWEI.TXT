@@ -1,0 +1,26 @@
+NOTA: Experimentos hechos con HUAWEI G630-U20
+
+Desde posición de APAGADO (no vale reiniciar):
+RECOVERY MODE: subir volúmen + power
+FASTBOOT MODE: bajar volúmen + power
+
+DESBLOQUEAR EL BOOTLOADER 
+=========================
+
+PARTE 1: CONSEGUIR EL CÓDIGO DE DESBLOQUEO DEL BOOTLOADER:
+La única fuente de información fiable para el estado actual del problema es:
+https://wiki.postmarketos.org/index.php?title=Bootloader&mobileaction=toggle_view_desktop#Huawei
+(Usando el DC-UNLOCKER hay que pagar y es para Windows. No tocar ni con un palo).
+La única manera válida de obtenerlo CON MUCHA PACIENDIA es usar esto:
+https://github.com/haexhub/huaweiBootloaderHack
+-Activamos las opciones de desarrollador, el USB debugging, y conectamos el teléfono (arrancado normalmente) al PC.
+-Pillamos el IMEI, que viene quitando la tapa o marcando *#06#
+-Ejecutamos: python3 unlock.py
+(NOTA: No funciona porque al fallar el desbloqueo el teléfono se rinicia, así que no se puede hacer el bruteforce).
+
+PARTE 2: EL DESBLOQUEO EN SÍ:
+-Entramos en modo fastboot (subir volúmen + power)
+-Comprobamos que el móvil está siendo detectado: fastboot devices
+-Intentamos desbloquear el flahing: fastboot flashing unlock 
+-Comprobamos si el bootloader está bloqueado o no: fastboot oem device-info
+-Ejecutamos el comando: fastboot oem unlock <código de desbloqueo del bootloader>
