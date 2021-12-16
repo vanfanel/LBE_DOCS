@@ -7831,6 +7831,8 @@ correspondiente a la versión de VirtualBox que tengamos instalada, y que puedes
 https://download.virtualbox.org/virtualbox/
 Tienes que montar la ISO desde la barra superior cuando estés ejecutando la máquina, en DEVICES->OPTICAL DRIVES.
 
+-OJO: Usa USB 2.0 en los dispositivos USB del VirtualBox (en Settings->USB), si usas USB 3.0 probablemente no funcione.
+
 AMS (Advanced Mac Substitute) en LINUX
 =======================================
 
