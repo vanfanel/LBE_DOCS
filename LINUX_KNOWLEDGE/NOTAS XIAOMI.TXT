@@ -6,6 +6,12 @@ Settings->About Phone->MIUI Version (7 veces)
 Y las opciones de desarrollo están en:
 Settings->Additional settings->Developer options
 
+DESBLOQUEAR EL BOOTLOADER
+=========================
+
+Vamos a las opciones de desarrollo, que están en:
+Settings->Additional settings->Developer Options
+
 Y ahí activamos:
 OEM UNLOCKING (para poder instalar el bootloader que nos salga de los cojones) 
 USB Debugging
@@ -51,3 +57,24 @@ y luego click otra vez para activarlo de nuevo).
 En ese momento, el teléfono será reconocido por el MiUsbDriver.exe, y se instalará el driver automáticamente.
 
 -Ya podemos hacer click en Miflash_unlock.exe, loguearnos en la cuenta MI, y desbloquear el bootloader.
+
+INSTALAR TWRP Y LINEAE OS
+=========================
+
+Para el REDMI 9A, buscamos todo por el codename, que es DANDELION.
+
+El custom bootloader TWRP para DANDELION está junto con sus instrucciones en:
+https://www.cyanogenmods.org/twrp-recovery-redmi-9a/
+
+La ROM de LINEAGE OS para DANDELION está en:
+https://forum.xda-developers.com/t/rom-unofficial-11-0-lineageos-18-1-for-redmi-9a-9c-garden-stable.4362597/ 
+
+También tienes este vídeo tutorial que funciona e incluye los archivos necesarios:
+https://www.youtube.com/watch?v=Rw838oP53ZY
+
+PARTE 1 - INSTALAR TWRP
+-Arrancar en modo fastboot (ver instrucciones arriba)
+-Flasheamos con: fastboot flash recovery twrp-3.4.x-xx.img
+
+PARTE 2 - INSTALAR LINEAGE OS
+-Arrancamos en TWRP (power + subil volúmen + bajar volúmen) con el ZIP copiado a una microSD, y lo instalamos desde TWRP como siempre.
