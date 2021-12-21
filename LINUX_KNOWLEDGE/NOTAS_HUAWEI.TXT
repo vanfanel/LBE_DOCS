@@ -11,12 +11,7 @@ PARTE 1: CONSEGUIR EL CÓDIGO DE DESBLOQUEO DEL BOOTLOADER:
 La única fuente de información fiable para el estado actual del problema es:
 https://wiki.postmarketos.org/index.php?title=Bootloader&mobileaction=toggle_view_desktop#Huawei
 (Usando el DC-UNLOCKER hay que pagar y es para Windows. No tocar ni con un palo).
-La única manera válida de obtenerlo CON MUCHA PACIENDIA es usar esto:
-https://github.com/haexhub/huaweiBootloaderHack
--Activamos las opciones de desarrollador, el USB debugging, y conectamos el teléfono (arrancado normalmente) al PC.
--Pillamos el IMEI, que viene quitando la tapa o marcando *#06#
--Ejecutamos: python3 unlock.py
-(NOTA: No funciona porque al fallar el desbloqueo el teléfono se rinicia, así que no se puede hacer el bruteforce).
+Los ataques por fuerza bruta no funcionan porque el teléfono se reinicia después de cada intento fallido.
 
 PARTE 2: EL DESBLOQUEO EN SÍ:
 -Entramos en modo fastboot (subir volúmen + power)

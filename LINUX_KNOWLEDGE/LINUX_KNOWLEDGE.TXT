@@ -5270,10 +5270,10 @@ Output gamma 2.20
 
 O bien usamos el shader ZFast, que está en /crt, con los parámetros:
 Blur amount: 0.30
-Scanline Darkness - Low: 4.00
-Scanline Darkness - High: 5.00
+Scanline Darkness - Low: 0.00
+Scanline Darkness - High: 0.00
 Dark pixel brightnes boost: 1.25
-Mask effect amount: 0.25
+Mask effect amount: 0.75
 Mask/Scanline fade: 0.80
 
 PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
@@ -5296,6 +5296,14 @@ video_fullscreen_x = "1280"
 video_fullscreen_y = "720"
 
 Y así ya no cambiará el modo de vídeo.
+
+**********RETROARCH no salva las partidas de SRAM a veces**************************
+
+Hay que tener en cuenta que RETROARCH no salva la SRAM automáticamente, sino que vuelca la SRAM al salir del core que sea.
+Para tener algo parecido a un volcado de SRAM automático, activa SETTINGS->SAVING->SaveRAM Autosave Interval,
+que por defecto deberían ser unos 10s.
+Sólo escribe en disco si encuentra diferencias en la SRAM (así que no escribe continuamente!) e incluso así, es una tarea que
+va en su propio thread si tienes activada la opción SETTINGS->USER INTERFACE->Threaded Tasks (cosa que SIEMPRE deberías tener activada).
 
 ****************************Cómo compilar libmodplug*******************************
 
