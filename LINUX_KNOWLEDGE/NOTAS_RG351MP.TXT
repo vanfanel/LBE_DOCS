@@ -27,7 +27,9 @@ Mask/Scanline fade: 0.80
 
 GAMEBOY Y GAMEBOY COLOR BIEN
 ============================
-En PER SYSTEM ADVANVCED CONFIGURATION, todo en AUTO menos DECORATION SET que lo ponemos a DEFAULT en ambos sistemas.
+En PER SYSTEM ADVANVCED CONFIGURATION, todo en AUTO excepto:
+-SHADER SET que lo ponemos a NONE.
+-DECORATION SET que lo ponemos a DEFAULT en ambos sistemas.
 
 MEGADRIVE Y MASTER SYSTEM BIEN
 ==============================
