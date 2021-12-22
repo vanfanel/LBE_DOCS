@@ -1,11 +1,12 @@
 PREPARAR LA TARJETA SD
 ======================
 
-No hace falta ningún programa de Windows. Simplemente hazle este layout con gparted (en principio crea las particiones como tipo EXT4, da igual, luego lo vas a cambiar con FDISK):
+No hace falta ningún programa de Windows. Simplemente hazle este layout con GPARTED.
+(OJO!!! Crea las particiones como tipo EXT4, da igual, luego lo vas a cambiar con FDISK. GPARTED NO SOPORTA EXFAT.):
 
 New layout is pretty simple:
-Part1: Start from 1MB till the end of SD card minus 1MB at the end. Type: exFAT
-Part2: Starts from last 1MB of SD card with size of 1MB. Type: 0xA2
+Part1: Starts from 1MB till the end of SD card minus 1MB at the end. Type: exFAT (code 7)
+Part2: Starts from last 1MB of SD card with size of 1MB. Type: Unknown (A2, no existe pero es lo que hay que poner) 
 And now dd u-boot binary to Part2.
 
 Usando FDISK, pon el tipo de partición 7 para la primera partición (exFAT) y el tipo A2 para la segunda. Te dirá que el tipo 2A es desconocido, da igual porque la vas a machacar con el u-boot.img. 

@@ -9,20 +9,27 @@ AUDIO: driver ALSA, 44100 Hz, 32 ms, resampler quality normal
 Los shaders custom los puedes meter en STORAGE/shaders
 
 En el menú de Emulation Station:
-INTEGER SCALING: OFF
+INTEGER SCALING: ON
 GAME ASPECT RATIO: 4/3 (queremos aprovechar toda la pantalla, y con el bilinear filtering y el shader ZFAST con máscara a saco,
 se ve muy bien sin bandas ni nada).
 SHADER SET: RETROARCH.GLSLP (ya que lo vamos a controlar desde dentro de RetroArch, que es el que genera RETROARCH.GLSLP;
 Así que SI NO TIENES "RETROARCH.GLSLP", entra en RetroArch y salva un SHADER GLOBAL PRESET en QUICK MENU->SHADERS->SAVE->SAVE GLOBAL PRESET,
 con cualquier shader cargado, y ya tienes un "RETROARCH.GLSLP" generado. Ahora ya puedes elegir el shader que quieras y sus parámetros
 desde dentro de RetroArch, y salvarlo como un SHADER GLOBAR PRESET y listo).
-Yo uso CRT/ZFAST con estos parámetros:
+
+Yo uso CRT/FAKELOTTES con sólo unos cambios en los parámetros (los demás los dejo por defecto):
+
+Scanline Intensity: 0.10
+WarpX: 0
+WarpY: 0
+
+O bien CRT/ZFAST con estos parámetros:
 
 Blur amount: 0.30
 Scanline Darkness - Low: 0.00
 Scanline Darkness - High: 0.00
 Dark pixel brightnes boost: 1.25
-Mask effect amount: 0.75
+Mask effect amount: 0.30
 Mask/Scanline fade: 0.80
 
 GAMEBOY Y GAMEBOY COLOR BIEN
