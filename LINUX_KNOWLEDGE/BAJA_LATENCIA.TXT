@@ -71,9 +71,7 @@ Pero suelo considerar el VCHIQ como "housekeeping", por lo que en la 0 está bie
 
 Para ver mejor estas cosas en TOP, a parte de activar que se vea la CPU (F y luego darle a D sobre la opción), puedes poner un periodo más pequeño pusaldo D directamente y
 metiendo algo como 0.1.
-¡¡¡¡OJO!!!! : Un proceso con prioridad -80 tiene prioridad de tiempo real: LAS PRIORIDADES NEGATIVAS SON DE TIEMPO REAL, ES DECIR, LAS MÁS ALTAS QUE EL KERNEL PUEDE
-OFRECER (hasta donde su preemptiveness lo permita, claro: cuando más preemtivable es un kernel, más puede garantizar que, al menos él, no va a interrumpir a la tarea de
-prioridad de tiempo real).
+¡¡¡¡OJO!!!! : Un proceso con prioridad -80 tiene prioridad de tiempo real: LAS PRIORIDADES NEGATIVAS SON DE TIEMPO REAL, ES DECIR, LAS MÁS ALTAS QUE EL KERNEL PUEDE OFRECER (hasta donde su preemptiveness lo permita, claro: cuando más preemtivable es un kernel, más puede garantizar que, al menos él, no va a interrumpir a la tarea de prioridad de tiempo real).
 
 EL RESÚMEN QUE SIGUE ES TODO LO QUE TIENES QUE SABER:
 EN RESÚMEN: HABIENDO AISLADO LAS CPUs DEL 1 al 3 CON "isolcpus=1-3" EN CMDLINE.TXT: 
