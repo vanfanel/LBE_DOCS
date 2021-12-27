@@ -5354,6 +5354,12 @@ disable_overscan=1
 Para establecer una espera en segundos, puedes añadir en recovery.cmdline:
 bootmenutimeout=60
 
+Y para que no busque actualizaciones, puedes añadir en recovery.cmdline:
+no_update
+
+Tienes todas las posibles opciones de recovery.cmdline en:
+https://github.com/procount/pinn/blob/master/README_PINN.md#cmdline-options
+
 ****************************Cómo compilar libmodplug*******************************
 
 Cambia automake-1.13 a automake-1.11 en el Makefile.
