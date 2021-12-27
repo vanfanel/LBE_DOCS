@@ -5344,6 +5344,16 @@ que por defecto deberían ser unos 10s.
 Sólo escribe en disco si encuentra diferencias en la SRAM (así que no escribe continuamente!) e incluso así, es una tarea que
 va en su propio thread si tienes activada la opción SETTINGS->USER INTERFACE->Threaded Tasks (cosa que SIEMPRE deberías tener activada).
 
+****************************Para configurar PINN después de actualizarlo***********
+
+Montamos /dev/sdb1, y ponemos en config.txt:
+
+disable_splash=1
+disable_overscan=1
+
+Para establecer una espera en segundos, puedes añadir en recovery.cmdline:
+bootmenutimeout=60
+
 ****************************Cómo compilar libmodplug*******************************
 
 Cambia automake-1.13 a automake-1.11 en el Makefile.

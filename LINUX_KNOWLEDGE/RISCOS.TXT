@@ -118,3 +118,12 @@ En el menú de abajo a la derecha, ve a:
 Configure→Boot→Run
 Y elimina:
 SDFS::RISCOSpi.$.Network.!ReDHCP
+
+MONTAR UNA ISO EN RISCOS
+========================
+
+Útil para las ISOS de RiscWorld.
+-Primero, ponle a la ISO el file type &DF6
+-Ahora, añade un CD-ROM en la configuración de RISC OS
+-Ahora carga el CDFaker (es una herramienta de Jon Abbott, lo tienes en el foro de ADFFS o en !PackMan)
+-Haz doble click en la ISO, y luego haz click en el icono del CD-ROM abajo en la barra de Risc OS, y ahí tienes los contenidos de la ISO. 
