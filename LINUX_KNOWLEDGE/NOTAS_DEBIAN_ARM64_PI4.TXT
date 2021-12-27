@@ -5,7 +5,7 @@ En GNU/LInux en general, la arquitectura ARM de 64 bits se llama aarch64, con do
 arquitectura objetivo que se le pasa a debootstrap, por ejemplo. Sin embargo, el ejecutable de qemu-static lleva el subfijo aarch64, porque no es algo propio de Debian.
 
 PARTE 1: EL KERNEL AARCH64
-=========================
+==========================
 
 Seguimos estos dos tutoriales:
 http://www.tal.org/tutorials/raspberry-pi3-build-64-bit-kernel

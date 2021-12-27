@@ -111,6 +111,32 @@ sudo rm /etc/apt/sources.list.d/vscode.list
 sudo rm /etc/apt/trusted.gpg.d/microsoft.gpg
 sudo apt update
 
+******Hacer que lo que conectamos en un puerto USB siempre aparezca en un nodo de /dev determinado***************************
+
+Mediante UDEV rules. Por ejemplo, para joysticks compatibles con XBOX360 (como el 8bitdo SN30Pro), hacemos esto.
+
+1- Obtenemos la información que necesitamos ejecutando: 
+
+udevadm info --name=/dev/input/js0 --attribute-walk
+
+Mirando el segundo device (es decir, el segundo bloque "looking at parent device...", nos interesan estas cosas:
+
+ATTRS{phys}=="usb-0000:01:00.0-1.3/input0"
+ATTRS{name}=="Microsoft X-Box 360 pad"
+
+También nos interesa el SUBSYSTEM, que vemos que es "input".
+
+2) Creamos /etc/udev/rules.d/80-joysticks.rules con un contenido como así:
+ 
+SUBSYSTEMS=="input", ATTRS{name}=="Microsoft X-Box 360 pad", ATTRS{phys}=="usb-0000:01:00.0-1.3/input0", NAME="input/js8"
+
+Recargamos las UDEV RULES sin reiniciar, así:
+
+udevadm control --reload-rules && udevadm trigger
+
+Podemos monitorear los eventos de UDEV con:
+udevadm monitor -p
+
 ******Probar los dispositivos de audio con speaker-test**********************************************************************
 
 Puedes ver los dispositivos disponibles con: aplay -L
@@ -1995,6 +2021,7 @@ sudo mkfs.msdos -s 64 /dev/sdb1
 ya que el tamaño de bloque es de 512bytes y -s expresa el tamaño de un sector (cluster) en bloques.
 
 **********Seleccionar columnas en VIM*********************************************************************************************************
+
 Esto es la hostia. Usa CTRL+V para entrar en VISUAL BLOCK MODE y seleccionar columnas. Ya las puedes borrar o hacer lo que quieras con ellas.
 
 **********Search and replace (buscar y sustituir) en VIM******************************************************************************************
@@ -5248,7 +5275,6 @@ sudo service lightdm stop
 
 y para volver, obviamente, start.
 
-
 **********Configuración óptima de RetroArch************
 
 VIDEO: driver VULKAN, VSYNC off, MAX_SWAPCHAIN 1
@@ -5286,6 +5312,19 @@ Ahora podemos hacer
 sudo udevadm control --reload-rules
 sudo chmod 666 /dev/input/event*
 o simplemente reiniciar.
+
+*********Conservar la asignación de mandos a los puertos de RetroArch***************************************
+
+La idea es que, si tenemos dos mandos por ejemplo, uno de ellos sea siempre el del puerto 1 de RetroArch y el otro sea el del puerto 2 de RetroArch.
+
+¡¡¡NO HACE FALTA ANDAR CON REGLAS DE UDEV!!!
+
+Nos vamos a SETTINGS->INPUT->PORT 1 CONTROLS y en DEVICE INDEX seleccionamos el mando que queramos que sea siempre
+el del puerto 1.
+Repetimos para  SETTINGS->INPUT->PORT 2 CONTROLS y su DEVICE INDEX.
+
+Puedes quitar y poner los mandos como quieras, etc... y la configuración se conserva siempre. Si inicias RetroArch con uno solo de los dos mandos
+conectado, tampoco hay problema y sigue en su puerto correcto.
 
 *********Configurar RETROARCH para que cuando usas el driver de video VULKAN no cambie la resolución********
 
