@@ -127,3 +127,15 @@ MONTAR UNA ISO EN RISCOS
 -Ahora, añade un CD-ROM en la configuración de RISC OS
 -Ahora carga el CDFaker (es una herramienta de Jon Abbott, lo tienes en el foro de ADFFS o en !PackMan)
 -Haz doble click en la ISO, y luego haz click en el icono del CD-ROM abajo en la barra de Risc OS, y ahí tienes los contenidos de la ISO. 
+
+STARFIGHTER 3000 y STARFIGHTER 30000 TNG SIN TEARING
+====================================================
+
+Ambos juegos usan modos de baja resolución. Para soportar esos modos podrías usar el módulo AnyMode, PERO de esa manera funcionarían con tearing y/o
+flickering. Así que NO USES ANYMODE CON ELLOS.
+Así que lo mejor es TENER ADFFS CARGADO EN AMBOS CASOS: de esa manera, ADFFS hace un takeover de los modos que usan los juegos, y van sin tearing.
+
+Para ejecutar SF 3000 TNG, recuerda que tienes que sustituir su !Run script por el script F1070501 que viene en !ADFFS.obey,
+comentando eso sí las primeras líneas que hacen referencia a montar una ISO, cosa totalmente innecesaria porque lo juegas desde plain files.
+
+Para salir de SF 3000 TNG, es con CTRL+ESC
