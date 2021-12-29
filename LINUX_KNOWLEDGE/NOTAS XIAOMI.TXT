@@ -63,18 +63,26 @@ INSTALAR TWRP Y LINEAE OS
 
 Para el REDMI 9A, buscamos todo por el codename, que es DANDELION.
 
-El custom bootloader TWRP para DANDELION está junto con sus instrucciones en:
-https://www.cyanogenmods.org/twrp-recovery-redmi-9a/
+-NO INSTALES NADA DE CYANOGENMODS.ORG, O ACABARÁS CON BOOTLOP.
 
-La ROM de LINEAGE OS para DANDELION está en:
-https://forum.xda-developers.com/t/rom-unofficial-11-0-lineageos-18-1-for-redmi-9a-9c-garden-stable.4362597/ 
+-SI TIENES BOOTLOOP, RE-FLASHEA LAS PARTICIONES BOOT Y RECOVERY.
+HE OBTENIDO AMBOS .IMG DE ESTE HILO:
+https://forum.xda-developers.com/t/img-stock-boot-vbmeta-and-recovery-images-partitions-for-dandelion-redmi-9a-redmi-9at.4210805/
+USA LAS VERSIONES 12.0.17 GLOBAL DE AMBOS.
+DE TODOS MODOS LOS TIENES EN EL DISCO DE BACKUP.
 
-También tienes este vídeo tutorial que funciona e incluye los archivos necesarios:
+-EL archivo de RECOVERY de TWRP lo he sacado de los archivos adjuntos de este vídeo de youtube:
 https://www.youtube.com/watch?v=Rw838oP53ZY
+TIENES COPIAS DE SEGURIDAD EN EL DISCO DURO DE BACKUP.
+EL ARCHIVO DE RECOVERY QUE HAY QUE FLASEAR SE LLAMA: TWRP-3.4.2B-CN-dandelion.img
 
-PARTE 1 - INSTALAR TWRP
--Arrancar en modo fastboot (ver instrucciones arriba)
--Flasheamos con: fastboot flash recovery twrp-3.4.x-xx.img
+Lo flasheamos (sin miedo) con:
+sudo fastboot flash recovery TWRP-3.4.2B-CN-dandelion.img
+Ya podemos arrancar en modo 
 
-PARTE 2 - INSTALAR LINEAGE OS
+-La ROM de LINEAGE OS para DANDELION (vale para 9A y 9C) está en:
+https://forum.xda-developers.com/t/rom-unofficial-11-0-lineageos-18-1-unified-for-redmi-9a-9c-9-activ-garden.4362597/
+(El volúmen de las llamadas suena bajo, pero por lo demás va perfecto).
+
+INSTALAR LINEAGE OS
 -Arrancamos en TWRP (power + subil volúmen + bajar volúmen) con el ZIP copiado a una microSD, y lo instalamos desde TWRP como siempre.
