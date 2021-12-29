@@ -52,9 +52,9 @@ Tienes que montar la ISO desde la barra superior cuando estés ejecutando la má
 (PARA SALIR DE MODO FASTBOOT: Mantener pulsado el botón de encendido y "bajar volúmen" durante 20 segundos hasta que el móvil se reinicie).
 
 -En el Windows virtualizado, hacemos doble click en el archivo MiUsbDriver.exe: Te pedirá que conectes el teléfono de nuevo.
-Lo que hay que hacer es desconectarlo y vulver a conectarlo en el VirtualBox (haciendo click en el dispositivo en Devices->USB para desactivarlo,
+Lo que hay que hacer es desconectarlo y volver a conectarlo en el VirtualBox (haciendo click en el dispositivo en Devices->USB para desactivarlo,
 y luego click otra vez para activarlo de nuevo).
-En ese momento, el teléfono será reconocido por el MiUsbDriver.exe, y se instalará el driver automáticamente.
+En ese momento, el teléfono será reconocido por el MiUsbDriver.exe, y se instalará el driver USB automáticamente.
 
 -Ya podemos hacer click en Miflash_unlock.exe, loguearnos en la cuenta MI, y desbloquear el bootloader.
 
