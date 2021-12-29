@@ -99,6 +99,29 @@ Depende de wayland, wlroots y xkbcommon.
 Puedes descargar y compilar wayland muy facilmente de aquí, vienen las instrucciones de compilación:
 https://github.com/wayland-project/wayland
 
+******Descargar desde ARCHIVE.ORG desde la línea de comandos usando un download manager***********************************************
+
+Normalmente se podría usar WGET, pero como hay items que sólo se pueden descargar estando logueado, y como archive.org usa HTTPS y no es posible
+loguearse por HTTPS con WGET, pues al final con muchos items no funciona WGET y nos da el famoso error 403: "forbidden".
+
+Así que usamos "ia", una herramienta de Internet Archive.
+Instalamos "ia":
+
+ia pip install internetarchive
+
+Ahora configuramos ia, para darle nuestro user/pass:
+
+ia configure
+
+Ahora podemos, por ejemplo, descargar un item completo:
+
+ia download no-intro_romsets
+
+...O bien (lo más lógico), podemos descargar un archivo de un item:
+
+ia download no-intro_romsets --glob="*Super Nintendo*"
+ia download no-intro_romsets --glob="*Mega Drive*"
+
 ******Descargar contenidos de ITunes desde Linux sin ITunes***************************************************************************
 
 El programa se llama tunesviewer.
