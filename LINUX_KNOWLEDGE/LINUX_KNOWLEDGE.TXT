@@ -119,8 +119,8 @@ ia download no-intro_romsets
 
 ...O bien (lo más lógico), podemos descargar un archivo de un item:
 
-ia download no-intro_romsets --glob="*Super Nintendo*"
-ia download no-intro_romsets --glob="*Mega Drive*"
+ia download no-intro_romsets --glob="*Super Nintendo*" --checksum
+ia download no-intro_romsets --glob="*Mega Drive*" --checksum
 
 Más info sobre cómo usar "ia" aquí: https://archive.org/services/docs/api/internetarchive/cli.html
 
