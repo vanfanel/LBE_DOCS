@@ -1,0 +1,128 @@
+EL NOMBRE DEL MODELO
+====================
+
+EN ESTE MOVIL VALE LO DE ZE550KL, LO DE Z00LD, LO DE Z00L... ES TODO EL MISMO MÓVIL.
+
+ASUS_Z00LD = ZE550KL = Z00L
+
+LO PRIMERO: ACTIVAR USB DEBUGGING
+=================================
+
+Como siempre: varios toques en el número de compilación, y en opciones de desarrollador, activar el USB DEBUGGING.
+
+ARRANCAR EN MODO FASTBOOT
+=========================
+
+Arrancar con VOL UP pulsado (está en la parte de atrás del teléfono, no a un lado como es habitual).
+
+O bien con el comando:
+sudo adb reboot bootloader
+
+ARRANCAR EN MODO RECOVERY
+=========================
+
+Arrancar con VOL DOWN pulsado (está en la parte de atrás del teléfono, no a un lado como es habitual).
+
+O bien con el comando:
+sudo adb reboot recovery
+
+COMPROBAR SI ESTÁ UNLOCKEADO EL BOOTLOADER
+==========================================
+
+Con el teléfono en modo fastboot:
+
+sudo fastboot oem device-info
+
+ROOTEAR 
+==================================================
+
+Es necesario rootear para unlockear el bootloader, porque la app oficial de ASUS ya NO FUNCIONA al tener que llamar a casa y no tener soporte,
+así que tenemos que tener acceso root para poder escribir con dd en una parte de la memoria a mano y así desbloquear el bootloader.
+
+El tutorial es este:
+https://forum.xda-developers.com/t/root-ze550kl-without-unlock-bootloader-latest-version-1-17-40-153.3383944/
+(PERO los archivos del tutorial ya no están, los bajamos de otro sitio)
+
+Bajamos system.img, boot.img y recovery.img de esta carpeta compartida de googledrive.
+NOS BAJAMOS LOS DE LA VERSIÓN "ZE550KL_WW_21.40.1220.2179", 
+Y DENTRO DE ESO LA "SLIM_ROOT_XPOSED", QUE TRAE INSTALADO EL SUPERSU QUE ES LO QUE NOS INTERESA.
+(SI YA NO ESTÁ TODO ESTO EN EL GOOGLEDRIVE, TIENES BACKUPS EN EL DISCO DURO DE BACKUP)
+https://drive.google.com/drive/folders/1L2tlNN9qdTojiAdONQrtTT6z7OH9bHVs
+
+Una vez tengamos system.img, boot.img y recovery.img hacemos:
+
+fastboot flash boot boot.img
+
+fastboot flash recovery recovery.img
+
+fastboot flash system system.img
+
+fastboot -w
+
+fastboot reboot recovery
+
+Y EN RECOVERY HACEMOS WIPE DE LAS PARTICIONES "DATA" y "CACHÉ". 
+
+Reiniciamos el teléfono normal, y vemos que ya tenemos instalada la APP de SuperSU, donde activamos el root.
+Reiniciamos, y ya desbloqueamos el bootloader desde el adb, como vemos en la siguiente sección.
+
+DESBLOQUEAR EL BOOTLOADER
+=========================
+
+ES UN POCO RARO, PORQUE SE HACE DOS VECES. PERO SIGUE ESTOS PASOS Y FUNCIONA.
+
+El tutorial es este:
+https://forum.xda-developers.com/t/guide-unofficial-method-unlock-bootloader-without-asus-unlock-app-root.3405850/
+
+Simplemente, con el teléfono rooteado e iniciado normalmente, hacemos:
+
+adb shell
+
+Y una vez en la adb shell, hacemos:
+
+su
+
+echo -ne "\x01" | dd obs=1 count=1 seek=16 of=/dev/block/bootdevice/by-name/devinfo
+
+(ES FUNDAMENTAL QUE "su" FUNCIONE BIEN, O NO TENDREMOS PERMISOS PARA ESCRIBIR EN /dev/block/bootdevice/by-name/devinfo).
+
+Ahora, con el teléfono en modo fastboot:
+
+fastboot oem adb_enable
+fastboot oem adb_enable
+
+Ahora, volvemos a arrancar el móvil normal y hacemos otra vez:
+
+adb shell
+
+Y una vez en la adb shell, hacemos:
+
+su
+
+echo -ne "\x01" | dd obs=1 count=1 seek=16 of=/dev/block/bootdevice/by-name/devinfo
+
+Y ahora ya comprobamos que está desbloqueado:
+
+sudo fastboot oem device-info
+
+INSTALAR CUSTOM BOOTLOADER (TWRP)
+=================================
+
+Hay un tutorial aquí:
+https://wiki.lineageos.org/devices/Z00L/install
+
+Este tutorial, fiable, nos dice que descarguemos el último TWRP par Z00L de aquí:
+https://dl.twrp.me/Z00L
+
+Lo flasheamos con:
+fastboot flash recovery twrp-3.5.1_9-0-Z00L.img
+
+Reiniciamos mientras pulsamos VOL DOWN, y ya estamos en TWRP.
+
+INSTALAR LINEAGEOS
+==================
+
+La última versión que he encontrado es una 16.0 de este hilo:
+https://forum.xda-developers.com/t/rom-unofficial-9-0-lineageos-16-0-z00l-z00t.3839590/
+(TIENES EL ZIP DE INSTALACIÓN EN EL DISCO DURO DE BACKUP)
+No te olvides, antes de riniciar, de hacer wipe a las particiones de cache, dalvik cache y data.
