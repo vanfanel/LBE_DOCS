@@ -4380,7 +4380,13 @@ También puedes editar cgenius.cfg, y poner EnableLogfile=false para que no te g
 *************Doomretro en la Raspberry Pi*************************************************************************************
 
 Bajamos la última stable de https://github.com/bradharding/doomretro/releases
+
+Si queremos que la resolución interna sea 320x200:
 Entramos en src, editamos doomdef.h y ponemos SCREENSCALE a 1.
+
+Si por el contrario dejamos que se renderize en alta resolución, pasamos "-nosplash" al ejecutable para que no salga el splash screen,
+ya que sólo sale en alta resolución.
+
 Editamos el Makefile y ponemos los CFLAGs "-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer", y quitamos el -g.
 Compilar y listo.
 
