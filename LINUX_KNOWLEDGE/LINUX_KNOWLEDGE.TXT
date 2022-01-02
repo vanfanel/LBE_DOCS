@@ -648,9 +648,6 @@ Bajamos la última estable de:
 
 https://github.com/JNechaevsky/russian-doom/releases
 
-Editamos src/i_video.c, y en la SDL_SetHint() que hay en el bloque de "Set the scaling quality for rendering the intermediate texture"...
-ponemos el "nearest" a "linear". Sólo en ese.
-
 Compilamos con CMAKE:
 mkdir b4
 cd b4
