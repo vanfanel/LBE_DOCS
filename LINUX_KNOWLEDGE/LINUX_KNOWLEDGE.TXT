@@ -306,9 +306,10 @@ Clonamos su repo:
 
 git clone --depth 1 https://github.com/realnc/dosbox-core.git
 
-Entramos en libretro y hacemos:
+Entramos en el directorio libretro y hacemos:
 
-make -j4 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0
+COMMONFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+make -j4 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0
 (Desactivo FLUIDSYNTH porque compila un montón de mierdas como libsndfile y demás que consumen CPU, con la emulación de GRAVIS vas que chutas en DOS).
 
 Para que todo vaya suave, en OPTIONS del core:
