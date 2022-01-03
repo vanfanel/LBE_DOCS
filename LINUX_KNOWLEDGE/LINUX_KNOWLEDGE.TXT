@@ -304,13 +304,15 @@ ejecuciones del RetroArch, y TE VOLVERÁS LOCO BUSCANDO LA EXPLICACIÓN!!)
 
 Clonamos su repo:
 
-git clone --depth 1 https://github.com/realnc/dosbox-core.git
+git clone --depth 1 https://github.com/libretro/dosbox-core.git
 
 Entramos en el directorio libretro y hacemos:
 
 COMMONFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-make -j4 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0
+make -j4 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
+WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0
 (Desactivo FLUIDSYNTH porque compila un montón de mierdas como libsndfile y demás que consumen CPU, con la emulación de GRAVIS vas que chutas en DOS).
+(También desactivo la emulación de tarjetas Voodoo, el PINHACK que es para ver completas las mesas de pinball sin scroll, etc).
 
 Para que todo vaya suave, en OPTIONS del core:
 En TIMING->FRAME TIMING MODE->EXTERNAL
@@ -4176,10 +4178,7 @@ Notas previas:
 Clonamos el repo con:
 git clone --depth 1 https://github.com/TheAssemblyArmada/Vanilla-Conquer.git
 
-Editamos common/video_sdl2.cpp
-y añadimos justo antes de la llamada a SDL_CreateRenderer:
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-Y en SDL_CreateRenderer() añadimos el flag SDL_RENDERER_PRESENTVSYNC.
+Editamos common/video_sdl2.cpp y en SDL_CreateRenderer() añadimos el flag SDL_RENDERER_PRESENTVSYNC.
 
 Creamos un directorio de compilación y entramos:
 mkdir b4
@@ -4193,20 +4192,26 @@ Creamos el directorio ~/cc, y metemos ahí los datos del juego.
 
 Copiamos el ejecutable (vanillatd para el C&C original, o vanillara para el RED ALERT) al directorio del juego, y listo!
 
+La primera vez que ejecutemos vanillatd o vanillara, se nos creará .config/vanilla-conquer/[vanillatd|vanillara]/conquer.ini
+Editamos ese conquer.ini y ponemos Scaler a nearest, etc.
+Queda pendiente que se incorpore un commit que permite ajustar el aspect ratio a 4:3.
+
 *************SONIC CD Y SONIC 1/2 NATIVOS en la Raspberry Pi***********************************************************************************
 
 Instalamos unas dependencias previas...
 
-sudo apt install libvorbis-dev libogg-dev libtheora-dev libtinyxml2-dev
+sudo apt install libvorbis-dev libogg-dev libtheora-dev
 
 --COMPILANDO EL SONIC CD--
 
 Clonamos su repo:
-git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-11-Decompilation.git
+git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-11-Decompilation.git
+
+Editamos RSDKv3/RetroEngine.hpp, y comentamos todos los defines de:
+#define RETRO_USING_MOUSE
+#define RETRO_USING_TOUCH
 
 Editamos RSDKv3/Drawing.cpp, y añadimos SDL_ShowCursor(false) justo antes de la llamada a SDL_CreateWindow().
-
-Editamos RSDKv3/Input.cpp, y ponemos todas las llamadas de SDL_ShowCursor(true) a SDL_ShowCursor(false).
 
 Editamos RSDKv3/Audio.cpp y ahí cambiamos:
 	#define AUDIO_SAMPLES   (0x800)
@@ -4221,7 +4226,7 @@ El ejecutable queda en bin/RSDKv3
 --COMPILANDO SONIC-1-2-2013--
 
 Clonamos su repo:
-git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-1-2-2013-Decompilation.git
+git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-1-2-2013-Decompilation.git
 
 Clonamos stb, que es una dependencia que NO soporta pkg-config y por eso tenemos que dársela a mano:
 cd dependencies/all
@@ -4238,9 +4243,14 @@ CXXFLAGS="-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -
 
 El ejecutable queda en bin/RSDKv4
 
-Ahora, para ejecutarlo, necesitamos Data.rsdk (preferiblemente de la versión de PC)
-y el directorio "videos" que contendrá unos vídeos .ogv. Por ahora, los vídeos tienen que empezar por mayúscula la primera letra
+Ahora, para ejecutarlo, necesitamos Data.rsdk (preferiblemente de la versión de PC).
+En el caso de Sonic CD, la versión de PC tiene un pequeño error en la pantalla del título, que se soluciona poniendo
+screenWidth a 400 en settings.ini. La versión de Steam es la de PC, así que también tiene este error.
+Pensarás que la versión de Android entonces es mejor, pero NO: aunque no tenga este errorcillo, tiene controles en pantalla
+y nag-screens, no deja salir pulsando ninguna tecla o botón, etc... Así que USA LA DE PC Y OLVÍDATE DE BUSCAR OTRAS VERSIONES. 
+El directorio "videos" contendrá los vídeos en .ogv. Por ahora, los vídeos tienen que empezar por mayúscula la primera letra
 para que el engine los detecte. Así, opening.ogv debe ser Opening.ogv, y good_ending.ogv debe ser Good_Ending.ogv, etc.
+Tienes todo preparado en el disco duro de backup.
 
 Edita settings.ini y pon VSync y Fullscreen a true, y "UseHQModes" a false.
 Si los colores ROJO y AZUL se ven invertidos en los vídeos, desactiva "EnhancedScaling" en settings.ini
