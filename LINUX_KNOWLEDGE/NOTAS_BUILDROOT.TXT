@@ -1,1 +1,21 @@
 VÍDEO INTRODUCTORIO: https://www.youtube.com/watch?v=yxj8ynXXgbk
+
+-CLONAMOS EL REPO DE BUILDROOT:
+git clone --depth 1 https://git.buildroot.net/buildroot
+
+-Vemos las máquinas para las que tenemos configuraciones:
+cd buildroot
+ls boards
+
+-Cargamos la config por defecto para Pi4 (cuidado, que se usan guiones bajos aquí, no guiones normales como en el nombre de la máquina en boards):
+make raspberrypi4_64_defconfig
+
+-Configuramos el futuro sistema para añadir o quitar funcionalidades:
+make menuconfig
+
+NOTAS:
+-Tienes wpa_supplicant en NETWORKING APPLICATIONS
+
+-Compilamos, obteniendo una imágen que podemos tostar a la microSD!
+make -j4
+
