@@ -1,7 +1,7 @@
 Un bloque típico de arranque con mdev sería este:
 (Fuentes:
-http://lists.busybox.net/pipermail/busybox/2015-August/083255.html
-https://wiki.gentoo.org/wiki/Mdev
+GUÍA DE MIGRACIÓN DE UDEV A MDEV: https://wiki.gentoo.org/wiki/Mdev
+OTRAS NOTAS: http://lists.busybox.net/pipermail/busybox/2015-August/083255.html
 )
 
 # Mount the filesystems it needs
