@@ -3784,6 +3784,28 @@ Ahora extraes el parche de widescreen, y el directorio "widescreen" con todo den
 Ahora haces "weinstall widescreen" en el directorio del juego (recuerda que a parte de los datos del juego tendrás el directorio "widescreen" ahí metido, NO sus contenidos sino el directorio en sí con todo dentro) y vas respondiendo a las preguntas.
 Para X Coordinate e Y Coordinate, usa 854x480. Para el tamaño máximo del juego, usa 1920x1080. Habilita lo de las múltiples resoluciones.
 
+*************Compilar MAME con sólo un driver concreto**************************************************************************
+
+  ##################################################################################################################
+  #  OJO!!! MAME es ahora incompilable de lo grande que es. NI LO INTENTES, es BASURA y ni con 4GB de RAM compila. #
+  ##################################################################################################################
+
+Clonamos su repo:
+git clone -b mame0239 --depth 1 https://github.com/mamedev/mame.git mame0239
+
+Un hilo sobre el asunto con la solución para compilar sólo un driver:
+http://forum.arcadecontrols.com/index.php?topic=162794.0
+
+This is actually spelled out in the mame documentation:
+
+https://docs.mamedev.org/initialsetup/compilingmame.html
+
+Quote:
+
+    You can do driver specific builds by using SOURCES=<driver> in your make statement. For instance, building Pac-Man by itself would be:
+    "make SOURCES=src/mame/drivers/pacman.cpp REGENIE=1"
+    including the necessary REGENIE for rebuilding the settings
+
 *************Compilar openadventure*********************************************************************************************
 
 Instalar cosas:
