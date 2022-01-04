@@ -29,7 +29,7 @@ mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
 mount -t tmpfs tmpfs /tmp
 mount -t tmpfs tmpfs /var/log
 
-# OPCIONAL: Lanzamos udev/eudev para que nos detecte lo que conectemos dinámicamene,
+# OPCIONAL: Lanzamos udev/eudev para que nos detecte lo que conectemos dinámicamente,
 # carge los modulos correspondientes y cree los nodos en /dev.
 # UDEV puede correr sin SYSTEMD, pero los scripts de inicio de UDEV en algunos sistemas
 # requieren SYSTEMD.
