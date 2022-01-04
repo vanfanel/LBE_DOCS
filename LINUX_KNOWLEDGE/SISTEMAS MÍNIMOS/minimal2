@@ -35,7 +35,8 @@ find /sys/devices -name modalias -type f -print0 | xargs -0 sort -u | xargs modp
 # FIN BLOQUE MDEV                               #
 #################################################
 
-# Ponemos a punto el governor de cada core, ahora que ya tenemos el sysfs preparado.
+# Ponemos a punto el governor de cada core, ahora que ya tenemos el sysfs preparado
+# y cargados los módulos que permiten controlar la frecuencia de la CPU de la Pi.
 for numcore in 0 1 2 3
 do
  echo performance > /sys/devices/system/cpu/cpu$numcore/cpufreq/scaling_governor
@@ -54,11 +55,6 @@ mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
 # OJO, no especificamos un tamaño, así que como mucho pueden ocupar el 50% de la RAM.
 mount -t tmpfs tmpfs /tmp
 mount -t tmpfs tmpfs /var/log
-
-# Esto de devpst es para poder conectar por ssh, si no no nos podrá dar una PTY.
-# Fundamental cuando usas MDEV.
-#mkdir /dev/pts
-#mount -t devpts none /dev/pts -o gid=4,mode=620
 
 # MUY IMPORTANTE exportar $HOME o las configuraciones de los programas
 # se empezarán a guardar en /. Así que esto hay que hacerlo SIEMPRE.
