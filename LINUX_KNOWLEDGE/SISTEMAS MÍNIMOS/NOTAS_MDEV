@@ -1,24 +1,11 @@
-Un bloque típico de arranque con mdev sería este:
-(Fuentes:
+Fuentes:
 GUÍA DE MIGRACIÓN DE UDEV A MDEV: https://wiki.gentoo.org/wiki/Mdev
 OTRAS NOTAS: http://lists.busybox.net/pipermail/busybox/2015-August/083255.html
-)
 
-# Mount the filesystems it needs
-mount -t sysfs none /sys
-mount -t proc proc /proc
+TIENES UNA SECUENCIA TÍPICA DE ARRANQUE CON MDEV EN EL SCRIPT "minimal2".
 
-# Mount a tmpfs that will containg the dev dir
-mount -t tmpfs mdev /dev
-
-# Tell the kernel what to run when there's a hotplug 
-echo /bin/mdev > /proc/sys/kernel/hotplug
-
-# Tell mdev to scan sys and create the /dev nodes according to it's findings.
-busybox mdev -s
-
-# Load the needed modules for the connected hw automatically
-find /sys/devices -name modalias -type f -print0 | xargs -0 sort -u | xargs modprobe -ab 2>/dev/null
+LO PRIMERO, sería tener mdev disponible como comando desde el principio del arranque, para ello al menos una vez tenemos que hacer:
+ln -s /bin/busybox /dev/mdev
 
 A PARTE, tienes que tener esto en /etc/mdev.conf si quieres que los módulos se carguen automáticamente
 cuando conectes algo en caliente:

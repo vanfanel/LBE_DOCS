@@ -1,0 +1,138 @@
+#!/bin/sh
+
+#################################################
+# BLOQUE MDEV                                   #
+#################################################
+
+# ¡¡¡¡CUIDADO!!!! ANTES DE QUE TODO ESTO FUNCIONE, DEBEMOS HACER: "ln -s /bin/busybox /bin/mdev"
+
+# Para que vayan gráficos y audio, es necesario tener sysfs y proc.
+# Y para que arranque el servicio udev/mdev, y para poder configurar el governor a mano.
+# Se supone que el kernel tiene las opciones CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y,
+# por lo que en /dev el propio kernel tiene ya montado el devtmpfs que es donde udev/mdev
+# crean los nodos de /dev.
+# En algunos kernels, como el de Devuan, ya viene montado /sys, así que se puede comentar eso.
+# mount -t sysfs none /sys
+mount -t proc proc /proc
+
+# Mount the dev dir on tmpfs so it's on RAM instead of disk
+mount -t tmpfs mdev /dev
+
+# Mount the devpts
+mkdir /dev/pts
+mount devpts /dev/pts -t devpts
+
+# Tell the kernel what to run when there's a hotplug.
+echo /bin/mdev > /proc/sys/kernel/hotplug
+
+# Tell mdev to scan sys and create the /dev nodes according to it's findings.
+busybox mdev -s
+
+# Load the needed modules for the connected hw automatically
+find /sys/devices -name modalias -type f -print0 | xargs -0 sort -u | xargs modprobe -ab 2>/dev/null
+
+#################################################
+# FIN BLOQUE MDEV                               #
+#################################################
+
+# Ponemos a punto el governor de cada core, ahora que ya tenemos el sysfs preparado.
+for numcore in 0 1 2 3
+do
+ echo performance > /sys/devices/system/cpu/cpu$numcore/cpufreq/scaling_governor
+done
+
+# Re-montamos el root como lectura/escritura.
+# Añadimos la opción "sync" después de otra coma para que las escrituras sean inmediatas,
+# lo que mejora mucho la predictibilidad del sistema al no haber escrituras retardadas.
+mount -o remount,rw,sync,noatime,nodiratime /
+
+# Montamos también la partición de BOOT
+mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
+
+# Montamos /tmpfs y /var/log en RAM, para que no se escriban temporales ni logs
+# en disco.
+# OJO, no especificamos un tamaño, así que como mucho pueden ocupar el 50% de la RAM.
+mount -t tmpfs tmpfs /tmp
+mount -t tmpfs tmpfs /var/log
+
+# Esto de devpst es para poder conectar por ssh, si no no nos podrá dar una PTY.
+# Fundamental cuando usas MDEV.
+#mkdir /dev/pts
+#mount -t devpts none /dev/pts -o gid=4,mode=620
+
+# MUY IMPORTANTE exportar $HOME o las configuraciones de los programas
+# se empezarán a guardar en /. Así que esto hay que hacerlo SIEMPRE.
+export HOME=/root
+
+# Setupcon configura la fuente y el teclado de la consola,
+# leyendo la configuración de /etc/default/console-setup y /etc/default/keyboard.
+hostname minimal
+setupcon
+
+# Restablecemos la última fecha conocida de /etc/fake-hwclock.data, para que
+# al menos no estemos en los 70s. Importante para qie GIT funcione.
+fake-hwclock load >> /dev/null
+
+# Antes de establecer el volúmen, tenemos que reproducir un audio aunque sea
+# inexistente, o el controlador del volúmen por software (softvol) no estará
+# disponible aún.
+# Algunos dispositivos como el vc4hdmi no tienen control de volúmen por hw.
+#aplay  /dev/zero -s 1 -q
+#amixer set PCM 230 -q
+
+# El lanzamiento del bash se hace mediante setsid y exec en dos stages:
+# En el STAGE 1, setsid inicia una nueva sesión y manda un primer sh ahí,
+# y en el STAGE 2 exec ejecuta otro sh con el mismo PID que el sh anterior,
+# que tiene PID 1 (Siempre hay que tener un PID 1 o el kernel da un panic
+# por matar el proceso init). La entrada y salida de este segundo sh
+# es redireccionada a tty1.
+# Se puede usar bash o bien sh. Si usamos bash, hay que pasarle el --login
+# porque si no, no lee /etc/profile y nos faltan cosas en el $PATH.
+setsid sh -c 'cd /root;exec bash --login </dev/tty1 >/dev/tty1 2>&1'
+
+# En caso de querer un único programa corriendo:
+# setsid sh -c 'exec /usr/local/bin/retroarch </dev/tty1 >/dev/tty1 2>&1'
+
+# Salvamos la última fecha conocida, que va al fichero /etc/fake-hwclock.data
+fake-hwclock save
+
+# Matamos todos los procesos que se han lanzado desde este script,
+# para que no haya nada accediendo a directorios que cuelguen del rootfs.
+pkill -P 1
+
+# Desmontamos todo lo que hemos montado.
+# El desmontaje conlleva la sincronización de los discos.
+umount /sys
+umount /proc
+umount /tmp
+umount /var/log
+umount /boot
+
+# El desmontaje del rootfs de un kernel en ejecución no se supone que sea posible,
+# así que lo re-montamos como sólo lectura y así el kernel puede seguir usándolo aunque
+# ya no se pueda escribir en él.
+# (Una alternativa sería hacer un swicth_root a un rootfs en initramfs).
+# NOTA: El bucle de espera en realidad no debería ser necesario porque ahí arriba has matado
+# todos los procesos lanzados por este script así que no debe haber nada accediendo a
+# directorios que cuelguen de /, pero se deja a modo de documentación.
+# IMPORTANTE: El re-montaje falla SIEMPRE si has editado este fichero mientras el
+# sistema lo estaba usando. Para confirmar que sigue abierto usa "lsof|grep minimal".
+busy=true
+while $busy
+do
+  mount / -o remount,ro 2> /dev/null
+  if [ $? -eq 0 ] # Si el último comando ejecutado tuvo éxito, $? es 0. 
+  then
+   busy=false
+   echo Filesystem umount successfull.
+  else
+   echo -n '.'  # Escribimos algo para que se vea que el script sigue vivo.
+   sleep 1      # Esperamos un segundo a reintentar.
+  fi  
+done
+
+# Dependiendo de si quieres reiniciar o apagar al salir, usa una o la otra.
+# Poweroff va con dos -f, sí, no es un error, es para que no contacte con el
+# gestor de procesos, que no existe.
+reboot -f
+#poweroff -f -f
