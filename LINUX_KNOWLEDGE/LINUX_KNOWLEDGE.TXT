@@ -324,6 +324,9 @@ Y luego, para que en el inicio monte un directorio y se meta en él, debes pasar
 
 Para el aspect ratio: Lo de siempre para todos los cores en general: en SETTINGS->VIDEO se pone en 4:3 para todo y fuera.  
 
+PARA EVITAR PANTALLA NEGRA al principio del SUPERFROG si se usa el driver de vídeo VULKAN: desactiva el "FRAME DUPING" en las opciones del core.
+(Sólo ocurre con el driver del vídeo VULKAN).
+
 #######################
 # EMPIEZA EL DOS.CONF #
 #######################
@@ -7856,7 +7859,7 @@ cd b4
 cmake -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON ..
 
 Ahora lo lanzaríamos con:
-retroach -L core <.exe del juego hecho con RPG Maker>
+retroarch -L core <.exe del juego hecho con RPG Maker>
 
 INSTALAR DRIVER IMPRESORA CANON
 ===============================

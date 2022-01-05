@@ -56,7 +56,9 @@ root:root es la propiedad de los nodos creados, y 660 los permisos.
 (Son los valores por defecto, los explicitamos sólo para dejarlo documentado)
 La documentación de MDEV está en unos TXT que vienen con su código fuente:
 git clone --depth 1 git://git.busybox.net/busybox
-Y editamos docs/mdev.txt
+Y editamos docs/mdev.txt para ver la documentación y ejemplos.
+Tienes un MONTÓN más de ejemplos (de hecho, un mdev.conf completo) aquí:
+https://github.com/slashbeast/mdev-like-a-boss/blob/master/mdev.conf
 
 Para que funcione la GPU, deberías tener los nodos del sistema gráfico. Son
 /dev/dri/card0
@@ -65,3 +67,8 @@ Para que funcione la GPU, deberías tener los nodos del sistema gráfico. Son
 ..Y en el caso de la raspberry pi, los debería crear el módulo VC4 al cargarse.
 
 (En caso de no crearse, VER NOTAS DEL FICHERO "CREACIÓN MANUAL DE NODOS")
+
+PARA QUE FUNCIONE RETROARCH, como usa libudev y obviamente libudev no funciona sin UDEV, tendríamos que usar LINUXRAW como driver en:
+input_driver="linuxraw"
+input_joypad_driver="linuxraw"
+....PERO VAMOS, que genera parones igual al poner o quitar mandos, así que no merece la pena.
