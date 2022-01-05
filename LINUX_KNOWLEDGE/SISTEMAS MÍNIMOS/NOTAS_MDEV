@@ -11,6 +11,11 @@ CONCEPTOS BÁSICOS
 
 -DEVTMPFS: El sistema de archivos virtual donde el kernel hace aparecer y desaparecer los nodos de dispositivo cuando los conectamos o desconectamos.
            RECUERDA: El kernel hace esto por sí mismo, NO hace falta MDEV para hacer aparecer o desaparecer nodos en /dev.
+           Para que el kernel se encargue de crear los nodos, tiene que tener la opción CONFIG_DEVTMPFS=y.
+           Y para que el kernel automonte el DEVTMPS en /dev (estando así /dev en RAM, no en el disco, y creando allí el kernel los nodos),
+           tiene que tener la opción CONFIG_DEVTMPFS_MOUNT=y.
+           En la mayoría de los kernels, ambas vienen por defecto activadas, así que no hace falta que hagas "mount -t devtmpfs none /dev"
+           en el script mínimo de inicio, ya viene montado DEVTMPFS en /dev y todo.
 
 -MDEV: Es una utilidad de espacio de usuario que es parte de BUSYBOX, y que el kernel llama cuando se conecta o desconecta un dispositivo.
        ¿Y para qué la llama si los nodos ya los crea el kernel en /dev usando DEVTMPFS? Pues porque MDEV nos permite establecer permisos o titularidad
@@ -25,10 +30,33 @@ TIENES UNA SECUENCIA TÍPICA DE ARRANQUE CON MDEV EN EL SCRIPT "minimal2".
 LO PRIMERO, sería tener mdev disponible como comando desde el principio del arranque, para ello al menos una vez tenemos que hacer:
 ln -s /bin/busybox /dev/mdev
 
-A PARTE, tienes que tener esto en /etc/mdev.conf si quieres que los módulos se carguen automáticamente
-cuando conectes algo en caliente:
+TAMBIÉN ten en cuenta que el kernel automonta DEVTMPFS en /dev, siempre y cuando tenga la opción CONFIG_DEVTMPFS_MOUNT=y, que es lo más normal,
+así que NORMALMENTE no necesitas montar el DEVTMPFS manualmente en tu custom init porque ya lo hace el kernel (esto es algo relativamente moderno,
+asú que puede que te encuentres instrucciones de cuando no era así y había que hacer "mount -t devtmpfs none /dev".
+TAMBIÉN, si arrancas con un initramfs o un initrd, tienes que hacer LO PRIMERO DEL INIT SCRIPT el montaje de devtmpfs
+con "mount -t devtmpfs none /dev", y luego tendrás que hacer "busybox mdev -s" para recrear los nodos de /dev ya que al montarlo a mano estará vacío.
+PERO eso es sólo si alguna vez usas un initramfs o un initrd, NORMALMENTE el kernel automonta DEVTMPS en /dev y ya está.
 
-$MODALIAS=.* 0:0 660 @modprobe "$MODALIAS"
+A PARTE, tienes que tener esto en /etc/mdev.conf si quieres que los módulos se carguen/descarguen automáticamente cuando conectes/desconectes
+algo en caliente:
+
+-$MODALIAS=.* root:root 660 @modprobe "$MODALIAS"
+-$MODALIAS=.* root:root 660 $modprobe -r "$MODALIAS"
+
+NOTA que ambas líneas empiezan con un guión. Esto es para que mdev NO se detenga en la primera línea con la que haga un match con la REGEX/exp.regular
+(que es .*, englobando así a TODOS los nombres de módulo de sysfs), sino que continúa leyendo las demás líneas y haciendo lo que se diga en ellas
+si también hace match con la REGEX de cada una de ellas.
+NOTA también que en una el comando modprobe se precede de '@' y en la otra se precede de '$'.
+Pues la de '@' es para que el comando se ejecute cuando el evento de hotplug es de CONEXIÓN ($ACTION=add) y la de '$' para que el comando se ejecute
+cuando el evento de hotplug es de DESCONEXIÓN ($ACTION=remove).
+NOTA que por raro que parezca, en la regla de descarga de módulo, también le damos el propietario y los permisos: sin eso, no funciona.
+NOTA que hacen falta ambas líneas, no se puede poner el comando de carga y el de descarga en la misma, no funciona.
+
+root:root es la propiedad de los nodos creados, y 660 los permisos.
+(Son los valores por defecto, los explicitamos sólo para dejarlo documentado)
+La documentación de MDEV está en unos TXT que vienen con su código fuente:
+git clone --depth 1 git://git.busybox.net/busybox
+Y editamos docs/mdev.txt
 
 Para que funcione la GPU, deberías tener los nodos del sistema gráfico. Son
 /dev/dri/card0
