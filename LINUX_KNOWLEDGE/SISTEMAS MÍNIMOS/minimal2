@@ -4,31 +4,59 @@
 # BLOQUE MDEV                                   #
 #################################################
 
-# ¡¡¡¡CUIDADO!!!! ANTES DE QUE TODO ESTO FUNCIONE, DEBEMOS HACER: "ln -s /bin/busybox /bin/mdev"
+# ¡¡¡¡CUIDADO!!!! ANTES DE PODER USAR MDEV, DEBEMOS CREAR UN LINK SIMBÓLICO A BUSYBOX CON:
+# "ln -s /bin/busybox /bin/mdev"
 
-# Para que vayan gráficos y audio, es necesario tener sysfs y proc.
-# Y para que arranque el servicio udev/mdev, y para poder configurar el governor a mano.
-# Se supone que el kernel tiene las opciones CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y,
-# por lo que en /dev el propio kernel tiene ya montado el devtmpfs que es donde udev/mdev
-# crean los nodos de /dev.
-# En algunos kernels, como el de Devuan, ya viene montado /sys, así que se puede comentar eso.
+# Para que se creen y borren automáticamente los nodos en /dev al conectar y desconectar cosas,
+# lo que se usa es DEVTMPFS, que es parte del kernel. O SEA, es el kernel el que crea y borra
+# los nodos en /dev, NO hace falta MDEV para ello.
+# Para que funcione DEVTMPFS, el kernel ha de tener las opciones CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y,
+# cosa que es lo más común.
+
+# MDEV lo llama el kernel cuando se conecta o desconecta algo, y usamos para dos cosas:
+# Para cargar / descargar los módulos necesarios automáticamente, y para establecer los permisos
+# y propiedad de los nodos de dispositivo en /dev automáctiacemte también.
+# Estas dos cosas se las especificamos a MDEV teniendo en /etc/mdev.conf esta línea:
+# MODALIAS=.* root:root 0660 @modprobe -b "$MODALIAS"
+
+# Además, para que vayan gráficos y audio, es necesario tener sysfs y proc montados.
+# En algunos kernels, como el de Devuan, ya viene montado /sys, así que la línea de montaje de /sys
+# la tengo comentada por eso.
 # mount -t sysfs none /sys
 mount -t proc proc /proc
 
-# Mount the dev dir on tmpfs so it's on RAM instead of disk
+# Montamos /dev en tmpfs para que esté en RAM y no en disco.
+# Esto implica que /dev queda vacío desde este momento, aunque el /dev original en disco tenga
+# los nodos de dispositivo que habrá creado el kernel usando DEVTMPFS, pero ese /dev en disco
+# ya no lo vamos a ver ni a usar, por eso luego le tenemos que pedir a mdev que nos recree los nodos.
 mount -t tmpfs mdev /dev
 
-# Mount the devpts
+# El sistema devpts (NO confundir con el gran DEVTMPFS, ¡ojo!) es otro sistema de archivos virtual
+# que vive en /dev/pts y que contiene esclavos multiplexados de /dev/ptmx, siendo cada uno de esos
+# esclavos la representación de un emulador de terminal (como xterm en X11,
+# o un terminal de wayland, o un terminal de acceso por SSH. Como usamos SSH,
+# pues tenemos que montar esto o nos dará un error "PTY allocation failed" al intentar entrar).
 mkdir /dev/pts
 mount devpts /dev/pts -t devpts
 
-# Tell the kernel what to run when there's a hotplug.
+# Le decimos al kernel que llame a MDEV cuando haya un hotplug/unplug,
+# MDEV lo usamos para cargar automáticamente los módulos correspondientes, para lo cual
+# le tenemos que decir a MDEV que llame a modprobe, cosa que le decimos poniendo
+# esta línea en /etc/mdev.conf
+# MODALIAS=.* root:root 0660 @modprobe -b "$MODALIAS"
 echo /bin/mdev > /proc/sys/kernel/hotplug
 
-# Tell mdev to scan sys and create the /dev nodes according to it's findings.
+# Le decimos a mdev que escanee /sys y recree los nodos de dispositivos en /dev de lo que encuentre
+# Sabemos que el principal encargado de crear los nodos en /dev es el kernel mediante DEVTMFS, NO MDEV,
+# pero es que más arriba hemos montado /dev en TMPFS para que esté en RAM, así que /dev estará vacío
+# si no le decimos a mdev que recree los nodos: el kernel los habrá creado antes, pero claro... en disco.
+# Así que si no montásemos /dev en TMPFS, no haría falta pedirle a MDEV que recree los nodos en /dev ahora).
 busybox mdev -s
 
-# Load the needed modules for the connected hw automatically
+# Cargamos los módulos del hardware que YA tenemos conectado.
+# Cuando conectemos nuevo hardware, se encargará MDEV porque será llamado por el kernel en cada evento
+# de conexión/desconexión, pero para el hardware que tenemos conectado al arrancar lo tenemos que
+# hacer nosotros porque no hay tales eventos que desencadenen las llamadas a MDEV.
 find /sys/devices -name modalias -type f -print0 | xargs -0 sort -u | xargs modprobe -ab 2>/dev/null
 
 #################################################

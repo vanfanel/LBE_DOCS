@@ -1,6 +1,24 @@
 Fuentes:
-GUÍA DE MIGRACIÓN DE UDEV A MDEV: https://wiki.gentoo.org/wiki/Mdev
-OTRAS NOTAS: http://lists.busybox.net/pipermail/busybox/2015-August/083255.html
+
+MANUAL DE BUILDROOT, DONDE SE EXPLICA QUÉ ES MDEV, DEVTMPFS... LEER LO PRIMERO (buscar MDEV):
+https://buildroot.org/downloads/manual/manual.html
+
+GUÍA DE MIGRACIÓN DE UDEV A MDEV: 					https://wiki.gentoo.org/wiki/Mdev
+OTRAS NOTAS MUY BUENAS SOBRE CÓMO FUNCIONA MDEV: 	http://lists.busybox.net/pipermail/busybox/2015-August/083255.html
+
+CONCEPTOS BÁSICOS
+=================
+
+-DEVTMPFS: El sistema de archivos virtual donde el kernel hace aparecer y desaparecer los nodos de dispositivo cuando los conectamos o desconectamos.
+           RECUERDA: El kernel hace esto por sí mismo, NO hace falta MDEV para hacer aparecer o desaparecer nodos en /dev.
+
+-MDEV: Es una utilidad de espacio de usuario que es parte de BUSYBOX, y que el kernel llama cuando se conecta o desconecta un dispositivo.
+       ¿Y para qué la llama si los nodos ya los crea el kernel en /dev usando DEVTMPFS? Pues porque MDEV nos permite establecer permisos o titularidad
+       de los nodos de dispositivo, nos permite llamar a un script cuando se conecta o desconecta tal o cual dispositivo, etc...
+       Todo ello, según lo que especifiquemos en /etc/mdev.conf
+
+LA SECUENCIA DE ARRANQUE CON MDEV
+=================================
 
 TIENES UNA SECUENCIA TÍPICA DE ARRANQUE CON MDEV EN EL SCRIPT "minimal2".
 
@@ -12,10 +30,10 @@ cuando conectes algo en caliente:
 
 $MODALIAS=.* 0:0 660 @modprobe "$MODALIAS"
 
-ADEMÁS, para que funcione, deberías tener los nodos del sistema gráfico. Son
+Para que funcione la GPU, deberías tener los nodos del sistema gráfico. Son
 /dev/dri/card0
 /dev/dri/card1
 /dev/dri/renderD128
-..Y los debería crear el módulo VC4 al cargarse.
+..Y en el caso de la raspberry pi, los debería crear el módulo VC4 al cargarse.
 
 (En caso de no crearse, VER NOTAS DEL FICHERO "CREACIÓN MANUAL DE NODOS")
