@@ -72,3 +72,7 @@ PARA QUE FUNCIONE RETROARCH, como usa libudev y obviamente libudev no funciona s
 input_driver="linuxraw"
 input_joypad_driver="linuxraw"
 ....PERO VAMOS, que genera parones igual al poner o quitar mandos, así que no merece la pena.
+
+PARA EL FUTURO: En teoría, es posible hacer funcionar el driver UDEV de RETROARCH con esto en lugar del libudev normal:
+https://github.com/illiliti/libudev-zero
+Habría que desinstalar libudev, y compilar e instalar libudev-zero, que a su vez trae ejemplos de /etc/mdev.conf para que funcione con libudev-zero.
