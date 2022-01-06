@@ -7045,6 +7045,9 @@ Para ajustar cosas del Maddog, puedes hacerlo durante el juego pulsando 9, o edi
 
 EL CARGADOR para el Maddog para evitar desincronizaciones de audio al principio, y con los parámetros necesariospara que vaya bien, es así:
 
+PARA CONVERTIR EL TRON desde mp4 de 1920x1080 a m2v de 960x540, hacemos esto:
+ffmpeg -i TRON.mp4 -vf tpad=stop_mode=clone:stop_duration=2,scale=960:540 -qscale:v 4 -b:v 6000k  -c:v mpeg2video tron.m2v
+
 ########################
 #INICIO CARGARDO MADDOG#
 ########################
