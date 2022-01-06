@@ -43,22 +43,31 @@ algo en caliente:
 -$MODALIAS=.* root:root 660 @modprobe "$MODALIAS"
 -$MODALIAS=.* root:root 660 $modprobe -r "$MODALIAS"
 
-NOTA que ambas líneas empiezan con un guión. Esto es para que mdev NO se detenga en la primera línea con la que haga un match con la REGEX/exp.regular
-(que es .*, englobando así a TODOS los nombres de módulo de sysfs), sino que continúa leyendo las demás líneas y haciendo lo que se diga en ellas
-si también hace match con la REGEX de cada una de ellas.
-NOTA también que en una el comando modprobe se precede de '@' y en la otra se precede de '$'.
-Pues la de '@' es para que el comando se ejecute cuando el evento de hotplug es de CONEXIÓN ($ACTION=add) y la de '$' para que el comando se ejecute
-cuando el evento de hotplug es de DESCONEXIÓN ($ACTION=remove).
-NOTA que por raro que parezca, en la regla de descarga de módulo, también le damos el propietario y los permisos: sin eso, no funciona.
-NOTA que hacen falta ambas líneas, no se puede poner el comando de carga y el de descarga en la misma, no funciona.
-
-root:root es la propiedad de los nodos creados, y 660 los permisos.
-(Son los valores por defecto, los explicitamos sólo para dejarlo documentado)
+NOTA que la parte en la que dice "$MODALIAS=.*" es lo que se llama el REGEX (regular expression) que, si coincide con algún dispositivo,
+se hace lo que le digamos que tenga que hacerse en esa línea.
 La documentación de MDEV está en unos TXT que vienen con su código fuente:
 git clone --depth 1 git://git.busybox.net/busybox
 Y editamos docs/mdev.txt para ver la documentación y ejemplos.
 Tienes un MONTÓN más de ejemplos (de hecho, un mdev.conf completo) aquí:
 https://github.com/slashbeast/mdev-like-a-boss/blob/master/mdev.conf
+
+NOTA que ambas líneas empiezan con un guión. Esto es para que mdev NO se detenga en la primera línea con la que haga un match con la REGEX/exp.regular
+(que es .*, englobando así a TODOS los nombres de módulo de sysfs), sino que continúa leyendo las demás líneas y haciendo lo que se diga en ellas
+si también hace match con la REGEX de cada una de ellas.
+
+NOTA también que en una el comando modprobe se precede de '@' y en la otra se precede de '$'.
+Pues la de '@' es para que el comando se ejecute cuando el evento de hotplug es de CONEXIÓN ($ACTION=add) y la de '$' para que el comando se ejecute
+cuando el evento de hotplug es de DESCONEXIÓN ($ACTION=remove).
+
+NOTA que por raro que parezca, en la regla de descarga de módulo, también le damos el propietario y los permisos: sin eso, no funciona.
+
+NOTA que hacen falta ambas líneas, no se puede poner el comando de carga y el de descarga en la misma, no funciona.
+
+NOTA QUE SI ALGUNA VEZ QUISIERAS que se automonte algo al conectarlo, etc... ahí en vez de "modprobe" puedes llamar al script de cosecha propia que quieras.
+Puedes hacer que ocurra lo que quieras poniéndolo ahí y si hay match del REGEX, se ejecutará.
+
+root:root es la propiedad de los nodos creados, y 660 los permisos.
+(Son los valores por defecto, los explicitamos sólo para dejarlo documentado)
 
 Para que funcione la GPU, deberías tener los nodos del sistema gráfico. Son
 /dev/dri/card0
@@ -68,12 +77,51 @@ Para que funcione la GPU, deberías tener los nodos del sistema gráfico. Son
 
 (En caso de no crearse, VER NOTAS DEL FICHERO "CREACIÓN MANUAL DE NODOS")
 
-PARA QUE FUNCIONE RETROARCH, como usa libudev y obviamente libudev no funciona sin UDEV, tendríamos que usar LINUXRAW como driver en:
+PARA QUE FUNCIONE RETROARCH
+===========================
+
+En Devuan, la implementación de udev es eudev, y la implementación de libudev es libeudev. Eudev/libeudev que no dependen de systemd,
+pero libeudev está muerta y por eso estamos aquí.
+Nos vamos a referir genéricamente a udev/eudev como udev, y a libeudev/libudev como libudev.
+Bueno: la cosa es que el backend UDEV de RetroArch (RA) usa libudev. Y LIBUDEV NECESITA EL SERVICIO UDEV CORRIENDO PARA FUNCIONAR.
+Como no lo tenemos, el backend UDEV de RetroArch no funciona. Olvídate de permisos o propiedad de los nodos de /dev/input/event*, etc
+El problema es simplemente que NO tenemos el servicio UDEV corriendo, aunque tengamos LIBUDEV instalada.
+Así que tenemos dos alternativas para que RetroArch funcione sin el servidio UDEV:
+
+-Usar el backend LINUXRAW, en lugar del backend UDEV.
+Su principal desventaja frente a UDEV es que no soporta hot-plugging mientras RetroArch corre, hay que salirse de RA,
+conectar los mandos que queramos usar y volver a entrar.
+Para usarlo, tenemos que ponerlo en DOS SITIOS de retroarch.conf:
+
 input_driver="linuxraw"
 input_joypad_driver="linuxraw"
-....PERO VAMOS, que genera parones igual al poner o quitar mandos, así que no merece la pena.
 
-PARA EL FUTURO: En teoría, es posible hacer funcionar el driver UDEV de RETROARCH con esto en lugar del libudev normal:
-https://github.com/illiliti/libudev-zero
-Habría que desinstalar libudev (libeudev en el caso de Devuan), y compilar e instalar libudev-zero, que a su vez trae
-ejemplos de /etc/mdev.conf para que funcione con libudev-zero.
+También recuerda que al pasar a usar LINUXRAW, tienes que reconfigurar los controles de la cruz del pad. Sólo los de la cruz,
+los demás si los dejas como estaban en UDEV funcionan.
+También recuerda que al pasar a usar LINUXRAW, las teclas de aceptar y cancelar en el teclado pasan a ser Z y X. Esto no se puede configurar,
+están hardcodeadas. Pero vamos, RetroArch tiene una GUI muy orientada a mandos, así que no importa. 
+
+-Usar libudev-zero, que es un drop-in replacement de UDEV que no necesita ningún servicio corriendo.
+Puede ser necesario cuando volvamos a Wayland, ya que no sé si LINUXRAW funcionará allí.
+Para ello:
+	-Clonamos su repo: git clone --depth 1 https://github.com/illiliti/libudev-zero.git
+
+	-Borramos a mano libudev (en Devuan es libeudev, un drop-in replacement de udev que no depende de systemd, pero los ficheros son los mismos):
+	rm /usr/lib/aarch64-linux-gnu/libudev*
+	rm /usr/lib/aarch64-linux-gnu/pkgconfig/libudev.pc
+	(Lo borramos a mano porque borrarlo usando "apt-get purge" se lleva por delante componentes del sistema muy importantes como el propio apt!)
+
+	-Compilamos e instalamos libudev-zero:
+	CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
+	make install
+	(OJO, como sabes, al no especificarle un PREFIX=... a "make install", se instalará en /usr/local, donde están todas mis librerías de
+	 compilación propia, como SDL2, etc.. es lo normal).
+
+Por si quieres volver a EUDEV:
+
+	-Para desinstalar libudev-zero sería:
+	make uninstall
+
+	-Para instalar de nuevo libeudev:
+	apt-get install --reinstall libeudev1
+	apt-get install --reinstall libeudev-dev
