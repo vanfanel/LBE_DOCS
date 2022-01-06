@@ -54,7 +54,9 @@ https://github.com/slashbeast/mdev-like-a-boss/blob/master/mdev.conf
 NOTA que ambas líneas empiezan con un guión. Esto es para que mdev NO se detenga en la primera línea con la que haga un match con la REGEX/exp.regular
 (que es .*, englobando así a TODOS los nombres de módulo de sysfs), sino que continúa leyendo las demás líneas y haciendo lo que se diga en ellas
 si también hace match con la REGEX de cada una de ellas.
-NOTA QUE PODRÍAMOS DEJAR SÓLO LA PRIMERA LÍNEA Y SIN GUIÓN, PARA NO DETECTAR DESCONEXIONES, SÓLO CONEXIONES, Y ASÍ NO TENER SALTOS EN LA EMULACIÓN,
+
+(¡¡¡OJO!!!)NOTA QUE PODRÍAMOS DEJAR SÓLO LA PRIMERA LÍNEA Y SIN GUIÓN, PARA NO DETECTAR DESCONEXIONES, SÓLO CONEXIONES,
+Y ASÍ NO TENER SALTOS EN LA EMULACIÓN,
 (pero claro, entonces tenemos que salir de RetroArch si queremos reconectar un mando, conectar otro nuevo, etc).
 
 NOTA también que en una el comando modprobe se precede de '@' y en la otra se precede de '$'.
