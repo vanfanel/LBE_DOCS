@@ -29,6 +29,7 @@
 # Para ello, debemos tener estas líneas en /etc/mdev.conf:
 #-$MODALIAS=.* root:root 660 @modprobe "$MODALIAS"
 #-$MODALIAS=.* root:root 660 $modprobe -r "$MODALIAS"
+# (Podríamos dejar sólo la primera línea, sin guión, para detectar sólo conexiones).
 # Son dos líneas porque una es para la carga automática de módulos al CONECTAR algo y otra
 # para la descarga automática de módulos al DESCONECTAR algo.
 # Lo de 'root:root 660' es la propiedad (usuario:grupo) y los permisos de los nodos. 

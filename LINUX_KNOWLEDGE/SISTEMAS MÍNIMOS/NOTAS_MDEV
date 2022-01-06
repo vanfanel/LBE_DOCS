@@ -54,6 +54,8 @@ https://github.com/slashbeast/mdev-like-a-boss/blob/master/mdev.conf
 NOTA que ambas líneas empiezan con un guión. Esto es para que mdev NO se detenga en la primera línea con la que haga un match con la REGEX/exp.regular
 (que es .*, englobando así a TODOS los nombres de módulo de sysfs), sino que continúa leyendo las demás líneas y haciendo lo que se diga en ellas
 si también hace match con la REGEX de cada una de ellas.
+NOTA QUE PODRÍAMOS DEJAR SÓLO LA PRIMERA LÍNEA Y SIN GUIÓN, PARA NO DETECTAR DESCONEXIONES, SÓLO CONEXIONES, Y ASÍ NO TENER SALTOS EN LA EMULACIÓN,
+(pero claro, entonces tenemos que salir de RetroArch si queremos reconectar un mando, conectar otro nuevo, etc).
 
 NOTA también que en una el comando modprobe se precede de '@' y en la otra se precede de '$'.
 Pues la de '@' es para que el comando se ejecute cuando el evento de hotplug es de CONEXIÓN ($ACTION=add) y la de '$' para que el comando se ejecute
@@ -107,9 +109,15 @@ Para ello:
 	-Clonamos su repo: git clone --depth 1 https://github.com/illiliti/libudev-zero.git
 
 	-Borramos a mano libudev (en Devuan es libeudev, un drop-in replacement de udev que no depende de systemd, pero los ficheros son los mismos):
+	apt-get purge libeudev-dev
 	rm /usr/lib/aarch64-linux-gnu/libudev*
 	rm /usr/lib/aarch64-linux-gnu/pkgconfig/libudev.pc
+	rm -R /usr/lib/udev
 	(Lo borramos a mano porque borrarlo usando "apt-get purge" se lleva por delante componentes del sistema muy importantes como el propio apt!)
+
+	NO OLVIDES, TRAS DESINSTALARLO, LIMPIAR LA CACHÉ DE LIBRERÍAS:
+	rm /etc/ld.so.cache
+	ldconfig
 
 	-Compilamos e instalamos libudev-zero:
 	CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
@@ -117,6 +125,21 @@ Para ello:
 	(OJO, como sabes, al no especificarle un PREFIX=... a "make install", se instalará en /usr/local, donde están todas mis librerías de
 	 compilación propia, como SDL2, etc.. es lo normal).
 
+	-RECOMPILAMOS RetroArch normalmente, que ahora debería detectar la librería libudev correspondiente a libudev-zero.
+	ESTO ES MUY IMPORTANTE. SI PASAS DE USAR UDEV/EUDEV A USAR UDEV-ZERO, HAY QUE RECOMPILAR RETROARCH.
+
+	-SI QUEREMOS TENER HOTPLUGGING como en el UDEV original (es decir: poder poner y quitar mandos mientras RetroArch está funcionando),
+	tenemos que compilar el helper que trae libudev-zero, instalarlo en /usr/local/bin, y añadir unas líneas a /etc/mdev.conf.
+	Se hace tal que así:
+		cd contrib
+		gcc helper.c -o udevzero-helper -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
+		cp udevzero-helper /usr/local/bin
+	
+		Y ahora añadimos esto a nuestro /etc/mdev.conf (está sacado de contrib/mdev.conf, modificado para que encuentre el helper
+		con el nombre que le hemos puesto nosotros cuando lo hemos compilado, que lo hemos llamado udevzero-helper como lo podíamos
+		haber llamado pepito):
+		SUBSYSTEM=input;.* root:input 660 */usr/local/bin/udevzero-helper
+		
 Por si quieres volver a EUDEV:
 
 	-Para desinstalar libudev-zero sería:

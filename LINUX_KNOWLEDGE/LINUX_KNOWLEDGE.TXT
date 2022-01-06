@@ -322,10 +322,19 @@ para que resamplee de los 70HZ a los ~60HZ de nuestro monitor (a cambio de la su
 La configuración general (ciclos, emulación de la CPU usada, tarjetas de vídeo y audio, etc) se hace desde las OPTIONS del core.
 Y luego, para que en el inicio monte un directorio y se meta en él, debes pasarle un .conf que sólo haga eso, así:
 
-Para el aspect ratio: Lo de siempre para todos los cores en general: en SETTINGS->VIDEO se pone en 4:3 para todo y fuera.  
+PARA EL ASPECT RATIO: Lo de siempre para todos los cores en general: en SETTINGS->VIDEO se pone en 4:3 para todo y fuera.  
 
 PARA EVITAR PANTALLA NEGRA al principio del SUPERFROG si se usa el driver de vídeo VULKAN: desactiva el "FRAME DUPING" en las opciones del core.
 (Sólo ocurre con el driver del vídeo VULKAN).
+
+PARA EL TECLADO COMPLETO: En SETTINGS->INPUT->HOTKEYS, en HOTEY ENABLE pon la tecla WINDOWS/PI (se llama "lsuper", lo verás al darle)
+y déjalo así para todos los cores.
+
+PARA EVITAR QUE SE QUEDE EN EL MENÚ DE RETROARCH AL SALIR, desactiva SETTINGS->CORE->LOAD DUMMY CORE ON CORE SHUTDOWN.
+
+PARA TENER UN PC EQUIVALENTE A UN 386 a 33MHz, pon 7800 ciclos (busca "dosbox cycles equivalent" en google para ver otras equivalencias).
+
+PARA CARGAR EL Might & Magic 2, antes tienes que ejecutar LOADFIX (es un comando del propio DOSBOX), para que no se queje de la memoria.
 
 #######################
 # EMPIEZA EL DOS.CONF #
