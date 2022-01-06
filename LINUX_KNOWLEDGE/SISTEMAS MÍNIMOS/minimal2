@@ -105,8 +105,8 @@ fake-hwclock load >> /dev/null
 # inexistente, o el controlador del volúmen por software (softvol) no estará
 # disponible aún.
 # Algunos dispositivos como el vc4hdmi no tienen control de volúmen por hw.
-#aplay  /dev/zero -s 1 -q
-#amixer set PCM 230 -q
+aplay  /dev/zero -s 1 -q
+amixer set PCM 230 -q
 
 # El lanzamiento del bash se hace mediante setsid y exec en dos stages:
 # En el STAGE 1, setsid inicia una nueva sesión y manda un primer sh ahí,
