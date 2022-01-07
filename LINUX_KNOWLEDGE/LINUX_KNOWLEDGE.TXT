@@ -646,6 +646,16 @@ retroarch -L ~/.config/retroarch/cores/fbneo_libretro.so --subsystem=msx msx/pen
 O bien en el RetroArch, nos vamos a "load core", cargamos el core FBNeo, y luego vamos a "load content" y nos aparecerá
 "subsystem", allí elegimos MSX, y luego volvemos a "subsystem" y le damos a "start content" y elegimos otra vez MSX.
 
+RECUERDA LO PRIMERO DESMAPEAR LAS TECLAS DE TECLADO A BOTONES DE JOYSTICK EN LOS SETTINGS PRINCIPALES DE RETROARCH!
+De lo contrario, cualdo pulsas una tecla de cursor, por ejemplo, estás enviando tanto la pulsación de teclado como la de joystick...
+Esto también pasa en el core dosbox-core, así que quítalas. No pierdes nada, te vas a poder seguir moviendo por el menú de RA igual,
+con las teclas de siempre, no hace falta tenerlas mapeadas a botones de joystick.
+
+RECUERDA que para poder salvar (o cargar!) los mapeos de teclado que se aplican sólo a lo que tengas en el directorio de
+los juegos de MSX (SAVE CONTENT DIRECTORY REMAP FILE), tienes que pasar la ruta de la ROM o bien completa o bien con ./ al menos, en plan:
+msx1 ./msx/penguin.zip
+Si haces: msx1 msx/penguin.zip, se salvará un .RMP con nombre de archivo corrupto.
+
 ******LA ABADÍA DEL CRIMEN, nativo en LINUX**********************************************************************
 
 Copiamos su repo:
@@ -7045,8 +7055,10 @@ Para ajustar cosas del Maddog, puedes hacerlo durante el juego pulsando 9, o edi
 
 EL CARGADOR para el Maddog para evitar desincronizaciones de audio al principio, y con los parámetros necesariospara que vaya bien, es así:
 
-PARA CONVERTIR EL TRON desde mp4 de 1920x1080 a m2v de 960x540, hacemos esto:
-ffmpeg -i TRON.mp4 -vf tpad=stop_mode=clone:stop_duration=2,scale=960:540 -qscale:v 4 -b:v 6000k  -c:v mpeg2video tron.m2v
+LA CONVERSIÓN DE JUEGOS DE SINGE2 (TRON, Sucker Punch, etc) PARA LA RASPBERRY PI
+  PARA CONVERTIR EL TRON desde mp4 de 1920x1080 a m2v de 960x540, hacemos esto:
+  ffmpeg -i TRON.mp4 -vf tpad=stop_mode=clone:stop_duration=2,scale=960:540 -qscale:v 4 -b:v 6000k  -c:v mpeg2video tron.m2v
+  ffmpeg -i TRON.mp4 -ss 00:00:00.33 -vn -c:a libvorbis -ar 44100 -map a -b:a 160k tron.ogg
 
 ########################
 #INICIO CARGARDO MADDOG#
