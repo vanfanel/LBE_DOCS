@@ -18,6 +18,22 @@ configure mode 28
 Puedes ver la lista de modos aquí:
 https://www.riscosopen.org/zipfiles/platform/common/UserGuide.pdf
 
+SOLUCIONAR PROBLEMAS POR PROGRAMAS QUE SE EJECUTAN AL INICIO O POR MÓDULOS INSTALADOS
+=====================================================================================
+
+NUNCA deberías poner programas que se ejecuten al inicio, ni instalar módulos adicionales, porque estas cosas afectan MUCHO y de forma muy errática
+al ADFFS.
+
+PARA ELIMINAR PROGRAMAS QUE SE EJECUTAN AL INICIO:
+Ve a CONFIGURE->BOOT->RUN o a CONFIGURE->BOOT->LOOK AT, y elimina TODO lo que esté puesto ahí. TODO.
+
+SI AUN ASÍ TIENES PROBLEMAS, puedes arrancar con SHIFT pulsado, que es un arranque limpio sin ejecutar nada de BOOT,
+y compara los módulos cargados cuando arrancas con SHIFT y cuando no arrancas con SHIFT.
+Esto se hace volcando la lista de módulos y mirándola después. Para volcal la lista de módulos, nos vamos a la consola (F12) y ejecutamos
+el comando "modules" así:
+
+*MODULES { > $.modlist }
+
 COMANDOS DEL SISTEMA
 =======================
 
@@ -58,12 +74,15 @@ config_hdmi_boost=4
 REPRODUCIR VÍDEO EN MPEG CON AUDIO Y TODO
 =========================================
 
-PREVIO: Para instalar un SYSTEM, simplemente le damos doble click a BOOT, y ya ves que ahí tienes un icono para hacer merges de SYSTEMS
-que traen los programas.
+Necesitamos el KinoAmp, última versión y el AMPlayer, última versión. Copiamos la aplicación del KinoAmp a Apps, SIN instalar su SYSTEM
+ni nada así raro.
+Abrimos el AMPlayer, y en su carpeta SYSTEM vermos que hay unos módulos llamados AMPlayer*. Los copiamos a la carpeta !KinoAmp.
+Editamos el ficher RunKino (NO el !Run, sino el RunKino) y añadimos al principio:
+RMLoad <Obey$Dir>.AMPlayer
+Y al final:
+X RMKill AMPlayer
 
-Necesitamos el KinoAmp, última versión y el AMPlayer, última versión. Copiamos la aplicación del KinoAmp a Apps, SIN instalar su SYSTEM,
-e instalamos el SYSTEM del AMPlayer. Copiar la aplicación de AMPlayer a Apps ya es opcional, aunque está bien para escuchar música.
-Para que se oiga, vamos a los CHOICES del KinoAmp, y elegimos la salida del AMPlayer.
+Y por último, vamos a los CHOICES del KinoAmp, y elegimos la salida del AMPlayer.
 
 CONFIGURAR EL JOYSTICK CON USBJOYSTICK
 ======================================
