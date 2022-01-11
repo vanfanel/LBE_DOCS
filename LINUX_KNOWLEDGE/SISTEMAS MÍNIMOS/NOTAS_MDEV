@@ -9,6 +9,30 @@ OTRAS NOTAS MUY BUENAS SOBRE CÓMO FUNCIONA MDEV: 	http://lists.busybox.net/pipe
 CONCEPTOS BÁSICOS
 =================
 
+NOTA PREVIA: TENER MUY CLARO ESTO PARA EMPEZAR:
+Recuerda que los permisos que ves cuando haces "ls -l" a un archivo van así:
+
+USER GROUP OTHER
+rwx  rwx   rwx
+
+Es decir, los permisos sobre el archivo que tiene el propietario, los del grupo del propietario, y los demás.
+El órden es ese: RWX. Y cada uno de ellos es 0 o 1, y tenemos 3 bits para los permisos del propietario, 3 bits para los permisos de los del grupo del propietario, y 3 bits para los permisos de los demás usuarios.
+Ahora, recuerda como base que "4 es 100".
+Así, 400 significaría: 	r-- --- ---
+455 significaría: 		r-- r-x r-x
+600 significaría: 		rw- --- ---
+660 significaría:		rw- rw- ---
+
+NOTA INICIAL: DEVTMPFS es parte del kernel (para que funcione basta con tener CONFIG_DEVTMPFS=y y CONFIG_DEVTMPFS_MOUNT=y en la config del kernel).
+DEVTMPFS crea los nodos de dispositivo, no nos hace falta MDEV para eso, ya los crea DEVTMPFS.
+PERO OJO!! los nodos que crea DEVTMPFS tienen todos como propietario root:root y permisos 600 (600 equivale a rw- --- ---),
+y algunos nodos como el de vídeo (/dev/dri/card0) necesitan permisos distintos.
+Por ejemplo, el nodo de vídeo (/dev/dri/card0) necesita tener permisos 660 = rw- rw- ---
+
+NOTA INICIAL: Los tres sistemas que tienes que tener funcionando para que RetroArch llegue a funcionar con el driver UDEV sin tener UDEV
+(es decir, teniendo MDEV en su lugar) son: DEVTMPFS, MDEV y LIBUDEV-ZERO.
+Tienes que tener funcionando LOS TRES SISTEMAS.
+
 -DEVTMPFS: El sistema de archivos virtual donde el kernel hace aparecer y desaparecer los nodos de dispositivo cuando los conectamos o desconectamos.
            RECUERDA: El kernel hace esto por sí mismo, NO hace falta MDEV para hacer aparecer o desaparecer nodos en /dev.
            Para que el kernel se encargue de crear los nodos, tiene que tener la opción CONFIG_DEVTMPFS=y.
@@ -21,6 +45,22 @@ CONCEPTOS BÁSICOS
        ¿Y para qué la llama si los nodos ya los crea el kernel en /dev usando DEVTMPFS? Pues porque MDEV nos permite establecer permisos o titularidad
        de los nodos de dispositivo, nos permite llamar a un script cuando se conecta o desconecta tal o cual dispositivo, etc...
        Todo ello, según lo que especifiquemos en /etc/mdev.conf
+       RECUERDA: Como los nodos que crea DEVTMPFS tienen permisos 600, y /dev/dri/card0 necesita permisos 660 para que se vea la pantalla,
+       necesitamos mdev para que le de permisos 660 (es decir, no nos vale con que DEVTMPFS cree el nodo y luego carguemos nosotros
+       manualmente el módulo de vídeo, coon "modprobe vc4", porque al hacerlo así nosotros, /dev/dri/card0 tendrá permisos 600 y no se verá
+       la pantalla). 
+
+-LIBUDEV-ZERO: Es una reimplementación de LIBUDEV ¡pero que no necesita el servicio UDEV funcionando!. De esa manera, RetroArch, cuyo driver
+de input UDEV usa LIBUDEV, que a su ver necesita el servicio UDEV corriendo, puede funcionar sin UDEV.
+
+--NOTA FINAL-- Lo que sucede con /dev/dri/card0 es que, al cargar el módulo vc4 nosotros manualmente,
+el kernel crea el nodo /dev/dri/card0 usando DEVTMPFS automáticamente como siempre.
+Pero lo crea con los permisos con que crea todos los nodos, es decir: root:root 600 (o sea => rw- --- ---)
+Sin embargo este módulo necesita 660 (o sea => rw- rw- ---) o no se verá la consola en pantalla.
+Entonces, como le hemos dicho al kernel que, cuando vaya a crear o destruir un nodo llame a MDEV
+(mediante la línea "echo /bin/mdev > /proc/sys/kernel/hotplug")
+entra MDEV y cambia los permisos al nodo /dev/dri/card0 y lo pone a 660 (tal como le hemos especificado en /etc/mdev.conf)
+y se ve la consola en pantalla sin problema.
 
 LA SECUENCIA DE ARRANQUE CON MDEV
 =================================

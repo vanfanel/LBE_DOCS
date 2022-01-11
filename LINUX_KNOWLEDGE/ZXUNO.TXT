@@ -8,6 +8,12 @@ avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -v -v -v -v -patmega328
 COMBINACIONES DE TECLADO DEL ZXUNO GO+
 ========================================
 
+Entrar en la BIOS al arrancar:
+
+SHIFT + 1 (Lo cual resulta en pulsación de la tecla EDIT, que es como se entra)
+O BIEN, SI HAS DEJADO CONFIGURADO EL TECLADO EN EL MODO DE OTRO ORDENADOR, POR LO CUAL SHIFT + 1 NO IRÁ,
+SIMPLEMENTE PULSA JOYSTICK ARRIBA Y EN EL MENÚ DE SELECCIÓN DE CORE, AL FINAL TIENES LA OPCIÓN "ENTER SETUP".
+
 Establecer un modo de teclado:
 
 CAPS+SHIFT+U y luego un número (0 es el ZX Spectrum, etc). Salvamos permanentemente con CAPS+SHIT+X
@@ -159,3 +165,17 @@ nos metemos en SYS, y allí creamos AUTOBOOT.BAS con este contenido:
 (MUY importante la barra, o si no intentará ir a /SYS/ZX y al no encontrarlo no entrará)
 SAVE *"AUTOBOOT.BAS" LINE 10
 (MUY importante indicarle en qué línea tiene que empezar a ejecutar el BASIC. Para escribir ese LINE, te pones en modo extended (CAPS SHIFT + SYMBOL SHIFT) y luego SYMBOL SHIFT + 3
+
+CORE DE PC-XT
+=============
+
+El repositorio donde se está desarrollando este core es:
+https://github.com/spark2k06/next186lite_graphics_gremlin
+
+Y la imágen de disco que hay que usar es la llamada DOS31HDD.zip que está al final del primer post de este hilo del port original de DistWave:
+https://www.zxuno.com/forum/viewtopic.php?t=815
+
+PARA QUE FUNCIONE EL TECLADO DEL ZXUNO GO+:
+-En la BIOS, el LAYOUT tiene que estar en SPECTRUM
+-En los modos de teclado, tiene que estar en .PCXT. Para ello, CAPS+SHIFT+U y luego el número 9.
+Y salvamos permanentemente el modo de teclado con CAPS+SHIT+X
