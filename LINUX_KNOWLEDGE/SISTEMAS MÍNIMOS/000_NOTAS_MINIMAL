@@ -62,12 +62,18 @@ el kernel crea el nodo /dev/dri/card0 usando DEVTMPFS automáticamente como siem
 Lo crea con los permisos con que crea todos los nodos, es decir: root:root 600 (o sea => rw- --- ---)
 Con esos permisos es suficiente para que se vea la consola en pantalla y, si además cargamos el módulo v3d, para que funcionen los gráficos.
 
-LA SECUENCIA DE ARRANQUE CON MDEV
-=================================
+LA SECUENCIA DE ARRANQUE CON MDEV (NOTA: MDEV NORMALMENTE NO HACE FALTA PARA NADA)
+==================================================================================
 
-TIENES UNA SECUENCIA TÍPICA DE ARRANQUE CON MDEV EN EL SCRIPT "minimal2".
+TIENES UNA SECUENCIA TÍPICA DE ARRANQUE SIN UDEV EN EL SCRIPT "minimal".
+NORMALMENTE MDEV NO HACE FALTA PARA NADA: DEVTMPFS (PARTE DEL KERNEL) CREA LOS NODOS EN /DEV,
+Y CARGAMOS "A MANO" LOS MÓDULOS NECESARIOS PARA NUESTRO HARDWARE.
+MDEV ES SÓLO POR SI QUEREMOS CONECTAR Y USAR HARDWARE NUEVO SIN REINICIAR LA MÁQUINA.
+ACTIVAR MDEV CONSISTE SIMPLEMENTE EN DECIRLE AL KERNEL QUE TIENE QUE LLAMAR A MDEV CUANDO HAY UN EVENTO DE HTPLUG, COSA QUE SE HACE CON LA
+LÍNEA:
+echo /bin/mdev/ > /proc/sys/kernel/hotplug
 
-LO PRIMERO, sería tener mdev disponible como comando desde el principio del arranque, para ello al menos una vez tenemos que hacer:
+PERO OJO!! LO PRIMERO, DEBES TENER MDEV DISPONIBLE COMO COMANDO DESDE EL PRINCIPIO DEL ARRANQUE, para ello al menos una vez tenemos que hacer:
 ln -s /bin/busybox /dev/mdev
 
 TAMBIÉN ten en cuenta que el kernel automonta DEVTMPFS en /dev, siempre y cuando tenga la opción CONFIG_DEVTMPFS_MOUNT=y, que es lo más normal,
@@ -77,7 +83,7 @@ TAMBIÉN, si arrancas con un initramfs o un initrd, tienes que hacer LO PRIMERO 
 con "mount -t devtmpfs none /dev", y luego tendrás que hacer "busybox mdev -s" para recrear los nodos de /dev ya que al montarlo a mano estará vacío.
 PERO eso es sólo si alguna vez usas un initramfs o un initrd, NORMALMENTE el kernel automonta DEVTMPS en /dev y ya está.
 
-A PARTE, tienes que tener esto en /etc/mdev.conf si quieres que los módulos se carguen/descarguen automáticamente cuando conectes/desconectes
+A PARTE, tienes que tener esto en /etc/mdev.conf si quieres que MDEV cargue/descargue automáticamente los módulos cuando conectes/desconectes
 algo en caliente:
 
 -$MODALIAS=.* root:root 600 @modprobe "$MODALIAS"

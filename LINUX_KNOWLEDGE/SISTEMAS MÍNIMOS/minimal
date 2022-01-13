@@ -1,15 +1,94 @@
 #!/bin/sh
 
-# Para que vayan gráficos y audio, es necesario tener sysfs y proc.
-# Y para que arranque el servicio udev/mdev, y para poder configurar el governor a mano.
-# Se supone que el kernel tiene las opciones CONFIG_DEVTMPFS=y, CONFIG_DEVTMPFS_MOUNT=y,
-# por lo que en /dev el propio kernel tiene ya montado el devtmpfs que es donde udev/mdev
-# crean los nodos de /dev.
-# En algunos kernels, como el de Devuan, ya viene montado /sys, así que se puede comentar eso.
-mount -t sysfs sysfs /sys
+#################################################
+# BLOQUE DEVTMPFS Y MDEV                        #
+#################################################
+
+# ¡¡¡¡CUIDADO!!!! ANTES DE PODER USAR MDEV, DEBEMOS CREAR UN LINK SIMBÓLICO A BUSYBOX CON:
+# "ln -s /bin/busybox /bin/mdev"
+
+# Para que se creen y borren automáticamente los nodos en /dev al conectar y desconectar cosas,
+# lo que se usa es DEVTMPFS, que es parte del kernel. O SEA, es el kernel el que crea y borra
+# los nodos en /dev, NO hace falta MDEV para ello.
+# Para que funcione DEVTMPFS, el kernel ha de tener la opción CONFIG_DEVTMPFS=y, que es lo más común. 
+# Y para que el kernel monte DEVTMPFS en /dev automáticamente, debe tener CONFIG_DEVTMPFS_MOUNT=y,
+# que también es lo más común.
+
+# Si arrancases usando un initramfs o un initrd, sin embargo, sí tendrías que montar DEVTMPFS en /dev
+# a mano LO PRIMERO EN EL SCRIPT, usando "mount -t devtmpfs none /dev", y luego tendrías que
+# pedirle a MDEV que recreease los nodos de dispositivo usando "busybox mdev -s", ya que aunque
+# el kernel ya habría creado los nodos en /dev en el arranque, ahora estaríamos con un /dev vacío
+# y habría que volver a crear los nodos: el kernel ya los creó así que no lo va volver a hacer
+# a no ser que reconectásemos todo.
+#
+# Además, en kernels viejos, CONFIG_DEVTMPFS_MOUNT no estaba, y por eso también a veces verás
+# instrucciones viejas que indican que hagas lo primero "mount -t devtmpfs none /dev" o similar.
+
+# MDEV nos hace falta para que auto-cargue los módulos cuando hay un evento de hotplug
+# después de que el kernel ya está arrancado.
+# De paso, también le podemos decir que establezca propiedad y permisos para los nodos,
+# pero esto a nosotros nos da igual porque lo hacemos todo con el usuario root,
+# así que los permisos 600 que establece DEVTMPFS por defecto nos valen perfectamente.
+
+# Para que MDEV haga la autocarga/descarga de módulos, debemos tener estas líneas en /etc/mdev.conf:
+#-$MODALIAS=.* root:root 600 @modprobe "$MODALIAS"
+#-$MODALIAS=.* root:root 600 $modprobe -r "$MODALIAS"
+# (Podríamos dejar sólo la primera línea, sin guión, para detectar sólo conexiones).
+# Son dos líneas porque una es para la carga automática de módulos al CONECTAR algo y otra
+# para la descarga automática de módulos al DESCONECTAR algo.
+# Lo de 'root:root 600' es la propiedad (usuario:grupo) y los permisos de los nodos que MDEV
+# establece (DEVTMPS al crear los nodos les da 600 a todos, nosotros hacemos lo mismo).
+# Ambas líneas empiezan por un guión realmente, para que MDEV no se detenga en la primera en que
+# haga match, y aunque parezca raro, en la de descarga también hay que poner la propiedad
+# y los permisos o no funciona.
+# Para que un comando se ejecute cuando se CONECTA algo se precede de '@' y para que se ejecute
+# cuando se DESCONECTA algo se precede de '$'. Por eso tienes una '@' en la de carga y un '$'
+# en la de descarga.
+# Se necesitan LAS DOS LÍNEAS, no vale poner el comando de carga (@modprobe) y el de descarga
+# ($modprobe -r) en la misma, sencillamente NO FUNCIONA.
+
+# Con lo siguiente "activamos" MDEV, es decir: le decimos al kernel que llame a MDEV cuando haya
+# un evento de hotplug/unplug. Sin MDEV, sencillamente hay que reiniciar el sistema si conectamos
+# o desconectamos algo.
+# echo /bin/mdev > /proc/sys/kernel/hotplug
+
+# Para que vayan gráficos y audio, es necesario tener sysfs y proc montados.
+# En algunos kernels, como el de Devuan, ya viene montado /sys, así que la línea de montaje de /sys
+# la tengo comentada por eso.
+# mount -t sysfs none /sys
 mount -t proc proc /proc
 
-# Ponemos a punto el governor de cada core, ahora que ya tenemos el sysfs preparado.
+# El sistema devpts (NO confundir con el gran DEVTMPFS, ¡ojo!) es otro sistema de archivos virtual
+# que vive en /dev/pts y que contiene esclavos multiplexados de /dev/ptmx, siendo cada uno de esos
+# esclavos la representación de un emulador de terminal (como xterm en X11,
+# o un terminal de wayland, o un terminal de acceso por SSH. Como usamos SSH,
+# pues tenemos que montar esto o nos dará un error "PTY allocation failed" al intentar entrar).
+mkdir -p /dev/pts
+mount devpts /dev/pts -t devpts
+
+# Cargamos los módulos del hardware que YA tenemos conectado. ¿Por qué lo hacemos si tenemos MDEV? Mira:
+# Cuando conectemos nuevo hardware, se encargará MDEV porque será llamado por el kernel en cada evento
+# de conexión/desconexión, pero para el hardware que YA está conectado al arrancar, lo tenemos que
+# hacer nosotros porque no hay tales eventos que desencadenen las llamadas a MDEV.
+
+# Podemos hacerlo automáticamente, mirando en /sys/devices...
+#find /sys/devices -name modalias -type f -print0 | xargs -0 sort -u | xargs modprobe -ab 2>/dev/null
+
+# O podemos hacerlo a mano, sólo para el hardware de esta máquina en concreto.
+# Si algo que conectas no va, ejecuta la línea anterior (find /sys/devices...etc) o arranca con ella,
+# vuelca la salida de lsmod a un fichero y analiza qué módulos te faltan aquí.
+# OJO al módulo "snd_soc_hdmi_codec": sin él, no hay señal de vídeo en la Raspberry Pi.
+modprobe vc4
+modprobe v3d
+modprobe snd_soc_hdmi_codec
+modprobe xpad
+
+#################################################
+# FIN BLOQUE DEVTMPFS Y MDEV                    #
+#################################################
+
+# Ponemos a punto el governor de cada core, ahora que ya tenemos el sysfs preparado
+# y cargados los módulos que permiten controlar la frecuencia de la CPU de la Pi.
 for numcore in 0 1 2 3
 do
  echo performance > /sys/devices/system/cpu/cpu$numcore/cpufreq/scaling_governor
@@ -28,22 +107,6 @@ mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
 # OJO, no especificamos un tamaño, así que como mucho pueden ocupar el 50% de la RAM.
 mount -t tmpfs tmpfs /tmp
 mount -t tmpfs tmpfs /var/log
-
-# OPCIONAL: Lanzamos udev/eudev para que nos detecte lo que conectemos dinámicamente,
-# carge los modulos correspondientes y cree los nodos en /dev.
-# UDEV puede correr sin SYSTEMD, pero los scripts de inicio de UDEV en algunos sistemas
-# requieren SYSTEMD.
-# POR AHORA se puede usar EUDEV, pero EUDEV va a ser retirado en 2022.
-# Así que en sistemas con SYSTEMD habría que instalar BUSYBOX, que lleva MDEV.
-# MDEV no carga los módulos automáticamente, tienes que tenerlos añadidos en
-# ficheros .conf dentro de /etc/modules-load.d/
-# Más info para el futuro sobre configurar MDEV: https://wiki.gentoo.org/wiki/Mdev
-#/etc/init.d/udev start >> /dev/null
-/etc/init.d/eudev start >> /dev/null
-
-# Esto de devpst es para poder conectar por ssh, si no no nos podrá dar una PTY.
-#mkdir /dev/pts
-#mount -t devpts none /dev/pts -o gid=4,mode=620
 
 # MUY IMPORTANTE exportar $HOME o las configuraciones de los programas
 # se empezarán a guardar en /. Así que esto hay que hacerlo SIEMPRE.
@@ -80,10 +143,6 @@ setsid sh -c 'cd /root;exec bash --login </dev/tty1 >/dev/tty1 2>&1'
 
 # Salvamos la última fecha conocida, que va al fichero /etc/fake-hwclock.data
 fake-hwclock save
-
-# Paramos udev/eudev (si es que lo hemos lanzado).
-#/etc/init.d/udev stop >> /dev/null
-/etc/init.d/eudev stop >> /dev/null
 
 # Matamos todos los procesos que se han lanzado desde este script,
 # para que no haya nada accediendo a directorios que cuelguen del rootfs.
