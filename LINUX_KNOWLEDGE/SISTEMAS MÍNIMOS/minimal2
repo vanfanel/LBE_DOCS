@@ -14,11 +14,6 @@
 # Y para que el kernel monte DEVTMPFS en /dev automáticamente, debe tener CONFIG_DEVTMPFS_MOUNT=y,
 # que también es lo más común.
 
-# MDEV nos hace falta para que, además de auto-cargar los módulos, establezca los permiso que le
-# digamos para los nodos, ya que por ejemplo /dev/dri/card0 necesita 660 (rw- rw- ---) para que se
-# vea algo en pantalla y DEVTMPFS crea todos los nodos con permisos 600 (rw- --- ---), así que
-# necesitamos que MDEV los ajuste o tendríamos que ajustarles los permisos nosotros a mano.
-
 # Si arrancases usando un initramfs o un initrd, sin embargo, sí tendrías que montar DEVTMPFS en /dev
 # a mano LO PRIMERO EN EL SCRIPT, usando "mount -t devtmpfs none /dev", y luego tendrías que
 # pedirle a MDEV que recreease los nodos de dispositivo usando "busybox mdev -s", ya que aunque
@@ -29,16 +24,20 @@
 # Además, en kernels viejos, CONFIG_DEVTMPFS_MOUNT no estaba, y por eso también a veces verás
 # instrucciones viejas que indican que hagas lo primero "mount -t devtmpfs none /dev" o similar.
 
-# MDEV lo usamos para cargar automáticamente los módulos correspondientes y para establecer
-# los permisos de los nodos.
-# Para ello, debemos tener estas líneas en /etc/mdev.conf:
-#-$MODALIAS=.* root:root 660 @modprobe "$MODALIAS"
-#-$MODALIAS=.* root:root 660 $modprobe -r "$MODALIAS"
+# MDEV nos hace falta para que auto-cargue los módulos cuando hay un evento de hotplug
+# después de que el kernel ya está arrancado.
+# De paso, también le podemos decir que establezca propiedad y permisos para los nodos,
+# pero esto a nosotros nos da igual porque lo hacemos todo con el usuario root,
+# así que los permisos 600 que establece DEVTMPFS por defecto nos valen perfectamente.
+
+# Para que MDEV haga la autocarga/descarga de módulos, debemos tener estas líneas en /etc/mdev.conf:
+#-$MODALIAS=.* root:root 600 @modprobe "$MODALIAS"
+#-$MODALIAS=.* root:root 600 $modprobe -r "$MODALIAS"
 # (Podríamos dejar sólo la primera línea, sin guión, para detectar sólo conexiones).
 # Son dos líneas porque una es para la carga automática de módulos al CONECTAR algo y otra
 # para la descarga automática de módulos al DESCONECTAR algo.
-# Lo de 'root:root 660' es la propiedad (usuario:grupo) y los permisos de los nodos que MDEV
-# establece (ya que DEVTMPS al crear los nodos les da 600 a todos).
+# Lo de 'root:root 600' es la propiedad (usuario:grupo) y los permisos de los nodos que MDEV
+# establece (DEVTMPS al crear los nodos les da 600 a todos, nosotros hacemos lo mismo).
 # Ambas líneas empiezan por un guión realmente, para que MDEV no se detenga en la primera en que
 # haga match, y aunque parezca raro, en la de descarga también hay que poner la propiedad
 # y los permisos o no funciona.
@@ -64,11 +63,20 @@ mount -t proc proc /proc
 mkdir -p /dev/pts
 mount devpts /dev/pts -t devpts
 
-# Cargamos los módulos del hardware que YA tenemos conectado. ¿Por qué lo hacemos a mano? Pues mira:
+# Cargamos los módulos del hardware que YA tenemos conectado. ¿Por qué lo hacemos si tenemos MDEV? Mira:
 # Cuando conectemos nuevo hardware, se encargará MDEV porque será llamado por el kernel en cada evento
 # de conexión/desconexión, pero para el hardware que YA está conectado al arrancar, lo tenemos que
 # hacer nosotros porque no hay tales eventos que desencadenen las llamadas a MDEV.
-find /sys/devices -name modalias -type f -print0 | xargs -0 sort -u | xargs modprobe -ab 2>/dev/null
+
+# Podemos hacerlo automáticamente, mirando en /sys/devices...
+#find /sys/devices -name modalias -type f -print0 | xargs -0 sort -u | xargs modprobe -ab 2>/dev/null
+
+# O podemos hacerlo a mano, sólo para el hardware de esta máquina en concreto.
+# Si algo que conectas no va, ejecuta la línea anterior (find /sys/devices...etc) o arranca con ella,
+# vuelca la salida de lsmod a un fichero y analiza qué módulos te faltan aquí.
+modprobe vc4
+modprobe v3d
+modprobe xpad
 
 #################################################
 # FIN BLOQUE DEVTMPFS Y MDEV                    #

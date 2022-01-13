@@ -6,10 +6,9 @@ https://buildroot.org/downloads/manual/manual.html
 GUÍA DE MIGRACIÓN DE UDEV A MDEV: 					https://wiki.gentoo.org/wiki/Mdev
 OTRAS NOTAS MUY BUENAS SOBRE CÓMO FUNCIONA MDEV: 	http://lists.busybox.net/pipermail/busybox/2015-August/083255.html
 
-CONCEPTOS BÁSICOS
-=================
+REPASO PREVIO: EL SISTEMA DE PERMISOS DE UNIX
+=============================================
 
-NOTA PREVIA: TENER MUY CLARO ESTO PARA EMPEZAR:
 Recuerda que los permisos que ves cuando haces "ls -l" a un archivo van así:
 
 USER GROUP OTHER
@@ -23,11 +22,13 @@ Así, 400 significaría: 	r-- --- ---
 600 significaría: 		rw- --- ---
 660 significaría:		rw- rw- ---
 
+CONCEPTOS BÁSICOS
+=================
+
 NOTA INICIAL: DEVTMPFS es parte del kernel (para que funcione basta con tener CONFIG_DEVTMPFS=y y CONFIG_DEVTMPFS_MOUNT=y en la config del kernel).
 DEVTMPFS crea los nodos de dispositivo, no nos hace falta MDEV para eso, ya los crea DEVTMPFS.
-PERO OJO!! los nodos que crea DEVTMPFS tienen todos como propietario root:root y permisos 600 (600 equivale a rw- --- ---),
-y algunos nodos como el de vídeo (/dev/dri/card0) necesitan permisos distintos.
-Por ejemplo, el nodo de vídeo (/dev/dri/card0) necesita tener permisos 660 = rw- rw- ---
+Los nodos que crea DEVTMPFS tienen todos como propietario root:root y permisos 600 (600 equivale a rw- --- ---),
+así que si lo hacemos todo como root, así queda perfecto todo, incluidos gráficos.
 
 NOTA INICIAL: Los tres sistemas que tienes que tener funcionando para que RetroArch llegue a funcionar con el driver UDEV sin tener UDEV
 (es decir, teniendo MDEV en su lugar) son: DEVTMPFS, MDEV y LIBUDEV-ZERO.
@@ -52,22 +53,14 @@ Tienes que tener funcionando LOS TRES SISTEMAS.
        ¿Y para qué la llama si los nodos ya los crea el kernel en /dev usando DEVTMPFS? Pues porque MDEV nos permite establecer permisos o titularidad
        de los nodos de dispositivo, nos permite llamar a un script cuando se conecta o desconecta tal o cual dispositivo, etc...
        Todo ello, según lo que especifiquemos en /etc/mdev.conf
-       RECUERDA: Como los nodos que crea DEVTMPFS tienen permisos 600, y /dev/dri/card0 necesita permisos 660 para que se vea la pantalla,
-       necesitamos mdev para que le de permisos 660 (es decir, no nos vale con que DEVTMPFS cree el nodo y luego carguemos nosotros
-       manualmente el módulo de vídeo, coon "modprobe vc4", porque al hacerlo así nosotros, /dev/dri/card0 tendrá permisos 600 y no se verá
-       la pantalla). 
-
+       
 -LIBUDEV-ZERO: Es una reimplementación de LIBUDEV ¡pero que no necesita el servicio UDEV funcionando!. De esa manera, RetroArch, cuyo driver
 de input UDEV usa LIBUDEV, que a su ver necesita el servicio UDEV corriendo, puede funcionar sin UDEV.
 
 --NOTA FINAL-- Lo que sucede con /dev/dri/card0 es que, al cargar el módulo vc4 nosotros manualmente,
 el kernel crea el nodo /dev/dri/card0 usando DEVTMPFS automáticamente como siempre.
-Pero lo crea con los permisos con que crea todos los nodos, es decir: root:root 600 (o sea => rw- --- ---)
-Sin embargo este módulo necesita 660 (o sea => rw- rw- ---) o no se verá la consola en pantalla.
-Entonces, como le hemos dicho al kernel que, cuando vaya a crear o destruir un nodo llame a MDEV
-(mediante la línea "echo /bin/mdev > /proc/sys/kernel/hotplug")
-entra MDEV y cambia los permisos al nodo /dev/dri/card0 y lo pone a 660 (tal como le hemos especificado en /etc/mdev.conf)
-y se ve la consola en pantalla sin problema.
+Lo crea con los permisos con que crea todos los nodos, es decir: root:root 600 (o sea => rw- --- ---)
+Con esos permisos es suficiente para que se vea la consola en pantalla y, si además cargamos el módulo v3d, para que funcionen los gráficos.
 
 LA SECUENCIA DE ARRANQUE CON MDEV
 =================================
@@ -87,8 +80,8 @@ PERO eso es sólo si alguna vez usas un initramfs o un initrd, NORMALMENTE el ke
 A PARTE, tienes que tener esto en /etc/mdev.conf si quieres que los módulos se carguen/descarguen automáticamente cuando conectes/desconectes
 algo en caliente:
 
--$MODALIAS=.* root:root 660 @modprobe "$MODALIAS"
--$MODALIAS=.* root:root 660 $modprobe -r "$MODALIAS"
+-$MODALIAS=.* root:root 600 @modprobe "$MODALIAS"
+-$MODALIAS=.* root:root 600 $modprobe -r "$MODALIAS"
 
 NOTA que la parte en la que dice "$MODALIAS=.*" es lo que se llama el REGEX (regular expression) que, si coincide con algún dispositivo,
 se hace lo que le digamos que tenga que hacerse en esa línea.
@@ -117,7 +110,7 @@ NOTA que hacen falta ambas líneas, no se puede poner el comando de carga y el d
 NOTA QUE SI ALGUNA VEZ QUISIERAS que se automonte algo al conectarlo, etc... ahí en vez de "modprobe" puedes llamar al script de cosecha propia que quieras.
 Puedes hacer que ocurra lo que quieras poniéndolo ahí y si hay match del REGEX, se ejecutará.
 
-root:root es la propiedad de los nodos creados, y 660 los permisos.
+root:root es la propiedad de los nodos creados, y 600 los permisos.
 (Son los valores por defecto, los explicitamos sólo para dejarlo documentado)
 
 Para que funcione la GPU, deberías tener los nodos del sistema gráfico. Son
@@ -187,7 +180,7 @@ Para ello:
 		Y ahora añadimos esto a nuestro /etc/mdev.conf (está sacado de contrib/mdev.conf, modificado para que encuentre el helper
 		con el nombre que le hemos puesto nosotros cuando lo hemos compilado, que lo hemos llamado udevzero-helper como lo podíamos
 		haber llamado pepito):
-		SUBSYSTEM=input;.* root:input 660 */usr/local/bin/udevzero-helper
+		SUBSYSTEM=input;.* root:input 600 */usr/local/bin/udevzero-helper
 		
 Por si quieres volver a EUDEV:
 
