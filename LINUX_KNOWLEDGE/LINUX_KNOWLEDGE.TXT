@@ -1621,6 +1621,16 @@ Viene en el parche del Castlevania Rondo of Blood al inglés.
 Instala el paquete libreoffice-gtk, y arreglado.
 Recuerda: libreoffice-gtk. Es un paquete de integración.
 
+*******Ver la configuración del kernel en ejecución****************
+
+Para que nos aparezca /proc/config.gz, hacemos:
+
+modprobe configs
+
+Ahora ya podemos buscar con ZGREP directamente:
+
+zgrep PREEMPT /proc/config.gz
+
 *******Deshabilitar el three-finger salute (ctrl-alt-sup)**********
 
 En algunos casos puede ser importante por seguridad, o porque arrancas con un script mínimo custom, sin sistema init.
