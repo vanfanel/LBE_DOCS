@@ -19,10 +19,10 @@ desde dentro de RetroArch, y salvarlo como un SHADER GLOBAR PRESET y listo).
 
 Yo uso CRT/ZFAST, que es el único shader que no machaca la CPU junto con fakelottes, pero en ZFAST puedes poner una mask que funciona
 perfectamente sin usar integer scale.
-Lo que SÍ hay que hacer es quitar totalmente las scanlines.
+Lo que SÍ hay que hacer es quitar totalmente las scanlines, y poner al máximo el "Blur Amount" para que la mask no cause shimmering horizontal.
 En resúmen, uso ZFAST con estos parámetros:
 
-Blur amount: 0.30
+Blur amount: 1.00
 Scanline Darkness - Low: 0.00
 Scanline Darkness - High: 0.00
 Dark pixel brightnes boost: 1.25
