@@ -33,15 +33,15 @@ Cuando mires en el TOP, si algo tiene prioridad negativa es que es de tiempo rea
 máxima.
 
 PARA TENER TAREAS CON GARANTÍAS DE TIEMPO REAL, ESTO ES, QUE NO SERÁN INTERRUMPIDAS Y SACADAS DE UNA CPU POR OTRAS TAREAS,
-NO HACE FALTA RECOMPILAR EL KERNEL, YA QUE LO QUE PERMITE CONFIGURAR EL KERNEL ES SI EL PROPIO KERNEL ES PREEMTIBLE (MÁS PREEMPTIBLE EN FULL RT QUE EN VOLUNTARY, 
-POR EJEMPLO), PERO ESTO A NOSOTROS NOS DA IGUAL (CON TAL DE QUE SEA UN KERNEL PREEMPTIBLE HASTA CIERTO PUNTO, QUE YA LO ES POR DEFECTO). LO QUE NOS INTERESA
-ES PODER AISLAR CPUs PARA QUE SÓLO SE EJECUTEN EN ELLAS TAREAS DETERMINADAS, ES DECIR, CREAR CPUs PRIVILEGIADAS.
+NO HACE FALTA RECOMPILAR EL KERNEL, YA QUE LO QUE PERMITE CONFIGURAR EL KERNEL ES SI EL PROPIO KERNEL ES PREEMTIBLE (MÁS PREEMPTIBLE
+EN FULL RT QUE EN VOLUNTARY, POR EJEMPLO), PERO ESTO A NOSOTROS NOS DA IGUAL (CON TAL DE QUE SEA UN KERNEL PREEMPTIBLE HASTA CIERTO PUNTO,
+QUE YA LO ES POR DEFECTO). LO QUE NOS INTERESA ES PODER AISLAR CPUs PARA QUE SÓLO SE EJECUTEN EN ELLAS TAREAS DETERMINADAS,
+ES DECIR, CREAR CPUs "PRIVILEGIADAS".
 PARA ELLO, simplemente añade a los parámetros del kernel:
 isolcpus=1-3
-Se le puede pasar un rango de CPUs separado por un guión, tal que: isolcpus=1-3 aislaría las CPUs del 1 al 3 y dejaría la 0 para housekeeping. A las 1,2 y 3, si no les pasamos nada
-con taskset no se ejecuta nada en ellas.
-..para que el scheduler no elija esas CPUs para cosas del kernel ni para ninguna otra tarea multithread (como compilar con -jn), excepto que yo le diga específicamente que las use
-mediante taskset.
+Se le puede pasar un rango de CPUs separado por un guión, tal que: isolcpus=1-3 aislaría las CPUs del 1 al 3 y dejaría la 0 para housekeeping. A las 1,2 y 3, si no les pasamos nada con taskset no se ejecuta nada en ellas.
+...Esto es para que el scheduler no elija esas CPUs para cosas del kernel ni para ninguna otra tarea multithread (como compilar con -jn), excepto que yo le diga específicamente que las use mediante taskset.
+
 Para comprobar qué CPUs tenemos aisladas:
 cat /sys/devices/system/cpu/isolated
 
@@ -96,14 +96,14 @@ cat /sys/devices/system/cpu/nohz_full
 Pero NO HACE FALTA NOHZ_FULL PORQUE:
 1- Es para situaciones donde, en la CPU totalmente tickless, sólo tienes un proceso que sólo tiene un thread, y ningún emulador o juego nativo es así.
 2- Habría que compilar el kernel con opciones especiales, porque si lo usas con un kernel normal no sale en DMESG lo de NO_HZ: Full dynticks CPUs: 2-3 (o el rango que sea).
-3- De todos modos, si miras watch -n1 -d 'cat /proc/interrupts', verás que las CPUs aisladas no van recibiendo interrupciones: se quedan en 11 o así, paradas, hasta que
-     ejecutamos algo en ellas y sólo entonces se incrementa el número de interrupciones que les llegan. Te interesa la fila de REESCHEDULING INTERRUPTS, que verás
-     que no se mueve hasta que ejecutas algo en las CPUs aisladas.
+3- De todos modos, si miras watch -n1 -d 'cat /proc/interrupts', verás que las CPUs aisladas no van recibiendo interrupciones: se quedan en 11 o así, paradas, hasta que ejecutamos algo en ellas y sólo entonces se incrementa el número de interrupciones que les llegan.
+Te interesa la fila de REESCHEDULING INTERRUPTS, que verás que no se mueve hasta que ejecutas algo en las CPUs aisladas.
 LAS CPUs AISLADAS NO RECIBEN INTERRUPCIONES DEL SCHEDULER CUANDO NO SE LAS USA, Y CUANDO SE LAS USA SÍ RECIBEN INTERRUPCIONES DE REESCHEDULING
-(a parte de montones de interrupciones por la propia ejecución del programa!!), PERO ES NORMAL QUE RECIBAN INTERRUPCIONES DE REESCHEDULING PORQUE LOS 
-PROGRAMAS QUE TÚ EJECUTAS SON MULTITHREAD, ASÍ QUE EL SCHEDULER TIENE QUE REPARTIR ESOS THREADS ENTRE LAS DISTINTASCPUs DEL GRUPO DE CPUs AISLADAS.
-SÓLO PODRÍAS ESPERAR QUE UNA CPU NO RECIBIERA INTERRUPCIONES DE REESCHEDULING SI SÓLO EJECUTASES UN PROGRAMA CON UN SÓLO THREAD EN ÉL, Y ESO NO
-PASA CON NADA DE LO QUE EJECUTAS. 
+(a parte de montones de interrupciones por la propia ejecución del programa!!), PERO ES NORMAL QUE RECIBAN INTERRUPCIONES DE REESCHEDULING
+PORQUE LOS  PROGRAMAS QUE TÚ EJECUTAS SON MULTITHREAD, ASÍ QUE EL SCHEDULER TIENE QUE REPARTIR ESOS THREADS ENTRE LAS DISTINTAS CPUs
+DEL GRUPO DE CPUs AISLADAS.
+SÓLO PODRÍAS ESPERAR QUE UNA CPU NO RECIBIERA INTERRUPCIONES DE REESCHEDULING SI SÓLO EJECUTASES UN PROGRAMA CON UN SÓLO THREAD EN ÉL,
+Y ESO NO PASA CON NADA DE LO QUE EJECUTAS. 
 ASÍ QUE NO TE RAYES CON ESTO, PASA DE nohz_full. Que te sirva para entender mejor el scheduler y ya.
 TAMPOCO PIERDAS EL TIEMPO CON LOS RCU THREADS, SACÁNDOLOS DE LA CPU, PASANDO rcu_nocbs=... NO SIRVE PARA NADA.
 UN KERNEL DE 250Hz TAMPOCO ARREGLA NADA.
@@ -117,19 +117,20 @@ Un resúmen con instrucciones específicas:
 echo 0 > /proc/sys/vm/swappiness
 
 PREFACIO
-=========
+========
 
 https://www.kernel.org/doc/Documentation/kernel-per-CPU-kthreads.txt
 https://www.kernel.org/doc/Documentation/timers/NO_HZ.txt
-https://access.redhat.com/sites/default/files/attachments/201501-perf-brief-low-latency-tuning-rhel7-v1.1.pdf
+https://access.redhat.com/sites/default/files/attachments/201501-perf-brief-low-latency-tuning-rhel7-v1.1.pdf (ojo al kernel commandline, pag 12)
+https://www.suse.com/c/cpu-isolation-introduction-part-1/ (ojo a la serie completa de entradas del blog sobre el tema)
 
-Se trata de dejar todos los threads del kernel que podamos en UNA sola CPU, que llamaremos "housekeeping CPU", y el resto de CPUs quedarán libres de jittering ya que estos hilos
-no corren en ellas.
+Se trata de dejar todos los threads del kernel que podamos en UNA sola CPU, que llamaremos "housekeeping CPU",
+y el resto de CPUs quedarán libres de jittering ya que estos hilos no corren en ellas.
 
 Los kthreads de RCU podrian no existir si compilamos con CONFIG_PREEMPT=n, pero claro, eso NO interesa para tiempo real, lo dice uno de los docs.
 
 PARTE 1: Los TICKS de sistema
-==========================
+=============================
 
 Esto es para que no se le manden a todos los cores ticks de manera contínua. Esto es bueno para tener cores donde sólo se ejecuta UN y sólo UN programa, y un core de housekeeping
 donde mandamos todos los theads del kernel. 
@@ -160,8 +161,9 @@ de manera que el procesado de callbacks del kernel se mande a hilos tipo rcu* qu
 No build_forced no-CBs CPUs, 
 de  manera que no haya una CPU libre de threads rcu* sino que luego movamos nosotros esos hilos a la CPU de housekeeping.
 
-Pulsa "?" sobre "Offload RCU callback processing from boot-selected CPUs" y lee sobre los nombres de los threads de control que se van a crear
-a partir de ahora, y que puedes mover a la CPU que quieras.
+Pulsa "?" sobre "Offload RCU callback processing from boot-selected CPUs" y lee sobre los nombres de los threads de control
+que se van a crear a partir de ahora, y que puedes mover a la CPU que quieras.
+
 Se puede usar el parámetro del kernel rcu_nocbs=... para especificar qué CPUs descargar de callbacks en tiempo de arranque, por ejemplo con rcu_nocbs=1,2,3
 se dejan las CPUs 1, 2 y 3 sin RCU callbacks y todas irán en la 1. 
 También se pueden mover los threads RCU después de arrancar a una CPU concreta, como vamos a ver a continuación, en este caso la 0, con:
@@ -175,7 +177,8 @@ rcuos/2
 rcuop/3
 rcuob/3
 rcuos/3
-...tienen que estar en la CPU 0, a pesar de que son de la 2 y la 3 (para mirarlo, ahí abajo tienes apuntes de TOP de cómo se mira en qué CPU corrió el thread por última vez).
+...tienen que estar en la CPU 0, a pesar de que son de la 2 y la 3 (para mirarlo, ahí abajo tienes apuntes de TOP de cómo se mira
+en qué CPU corrió el thread por última vez).
 
 PARTE 3: ISOLCPUS
 ================
@@ -200,13 +203,14 @@ Mírate "man 2 sched_setaffinity" si quieres controlar que un thread determinado
 CÓMO COMPROBAR EN QUÉ CPU CORRE CADA PROCESO
 ==================================================
 
-En TOP, pulsamos F mientras estamos ejecutándolo. En el menú que nos sale, podemos pulsar D sobre lo que queramos que se vea / que no se vea, elegimos que se vea
-el campo "P       = Last Used Cpu (SMP)", y le damos a ESCAPE, de manera que podemos ver en qué CPU corre cada cosa.
+En TOP, pulsamos F mientras estamos ejecutándolo. En el menú que nos sale, podemos pulsar D sobre lo que queramos que se vea / que no se vea,
+elegimos que se vea el campo "P = Last Used Cpu (SMP)", y le damos a ESCAPE, de manera que podemos ver en qué CPU corre cada cosa.
 
 DUDA: SI USO UN KERNEL CON EL SCHEDULER PUESTO A 100HZ, ¿PUEDO ESPECIFICAR usbhid.jspoll=2 QUE HACE QUE LOS USB SE LEAN A 500HZ?
 =============================================================================================================================
 
 Sí. El kernel corre sobre HRTIMERS, lo de los 100HZ es la velocidad del sheduler, es decir, cuántas veces por segundo mira a ver qué se ejecuta dónde.
 Son cosas distintas e independientes, la granularidad del kernel es mucho mayor que 100HZ... eso es sólo el scheduler.
-Y el scheduler, en tus sistemas de no-escritorio, va de sobra a 100Hz para una cosa que ejecutas a la vez (mas el housekeeping del kernel fuera de las CPUs aisladas).
+Y el scheduler, en tus sistemas de no-escritorio, va de sobra a 100Hz para una cosa que ejecutas a la vez (mas el housekeeping del kernel
+fuera de las CPUs aisladas).
 Así que sí, se puede.
