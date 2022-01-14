@@ -17,19 +17,16 @@ Así que SI NO TIENES "RETROARCH.GLSLP", entra en RetroArch y salva un SHADER GL
 con cualquier shader cargado, y ya tienes un "RETROARCH.GLSLP" generado. Ahora ya puedes elegir el shader que quieras y sus parámetros
 desde dentro de RetroArch, y salvarlo como un SHADER GLOBAR PRESET y listo).
 
-Yo uso CRT/FAKELOTTES con sólo unos cambios en los parámetros (los demás los dejo por defecto):
-
-Scanline Intensity: 0.10
-WarpX: 0
-WarpY: 0
-
-O bien CRT/ZFAST con estos parámetros:
+Yo uso CRT/ZFAST, que es el único shader que no machaca la CPU junto con fakelottes, pero en ZFAST puedes poner una mask que funciona
+perfectamente sin usar integer scale.
+Lo que SÍ hay que hacer es quitar totalmente las scanlines.
+En resúmen, uso ZFAST con estos parámetros:
 
 Blur amount: 0.30
 Scanline Darkness - Low: 0.00
 Scanline Darkness - High: 0.00
 Dark pixel brightnes boost: 1.25
-Mask effect amount: 0.30
+Mask effect amount: 0.80
 Mask/Scanline fade: 0.80
 
 GAMEBOY Y GAMEBOY COLOR BIEN

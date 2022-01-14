@@ -79,8 +79,8 @@ EN RESÚMEN: HABIENDO AISLADO LAS CPUs DEL 1 al 3 CON "isolcpus=1-3" EN CMDLINE.
 taskset -c 3 ./retroarch
 -Para lanzar algo MUY multithread (y que por tanto puede aprovechar varios cores) como el GZDOOM:
 chrt -f 80 taskset -c 1-3 ./gzdoom
-Yo uso -f 80, o -f 99..., que es SCHED_FIFO: los programas pillan la CPU y no la sueltan hasta que no acaban. La alternativa, -r, es SCHED_RR, que reparte rodajas de un tamaño
-determinado toooodo el rato, con lo que se generan más interrupciones de scheduling y no nos interesa tanto. ASÍ QUE USA -f mejor.
+Yo uso -f 80, o -f 99..., que es SCHED_FIFO: los programas pillan la CPU y no la sueltan hasta que no acaban. La alternativa, -r, es SCHED_RR, que reparte rodajas de un tamaño determinado toooodo el rato, con lo que se generan más interrupciones de scheduling y no nos interesa tanto.
+ASÍ QUE USA -f mejor.
 CUIDADO con el -r 99: se producen cuelgues.
 -Añade a .bashrc:
 alias make='chrt -r 1 taskset -c 1-3 make'
@@ -132,45 +132,45 @@ Los kthreads de RCU podrian no existir si compilamos con CONFIG_PREEMPT=n, pero 
 PARTE 1: Los TICKS de sistema
 =============================
 
-Esto es para que no se le manden a todos los cores ticks de manera contínua. Esto es bueno para tener cores donde sólo se ejecuta UN y sólo UN programa, y un core de housekeeping
-donde mandamos todos los theads del kernel. 
+En principio, en los kernels Linux originales, el scheduler va mandando "clock interrupts" a todas las CPUs para que,
+al atender a esas interrupciones, las CPUs vayan ejecutando los trozos de código de los diferentes procesos que están corriendo en el sistema,
+y que las CPUs se reparten.
+A estos "clock interrupts" los vamos a llamar "ticks".
 
-En GENERAL SETUP->TIMERS SUBSYSTEM, elegimos
-Full dynticks system (tickless)
-y también 
-Full dynticks system on all CPUs by default (except CPU 0)
+Cuando el scheduler no tiene nada de trabajo que enviarle a una CPU, esa CPU se considera "idle".
+O sea, que está idle porque no hay nada que se le pueda mandar hacer.
+Vamos, que una CPU sólo puede pasar a "idle" si el scheduler no tiene nada que mandarle hacer. 
 
-Eso ya nos condiciona a que la única CPU que va a tener TICKS periódicos (que son para proporcionar hora del sistema y cosas así) es sólo la 0.
-Las demás serán con ticks dinámicos o DYNTICS, que es mejor para realtime.
+Como hemos dicho, originalmente, el scheduler mandaba ticks, con una frecuencia fija, a todas las CPUs, estuviesen idle o estuviesen ocupadas.
+Ahora entiendes por qué mandar ticks a una CPU mientras está idle no tiene sentido: no hay nada que ejecutar en ella,
+así que hacer que procese los ticks sólo sirve para gastar energía eléctrica, al impedir que entre en un estado de idle profundo que ahorra energía.
+¿Para qué queremos mandar ticks a CPUs que no están haciendo nada si no tenemos nada que ponerlas a hacer?
 
-(sacado de https://www.kernel.org/doc/Documentation/timers/NO_HZ.txt)
-"The CONFIG_NO_HZ_FULL=y Kconfig option causes the kernel to avoid
-sending scheduling-clock interrupts to CPUs with a single runnable task,
-and such CPUs are said to be "adaptive-ticks CPUs".  This is important
-for applications with aggressive real-time response constraints because
-it allows them to improve their worst-case response times by the maximum
-duration of a scheduling-clock interrupt."
+Pues bien: La opción del kernel CONFIG_NO_HZ_IDLE=y lo que hace es que NO SE MANDEN ticks a CPUs que estén idle.
+Los kernels más comunes (debian, devuan, etc) vienen con CONFIG_NO_HZ_IDLE=y porque aparentemente son todo ventajas y ninguna desventaja.
+
+Y para controlar esto mismo, tenemos el parámetro del kernel "nohz".
+Si ponemos nohz=on, estamos haciendo lo mismo que hace CONFIG_NO_HZ_IDLE=y.
+Y si ponemos nohz=off, lo que hacemos es que SÍ SE MANDEN "ticks" a las CPUs mientras están en estado idle,
+incluso aunque en el kernel tengamos puesto CONFIG_NO_HZ_IDLE=y.
+
+Bibliografía:
+https://www.kernel.org/doc/html/v5.0/admin-guide/pm/cpuidle.html (leer la definición de "idle CPU" y la sección "idle CPUs and the scheduler tick")
+https://www.suse.com/c/cpu-isolation-introduction-part-1 (si has leido lo anterior, ya puedes entender esto)
+https://www.kernel.org/doc/html/latest/timers/no_hz.html (si has leido lo anterior, ya puedes entender esto)
+
 
 PARTE 2: Los RCU
-===============
+================
 
-En GENERAL SETUP->RCU SUBSYSTEM, elegimos
-Offload RCU callback processing from boot-selected CPUs,
-de manera que el procesado de callbacks del kernel se mande a hilos tipo rcu* que podemos mover a la CPU de housekeeping.
-
-No build_forced no-CBs CPUs, 
-de  manera que no haya una CPU libre de threads rcu* sino que luego movamos nosotros esos hilos a la CPU de housekeeping.
-
-Pulsa "?" sobre "Offload RCU callback processing from boot-selected CPUs" y lee sobre los nombres de los threads de control
-que se van a crear a partir de ahora, y que puedes mover a la CPU que quieras.
-
-Se puede usar el parámetro del kernel rcu_nocbs=... para especificar qué CPUs descargar de callbacks en tiempo de arranque, por ejemplo con rcu_nocbs=1,2,3
+Se puede usar el parámetro del kernel rcu_nocbs=... para especificar qué CPUs descargar de callbacks en tiempo de arranque, por ejemplo con: rcu_nocbs=1,2,3
 se dejan las CPUs 1, 2 y 3 sin RCU callbacks y todas irán en la 1. 
 También se pueden mover los threads RCU después de arrancar a una CPU concreta, como vamos a ver a continuación, en este caso la 0, con:
 
 for i in `pgrep rcuo` ; do taskset -pc 0 $i ; done
 
-Si lo has hecho bien (con que le pases rcu_nocbs=1,2,3 vale, si tienes las opciones correctas en el kernel), en TOP tienes que ver que, por ejemplo, los threads
+Si lo has hecho bien (con que le pases rcu_nocbs=1,2,3 vale, si tienes las opciones correctas en el kernel),
+en TOP tienes que ver que, por ejemplo, estos threads:
 rcuop/2
 rcuob/2
 rcuos/2
@@ -181,7 +181,7 @@ rcuos/3
 en qué CPU corrió el thread por última vez).
 
 PARTE 3: ISOLCPUS
-================
+=================
 
 Vamos a decirle al scheduler que no elija ciertos cores para ejecutar cosas. Le pasamos al kernel el parámetro:
 isolcpus=1,2,3
@@ -194,20 +194,20 @@ Puede ser una lista de cpus:
 taskset -c 1,2,3 <nombre_programa>
 
 OTRAS COSAS
-============
+===========
 
 En GENERAL SETUP, deshabilitamos el PROFILING SUPPORT (lo que se lleva por delante el oprofile).
 Quedaría mirar lo de compilar sin governor, en CPU POWER MANAGEMENT -> CPU FREQUENCY SCALING, y luego poner la velocidad de la CPU a mano.
 Mírate "man 2 sched_setaffinity" si quieres controlar que un thread determinado tenga afinidad a una CPU.
 
 CÓMO COMPROBAR EN QUÉ CPU CORRE CADA PROCESO
-==================================================
+============================================
 
 En TOP, pulsamos F mientras estamos ejecutándolo. En el menú que nos sale, podemos pulsar D sobre lo que queramos que se vea / que no se vea,
 elegimos que se vea el campo "P = Last Used Cpu (SMP)", y le damos a ESCAPE, de manera que podemos ver en qué CPU corre cada cosa.
 
 DUDA: SI USO UN KERNEL CON EL SCHEDULER PUESTO A 100HZ, ¿PUEDO ESPECIFICAR usbhid.jspoll=2 QUE HACE QUE LOS USB SE LEAN A 500HZ?
-=============================================================================================================================
+================================================================================================================================
 
 Sí. El kernel corre sobre HRTIMERS, lo de los 100HZ es la velocidad del sheduler, es decir, cuántas veces por segundo mira a ver qué se ejecuta dónde.
 Son cosas distintas e independientes, la granularidad del kernel es mucho mayor que 100HZ... eso es sólo el scheduler.
