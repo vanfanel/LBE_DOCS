@@ -5394,7 +5394,15 @@ Scanline gap brightness 	0.90
 Bloom factor				1.00
 Input gamma					2.40
 Output gamma				2.20
-(OJO!!! Edita el shader y comentar "#define CURVATURE" para los cores más exigentes, como el de GBA!)
+(OJO!!! PARA QUE EL SHADER NO CAUSE DROPOUTS DE AUDIO EN LOS CORES EXIGENTES,
+edita el shader y comenta todos los defines posibles, dejando toda esa sección comentada así:
+//#define SCANLINES
+//#define CURVATURE
+//#define FAKE_GAMMA
+//#define GAMMA
+//#define SHARPER
+//#define MULTISAMPLE
+)
 
 O bien usamos el shader ZFast, que está en /crt, con los parámetros:
 Blur amount:				1.00
@@ -5403,7 +5411,7 @@ Scanline Darkness - High:	0.00
 Dark pixel brightnes boost: 1.25
 Mask effect amount:			0.80
 Mask/Scanline fade:			0.80
-(OJO!! La versión SLANG del shader ZFast no tiene efecto mask, así que hasta que lo arreglen no tiene sentido usarlo).
+(OJO!! En la versión SLANG del shader ZFast no funciona el efecto mask, así que hasta que lo arreglen no tiene sentido usarlo).
 
 PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 

@@ -227,10 +227,21 @@ AÑÁDELO. LA EXPLICACIÓN ESTÁ EN LA SECCIÓN DE CONFIGURACIÓN INICIAL.
 apt-get install --reinstall initscripts -o Dpkg::Options::="--force-confask,confnew,confmiss"
 
 -La línea de comandos del kernel en cmdline.txt, una vez listo todo, queda así:
-video="HDMI-A-1:1280x720@60" mitigations=off elevator=noop console=tty1 root=PARTUUID=521a4163-0b rootfstype=ext4 rootflags=sync,noatime,nodiratime rw rootwait quiet fastboot logo.nologo noswap loglevel=3 usbhid.jspoll=2
+video="HDMI-A-1:1280x720@60" mitigations=off audit=0 mce=ignore_ce nosoftlockup elevator=noop console=tty1 root=PARTUUID=521a4163-0b rootfstype=ext4 rootflags=sync,noatime,nodiratime rw rootwait quiet fastboot logo.nologo noswap loglevel=3 usbhid.jspoll=2
 
 (¡¡ATENCIÓN!!: PUEDES COMPROBAR QUE EL ROOTFS SE HA MONTADO CON LOS PARÁMETROS QUE QUIERAS (te suele gustar montarlo con "sync" para que las
 escrituras sean inmediatas) SIMPLEMENTE MIRANDO LA SALIDA DEL COMANDO "mount" UNA VEZ ARRANCADO EL SISTEMA).
+
+(audit=0 desconecta la infraestructura de auditoría del kernel, que nos salva un 1% de CPU.
+ mce=ignore_ce ignora los errores corregidos, que producen prinks y cosas así causando picos de latencia.
+ nosoftlockup deshabilita el logging que se produce cuando un proceso está más de cierto tiempo en una CPU, cosa que usando "chrt -f 80"
+ para que un proceso pille una CPU y no la suelte es normal que se produzca.
+ elevator=noop hace que las operaciones de lectura/escritura en disco se produzcan tal cual llegan, sin algoritmos de elección).
+
+(¡¡ATENCIÓN!!: puedes aislar un grupo de CPUs para que el scheduler no les envíe tareas y para que no les lleguen ticks, con los parámetros:
+ isolcpus=1-3 nohz_full=1-3
+ Y en consecuencia, si quieres correr algo sobre esas CPUs aisladas puedes hacer:
+ chrt -f 80 taskset -c 1-3 <programa>).
 
 -Si quieres colores en la consola, un prompt sencillo y un mensaje de bienvenida, edita ~/.bashrc (el fichero viene comentado entero)
 y déjalo así (la parte de "...If not runnin interactively..." es necesaria para que el mensaje de bienvenida no interfiera con el scp):
