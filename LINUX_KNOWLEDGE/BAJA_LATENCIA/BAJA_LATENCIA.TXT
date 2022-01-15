@@ -1,6 +1,7 @@
 LO MÁS BÁSICO
 ==============
 
+A) SI ARRANCAS CON SYSTEMD U OTRO INIT SIMILAR:
 Empezamos consiguiendo los privilegios para establecer prioridad de tiempo real en nuestros procesos.
 Tienes que tener en /etc/security/limits.conf:
 @audio   -  rtprio     99
@@ -17,7 +18,12 @@ real-time priority (-r) 99
 max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
-Para aprovechar esto,  usaremos una de las dos políticas de REALTIME de LINUX:
+B) SI ARRANCAS A SACO CON UN INIT MÍNIMO CASERO, PUEDES VER QUE NO TIENES LÍMITES DE PRIORIDAD DE TIEMPO REAL EJECUTANDO "prlimit"
+Y MIRANDO LOS VALORES DE RTPRIO. 
+
+-----
+
+EN TODO CASO, para aprovechar que no tenemos límites de prioridad de tiempo real, usaremos una de las dos políticas de REALTIME de LINUX:
 
 -SCHED_FIFO: Usa "chrt -f 80" (le puedes dar hasta 99, pero no se recomienda porque puede causar starvation en algo
 que tenga que ejecutar ahí el kernel), que le da prioridad realtime y no suelta la CPU porque no hay otra aplicación con la misma o superior prioridad que la pida (o sea, es FIFO de máxima prioridad), asi que MIENTRAS NO ACABE, COMO LLEGÓ ANTES, NO SUELTA LA CPU ni a palos.
