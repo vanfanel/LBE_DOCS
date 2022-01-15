@@ -154,7 +154,8 @@ Si ponemos nohz=on, estamos haciendo lo mismo que hace CONFIG_NO_HZ_IDLE=y.
 Y si ponemos nohz=off, lo que hacemos es que SÍ SE MANDEN "ticks" a las CPUs mientras están en estado idle,
 incluso aunque en el kernel tengamos puesto CONFIG_NO_HZ_IDLE=y.
 
-EN DEFINITIVA, NO NOS CONVIENE PASAR nohz=off, PORQUE NOS INTERESA QUE NO SE MANDEN TICKS A LAS CPUS CUANDO ESTÁN EN ESTADO IDLE.
+EN DEFINITIVA, NO NOS CONVIENE PASAR nohz=off, PORQUE NOS INTERESA QUE NO SE MANDEN TICKS A LAS CPUS CUANDO ESTÁN EN ESTADO IDLE,
+QUE ES COMO VIENE CONFIGURADO EL KERNEL POR DEFECTO, PARA NO ENVIAR TICKS A LAS CPUS QUE ESTÁN IDLE.
 
 Bibliografía:
 https://www.kernel.org/doc/html/v5.0/admin-guide/pm/cpuidle.html (leer la definición de "idle CPU" y la sección "idle CPUs and the scheduler tick")
