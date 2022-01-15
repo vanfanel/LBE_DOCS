@@ -1,7 +1,9 @@
 LO MÁS BÁSICO
 =============
 
-A) SI ARRANCAS CON SYSTEMD U OTRO INIT SIMILAR:
+A) SI ARRANCAS CON SYSTEMD U OTRO INIT SIMILAR
+(EN EL CASO DE ARRANCAR CON TU PROPIO SCRIPT DE INICIO, NADIE VA A LEER /etc/security/limits.conf):
+
 Empezamos consiguiendo los privilegios para establecer prioridad de tiempo real en nuestros procesos.
 Tienes que tener en /etc/security/limits.conf:
 @audio   -  rtprio     99
