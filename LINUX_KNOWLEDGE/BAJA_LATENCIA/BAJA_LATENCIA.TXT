@@ -1,5 +1,5 @@
 LO MÁS BÁSICO
-==============
+=============
 
 A) SI ARRANCAS CON SYSTEMD U OTRO INIT SIMILAR:
 Empezamos consiguiendo los privilegios para establecer prioridad de tiempo real en nuestros procesos.
