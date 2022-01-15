@@ -5388,7 +5388,7 @@ SHADER:
 Usamos el shader crt-pi, que está en /crt, con los parámetros:
 Curvature horizontal 		00
 Curvature vertical			00
-Mask brightness				0.75
+Mask brightness				0.70
 Scanline weight				6.00
 Scanline gap brightness 	0.90
 Bloom factor				1.00
@@ -5402,6 +5402,7 @@ edita el shader y comenta todos los defines posibles, dejando toda esa sección 
 //#define GAMMA
 //#define SHARPER
 //#define MULTISAMPLE
+OJO!!! PARA EVITAR MOVIMIENTO HORIZONTAL "SUCIO", ya que estás editándolo, pon MASK_TYPE a 1.  
 )
 
 O bien usamos el shader ZFast, que está en /crt, con los parámetros:
@@ -5411,7 +5412,10 @@ Scanline Darkness - High:	0.00
 Dark pixel brightnes boost: 1.25
 Mask effect amount:			0.80
 Mask/Scanline fade:			0.80
-(OJO!! En la versión SLANG del shader ZFast no funciona el efecto mask, así que hasta que lo arreglen no tiene sentido usarlo).
+(OJO!! Para que el efecto MASK se vea, edita el shader y comenta la línea "#define FINEMASK". Viene maqueado para pantallas de baja resolución.)
+(OJO!! ZFAST en realidad es más lento que CRT-PI, porque en ZFAST no podemos comentar las scanlines y dejar sólo la máscara).
+
+O bien usamos FAKELOTTES, que tiene una mask increíble, pero olvídate de mGBA y de SwanStation, claro.
 
 PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 
