@@ -26,7 +26,9 @@ Y MIRANDO LOS VALORES DE RTPRIO.
 EN TODO CASO, para aprovechar que no tenemos límites de prioridad de tiempo real, usaremos una de las dos políticas de REALTIME de LINUX:
 
 -SCHED_FIFO: Usa "chrt -f 80" (le puedes dar hasta 99, pero no se recomienda porque puede causar starvation en algo
-que tenga que ejecutar ahí el kernel), que le da prioridad realtime y no suelta la CPU porque no hay otra aplicación con la misma o superior prioridad que la pida (o sea, es FIFO de máxima prioridad), asi que MIENTRAS NO ACABE, COMO LLEGÓ ANTES, NO SUELTA LA CPU ni a palos.
+que tenga que ejecutar ahí el kernel), que le da prioridad realtime y no suelta la CPU porque no hay otra aplicación
+con la misma o superior prioridad que la pida (o sea, es FIFO de máxima prioridad), asi que MIENTRAS NO ACABE,
+COMO LLEGÓ ANTES, NO SUELTA LA CPU ni a palos.
 
 -SCHED_RR: Hay ROUND ROBBIN de máxima prioridad también, con lo cual se reparten rodajas de tiempo de un tamaño determinado continuamente.
 Esto se haría con "chrt -r 80". Lo mismo, el 80 es orientativo y 99 no se recomienda.
