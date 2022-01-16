@@ -172,8 +172,7 @@ CORE DE PC-XT
 El repositorio donde se está desarrollando este core es:
 https://github.com/spark2k06/next186lite_graphics_gremlin
 
-Y la imágen de disco que hay que usar es la llamada DOS31HDD.zip que está al final del primer post de este hilo del port original de DistWave:
-https://www.zxuno.com/forum/viewtopic.php?t=815
+La imágen de disco que hay que usar es la una de MS-DOS 6.22 básica que te pasó Aitor (spark2k06 en Telegram), el autor del core.
 
 PARA PASAR DE 4.77 Mhz a 8 Mhz, hay que poner un 1 en el puerto 97h, cosa que se puede hacer este programa en ensamblador,
 que se puede ensamblar con el comando "debug" de MS-DOS:
