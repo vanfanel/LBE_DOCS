@@ -6,8 +6,6 @@ AUDIO: driver ALSA, 44100 Hz, 32 ms, resampler quality normal
 
 (y en las opciones específicas del FBNeo, ajusta el sonido a 44100 también, que viene a 48000)
 
-Los shaders custom los puedes meter en STORAGE/shaders
-
 En el menú de Emulation Station:
 INTEGER SCALING: ON
 GAME ASPECT RATIO: 4/3 (queremos aprovechar toda la pantalla, y con el bilinear filtering y el shader ZFAST con máscara a saco,
@@ -17,17 +15,36 @@ Así que SI NO TIENES "RETROARCH.GLSLP", entra en RetroArch y salva un SHADER GL
 con cualquier shader cargado, y ya tienes un "RETROARCH.GLSLP" generado. Ahora ya puedes elegir el shader que quieras y sus parámetros
 desde dentro de RetroArch, y salvarlo como un SHADER GLOBAR PRESET y listo).
 
-Yo uso CRT/ZFAST, que es el único shader que no machaca la CPU junto con fakelottes, pero en ZFAST puedes poner una mask que funciona
-perfectamente sin usar integer scale.
-Lo que SÍ hay que hacer es quitar totalmente las scanlines, y poner al máximo el "Blur Amount" para que la mask no cause shimmering horizontal.
-En resúmen, uso ZFAST con estos parámetros:
+Como shader, la mejor opción usar crt-pi PERO editándolo para quitarle las scanlines, gamma, etc.
+Es la única opción que no se come mucho la CPU: ZFAST sí se la come lo pongas como lo pongas poque no se le pueden deshabilitar las scanlines.
+Si no te fias, pon ZFAST, arranca el Rainbow Islands arcade, y compara: ZFAST te deja la CPU temblando.
 
-Blur amount: 1.00
-Scanline Darkness - Low: 0.00
-Scanline Darkness - High: 0.00
-Dark pixel brightnes boost: 1.25
-Mask effect amount: 0.80
-Mask/Scanline fade: 0.80
+Es decir, para usar crt-pi personalizado hacemos esto:
+
+-Creamos /STORAGE/shaders/shaders
+-Copiamos crt-pi.glslp a /STORAGE/shaders
+-Copiamos crt-pi.glsl a /STORAGE/shaders/shaders
+-Editamos /STORAGE/shaders/shaders/crt-pi.glsl y le hacemos dos cosas:
+	-Comentamos todo esto:
+	//#define SCANLINES
+	//#define CURVATURE
+	//#define FAKE_GAMMA
+	//#define GAMMA
+	//#define SHARPER
+	//#define MULTISAMPLE
+	-Ponemos el MASK TYPE a 1, porque el 2 es demasiado "grueso" para una pantalla de portátil.
+-Ahora, seleccionamos en EMULATION STATION el shader crt-pi, entramos en RetroArch, ajustamos los parámetros del shader así:
+Curvature horizontal 		00
+Curvature vertical			00
+Mask brightness				0.70
+Scanline weight				6.00
+Scanline gap brightness 	0.90
+Bloom factor				1.00
+Input gamma					2.40
+Output gamma				2.20
+...Salvamos como "GLOBAL PRESET", volvemos a EMULATION STATION, y elegimos como shader el "RetroArch.glslp", que es como se llama
+el GLOBAL PRESET.
+Y ya lo tenemos lo mejor posible.
 
 GAMEBOY Y GAMEBOY COLOR BIEN
 ============================
@@ -77,3 +94,11 @@ LYNX BIEN
 -Cambia el emulador al beetle-lynx.
 -Mete lynxboot.img en roms/bios
 -Las ROMS que te valen son las mismas que las que usas en la MiSTer.
+
+USAR SHADERS CUSTOM
+===================
+
+Los shaders custom los puedes meter en STORAGE/shaders
+Luego los tienes que seleccionar desde el menú de Emulation Station, no desde RetroArch, cambiar los parámetros del shader que quieras,
+salvarlo como GLOBAL PRESET, y luego elegir en Emulation Station "RetroArch.glsl" como shader (que es donde queda guardado el global preset).
+Eso o, supongo, cambiar el directorio de los shaders en RetroArch, en SETTINGS->DIRECTORIES.
