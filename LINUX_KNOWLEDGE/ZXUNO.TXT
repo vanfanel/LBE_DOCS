@@ -175,7 +175,24 @@ https://github.com/spark2k06/next186lite_graphics_gremlin
 Y la imágen de disco que hay que usar es la llamada DOS31HDD.zip que está al final del primer post de este hilo del port original de DistWave:
 https://www.zxuno.com/forum/viewtopic.php?t=815
 
-PARA QUE FUNCIONE EL TECLADO DEL ZXUNO GO+:
+PARA PASAR DE 4.77 Mhz a 8 Mhz, hay que poner un 1 en el puerto 97h, cosa que se puede hacer este programa en ensamblador,
+que se puede ensamblar con el comando "debug" de MS-DOS:
+-n speedup.com
+-a
+151B:0100 mov al,1
+151B:0102 out 97,al
+151B:0104 int 20
+151B:0106
+-r cx
+CX 0000
+:6
+-w
+"writing 00006 bytes"
+
+-Might And Magic 1: Ejecutar antes "GRAPHSET.EXE" y elegir CGA.
+-Might And Magic 2: Ejecutar "mm2 C"
+
+PARA QUE FUNCIONE EL TECLADO DEL ZXUNO GO+ (EN PRINCIPIO AL TENERLO EN MODO SPECTRUM DEBERÍA IR, PERO SI NO TE VA PRUEBA ESTO):
 -En la BIOS, el LAYOUT tiene que estar en SPECTRUM
 -En los modos de teclado, tiene que estar en .PCXT. Para ello, CAPS+SHIFT+U y luego el número 9.
 Y salvamos permanentemente el modo de teclado con CAPS+SHIT+X
