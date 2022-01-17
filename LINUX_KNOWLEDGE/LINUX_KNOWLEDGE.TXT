@@ -6868,6 +6868,10 @@ Algunos juegos necesitan FMODEX, que es una librería cerrada que puedes descarg
 Sólo la última versión soporta aarch64:
 https://www.fmod.com/download
 
+BASTION necesita FMODEX. En teoría, en algún momento será posibe lanzar BASTION en Pi4 sin usar FMODEX, con:
+"LD_LIBRARY_PATH=lib64 mono Bastion.exe -usefnasound"
+...Pero de momento, la versión GOG que es la que yo tengo comprada no soporta "-usefnasound".
+
 También es importante que tengas libmojoshader para tu arquitectura porque la usan muchos juegos.
 Las instrucciones para compilarla están en:
 https://magazine.odroid.com/article/playing-modern-fna-games-on-the-odroid-platform/
