@@ -158,3 +158,21 @@ Para ejecutar SF 3000 TNG, recuerda que tienes que sustituir su !Run script por 
 comentando eso sí las primeras líneas que hacen referencia a montar una ISO, cosa totalmente innecesaria porque lo juegas desde plain files.
 
 Para salir de SF 3000 TNG, es con CTRL+ESC
+
+ARRANCAR EL SISTEMA SIN ESCRITORIO
+==================================
+
+Para deshabilitar el escritorio y arrancar directamente en el SUPERVISOR, desde el CLI de F12 hacemos:
+OPT 4,0
+
+Y para volver a habilitar el escritorio, hacemos:
+OPT 4,2
+
+Para reiniciar el sistema desde el SUPERVISOR cuando no tenemos escritorio hacemos:
+CTRL+[BREAK]
+... que en mi teclado se traduce en:
+CTRL+FN+FIN
+
+Para lanzar un juego de ADFFS desde el SUPERVISOR, hacemos:
+$.Apps.Games.!ADFFSbeta
+$.Apps.Games.!Diggers
