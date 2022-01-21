@@ -243,6 +243,59 @@ cd AM2R-Autopatcher-Linux && python patcher.py
 (Te preguntará por el tipo de parche: responde Android. Y no hace falta que instales el pack de sonido de alta calidad porque
 ocupa MUCHO más.)
 
+******EDITAR Y CAMBIAR COSAS EN JUEGOS GML COMO EL MALDITA CASTILLA**********************************************************
+
+Por ejemplo, vamos a ver cómo activar en el juego la interpolación bilineal para evitar el shimmering.
+
+Bajamos la versión 0.3.5.8 del Undertale Tool de aquí:
+https://github.com/krzys-h/UndertaleModTool/releases
+
+NO usamos la última versión porque se cuelga al salvar archivos de juego después de editarlos.
+
+Instalamos la versión de .NET que nos pida. Por ejemplo, para la versión 0.3.5.8 nos pide .NET 4.6.2, así que hacemos:
+winetricks dotnet462
+
+Ejecutamos el UndertaleTool.exe con wine.
+
+Abrimos el archivo assets/game.droid.
+
+PARA CAMBIAR COSAS, desplegamos la categoría CODE, y allí hacemos doble click en el fichero de código que queramos cambiar.
+Nos aparecerá la vista DECOMPILED del fichero, que es la que tiene código legible que podemos editar a nuestro gusto.
+Entonces nos vamos a a la vista DISSASEMBLY, y CONFIRMAMOS que se ha generado el código equivalente a la línea que hemos añadido.
+OJO!!! HASTA QUE NO VAYAMOS A DISSASEMBLY, NO SE GUARDAN LOS CAMBIOS!!!
+
+PARA SABER QUÉ NOS INTERESA CAMBIAR, LO PRIMERO EXPORTAMOS EL CÓDIGO PARA LUEGO PODER BUSCAR EN ÉL (DESDE EL UndertaleModTool NO SE PUEDE).
+Para ello, nos vamos a SCRIPTS->BUILTIN SCRIPTS->EXPORT ALL CODE, y una vez exportado ya podemos buscar.
+A CONTINUACIÓN, NOTAS DE COSAS QUE YA HEMOS BUSCADO, PARA DEJAR CIERTOS ASPECTOS DEL JUEGO COMO QUERAMOS:
+
+-EDITAMOS "gml_Script_scr_initial_values", y ahí ponemos "global.is_ouya" a 0.
+ Eso hace que en "gml_Object_obj_old_tv_Draw_64", se vaya por la ruta de arriba (la del "if (!global.is_ouya)"),
+ así que quitamos todos las llamadas a "texture_set_interpolation()" menos la primera, que la ponemos a "true".
+ (Esto hace que todo vaya interpolado, naturalmente, y si se activa el overlay irá interpolado también, que dentro
+ de lo que cabe queda mejor).
+-EDITAMOS "gml_Object_obj_control_Other_2", y ahí podemos desactivar poner el "speedrun" a 0,
+configurar los controles, etc.
+También podríamos poner el "overlay" a 0, pero no lo recomiendo porque el juego se ve mejor con overlay si ponemos
+una resolución adecuada.
+
+Salvamos, sobreescribiendo el archivo .droid, y reempaquetamos el .APK comprimiendo el directorio del juego con ZIP,
+PERO SIN COMPRIMIR, SÓLO "STORE".
+Para comprimirlo con sólo store y guardando los archivos y directorios como se debe, entramos en el directorio donde tenemos
+descomprimido el APK y hacemos:
+zip -r -0 maldita.apk *
+
+TIENES UN APK LISTO EN EL DISCO DURO DE BACKUP, CON TODAS LAS MODIFICACIONES A TU GUSTO.
+
+PARA QUE SE VEA BIEN EL OVERLAY:
+COMO la imágen que se usa para las scanlines, (CURIOSIDAD: está en SPRITES y se llama "spr_old_tv"), es de 576x432,
+tenemos que poner una resolución en cmdline.txt cuya altura (número de líneas) sea múltiplo de 432.
+O sea que con una resolución que tenga una altura de 864, ya se ve bien.
+PERO además nos interesa que sea 864 de altura y que tenga un ratio de 16:9, por lo que la anchura será 1536.
+Los detalles para establecer un modo de vídeo de 1536x864 y con el aspect ratio correcto, los he sacado de:
+https://wiki.archlinux.org/title/kernel_mode_setting#Early_KMS_start
+El parámetro "video=..." de la línea de parámetros del kernel quedaría así:
+video="HDMI-A-1:1536x864@60"
+
 ******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
 
 Clonamos su repo:
