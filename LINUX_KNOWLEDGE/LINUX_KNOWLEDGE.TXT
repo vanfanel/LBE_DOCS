@@ -296,6 +296,10 @@ https://wiki.archlinux.org/title/kernel_mode_setting#Early_KMS_start
 El parámetro "video=..." de la línea de parámetros del kernel quedaría así:
 video="HDMI-A-1:1536x864@60"
 
+MÁS! PARA CARGAR MÁS JUEGOS HECHOS CON GML, COGE EL APK DEL MALDITA CASTILLA DESCOMPRIMIDO,
+COPIA LOS DATOS DEL NUEVO JUEGO A "assets", Y RENOMBRA "data.win" A "game.droid", RECONSTRUYE EL APK Y LISTO!!!
+(Si no va, ya sería investigar desde el UndertaleTool).
+
 ******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
 
 Clonamos su repo:
