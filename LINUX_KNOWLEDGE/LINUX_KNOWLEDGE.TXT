@@ -809,6 +809,7 @@ data (del juego que sea)
 Y ya puedes hacer "./OpenBOR Paks/bor.pak" y te lanzará el juego desempaquetado.
 
 ******Another World en la Raspberry Pi******************************************************
+
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
@@ -7574,6 +7575,23 @@ IBMIOP SKULL.EXE
 Puedes (debes, por comodidad) borrar el archivo INTRO.
 
 Y ya debería ir... Ya sabes: Sound Blaster para los efectos, y GUS para la música. Es cutre, pero funciona de momento.
+
+TURRICAN 2 EN DOSBOX
+====================
+
+En todas las páginas viene una versión que no funciona. 
+Lo único que les falta a todas es establecer la variable de entorno "T2DIR" apuntando al diretorio "CFG" que viene con el juego.
+Para que funcione, simplemente créate un PLAY.BAT con este contenido (suponiendo que tenemos el juego en C:\JUEGOS\T2):
+
+@echo off
+cls
+set t2dir=c:\cfg
+oversmpl on
+t2
+
+Con esto ya te saldrá el menú con todas sus opciones, y el juego funcionará bien.
+Para que vaya el audio, selecciona la SoundBlaster PRO, PUERTO 220, IRQ 7, DMA 1 (y que estén igual en la config del DOSBOX, claro).
+NO TE MOLESTES con el audio GUS, suena peor que con SBPro...
 
 LA MEJOR PÁGINA PARA BAJAR PELÍCULAS BUENAS Y ALTERNATIVAS
 ==========================================================
