@@ -1342,6 +1342,7 @@ git submodule update --init
 
 Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 512, comentando el while que hay debajo.
 Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(), en la llamada a SDL_SetHint(), "nearest" por "linear".
+Editamos jfaudiolib/Makefile, y eliminamos el "-g" ese que hay ahí perdido.
 
 Compilamos con:
 CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
@@ -5965,7 +5966,7 @@ git clone --depth 1 https://github.com/exult/exult.git
 
 Editamos exult.cc, comentamos la línea
 std::atexit(SDL_Quit);
-Y aniadimos SDL_Quit() al final de la función Play(), antes del return(0).
+Y añadimos SDL_Quit() al final de la función Play(), antes del return(0).
 
 ---CONFIGURACIÓN DEL CÓDIGO
 
