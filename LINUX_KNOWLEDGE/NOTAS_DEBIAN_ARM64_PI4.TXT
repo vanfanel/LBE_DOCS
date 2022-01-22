@@ -312,8 +312,8 @@ dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
 sudo systemctl disable dropbear
 (CUIDADO QUE SIN LAS CLAVES NO FUNCIONA!!!)
 
--Configuramos la consola, el teclado y los locales (NO LO HAGAS POR SSH, o fallará por culpa de los LOCALE de la máquina desde la que te conectas
-y perderás un buen rato):
+-Configuramos la consola, el teclado y los locales (NO LO HAGAS POR SSH, o fallará por culpa de los LOCALE de la máquina
+desde la que te conectas y perderás un buen rato):
 sudo apt-get install locales console-setup console-data keyboard-configuration
 sudo dpkg-reconfigure console-setup
 sudo dpkg-reconfigure locales
@@ -529,7 +529,7 @@ sudo usermod -a -G render pi
 
 Empezamos con libDRM:
 Instalamos estas dependencias previas: 
-sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ meson --no-install-recommends
+sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ meson pyhton3-setuptools --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 Bajamos la última versión estable de:
 https://dri.freedesktop.org/libdrm/
@@ -537,8 +537,8 @@ mkdir b4
 cd b4
 
 Configuramos libdrm con esto:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false \
 -Dinstall-test-programs=true ..
 
@@ -566,7 +566,7 @@ SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, TIENES QUE INSTALAR LIBGLVND:
 git clone --depth 1 https://gitlab.freedesktop.org/glvnd/libglvnd.git
 mkdir b4
 cd b4
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=disabled -Dx11=disabled ..
 ninja -4
 sudo ninja install
@@ -606,27 +606,27 @@ mkdir b4
 cd b4
 
 COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=disabled -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro \
 -Dglvnd=true -Dbuildtype=release ..
 (SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=disabled -Dglvnd=true -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 (SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
 
 SI QUISIERAS SÓLO GLES Y GLES2, SIN OPENGL COMPLETO:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=disabled -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 (SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=dri -Dplatforms=drm,x11 -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 PARA COMPILAR:
@@ -668,8 +668,8 @@ git clone --depth 1 https://github.com/libsdl-org/SDL.git
 Ahora, para configurar:
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
 ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA, PERO EN MODO DEBUG:
@@ -702,13 +702,13 @@ Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sa
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
 Para SDL2_Mixer (instalar antes estas dependencias: apt-get install libmpg123-dev libogg-dev libflac-dev libmodplug-dev):
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
 Para SDL2_Image o SDL2_ttf:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure --without-x
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure --without-x
 
 INSTALAR RETROARCH
 ===================
@@ -718,8 +718,8 @@ sudo apt-get install glslang-dev glslang-tools spirv-tools
 
 Para configurar RetroArch con soporte de GLES y VULKAN, como lo venimos haciendo:
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
 ./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg \
 --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
