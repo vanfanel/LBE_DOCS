@@ -1911,7 +1911,7 @@ pi 	-	nice	-20
 
 Ahora podemos lanzar el programa con nice -n -10 <nombre_programa>
 
-********DOSBOX en ARM****************************************************************************************************************************
+********DOSBOX en ARM**************************************************************************************************************
 
 Nos bajamos el archivo svn de aquí: http://www.dosbox.com/wiki/BuildingDOSBox
 Si queremos el ARM dynarec, tras ejecutar el ./configure tenemos que editar el config.h y añadir:
@@ -1936,7 +1936,7 @@ CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-point
 Si se queja el DOSBOX de que falta el ratón, usa la variable de entorno SDL_NOMOUSE=1
 Si se queja de que las SDL no tienen soporte para CDROM, pues te toca recompilar las SDL.
 
-********Hacer que el cursor de la consola deje de parpadear*********************************************************************************************
+********Hacer que el cursor de la consola deje de parpadear********************************************************************
 
 echo -e '\033[?17;0;0c' > /dev/tty1
 
