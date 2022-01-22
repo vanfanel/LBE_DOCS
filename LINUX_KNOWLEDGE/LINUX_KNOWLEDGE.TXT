@@ -204,7 +204,7 @@ OJO!!! Se tiene que hacer con un Linux de 32bits (armhf).
 De momento no es compatible con Linux de 64bit (como aarch64) y cuando lo sea, sólo se podrán usar juegos que funcionen sobre
 un GMLoader de 64bit, con lo que no será compatible con juegos de GameMaker versión 2.x como el Maldita Castilla.
 
-Instaamos dependencias previas:
+Instalamos dependencias previas:
 sudo apt-get install libbz2-dev 
 
 Bueno, vamos al lio.
@@ -212,13 +212,12 @@ Clonamos el repo:
 git clone --depth 1 https://github.com/JohnnyonFlame/droidports.git
 git submodule update --init --recursive
 
-Editamos ports/gmloader/sdl2_media.c y ponemos debajo de la llamada a SDL_CreateWindow():
-SDL_ShowCursor(SDL_DISABLE);
-
 Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_C_FLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 Ahora es tan simple como cargar el Maldita Castilla con:
 ./loader Maldita_Castilla.apk
