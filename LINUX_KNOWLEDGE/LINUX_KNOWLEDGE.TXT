@@ -1161,7 +1161,7 @@ find ./ -name Makefile -exec sed -i 's/AR = ar/AR = gcc-ar/g' {} \;
 
 find ./ -name Makefile -exec sed -i 's/RANLIB = ranlib/RANLIB = gcc-ranlib/g' {} \;
 
-find ./ -name Makefile -exec sed -i 's/-g -O2/-O2 -march=armv8-a+crc+simd -mtune=cortex-a72 /g' {} \;
+find ./ -name Makefile -exec sed -i 's/-g -O2/-O2 -march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer/g' {} \;
 
 (Siempre que ejecutes configure, te tocará sustutuir AR y RANLIB y reajustar los CFLAGS con el find como acabas de ver, porque el configure lo pone mal otra vez en los makefiles).
 
@@ -1931,7 +1931,7 @@ en src/video/fbcon/SDL_fbvideo.c, función FB_WaitVBL().
 
 Configuramos con:
 
-CFLAGS="-Ofast -march=armv7-a -mtune=cortex-a7 -mfloat-abi=hard -mfpu=neon-vfpv4 -funroll-loops" ./configure --disable-video-opengl --enable-video-fbcon --disable-video-kms --disable-video-directfb --disable-oss --disable-alsatest --disable-pulseaudio --disable-pulseaudio-shared --disable-arts --disable-nas --disable-esd --disable-nas-shared --disable-diskaudio --disable-dummyaudio --disable-mintaudio --disable-video-x11
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure --disable-video-opengl --enable-video-fbcon --disable-video-kms --disable-video-directfb --disable-oss --disable-alsatest --disable-pulseaudio --disable-pulseaudio-shared --disable-arts --disable-nas --disable-esd --disable-nas-shared --disable-diskaudio --disable-dummyaudio --disable-mintaudio --disable-video-x11
 
 Si se queja el DOSBOX de que falta el ratón, usa la variable de entorno SDL_NOMOUSE=1
 Si se queja de que las SDL no tienen soporte para CDROM, pues te toca recompilar las SDL.
@@ -3355,8 +3355,11 @@ https://github.com/FWGS/cs16-client/releases
 
 ************SABER QUÉ CFLAGS USAR*******************************************************************************************************
 
-Para saber qué hace GCC cuando le decimos que use "native" en nuestra plataforma, hacemos:
+Para saber qué hace GCC cuando le decimos que use "-march=native" en nuestra plataforma, hacemos:
 gcc -### -E - -march=native 2>&1 | sed -r '/cc1/!d;s/(")|(^.* - )|( -mno-[^\ ]+)//g' 
+
+Y para saber qué hace GCC cuando decirmos que use "-mcpu=native" en nuestra plataforma, hacemos:
+gcc -### -E - -mcpu=native 2>&1 | sed -r '/cc1/!d;s/(")|(^.* - )|( -mno-[^\ ]+)//g'
 
 Así que un set de flags neutral para Pi3 y Pi4, 32 o 64bit, con un GCC moderno en el que NATIVE funciona ya bien, sería:
 
@@ -3582,7 +3585,8 @@ https://github.com/FluidSynth/fluidsynth/releases
 
 Y configuramos desde un directorio de build que creamos nosotros:
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72" CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
 
 Y compilamos con make -j4, e instalamos con:
