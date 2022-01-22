@@ -2056,7 +2056,6 @@ En :
 Añadimos:
 options drm_kms_helper poll=0
 
-
 **********Notas instalación DEBIAN************************************************************************************************************
 
 --Nos puede pedir firmware para hardware de red cuyo firm es non-free. Nos bajamos el archivo "firmware-ralink_0.28+squeeze1_all.deb" o el que sea que
