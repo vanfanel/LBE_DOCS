@@ -47,16 +47,16 @@
 # Se necesitan LAS DOS LÍNEAS, no vale poner el comando de carga (@modprobe) y el de descarga
 # ($modprobe -r) en la misma, sencillamente NO FUNCIONA.
 
-# Con lo siguiente "activamos" MDEV, es decir: le decimos al kernel que llame a MDEV cuando haya
-# un evento de hotplug/unplug. Sin MDEV, sencillamente hay que reiniciar el sistema si conectamos
-# o desconectamos algo.
-# echo /bin/mdev > /proc/sys/kernel/hotplug
-
-# Para que vayan gráficos y audio, es necesario tener sysfs y proc montados.
+# Para poder activar MDEV, y para que vayan gráficos y audio, es necesario tener sysfs y proc montados.
 # En algunos kernels, como el de Devuan, ya viene montado /sys, así que la línea de montaje de /sys
 # la tengo comentada por eso.
 # mount -t sysfs none /sys
 mount -t proc proc /proc
+
+# Con lo siguiente "activamos" MDEV, es decir: le decimos al kernel que llame a MDEV cuando haya
+# un evento de hotplug/unplug. Sin MDEV, sencillamente hay que reiniciar el sistema si conectamos
+# o desconectamos algo.
+# echo /bin/mdev > /proc/sys/kernel/hotplug
 
 # El sistema devpts (NO confundir con el gran DEVTMPFS, ¡ojo!) es otro sistema de archivos virtual
 # que vive en /dev/pts y que contiene esclavos multiplexados de /dev/ptmx, siendo cada uno de esos
