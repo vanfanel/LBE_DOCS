@@ -4742,7 +4742,8 @@ setglobal fileencoding=utf-8
 " Esto es para que no entremos en modo VISUAL al usar un ratón desde SSH
 set mouse-=a
 
-" Esto es para cambiar entre buffers. Hemos usado w porque se puede hacer con una mano la combinación, pero se cambia de buffer y no de ventana.
+" Esto es para cambiar entre buffers. Hemos usado w porque se puede hacer con una mano la combinación,
+" pero se cambia de buffer y no de ventana.
 " Es para cuando se tienen dos ficheros abiertos a la vez. La exclamación es para poder cambiar entre buffers sin guardar cambios.
 map <C-w> :bnext!<cr>
 
