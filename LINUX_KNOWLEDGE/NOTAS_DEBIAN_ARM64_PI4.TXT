@@ -563,7 +563,8 @@ SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
 sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommends
 
 SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, TIENES QUE INSTALAR LIBGLVND:
-git clone --depth 1 https://gitlab.freedesktop.org/glvnd/libglvnd.git
+Bajamos la última estable de aquí:
+https://gitlab.freedesktop.org/glvnd/libglvnd/-/tags
 mkdir b4
 cd b4
 CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
