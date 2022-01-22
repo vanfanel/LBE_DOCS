@@ -77,7 +77,8 @@ mount devpts /dev/pts -t devpts
 # O podemos hacerlo a mano, sólo para el hardware de esta máquina en concreto.
 # Si algo que conectas no va, ejecuta la línea anterior (find /sys/devices...etc) o arranca con ella,
 # vuelca la salida de lsmod a un fichero y analiza qué módulos te faltan aquí.
-# OJO al módulo "snd_soc_hdmi_codec": sin él, no hay señal de vídeo en la Raspberry Pi.
+# OJO a los módulos "i2c_brcmstb" y "snd_soc_hdmi_codec": sin ellos, no hay señal de vídeo en la Pi.
+modprobe i2c_brcmstb
 modprobe vc4
 modprobe v3d
 modprobe snd_soc_hdmi_codec
