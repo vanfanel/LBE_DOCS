@@ -205,7 +205,9 @@ De momento no es compatible con Linux de 64bit (como aarch64) y cuando lo sea, s
 un GMLoader de 64bit, con lo que no será compatible con juegos de GameMaker versión 2.x como el Maldita Castilla.
 
 Instalamos dependencias previas:
-sudo apt-get install libbz2-dev 
+sudo apt-get install libbz2-dev libzip-dev
+
+TAMBIÉN se necesita OpenAL, que tiene su sección en este documento para compilarla e instalarla rápidamente.
 
 Bueno, vamos al lio.
 Clonamos el repo:
