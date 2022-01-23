@@ -297,9 +297,37 @@ https://wiki.archlinux.org/title/kernel_mode_setting#Early_KMS_start
 El parámetro "video=..." de la línea de parámetros del kernel quedaría así:
 video="HDMI-A-1:1536x864@60"
 
-MÁS! PARA CARGAR MÁS JUEGOS HECHOS CON GML, COGE EL APK DEL MALDITA CASTILLA DESCOMPRIMIDO,
-COPIA LOS DATOS DEL NUEVO JUEGO A "assets", Y RENOMBRA "data.win" A "game.droid", RECONSTRUYE EL APK Y LISTO!!!
-(Si no va, ya sería investigar desde el UndertaleTool).
+
+*****CÓMO CARGAR OTROS JUEGOS DE GAME MAKER (GML) CON EL GMLOADER***********************************************************
+
+PARA CARGAR MÁS JUEGOS HECHOS CON GML, LA IDEA BÁSICA SERÍA COGER EL APK DE UN JUEGO, DESCOMPRIMIRLO,
+COPIAR LOS DATOS DEL NUEVO JUEGO A "assets", Y RENOMBRA "data.win" A "game.droid", Y RECONSTRUIR EL APK.
+
+PERO OJO! El APK que usas de "donante" tiene que tener una versión del runner que coincida con la versión
+que el data.win/data.droid espera.
+Así que para saber qué versión del runner espera el data.win/game.droid, lo cargamos con el UnderTaleModTool (UTMT) y
+en la caja de texto de la parte de abajo del todo, escribimos una de estas:
+Data.GMS2_2_2_302
+Data.GM2_2_3
+Data.GM2_2_3_1
+Data.GM2_2_3_2
+(Cuando coincida la versión te dirá TRUE, y cuando no coincida te dirá FALSE).
+(Si quieres ver qué más heurustics hay para averiguar la versión, mira en el código fuente del UTMT, aquí:
+https://github.com/krzys-h/UndertaleModTool/blob/4b52cb69c0939c4ccf6392838eee2eb5d8b2cfc8/UndertaleModLib/UndertaleData.cs#L60 )
+(Si con una de esas te dice algo de "UndertaleData' does not contain a definition for...", significa que necesitas
+una versión del UTMT más moderna, que conozca los heuristics de esa versión).
+
+CON ESO QUE TE ACABO DE EXPLICAR, DEBERÍAS SER CAPAZ DE AVERIGUAR QUÉ APK PUEDES USAR COMO DONANTE PARA UN data.win/game.droid DETERMINADO.
+
+DEBERÍA SER POSIBLE EJECUTAR VERSIONES ACTUALES DE UTMT SIN USAR WINE, YA QUE CON WINE SE PETAN.
+Esto es así porque las versiones modernas de UTMT usan DOTNET > 5.0 cuyas apps funcionan nativamente en Linux si instalamos el DOTNET.
+ASÍ QUE PARA EJECUTAR VERSIONES RECIENTES DE UNDERTALEMODTOOL (UTMT) SIN USAR WINE:
+-Instalamos la última versión de DOTNET haciendo:
+sudo snap install dotnet-runtime-60 --classic
+sudo snap alias dotnet-runtime-60.dotnet dotnet
+
+-Ahora ya podemos hacer algo como esto para cargar el UTMT:
+dotnet UndertaleModTool.exe
 
 ******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
 
