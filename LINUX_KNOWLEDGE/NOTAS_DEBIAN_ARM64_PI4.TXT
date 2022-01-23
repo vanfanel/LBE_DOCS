@@ -669,8 +669,8 @@ Instalamos dependencias previas:
 sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg123-dev libmodplug-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 
-Clonamos el repo de las SDL2:
-git clone --depth 1 https://github.com/libsdl-org/SDL.git
+Bajamos la última versión estable de:
+https://www.libsdl.org/download-2.0.php
 
 Ahora, para configurar:
 
