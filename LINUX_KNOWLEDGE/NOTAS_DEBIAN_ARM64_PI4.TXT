@@ -339,6 +339,7 @@ Edita /etc/systemd/system.conf y pon LogTarget a "null" o a "console"
 -Para quitar el error: "Failed to listen on journal socket"
 systemctl mask systemd-journald.socket
 systemctl mask systemd-journald-dev-log.socket
+systemctl mask systemd-rfkill.socket
 
 -Para quitar el error: "brcmfmac: brcmf_sdio_htclk: HT Avail timeout (1000000): clkctl 0x50"
 Puedes instalar el firmware de la wifi, o simplemente deshabilitarla poniendo en config.txt:
