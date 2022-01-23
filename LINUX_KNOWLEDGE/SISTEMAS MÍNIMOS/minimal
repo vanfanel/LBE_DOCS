@@ -50,7 +50,7 @@
 # Para poder activar MDEV, y para que vayan gráficos y audio, es necesario tener sysfs y proc montados.
 # En algunos kernels, como el de Devuan, ya viene montado /sys, así que la línea de montaje de /sys
 # la tengo comentada por eso.
-# mount -t sysfs none /sys
+mount -t sysfs none /sys
 mount -t proc proc /proc
 
 # Con lo siguiente "activamos" MDEV, es decir: le decimos al kernel que llame a MDEV cuando haya
@@ -160,25 +160,8 @@ umount /boot
 # El desmontaje del rootfs de un kernel en ejecución no se supone que sea posible,
 # así que lo re-montamos como sólo lectura y así el kernel puede seguir usándolo aunque
 # ya no se pueda escribir en él.
-# (Una alternativa sería hacer un swicth_root a un rootfs en initramfs).
-# NOTA: El bucle de espera en realidad no debería ser necesario porque ahí arriba has matado
-# todos los procesos lanzados por este script así que no debe haber nada accediendo a
-# directorios que cuelguen de /, pero se deja a modo de documentación.
-# IMPORTANTE: El re-montaje falla SIEMPRE si has editado este fichero mientras el
-# sistema lo estaba usando. Para confirmar que sigue abierto usa "lsof|grep minimal".
-busy=true
-while $busy
-do
-  mount / -o remount,ro 2> /dev/null
-  if [ $? -eq 0 ] # Si el último comando ejecutado tuvo éxito, $? es 0. 
-  then
-   busy=false
-   echo Filesystem umount successfull.
-  else
-   echo -n '.'  # Escribimos algo para que se vea que el script sigue vivo.
-   sleep 1      # Esperamos un segundo a reintentar.
-  fi  
-done
+# La sincronización del sistema de ficheros la implícita al hacer esto.
+mount / -o remount,ro 2> /dev/null
 
 # Dependiendo de si quieres reiniciar o apagar al salir, usa una o la otra.
 # Poweroff va con dos -f, sí, no es un error, es para que no contacte con el

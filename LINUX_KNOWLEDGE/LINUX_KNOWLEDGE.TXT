@@ -1472,7 +1472,7 @@ git clone --depth 1 https://github.com/sezero/mikmod.git
 cd libmikmod
 mkdir b4
 cd b4
-cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSE=0 -DENABLE_OSS=0 cmake -DENABLE_DOC=0 \
+cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSE=0 -DENABLE_OSS=0 -DENABLE_DOC=0 \
 -DCMAKE_C_FLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
 sudo make install
 
@@ -4773,7 +4773,8 @@ set completeopt=menuone,menu,longest,preview
 map <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr><cr>
 
 "para desactivar la autoinserción de comentarios, que es lo que nos jode cuando copiamos código desde el navegador
-"Es fundamental que esté colocada esta línea después de la de filetype plugin on, porque esa línea activaría de nuevo la autoinserción.
+"Es fundamental que esté colocada esta línea después de la de filetype plugin on,
+"porque esa línea activaría de nuevo la autoinserción.
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 colo desert
@@ -4797,6 +4798,11 @@ vmap <S-Tab> <gv
 vnoremap < <gv
 vnoremap > >gv
 
+" Para que VIM no cree ficheros raros si no cerramos un fichero, que son una molestia.
+set nobackup       "no backup files
+set nowritebackup  "only in case you don't want a backup file while editing
+set noswapfile     "no swap files
+
 ===========================================================
 
 Y ahora, para que VIM recuerde la última posición en que estábamos cuando abrimos un fichero dado por última vez, editamos /etc/vim/vimrc
@@ -4816,11 +4822,12 @@ En DEBIAN como ROOT, edita /usr/share/vim/vim81/defaults.vim y comenta lo del mo
 
 ===========================================================
 
-Para que VIM no entre en modo VISUAL cada vez que pinchamos con el ratón, editamos /usr/share/vim/vim81/defaults.vim y
+Para que VIM no entre en modo VISUAL cada vez que pinchamos con el ratón, editamos /usr/share/vim/vim82/defaults.vim y
 cambiamos
 set mouse=a
 por
 set mouse-=a
+(O SIMPLEMENTE BORRAMOS TODA ESA SECCIÓN!!!)
 
 SI NO SABES dónde se está configurando lo del mouse, haz:
 :verbose set mouse
@@ -7060,7 +7067,7 @@ apt-get install python
 
 Clonamos su repo:
 
-git clone --deph 1 
+git clone --depth 1 https://github.com/nigels-com/glew.git
 
 Entramos en el raiz de los sources y hacemos:
 
@@ -7072,8 +7079,10 @@ CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-point
 CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 make SYSTEM=linux-egl-glvnd -j4 install
 
-AHORA EDITA /usr/local/include/GL/glew.h y ELIMINA TODO EL BLOQUE GLU, es decir, busca "GLEW_NO_GLU"
-y elimina todo lo que hay en el bloque donde está eso.
+AHORA EDITA /usr/local/include/GL/glew.h y, o bien añade:
+#define GLEW_NO_GLU 1
+(Añádelo debajo de "#define GLEW_OK 0"
+...O bien ELIMINA TODO EL BLOQUE GLU, es decir, busca "GLEW_NO_GLU" y elimina todo lo que hay en el bloque donde está eso.
 SI NO HACES ESTO, los programas que usen GLEW los tienes que compilar siempre pasándole al compilador "-DGLEW_NO_GLU"
 
 AMBERMOON.NET EN LINUX
