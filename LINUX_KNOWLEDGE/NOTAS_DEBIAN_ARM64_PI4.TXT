@@ -337,6 +337,11 @@ Y reiniciamos.
 Edita /etc/systemd/system.conf y pon LogTarget a "null" o a "console"
 
 -Para quitar el error: "Failed to listen on journal socket"
+Mira a ver qué sockets están activos con:
+systemctl | grep socket
+...Y le haces un "systemctl mask" a los que queden.
+También hazle "systemctl mask" a sockets.target.
+Algunos ejemplos:
 systemctl mask systemd-journald.socket
 systemctl mask systemd-journald-dev-log.socket
 systemctl mask systemd-rfkill.socket
