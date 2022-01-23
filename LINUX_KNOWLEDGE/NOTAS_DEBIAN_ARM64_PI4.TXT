@@ -535,7 +535,7 @@ sudo usermod -a -G render pi
 
 Empezamos con libDRM:
 Instalamos estas dependencias previas: 
-sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ meson pyhton3-setuptools --no-install-recommends
+sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ meson python3-setuptools --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 Bajamos la última versión estable de:
 https://dri.freedesktop.org/libdrm/
