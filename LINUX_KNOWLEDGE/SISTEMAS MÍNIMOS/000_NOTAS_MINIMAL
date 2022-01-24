@@ -197,6 +197,12 @@ Por si quieres volver a EUDEV:
 	apt-get install --reinstall libeudev1
 	apt-get install --reinstall libeudev-dev
 
+DESHABILITAR EL CURSOR QUE PARPADEA MIENTRAS ARRANCA EL KERNEL
+==============================================================
+
+Añadimos a cmdline.txt:
+vt.global_cursor_default=0
+
 LIMPIEZA DE PAQUETES PESADOS
 ============================
 
