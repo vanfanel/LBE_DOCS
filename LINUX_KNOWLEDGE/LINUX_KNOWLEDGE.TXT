@@ -320,11 +320,19 @@ una versión del UTMT más moderna, que conozca los heuristics de esa versión).
 CON ESO QUE TE ACABO DE EXPLICAR, DEBERÍAS SER CAPAZ DE AVERIGUAR QUÉ APK PUEDES USAR COMO DONANTE PARA UN data.win/game.droid DETERMINADO.
 
 DEBERÍA SER POSIBLE EJECUTAR VERSIONES ACTUALES DE UTMT SIN USAR WINE, YA QUE CON WINE SE PETAN.
-Esto es así porque las versiones modernas de UTMT usan DOTNET > 5.0 cuyas apps funcionan nativamente en Linux si instalamos el DOTNET.
+Esto es así porque las versiones modernas de UTMT usan DOTNET > 5.0 cuyas apps funcionan nativamente en Linux si instalamos el DOTNET
+y compilamos el UTMT.
 ASÍ QUE PARA EJECUTAR VERSIONES RECIENTES DE UNDERTALEMODTOOL (UTMT) SIN USAR WINE:
--Instalamos la última versión de DOTNET haciendo:
-sudo snap install dotnet-runtime-60 --classic
-sudo snap alias dotnet-runtime-60.dotnet dotnet
+
+-Instalamos la última versión de DOTNET SDK haciendo:
+sudo snap install dotnet-sdk --classic --channel=6.0
+sudo snap alias dotnet-sdk.dotnet dotnet
+sudo ln -s /snap/dotnet-sdk/current/dotnet /usr/local/bin/dotnet
+
+-Compilamos los sources de UTMT así:
+Clonamos su repo: git clone --depth 1 https://github.com/krzys-h/UndertaleModTool.git
+Compilamos con:
+/usr/local/bin/dotnet build UndertaleModTool.sln --configuration Release
 
 -Ahora ya podemos hacer algo como esto para cargar el UTMT:
 dotnet UndertaleModTool.exe
