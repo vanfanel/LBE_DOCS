@@ -160,7 +160,7 @@ umount /boot
 # El desmontaje del rootfs de un kernel en ejecución no se supone que sea posible,
 # así que lo re-montamos como sólo lectura y así el kernel puede seguir usándolo aunque
 # ya no se pueda escribir en él.
-# La sincronización del sistema de ficheros la implícita al hacer esto.
+# La sincronización del sistema de ficheros va implícita.
 mount / -o remount,ro 2> /dev/null
 
 # Dependiendo de si quieres reiniciar o apagar al salir, usa una o la otra.
