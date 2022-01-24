@@ -4,80 +4,95 @@
 # BLOQUE DEVTMPFS Y MDEV                        #
 #################################################
 
-# ¡¡¡¡CUIDADO!!!! ANTES DE PODER USAR MDEV, DEBEMOS CREAR UN LINK SIMBÓLICO A BUSYBOX CON:
+# ¡¡¡¡CUIDADO!!!! ANTES DE PODER USAR MDEV, DEBEMOS CREAR UN LINK SIMBÓLICO
+# A BUSYBOX CON:
 # "ln -s /bin/busybox /bin/mdev"
 
-# Para que se creen y borren automáticamente los nodos en /dev al conectar y desconectar cosas,
-# lo que se usa es DEVTMPFS, que es parte del kernel. O SEA, es el kernel el que crea y borra
-# los nodos en /dev, NO hace falta MDEV para ello.
-# Para que funcione DEVTMPFS, el kernel ha de tener la opción CONFIG_DEVTMPFS=y, que es lo más común. 
-# Y para que el kernel monte DEVTMPFS en /dev automáticamente, debe tener CONFIG_DEVTMPFS_MOUNT=y,
-# que también es lo más común.
+# Para que se creen y borren automáticamente los nodos en /dev al conectar
+# y desconectar cosas, lo que se usa es DEVTMPFS, que es parte del kernel.
+# O SEA, es el kernel el que crea y borra los nodos en /dev, NO hace falta MDEV.
+# Para que funcione DEVTMPFS, el kernel ha de tener la opción CONFIG_DEVTMPFS=y,
+# que es lo más común. 
+# Y para que el kernel monte DEVTMPFS en /dev automáticamente, debe tener
+# CONFIG_DEVTMPFS_MOUNT=y, que también es lo más común.
 
-# Si arrancases usando un initramfs o un initrd, sin embargo, sí tendrías que montar DEVTMPFS en /dev
-# a mano LO PRIMERO EN EL SCRIPT, usando "mount -t devtmpfs none /dev", y luego tendrías que
-# pedirle a MDEV que recreease los nodos de dispositivo usando "busybox mdev -s", ya que aunque
-# el kernel ya habría creado los nodos en /dev en el arranque, ahora estaríamos con un /dev vacío
-# y habría que volver a crear los nodos: el kernel ya los creó así que no lo va volver a hacer
-# a no ser que reconectásemos todo.
+# Si arrancases usando un initramfs o un initrd, sin embargo, sí tendrías
+# que montar DEVTMPFS en /dev a mano LO PRIMERO EN EL SCRIPT,
+# usando "mount -t devtmpfs none /dev", y luego tendrías que pedirle a MDEV
+# que recreease los nodos de dispositivo usando "busybox mdev -s",
+# ya que aunque el kernel ya habría creado los nodos en /dev en el arranque,
+# ahora estaríamos con un /dev vacío y habría que volver a crear los nodos:
+# el kernel ya los creó así que no lo va volver a hacer a no ser que
+# reconectásemos todo.
 #
-# Además, en kernels viejos, CONFIG_DEVTMPFS_MOUNT no estaba, y por eso también a veces verás
-# instrucciones viejas que indican que hagas lo primero "mount -t devtmpfs none /dev" o similar.
+# Además, en kernels viejos, CONFIG_DEVTMPFS_MOUNT no estaba, y por eso también
+# a veces verás instrucciones viejas que indican que hagas lo primero
+# "mount -t devtmpfs none /dev" o similar.
 
-# MDEV nos hace falta para que auto-cargue los módulos cuando hay un evento de hotplug
-# después de que el kernel ya está arrancado.
-# De paso, también le podemos decir que establezca propiedad y permisos para los nodos,
-# pero esto a nosotros nos da igual porque lo hacemos todo con el usuario root,
-# así que los permisos 600 que establece DEVTMPFS por defecto nos valen perfectamente.
+# MDEV nos hace falta para que auto-cargue los módulos cuando hay un evento
+# de hotplug después de que el kernel ya está arrancado.
+# De paso, también le podemos decir que establezca propiedad y permisos
+# para los nodos, pero esto a nosotros nos da igual porque lo hacemos todo
+# con el usuario root, así que los permisos 600 que establece DEVTMPFS
+# por defecto nos valen perfectamente.
 
-# Para que MDEV haga la autocarga/descarga de módulos, debemos tener estas líneas en /etc/mdev.conf:
+# Para que MDEV haga la autocarga/descarga de módulos, debemos tener
+# estas líneas en /etc/mdev.conf:
 #-$MODALIAS=.* root:root 600 @modprobe "$MODALIAS"
 #-$MODALIAS=.* root:root 600 $modprobe -r "$MODALIAS"
-# (Podríamos dejar sólo la primera línea, sin guión, para detectar sólo conexiones).
-# Son dos líneas porque una es para la carga automática de módulos al CONECTAR algo y otra
-# para la descarga automática de módulos al DESCONECTAR algo.
-# Lo de 'root:root 600' es la propiedad (usuario:grupo) y los permisos de los nodos que MDEV
-# establece (DEVTMPS al crear los nodos les da 600 a todos, nosotros hacemos lo mismo).
-# Ambas líneas empiezan por un guión realmente, para que MDEV no se detenga en la primera en que
-# haga match, y aunque parezca raro, en la de descarga también hay que poner la propiedad
-# y los permisos o no funciona.
-# Para que un comando se ejecute cuando se CONECTA algo se precede de '@' y para que se ejecute
-# cuando se DESCONECTA algo se precede de '$'. Por eso tienes una '@' en la de carga y un '$'
-# en la de descarga.
-# Se necesitan LAS DOS LÍNEAS, no vale poner el comando de carga (@modprobe) y el de descarga
-# ($modprobe -r) en la misma, sencillamente NO FUNCIONA.
+# (Podríamos dejar sólo la primera línea, sin guión, para detectar
+# sólo conexiones). Son dos líneas porque una es para la carga automática
+# de módulos al CONECTAR algo y otra para la descarga automática de módulos
+# al DESCONECTAR algo.
+# Lo de 'root:root 600' es la propiedad (usuario:grupo) y los permisos
+# de los nodos que MDEV establece (DEVTMPS al crear los nodos les da 600
+# a todos, nosotros hacemos lo mismo en este ejemplo).
+# Ambas líneas empiezan por un guión realmente, para que MDEV no se detenga
+# en la primera en que haga match, y aunque parezca raro, en la de descarga
+# también hay que poner la propiedad y los permisos o no funciona.
+# Para que un comando se ejecute cuando se CONECTA algo, se precede de '@'
+# y para que se ejecute cuando se DESCONECTA algo se precede de '$'.
+# Por eso tienes una '@' en la de carga y un '$' en la de descarga.
+# Se necesita usar DOS LÍNEAS, no vale poner el comando de carga (@modprobe)
+# y el de descarga ($modprobe -r) en la misma, sencillamente NO FUNCIONA.
 
-# Para poder activar MDEV, y para que vayan gráficos y audio, es necesario tener sysfs y proc montados.
-# En algunos kernels, como el de Devuan, ya viene montado /sys, así que la línea de montaje de /sys
-# la tengo comentada por eso.
+# Para poder activar MDEV, y para que vayan gráficos y audio, es necesario tener
+# sysfs y proc montados.
+# En algunos kernels ya viene montado /sys, así que la línea de montaje de /sys
+# no sería necesaria.
 mount -t sysfs none /sys
 mount -t proc proc /proc
 
-# Con lo siguiente "activamos" MDEV, es decir: le decimos al kernel que llame a MDEV cuando haya
-# un evento de hotplug/unplug. Sin MDEV, sencillamente hay que reiniciar el sistema si conectamos
-# o desconectamos algo.
+# Con lo siguiente "activamos" MDEV, es decir: le decimos al kernel que llame
+# a MDEV cuando haya un evento de hotplug/unplug. Sin MDEV, sencillamente
+# hay que reiniciar el sistema si conectamos o desconectamos algo.
 # echo /bin/mdev > /proc/sys/kernel/hotplug
 
-# El sistema devpts (NO confundir con el gran DEVTMPFS, ¡ojo!) es otro sistema de archivos virtual
-# que vive en /dev/pts y que contiene esclavos multiplexados de /dev/ptmx, siendo cada uno de esos
-# esclavos la representación de un emulador de terminal (como xterm en X11,
-# o un terminal de wayland, o un terminal de acceso por SSH. Como usamos SSH,
-# pues tenemos que montar esto o nos dará un error "PTY allocation failed" al intentar entrar).
+# El sistema devpts (NO confundir con el gran DEVTMPFS, ¡ojo!) es otro sistema
+# de archivos virtual que vive en /dev/pts y que contiene esclavos multiplexados
+# de /dev/ptmx, siendo cada uno de esos esclavos la representación de un emulador
+# de terminal (como xterm en X11, o un terminal de wayland, o un terminal
+# de acceso por SSH. Como usamos SSH, pues tenemos que montar esto
+# o nos dará un error "PTY allocation failed" al intentar entrar).
 mkdir -p /dev/pts
 mount devpts /dev/pts -t devpts
 
-# Cargamos los módulos del hardware que YA tenemos conectado. ¿Por qué lo hacemos si tenemos MDEV? Mira:
-# Cuando conectemos nuevo hardware, se encargará MDEV porque será llamado por el kernel en cada evento
-# de conexión/desconexión, pero para el hardware que YA está conectado al arrancar, lo tenemos que
-# hacer nosotros porque no hay tales eventos que desencadenen las llamadas a MDEV.
+# Cargamos los módulos del hardware que YA tenemos conectado.
+# ¿Por qué lo hacemos si tenemos MDEV? Mira:
+# Cuando conectemos nuevo hardware, se encargará MDEV porque será llamado
+# por el kernel en cada evento de conexión/desconexión,
+# pero para el hardware que YA está conectado al arrancar,
+# lo tenemos que hacer nosotros porque no hay tales eventos que desencadenen
+# las llamadas a MDEV.
 
 # Podemos hacerlo automáticamente, mirando en /sys/devices...
 #find /sys/devices -name modalias -type f -print0 | xargs -0 sort -u | xargs modprobe -ab 2>/dev/null
 
 # O podemos hacerlo a mano, sólo para el hardware de esta máquina en concreto.
-# Si algo que conectas no va, ejecuta la línea anterior (find /sys/devices...etc) o arranca con ella,
+# Si algo que conectas no va, ejecuta la línea anterior o arranca con ella,
 # vuelca la salida de lsmod a un fichero y analiza qué módulos te faltan aquí.
-# OJO a los módulos "i2c_brcmstb" y "snd_soc_hdmi_codec": sin ellos, no hay señal de vídeo en la Pi.
+# OJO a los módulos "i2c_brcmstb" y "snd_soc_hdmi_codec": sin ellos,
+# no hay señal de vídeo en la Pi.
 modprobe i2c_brcmstb
 modprobe vc4
 modprobe v3d
@@ -88,24 +103,26 @@ modprobe xpad
 # FIN BLOQUE DEVTMPFS Y MDEV                    #
 #################################################
 
-# Ponemos a punto el governor de cada core, ahora que ya tenemos el sysfs preparado
-# y cargados los módulos que permiten controlar la frecuencia de la CPU de la Pi.
+# Ponemos a punto el governor de cada core, ahora que ya tenemos el sysfs
+# preparado y cargados los módulos que permiten controlar la frecuencia
+# de la CPU.
 for numcore in 0 1 2 3
 do
  echo performance > /sys/devices/system/cpu/cpu$numcore/cpufreq/scaling_governor
 done
 
 # Re-montamos el root como lectura/escritura.
-# Añadimos la opción "sync" después de otra coma para que las escrituras sean inmediatas,
-# lo que mejora mucho la predictibilidad del sistema al no haber escrituras retardadas.
-mount -o remount,rw,sync,noatime,nodiratime /
+# Podríamos la opción "sync" después de otra coma para que las escrituras
+# sean inmediatas, lo que mejora mucho la predictibilidad del sistema
+# al no haber escrituras retardadas.
+mount -o remount,rw,noatime,nodiratime /
 
 # Montamos también la partición de BOOT
-mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
+mount /dev/mmcblk0p1 /boot -o rw,sync,noatime,nodiratime
 
 # Montamos /tmpfs y /var/log en RAM, para que no se escriban temporales ni logs
 # en disco.
-# OJO, no especificamos un tamaño, así que como mucho pueden ocupar el 50% de la RAM.
+# No especificamos un tamaño, así que como mucho pueden ocupar el 50% de la RAM.
 mount -t tmpfs tmpfs /tmp
 mount -t tmpfs tmpfs /var/log
 
@@ -157,9 +174,9 @@ umount /tmp
 umount /var/log
 umount /boot
 
-# El desmontaje del rootfs de un kernel en ejecución no se supone que sea posible,
-# así que lo re-montamos como sólo lectura y así el kernel puede seguir usándolo aunque
-# ya no se pueda escribir en él.
+# El desmontaje del rootfs de un kernel en ejecución no se supone
+# que sea posible, así que lo re-montamos como sólo lectura y así el kernel
+# puede seguir usándolo aunque ya no se pueda escribir en él.
 # La sincronización del sistema de ficheros va implícita.
 mount / -o remount,ro 2> /dev/null
 
