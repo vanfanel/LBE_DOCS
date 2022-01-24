@@ -118,7 +118,7 @@ done
 mount -o remount,rw,noatime,nodiratime /
 
 # Montamos también la partición de BOOT
-mount /dev/mmcblk0p1 /boot -o rw,sync,noatime,nodiratime
+mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
 
 # Montamos /tmpfs y /var/log en RAM, para que no se escriban temporales ni logs
 # en disco.
