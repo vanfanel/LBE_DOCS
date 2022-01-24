@@ -196,3 +196,35 @@ Por si quieres volver a EUDEV:
 	-Para instalar de nuevo libeudev:
 	apt-get install --reinstall libeudev1
 	apt-get install --reinstall libeudev-dev
+
+LIMPIEZA DE PAQUETES PESADOS
+============================
+
+Lo primero, purgamos los paquetes que han sido "removed" pero no "purged":
+dpkg --list |grep "^rc" | cut -d " " -f 3 | xargs sudo dpkg --purge
+
+AHORA, podemos listar los paquetes instalados por órden de peso con:
+dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
+
+..Y los vamos eliminando a gusto.
+Empieza con estos:
+apt-get purge firmware-misc-nonfree firmware-libertas firmware-atheros
+
+LIBRARNOS DEFINITIVAMENTE DE SYSTEMD
+====================================
+
+Una vez que tengamos el sistema arrancando desde nuestro propio script de inicio en /etc/minimal, ya podemos hacer sin miedo:
+
+apt-get purge systemd cron anacron bcron init
+rm -R /etc/systemd
+
+OJO!!! UNA VEZ PURGADO SYSTEMD, YA NO TENEMOS /sbin/poweroff, /sbin/reboot, etc... YA QUE LOS QUE TRAE DEBIAN SON
+TODOS ELLOS SYNLINKS A /bin/systemctl.
+
+Así que tenemos que hacer:
+ln -s /usr/bin/busybox /usr/bin/reboot
+ln -s /usr/bin/busybox /usr/bin/halt
+ln -s /usr/bin/busybox /usr/bin/poweroff
+
+Otra alternativa sería usar los ejecutables que hay en /usr/lib/klibc/bin/, pero recuerda que habría que llamarlos con la ruta completa
+ya que /usr/lib/klibc/bin/ no está en el PATH.

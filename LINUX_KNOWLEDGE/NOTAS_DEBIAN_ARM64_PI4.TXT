@@ -713,9 +713,17 @@ CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-point
 CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
-Para SDL2_Image o SDL2_ttf:
+Para SDL2_Image
 CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure --without-x
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+./configure --without-x
+
+Para SDL2_ttf:
+Bajamos la última release de aquí: https://github.com/libsdl-org/SDL_ttf/releases)
+
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+./configure --without-x --disable-freetype-builtin --disable-harfbuzz
 
 INSTALAR RETROARCH
 ===================

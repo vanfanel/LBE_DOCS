@@ -38,7 +38,7 @@ Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece.
 Para hacer una release (engines como plugins dinámicos, todos los que vienen activados por defecto estarán activados, necesitarás libjpeg-dev, libpng-dev y libvorbis-dev, aunque estos no tienen por qué ser sus nombres exatctos, para engines como Sword 2.5 o Wintermute):
 
 COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
-(Hay que instalar libmpeg2-dev para que funcionen los Broken Sword)
+(Hay que instalar libmpeg2-4-dev para que funcionen los Broken Sword)
 
 CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \

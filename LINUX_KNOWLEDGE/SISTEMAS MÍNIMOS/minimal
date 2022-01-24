@@ -180,8 +180,16 @@ umount /boot
 # La sincronización del sistema de ficheros va implícita.
 mount / -o remount,ro 2> /dev/null
 
-# Dependiendo de si quieres reiniciar o apagar al salir, usa una o la otra.
-# Poweroff va con dos -f, sí, no es un error, es para que no contacte con el
-# gestor de procesos, que no existe.
-reboot -f
+# OJO!! Si desinstalas SYSTEMD, ya no hay /usr/sbin/reboot, poweroff, ni halt,
+# ya que todos ellos son symlinks a /bin/systemctl, así que para que esto
+# funcione tienes que hacer:
+# ln -s /usr/bin/busybox /usr/bin/reboot
+# ln -s /usr/bin/busybox /usr/bin/halt
+# ln -s /usr/bin/busybox /usr/bin/poweroff
+# El poweroff de systemd va con dos -f, sí, no es un error, es para que no
+# intente contactar con el gestor de procesos, que no existe.
+# El poweroff de busybox no tiene ese problema.
+#halt -f
+#reboot -f
 #poweroff -f -f
+poweroff -f
