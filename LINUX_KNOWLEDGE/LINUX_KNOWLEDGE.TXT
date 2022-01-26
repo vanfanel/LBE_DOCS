@@ -300,8 +300,8 @@ video="HDMI-A-1:1536x864@60"
 
 *****CÓMO CARGAR OTROS JUEGOS DE GAME MAKER (GML) CON EL GMLOADER***********************************************************
 
-PARA CARGAR MÁS JUEGOS HECHOS CON GML, LA IDEA BÁSICA SERÍA COGER EL APK DE UN JUEGO, DESCOMPRIMIRLO,
-COPIAR LOS DATOS DEL NUEVO JUEGO A "assets", Y RENOMBRA "data.win" A "game.droid", Y RECONSTRUIR EL APK.
+PARA CARGAR OTROS JUEGOS HECHOS CON GML, LA IDEA BÁSICA SERÍA COGER EL APK DE UN JUEGO ("donor apk"),
+DESCOMPRIMIRLO, COPIAR LOS DATOS DEL NUEVO JUEGO A "assets", RENOMBRAR "data.win" A "game.droid", Y RECONSTRUIR EL APK.
 
 PERO OJO! El APK que usas de "donante" tiene que tener una versión del runner que coincida con la versión
 que el data.win/data.droid espera.
@@ -7008,6 +7008,12 @@ git clone --depth 1 https://github.com/FNA-XNA/FNA.git
 git submodule update --init --recursive
 make release -j4
 Nos deja el FNA.dll en bin/Release/FNA.dll
+
+OTROS JUEGOS DE FNA QUE FUNCIONAN BIEN EN LA PI:
+https://bootdiskrevolution.itch.io/bleed
+https://bootdiskrevolution.itch.io/bleed-2
+https://www.gog.com/game/timespinner
+https://supergiant-games.itch.io/transistor
 
 COMPILAR NUESTRA PROPIA VERSIÓN DE WPA_SUPPLICANT
 =================================================
