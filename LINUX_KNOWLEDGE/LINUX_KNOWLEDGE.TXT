@@ -315,27 +315,11 @@ Data.GM2_2_3_2
 (Si quieres ver qué más heurustics hay para averiguar la versión, mira en el código fuente del UTMT, aquí:
 https://github.com/krzys-h/UndertaleModTool/blob/4b52cb69c0939c4ccf6392838eee2eb5d8b2cfc8/UndertaleModLib/UndertaleData.cs#L60 )
 (Si con una de esas te dice algo de "UndertaleData' does not contain a definition for...", significa que necesitas
-una versión del UTMT más moderna, que conozca los heuristics de esa versión).
+una versión del UTMT más moderna, que conozca los heuristics de esa versión. EL PROBLEMA ES QUE LAS VERSIONES MODERNAS DE UTMT
+PETAN EN LINUX, Y NO SE PUEDE USAR NATIVAMENTE PORQUE USA CIERDA MIERDA QUE LO HACE EXCLUSIVO DE WINDOWS, ASÍ QUE ES WINE O NADA).
 
 CON ESO QUE TE ACABO DE EXPLICAR, DEBERÍAS SER CAPAZ DE AVERIGUAR QUÉ APK PUEDES USAR COMO DONANTE PARA UN data.win/game.droid DETERMINADO.
 
-DEBERÍA SER POSIBLE EJECUTAR VERSIONES ACTUALES DE UTMT SIN USAR WINE, YA QUE CON WINE SE PETAN.
-Esto es así porque las versiones modernas de UTMT usan DOTNET > 5.0 cuyas apps funcionan nativamente en Linux si instalamos el DOTNET
-y compilamos el UTMT.
-ASÍ QUE PARA EJECUTAR VERSIONES RECIENTES DE UNDERTALEMODTOOL (UTMT) SIN USAR WINE:
-
--Instalamos la última versión de DOTNET SDK haciendo:
-sudo snap install dotnet-sdk --classic --channel=6.0
-sudo snap alias dotnet-sdk.dotnet dotnet
-sudo ln -s /snap/dotnet-sdk/current/dotnet /usr/local/bin/dotnet
-
--Compilamos los sources de UTMT así:
-Clonamos su repo: git clone --depth 1 https://github.com/krzys-h/UndertaleModTool.git
-Compilamos con:
-/usr/local/bin/dotnet build UndertaleModTool.sln --configuration Release
-
--Ahora ya podemos hacer algo como esto para cargar el UTMT:
-dotnet UndertaleModTool.exe
 
 ******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
 
