@@ -551,6 +551,25 @@ La BIOS va en ~/.local/share/duckstation/bios/
 PARA LANZAR LOS JUEGOS tienes que pasarle la ruta COMPLETA del .cue, no vale que le pases una ruta relativa a donde estás,
 ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
 
+******Compilar el core FLYCAST para Raspberry Pi 4***
+
+Clonamos su repo (tiene soporte para Libretro en upstream):
+git clone --depth 1 https://github.com/flyinghead/flycast.git
+git submodule update --init
+
+Configuramos y compilamos:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_OPENGL=OFF -DUSE_GLES=OFF -DUSE_GLES2=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_C_FLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+
+make -j4
+
+Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
+
+Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
 ******Space Cadet pinball en la Raspberry Pi*********
 
