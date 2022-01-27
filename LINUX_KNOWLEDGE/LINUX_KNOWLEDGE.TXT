@@ -6971,8 +6971,11 @@ AHORA VAMOS "RECOLECTANDO" LAS LIBRERÍAS QUE USAN LOS JUEGOS, QUE LAS NECESITAS
 
 --LIBFNA
 
-Ls juegos suelen traer su propio FNA.dll, pero no es compatible con algunos de ellos como Bastion, así que tenemos
-que compilar nuestra propia versión con unos cambios.
+Los juegos suelen traer su propio FNA.dll, y de hecho el FNA.dll es el mismo en todas las arquitecturas,
+pero el que traen los juegos no es compatible con algunos de ellos, como Bastion, así que es recomendable
+compilar nuestra propia versión con unos cambios.
+(Pero NO es necesario para jugar al BASTION en aarch64, por ejemplo, ya que el FNA.dll que trae el BASTION
+funciona en aarch64 también).
 
 Dependencia previa, el compilador de mono (FNA está escrito en C#):
 sudo apt-get install mono-mcs
@@ -7013,6 +7016,7 @@ Compilamos con:
 make release -j4
 
 Nos deja el FNA.dll en bin/Release/FNA.dll
+Sobreescribimos el que viene con el juego, y listo.
 
 --LIBMOJOSHADER
 Aunque los juegos traen su propio libmojoshader.so, suele ser para x86_64, no para arch64.
