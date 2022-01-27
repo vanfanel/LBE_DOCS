@@ -743,7 +743,7 @@ CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-poi
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
 --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra \
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled \
---enable-egl --enable-opengles --enable-opengles3 --enable-vulkan --disable-builtinglslang
+--enable-egl --enable-opengles --enable-opengles3 --enable-vulkan
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (SI TE DA ERROR AL LINKAR por funciones de slang, no le pases --disable-builtinglslang)
