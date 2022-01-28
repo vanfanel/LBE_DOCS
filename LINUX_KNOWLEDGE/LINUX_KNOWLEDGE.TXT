@@ -6985,85 +6985,82 @@ EN SU LUGAR, lo ideal sería usar monokickstart, que es un monoruntime auto-cont
 y te lanza el juego que sea:
 https://github.com/flibitijibibo/MonoKickstart
 
-
 AHORA VAMOS "RECOLECTANDO" LAS LIBRERÍAS QUE USAN LOS JUEGOS, QUE LAS NECESITAS PARA AARCH64
-
---LIBFNA
-
-Los juegos suelen traer su propio FNA.dll, y de hecho el FNA.dll es el mismo en todas las arquitecturas,
-pero el que traen los juegos no es compatible con algunos de ellos, como Bastion, así que es recomendable
-compilar nuestra propia versión con unos cambios.
-(Pero NO es necesario para jugar al BASTION en aarch64, por ejemplo, ya que el FNA.dll que trae el BASTION
-funciona en aarch64 también).
 
 Dependencia previa, el compilador de mono (FNA está escrito en C#):
 sudo apt-get install mono-mcs
 
+1--LIBFNA Y SUS SUB-LIBRERÍAS (UNA SUB-LIBRERÍA DE FNA, LLAMADA FNA3D, INCLUYE LIBMOJOSHADER ESTÁTICAMENTE LINKADA.
+LIBMOJOSHADER NO VENÍA INCLUIDO NO VENÍA INCLUÍDO, Y POR ESO LO TRAEN ALGUNOS JUEGOS COMO UN .SO A PARTE,
+QUE YA NO ES NECESARIO PORQUE AHORA FORMA PARTE DE FNA3D, QUE ES PARTE DE FNA COMO VAMOS A VER
+Así que NUNCA te pongas a compilar libmojoshader...).
+
+Lo primero es conseguir nuestro propio y actualizado FNA.dll + FNA.dll.config.
+Esta es la librería "central", independiente del sistema, que hace que se llame a librerías .so dependientes del sistema,
+así que al actualizar FNA.dll + FNA.dll.config conseguimos tener el control de qué .so se necesitan.
+
+Los juegos suelen traer su propio FNA.dll, y de hecho el FNA.dll es el mismo en todas las arquitecturas,
+pero nos conviene compilar TODO EL ECOSISTEMA FNA, ya que algunas sub-librerías de FNA necesitan cambios.
+(Por ejemplo, BASTION sólo funciona tras parchear FNA3D, como veremos, que es una sub-librería de FNA).
+
 Clonamos su repo:
 git clone --depth 1 https://github.com/FNA-XNA/FNA.git
 git submodule update --init --recursive
-Editamos lib/FNA3D/src/FNA3D_Driver_OpenGL.c, y dejamos XNAToGL_TextureInternalFormat así:
-
-static int32_t XNAToGL_TextureInternalFormat[] =
-{       
-        GL_RGBA8,                               /* SurfaceFormat.Color */
-        GL_RGB8,                                /* SurfaceFormat.Bgr565 */
-        GL_BGRA,                                /* SurfaceFormat.Bgra5551 */
-        GL_BGRA,                                /* SurfaceFormat.Bgra4444 */
-        GL_COMPRESSED_RGBA_S3TC_DXT1_EXT,       /* SurfaceFormat.Dxt1 */
-        GL_COMPRESSED_RGBA_S3TC_DXT3_EXT,       /* SurfaceFormat.Dxt3 */
-        GL_COMPRESSED_RGBA_S3TC_DXT5_EXT,       /* SurfaceFormat.Dxt5 */
-        GL_RG8,                                 /* SurfaceFormat.NormalizedByte2 */
-        GL_RGBA8,                               /* SurfaceFormat.NormalizedByte4 */
-        GL_RGB10_A2_EXT,                        /* SurfaceFormat.Rgba1010102 */
-        GL_RG16,                                /* SurfaceFormat.Rg32 */
-        GL_RGBA16,                              /* SurfaceFormat.Rgba64 */
-        GL_ALPHA,                               /* SurfaceFormat.Alpha8 */
-        GL_R32F,                                /* SurfaceFormat.Single */
-        GL_RG32F,                               /* SurfaceFormat.Vector2 */
-        GL_RGBA32F,                             /* SurfaceFormat.Vector4 */
-        GL_R16F,                                /* SurfaceFormat.HalfSingle */
-        GL_RG16F,                               /* SurfaceFormat.HalfVector2 */
-        GL_RGBA16F,                             /* SurfaceFormat.HalfVector4 */
-        GL_RGBA16F,                             /* SurfaceFormat.HdrBlendable */
-        GL_BGRA                                 /* SurfaceFormat.ColorBgraEXT */
-        GL_SRGB_ALPHA_EXT,                      /* SurfaceFormat.ColorSrgbEXT */
-        GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT, /* SurfaceFormat.Dxt5SrgbEXT */
-};
 
 Compilamos con:
 make release -j4
 
-Nos deja el FNA.dll en bin/Release/FNA.dll
-Sobreescribimos el que viene con el juego, y listo.
+Nos deja el FNA.dll y FNA.dll.config en bin/Release/
+Los copiamos al directorio del juego, sobreescribiendo los que trae.
 
---LIBMOJOSHADER
-Aunque los juegos traen su propio libmojoshader.so, suele ser para x86_64, no para arch64.
+Ahora tenemos que entrar en cada uno de los directorios de las sub-librerías de FNA,
+que están en FNA/libs, e ir compilándolas una a una, y copiándolas donde estaban las librerías incluidas con el juego
+que queremos correr:
+(FÍJATE que los .so van al directorio de las librerías dependientes del sistema, en este caso llamado "lib64",
+pero que las .dll van al mismo directorio que el ejecutable del juego... Esto no sé si es así siempre, pero al menos
+para el BASTION funciona así)
 
--Bajamos los últimos sources:
-git clone --depth 1 https://github.com/icculus/mojoshader
+	-Entramos en FAudio y hacemos:
+		mkidir b4
+		cd b4
+		cmake ..
+		cp libFAudio.so* ~/bastion/game/lib64/
 
--Configuramos con:
-cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DDEPTH_CLIPPING=ON -DFLIP_VIEWPORT=ON \
--DPROFILE_METAL=OFF -DPROFILE_D3D=OFF ..
+	-Entramos en FNA3D (que incluye libmojoshader estáticamente linkado así que NO hay que compilar libmojoshader a parte) y hacemos:
+		-Editamos lib/FNA3D/src/FNA3D_Driver_OpenGL.c, nos vamos a "static int32_t XNAToGL_TextureInternalFormat[]"
+		y cambiamos GL_RGB5_A1, GL_RGBA4 y GL_RGBA8 por GL_BGRA.
+		(Sí, GL_BGRA aparecerá varias veces en la matriz, no hay problema, es lo que queremos: que aparezca GL_BGRA
+		en vez de GL_RGB5_A1, GL_RGBA4 y GL_RGBA8).
+		-Compilamos con:
+		mkdir b4
+		cd b4
+		cmake ..
+		cp libFNA3D.so* ~/bastion/game/lib64/
 
--Para instalarla, copiamos libmojoshader.so al directorio donde el juego guarda sus librerías (suelen venir en el mismo directorio
-que el ejecutable del juego, o en un subdirectorio: Bastion por ejemplo trae un subdir llamado "lib64" para las librerías de 64 bits,
-y ya ves que lo ejecutamos con "LD_LIBRARY_PATH=lib64" para que busque ahí las librerías.)
+	-Entramos en SDL2-CS y hacemos:
+		make release -j4
+		cp bin/Release/SDL2-CS.dll* ~/bastion/game/
 
---LIBFMODEX
-Algunos juegos necesitan FMODEX, que es una librería cerrada que puedes descargar de aquí para tu arquitectura.
-Sólo la última versión soporta aarch64:
+	-Entramos en Theorafile y hacemos:
+		make -j4
+		cp libtheorafile.so* ~/bastion/game/lib64/
+
+2--LIBFMODEX
+Algunos juegos necesitan FMODEX, que es una librería cerrada.
+EL PROBLEMA es que los juegos usan FMODEX, que es antigua, pero sólo FMOD está para descargar para aach64.
+FMOD es la versión moderna de FMOD.
+Puedes descargar FMOD de aquí para tu arquitectura.
 https://www.fmod.com/download
-
-Aunque BASTION necesita FMODEX, en teoría, en algún momento será posibe lanzar BASTION en Pi4 sin usar FMODEX, con:
-"LD_LIBRARY_PATH=lib64 mono Bastion.exe -usefnasound"
-...Pero de momento, la versión GOG que es la que yo tengo comprada no soporta "-usefnasound".
-
-La solución temporal sería usar esto:
+COMO HEMOS DICHO, LOS JUEGOS USAN FMODEX EN VEZ DE FMOD, ASÍ QUE AQUÍ TENEMOS UN WRAPPER PARA TENER FMODEX... SOBRE FMOD!!!
+...Y ASÍ ENGAÑAR A LOS JUEGOS:
 https://github.com/ptitSeb/fakemodex
-...Para lo cual lo primero es copiar las librerías fmod para aarch64, que puedes descargar de fmod.com tras registrarte,
-y luego fakemodex coge las llamadas a fmodex y las envía a fmod (fmod es más moderno que fmodex). 
+...Para usarlo, primero es copiar las librerías fmod para aarch64,
+y luego usar este wrapper fakemodex, tras compilarlo e instalarlo en el directorio de librerías del juego.
+
+(NOTA: Aunque BASTION necesita FMODEX, en teoría, en algún momento será posibe lanzar BASTION en Pi4 sin usar FMODEX, con:
+"LD_LIBRARY_PATH=lib64 mono Bastion.exe -usefnasound"
+...Pero de momento, la versión GOG que es la que yo tengo comprada no soporta "-usefnasound".)
+
 
 Para lanzar BASTION, versión Linux, por ejemplo, entramos en Game y hacemos:
 LD_LIBRARY_PATH=lib64 mono Bastion.exe
