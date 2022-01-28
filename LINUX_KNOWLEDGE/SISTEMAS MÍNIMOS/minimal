@@ -186,10 +186,8 @@ mount / -o remount,ro 2> /dev/null
 # ln -s /usr/bin/busybox /usr/bin/reboot
 # ln -s /usr/bin/busybox /usr/bin/halt
 # ln -s /usr/bin/busybox /usr/bin/poweroff
-# El poweroff de systemd va con dos -f, sí, no es un error, es para que no
-# intente contactar con el gestor de procesos, que no existe.
-# El poweroff de busybox no tiene ese problema.
+# El poweroff de systemd va con dos -f, sí. Si no, falla a veces cuando
+# una sesión ssh abierta de fondo, etc.
 #halt -f
 #reboot -f
-#poweroff -f -f
-poweroff -f
+poweroff -f -f
