@@ -6995,12 +6995,12 @@ LIBMOJOSHADER NO VENÍA INCLUIDO NO VENÍA INCLUÍDO, Y POR ESO LO TRAEN ALGUNOS
 QUE YA NO ES NECESARIO PORQUE AHORA FORMA PARTE DE FNA3D, QUE ES PARTE DE FNA COMO VAMOS A VER
 Así que NUNCA te pongas a compilar libmojoshader...).
 
-Lo primero es conseguir nuestro propio y actualizado FNA.dll + FNA.dll.config.
-Esta es la librería "central", independiente del sistema, que hace que se llame a librerías .so dependientes del sistema,
+LO PRIMERO es conseguir nuestro propio y actualizado FNA.dll + FNA.dll.config.
+ESTA ES LA LIBRERÍA "CENTRAL", independiente del sistema, que hace que se llame a librerías .so dependientes del sistema,
 así que al actualizar FNA.dll + FNA.dll.config conseguimos tener el control de qué .so se necesitan.
 
 Los juegos suelen traer su propio FNA.dll, y de hecho el FNA.dll es el mismo en todas las arquitecturas,
-pero nos conviene compilar TODO EL ECOSISTEMA FNA, ya que algunas sub-librerías de FNA necesitan cambios.
+pero nos conviene compilar TODO EL ECOSISTEMA FNA, ya que algunas sub-librerías de FNA pueden necesitar cambios.
 (Por ejemplo, BASTION sólo funciona tras parchear FNA3D, como veremos, que es una sub-librería de FNA).
 
 Clonamos su repo:
@@ -7026,7 +7026,8 @@ para el BASTION funciona así)
 		cmake ..
 		cp libFAudio.so* ~/bastion/game/lib64/
 
-	-Entramos en FNA3D (que incluye libmojoshader estáticamente linkado así que NO hay que compilar libmojoshader a parte) y hacemos:
+	-(OPCIONAL: ESTO ES UN HACK Y SÓLO ES PARA BASTION Y NO VA BIEN, QUEDA AQUÍ CON FINES DOCUMENTALES, PERO NO LO HAGAS)
+	Entramos en FNA3D (que incluye libmojoshader estáticamente linkado así que NO hay que compilar libmojoshader a parte) y hacemos:
 		-Editamos lib/FNA3D/src/FNA3D_Driver_OpenGL.c, nos vamos a "static int32_t XNAToGL_TextureInternalFormat[]"
 		y cambiamos GL_RGB5_A1, GL_RGBA4 y GL_RGBA8 por GL_BGRA.
 		(Sí, GL_BGRA aparecerá varias veces en la matriz, no hay problema, es lo que queremos: que aparezca GL_BGRA
