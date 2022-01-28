@@ -162,9 +162,11 @@ setsid sh -c 'cd /root;exec bash --login </dev/tty1 >/dev/tty1 2>&1'
 # Salvamos la última fecha conocida, que va al fichero /etc/fake-hwclock.data
 fake-hwclock save
 
-# Matamos todos los procesos que se han lanzado desde este script,
-# para que no haya nada accediendo a directorios que cuelguen del rootfs.
-pkill -P 1
+# Matamos todos los procesos que se hemos lanzado para que powerwoff no falle 
+# intentando esperar a que un proceso acabe, lo que causaría
+# el fin de nuestro "init", que es este script, y por tanto un kernel panic
+# ya que el "init" nunca debe llegar a acabar sino cortarse en el poweroff.
+killall -u root
 
 # Desmontamos todo lo que hemos montado.
 # El desmontaje conlleva la sincronización de los discos.
@@ -186,8 +188,9 @@ mount / -o remount,ro 2> /dev/null
 # ln -s /usr/bin/busybox /usr/bin/reboot
 # ln -s /usr/bin/busybox /usr/bin/halt
 # ln -s /usr/bin/busybox /usr/bin/poweroff
-# El poweroff de systemd va con dos -f, sí. Si no, falla a veces cuando
-# una sesión ssh abierta de fondo, etc.
+# El poweroff de systemd va con dos -f ("-f -f") para que no intente contactar
+# con el gestor de procesos, que no existe.
+# El poweroff de busybox no tiene ese problema.
 #halt -f
 #reboot -f
-poweroff -f -f
+poweroff -f
