@@ -5519,6 +5519,9 @@ Scanline gap brightness 	0.90
 Bloom factor				1.00
 Input gamma					2.40
 Output gamma				2.20
+(OJO!!! ESTE CORE NECESITA QUE TENGAS "INTEGER SCALE" ACTIVADO Y "ASPECT RATIO" FORZADO A "4:3"
+ EN SETTINGS->VIDEO->SCALING, O SE RALENTIZARÁ).
+
 (OJO!!! COMO ÚLTIMO RECURSO PARA QUE EL SHADER NO CAUSE DROPOUTS DE AUDIO EN LOS CORES EXIGENTES,
 edita el shader y comenta todos los defines posibles, dejando toda esa sección comentada así:
 //#define SCANLINES
