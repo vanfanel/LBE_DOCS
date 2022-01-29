@@ -409,6 +409,13 @@ PARA EVITAR PUSACIONES FANTASMA REPETIDAS AL PULSAR NOSOTROS UNA TECLA O PROBLEM
 a teclas del teclado en los settings principales de RetroArch. Ve borrándolas todas con SUPR, y mapeas SÓLO A BOTONES DEL MANDO.
 Y TRANQUILO, QUE TE SIGUIES PUDIENDO MOVER CON EL TECLADO, ESO NO TIENE NADA QUE VER.
 
+PARA QUE EL PAD NO SE QUEDE ATASCADO EN UNA DIRECCIÓN AL SALTAR EN LOS JUEGOS:
+-En "QUICK MENU->CONTROLS->PORT 1 CONTROLS", usa "Joystick" como "DEVICE TYPE", y pon así los controles direccionales:
+D-Pad UP: Left Analog Y-
+D-Pad UP: Left Analog Y+
+D-Pad UP: Left Analog X-
+D-Pad UP: Left Analog X+
+
 PARA EL ASPECT RATIO: Lo de siempre para todos los cores en general: en SETTINGS->VIDEO se pone en 4:3 para todo y fuera.  
 
 PARA EVITAR PANTALLA NEGRA al principio del SUPERFROG si se usa el driver de vídeo VULKAN: desactiva el "FRAME DUPING" en las opciones del core.
