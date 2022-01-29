@@ -5511,15 +5511,15 @@ AUDIO: driver ALSA, 44100 Hz, 32ms, resampler quality normal
 SHADER:
 
 Usamos el shader crt-pi, que está en /crt, con los parámetros:
-Curvature horizontal 		00
-Curvature vertical			00
+Curvature horizontal 		0.10
+Curvature vertical			0.15
 Mask brightness				0.70
 Scanline weight				6.00
 Scanline gap brightness 	0.90
 Bloom factor				1.00
 Input gamma					2.40
 Output gamma				2.20
-(OJO!!! PARA QUE EL SHADER NO CAUSE DROPOUTS DE AUDIO EN LOS CORES EXIGENTES,
+(OJO!!! COMO ÚLTIMO RECURSO PARA QUE EL SHADER NO CAUSE DROPOUTS DE AUDIO EN LOS CORES EXIGENTES,
 edita el shader y comenta todos los defines posibles, dejando toda esa sección comentada así:
 //#define SCANLINES
 //#define CURVATURE
