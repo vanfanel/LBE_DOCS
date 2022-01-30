@@ -568,9 +568,11 @@ Configuramos y compilamos:
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_OPENGL=OFF \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_OPENGL=OFF -DUSE_GLES2=ON -DUSE_VULKAN=ON \
 -DCMAKE_CXX_FLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 -DCMAKE_C_FLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+(POR AHORA no es posible compilarlo con VULKAN solamente, porque se empeña en linkar las librerías
+de OpenGL incluso si lo deshabilitamos. Hay un issue abierto por ello.)
 
 make -j4
 
