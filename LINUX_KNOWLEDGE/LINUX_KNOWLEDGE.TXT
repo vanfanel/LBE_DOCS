@@ -5556,6 +5556,13 @@ PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No 
 
 PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE SHADERS SE VERÁ MUY RARA.
 
+SI USAS INTEGER SCALING Y QUIERES UN BORDE PARA LA PANTALLA:
+-Clona el repo https://github.com/libretro/common-overlays.git, y mete los overlays que quieras en ~/.config/retroarch/overlay
+-Ve a QUICK MENU->ON-SCREEN OVERLAY, activa DISPLAY OVERLAY, y selecciona un overlay preset de los que has copiado.
+(Se podría activar y ajustar también en SETTINGS->ON-SCREEN DISPLAY->ON-SCREEN OVERLAY, estableciendo así un solo overlay
+para todos los cores, pero como cada core aparece de un tamaño en pantalla al usar INTEGER SCALING, nos conviene gestonarlo
+aquí en QUICK MENU para que quede configurado core a core).
+
 *********No funcionan los input en RetroArch**********
 
 PARA que haya input con el driver udev (input_driver = "udev") debemos crear /etc/udev/rules.d/99-evdev.rules con el contenido:
