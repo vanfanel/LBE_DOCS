@@ -573,6 +573,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_OPENGL=OFF -DUSE_GLES2=O
 -DCMAKE_C_FLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
 (POR AHORA no es posible compilarlo con VULKAN solamente, porque se empeña en linkar las librerías
 de OpenGL incluso si lo deshabilitamos. Hay un issue abierto por ello.)
+(SE SUPONE que podemos compilar una versión que vaya fullspeed en Pi4 64bit con estos flags:
+-march=armv8-a+fp+simd+sb+predres+crypto+crc -mcpu=cortex-a72 -mtune=cortex-a72 -O3 -funsafe-math-optimizations)
 
 make -j4
 
