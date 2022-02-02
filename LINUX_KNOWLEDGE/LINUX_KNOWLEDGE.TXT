@@ -25,6 +25,13 @@ echo $SDL_VIDEO_DOUBLE_BUFFER
 
 Con el comando showkeys
 
+******IMPRIMIR DESDE UN MAKEFILE*****************************************************************************************
+
+Se hace simplemente con:
+@echo "hola mundo!"
+
+PERO OJO: Si te da un error de "missing separator" métele un tabulador delante.
+
 ******Hacer que se lean los diagnostics del bootloader de la Raspberry Pi 4 incluso cuando arranca correctamente*******
 
 Editamos los parámetros de configuración del bootloader con:
@@ -5530,7 +5537,9 @@ Scanline gap brightness 	0.90
 Bloom factor				1.00
 Input gamma					2.40
 Output gamma				2.20
-(OJO!!! ESTE CORE NECESITA QUE TENGAS "INTEGER SCALE" ACTIVADO Y "ASPECT RATIO" FORZADO A "4:3"
+Y editamos el shader en ~/.config/retroarch/shaders/slang/crt/shaders/crt-pi.slang,
+y ponemos MASK TYPE a 1, que consume menos CPU y se ve mejor.
+(OJO!!! ESTE SHADER NECESITA QUE TENGAS "INTEGER SCALE" ACTIVADO Y "ASPECT RATIO" FORZADO A "4:3"
  EN SETTINGS->VIDEO->SCALING, O SE RALENTIZARÁ).
 
 (OJO!!! COMO ÚLTIMO RECURSO PARA QUE EL SHADER NO CAUSE DROPOUTS DE AUDIO EN LOS CORES EXIGENTES,

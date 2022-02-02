@@ -32,7 +32,7 @@ Es decir, para usar crt-pi personalizado hacemos esto:
 	//#define GAMMA
 	//#define SHARPER
 	//#define MULTISAMPLE
-	-Ponemos el MASK TYPE a 1, porque el 2 es demasiado "grueso" para una pantalla de portátil.
+	-Ponemos el MASK TYPE a 1, porque el 2 es demasiado "grueso" para una pantalla de portátily consume más CPU.
 -Ahora, seleccionamos en EMULATION STATION el shader crt-pi, entramos en RetroArch, ajustamos los parámetros del shader así:
 Curvature horizontal 		00
 Curvature vertical			00
