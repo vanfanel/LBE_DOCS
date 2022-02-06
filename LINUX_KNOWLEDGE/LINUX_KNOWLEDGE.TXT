@@ -1934,6 +1934,23 @@ Ahora ya podemos agregar contactos de whatsapp con normalidad!
 
 Si tienes problemas de conectividad, edita ~/.purple/accounts.xml y busca el servidor, versión de android, puerto...
 
+
+*********Evitar desconexión de red WIFI cuando la batería está baja*****************
+
+Editamos este fichero:
+
+sudo vim /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
+
+y ponemos
+wifi.powersave = 2
+(Viene puesto a 3, que es "default", y lo ponemos a 2 que es "disable").
+
+Reiniciamos el sistema o hacemos:
+
+systemctl restart NetworkManager
+
+..Y listo.
+
 *********NO funciona la conexión con una tarjeta de broadcom (módulo b43)***********
 
 Si miras 
