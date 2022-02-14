@@ -1788,7 +1788,8 @@ sudo crontab -e
 Y le añadimos la línea:
 @reboot /usr/sbin/iptables-restore < /etc/iptables.sav
 Recuerda crear una conexión en el servidor que sea del mismo rango que la IP fija del cliente,
-y en el cliente poner como gateway la IP del servidor, añadir el servidor dns en /etc/resolv.conf si hace falta, etc...
+y en el cliente poner como gateway la IP del servidor (también en RISC OS!!!),
+añadir el servidor dns en /etc/resolv.conf (sólo en LINUX, claro) si hace falta, etc...
 Lo típico de /etc/network/interfaces, que tienes más abajo en varios sitios.
 
 *******No tengo rc.local! Dónde añado cosas al inicio??*********************************************************************************************
