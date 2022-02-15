@@ -6707,7 +6707,7 @@ sudo mount /dev/mmcblk0p5 /mnt/hdd
 Y hago lo que tengo que hacer. ¡¡OJO: DESDE EL PC NO DEJA GUARDAR ESTE ARCHIVO CON SUS CAMBIOS!!
 Podemos ver qué sistema arranca de qué partición consultando installed_os.json en ese misma partición. 
 
-PARA PASAR un rootfs de Linux desde otra tarjeta, usa "rsync -a <dir_orígen>/* <dir_destino>", NO USES CP -R QUE LA LIAS CON LOS PROPIETARIOS!!
+PARA PASAR un rootfs de Linux desde otra tarjeta, usa "rsync -av --progress <dir_orígen>/* <dir_destino>", NO USES CP -R QUE LA LIAS CON LOS PROPIETARIOS!!
 
 COPIA DE SEGURIDAD DE UN ROOTFS, COMO EN TIEMPOS DE GENTOO!
 ===========================================================
@@ -7650,7 +7650,8 @@ Normalmente no es posible instalar un nuevo SO después de instalar NOOBS en una
 	Apunta también sus PARTUUID, que puedes averiguar con sudo blkid /dev/sdb8 y blkid /dev/sdb9
 
 -En la partición boot copia todo lo que se necesita (kernel, dbts, overlays, ficheros de configuración, firmware, etc...). Con cp -R vale.
--En la partición del rootfs copia el rootfs del sistema a instalar, pero recuerda hacerlo con rsync -a origen/* destino/ , NO con cp que la lías con los permisos.
+-En la partición del rootfs copia el rootfs del sistema a instalar, pero recuerda hacerlo con rsync -av --progress origen/* destino/ ,
+NO con cp que la lías con los permisos.
 -Crea una entrada nueva para el sistema en el fichero installed_os.json de la partición SETTINGS de NOOBS, es decir, en SETTINGS/installed_os.json. Por ejemplo así:
 { 
   "bootable" : true,
