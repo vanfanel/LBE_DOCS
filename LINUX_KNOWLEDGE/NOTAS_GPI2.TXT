@@ -1,0 +1,21 @@
+PARA FLASHEAR UN SO A LA EMMC
+=============================
+
+INTRODUCCIÓN: Los modelos de CM4 que tienen EMMC no pueden arrancar a la vez desde EMMC y desde SD, así que no podemos simplemente flashearles
+un sistema a la SD y esperar que arranque, se lo tenemos que flashear a la EMMC interna.
+Para ello usamos usbboot, que arranca la CM4 de tal modo que nos permite flashearle un sistema a la EMMC.
+
+Compilamos e instalamos:
+https://github.com/raspberrypi/usbboot
+
+Conectamos la GPI CASE 2 por el puerto microUSB al ordenador (el puerto de arriba, el que queda detrás de la tapa, NO el de abajo que es USB-C)
+y ejecutamos:
+sudo rpiboot
+
+Ahora en /dev tendremos /dev/sdb, que ya podemos flashear con algo como:
+sudo dd if=recalbox-rpi4.img of=/dev/sdb bs=4M status=progress
+
+Una vez que se haya flasheado, ya podemos acceder a las particiones boot y root del SO, y tenemos que sustituir unos overlays
+y el config.txt por los que vienen en este archivo:
+https://support.retroflag.com/Products/GPi_Case_2/GPi_Case_2_patch.zip
+

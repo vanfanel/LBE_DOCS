@@ -2784,6 +2784,32 @@ sudo ifconfig wlan0 down
 sudo rmmod brcmfmac
 sudo /etc/init.d/dropbear stop
 
+***********Hacer un volcado de un disco abarcando sólo el espacio usado por las particiones***********************************************
+
+Miramos con FDISK dónde acaba la última partición, y el tamaño de unidad:
+
+sudo fdisk -l /dev/sdb
+
+Disk /dev/sdb: 58 GiB, 62277025792 bytes, 121634816 sectors
+Disk model: Card  Reader    
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x4f2a38d0
+
+Device     Boot  Start     End Sectors  Size Id Type
+/dev/sdb1         8192  532479  524288  256M  c W95 FAT32 (LBA)
+/dev/sdb2       532480 8519679 7987200  3,8G 83 Linux
+
+AHÍ VEMOS que UNITS es: 512 bytes
+AHÍ VEMOS que LA ÚLTIMA PARTICIÓN ACABA EN 8519679
+PUES BIEN: A DD LE PASAMOS EL TAMAÑO DE UNIDAD (512) Y EL NÚMERO DE UNIDADES (LE SUMAMOS 1 A 8519679, Y NOS QUEDA 8519680) Y TEMEMOS:
+
+sudo dd if=/dev/sdb of=dump.img bs=512 count=8519680 status=progress
+
+Y ya tenemos nuestro volcado, que ocupa lo que ocupan las partiociones, sin volcar el espacio extra al final del disco.
+
 ***********Extraer una partición de un IMG que contiene la imágen de un disco completo****************************************************
 
 Fácil. Con fdisk vemos dónde empieza y cuánto mide la partición que queremos (en sectores nos lo da directamente, que es lo que nos interesa):
