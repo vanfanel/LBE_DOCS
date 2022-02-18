@@ -50,3 +50,5 @@ Para el sonido:
 dejándolo así inútil (deshabilitar el servicio no vale porque no sobreviviría a un reinicio, parece ser).
 -Ahora elegimos como driver de audio el ALSA, y como dispositivo de audio, escribimos manualmente "plughw:2,0"
 -Nos conectamos por SSH, y editamos /storage/.config/retroarch/retroarch.cfg para poner el max_swapchain a 2. 
+-Para quitar el ruido del wifi en el altavoz, edita /flash/config.txt y le añades: dtoverlay=disable-wifi
+ (Para editar config.txt tienes que re-montar la partición flash como lectura/escritura, con: mount -o remount,rw /dev/mmcblk0p1)
