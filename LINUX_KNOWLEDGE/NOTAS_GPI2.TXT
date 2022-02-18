@@ -12,10 +12,32 @@ Conectamos la GPI CASE 2 por el puerto microUSB al ordenador (el puerto de arrib
 y ejecutamos:
 sudo rpiboot
 
-Ahora en /dev tendremos /dev/sdb, que ya podemos flashear con algo como:
-sudo dd if=recalbox-rpi4.img of=/dev/sdb bs=4M status=progress
+Si todo va bien, en /dev ya tendremos la emmc como /dev/sdb.
 
-Una vez que se haya flasheado, ya podemos acceder a las particiones boot y root del SO, y tenemos que sustituir unos overlays
-y el config.txt por los que vienen en este archivo:
-https://support.retroflag.com/Products/GPi_Case_2/GPi_Case_2_patch.zip
+Si es así, ya podemos flashear a /dev/sdb con algo como:
+sudo dd if=Lakka-RPi4-GPICase.img of=/dev/sdb bs=4M status=progress
 
+Una vez que se haya flasheado, ya podemos acceder a las particiones boot y root del SO.
+
+LAKKA EN LA GPI CASE 2
+======================
+
+Hay una imágen preparada en el canal de DISCORD de la GPI CASE 2, de momento en la sala de betatesting.
+
+CONFIGURAR LINUX PARA QUE USE LA PANTALLA DPI DE LA CONSOLA
+============================================================
+
+-Lo que sabemos hasta ahora proviene de este hilo:
+
+https://forums.raspberrypi.com/viewtopic.php?p=1975135#p1975135
+
+-En config.txt, tenemos que tener esto para configurar la pantalla con los specs del fabricante:
+
+dtoverlay=vc4-kms-v3d
+dtoverlay=vc4-kms-dpi-generic,hactive=640,hfp=20,hsync=2,hbp=20
+dtparam=vactive=480,vfp=1,vsync=1,vbp=2
+dtparam=clock-frequency=24000000
+
+-En cmdline.txt NO HAY QUE PONER NINGÚN PARÁMETRO DE "video=..."
+
+-Nos falta averiguar qué módulos son necesarios para controlar la pantalla.
