@@ -4897,7 +4897,7 @@ Y cambiamos el ownership de ~/.viminfo al usuario, ya que viene como propiedad d
 Y si aún así no funciona, comenta todo lo que has puesto en ~/.vimrc, debería funcionar. Entonces ve descomentando líneas y comprobando qué setting de .vimrc es el que
 impide que funcione. Sí, esto me ha pasado.
 
-En DEBIAN como ROOT, edita /usr/share/vim/vim81/defaults.vim y comenta lo del mouse para que no entre en modo visual.
+En DEBIAN como ROOT, edita /usr/share/vim/vim82/defaults.vim y comenta lo del mouse para que no entre en modo visual.
 
 ===========================================================
 
