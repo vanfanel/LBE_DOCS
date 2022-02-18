@@ -41,3 +41,12 @@ dtparam=clock-frequency=24000000
 -En cmdline.txt NO HAY QUE PONER NINGÚN PARÁMETRO DE "video=..."
 
 -Nos falta averiguar qué módulos son necesarios para controlar la pantalla.
+
+CONFIGURAR LA DISTRO EXPERIMENTAL DEL LAKKA DEL CANAL "RETROFLAG GPI CASE USERS" DE DISCORD
+===========================================================================================
+
+Para el sonido:
+-Editamos el UNIT de PULSEAUDIO para deshabilitarlo. Para ello, hacemos "systemctl edit --full pulseaudio" y eliminamos la línea de ExecStart,
+dejándolo así inútil (deshabilitar el servicio no vale porque no sobreviviría a un reinicio, parece ser).
+-Ahora elegimos como driver de audio el ALSA, y como dispositivo de audio, escribimos manualmente "plughw:2,0"
+-Nos conectamos por SSH, y editamos /storage/.config/retroarch/retroarch.cfg para poner el max_swapchain a 2. 
