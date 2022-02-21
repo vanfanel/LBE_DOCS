@@ -113,7 +113,7 @@ int main () {
 
 
 CREAR IMÁGENES DE DISCO DURO DE ATARIST Y LUEGO MONTARLAS EN LINUX
-==============================================================
+==================================================================
 
 PREVIO: El sistema y driver de discos original de Atari para los AtariST se llamaba AHDI. Tiene limitaciones del copón como que sólo puede arrancar desde particiones de tipo GEM de menos i igual de 16Megas,
 luego tampoco se pueden hacer particiones GEM de más de 32MB, etc.. es una mierda.
@@ -264,13 +264,29 @@ Tienes muchos juegos ya traducidos y de todo en:
 http://www.pc98.org/main.html
 ...Pero están en .HDI y se necesita que estén en HDF. Así que no te valen por ahora.
 
+********CONFIGURAR EL TECLADO EN EL CORE DE AMIGA PARA USAR UN TECLADO DE PC EN ESPAÑOL**********
+
+Nos bajamos este archivo:
+http://aminet.net/util/wb/Win95e_V2.lha 
+... Y lo mandamos a fat/games/amiga/shared
+
+Ahora cargamos el ADF llamado INSTALLRTG.ADF, y dentro de él ejecutas INSTALLSHARE, que montará el directorio fat/games/amiga/shared, haciéndolo accesible desde Amiga.
+
+Una vez hecho esto, nos vamos al CLI (GoShell en AG+) y hacemos:
+
+mister:
+lha x win95e_v2.lha
+copy win95e devs:keymaps
+
+Y ahora nos vamos a Preferences/Input, y seleccionamos el mapa win95e. ¡Y ya está!
+
 ********INSTALAR LAS KICKSTART PARA WHDLOAD*********************************************
 
 Tienes las ROMs ya preparadas en shared/Kickstarts
 
 Cargas el ADF llamado INSTALLRTG.ADF, y dentro de él ejecutas INSTALLSHARE, que montará el directorio fat/games/amiga/shared, haciéndolo accesible desde Amiga.
 
-Una vez hecho esto, nos vamos al CLI y hacemos:
+Una vez hecho esto, nos vamos al CLI (GoShell en AG+) y hacemos:
 
 makedir devs:kickstarts
 mister:
