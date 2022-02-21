@@ -264,6 +264,19 @@ Tienes muchos juegos ya traducidos y de todo en:
 http://www.pc98.org/main.html
 ...Pero están en .HDI y se necesita que estén en HDF. Así que no te valen por ahora.
 
+********INSTALAR LAS KICKSTART PARA WHDLOAD*********************************************
+
+Tienes las ROMs ya preparadas en shared/Kickstarts
+
+Cargas el ADF llamado INSTALLRTG.ADF, y dentro de él ejecutas INSTALLSHARE, que montará el directorio fat/games/amiga/shared, haciéndolo accesible desde Amiga.
+
+Una vez hecho esto, nos vamos al CLI y hacemos:
+
+makedir devs:kickstarts
+mister:
+cd kickstarts
+copy ALL to devs:kickstarts
+
 ********ACTUALIZAR LA DISTRO AMIGA AGS+**************************************************
 
 -Pones el LHA de la actualización en fat/games/amiga/shared
