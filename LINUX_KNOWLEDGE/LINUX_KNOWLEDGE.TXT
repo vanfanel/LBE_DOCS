@@ -1084,13 +1084,13 @@ Comentamos entero el bloque "# Find out which partition or disk are we using": e
 Ejecutamos bootinst.sh desde nuestro disco duro, y listo. Si se queja de que no encuentra archivos para instalar el bootloader, lo mandas a la copia local del directorio boot
 de la ISO y lo ejecutas desde allí.
 
-*******Aplicar parches ips en Linux*****************************************************************************************************************************************
+*******Aplicar parches ips en Linux***************************************************************************************
 
 Lo hacemos con el UIPS, un parcheador hecho en C de Neil Corlett (sí, el traductor del Seiken Densetsu 2, la gente es la hostia!) de hace mil años.
 Clonamos este repo: https://github.com/chungy/cmdpack.git
 Compilamos y a correr.
 
-*******Cambiar las fuentes de tamaño en Debian/Lubuntu cuando dpkg-reconfigure console-setup falla*******************************************
+*******Cambiar las fuentes de tamaño en Debian/Lubuntu cuando dpkg-reconfigure console-setup falla************************
 El problema es que /lib/udev/console-setup-tty está jodido.
 Si hacemos strace /lib/udev/console-setup-tty fbcon, vemos que está buscando un fichero de fuente en /etc/console-setup que no existe, y además lo busca en PSF y nosotros
 los tenemos en .psf.gz. Así que ajustamos cosas en /etc/default/console-setup para que busque una fuente que tengamos en /etc/console-setup y se la ponemos ahí.
