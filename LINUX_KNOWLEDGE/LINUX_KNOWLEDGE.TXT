@@ -1771,8 +1771,23 @@ mediante el comando reboot. Ni idea.
 *******Preparar el portátil como router para salir a internet desde la Raspberry Pi u otra placa conectada a él por ethernet************
 
 Al router (el portátil, por ejemplo, que es el que se conecta a internet) le ponemos una IP fija en el mismo rango que el cliente.
-En Lubuntu o Debian es tan fácil como crear una conexión ethernet nueva en el gestor de redes. 
+En Lubuntu es tan fácil como crear una conexión ethernet nueva en el gestor de redes. 
 CUIDADO!!! CUIDADO!!! NO LE PONGAS un gateway o puerta de enlace, porque LA CONEXIÓN WIFI DEJARÁ DE FUNCIONAR AL PONER EL CABLE SI LO HACES.
+
+<BLOQUE DEBIAN> 
+
+En DEBIAN con LXQT, que usa connman (con su GUI llamada Connman UI), hacemos lo mismo pero a mano, así:
+Averiguamos el nombre que le da connman a nuestra conexió ethernet:
+connmanctl services
+...vemos este, que es el cableado: ethernet_3822e2bae00a_cable 
+
+AHORA, creamos la conexión con IP estática así:
+connmanctl config ethernet_3822e2bae00a_cable --ipv4 manual 192.168.1.27 255.255.255.0
+connmanctl config ethernet_3822e2bae00a_cable --nameservers 8.8.8.8 4.4.4.4
+...Esta conexión quedará guardada automáticamente en /var/lib/connman/ethernet_3822e2bae00a_cable/settings
+
+<FIN BLOQUE DEBIAN>
+
 Ahora editamos /etc/sysctl.conf y descomentamos la línea
 #net.ipv4.ip_forward=1
 Añadimos el binding a las IPtables:
