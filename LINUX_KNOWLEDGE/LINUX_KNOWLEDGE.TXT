@@ -1783,7 +1783,6 @@ connmanctl services
 
 AHORA, creamos la conexión con IP estática así:
 connmanctl config ethernet_3822e2bae00a_cable --ipv4 manual 192.168.1.27 255.255.255.0
-connmanctl config ethernet_3822e2bae00a_cable --nameservers 8.8.8.8 4.4.4.4
 ...Esta conexión quedará guardada automáticamente en /var/lib/connman/ethernet_3822e2bae00a_cable/settings
 
 <FIN BLOQUE DEBIAN>

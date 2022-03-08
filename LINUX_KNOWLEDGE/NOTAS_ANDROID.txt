@@ -5,7 +5,8 @@ En el ejemplo se ha usado el samsung Grand Prime, cuyo número de modelo es G531
 Así mismo, en este ejemplo lo que se hace es flashear la partición SYSTEM por otra que ya viene rooteada.
 
 Necesitamos el Heimdall. Para compilarlo, necesitamos los siguientes paquetes instalados:
-build-essential cmake zlib1g-dev qt5-default libusb-1.0-0-dev
+build-essential cmake zlib1g-dev libusb-1.0-0-dev qt5-default
+(En DEBIAN BULLSEYE, cambia qt5-default por qtbase5-dev)
 
 Ahora clonamos desde:
 https://github.com/Benjamin-Dobell/Heimdall.git

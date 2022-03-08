@@ -5,6 +5,9 @@ INTRODUCCIÓN: Los modelos de CM4 que tienen EMMC no pueden arrancar a la vez de
 un sistema a la SD y esperar que arranque, se lo tenemos que flashear a la EMMC interna.
 Para ello usamos usbboot, que arranca la CM4 de tal modo que nos permite flashearle un sistema a la EMMC.
 
+Unas dependencias previas:
+sudo apt-get install libusb-1.0-0-dev
+
 Compilamos e instalamos:
 https://github.com/raspberrypi/usbboot
 
