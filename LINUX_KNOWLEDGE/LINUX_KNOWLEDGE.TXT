@@ -4045,7 +4045,15 @@ Instalar cosas:
 sudo apt-get install libedit-dev pyhton-yaml
 editar el makefile para añadir los cflags. Compilar y listo.
 
-*************Compilar Cannonball (OutRun engine) en Rpi***************************************************************************
+*************Core Cannonball (OutRun engine) en la Rpi*****************************************************************************************
+
+Necesitamos un directorio /roms donde metemos las roms del juego (es el romset del MAME y si te falta una eprom, es del SET B)
+donde metemos también el directorio /res que viene con los sources.
+Es decir, /res quedaría como /roms/res.
+En /roms, creamos un archivo vacío llamado outrun.game, y lanzaríamos el core como:
+retroarch -L ~/.config/retroarch/cores/cannonball-libretro.so roms/outrun.game
+
+*************Compilar Cannonball (OutRun engine) versión SDL2 en Rpi***************************************************************************
 
 Clonamos su repo:
 git clone --depth 1 https://github.com/djyt/cannonball.git
