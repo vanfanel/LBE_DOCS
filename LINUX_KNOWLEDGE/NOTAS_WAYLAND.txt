@@ -431,3 +431,41 @@ sudo seatd -u pi
 cage <nombre_ejecutable>
 Y si es con parámetros, usamos -- entre cage y el nombre del ejecutable, así:
 cage -- <nombre_ejecutable> <parámetros>
+
+KITTY, UN EMULADOR DE TERMINAL PARA WAYLAND
+-------------------------------------------
+
+--Requisito previo: GLFW, que es lo que usa Kitty para dibujar en pantalla.
+Nos bajamos la última estable de GLFW de:
+https://www.glfw.org/
+
+Y configuramos, compilamos e instalamos GLFW:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DGLFW_USE_WAYLAND=1 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+
+make -j4
+sudo make install
+
+AHORA VAMOS A POR KITTY EN SÍ...
+
+--Clonamos su repo, configuramos y compilamos:
+
+git clone --depth 1 https://github.com/kovidgoyal/kitty
+
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+./configure
+
+make -j4
+
+--Lo lanzamos en modo fullscreen con:
+kitty --start-as fullscreen
+(NO, no falta ningún guión).
+
+--Para ajustar la fuente, podemos editar su configuración. Para ello, desde dentro de Kitty, hacemos CTRL+SHIFT+F2,
+cambiamos lo que sea y guardamos.
+De este modo, se nos crea ~/.config/kitty/kitty.conf, que podemos editar luego y cambiar lo que queramos.
+
+
