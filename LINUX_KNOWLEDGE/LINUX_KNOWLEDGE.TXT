@@ -790,12 +790,12 @@ Creamos el directorio donde va a ir el juego, por ejemplo ~/abadia
 Y ahí copiamos los directorios "roms", "fonts" y "res" que vienen con los sources en su directorio "build".
 Copiamos también el ejecutable "abbey", y ya debería ir. No necesitas nada más externo.
 
-RussianDoom / RussianHeretic, un sourceport peculiar en ruso
-============================================================
+Interdoom, un sourceport peculiar en ruso
+=========================================
 
 Bajamos la última estable de:
 
-https://github.com/JNechaevsky/russian-doom/releases
+https://github.com/JNechaevsky/inter-doom.git/releases
 
 Compilamos con CMAKE:
 mkdir b4
