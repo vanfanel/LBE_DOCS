@@ -3406,7 +3406,7 @@ CFLAGS="-O2 -march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-p
 
 ***********XASH3D para Raspberry Pi (GLES) **********************************************************************************************
 
-OJO; NO HACE FALTA COMPILAR LAS SDL2 CON SOPORTE PARA DESKTOP GL USANDO UN WRAPPER EN TORNO A GLES NI NADA!!! LAS SDL2 NORMALES CON GLES TE VALEN.
+XASH3D SOPORTA AHORA TANTO OPENGL COMO GLES1 Y GLES2, SIN WRAPPERS NI NADA.
 OJO; SI ESTAS INSTRUCCIONES TE DAN ERRORES, QUE SEPAS QUE PROCEDEN DE AQUÍ:
 https://github.com/FWGS/xash3d/wiki/Building-and-running#cmake-recommended-for-non-windows
 
@@ -3414,20 +3414,13 @@ Instalamos una pequeña dependencia que hace falta:
 sudo apt-get install --no-install-recommends libfontconfig1-dev
 
 Clonamos el repo principal:
-git clone https://github.com/FWGS/xash3d
-
-Ahora entramos en el directorio "engine", y ahí dentro clonamos el NANOGL:
-cd xash3d/engine
-git clone https://github.com/FWGS/nanogl
-
-Ahora nos volvemos al raiz de los sources e inicializamos unos submódulos:
-cd ~/src/xash3d
+git clone https://github.com/FWGS/xash3d-fwgs
 git submodule init && git submodule update --init
 
 Ahora creamos el directorio de compilación, configuramos con CMAKE, y compilamos:
 mkdir build
 cd build
-cmake .. -DXASH_SDL=ON -DXASH_VGUI=OFF -DXASH_NANOGL=ON -DXASH_64BIT=1
+cmake .. -DXASH_SDL=ON -DXASH_VGUI=OFF -DXASH_64BIT=1
 make -j4
 
 Ahora, creamos ~/halai, y vamos copiando los archivos que necesitamos:
@@ -3438,9 +3431,8 @@ Ahora copiamos el directorio "valve" de una instalación de Half Life a ~/halai/
 (Tienen un CD completo en archive.org, en formato CUE/BIN que puedes convertir a .ISO+.WAV con:
 bchunk -w HALF_LIFE.BIN HALF_LIFE.BIN half
 
-
 Ahora vamos a por las librerías del juego: clonamos esto:
-https://github.com/FWGS/hlsdk-xash3d
+git clone --depth 1 https://github.com/FWGS/hlsdk-xash3d
 
 Creamos el directorio de compilación y compilamos para 64bits:
 cd hlsdk-xash3d
@@ -3463,8 +3455,6 @@ Nos vamos a ~/halai y ejecutamos nuestro script de lanzamiento, ./halai
 
 Y si quieres counterstrike 1.6, la librería de juego que tendrías que compilar e instalar en ~/halai/valve/dlls/ es esta:
 https://github.com/FWGS/cs16-client/releases
-
-
 
 SI QUIERES TENER MÚSICA DURANTE EL JUEGO, cuando ripees el CD con bchunk (porque vas a necesitar hacerlo para sacar el diretorio "valve" de la ISO) hazlo así:
 bchunk -w HALF_LIFE.BIN HALF_LIFE.BIN half
