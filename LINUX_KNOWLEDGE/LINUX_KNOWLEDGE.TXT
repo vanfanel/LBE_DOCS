@@ -815,17 +815,23 @@ make -j4
 Copiamos el directorio "src/base" tal cual (tiene wads dentro para el engine) a ~/heretic
 cp -R src/base ~/heretic/
 
-Copiamos los ejecutables russian* (que están en src) a ~/doom
-cp src/russian-* ~/heretic/
+Copiamos los ejecutables inter-* (que están en src) a ~/doom
+cp src/inter-* ~/heretic/
 
 Ejecutamos el juego por primera vez para que nos genere russian-heretic.ini.
 Editamos russian-heretic.ini y ponemos:
 english_language	1
 
-Para tener música que no sea la emulada por OPL, metemos en un WAD tal cual sin directorios los FLAC o los OGG  de aquí,
-PERO MUY IMPORTANTE, SIN EXTENSIÓN, en plan E1M3 sin más:
-https://forum.zdoom.org/viewtopic.php?f=19&t=48937
-Bájate el PK3, o sea, la versión preparada para GZDoom y tal, y sacas los OGG y les quitas la extensión.
+Para tener música GUS, tenemos que tener SDL2-mixer compilado con soporte de Timidity, y en inter-heretic.ini
+ponemos la ruta de los patches que vienen en el directorio "base":
+
+gus_patch_path = "/root/heretic/base/gus_patches"
+
+Para tener música digital, usamos estos WADs ya preparados:
+https://zandronum.com/forum/viewtopic.php?t=97
+
+También podríamos meter en un WAD tal cual sin directorios los FLAC o los OGG que queramos,
+PERO MUY IMPORTANTE, SIN EXTENSIÓN, en plan E1M3 sin más.
 Le puedes quitar la extensión OGG a todos los archivos de un directorio con:
 find -type f -name '*.ogg' | while read f; do mv "$f" "${f%.ogg}"; done
 Ahora los metes en un WAD (con SLADE en Linux vale para crear WADs)
