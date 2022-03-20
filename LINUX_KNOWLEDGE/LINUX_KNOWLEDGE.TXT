@@ -7126,7 +7126,7 @@ que queremos correr:
 pero que las .dll van al mismo directorio que el ejecutable del juego... Esto no sé si es así siempre, pero al menos
 para el BASTION funciona así)
 
-	-Entramos en FAudio y hacemos:
+	-Entramos en lib/FAudio y hacemos:
 		mkidir b4
 		cd b4
 		cmake ..
@@ -7144,11 +7144,11 @@ para el BASTION funciona así)
 		cmake ..
 		cp libFNA3D.so* ~/bastion/game/lib64/
 
-	-Entramos en SDL2-CS y hacemos:
+	-Entramos en lib/SDL2-CS y hacemos:
 		make release -j4
 		cp bin/Release/SDL2-CS.dll* ~/bastion/game/
 
-	-Entramos en Theorafile y hacemos:
+	-Entramos en lib/Theorafile y hacemos:
 		make -j4
 		cp libtheorafile.so* ~/bastion/game/lib64/
 
@@ -7179,6 +7179,8 @@ https://bootdiskrevolution.itch.io/bleed
 https://bootdiskrevolution.itch.io/bleed-2
 https://www.gog.com/game/timespinner
 https://www.gog.com/game/chasm
+https://www.gog.com/en/game/owlboy
+https://store.steampowered.com/app/1280300/Steel_Assault/
 https://supergiant-games.itch.io/transistor
 
 COMPILAR NUESTRA PROPIA VERSIÓN DE WPA_SUPPLICANT
@@ -8155,19 +8157,19 @@ DESCARGAR DE MEGA POR CACHOS CON LAS MEGATOOLS
 
 Se usa megadl.
 
+Instalamos dependencias previas:
+sudo apt-get install libglib2.0-dev libcurl4-gnutls-dev libssl-dev meson
+
 Clonamos el repo de las megatools:
 git clone --depth 1 https://megous.com/git/megatools
 
-Instalamos dependencias previas:
-sudo apt-get install libglib2.0-dev libcurl4-gnutls-dev libssl-dev
-
 Creamos el directorio de compilación, entramos en él y configuramos con meson:
-mkdir b3
-cd b3
+mkdir b4
+cd b4
 meson ..
 
 Compilamos
-ninja -j3
+ninja -j4
 sudo ninja install
 
 Y ya podemos descargar con:
