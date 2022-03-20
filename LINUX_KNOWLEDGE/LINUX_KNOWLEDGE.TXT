@@ -7079,16 +7079,13 @@ sí que dependen de la plataforma.
 NO HAY QUE INSTALAR NADA DEL PROYECTO FNA, SIMPLEMENTE LOS JUEGOS VAN CON MONO SI LES DAS LAS LIBRERÍAS NECESARIAS.
 SE EJECUTAN SIMPLEMENTE CON: mono <juego.exe>
 
-Instalamos mono-runtime:
-sudo apt-get install mono-runtime --no-install-recommends
+Instalamos mono-runtime y el compilador de mono (FNA está escrito en C#):
+sudo apt-get install mono-runtime mono-mcs --no-install-recommends
 EN SU LUGAR, lo ideal sería usar monokickstart, que es un monoruntime auto-contenido y que lo renombras como el juego
 y te lanza el juego que sea:
 https://github.com/flibitijibibo/MonoKickstart
 
 AHORA VAMOS "RECOLECTANDO" LAS LIBRERÍAS QUE USAN LOS JUEGOS, QUE LAS NECESITAS PARA AARCH64
-
-Dependencia previa, el compilador de mono (FNA está escrito en C#):
-sudo apt-get install mono-mcs
 
 1--LIBFNA Y SUS SUB-LIBRERÍAS (UNA SUB-LIBRERÍA DE FNA, LLAMADA FNA3D, INCLUYE LIBMOJOSHADER ESTÁTICAMENTE LINKADA.
 LIBMOJOSHADER NO VENÍA INCLUIDO NO VENÍA INCLUÍDO, Y POR ESO LO TRAEN ALGUNOS JUEGOS COMO UN .SO A PARTE,
@@ -7123,7 +7120,10 @@ para el BASTION funciona así)
 	-Entramos en lib/FAudio y hacemos:
 		mkidir b4
 		cd b4
-		cmake ..
+
+		cmake .. -DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_C_FLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+
 		cp libFAudio.so* ~/bastion/game/lib64/
 
 	-(OPCIONAL: ESTO ES UN HACK Y SÓLO ES PARA BASTION Y NO VA BIEN, QUEDA AQUÍ CON FINES DOCUMENTALES, PERO NO LO HAGAS)
@@ -7135,7 +7135,10 @@ para el BASTION funciona así)
 		-Compilamos con:
 		mkdir b4
 		cd b4
-		cmake ..
+
+		cmake .. -DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_C_FLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+		
 		cp libFNA3D.so* ~/bastion/game/lib64/
 
 	-Entramos en lib/SDL2-CS y hacemos:
@@ -7143,20 +7146,20 @@ para el BASTION funciona así)
 		cp bin/Release/SDL2-CS.dll* ~/bastion/game/
 
 	-Entramos en lib/Theorafile y hacemos:
-		make -j4
+		CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
 		cp libtheorafile.so* ~/bastion/game/lib64/
 
 2--LIBFMODEX
 Algunos juegos necesitan FMODEX, que es una librería cerrada.
 EL PROBLEMA es que los juegos usan FMODEX, que es antigua, pero sólo FMOD está para descargar para aach64.
-FMOD es la versión moderna de FMOD.
+FMOD es la versión moderna de FMODEX.
 Puedes descargar FMOD de aquí para tu arquitectura.
 https://www.fmod.com/download
 COMO HEMOS DICHO, LOS JUEGOS USAN FMODEX EN VEZ DE FMOD, ASÍ QUE AQUÍ TENEMOS UN WRAPPER PARA TENER FMODEX... SOBRE FMOD!!!
 ...Y ASÍ ENGAÑAR A LOS JUEGOS:
 https://github.com/ptitSeb/fakemodex
 ...Para usarlo, primero es copiar las librerías fmod para aarch64,
-y luego usar este wrapper fakemodex, tras compilarlo e instalarlo en el directorio de librerías del juego.
+y luego usar el mencionado wrapper "fakemodex", tras compilarlo e instalarlo en el directorio de librerías del juego.
 
 (NOTA: Aunque BASTION necesita FMODEX, en teoría, en algún momento será posibe lanzar BASTION en Pi4 sin usar FMODEX, con:
 "LD_LIBRARY_PATH=lib64 mono Bastion.exe -usefnasound"
