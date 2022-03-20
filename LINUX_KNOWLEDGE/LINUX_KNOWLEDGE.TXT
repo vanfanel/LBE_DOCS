@@ -793,12 +793,6 @@ Copiamos también el ejecutable "abbey", y ya debería ir. No necesitas nada má
 Interdoom, un sourceport peculiar en ruso
 =========================================
 
-Instalamos una dependencia previa (se puede compilar sin ella, pero eso causa que inter-hexen sufra una pausa antes
-de que suenen los efectos de sonido ambientales, así que instala esto y compila el engine con ello instalado para
-evitarlo):
-
-apt-get install libsamplerate0-dev
-
 Bajamos la última estable de:
 
 https://github.com/JNechaevsky/inter-doom.git/releases
