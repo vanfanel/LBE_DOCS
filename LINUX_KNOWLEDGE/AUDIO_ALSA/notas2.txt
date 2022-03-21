@@ -46,7 +46,7 @@ FIAR DE MEDIDAS QUE RECOJAN EL FACTOR TIEMPO, ADEMÁS DEL CUÁNTO. MÉTETE ESTO 
 ES LO MÁS IMPORTANTE DE TODO ESTO JUNTO CON EL FUNCIONAMIENTO DEL RESAMPLER.*******
 
 POR TODO ESTO, en Linux no deberíamos bajar del nivel de los samples por segundo para equilibrar
-las cosas: el cuándo de los accesos de ALSA a su buffer es imprevisible, y de la parde del 
+las cosas: el cuándo de los accesos de ALSA a su buffer es imprevisible, y de la parte del 
 emulador nosotros estaremos entregando los samples a una velocidad que dependerá del refresco
 físico de pantalla, así que si el número de samples consumidos por segundo (esto es lo importante,
 que los samples por segundo comprenden el cuánto y el tiempo, mientras que los samples por

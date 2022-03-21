@@ -296,6 +296,7 @@ sudo systemctl mask alsa-state.service
 sudo systemctl mask alsa-restore.service
 
 Y ya van a quedar así para siempre los niveles. Si los quieres cambiar, pues unmaskeas los servicios state y restore, los cambias, reinicias y los vuelves a maskear.
+
 ****FIN BLOQUE ALSA****
 
 -Crear el /usr/bin/netup con:
@@ -383,12 +384,21 @@ max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
 -Para configurar el audio con el driver de audio HDMI del lado de ARM (que es como lo venimos haciendo en 2020):
-	-En config.txt
+	PREVIO: En el momento en que usamos el sistema KMS (dtoverlay=vc4-kms-v3d) obtenemos el dispositivo ALSA de audio llamado vc4hdmi,
+	que mete los frames de audio en los periodos de blanking del vídeo.
+	Al usar KMS, el kernel se encarga del vídeo y de meter esos frames de audio en el blanking de vídeo, así que el audio del lado del
+	firmware (es decir, el audio bcm2835) NO PUEDE FUNCIONAR CON KMS.
+
+	-Para usar el vídeo KMS, tenemos que tener en config.txt:
 		dtoverlay=vc4-kms-v3d
 		#dtparam=audio=on <---SE DEBE deshabilitar la carga de bcm2835.
+		(Si quisiéramos desactivar el dispositivo de audio vc4hdmi a la vez que usamos KMS, usaríamos esto: dtoverlay=vc4-kms-v3d,noaudio
+		 PERO OLVÍDATE de tener KMS y a la vez audio del lado del firmware (bmc2835) cargando manualmente el módulo snd_bcm2835
+		 o si usamos el init por defecto descomentando la línea "dtparam=audio=on", PORQUE combinar KMS con el audio bcm2835
+		 es imposible como ya se ha dicho: SI USAMOS KMS, NO PODEMOS USAR EL AUDIO BMC2835, SÓLO EL AUDIO VC4HDMI.)
 	 RECUERDA que ninguno de los parámetros hdmi_* de config.txt funciona en modo KMS! El modo de vídeo, por ejemplo,
 	 se establecería añadiendo a cmdline.txt algo como:
-	 video="HDMI-A-1:1360x768@60"
+	 video="HDMI-A-1:1280x720@60"
 	-Si falla speakertest, mira que tengas en /usr/share/alsa/cards/vc4-hdmi.conf lo que pone en el post de DOM en
 	 https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769&p=1636828#p1636828
 	 OJO! PARECE QUE SEGÚN SE ACTUALIZA EL KERNEL, LOS CONTENIDOS DE /usr/share/alsa/cards/vc4-hdmi.conf hay que irlos cambiando
