@@ -1,0 +1,54 @@
+
+FUENTE DE EJEMPLOS: https://alsa-project.org/wiki/Asoundrc
+PARA HACER PRUEBAS creamos ~/.asoundrc
+
+EJEMPLO 1
+=========
+
+# Redefinimos el dispositivo "default", que viene definido en los interiores de ALSA,y le decimos que el sonido PCM
+# de ese nuevo "default" vaya por el slave "dmixer".
+
+pcm.!default {
+	type plug
+	slave.pcm "dmixer"
+}
+
+# Definimos "dmixer" (lo podríamos haber llamado de otro modo), que le decimos que use el pluging "dmix" (que se llama así).
+
+pcm.dmixer  {
+ 	type dmix
+	...
+}
+
+ctl.dmixer {
+	type hw
+	card 0
+}
+
+EJEMMPLO 2
+==========
+
+#Definimos slave que es un resampler, que llamamos "myresampler" y que resamplea a 11000 Hz.
+
+pcm_slave.myresampler {
+        pcm "plughw:Generic"
+        rate 11000
+}
+
+#Lo enganchamos al rate_convert del PCM
+
+pcm.rate_convert {
+        type rate
+        slave myresampler
+}
+
+NOTAS RASPBERRY
+===============
+
+En la Pi podemos acceder directamente al dispositivo default con:
+
+speaker-test -D default:vc4hdmi0
+
+En el PC podemos acceder con:
+
+speaker-test -D plughw:Generic

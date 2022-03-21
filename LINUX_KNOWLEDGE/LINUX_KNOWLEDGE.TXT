@@ -187,11 +187,14 @@ hw:CARD=vc4hdmi0,DEV=0
     Direct hardware device without any conversions
 
 Pues puedes pasárselo a speaker-test así:
-speaker-test -Dhw:vc4hdmi0
-Donde estás diciéndole a speaker-test que use el dispositivo "hw" y dentro de ese dispositivo la tarjeta "vc4hdmi0".
+speaker-test -D default:vc4hdmi0
+Donde estás diciéndole a speaker-test que use el dispositivo "default" (la definición específica de "default" para el device
+vc4hdmi está en /usr/share/alsa/cards/vc4-hdmi.conf) y que dentro de ese dispositivo "default" use la tarjeta "vc4hdmi0".
 
-Ten en cuenta que ese dispositivo es directamente "Direct hardware device without any conversions", sin DMIX, y lo malo es
-que sólo acepta un formato llamado IEC958_SUBFRAME_LE, así que no funciona directamente con speaker-test porque speaker-test
+Podríamos INTENTAR usar directamente el dispositivo "hw", por ejemplo:
+speaker-test -D hw:vc4hdmi0
+...Pero "hw" es directamente "Direct hardware device without any conversions", sin DMIX, y sólo acepta un formato
+llamado IEC958_SUBFRAME_LE, así que no funciona directamente con speaker-test porque speaker-test
 no puede generar audio en formato IEC958_SUBFRAME_LE. De hecho, ningún programa, en general, puede hacer eso.
 
 ******Ver los modos soportados de una pantalla/monitor (EDID)****************************************************************
