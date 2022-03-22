@@ -28,19 +28,21 @@ ctl.dmixer {
 EJEMMPLO 2
 ==========
 
-#Definimos slave que es un resampler, que llamamos "myresampler" y que resamplea a 11000 Hz.
+#Definimos un slave que es un resampler, que llamamos "myresampler" y que resamplea a 11000 Hz.
 
 pcm_slave.myresampler {
         pcm "plughw:Generic"
         rate 11000
 }
 
-#Lo enganchamos al rate_convert del PCM
+#Enganchamos el slave al rate_convert del PCM
 
 pcm.rate_convert {
         type rate
         slave myresampler
 }
+
+#Como hemos sustituido el rate_convert del pc "default", basta con hacer speaker-test (sin "-D") para que el sonido salga resampleado.
 
 NOTAS RASPBERRY
 ===============
