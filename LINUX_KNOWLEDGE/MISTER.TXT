@@ -18,8 +18,8 @@ Formatea la partición 1 como exFAT con: mkfs.exfat /dev/sdb1
 
 Y ahora simplemente te bajas los ficheros que han de ir en la SD, que están en la guía:
 https://github.com/MiSTer-devel/Main_MiSTer/wiki/Setup-Guide
-Y los metes en la tarjeta. Tienes que tener tres cosas principalmente: el directorio linux, y los archivos MiSTer y menu.rfb; Con eso ya arranca desde la SD porque le has
-flasheado el uboot antes. A mayores, pues los cores que le quieras ir metiendo, cada uno tiene sus particularidades pero van el el raiz los rbf de cada core.
+Y los metes en la tarjeta. Tienes que tener tres cosas principalmente: el directorio linux, y los archivos MiSTer y menu.rfb; Con eso ya arranca desde la SD porque le has flasheado el uboot antes. 
+A mayores, pues los cores que le quieras ir metiendo, cada uno tiene sus particularidades pero van el el raiz los rbf de cada core.
 
 MEJORAR LA LATENCIA DE LOS USB
 =============================

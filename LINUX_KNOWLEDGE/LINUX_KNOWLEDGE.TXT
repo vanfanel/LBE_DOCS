@@ -4483,7 +4483,7 @@ Editamos RSDKv3/Audio.cpp y ahí cambiamos:
 	#define AUDIO_SAMPLES   (0x200)
 
 Compilamos con:
-CXXFLAGS="-O2 -march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
+CXXFLAGS="-O2 -march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DGLEW_NO_GLU" make -j4
 
 El ejecutable queda en bin/RSDKv3
 
@@ -4503,7 +4503,7 @@ Editamos RSDKv4/RetroEngine.hpp y comentamos la línea:
 	#define RETRO_USE_NETWORKING (!RETRO_USE_ORIGINAL_CODE && 1)
 	
 Compilamos con:
-CXXFLAGS="-O2 -march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
+CXXFLAGS="-O2 -march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DGLEW_NO_GLU" make -j4
 
 El ejecutable queda en bin/RSDKv4
 
