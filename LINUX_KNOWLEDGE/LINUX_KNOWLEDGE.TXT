@@ -6217,21 +6217,21 @@ Compilamos con make -j4
 Copiamos el directorio data que viene con los sources a ~/ultima7/data
 Copiamos el ejecutable exult resultante a ~/ultima7
 
-Creamos ~/ultima7/ultima7_bg/static
-Creamos ~/ultima7/ultima7_bg/gamedat
-Creamos ~/ultima7/ultima7_bg/savegame
+Creamos ~/ultima7/blackgate/static
+Creamos ~/ultima7/blackgate/gamedat
+Creamos ~/ultima7/blackgate/savegame
 
-Copiamos los datos de STATIC del juego a ~/ultima7/ultima7_bg/static
-Copiamos los datos de GAMEDAT del juego a ~/ultima7/ultima7_bg/gamedat
+Copiamos los datos de STATIC del juego a ~/ultima7/blackgate/static
+Copiamos los datos de GAMEDAT del juego a ~/ultima7/blackgate/gamedat
 
-Ahora copiamos ~/.exult.cfg a ~/ultima7/exult.cfg. Si no tenemos ~/.exult.cfg, ejecutamos el exult por primera vez y lo creará.
+Ahora ejecutamos el exult por primera vez y creará ~/ultima7/exult.cfg.
 Ahora editamos  ~/ultima7/exult.cfg y le añadimos, bajo <disk>:
 <game>
       <blackgate>
-        <path>./ultima7_bg</path>
-        <static>./ultima7_bg/static</static>
-        <gamedat>./ultima7_bg/gamedat</gamedat>
-        <savegame>./ultima7_bg/savegame</savegame>
+        <path>./blackgate</path>
+        <static>./blackgate/static</static>
+        <gamedat>./blackgate/gamedat</gamedat>
+        <savegame>./blackgate/savegame</savegame>
       <blackgate>
 </game>
 
@@ -6274,15 +6274,15 @@ Instala copiando el ejecutable love donde quieras.
 INSTALAR JACKD2 EN LA RASPBERRY PI
 =================================
 FUENTES: http://jrigg.co.uk/linuxaudio/jack2debian7.html
-		       http://jackaudio.org/faq/linux_rt_config.html
+		 http://jackaudio.org/faq/linux_rt_config.html
 
-NO debes usar el gestor de paquetes para esto, porque la versión de libjack, jackd2, etc.. que trae Debian está compilada con soporte para basuras varias
-como X11 o DBUS.
+NO debes usar el gestor de paquetes para esto, porque la versión de libjack, jackd2, etc.. que trae Debian
+está compilada con soporte para basuras varias, como X11 o DBUS.
 Así que toda compilar a instalar la nuestra:
-git clone --depth 1 git://github.com/jackaudio/jack2.git
+Bajamos los últimos sources estables de: https://github.com/jackaudio/jack2/releases
 cd jack2
 ./waf configure --alsa --prefix=/usr
-./waf -j8
+./waf -j4
 sudo ./waf install
 Instala tanto las librerías, como los las headers para desarrollo, como jackd.
 
@@ -7073,9 +7073,6 @@ Quedó abandonada, y el proyecto FNA nos permite ejecutar programas XNA en siste
 Las versiones de juegos que podemos ejecutar son las que tienen soporte FNA (no las viejas XNA) así que siempre tienen que traer un FNA.dll
 incluido con el juego.
 
-La guía básica es esta:
-https://magazine.odroid.com/article/playing-modern-fna-games-on-the-odroid-platform/
-
 Los juegos son independientes de la plataforma, PERO el mono-runtime y las librerías nativas (SDL2, libmojoshaders, etc)
 sí que dependen de la plataforma.
 
@@ -7084,9 +7081,9 @@ SE EJECUTAN SIMPLEMENTE CON: mono <juego.exe>
 
 Instalamos mono-runtime y el compilador de mono (FNA está escrito en C#):
 sudo apt-get install mono-runtime mono-mcs --no-install-recommends
-EN SU LUGAR, lo ideal sería usar monokickstart, que es un monoruntime auto-contenido y que lo renombras como el juego
+(EN SU LUGAR, se podría usar monokickstart, que es un monoruntime auto-contenido y que lo renombras como el juego
 y te lanza el juego que sea:
-https://github.com/flibitijibibo/MonoKickstart
+https://github.com/flibitijibibo/MonoKickstart)
 
 AHORA VAMOS "RECOLECTANDO" LAS LIBRERÍAS QUE USAN LOS JUEGOS, QUE LAS NECESITAS PARA AARCH64
 
@@ -7152,7 +7149,40 @@ para el BASTION funciona así)
 		CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
 		cp libtheorafile.so* ~/bastion/game/lib64/
 
-2--LIBFMODEX
+2--PIPEWIRE
+En la Raspberry Pi, usando el dispositivo de audio vc4-hdmi, NO funciona DMIX por el tema del formato extraño que soporta vc4-hdmi.
+Eso es un problema para los juegos FNA ya que abren varias veces el mismo dispositivo de audio, cosa imposible sin DMIX ya que no
+se pueden reproducir varios streams de audio a la vez.
+Por ello, al no tener DMIX en ALSA, necesitamos un servidor de audio que mezcle los diferentes streams de audio de los juegos.
+Ese servidor de audio es PIPEWIRE.
+
+Lo que necesitamos es compilar SDL2 para que use PIPEWIRE en lugar de ALSA directamente.
+Con instalar esto sería suficiente, en teoría, y luego reconfigurar y recompilar SDL2:
+sudo apt-get install libpipewire-0.3-dev
+...PERO EN DEBIAN 11 ESTO NO ES POSIBLE, PORQUE SÓLO TIENE HASTA PIPEWIRE 0.3.19 Y SDL2 NECESITA PIPEWIRE 0.3.20 MÍNIMO.
+(O sea que cuando salga Debian 12, simplemente instalaremos libpipewire y recompilaremos SDL2, y ya podremos
+borrar el siguiente bloque).
+
+---BLOQUE PARA COMPILAR PIPEWIRE A MANO EN DEBIAN 11 BULLSEYE---
+Dependencias previas:
+sudo apt-get install libdbus-1-dev
+
+Nos bajamos la release 0.3.30 de aquí:
+https://gitlab.freedesktop.org/pipewire/pipewire/-/releases
+
+Configuramos y compilamos con meson así:
+
+CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+meson -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled -Dman=disabled ..
+
+ninja -j4
+sudo ninja install
+
+---FIN BLOQUE PARA COMPILAR PIPEWIRE A MANO EN DEBIAN 11----
+
+
+3--LIBFMODEX
 Algunos juegos necesitan FMODEX, que es una librería cerrada.
 EL PROBLEMA es que los juegos usan FMODEX, que es antigua, pero sólo FMOD está para descargar para aach64.
 FMOD es la versión moderna de FMODEX.
