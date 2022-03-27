@@ -7912,7 +7912,7 @@ Para que funcione, simplemente créate un PLAY.BAT con este contenido (suponiend
 
 @echo off
 cls
-set t2dir=c:\cfg
+set t2dir=c:\juegos\t2\cfg
 oversmpl on
 t2
 
