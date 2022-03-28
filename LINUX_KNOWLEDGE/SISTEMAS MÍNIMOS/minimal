@@ -126,6 +126,12 @@ mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
 mount -t tmpfs tmpfs /tmp
 mount -t tmpfs tmpfs /var/log
 
+# Montamos /dev/shm que es el directorio de memoria compartida que usan los
+# programas para acceder a porciones de memoria de otros programas.
+# Sin esto, por ejemplo, jackd no funcionará.
+mkdir /dev/shm
+mount -t tmpfs tmpfs /dev/shm
+
 # MUY IMPORTANTE exportar $HOME o las configuraciones de los programas
 # se empezarán a guardar en /. Así que esto hay que hacerlo SIEMPRE.
 export HOME=/root

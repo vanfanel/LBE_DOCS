@@ -6310,6 +6310,17 @@ LOS SETTINGS DE limits.conf son directamente IGNORADOS SI NOS CONECTAMOS POR SSH
 Puedes lanzar jackd a mano para que empieze a escuchar con:
 jackd -R -P 70 -d alsa -r 48000 -n 2 -p 1024
 
+--BLOQUE ERROR RECALCITRANTE--
+SI TE DA UN ERROR COMO ESTE:
+Cannot bind server to socket err = No such file or directory
+Server channel open error
+JackServer::Open failed with -1
+..:SIGNIFICA QUE TE FALTA /dev/shm, ASÍ QUE DEBERÍAS TENER ESTO EN EL CUSTOM INIT SCRIPT QUE LEVANTA TU SISTEMA:
+
+mkdir /dev/shm
+mount -t tmpfs tmpfs /dev/shm
+--FIN BLOQUE ERROR RECALCITRANTE--
+
 También puedes lanzar retroarch compilado con soporte para jack y funciona muy bien, con una latencia por defecto de 21ms
 que hasta donde yo sé no se puede cambiar porque la opción de la latencia de audio no hace nada, siempre son 21ms (lo dice retroarch al iniciarse
 si no has silenciado todos los mensajes).
