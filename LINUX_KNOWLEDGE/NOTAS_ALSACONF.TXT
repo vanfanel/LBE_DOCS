@@ -49,7 +49,9 @@ NOTAS RASPBERRY
 
 En la Pi podemos acceder directamente al dispositivo default con:
 
-speaker-test -D default:vc4hdmi0
+speaker-test -c 2 -D hdmi:vc4hdmi0
+(OJO, sólo funciona si se le especifica el número de canales con "-c 2"!!! Sin el número de canales, puedes usar "default:vc4hdmi0",
+que aparentemente es lo mismo, no lleva DMIX ni nada de eso).
 
 En el PC podemos acceder con:
 
