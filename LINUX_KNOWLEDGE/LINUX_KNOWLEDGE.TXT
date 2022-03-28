@@ -7178,20 +7178,30 @@ borrar el siguiente bloque).
 Dependencias previas:
 sudo apt-get install libdbus-1-dev
 
-Nos bajamos la release 0.3.30 de aquí:
+Nos bajamos la release 0.3.39 de aquí:
 https://gitlab.freedesktop.org/pipewire/pipewire/-/releases
+(A partir de 0.3.40, ya se necesita una versión de MESON que es más reciente que la que trae DEBIAN 11 Bullseye...)
 
 Configuramos y compilamos con meson así:
 
 CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-meson -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled -Dman=disabled ..
+meson -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
+-Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled ..
 
 ninja -j4
 sudo ninja install
+sudo rm /etc/ld.so.cache
+sudo ldconfig
+(OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
 
 ---FIN BLOQUE PARA COMPILAR PIPEWIRE A MANO EN DEBIAN 11----
 
+Ahora para ejecutar pipewire:
+export XDG_RUNTIME_DIR=/tmp
+pipewire
+..Y ya podemos lanzar un programa SDL2 usando el backend pipewire con:
+SDL_AUDIODRIVER=pipewire ./programa
 
 3--LIBFMODEX
 Algunos juegos necesitan FMODEX, que es una librería cerrada.
