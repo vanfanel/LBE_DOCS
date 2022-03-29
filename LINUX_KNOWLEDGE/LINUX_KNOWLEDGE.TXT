@@ -7178,9 +7178,14 @@ borrar el siguiente bloque).
 Dependencias previas:
 sudo apt-get install libdbus-1-dev
 
-Nos bajamos la release 0.3.39 de aquí:
+Lo primero es instalar los últimos MESON y NINJA, porque los que trae DEBIAN 11 BULLSEYE son viejos y las versiones
+actuales de pipewire necesitan versiones actuales para compilar:
+sudo apt install python3-pip --no-install-recommends
+python3 -m pip install ninja
+python3 -m pip install meson
+
+Nos bajamos la última release de aquí:
 https://gitlab.freedesktop.org/pipewire/pipewire/-/releases
-(A partir de 0.3.40, ya se necesita una versión de MESON que es más reciente que la que trae DEBIAN 11 Bullseye...)
 
 Configuramos y compilamos con meson así:
 
@@ -7194,6 +7199,10 @@ sudo ninja install
 sudo rm /etc/ld.so.cache
 sudo ldconfig
 (OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
+
+Ahora copiamos el minimal.conf que se nos ha generado en b4/src... a /etc/pipewire, así:
+cp src/daemon/minimal.conf
+
 
 ---FIN BLOQUE PARA COMPILAR PIPEWIRE A MANO EN DEBIAN 11----
 
