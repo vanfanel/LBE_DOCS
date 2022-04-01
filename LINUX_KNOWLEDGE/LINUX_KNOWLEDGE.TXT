@@ -107,6 +107,14 @@ Depende de wayland, wlroots y xkbcommon.
 Puedes descargar y compilar wayland muy facilmente de aquí, vienen las instrucciones de compilación:
 https://github.com/wayland-project/wayland
 
+******Convertir CUE/BIN a CHD*********************************************************************************************************
+
+Instalamos chdman:
+sudo apt-get install mame-tools
+
+Y para comprimir de CUE/BIN a CHD:
+chdman createcd -i image.cue -o image.chd
+
 ******Descargar desde ARCHIVE.ORG desde la línea de comandos usando un download manager***********************************************
 
 Normalmente se podría usar WGET, pero como hay items que sólo se pueden descargar estando logueado, y como archive.org usa HTTPS y no es posible
@@ -6195,57 +6203,39 @@ Y añadimos SDL_Quit() al final de la función Play(), antes del return(0).
 
 ---CONFIGURACIÓN DEL CÓDIGO
 
-Editamos el configure.ac, y dejamos, en la parte de linux,
-WINDOWING_SYSTEM="-DXWIN"
-a así:
-WINDOWING_SYSTEM=""
-
 Ejecutamos el autogen.sh
 
 Configuramos con:
 
 CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa --enable-lto --with-optimization=normal
+./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa \
+--enable-lto --with-optimization=normal --prefix=$HOME/ultima7
 
-SI EL EJECUTABLE QUE OBTIENES DA SEGFAULTS, PON --with-optimization=normal EN VEZ DE --with-optimization=heavy
+PODRÍAS PONER --with-optimization=heavy EN LUGAR DE --with-optimization=normal, PERO ESO CAUSA SEGFAULTS A VECES.
 
 Compilamos con make -j4
 
 ---INSTALACIÓN DEL JUEGO
 
-Copiamos el directorio data que viene con los sources a ~/ultima7/data
-Copiamos el ejecutable exult resultante a ~/ultima7
+Hacemos:
+make install
+...Esto creará:
+~/ultima7/bin, donde la instalación que acabamos de hacer mete el ejecutable "exult" y el fichero "exult.cfg",
+~/ultima7/share, donde la instalación que acabamos de hacer meterá unas cosas, y nosotros meteremos a mano los datos del juego,
+siguiendo las instrucciones a continuación.
 
-Creamos ~/ultima7/blackgate/static
-Creamos ~/ultima7/blackgate/gamedat
-Creamos ~/ultima7/blackgate/savegame
-
-Copiamos los datos de STATIC del juego a ~/ultima7/blackgate/static
-Copiamos los datos de GAMEDAT del juego a ~/ultima7/blackgate/gamedat
-
-Ahora ejecutamos el exult por primera vez y creará ~/ultima7/exult.cfg.
-Ahora editamos  ~/ultima7/exult.cfg y le añadimos, bajo <disk>:
-<game>
-      <blackgate>
-        <path>./blackgate</path>
-        <static>./blackgate/static</static>
-        <gamedat>./blackgate/gamedat</gamedat>
-        <savegame>./blackgate/savegame</savegame>
-      <blackgate>
-</game>
+Creamos el directorio ~/ultima7/share/exult/forgeofvirtue
+Copiamos los directorios "static" y "gamedat" de nuestra instalación de Ultima 7 a ~/ultima7/share/exult/forgeofvirtue
 
 Para tener música y efectos de sonido, bájate el ZIP all-in-one de aquí:
 http://exult.sourceforge.net/download.php
-Y simplemente mete los contenidos del zip en ~/ultima7/data/ , ahí a saco sin más. No hay que añadir nada en el CFG, va solo con lo que tienes.
-
-A exult le pasamos el cfg así:
-./exult -c exult.cfg
+Y simplemente mete los contenidos del zip en ~/ultima7/shared/exult, ahí a saco sin más. No hay que añadir nada en el CFG, va solo con lo que tienes.
 
 La pantalla lo mejor es dejarla así:
 Full Screen: Enabled
-Display Mode: 640x400
-Scaler: Bilinear
+Display Mode: 1280x720 (<---Suponiendo que tengas el sistema a 720p!! Si no, usa la resolución que uses en el sistema).
+Scaler: Interlaced
 Scaling: 2x
 Game Area: Auto
 Fill Quality: Point
@@ -7180,6 +7170,7 @@ sudo apt-get install libdbus-1-dev
 
 Lo primero es instalar los últimos MESON y NINJA, porque los que trae DEBIAN 11 BULLSEYE son viejos y las versiones
 actuales de pipewire necesitan versiones actuales para compilar:
+sudo apt-ger purge ninja meson
 sudo apt install python3-pip --no-install-recommends
 python3 -m pip install ninja
 python3 -m pip install meson
@@ -7859,10 +7850,38 @@ COMPRIMR CUE/BIN A CHD
 ======================
 
 Necesitamos las mame-tools:
-sudo apt-get install mame-tools
+sudo apt-get install mame-tools p7zip-full
 
 Y se comprime pasándole el CUE:
 chdman createcd -i BC\ Racers.cue -o BC\ Racers.chd
+
+Si tienes un directorio con varios 7z (cada uno de los cuales conteniendo un cue/bin), puedes convertir todos los 7z
+de ese directorio usando este sencillo script:
+
+		------
+		
+#!/bin/bash
+#extract 7z
+  for x7zFile in *.7z; do
+                gameName="$(basename "$x7zFile" .7z)"
+                echo "!!!!!!!!!!Extracting ${gameName}..."
+                7z x "${x7zFile}" -o./"${gameName}-tmp"
+
+                echo "!!!!!!!!!!Converting ${gameName}..."
+                chdman createcd -i "./${gameName}-tmp/${gameName}.cue" -o ./"${gameName}.chd"
+#rm temporary directory
+                rm -R ./"${gameName}-tmp"
+### uncomment below to rm the original 7z archive
+#               rm ./"$x7zFile"
+
+                echo "!!!!!!!!!!${gameName} complete..."
+done
+echo "All done."
+
+		-------
+
+Y para convertir todos los cue/bin de un directorio, usa este script:
+for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd"; done
 
 ESCRIBIENDO Y GESTIONANDO SERVICIOS EN SYSTEMD
 ==============================================
