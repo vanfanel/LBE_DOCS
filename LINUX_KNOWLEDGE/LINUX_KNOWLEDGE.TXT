@@ -6076,6 +6076,7 @@ Compilamos y metemos en el directorio ~/diablo:
 -El ejecutable "devilutionx"
 -La versión actual del fichero "devilutionx.mpq" que se descarga de aquí:
 https://github.com/diasurgical/devilutionx-assets/releases
+(También se genera un "devilutionx.mpq" con el proceso de compilación si tienes smpq instalado).
 -El fichero de los datos del juego, que se llama "diabdat.mpq" y que tienes que conseguir por tu cuenta.
 
 La primera vez que ejecutemos el juego, se creará el fichero de configuración en ~/.local/share/diasurgical/devilution/diablo.ini
