@@ -90,3 +90,6 @@ com.android.vending
 
 Podemos borrar los servicios de google:
 com.google.android.gms
+
+Podemos borrar Google Chrome:
+pm uninstall -k --user 0 com.android.chrome
