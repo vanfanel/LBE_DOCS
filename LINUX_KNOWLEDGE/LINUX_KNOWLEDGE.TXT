@@ -115,6 +115,9 @@ sudo apt-get install mame-tools
 Y para comprimir de CUE/BIN a CHD:
 chdman createcd -i image.cue -o image.chd
 
+Y para extraer de CHD a CUE/BIN:
+chdman extractcd -i image.chd -o image.cue -ob image.bin
+
 ******Descargar desde ARCHIVE.ORG desde la línea de comandos usando un download manager***********************************************
 
 Normalmente se podría usar WGET, pero como hay items que sólo se pueden descargar estando logueado, y como archive.org usa HTTPS y no es posible
@@ -3000,6 +3003,16 @@ for f in *.wav; do ffmpeg -i "$f" -c:a libmp3lame -q:a 2 "${f/%wav/mp3}" -c:a li
 
 -O sólo a OGG:
 for f in *.wav; do ffmpeg -i "$f" -c:a libvorbis -q:a 4 "${f/%wav/ogg}"; done
+
+***********CONVERTIR TODOS LOS FICHEROS DE UN DIRECTORIO DE WAV A FLAC*****************************************************************
+
+Instalamos el paquete SOX:
+
+sudo apt-get install sox
+
+Convertimos:
+
+for i in *.wav; do sox "$i" "${i%.*}.flac"; done
 
 ***********OpenLara, versión opensource del Tomb Raider********************************************************************************
 
