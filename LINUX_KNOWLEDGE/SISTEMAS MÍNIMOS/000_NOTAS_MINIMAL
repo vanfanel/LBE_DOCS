@@ -50,8 +50,9 @@ Tienes que tener funcionando LOS TRES SISTEMAS.
 			Meaningful symlinks, permissions and device ownership must still be handled by userspace."
 
 -MDEV: Es una utilidad de espacio de usuario que es parte de BUSYBOX, y que el kernel llama cuando se conecta o desconecta un dispositivo.
-       ¿Y para qué la llama si los nodos ya los crea el kernel en /dev usando DEVTMPFS? Pues porque MDEV nos permite establecer permisos o titularidad
-       de los nodos de dispositivo, nos permite llamar a un script cuando se conecta o desconecta tal o cual dispositivo, etc...
+       ¿Y para qué la llama si los nodos ya los crea el kernel en /dev usando DEVTMPFS?
+       Pues porque MDEV nos permite establecer permisos o titularidad de los nodos de dispositivo,
+       nos permite llamar a un script cuando se conecta o desconecta tal o cual dispositivo, etc...
        Todo ello, según lo que especifiquemos en /etc/mdev.conf
        
 -LIBUDEV-ZERO: Es una reimplementación de LIBUDEV ¡pero que no necesita el servicio UDEV funcionando!. De esa manera, RetroArch, cuyo driver
@@ -97,9 +98,9 @@ Y editamos docs/mdev.txt para ver la documentación y ejemplos.
 Tienes un MONTÓN más de ejemplos (de hecho, un mdev.conf completo) aquí:
 https://github.com/slashbeast/mdev-like-a-boss/blob/master/mdev.conf
 
-NOTA que ambas líneas empiezan con un guión. Esto es para que mdev NO se detenga en la primera línea con la que haga un match con la REGEX/exp.regular
-(que es .*, englobando así a TODOS los nombres de módulo de sysfs), sino que continúa leyendo las demás líneas y haciendo lo que se diga en ellas
-si también hace match con la REGEX de cada una de ellas.
+NOTA que ambas líneas empiezan con un guión. Esto es para que mdev NO se detenga en la primera línea con la que haga un match
+con la REGEX/exp.regular (que es .*, englobando así a TODOS los nombres de módulo de sysfs), sino que continúa leyendo las demás líneas
+y haciendo lo que se diga en ellas si también hace match con la REGEX de cada una de ellas.
 
 (¡¡¡OJO!!!)NOTA QUE PODRÍAMOS DEJAR SÓLO LA PRIMERA LÍNEA Y SIN GUIÓN, PARA NO DETECTAR DESCONEXIONES, SÓLO CONEXIONES,
 Y ASÍ NO TENER SALTOS EN LA EMULACIÓN,
@@ -130,8 +131,7 @@ Para que funcione la GPU, deberías tener los nodos del sistema gráfico. Son
 PARA QUE FUNCIONE RETROARCH
 ===========================
 
-En Devuan, la implementación de udev es eudev, y la implementación de libudev es libeudev. Eudev/libeudev que no dependen de systemd,
-pero libeudev está muerta y por eso estamos aquí.
+En Devuan, la implementación de udev es eudev, y la implementación de libudev es libeudev. Eudev/libeudev que no depende de systemd.
 Nos vamos a referir genéricamente a udev/eudev como udev, y a libeudev/libudev como libudev.
 Bueno: la cosa es que el backend UDEV de RetroArch (RA) usa libudev. Y LIBUDEV NECESITA EL SERVICIO UDEV CORRIENDO PARA FUNCIONAR.
 Como no lo tenemos, el backend UDEV de RetroArch no funciona. Olvídate de permisos o propiedad de los nodos de /dev/input/event*, etc
@@ -148,8 +148,8 @@ input_joypad_driver="linuxraw"
 
 También recuerda que al pasar a usar LINUXRAW, tienes que reconfigurar los controles de la cruz del pad. Sólo los de la cruz,
 los demás si los dejas como estaban en UDEV funcionan.
-También recuerda que al pasar a usar LINUXRAW, las teclas de aceptar y cancelar en el teclado pasan a ser Z y X. Esto no se puede configurar,
-están hardcodeadas. Pero vamos, RetroArch tiene una GUI muy orientada a mandos, así que no importa. 
+También recuerda que al pasar a usar LINUXRAW, las teclas de aceptar y cancelar en el teclado pasan a ser Z y X.
+Esto no se puede configurar, están hardcodeadas. Pero vamos, RetroArch tiene una GUI muy orientada a mandos, así que no importa. 
 
 -Usar libudev-zero, que es un drop-in replacement de UDEV que no necesita ningún servicio corriendo.
 Puede ser necesario cuando volvamos a Wayland, ya que no sé si LINUXRAW funcionará allí.
@@ -196,6 +196,22 @@ Por si quieres volver a EUDEV:
 	-Para instalar de nuevo libeudev:
 	apt-get install --reinstall libeudev1
 	apt-get install --reinstall libeudev-dev
+
+INSTALAR EUDEV
+==============
+
+EUDEV sigue vivo, bajo el paraguas de Gentoo y Alpine Linux.
+
+Bajamos los últimos sources estables de aquí:
+https://github.com/eudev-project/eudev/releases
+
+Instalamos dependencias previas:
+apt-get install gperf
+
+Configuramos, compilamos e instalamos, con:
+CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure
+make -j4
+make install
 
 DESHABILITAR EL CURSOR QUE PARPADEA MIENTRAS ARRANCA EL KERNEL
 ==============================================================

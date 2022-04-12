@@ -7197,7 +7197,7 @@ Configuramos y compilamos con meson así:
 CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
--Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled ..
+-Dv4l2=disabled -Dpipewire-v4l2=disabled -Dudev=disabled -Dman=disabled ..
 
 ninja -j4
 sudo ninja install
@@ -7205,9 +7205,17 @@ sudo rm /etc/ld.so.cache
 sudo ldconfig
 (OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
 
-Ahora copiamos el minimal.conf que se nos ha generado en b4/src... a /etc/pipewire, así:
-cp src/daemon/minimal.conf
+Ahora editamos /usr/local/share/pipewire/minimal.conf, y comentamos el dispositivo "source" (porque la Pi no tiene
+dispositivo de grabación, y si no lo comentamos da error).
 
+Ahora, en una TTY lanzamos Pipewire:
+XDG_RUNTIME_DIR=/tmp pipewire -v -c /usr/local/share/pipewire/minimal.conf
+
+En otra TTY lanzamos el juego:
+PIPEWIRE_LOG_SYSTEMD=false PIPEWIRE_DEBUG=3 XDG_RUNTIME_DIR=/tmp SDL_AUDIODRIVER=pipewire ./prince.bin
+
+Y en otra TTY vemos las conexiones que podemos hacer:
+XDG_RUNTIME_DIR=/tmp pw-link -o
 
 ---FIN BLOQUE PARA COMPILAR PIPEWIRE A MANO EN DEBIAN 11----
 

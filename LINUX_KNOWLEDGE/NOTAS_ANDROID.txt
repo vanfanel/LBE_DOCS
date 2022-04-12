@@ -93,3 +93,7 @@ com.google.android.gms
 
 Podemos borrar Google Chrome:
 pm uninstall -k --user 0 com.android.chrome
+
+Si quieres una lista de BLOATWARE por compañía, aquí hay una:
+https://www.droidwin.com/remove-uninstall-bloatware-apps-from-android-via-adb-commands/#Google_Bloatware
+PERO recuerda que donde pone com.google.android.<loquesea>, quita la parte de "google".
