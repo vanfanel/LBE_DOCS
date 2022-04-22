@@ -123,27 +123,33 @@ chdman extractcd -i image.chd -o image.cue -ob image.bin
 Normalmente se podría usar WGET, pero como hay items que sólo se pueden descargar estando logueado, y como archive.org usa HTTPS y no es posible
 loguearse por HTTPS con WGET, pues al final con muchos items no funciona WGET y nos da el famoso error 403: "forbidden".
 
-Así que usamos "ia", una herramienta de Internet Archive.
-Instalamos "ia":
+Así que usamos la librería de python llamada "internearchive", una herramienta de Internet Archive.
+Instalamos la librería "internetarchive":
 
 pip install internetarchive
 
-Ahora configuramos ia, para darle nuestro user/pass:
+Ahora configuramos la librería ia, para darle nuestro user/pass:
 
 ia configure
 
-Ahora podemos, por ejemplo, descargar un item completo:
+Y AHORA instalamos el script downloader en python también que vamos a usar:
+(Con ia se puede descargar, pero NO soporta resume así que no me vale).
 
-ia download no-intro_romsets
+git clone --depth 1 https://github.com/john-corcoran/internetarchive-downloader.git
+sudo cp ia_downloader.py /usr/local/bin/ia_downloader
+sudo chmod +x /usr/local/bin/ia_downloader
+ 
+Descargamos tal que así. Para bajarnos una colección completa al directorio actual...:
 
-...O bien (lo más lógico), podemos descargar un archivo de un item:
+ia_downloader download no-intro_romsets ./
 
-ia download no-intro_romsets --glob="*Super Nintendo*" --checksum
-ia download no-intro_romsets --glob="*Mega Drive*" --checksum
+Para bajarnos sólo unos ítems concretos de una colección (por ejemplo los romsets completos de SNES y Megadrive):
 
-(Lo de checksum es para que se haga resume si falla, así que ponlo siempre).
+ia_downloader download no-intro_romsets ./ -f Super\ Nintendo Megadrive
 
-Más info sobre cómo usar "ia" aquí: https://archive.org/services/docs/api/internetarchive/cli.html
+Y para continuar si se cortó la bajada anterior:
+
+ia_downloader download no-intro_romsets ./ -f Super\ Nintendo Megadrive -r
 
 ******Descargar contenidos de ITunes desde Linux sin ITunes***************************************************************************
 
