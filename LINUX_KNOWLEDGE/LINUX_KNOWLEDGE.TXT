@@ -126,7 +126,7 @@ loguearse por HTTPS con WGET, pues al final con muchos items no funciona WGET y 
 Así que usamos "ia", una herramienta de Internet Archive.
 Instalamos "ia":
 
-ia pip install internetarchive
+pip install internetarchive
 
 Ahora configuramos ia, para darle nuestro user/pass:
 
@@ -7216,6 +7216,8 @@ PIPEWIRE_LOG_SYSTEMD=false PIPEWIRE_DEBUG=3 XDG_RUNTIME_DIR=/tmp SDL_AUDIODRIVER
 
 Y en otra TTY vemos las conexiones que podemos hacer:
 XDG_RUNTIME_DIR=/tmp pw-link -o
+..O consultamos tw-dump:
+XDG_RUNTIME_DIR=/tmp pw-dump
 
 ---FIN BLOQUE PARA COMPILAR PIPEWIRE A MANO EN DEBIAN 11----
 
