@@ -151,6 +151,10 @@ Y para continuar si se cortó la bajada anterior:
 
 ia_downloader download no-intro_romsets ./ -f Super\ Nintendo Megadrive -r
 
+Y como lo venimos haciendo ahora, para descargar con una sola línea todos los romsets que solemos usar:
+
+ia_downloader download no-intro_romsets ./ -f Super\ Nintendo Mega Drive headered_NES2.0 Game\ Boy\ \(2022 Game\ Gear Master\ System 32X Lynx PC\ Engine Atari\ -\ 2600 Atari\ -\ 5200 Atari\ -\ 7800 Jaguar WonderSwan ColecoVision Virtual\ Boy SG-1000 -r
+
 ******Descargar contenidos de ITunes desde Linux sin ITunes***************************************************************************
 
 El programa se llama tunesviewer.
