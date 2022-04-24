@@ -115,6 +115,9 @@ sudo apt-get install mame-tools
 Y para comprimir de CUE/BIN a CHD:
 chdman createcd -i image.cue -o image.chd
 
+Y para comprimir todos los CUE/BIN de un directorio a CHD:
+for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd"; done
+
 Y para extraer de CHD a CUE/BIN:
 chdman extractcd -i image.chd -o image.cue -ob image.bin
 
@@ -153,7 +156,7 @@ ia_downloader download no-intro_romsets ./ -f Super\ Nintendo Megadrive -r
 
 Y como lo venimos haciendo ahora, para descargar con una sola línea todos los romsets que solemos usar:
 
-ia_downloader download no-intro_romsets ./ -f Super\ Nintendo Mega Drive headered_NES2.0 Game\ Boy\ \(2022 Game\ Gear Master\ System 32X Lynx PC\ Engine Atari\ -\ 2600 Atari\ -\ 5200 Atari\ -\ 7800 Jaguar WonderSwan ColecoVision Virtual\ Boy SG-1000 -r
+ia_downloader download no-intro_romsets ./ -f Super\ Nintendo Mega Drive headered_NES2.0 Game\ Boy\ \(2022 Game\ Boy\ Color Game\ Gear Master\ System 32X Lynx PC\ Engine Atari\ -\ 2600 Atari\ -\ 5200 Atari\ -\ 7800 Jaguar WonderSwan ColecoVision Virtual\ Boy SG-1000 -r
 
 ******Descargar contenidos de ITunes desde Linux sin ITunes***************************************************************************
 
