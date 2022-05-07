@@ -1,0 +1,8 @@
+-Añadimos los parámetros del kernel que queramos en /etc/default/grub, y ejecutamos update-grub para que los meta en /boot/grub/grub.cfg
+(NUNCA editamos a mani /boot/grub/grub.cfg porque es sobreescrito por update-grub con info de /etc/default/grub)
+
+-Para cambiar de modo de vídeo, hay que añadir:
+video="HDMI-A-2:1280x720@60"
+
+-Para que no nos salgan los interfaces de red con nombres raros hay que añadir:
+"net.ifnames=0"

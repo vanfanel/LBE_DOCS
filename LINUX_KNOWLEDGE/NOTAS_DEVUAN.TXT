@@ -112,7 +112,7 @@ sleep 1
 dhclient $WLAN_IFACE_NAME
 # Actualizamos a la hora de red para que GIT y APT vayan bien.
 # ntpdate pertenece a un paquete del mismo nombre.
-ntpdate -b -p 1 hora.roa.es
+ntpdate -b hora.roa.es
 # Iniciamos el servidor SSH.
 /etc/init.d/ssh start
 

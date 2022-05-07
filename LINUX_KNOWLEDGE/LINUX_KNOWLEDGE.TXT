@@ -1103,7 +1103,7 @@ O simplemente pasándole el directorio donde están las ROMs de ese sistema:
 
 Se entra en el menú con F12
 
-******Grabar WIFISLAX moderno en un pendrive de arranque****************************************************************************************************************
+******Grabar WIFISLAX moderno en un pendrive de arranque************************************************************************
 
 Extraemos los dos directorios de la ISO, wifislax y boot, a nuestro disco duro.
 Formateamos el pen a FAT32. Esto no nos va a dejar ejecutar cosas por temas de permisos de los que carece FAT32, así que ya verás lo que hay que hacer.
@@ -2000,6 +2000,31 @@ systemctl restart NetworkManager
 
 ..Y listo.
 
+*************HACER FUNCIONAR PINCHO WIFI con RTL8188EU en Linux******************
+
+Instalamos dependencias previas:
+apt-get install build-essential linux-headers-amd64 git
+
+Clonamos el repo:
+git clone --depth 1 https://github.com/lwfinger/rtl8188eu.git
+
+Instalamos el nuevo módulo:
+make
+make install
+cp rtl8188eu/rtl8188eufw.bin /lib/firmware/rtlwifi/
+
+depmod -a
+
+update-initramfs -u
+
+modprobe 8188eu
+
+Ten en cuenta que el chip rtl8188eu NO SOPORTA el driver nl80211, así que en el script WIFIUP,
+vez de poner -D nl80211, tiene que poner -D wext, que es el driver viejo.
+Total, que la llamada a wpa_supplicant queda así:
+
+wpa_supplicant -iwlan0 -D wext -c/etc/wpa_supplicant/wpa_supplicant.conf -B
+
 *********NO funciona la conexión con una tarjeta de broadcom (módulo b43)***********
 
 Si miras 
@@ -2019,7 +2044,7 @@ sudo b43-fwcutter -w /lib/firmware broadcom-wl-5.100.138/linux/wl_apsta.o
 Instrucciones sacadas de:
 https://askubuntu.com/questions/730799/installing-firmware-b43-installer-offline
 
-*********Conexión WIFI lenta con BCM4313********************************************************************************************************************* 
+*********Conexión WIFI lenta con BCM4313*********************************************
 Para arreglarlo, líbrate de los drivers b43 que son una mierdaca.
 
 sudo apt-get install bcmwl-kernel-source
