@@ -6,3 +6,50 @@ video="HDMI-A-2:1280x720@60"
 
 -Para que no nos salgan los interfaces de red con nombres raros hay que añadir:
 "net.ifnames=0"
+
+******SERVICIOS A DESACTIVAR**********
+--Desactivar swap--
+
+Miramos cómo se llama el servicio de swap:
+systemctl --type swap
+
+Por ejemplo nos sale que se llama:
+dev-disk-by\x2duuid-a31245cc\x2db81d\x2d4e3f\x2daf9c\x2d95c6d1bf02f4.swap
+
+Desactivamos con:
+systemctl mask 'dev-disk-by\x2duuid-a31245cc\x2db81d\x2d4e3f\x2daf9c\x2d95c6d1bf02f4.swap
+
+MUCHO OJO CON LA COMILLA SIMPLE AL PRINCIPIO O AL FINAL, O NO FUNCIONARÁ.
+
+
+--Otras cosas a desactivar--
+
+Puedes ver los tipos de servicios con:
+systemctl -t help
+Y luego escribir algo como:
+systemctl -t service
+...Para ver descripciones de lo que hacen.
+
+Si quieres volver a activar algo que has desactivado por error y no arranca, etc... puedes ir a /etc/systemd/system/
+y borrar el symlink correspondiente, así volverá a funcionar ese servicio o lo que sea.
+
+systemctl mask cron.service
+systemctl mask console-setup.service
+systemclt mask systemd-timesyncd.service
+systemctl mask systemd-journald.service
+systemctl mask systemd-journal-flush.service
+systemctl mask systemd-journald.socket
+systemctl mask systemd-journald-dev-log.socket
+systemctl mask systemd-update-utmp.service
+systemctl mask systemd-sysusers.service
+systemctl mask systemd-random-seed.service
+systemctl mask systemd-user-sessions.service
+systemctl mask wpa_supplicant.service
+systemctl mask systemd-logind.service
+systemctl mask rsyslog.service
+systemctl mask dbus.service
+systemctl mask ssh.service
+systemctl mask apparmor.service
+systemctl mask networking.service
+systemctl mask sys-kernel-debug.mount
+systemctl mask sys-kernel-tracing.mount
