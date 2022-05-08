@@ -2000,6 +2000,22 @@ systemctl restart NetworkManager
 
 ..Y listo.
 
+*************HACER FUNCIONAR PINCHO WIFI con MT7601U en Linux********************
+
+El kernel trae ya los módulos necesarios, pero hay que bajarse el firmware:
+
+wget wget -c 'http://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git/plain/mt7601u.bin'
+
+...Y meterlo en su sitio:
+
+cp mt7601u.bin /lib/firmware/
+
+Si por alguna razón no tienes wlan0, mira dmesg.
+
+Este driver sí soporta el modo nl80211, así que la línea de wpa_supplicant queda así:
+
+wpa_supplicant -iwlan0 -D nl80211 -c/etc/wpa_supplicant/wpa_supplicant.conf -B
+
 *************HACER FUNCIONAR PINCHO WIFI con RTL8188EU en Linux******************
 
 Instalamos dependencias previas:
