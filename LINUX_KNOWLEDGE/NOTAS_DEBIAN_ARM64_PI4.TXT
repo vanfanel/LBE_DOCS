@@ -545,7 +545,7 @@ sudo usermod -a -G render pi
 
 Empezamos con libDRM:
 Instalamos estas dependencias previas: 
-sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make automake pkg-config gcc g++ meson python3-setuptools --no-install-recommends
+sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make cmake automake pkg-config gcc g++ meson python3-setuptools --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 Bajamos la última versión estable de:
 https://dri.freedesktop.org/libdrm/
@@ -553,8 +553,8 @@ mkdir b4
 cd b4
 
 Configuramos libdrm con esto:
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false \
 -Dinstall-test-programs=true ..
 
@@ -564,7 +564,7 @@ sudo ninja install
 
 En este punto, puedes probar si libdrm te funciona bien haciendo:
 modetest -s 32:1280x720
-(donde 32 es un ID de conector válido: puedes ver los conectores con modetest|more).
+(donde 32 es un ID de conector válido: puedes ver los conectores con modetest|grep connected).
 
 DEPENDENCIAS PREVIAS DE MESA:
 
@@ -583,7 +583,7 @@ Bajamos la última estable de aquí:
 https://gitlab.freedesktop.org/glvnd/libglvnd/-/tags
 mkdir b4
 cd b4
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=disabled -Dx11=disabled ..
 ninja -4
 sudo ninja install
@@ -623,31 +623,31 @@ mkdir b4
 cd b4
 
 COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=disabled -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro \
 -Dglvnd=true -Dbuildtype=release ..
 (SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=disabled -Dglvnd=true -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 (SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
 
 SI QUISIERAS SÓLO GLES Y GLES2, SIN OPENGL COMPLETO:
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=disabled -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 (SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dglx=dri -Dplatforms=drm,x11 -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 PARA COMPILAR:
-ninja -j3 (NO USES -j4 si has quitado los rlimits, o petarás la máquina por agotamiento de CPU!)
+ninja -j4
 PARA INSTALAR:
 sudo ninja install
 Y NO TE OLVIDES DE HACER:
@@ -659,9 +659,6 @@ Y PARA DESINSTALAR:
 sudo ninja uninstall
 O ALTERNATIVAMENTE:
 meson introspect ./ --installed | python3 -c 'import sys; a = eval(sys.stdin.read()); print(" ".join(a.keys()))' | xargs rm
-
-!!!!NOTA QUE TE PUEDE INTERESAR EN EL FUTURO: En X86_64, donde se usa el driver i965 que NO es gallium sino dri, se haría:
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" meson --buildtype=plain -Db_ndebug=true -Dglvnd=true -Dplatforms=drm -Dglx=disabled -Dllvm=false -Ddri-drivers=i915 -Dgallium-drivers='' -Dvulkan-drivers='' ..
 
 COPIAR ARCHIVOS DESDE UN SISTEMA ANTIGUO
 =========================================
@@ -685,8 +682,8 @@ https://www.libsdl.org/download-2.0.php
 Ahora, para configurar:
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
 ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA, PERO EN MODO DEBUG:
@@ -719,20 +716,20 @@ Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sa
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
 Para SDL2_Mixer (instalar antes estas dependencias: apt-get install libmpg123-dev libogg-dev libflac-dev libmodplug-dev):
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
 Para SDL2_Image
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 ./configure --without-x
 
 Para SDL2_ttf:
 Bajamos la última release de aquí: https://github.com/libsdl-org/SDL_ttf/releases)
 
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 ./configure --without-x --disable-freetype-builtin --disable-harfbuzz
 
 INSTALAR RETROARCH
@@ -746,8 +743,8 @@ apt-get purge libraspberrypi*
 
 Para configurar RetroArch con soporte de GLES y VULKAN, como lo venimos haciendo:
 
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
 ./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg \
 --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
