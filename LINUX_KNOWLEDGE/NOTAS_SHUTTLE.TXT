@@ -33,6 +33,12 @@ systemctl -t service
 Si quieres volver a activar algo que has desactivado por error y no arranca, etc... puedes ir a /etc/systemd/system/
 y borrar el symlink correspondiente, así volverá a funcionar ese servicio o lo que sea.
 
+Para ver el inicio, pudes hacer:
+systemctl mask getty.target
+...y Cuando lo hayas visto, hacer:
+systemctl unmask getty.target
+
+LISTA DE COSAS QUE SE PUEDEN MASKEAR TRANQUILAMENTE:
 systemctl mask cron.service
 systemctl mask console-setup.service
 systemclt mask systemd-timesyncd.service
@@ -44,8 +50,14 @@ systemctl mask systemd-update-utmp.service
 systemctl mask systemd-sysusers.service
 systemctl mask systemd-random-seed.service
 systemctl mask systemd-user-sessions.service
-systemctl mask wpa_supplicant.service
+systemctl mask systemd-tmpfiles-setup.service
+systemctl mask systemd-update-utmp-runlevel.service
+systemctl mask systemd-rfkill.socket
+systemctl mask systemd-tmpfiles-clean.timer
 systemctl mask systemd-logind.service
+systemctl mask sys-fs-fuse-connections.mount
+systemctl mask e2scrub_reap.service
+systemctl mask wpa_supplicant.service
 systemctl mask rsyslog.service
 systemctl mask dbus.service
 systemctl mask ssh.service
@@ -53,3 +65,49 @@ systemctl mask apparmor.service
 systemctl mask networking.service
 systemctl mask sys-kernel-debug.mount
 systemctl mask sys-kernel-tracing.mount
+systemctl mask dev-mqueue.mount
+systemctl mask sockets.target
+systemctl mask apt-daily-upgrade.timer
+systemctl mask apt-daily.timer
+systemctl mask dpkg-db-backup.timer
+systemctl mask dpkg-db-backup.service
+systemctl mask logrotate.timer
+systemctl mask man-db.timer
+systemctl mask fstrim.timer
+systemctl mask e2scrub_all.timer
+systemctl mask swap.target
+systemctl mask remote-fs.target
+systemctl mask cryptsetup.target
+
+UNA VEZ INSTALADO Y CON RED PROPIA, DEJAMOS /etc/apt/sources.list así (sustituye bookworm por la versión de Debian que estés usando):
+
+deb http://deb.debian.org/debian bookworm main contrib non-free
+deb-src http://deb.debian.org/debian bookworm main contrib non-free
+
+deb http://deb.debian.org/debian-security/ bookworm-security main contrib non-free
+deb-src http://deb.debian.org/debian-security/ bookworm-security main contrib non-free
+
+deb http://deb.debian.org/debian bookworm-updates main contrib non-free
+deb-src http://deb.debian.org/debian bookworm-updates main contrib non-free
+
+Y ya ponemos hacer apt-get update && apt-get upgrade
+
+-Ponemos los LOCALES con: dpkg-reconfigure locales. Elegimos que se generen en_US.UTF8 y es_ES.UTF, y dejamos puesto en_US.UTF8.
+ESTO nos quita errores de teclado a través de SSH, ya que necesitamos los LOCALES de la máquina cliente también.
+
+VAMOS CON EL SONIDO:
+
+-Instalamos alsa-utils:
+apt-get install alsa-utils
+
+Ahora vemos qué cards y devices hay con: aplay -l
+Vemos que el HDMI2, que es el que suena en este cacharro, aparece listado como:
+card 0: PCH [HDA Intel PCH], device 8: HDMI 2 [HDMI 2]
+
+Lo probamos con speaker-test:
+speaker-test -c2 -D hw:0,8
+
+Así que ahora creamos /etc/asound.conf con este contenido:
+defaults.pcm.card 0
+defaults.pcm.device 8
+...Y ya suena todo lo de ALSA por defecto por el HDMI!
