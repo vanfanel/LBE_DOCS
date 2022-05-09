@@ -7,6 +7,9 @@ video="HDMI-A-2:1280x720@60"
 -Para que no nos salgan los interfaces de red con nombres raros hay que añadir:
 "net.ifnames=0"
 
+-Además añadimos estos parámetros:
+"mitigations=off audit=0"
+
 ******SERVICIOS A DESACTIVAR**********
 --Desactivar swap--
 

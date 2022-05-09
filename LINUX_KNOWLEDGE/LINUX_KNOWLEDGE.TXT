@@ -393,8 +393,8 @@ mkdir b4
 cd b4
 cmake .. -DLIBRETRO=ON -DUSE_VULKAN_DISPLAY_KHR=ON -DUSE_WAYLAND_WSI=OFF -DUSING_X11_VULKAN=OFF \
 -DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2"
 
 *******Compilar el core libretro Yabause***********
 
@@ -408,7 +408,16 @@ make -j4
 
 La bios tiene que ir en ~/.config/retroarch/system/saturn_bios.bin o ~/.config/retroarch/system/kronos/saturn_bios.bin
 
+(OJO: Tienes que tener puesto el driver de vídeo en GLCORE, o en SETTINGS->CORE, permitir que los cores hagan el cambio de driver de vídeo).
 (OJO: requiere OpenGL 4.1 o algo así, y NO FUNCIONA CON VULKAN, GLES, GLES2 ni GLES3, así que olvídate de que funcione en la Raspberry Pi 4).
+
+*******Compilar el core Beetle-Saturn********************************
+
+git clone --depth 1 https://github.com/libretro/beetle-saturn-libretro.git
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" make -j4
+
+La BIOS tiene que ir en ~/.config/retroarch/system/mpr-17933.bin
 
 *******Compilar el core DOSBOX-CORE**********************************
 
@@ -618,8 +627,15 @@ Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
 ******Core PCSX2 libretro****************************
 
+Instalamos dependencia previa:
+sudo apt-get install liblzma-dev
+
 git clone --depth 1 https://github.com/libretro/pcsx2.git
 git submodule update --init
+
+Editamos CMakeLists.txt y borramos las líneas:
+set(CMAKE_C_COMPILER_LAUNCHER ccache)
+set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
 
 Configuramos y compilamos con:
 
@@ -627,8 +643,8 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_C_FLAGS="-march=native -mtune=native"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
 
 ******Space Cadet pinball en la Raspberry Pi*********
 
@@ -640,8 +656,8 @@ Configuramos y compilamos con:
 mkdir b4
 cd b4
 cmake .. \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
 make -j4
 
 Copiamos el ejecutable y los datos del juego (que los tienes ya preparados en el disco duro de backup) y a jugar.
@@ -7239,7 +7255,7 @@ Configuramos y compilamos con meson así:
 CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
 meson -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
--Dv4l2=disabled -Dpipewire-v4l2=disabled -Dudev=disabled -Dman=disabled ..
+-Dv4l2=disabled -Dpipewire-v4l2=disabled -Dudev=disabled -Ddbus=disabled -Dman=disabled ..
 
 ninja -j4
 sudo ninja install
