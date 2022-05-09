@@ -604,14 +604,29 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O3 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O3 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O3 -fomit-frame-pointer" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O3 -fomit-frame-pointer"
 
 make -j4
 
 Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 
+Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 Y ya podemos lanzar juegos en GDI, CDI o CHD.
+
+******Core PCSX2 libretro****************************
+
+git clone --depth 1 https://github.com/libretro/pcsx2.git
+
+Configuramos y compilamos con:
+git submodule update --init
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 ******Space Cadet pinball en la Raspberry Pi*********
 

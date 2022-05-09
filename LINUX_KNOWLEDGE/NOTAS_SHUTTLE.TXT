@@ -191,6 +191,33 @@ CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-po
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled \
 --enable-egl --enable-opengles --enable-opengles3 --enable-vulkan
 
+CFLAGS="-march=native -mtune=native -O0 -ggdb -DEGL_NO_X11" \
+CXXFLAGS="-march=native -mtune=native -O0 -ggdb -DEGL_NO_X11" \
+./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg \
+--disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss \
+--disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
+--disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra \
+--disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled \
+--enable-egl --enable-opengles --enable-opengles3 --enable-vulkan
+
+INSTALAR SDL2
+=============
+
+Instalamos dependencias previas:
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg123-dev libmodplug-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
+(libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
+
+Bajamos la última versión estable de:
+https://www.libsdl.org/download-2.0.php
+
+Ahora, para configurar:
+
+CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
+
+CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
+
 CORE FLYCAST (UPSTREAM)
 =======================
 
@@ -204,11 +231,37 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O3 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O3 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+
+Si quieres versión con OpenGL_ES:
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_VULKAN=ON -DUSE_OPENGLES2=ON -DUSE_OPENGL=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
 
 make -j4
 
 Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 
-Y ya podemos lanzar juegos en GDI, CDI o CHD.
+Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
+Podemos lanzar juegos en GDI, CDI o CHD.
+
+QUE EL DIRECTORIO ACTUAL ESTÉ EN EL PATH
+========================================
+
+Edita ~/.profile y lo dejas así:
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+export PATH=$PATH:.
+
+PS1='\w\$ '
+TERM=xterm-256color
+color_prompt=yes
+export LS_OPTIONS='--color=auto'
+alias ls='ls $LS_OPTIONS'
