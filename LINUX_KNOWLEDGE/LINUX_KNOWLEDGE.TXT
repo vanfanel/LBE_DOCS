@@ -406,7 +406,9 @@ entramos en yabause/src/libretro
 
 make -j4
 
-(OJO: requiere OpenGL 4.1 o algo así, olvídate de que funcione en la Raspberry Pi).
+La bios tiene que ir en ~/.config/retroarch/system/saturn_bios.bin o ~/.config/retroarch/system/kronos/saturn_bios.bin
+
+(OJO: requiere OpenGL 4.1 o algo así, y NO FUNCIONA CON VULKAN, GLES, GLES2 ni GLES3, así que olvídate de que funcione en la Raspberry Pi 4).
 
 *******Compilar el core DOSBOX-CORE**********************************
 
@@ -617,9 +619,9 @@ Y ya podemos lanzar juegos en GDI, CDI o CHD.
 ******Core PCSX2 libretro****************************
 
 git clone --depth 1 https://github.com/libretro/pcsx2.git
+git submodule update --init
 
 Configuramos y compilamos con:
-git submodule update --init
 
 mkdir b4
 cd b4
@@ -5869,14 +5871,21 @@ fi
 
 -Si ves que al cargar varios juegos tienes errores de EGL, pon gpu_mem=256 en el config.txt
 
-****************************Retroarch*******************************
+RETROARCH EN UN PC GENÉRICO SOBRE X11
+=====================================
 
-Para PC:
-LO PRIMERO TEN INSTALADO PKGCONFIG, O NO DETECTARÁ ALGUNAS LIBRERÍAS ESENCIALES!!!
+Dependencias previas:
+sudo apt-get install libasound2-dev glslang-dev glslang-tools spirv-tools \
+xcb libxcb-xkb-dev x11-xkb-utils libx11-xcb-dev libxkbcommon-x11-dev
 
-./configure --enable-kms --disable-vg --disable-wayland --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg --disable-networking --disable-libretrodb --disable-materialui --disable-xmb --enable-udev --disable-sdl --disable-pulse --disable-oss --disable-freetype --disable-7zip --disable-libxml2 --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga  --disable-opengl --enable-opengles --disable-flac --disable-qt
-
-Editamos Makefile.common y comentamos la línea del -g
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+./configure --disable-ibxm --disable-vg --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg \
+--disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss \
+--disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
+--disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra \
+--disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled \
+--enable-opengl --enable-vulkan
 
 Ahora ya compilamos:
 make -j8 V=1
@@ -5885,38 +5894,6 @@ El V=1 es para ver las líneas de compilación y comprobar que nuestros flags se
 Si quieres compilar en modo debug, haz:
 make -j6 DEBUG=1 V=1
 y se le pasará -O0 -g al compilador, y nada de -O2 ni -O2
-
-NO instales ninguna librería de mesa, gl NI NADA DE ESO, o luego las SDL2 se liarán. En la Rpi NO HAY MESA y no hay GL, sólo EGL y GLES que ya
-vienen instaladas como libs e includes en /opt/vc.
-(¡CUIDADO, que lo de floathard sólo es para ARM! Si compilas en x86 no uses eso. Las instrucciones para compilar Retroarch para X86 las tienes más arriba.)
-(CUIDADO que si compilas sin las sdl, que es lo recomendado, necesitarás añadir la línea input_driver = “linuxraw” (RESPETA LOS ESPACIOS) en el retroarch.cfg, o te dará un error de input driver “null” desconocido!)
-
-¡¡YA NO HACE FALTA AÑADIR input_driver = “linuxraw” en el retroarch.cfg si compilas sin las SDL!!
-AHORA el dispositivo por defecto para mandos USB es udev, no linuxraw. Genial!
-No hace falta NINGUNA línea de input_driver. Al compilar sin SDL, udev es el device por defecto sin especificar nada.
-
-SI TE DA EL ERROR: Error: Dynamic loading of libretro is enabled, but your platform does not appear to have dlopen()
-....es por algo que le estás pasando a configure y que hace que fallen los tests de compilación, como por ejemplo --enable-neon o así.
-
-Si te da un error el distcc en plan "unable to distribute", es porque el Makefile del core que sea está usando CC en vez de GCC.
-
-Para los shaders, clona el repo https://github.com/libretro/glsl-shaders.git
-Te interesan sólo scanline.glsl y zfast-crt.glsl, y aún así el snes9x no va a ir bien en las escenas de la intro del Chrono Trigger.
-
-PARA TENER EL AUDIO/VIDEO BIEN SINCRONIZADOS:
--Vsync ON
--Hardsync ON
--Max_swapchain = 2
--Audio sync ON
--Driver de audio: Alsa
--Audio latency: 45
-SI USAS ALSATHREAD, DEBES TENER AUDIO SYNC ACTIVADO, O SE OIRÁ FATAL.
-Puedes desactivar el audio sync si usas el driver ALSA normal.
-Es mejor usar ALSATHREAD QUE ALSA porque al lanzar los juegos no hace doble cracking!!
-
-Si quieres HID, instala libusb-1.0-0-dev y luego...
-Para el adaptador greenasia, en input/connect/joypad_connection.c añade esta entrada con sus VID/PID correctos:
-{ "PS2/PSX Controller Adapter",  4607,  13121,      &pad_connection_ps2adapter },
 
 COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
 ===========================================================================
