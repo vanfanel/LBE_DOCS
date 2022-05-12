@@ -7263,8 +7263,9 @@ sudo rm /etc/ld.so.cache
 sudo ldconfig
 (OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
 
-Ahora editamos /usr/local/share/pipewire/minimal.conf, y comentamos el dispositivo "source" (porque la Pi no tiene
-dispositivo de grabación, y si no lo comentamos da error).
+Ahora editamos /usr/local/share/pipewire/minimal.conf, y:
+-Comentamos el dispositivo "source" (porque la Pi no tiene dispositivo de grabación, y si no lo comentamos da error).
+-En el dispositivo "sink", que está justo debajo (los sink son los dispositivos que "consumen" audio) ponemos el valor "device" a "hdmi:vc4hmi0"
 
 Ahora, en una TTY lanzamos Pipewire:
 XDG_RUNTIME_DIR=/tmp pipewire -v -c /usr/local/share/pipewire/minimal.conf
