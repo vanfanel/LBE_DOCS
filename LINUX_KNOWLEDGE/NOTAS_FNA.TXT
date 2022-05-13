@@ -129,7 +129,7 @@ sudo rm /etc/ld.so.cache
 sudo ldconfig
 (OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
 
-Ahora editamos /usr/local/share/pipewire/minimal.conf, y:
+Ahora editamos "/usr/local/share/pipewire/minimal.conf", y:
 -Comentamos el dispositivo "source" (porque la Pi no tiene dispositivo de grabación, y si no lo comentamos da error).
 -En el dispositivo "sink", que está justo debajo (los sink son los dispositivos que "consumen" audio) hacemos los siguientes cambios:
 	-Ponemos el valor "device" a "hdmi:vc4hmi0"
@@ -140,7 +140,10 @@ Ahora editamos /usr/local/share/pipewire/minimal.conf, y:
 ====SUB-BLOQUE INSTALAR WIREPLUMBER=====
 
 Ahora instalamos WIREPLUMBER, que conecta cada programa SDL2 con PIPEWIRE.
-(WIREPLUMBER es un session manager para programas que usan PIPEWIRE).
+(WIREPLUMBER es un session manager para programas que usan PIPEWIRE, y "/usr/local/share/pipewire/minimal.conf"
+es una configuración especial que vale PRECISAMENTE para cuando queremos usar PIPEWIRE sin un session manager en el sistema,
+y queremos que WIREPLUMBER sea el session manager para los programas que usan PIPEWIRE.
+Si tuviéramos un session manager en el sistema, usaríamos el pipewire.conf "normal", no el minimal, pero no es nuestro caso).
 
 git clone --depth 1 https://gitlab.freedesktop.org/pipewire/wireplumber.git
 mkdir b4
