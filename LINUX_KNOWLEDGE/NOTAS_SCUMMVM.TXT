@@ -19,8 +19,8 @@ Al pasarle como host la Raspberry Pi (--host=raspberrypi), compilará contra SDL
 
 Para compilación rápida de prueba, sólo con engine SCUMMVM:
 
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mcpu=native -O2" \
+CXXFLAGS="-march=native -mcpu=native -O2" \
 ./configure --disable-debug --enable-release --enable-optimizations \
 --opengl-mode=gles2 --force-opengl-game-es2 --disable-hq-scalers \
 --disable-eventrecorder --disable-cloud --disable-savegame-timestamp \
@@ -40,8 +40,8 @@ Para hacer una release (engines como plugins dinámicos, todos los que vienen ac
 COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
 (Hay que instalar libmpeg2-4-dev para que funcionen los Broken Sword)
 
-CFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mcpu=native -O2" \
+CXXFLAGS="-march=native -mcpu=native -O2" \
 ./configure --disable-debug --enable-release --enable-optimizations \
 --opengl-mode=gles2 --disable-hq-scalers \
 --disable-eventrecorder --disable-cloud --disable-savegame-timestamp \

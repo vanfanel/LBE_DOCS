@@ -252,8 +252,8 @@ Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
 
 Ahora es tan simple como cargar el Maldita Castilla con:
 ./loader Maldita_Castilla.apk
@@ -368,13 +368,13 @@ cd b4
 
 PARA WAYLAND:
 cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSE_VULKAN_DISPLAY_KHR=OFF -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2"
 
 PARA KMSDRM:
 cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=OFF -DUSE_VULKAN_DISPLAY_KHR=ON -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2"
 
 Si nos da un error al linkar relacionado con ffmpeg, tenemos que recompilar ffmpeg interno que trae, lo cual se hace con esta
 secuencia de comandos:
@@ -432,7 +432,7 @@ git clone --depth 1 https://github.com/libretro/dosbox-core.git
 
 Entramos en el directorio libretro y hacemos:
 
-COMMONFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+COMMONFLAGS="-march=native -mtune=native -O2" \
 make -j4 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0
 
@@ -513,8 +513,8 @@ bien automáticamente.
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
 
 ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 
@@ -560,7 +560,7 @@ cd build
 
 -Configuramos pasándole el cmake toolchain file así:
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
 -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ..
 
 -Compilamos con make, y comprobamos el ejecutable, que sea aarch64:
@@ -587,8 +587,8 @@ sudo apt-get install extra-cmake-modules --no-install-recommends
 Configuramos con:
 
 cmake .. \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DEGL_NO_X11" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON \
 -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=ON -DUSE_SDL2=ON ..
 
@@ -675,7 +675,7 @@ git clone --recursive https://github.com/nesbox/TIC-80 --depth 1
 
 Configuramos con:
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
 
 Los juegos están en:
 https://tic80.com/play?cat=0
@@ -857,7 +857,7 @@ Compilamos con CMAKE:
 mkdir b4
 cd b4
 
-cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -fsigned-char" \
+cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -fsigned-char" \
 -DCMAKE_BUILD_TYPE=Release -DBUILD_PORTABLE=ON ..
 
 make -j4
@@ -954,7 +954,7 @@ Editamos Makefile y:
 -Quitamos el -Werror para que no trate los warnings como errores.
 -Comentamos la línea de STRIP debajo de "ifdef BUILD_LINUX"
 -Quitamos el -g de la segunda línea de CFLAGS que hay al inicio de la sección Compiler Flags, y ahí mismo
- añadimos los CFLAGS de la Pi4 si vamos a ocmpilar para ella: -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+ añadimos los CFLAGS de la Pi4 si vamos a ocmpilar para ella: -march=native -mtune=native -O2
 -Para que cuando compilemos veamos los flags, nos vamos a la sección "Rules to manage Files and Libraries for SDL"
  y debajo del "@echo Compiling" de los .c, metemos: @echo $(CC) $(CFLAGS) -c $<
 
@@ -993,7 +993,7 @@ Y ya puedes hacer "./OpenBOR Paks/bor.pak" y te lanzará el juego desempaquetado
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
-Los CXXFLAGS son: -O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+Los CXXFLAGS son: -O2 -march=native -mtune=native -O2
 Y añade la línea de optimiación agresiva debajo de la original de CFLAGS:
 CXXFLAGS += -flto -fomit-frame-pointer
 (NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
@@ -1015,7 +1015,7 @@ apt-get install libmodplug-dev --no-install-recommends
 
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
-CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=native -mtune=native -O2
 
 Editamos sdl_systemstub.cpp y cambiamos:
 desired.samples = 2048;
@@ -1046,7 +1046,7 @@ Editamos src/sdl2/video.c y:
 
 Entramos en el directorio linux, editamos Makefile y añadimos a los CFLAGS:
 
--O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+-O2 -march=native -mtune=native -O2
 
 Compilamos con make -j4
 
@@ -1244,8 +1244,8 @@ mkdir b4
 cd b4
 
 Configuramos con:
-CFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
 meson .. -Duse_opengl=false -Duse_sdl2_net=false
 
 Compilamos con:
@@ -1268,14 +1268,14 @@ https://www.vogons.org/viewtopic.php?f=41&t=34770&start=120
 patch -p0 < parche.patch
 
 Editamos el configure, y cambiamos "-g -O2" por los flags:
--O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+-O2 -march=native -mtune=native -O2
 porque si no algunos Makefiles van a tener los flags antiguos.
 
 Editamos configure y ponemos a "no" todos los have... relacionados con opengl y x11.
 
 Configuraríamos para SDL2. 
 
-CXXFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure
+CXXFLAGS="-O2 -march=native -mtune=native -O2" ./configure
 
 Cambiamos "AR = ar" por "AR = gcc-ar" y "RANLIB = ranlib" por "RANLIB = gcc-ranlib" en todos los Makefile (hay varios, en distintos subdirectorios) y forzamos los CFLAGS
 que nos interesan en ellos, ya que no llegan desde el configure a algunos Makefiles, con:
@@ -1284,7 +1284,7 @@ find ./ -name Makefile -exec sed -i 's/AR = ar/AR = gcc-ar/g' {} \;
 
 find ./ -name Makefile -exec sed -i 's/RANLIB = ranlib/RANLIB = gcc-ranlib/g' {} \;
 
-find ./ -name Makefile -exec sed -i 's/-g -O2/-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer/g' {} \;
+find ./ -name Makefile -exec sed -i 's/-g -O2/-O2 -march=native -mtune=native -O2/g' {} \;
 
 (Siempre que ejecutes configure, te tocará sustutuir AR y RANLIB y reajustar los CFLAGS con el find como acabas de ver, porque el configure lo pone mal otra vez en los makefiles).
 
@@ -1412,8 +1412,8 @@ git clone --depth 1 https://github.com/FrodeSolheim/fs-uae.git
 Ejecutamos el script bootstrap incluido con los sources, y ya podemos ejecutar ./configure
 
 Configuramos con:
-CFLAGS="-O3 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-O3 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-O3 -march=native -mtune=native -O2" \
+CXXFLAGS="-O3 -march=native -mtune=native -O2" \
 ./configure --without-x11 --with-alsa --without-midi --without-libmpeg2 --without-openal --disable-x86 --disable-qemu-cpu --disable-drivesound --disable-netplay --disable-slirp
 
 Editamos src/fsemu-background.c y comentamos la línea:
@@ -1525,7 +1525,7 @@ Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(
 Editamos jfaudiolib/Makefile, y eliminamos el "-g" ese que hay ahí perdido.
 
 Compilamos con:
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2" \
 make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GLES2
 
 Mete el duke3d.grp en el mismo directorio que el ejecutable.
@@ -1567,7 +1567,7 @@ cd libmikmod
 mkdir b4
 cd b4
 cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSE=0 -DENABLE_OSS=0 -DENABLE_DOC=0 \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
 sudo make install
 
 Y AHORA VAMOS A POR EL UQM EN SÍ:
@@ -1582,7 +1582,7 @@ Activamos y desactivamos lo que queramos, sobre todo estas cosas:
 -Usar libmikmod del sistema, NO el libmikmod incluido que como ya hemos dicho suena mal en la Pi.
 
 Ahora editamos build.vars, y ahí añadimos las CFLAGS y CXXFLAGS de la Pi4:
--march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+-march=native -mtune=native -O2
 
 Ahora editamos src/libs/graphics/sdl/sdl2_pure.c, y en la llamada de SDL_CreateRenderer(), metemos los flags:
 SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
@@ -1620,7 +1620,7 @@ Editamos Makefile y quitamos -lX11, y ponemos MP3LIB=mad a MP3LIB=mpg123 (para n
 
 make -j4
 
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
+CFLAGS="-march=native -mtune=native -O2" make -j4
 
 *******Quakespasm en la Pi*******************************************************
 
@@ -1631,7 +1631,7 @@ git clone --depth 1 https://github.com/sezero/quakespasm.git
 
 Entramos en el directorio Quake, editamos Makefile para cambiar -lGL por -lOpenGL, y compilamos con:
 
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4 USE_SDL2=1 USE_CODEC_MP3=0 USE_CODEC_WAVE=0
+CFLAGS="-march=native -mtune=native -O2" make -j4 USE_SDL2=1 USE_CODEC_MP3=0 USE_CODEC_WAVE=0
 
 OJO: Guarda su configuración en el subdirectorio id1 de donde tengas el ejecutable!
 Para tener 60FPS constantes, puedes editar id1/config.cfg y poner:
@@ -2127,7 +2127,7 @@ en src/video/fbcon/SDL_fbvideo.c, función FB_WaitVBL().
 
 Configuramos con:
 
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure --disable-video-opengl --enable-video-fbcon --disable-video-kms --disable-video-directfb --disable-oss --disable-alsatest --disable-pulseaudio --disable-pulseaudio-shared --disable-arts --disable-nas --disable-esd --disable-nas-shared --disable-diskaudio --disable-dummyaudio --disable-mintaudio --disable-video-x11
+CFLAGS="-march=native -mtune=native -O2" ./configure --disable-video-opengl --enable-video-fbcon --disable-video-kms --disable-video-directfb --disable-oss --disable-alsatest --disable-pulseaudio --disable-pulseaudio-shared --disable-arts --disable-nas --disable-esd --disable-nas-shared --disable-diskaudio --disable-dummyaudio --disable-mintaudio --disable-video-x11
 
 Si se queja el DOSBOX de que falta el ratón, usa la variable de entorno SDL_NOMOUSE=1
 Si se queja de que las SDL no tienen soporte para CDROM, pues te toca recompilar las SDL.
@@ -3334,7 +3334,7 @@ Creamos el dir de compilación, entramos, configuramos y compilamos:
 mkdir b3
 cd b3
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
 make -j4
 
 ***********RIGEL, el engine de Duke Nukem II************************************************************
@@ -3348,8 +3348,8 @@ cd b4
 
 Compilamos con GLES con:
 cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 
 ***********Compilar RAZE, el engine de Duke Nukem, Blood, Exhumed, etc para Linux****************************************************************
 
@@ -3369,7 +3369,7 @@ https://github.com/coelckers/ZMusic/releases
 Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
 make -j4
 sudo make install
 
@@ -3380,7 +3380,7 @@ git clone --depth 1 https://github.com/coelckers/Raze.git
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
 make -j4
 
 Ahora, creamos ~/raze y metemos allí el ejecutable resultante ("raze"), raze.pk3, el directorio soundfonts, y el duke3d.rgp
@@ -3411,7 +3411,7 @@ Compilamos con:
 Funciona con aceleración GLES, por cierto, usando POLYMOST, y bastante bien además.
 
 make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=0 USE_LIBVPX=0 HAVE_FLAC=0 LTO=0 \
-OPTOPT="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+OPTOPT="-march=native -mtune=native -O2"
 
 Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
 
@@ -3493,7 +3493,7 @@ justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
-cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
 (PARA compilar en modo verbose, haz make VERBOSE=1)
 
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
@@ -3517,7 +3517,7 @@ Al final, mi script wolf3d contiene esta línea para lanzar el ECWOLF a mi gusto
 NOTA: SI USAS EL CORE DE RETROARCH, pon los datos y el EXE de la versión de ACTIVISION, NO la original de Apogee, y a Retroarch, además del core, le pasas el WOLF3D.EXE.
 Y se compila con:
 
-CFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" cmake -DLIBRETRO=1 ..
+CFLAGS="-O2 -march=native -mtune=native -O2" cmake -DLIBRETRO=1 ..
 
 ***********XASH3D para Raspberry Pi (GLES) **********************************************************************************************
 
@@ -3590,7 +3590,7 @@ gcc -### -E - -mtune=native 2>&1 | sed -r '/cc1/!d;s/(")|(^.* - )|( -mno-[^\ ]+)
 
 Así que un set de flags neutral para Pi3 y Pi4, 32 o 64bit, con un GCC moderno en el que NATIVE funciona ya bien, sería:
 
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+CFLAGS="-march=native -mtune=native -O2"
 
 ************Parchear con XDelta en Linux************************************************************************************************
 
@@ -3812,8 +3812,8 @@ https://github.com/FluidSynth/fluidsynth/releases
 
 Y configuramos desde un directorio de build que creamos nosotros:
 
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
 
 Y compilamos con make -j4, e instalamos con:
@@ -4075,7 +4075,7 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 Hay que leer el INSTALL para saber cómo se compila, pero esencialmente:
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_BACKEND=SDL2 -DOPENGL_BACKEND=None -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_BACKEND=SDL2 -DOPENGL_BACKEND=None -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
 
 make -j4
 
@@ -4553,7 +4553,7 @@ mkdir b4
 cd b4
 
 Configuramos y compilamos con:
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 make -j4
 
 Creamos el directorio ~/cc, y metemos ahí los datos del juego.
@@ -4587,7 +4587,7 @@ Editamos RSDKv3/Audio.cpp y ahí cambiamos:
 	#define AUDIO_SAMPLES   (0x200)
 
 Compilamos con:
-CXXFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DGLEW_NO_GLU" make -j4
+CXXFLAGS="-O2 -march=native -mtune=native -O2 -DGLEW_NO_GLU" make -j4
 
 El ejecutable queda en bin/RSDKv3
 
@@ -4607,7 +4607,7 @@ Editamos RSDKv4/RetroEngine.hpp y comentamos la línea:
 	#define RETRO_USE_NETWORKING (!RETRO_USE_ORIGINAL_CODE && 1)
 	
 Compilamos con:
-CXXFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DGLEW_NO_GLU" make -j4
+CXXFLAGS="-O2 -march=native -mtune=native -O2 -DGLEW_NO_GLU" make -j4
 
 El ejecutable queda en bin/RSDKv4
 
@@ -4641,8 +4641,8 @@ Compilamos con:
 mkdir b4
 cd b4
 cmake -DUSE_SDL2=ON -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 make -j4
 
 Copiamos el directorio data que viene con los sources al mismo directorio donde metamos el ejecutable.
@@ -4657,7 +4657,7 @@ Clonamos su repo:
 git clone --depth 1 https://github.com/lemon32767/ccleste.git
 
 Editamos el Makefile, y en la línea de las CFLAGS quitamos el -g y ponemos los flags de la Pi4, que son:
--march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+-march=native -mtune=native -O2
 
 Editamos sdl12main.c y allí:
 -Comentamos toda la sección donde aparece SDL_Delay(), todo el bloque de principio a fin.
@@ -4694,8 +4694,8 @@ cd b4
 
 cmake .. \
 -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
 
 Copiamos el ejecutable MightyMike y el directorio "Data" que viene con los sources a ~/mightymike
 
@@ -4711,8 +4711,8 @@ cd b4
 
 cmake .. \
 -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
 
 Copiamos el ejecutable Nanosaur y el directorio "Data" que viene con los sources a ~/nanosaur
 
@@ -4735,7 +4735,7 @@ cd b4
 Ahora configuramos:
 
 cmake .. -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
@@ -4766,7 +4766,7 @@ Entramos en src, editamos doomdef.h y ponemos SCREENSCALE a 1.
 Si por el contrario dejamos que se renderize en alta resolución, pasamos "-nosplash" al ejecutable para que no salga el splash screen,
 ya que sólo sale en alta resolución.
 
-Editamos el Makefile y ponemos los CFLAGs "-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer", y quitamos el -g.
+Editamos el Makefile y ponemos los CFLAGs "-march=native -mtune=native -O2", y quitamos el -g.
 Compilar y listo.
 
 En doomretro.cfg, ponemos:
@@ -4824,7 +4824,7 @@ Creamos el directorio de compilación, entramos, configuramos y compilamos:
 cd systemshock
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_SDL2=ON -DENABLE_SOUND=ON -DENABLE_FLUIDSYNTH=ON -DOpenGL_GL_PREFERENCE=GLVND ..
+CFLAGS="-march=native -mtune=native -O2" cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_SDL2=ON -DENABLE_SOUND=ON -DENABLE_FLUIDSYNTH=ON -DOpenGL_GL_PREFERENCE=GLVND ..
 make -j4
 
 Ahora creamos ~/sshock y ahí dentro:
@@ -4900,7 +4900,7 @@ así que irá a unos 30FPS suaves que no está mal).
 -Añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear"); antes de la llamada a SDL_CreateRenderer()
 
 Editamos Makefile y añadimos al lado de -O2 los flags de la Pi4:
--march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+-march=native -mtune=native -O2
 
 Compilamos con:
 make -j4
@@ -5156,7 +5156,7 @@ Ahora actualiza el config.guess, que el que trae el rogue es viejo y no detecta 
 wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' -O config.guess
 
 Configurar y compilar:
-CFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure
+CFLAGS="-O2 -march=native -mtune=native -O2" ./configure
 make -j4
 
 Ayuda de teclas con shift+?
@@ -5923,7 +5923,7 @@ No hace falta que quites los directorios de los includes, esos dan igual.
 Editamos Makefile y dejamos la platform definition de la pi4 asi:
 
    else ifneq (,$(findstring rpi4,$(platform)))
-      PLATFORM_DEFINES := -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+      PLATFORM_DEFINES := -march=native -mtune=native -O2
    endif
 
 Ahora hacemos un 
@@ -6128,7 +6128,7 @@ git submodule update --init --recursive
 Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
 cd b4
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release ..
+CXXFLAGS="-march=native -mtune=native -O2" cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release ..
 
 DEVILUTIONX, Diablo en Linux
 ============================
@@ -6141,7 +6141,7 @@ https://github.com/diasurgical/devilutionX/releases
 
 Configuramos con:
 cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 
 Compilamos y metemos en el directorio ~/diablo:
 -El ejecutable "devilutionx"
@@ -6212,7 +6212,7 @@ git clone --depth 1 https://github.com/flareteam/flare-game.git
 creamos el directorio de compilación, entramos en él, configuramos y compilamos:
 mkdir b3
 cd b3
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -flto" \
+CXXFLAGS="-march=native -mtune=native -O2 -flto" \
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
@@ -6240,8 +6240,8 @@ en screen/Screen.cpp, justo antes de SDL_CreateWindowAndRenderer()
 
 Configuramos así:
 
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure --disable-debug
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" ./configure --disable-debug
 
 Compilamos:
 
@@ -6279,8 +6279,8 @@ Ejecutamos el autogen.sh
 
 Configuramos con:
 
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa \
 --enable-lto --with-optimization=normal --prefix=$HOME/ultima7
 
@@ -6328,8 +6328,8 @@ sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libthe
 La otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarlas).
 
 Configuramos love con:
-cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 
 Instala copiando el ejecutable love donde quieras.
 
@@ -6429,8 +6429,8 @@ Instalamos esta dependencia previa si queremos ratón en la consola:
 sudo apt-get install gpm libgpm-dev --no-install-recommends
 
 Configuramos e instalamos:
-CFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
 ./configure --prefix=/usr --enable-hw-tty=yes  --enable-hw-x11=no 
 make -j4
 sudo make install
@@ -6447,8 +6447,8 @@ Compilamos con:
 WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
 
 Para Raspberry Pi 4:
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
 
 SI TIENES MOVIMIENTO ERRÁTICO DEL RATÓN: Desconecta el mando USB.
@@ -6474,8 +6474,8 @@ Por si alguna vez lo necesitas para algo.
 Bajamos la última release de: https://github.com/kcat/openal-soft/tags
 Configuramos así:
 cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 
 STUNT CAR RACER EN LA RASPBERRY PI
 ==================================
@@ -6502,8 +6502,8 @@ Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir Code/b4
 cd Code/b4
 cmake -DGLES=ON -DWITH_SDL2=on -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 make -j4
 
 Para instalar el juego:
@@ -6537,7 +6537,7 @@ https://github.com/coelckers/ZMusic/releases
 Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
 make -j4
 sudo make install
 
@@ -6557,8 +6557,8 @@ justo antes de SDL_CreateWindow(), como siempre.
 
 También debes poner a SDL_FALSE las llamadas de SDL_ShowCursor() en vim src/common/platform/posix/sdl/i_gui.cpp
 
-cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
 -DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j4
@@ -6613,8 +6613,8 @@ git clone --depth 1 https://github.com/crawl/crawl.git
 git submodule update --init
 
 Descomprimimos y nos vamos al directorio crawl-ref/source, y compilamos con:
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 make -j4 TILES=y LUAJIT=y
 
 Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
@@ -6651,8 +6651,8 @@ Configuramos y compilamos con:
 mkdir b4
 cd b4
 EDITOR_ENABLED=0 cmake -DCMAKE_BUILD_TYPE=Release -Wno-dev \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
 -DFMOD_ENABLED=OFF -DOPENAL_ENABLED=ON  ..
 make -j4
 
@@ -6678,7 +6678,7 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
  antes de SDL_CreateWindow()
 
 Editamos makefile y añadimos en el options de "ifeq ($(target), Ubuntu_SDL20)"
--O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+-O2 -march=native -mtune=native -O2
 
 Compilamos con:
 make target=Ubuntu_SDL20 -j4
@@ -6710,14 +6710,14 @@ Tenemos dos métodos para compilarlo:
 USANDO CMAKE (RECOMENDADO):
 mkdir b4
 cd b4
-cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -fsigned-char" \
+cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -fsigned-char" \
 -DCMAKE_BUILD_TYPE=Release ..
 make -j4
 
 USANDO MAKE (RECOMENDADO SI FALLA CMAKE):
 Editamos configure.ac, quitamos el -g de los CFLAGS, ejecutamos ./autogen.sh,
 y a continuación configuramos y compilamos:
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -fsigned-char" ./configure
+CFLAGS="-march=native -mtune=native -O2 -fsigned-char" ./configure
 make -j4
 
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
@@ -6910,8 +6910,8 @@ O bien usamos la 0.87 que traen los sources de los juegos, ya que en algunos cas
 CXXFLAGS="-fpermissive" ./configure --enable-static
 make -j8
 
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --enable-static
 
 Buscamos libmodplug.a
@@ -6947,8 +6947,8 @@ Bajamos la última versión estable de libepoxy desde:
 https://github.com/anholt/libepoxy/releases
 
 Configuramos, compilamos e instalamos:
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 meson -Dx11=false ..
 ninja -j4
 sudo ninja install
@@ -6961,8 +6961,8 @@ Configuramos y compilamos:
 mkdir b4
 cd b4
 cmake -DCMAKE_BUILD_TYPE=Release -DRENDERER=GLES2 \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 (Hay otros renderers disponibles, mira en el README)
 make -j4 
 
@@ -7217,8 +7217,8 @@ make extensions
 
 Y compilamos e instalamos con un solo comando, así:
 
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 make SYSTEM=linux-egl-glvnd -j4 install
 
 AHORA EDITA /usr/local/include/GL/glew.h y, o bien añade:
@@ -7239,7 +7239,7 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DGLFW_USE_WAYLAND=1 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2"
 
 make -j4
 sudo make install
@@ -7286,8 +7286,8 @@ mkdir b4
 cd b4
 
 cmake ../src -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
 
 make -j4
 
@@ -7382,8 +7382,8 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
 
 make -j4
 
@@ -7499,7 +7499,7 @@ Empezamos compilando libjpeg-turbo, que nos va a hacer falta la versión estáti
 https://github.com/libjpeg-turbo/libjpeg-turbo/releases
 
 Ahora creamos directorio de compilación, entramos, y configuramos con CMAKE así:
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" cmake -DCMAKE_BUILD_TYPE=Release ..
+CFLAGS="-march=native -mtune=native -O2" cmake -DCMAKE_BUILD_TYPE=Release ..
 
 Ahora, clonamos el repo del FROTZ:
 git clone --depth 1 https://github.com/DavidGriffith/frotz.git
@@ -7974,7 +7974,7 @@ Bajamos la última versión de los sources de:
 http://cyxdown.free.fr/hode/
 
 Editamos el Makefile:
--Quitamos el -g y añadimos en su lugar los FLAGS: -O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer
+-Quitamos el -g y añadimos en su lugar los FLAGS: -O2 -march=native -mtune=native -O2
 
 Editamos system_sdl2.cpp  y:
 
@@ -8043,8 +8043,8 @@ Clonamos su repo en:
 git clone --depth 1 https://github.com/Neverball/neverball.git
 
 Compilamos con
-CFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4
 
 VVVVVV en la Raspberry Pi
@@ -8057,8 +8057,8 @@ git clone --depth 1 https://github.com/TerryCavanagh/VVVVVV.git
 Entramos en desktop_version, creamos b4 y configuramos con:
 
 cmake -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-DNDEBUG -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" \
--DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer" ..
+-DCMAKE_C_FLAGS="-DNDEBUG -march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native -O2" ..
 
 Bajamos el data.zip que viene con la versión Windows del VVVVVV, disponible aquí:
 https://thelettervsixtim.es/makeandplay/
@@ -8250,8 +8250,8 @@ mkdir ~/.q3a
 mkdir ~/.q3a/baseq3
 
 Entramos en los sources y, sin más, hacemos:
-CFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DSDL_DISABLE_IMMINTRIN_H" \
-CXXFLAGS="-O2 -march=native -mtune=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer -DSDL_DISABLE_IMMINTRIN_H" make -j4
+CFLAGS="-O2 -march=native -mtune=native -O2 -DSDL_DISABLE_IMMINTRIN_H" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2 -DSDL_DISABLE_IMMINTRIN_H" make -j4
 
 En X86_64, con hacer make -j4, vale.
 
