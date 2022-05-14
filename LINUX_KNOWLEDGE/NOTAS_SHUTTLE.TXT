@@ -20,7 +20,7 @@ Por ejemplo nos sale que se llama:
 dev-disk-by\x2duuid-a31245cc\x2db81d\x2d4e3f\x2daf9c\x2d95c6d1bf02f4.swap
 
 Desactivamos con:
-systemctl mask 'dev-disk-by\x2duuid-a31245cc\x2db81d\x2d4e3f\x2daf9c\x2d95c6d1bf02f4.swap
+systemctl mask 'dev-disk-by\x2duuid-a31245cc\x2db81d\x2d4e3f\x2daf9c\x2d95c6d1bf02f4.swap'
 
 MUCHO OJO CON LA COMILLA SIMPLE AL PRINCIPIO O AL FINAL, O NO FUNCIONARÁ.
 
@@ -81,6 +81,9 @@ systemctl mask e2scrub_all.timer
 systemctl mask swap.target
 systemctl mask remote-fs.target
 systemctl mask cryptsetup.target
+
+Para quitar el error "Unprivileged users are not permitted to log in yet" al conectar por SSH, editamos "/etc/ssh/sshd_config"
+y ponemos "UsePAM" a "no".
 
 UNA VEZ INSTALADO Y CON RED PROPIA, DEJAMOS /etc/apt/sources.list así (sustituye bookworm por la versión de Debian que estés usando):
 

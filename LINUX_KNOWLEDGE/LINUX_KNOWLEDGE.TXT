@@ -1870,6 +1870,32 @@ y en el cliente poner como gateway la IP del servidor (también en RISC OS!!!),
 añadir el servidor dns en /etc/resolv.conf (sólo en LINUX, claro) si hace falta, etc...
 Lo típico de /etc/network/interfaces, que tienes más abajo en varios sitios.
 
+*******Un servicio de systemd para levantar la red**************************************************************************************************
+
+Nos interesa que no se reinicie al salir (por eso NO le ponemos "Restart=always"),
+que se ejecute una sola vez (por eso ponemos "Type=oneshot")
+y que permanezca activo tras ejecutarse (por eso "RemainAfterExit=yes").
+Así que queda así nuestro /etc/systemd/system/wifiup.service:
+
+[Unit]
+Description=WIFI network upbringring
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+PAMName=login
+ExecStart=
+ExecStart=-/usr/local/bin/wifiup
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+
+Lo activamos con: "systemctl enable wifiup"
+(Lo único que hace es crear un symlink en /etc/systemd/system/multi-user.target.wants, ya que es ese target el que depende de nuestro script
+para ser alcanzado).
+
 *******No tengo rc.local! Dónde añado cosas al inicio??*********************************************************************************************
 
 En las versiones actuales de Debian/Ubuntu, el servicio rc-local, que leía comandos de /etc/rc.local, no viene ya, así que tenemos dos opciones:
@@ -7809,8 +7835,7 @@ WantedBy=multi-user.target
 Para habilitarlo, lo que hago es:
 systemctl enable retroarch
 
-En realidad esto lo único que hace es copiar /etc/systemd/system/retroarch.service a /etc/systemd/system/multi-user.target.wants/retroarch.service, es decir, lo mete
-en el directorio del target "multiuser", que es el último, supongo, cuando se inicia el sistema. (Bueno, crea un symlink, pero ya me entiendes).
+En realidad esto lo único que hace es copiar /etc/systemd/system/retroarch.service a /etc/systemd/system/multi-user.target.wants/retroarch.service, es decir, lo mete en el directorio del target "multiuser", que es el último, supongo, cuando se inicia el sistema. (Bueno, crea un symlink, pero ya me entiendes).
 
 Naturalmente, "systemctl disable retroarch" hace lo contrario: borra /etc/systemd/system/multi-user.target.wants/retroarch.service.
 
