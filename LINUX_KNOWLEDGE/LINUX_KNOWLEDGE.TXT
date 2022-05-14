@@ -1896,6 +1896,10 @@ Lo activamos con: "systemctl enable wifiup"
 (Lo único que hace es crear un symlink en /etc/systemd/system/multi-user.target.wants, ya que es ese target el que depende de nuestro script
 para ser alcanzado).
 
+Recuerda que nuestro script "wifiup" debe tener al principio la cadena:
+#!/bin/bash
+...O no funcionará lanzarlo desde la UNIT que acabamos de crear, porque por defecto considera que es un binario, no un script.
+
 *******No tengo rc.local! Dónde añado cosas al inicio??*********************************************************************************************
 
 En las versiones actuales de Debian/Ubuntu, el servicio rc-local, que leía comandos de /etc/rc.local, no viene ya, así que tenemos dos opciones:
