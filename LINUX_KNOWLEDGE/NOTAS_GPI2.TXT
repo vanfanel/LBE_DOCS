@@ -61,13 +61,15 @@ cp *.so *.dsp ~/.config/retroarch/filters/audio/
 Ahora, en RetroArch vamos a "settings->audio->dsp plugin" y seleccionamos "Mono.dsp".
 Y ya está. 
 
--Para no tener nada por pantalla, desactivar mitigations, polling rápido de mandos USB, poner el governor a performance, etc...
+-Para no tener nada por pantalla, desactivar mitigations, poner el governor a performance, etc...
 la línea del kernel en cmdline.txt queda así:
 
-console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait video="DPI-1:640x480@60" quiet loglevel=0 logo.nologo vt.global_cursor_default=0 mitigations=off audit=0 mce=ignore_ce nosoftlockup usbhid.jspoll=1 xpad.cpoll=1 consoleblank=0 cpufreq.default_governor=ondemand
+console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait video="DPI-1:640x480@60" quiet loglevel=0 logo.nologo vt.global_cursor_default=0 mitigations=off audit=0 mce=ignore_ce nosoftlockup consoleblank=0 cpufreq.default_governor=ondemand
 
 (Otra alternativa sería poner "cpufreq.default_governor=performance" en cmdline.txt. y poner arm_freq a 1200 en config.txt, y así se mantendrá constante sin saltos del scheduler porque has puesto el governor a performance; Pero Cicirifu, autor del port de Lakka a la GPI CASE 2,
 usa ondemand y deja al governor decidir la frecuencia de la CPU).
+
+(También podrías añadir polling rápido de mandos USB con "usbhid.jspoll=1 xpad.cpoll=1", pero los beneficios reales no están claros).
 
 -Para que el mando se autoconfigure (si es un mando conocido o compatible con uno conocido: la mayoría de ellos los reconoce como XBOX360 PAD)
 tienes que clonar:
