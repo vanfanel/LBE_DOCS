@@ -69,7 +69,8 @@ console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait 
 (Otra alternativa sería poner "cpufreq.default_governor=performance" en cmdline.txt. y poner arm_freq a 1200 en config.txt, y así se mantendrá constante sin saltos del scheduler porque has puesto el governor a performance; Pero Cicirifu, autor del port de Lakka a la GPI CASE 2,
 usa ondemand y deja al governor decidir la frecuencia de la CPU).
 
-(También podrías añadir polling rápido de mandos USB con "usbhid.jspoll=1 xpad.cpoll=1", pero los beneficios reales no están claros).
+(También podrías añadir polling rápido de mandos USB con "usbhid.jspoll=1 xpad.cpoll=1", pero NO LO HAGAS PORQUE PRODUCE HICCUPS DE AUDIO Y VÍDEO
+y los beneficios reales no están claros).
 
 -Para que el mando se autoconfigure (si es un mando conocido o compatible con uno conocido: la mayoría de ellos los reconoce como XBOX360 PAD)
 tienes que clonar:
