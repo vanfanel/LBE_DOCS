@@ -64,10 +64,10 @@ Y ya está.
 -Para no tener nada por pantalla, desactivar mitigations, poner el governor a ondemand, etc...
 la línea del kernel en cmdline.txt queda así:
 
-console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait video="DPI-1:640x480@60" quiet loglevel=0 logo.nologo vt.global_cursor_default=0 mitigations=off audit=0 mce=ignore_ce nosoftlockup consoleblank=0 cpufreq.default_governor=ondemand
+console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait video="DPI-1:640x480@60" quiet loglevel=0 logo.nologo vt.global_cursor_default=0 mitigations=off audit=0 mce=ignore_ce nosoftlockup consoleblank=0 cpufreq.default_governor=performance
 
-(Otra alternativa sería poner "cpufreq.default_governor=performance" en cmdline.txt. y poner arm_freq a 1200 en config.txt, y así se mantendrá constante sin saltos del scheduler porque has puesto el governor a performance; Pero Cicirifu, autor del port de Lakka a la GPI CASE 2,
-usa ondemand y deja al governor decidir la frecuencia de la CPU).
+(Se podría poner "arm_freq" a 1200 en config.txt para ahorrar batería, o poner cpufreq.default_governor=ondemand para ahorrar aún más batería,
+pero entonces olvídate de mGBA y swanstation).
 
 (También podrías añadir polling rápido de mandos USB con "usbhid.jspoll=1 xpad.cpoll=1", pero NO LO HAGAS PORQUE PRODUCE HICCUPS DE AUDIO Y VÍDEO
 y los beneficios reales no están claros).
