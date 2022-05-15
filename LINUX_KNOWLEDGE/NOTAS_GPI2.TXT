@@ -52,6 +52,9 @@ defaults.ctl.!device 0
 
 (Podemos confirmar que es correcto si ejecutamos "speaker-test" sin ningún parámetro y funciona).
 
+-Para no tener nada por pantalla, además de todo lo anterior, la línea del kernel en cmdline.txt queda así:
+console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait video="DPI-1:640x480@60" quiet loglevel=0 logo.nologo vt.global_cursor_default=0
+
 CONFIGURAR LA DISTRO EXPERIMENTAL DEL LAKKA DEL CANAL "RETROFLAG GPI CASE USERS" DE DISCORD
 ===========================================================================================
 
