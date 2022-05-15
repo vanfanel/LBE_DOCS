@@ -61,7 +61,7 @@ cp *.so *.dsp ~/.config/retroarch/filters/audio/
 Ahora, en RetroArch vamos a "settings->audio->dsp plugin" y seleccionamos "Mono.dsp".
 Y ya está. 
 
--Para no tener nada por pantalla, desactivar mitigations, poner el governor a performance, etc...
+-Para no tener nada por pantalla, desactivar mitigations, poner el governor a ondemand, etc...
 la línea del kernel en cmdline.txt queda así:
 
 console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait video="DPI-1:640x480@60" quiet loglevel=0 logo.nologo vt.global_cursor_default=0 mitigations=off audit=0 mce=ignore_ce nosoftlockup consoleblank=0 cpufreq.default_governor=ondemand
