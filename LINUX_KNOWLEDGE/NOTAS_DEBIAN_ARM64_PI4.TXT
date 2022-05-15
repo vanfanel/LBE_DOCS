@@ -334,8 +334,8 @@ sudo systemctl mask <sevcio>
 KERNEL=="event*", NAME="input/%k", MODE="666"
 Y reiniciamos.
 
--Para quitar el error: "Failed to connect stdout to the journal socket"
-Edita /etc/systemd/system.conf y pon LogTarget a "null" o a "console"
+-Para quitar el error de DMESG: "Failed to connect stdout to the journal socket"
+Edita /etc/systemd/system.conf y pon LogTarget=null.
 
 -Para quitar el error: "Failed to listen on journal socket"
 Mira a ver qué sockets están activos con:

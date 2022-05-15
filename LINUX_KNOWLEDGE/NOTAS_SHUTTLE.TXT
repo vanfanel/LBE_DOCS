@@ -82,6 +82,9 @@ systemctl mask swap.target
 systemctl mask remote-fs.target
 systemctl mask cryptsetup.target
 
+Para quitar el error de DMESG: "Failed to connect stdout to the journal socket"
+Edita /etc/systemd/system.conf y pon LogTarget=null.
+
 Para quitar el error "Unprivileged users are not permitted to log in yet" al conectar por SSH, editamos "/etc/ssh/sshd_config"
 y ponemos "UsePAM" a "no".
 
@@ -113,9 +116,12 @@ card 0: PCH [HDA Intel PCH], device 8: HDMI 2 [HDMI 2]
 Lo probamos con speaker-test:
 speaker-test -c2 -D hw:0,8
 
-Así que ahora creamos /etc/asound.conf con este contenido:
-defaults.pcm.card 0
-defaults.pcm.device 8
+Así que ahora creamos /etc/asound.conf donde especificamos el nombre de la CARD y el número de DEVICE:
+defaults.pcm.!card PCH
+defaults.ctl.!card PCH
+defaults.pcm.!device 8
+defaults.ctl.!device 8
+
 ...Y ya suena todo lo de ALSA por defecto por el HDMI!
 
 INSTALAR MESA

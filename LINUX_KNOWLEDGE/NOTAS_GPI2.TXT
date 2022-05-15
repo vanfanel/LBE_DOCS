@@ -30,20 +30,27 @@ Hay una imágen preparada en el canal de DISCORD de la GPI CASE 2, de momento en
 CONFIGURAR LINUX PARA QUE USE LA PANTALLA DPI DE LA CONSOLA
 ============================================================
 
--Lo que sabemos hasta ahora proviene de este hilo:
-
-https://forums.raspberrypi.com/viewtopic.php?p=1975135#p1975135
+Lo que sabemos proviene cicirifu, autor del Lakka para GPI CASE 2.
+Búscale en Discord, en el server de GPI CASE.
 
 -En config.txt, tenemos que tener esto para configurar la pantalla con los specs del fabricante:
+dtoverlay=vc4-kms-v3d,cma-size=402653184
+dtoverlay=vc4-kms-dpi-generic,clock-frequency=24000000
+dtparam=hactive=640,hfp=41,hsync=40,hbp=41
+dtparam=vactive=480,vfp=18,vsync=9,vbp=18
+dtparam=rgb666-padhi
 
-dtoverlay=vc4-kms-v3d
-dtoverlay=vc4-kms-dpi-generic,hactive=640,hfp=20,hsync=2,hbp=20
-dtparam=vactive=480,vfp=1,vsync=1,vbp=2
-dtparam=clock-frequency=24000000
+-En cmdline.txt tenemos que pasar al kernel esto:
+video="DPI-1:640x480@60"
 
--En cmdline.txt NO HAY QUE PONER NINGÚN PARÁMETRO DE "video=..."
+-Si miramos "aplay -l", veremos que la CARD de audio USB se llama "Device", y que el DEVICE que tiene es el 0.
+En consecuencia, en "/etc/asound.conf" tendremos:
+defaults.pcm.!card Device
+defaults.ctl.!card Device
+defaults.pcm.!device 0
+defaults.ctl.!device 0
 
--Nos falta averiguar qué módulos son necesarios para controlar la pantalla.
+(Podemos confirmar que es correcto si ejecutamos "speaker-test" sin ningún parámetro y funciona).
 
 CONFIGURAR LA DISTRO EXPERIMENTAL DEL LAKKA DEL CANAL "RETROFLAG GPI CASE USERS" DE DISCORD
 ===========================================================================================
