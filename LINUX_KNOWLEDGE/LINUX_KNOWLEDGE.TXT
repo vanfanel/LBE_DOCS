@@ -2957,7 +2957,7 @@ PUES BIEN: A DD LE PASAMOS EL TAMAÑO DE UNIDAD (512) Y EL NÚMERO DE UNIDADES (
 
 sudo dd if=/dev/sdb of=dump.img bs=512 count=8519680 status=progress
 
-Y ya tenemos nuestro volcado, que ocupa lo que ocupan las partiociones, sin volcar el espacio extra al final del disco.
+Y ya tenemos nuestro volcado, que ocupa lo que ocupan las particiones, sin volcar el espacio extra al final del disco.
 
 ***********Extraer una partición de un IMG que contiene la imágen de un disco completo****************************************************
 
