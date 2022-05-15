@@ -504,7 +504,7 @@ NO te molestes en reportarlo, porque el autor de duckstation es un poco gilipoll
 Clonamos el repo donde mantienen la versión no oficial:
 git clone --depth 1 https://github.com/libretro/swanstation.git
 
-Editamos src/duckstation-libretro/libretro_host_interface.cpp y comentamos el contenido de la función
+Editamos src/libretro/libretro_host_interface.cpp y comentamos el contenido de la función
 LibretroHostInterface::UpdateGeometry(), dejándola inutilizada por completo.
 (Esto evita las ralentizaciones cuando el WipeOut hace el efecto de terremoto de pantalla al sufrir un ataque enemigo).
 OJO!!! RECUERDA que debes poner en las opciones del core el ratio a 4:3 porque al comentar UpdateGeometry() no se puede establecer
@@ -512,7 +512,7 @@ bien automáticamente.
 
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON \
+cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
 

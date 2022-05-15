@@ -43,17 +43,30 @@ dtparam=rgb666-padhi
 -En cmdline.txt tenemos que pasar al kernel esto:
 video="DPI-1:640x480@60"
 
--Si miramos "aplay -l", veremos que la CARD de audio USB se llama "Device", y que el DEVICE que tiene es el 0.
-En consecuencia, en "/etc/asound.conf" tendremos:
+-Para el audio, tenemos que seleccionar el CARD/DEVICE por defecto para ALSA, y además, como sólo uno de los canales del estéreo
+está conectado al altavoz, tenemos que conseguir sonido MONO mezclando ambos canales.
+Para ambas cosas (seleccionar el dispositivo, mezclar el sonido en MONO) tenemos que hacer estas cosas.
+Debemos tener esto en /etc/asound.conf:
+
 defaults.pcm.!card Device
 defaults.ctl.!card Device
 defaults.pcm.!device 0
 defaults.ctl.!device 0
 
-(Podemos confirmar que es correcto si ejecutamos "speaker-test" sin ningún parámetro y funciona).
+...Y luego usar el plugin MONO en settings->audio->dsp_plugin.
+Para ello, dentro de los sources de RetroArch, vamos al directorio "libretro-common/audio/dsp_filters" y compilamos los filtros así:
+CFLAGS="-march=native -mtune=native -O2" make -j4
+Ahora copiamos todos los filtros a "~/.config/retroarch/filters/audio/", así:
+cp *.so *.dsp ~/.config/retroarch/filters/audio/
+Ahora, en RetroArch vamos a "settings->audio->dsp plugin" y seleccionamos "Mono.dsp".
+Y ya está. 
 
--Para no tener nada por pantalla, desactivar mitigations, polling rápido de mandos USB, etc... la línea del kernel en cmdline.txt queda así:
-console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait video="DPI-1:640x480@60" quiet loglevel=0 logo.nologo vt.global_cursor_default=0 mitigations=off audit=0 mce=ignore_ce nosoftlockup usbhid.jspoll=1 xpad.cpoll=1
+-Para no tener nada por pantalla, desactivar mitigations, polling rápido de mandos USB, poner el governor a performance, etc...
+la línea del kernel en cmdline.txt queda así:
+
+console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait video="DPI-1:640x480@60" quiet loglevel=0 logo.nologo vt.global_cursor_default=0 mitigations=off audit=0 mce=ignore_ce nosoftlockup usbhid.jspoll=1 xpad.cpoll=1 consoleblank=0 cpufreq.default_governor=performance
+
+(Luego, en config.txt pon arm_freq a 1200 y así se mantendrá constante sin saltos del scheduler porque has puesto el governor a performance).
 
 -Para que el mando se autoconfigure (si es un mando conocido o compatible con uno conocido: la mayoría de ellos los reconoce como XBOX360 PAD)
 tienes que clonar:
@@ -75,12 +88,7 @@ Y elimina ".config/retroarch/cores/core_info.cache".
 
 -La GPI CASE 2 sólo tiene conectado al altavoz UNO de los canales de audio, a pesar de que el sistema de audio es estéreo.
 Así que necesitamos mezclar los dos canales a uno solo, o en sistemas estéreo perdemos la mitad de los sonidos.
-Para ello, dentro de los sources de RetroArch, vamos al directorio "libretro-common/audio/dsp_filters" y compilamos los filtros así:
-CFLAGS="-march=native -mtune=native -O2" make -j4
-Ahora copiamos todos los filtros a "~/.config/retroarch/filters/audio/", así:
-cp *.so *.dsp ~/.config/retroarch/filters/audio/
-Ahora, en RetroArch vamos a "settings->audio->dsp plugin" y seleccionamos "Mono.dsp".
-Y ya está. 
+
 
 CONFIGURAR LA DISTRO EXPERIMENTAL DEL LAKKA DEL CANAL "RETROFLAG GPI CASE USERS" DE DISCORD
 ===========================================================================================
