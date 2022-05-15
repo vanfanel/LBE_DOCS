@@ -2618,7 +2618,7 @@ consoleblank=0
 -Desactivamos el modo turbo para la tarjeta de red, que como cuelga del USB da problemas, con smsc95xx.turbo_mode=N
 -Desactivamos el powerlink de USB con dwc_otg.lpm_enable=0, pero vamos, que creo que viene desactivado por defecto.
 -En el futuro, a partir del kernel 4.12, se podrá especificar el polling rate de los joysticks, para quitar latencia, con usbhid.jspoll=<polling rate>. Míratelo para entonces y añádelo.
- usbhid.jspoll=1 es un buen valor, resultando en 1000Hz de polling rate... lo que ya está muy bien.
+ usbhid.jspoll=1 xpad.cpoll=1 es un buen valor, resultando en 1000Hz de polling rate... lo que ya está muy bien.
  Se puede comprobar una vez arrancado el sistema con evhz, un programa que se baja de aquí: git clone --depth 1 https://gitlab.com/iankelling/evhz
 RECUERDA que tienes que poder PRIMERO quiet, y luego loglevel: EN ESE PRECISO ÓRDEN, o el valor de loglevel será IGNORADO. Tengo cmdline.txt así:
 dwc_otg.lpm_enable=0 smsc95xx.turbo_mode=N console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=noop rootwait consoleblank=0 quiet loglevel=3 fastboot logo.nologo noswap
@@ -5875,26 +5875,32 @@ y activar LINEAR FILTERING.
 -Tienes que habilitar el soporte para PNG (rpng) al configurar
 
 -Necesitas los assets de aquí: https://github.com/libretro/retroarch-assets
-De ese repo, necesitas solamente el directorio xmb en el directorio de assets. El directorio de assets se cambia en el menú o en el cfg. Yo los tengo en ~/retro/assets,
-de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/xmb
+De ese repo, copia los directorios xmb y ozone en el directorio de assets a ~/.config/retroarch/assets
 
 -Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
 git clone --depth 1 https://github.com/libretro/libretro-super.git
 Y mandar el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/cores. Sí, junto con los cores. Así:
 cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
-Ahora en RetroArch, en Settings->File Browser, desactiva todo y activa "Filter Unknows Extensions"
+Ahora en RetroArch, en Settings->Core, desactiva "Cache core info files".
+Y elimina ".config/retroarch/cores/core_info.cache".
+(Si no haces estas últimas dos cosas, no funcionará, y no sabrás por qué).
+
+-Para que el mando se autoconfigure (si es un mando conocido o compatible con uno conocido: la mayoría de ellos los reconoce como XBOX360 PAD)
+tienes que clonar:
+git clone --depth 1 https://github.com/libretro/retroarch-joypad-autoconfig.git
+Y meter el directorio "udev" en ~/.config/retroarch/autoconfig/
+Esto es imprescindible en consolas sin teclado, porque si no, no tienes manera de configurar el mando al arrancar el RetroArch al principio.
 
 -Para poder tener las opciones de escanear directorios y tal, de modo que se nos creen las playlists que es lo que permite que al cargar una ROM
  se cargue automáticamente su core, tienes que activar libretrodb.
  Además, tienes que tener las databases de libretro, de manera que pueda comparar tus roms contra las de las databases.
  Así que te bajas las databases de este repo:
  clone --depth 1 https://github.com/libretro/libretro-database.git
- De ese repo sólo necesitas en realidad el directorio rdb.
- Ahora tienes que configurar el setting "content_database_path" de tal manera que apunte al directorio rdb. Si tengo todo el contenido del repo
- en ~/home/pi/retro/db, pues pongo content_database_path apuntando a ~/home/pi/retro/db.
-Lo puedes hacer desde el propio XMB en Settings > Directory
- Ahora ya debería escanear las ROMS y sacártelas ordenadas por icono de sistema en la parte de arriba, pero si intentas lanzar una te dirá que "not cores found".
- Pues vale, nos vamos a settings > playlist, y ahí podemos asociar los playlists con cores, de tal manera que el playlist de NES cargue el nestopia, etc...
+ Copiamos el directorio "rdb" a "~/.config/retroarch/database" (quedará como ~/.config/retroarch/database/rdb)
+ Ahora ya debería escanear las ROMS y sacártelas ordenadas por icono de sistema en la parte de arriba, pero si intentas lanzar una te dirá
+ que "not cores found".
+ Pues vale, nos vamos a settings->playlist, y ahí podemos asociar los playlists con cores,
+ de tal manera que el playlist de NES cargue el nestopia, etc...
  Por CADA directorio de ROMs escaneado, XMB te va a crear una playlist, donde todas las ROMs de esa playlist se van a abrir con un determinado core. 
  Estas playlist son archivos.lpl que los crea al principio en ~/.config/RetroArch/playlists, pero tenemos el setting playlist_directory.
  Yo lo que he hecho ha sido configurar playlist_directory para que apunte a ~/retro/db/playlists, y ahí he metido las playlists que ya tenía, y ahí meterá XMB las nuevas
@@ -6020,7 +6026,7 @@ a la vez que dan soporte a los programas (un navegador, correo electrónico, men
 lo tienes TODO a la vez y quieres que todo tenga una respuesta buena).
 EN UN SISTEMA EMULADOR ese no es el caso: tienes un proceso y se acabó. NO TIENE SENTIDO un scheduler repartiendo la CPU 1000 veces por segundo,
 con 100 va que chuta. 
-Si quieres elige 250 por aquello de la frecuencia de polling de los USBs, que con usbhid.jspoll=1 puedes leerlos a 1000 Hz, 
+Si quieres elige 250 por aquello de la frecuencia de polling de los USBs, que con "usbhid.jspoll=1 xpad.cpoll=1" puedes leerlos a 1000 Hz, 
 o porque para audio es algo mejor, PUES OLVÍDATE: NO TIENE SENTIDO: EL KERNEL CORRE SOBRE HRTIMERS, QUE SON TIMERS INTERNOS DE ALTA RESOLUCIÓN.
 O sea que EL KERNEL NO CORRE SOBRE EL VALOR DE LOS HZ DEL SCHEDULER: ESTE VALOR SÓLO INFLUYE EN PROGRAMAS MULTITHREAD DONDE LOS THREADS
 ESTÁN "ATADOS" A TIEMPO DE COMPUTACIÓN.
@@ -7441,8 +7447,8 @@ then
     sudo mount /dev/sda1 mnt
 fi
 
-DUDA: SI USO UN KERNEL CON EL SCHEDULER PUESTO A 100HZ, ¿PUEDO ESPECIFICAR usbhid.jspoll=1 QUE HACE QUE LOS USB SE LEAN A 1000HZ?
-=============================================================================================================================
+DUDA: SI USO UN KERNEL CON EL SCHEDULER PUESTO A 100HZ, ¿PUEDO ESPECIFICAR usbhid.jspoll=1 xpad.cpoll=1 QUE HACE QUE LOS USB SE LEAN A 1000HZ?
+==============================================================================================================================================
 
 Sí. El kernel corre sobre HRTIMERS, lo de los 100HZ es la velocidad del sheduler, es decir, cuántas veces por segundo mira a ver qué se ejecuta dónde.
 Son cosas distintas e independientes, la granularidad del kernel es mucho mayor que 100HZ... eso es sólo el scheduler.
@@ -7828,9 +7834,9 @@ El contenido de retroarch.service es:
 Description=RetroArch service
 
 [Service]
-User=pi
-Group=pi
-ExecStart=/home/pi/retro/ragui.sh
+User=root
+Group=root
+ExecStart=/usr/local/bin/retroarch
 Restart=always
 
 [Install]

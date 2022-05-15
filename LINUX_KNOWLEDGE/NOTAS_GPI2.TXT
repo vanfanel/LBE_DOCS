@@ -52,8 +52,35 @@ defaults.ctl.!device 0
 
 (Podemos confirmar que es correcto si ejecutamos "speaker-test" sin ningún parámetro y funciona).
 
--Para no tener nada por pantalla, además de todo lo anterior, la línea del kernel en cmdline.txt queda así:
-console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait video="DPI-1:640x480@60" quiet loglevel=0 logo.nologo vt.global_cursor_default=0
+-Para no tener nada por pantalla, desactivar mitigations, polling rápido de mandos USB, etc... la línea del kernel en cmdline.txt queda así:
+console=tty1 root=PARTUUID=048e5591-02 rootfstype=ext4 fsck.repair=yes rootwait video="DPI-1:640x480@60" quiet loglevel=0 logo.nologo vt.global_cursor_default=0 mitigations=off audit=0 mce=ignore_ce nosoftlockup usbhid.jspoll=1 xpad.cpoll=1
+
+-Para que el mando se autoconfigure (si es un mando conocido o compatible con uno conocido: la mayoría de ellos los reconoce como XBOX360 PAD)
+tienes que clonar:
+git clone --depth 1 https://github.com/libretro/retroarch-joypad-autoconfig.git
+Y meter el directorio "udev" en ~/.config/retroarch/autoconfig/
+Esto es imprescindible en consolas sin teclado, porque si no, no tienes manera de configurar el mando al arrancar el RetroArch al principio.
+
+-Para establecer el directorio de inicio del navegador de RetroArch, uses el GUI que uses, debes editar retroarch.cfg
+y establecer el path con "rgui_browser_directory", como por ejemplo:
+rgui_browser_directory = "~/roms"
+
+-Para que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
+git clone --depth 1 https://github.com/libretro/libretro-super.git
+Y mandar el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/cores. Sí, junto con los cores. Así:
+cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
+Ahora en RetroArch, en Settings->Core, desactiva "Cache core info files".
+Y elimina ".config/retroarch/cores/core_info.cache".
+(Si no haces estas últimas dos cosas, no funcionará, y no sabrás por qué).
+
+-La GPI CASE 2 sólo tiene conectado al altavoz UNO de los canales de audio, a pesar de que el sistema de audio es estéreo.
+Así que necesitamos mezclar los dos canales a uno solo, o en sistemas estéreo perdemos la mitad de los sonidos.
+Para ello, dentro de los sources de RetroArch, vamos al directorio "libretro-common/audio/dsp_filters" y compilamos los filtros así:
+CFLAGS="-march=native -mtune=native -O2" make -j4
+Ahora copiamos todos los filtros a "~/.config/retroarch/filters/audio/", así:
+cp *.so *.dsp ~/.config/retroarch/filters/audio/
+Ahora, en RetroArch vamos a "settings->audio->dsp plugin" y seleccionamos "Mono.dsp".
+Y ya está. 
 
 CONFIGURAR LA DISTRO EXPERIMENTAL DEL LAKKA DEL CANAL "RETROFLAG GPI CASE USERS" DE DISCORD
 ===========================================================================================
