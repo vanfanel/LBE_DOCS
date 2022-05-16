@@ -168,7 +168,7 @@ Para ello:
 	ldconfig
 
 	-Compilamos e instalamos libudev-zero:
-	CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" make -j4
+	CFLAGS="-march=native -mtune=native -O2" make -j4
 	make install
 	(OJO, como sabes, al no especificarle un PREFIX=... a "make install", se instalará en /usr/local, donde están todas mis librerías de
 	 compilación propia, como SDL2, etc.. es lo normal).
@@ -180,7 +180,7 @@ Para ello:
 	tenemos que compilar el helper que trae libudev-zero, instalarlo en /usr/local/bin, y añadir unas líneas a /etc/mdev.conf.
 	Se hace tal que así:
 		cd contrib
-		gcc helper.c -o udevzero-helper -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer
+		gcc helper.c -o udevzero-helper -march=native -mtune=native -O2
 		cp udevzero-helper /usr/local/bin
 	
 		Y ahora añadimos esto a nuestro /etc/mdev.conf (está sacado de contrib/mdev.conf, modificado para que encuentre el helper
@@ -209,7 +209,7 @@ Instalamos dependencias previas:
 apt-get install gperf
 
 Configuramos, compilamos e instalamos, con:
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" ./configure
+CFLAGS="-march=native -mtune=native -O2" ./configure
 make -j4
 make install
 
