@@ -615,8 +615,8 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O3 -fomit-frame-pointer" \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O3 -fomit-frame-pointer"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
 
 make -j4
 
@@ -995,7 +995,7 @@ Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
 Los CXXFLAGS son: -O2 -march=native -mtune=native -O2
 Y añade la línea de optimiación agresiva debajo de la original de CFLAGS:
-CXXFLAGS += -flto -fomit-frame-pointer
+CXXFLAGS += -flto
 (NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
 
 -En mixer.cpp, ajusta el tamanio del buffer de 4096 a 1024
@@ -1477,7 +1477,7 @@ else ifeq ($(platform), rpi2)
    ENDIANNESS_DEFINES := -DLSB_FIRST
    COMMONFLAGS += -DARM
    COMMONFLAGS += -mfloat-abi=hard
-   COMMONFLAGS += -marm -mtune=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -fomit-frame-pointer -fstrict-aliasing
+   COMMONFLAGS += -marm -mtune=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -fstrict-aliasing
    COMMONFLAGS += -DDISABLE_EXCEPTIONS
    COMMONFLAGS += -DC_DYNREC -DC_TARGETCPU="ARMV7LE" -DC_UNALIGNED_MEMORY
    IS_X86 := 0

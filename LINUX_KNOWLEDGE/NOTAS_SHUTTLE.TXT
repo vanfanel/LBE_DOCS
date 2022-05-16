@@ -117,6 +117,8 @@ Lo probamos con speaker-test:
 speaker-test -c2 -D hw:0,8
 
 Así que ahora creamos /etc/asound.conf donde especificamos el nombre de la CARD y el número de DEVICE:
+(OJO: NO debemos especificar la CARD por número, porque el número cambia entre reinicios).
+
 defaults.pcm.!card PCH
 defaults.ctl.!card PCH
 defaults.pcm.!device 8
