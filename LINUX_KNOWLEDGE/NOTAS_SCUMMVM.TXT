@@ -19,8 +19,8 @@ Al pasarle como host la Raspberry Pi (--host=raspberrypi), compilará contra SDL
 
 Para compilación rápida de prueba, sólo con engine SCUMMVM:
 
-CFLAGS="-march=native -mcpu=native -O2" \
-CXXFLAGS="-march=native -mcpu=native -O2" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-debug --enable-release --enable-optimizations \
 --opengl-mode=gles2 --force-opengl-game-es2 --disable-hq-scalers \
 --disable-eventrecorder --disable-cloud --disable-savegame-timestamp \
@@ -40,8 +40,11 @@ Para hacer una release (engines como plugins dinámicos, todos los que vienen ac
 COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
 (Hay que instalar libmpeg2-4-dev para que funcionen los Broken Sword)
 
-CFLAGS="-march=native -mcpu=native -O2" \
-CXXFLAGS="-march=native -mcpu=native -O2" \
+Para que no salga el cursor de sistema, editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse
+comentamos todo el "if" y lo que hay dentro.
+
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-debug --enable-release --enable-optimizations \
 --opengl-mode=gles2 --disable-hq-scalers \
 --disable-eventrecorder --disable-cloud --disable-savegame-timestamp \
@@ -50,13 +53,11 @@ CXXFLAGS="-march=native -mcpu=native -O2" \
 --disable-taskbar --disable-sdlnet --disable-libcurl --enable-plugins --default-dynamic \
 --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,hypno,hadesch,private,stark,ags,asylum,twine,glk
 
+Para tener un tema, copia el archivo gui/themes/scummremastered.zip que viene con los sources a ~/scummvm/themes,
+y en el scummvm pon en PATHS el path de los themes apuntando a gui/themes, y luego en MISC selecciona el tema.
+
 Si no le pasas --opengl-mode=gles2, intentará usar OpenGL normal para el OpenGL-in-game, así que tendrías que editar el configure
 y cambiar -lGL por -lOpenGL.
-
-Para que no salga el cursor de sistema, editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse comentamos todo el "if" y lo que hay dentro.
-
-Para tener un tema, copia el directorio gui/themes/scummremastered que viene con los sources a ~/scummvm/themes,
-y en el scummvm pon en PATHS el path de los themes apuntando a gui/themes, y luego en MISC selecciona el tema.
 
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
 

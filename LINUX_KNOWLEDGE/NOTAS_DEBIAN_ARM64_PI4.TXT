@@ -553,6 +553,7 @@ mkdir b4
 cd b4
 
 Configuramos libdrm con esto:
+
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false \
@@ -583,8 +584,10 @@ Bajamos la última estable de aquí:
 https://gitlab.freedesktop.org/glvnd/libglvnd/-/tags
 mkdir b4
 cd b4
+
 CFLAGS="-march=native -mtune=native -O2" \
 meson -Dglx=disabled -Dx11=disabled ..
+
 ninja -4
 sudo ninja install
 (Y "sudo ninja uninstall" para desinstalar)
@@ -623,10 +626,12 @@ mkdir b4
 cd b4
 
 COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
+
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson -Dglx=disabled -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro \
 -Dglvnd=true -Dbuildtype=release ..
+
 (SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
@@ -682,11 +687,13 @@ https://www.libsdl.org/download-2.0.php
 Ahora, para configurar:
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
+
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA, PERO EN MODO DEBUG:
+
 CFLAGS="-O0 -ggdb -DEGL_NO_X11" ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
 
 (LO DE -DMESA_EGL_NO_X11_HEADERS LO HEMOS SACADO DE /usr/lib/pkgconfig/egl.pc. Como el viejo buildsystem de las SDL2 basado en configure y make no usa pkgconfig para saber qué flags tiene que pasar cuando
