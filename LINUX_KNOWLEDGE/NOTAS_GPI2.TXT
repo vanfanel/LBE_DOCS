@@ -93,8 +93,10 @@ Y elimina ".config/retroarch/cores/core_info.cache".
 -La GPI CASE 2 sólo tiene conectado al altavoz UNO de los canales de audio, a pesar de que el sistema de audio es estéreo.
 Así que necesitamos mezclar los dos canales a uno solo, o en sistemas estéreo perdemos la mitad de los sonidos.
 
--La configuración de audio más óptima es, o bien el driver ALSA con un delay de 64ms, o bien ALSATHREAD con un delay de 32ms.
-Pero ALSA con menos de 64, produce stuttering.
+-La configuración de audio más óptima es, con el driver ALSA siempre:
+	-Si tienes doble buffer de vídeo, un delay de audio de 64ms.
+	-Si tienes triple buffer de vídeo, puedes bajar el delay de audio a 32ms.
+El driver ALSATHREAD con doble buffer suena mal siempre, pasa de él.
 
 CONFIGURAR LA DISTRO EXPERIMENTAL DEL LAKKA DEL CANAL "RETROFLAG GPI CASE USERS" DE DISCORD
 ===========================================================================================

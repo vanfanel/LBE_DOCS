@@ -6187,13 +6187,13 @@ DEVILUTIONX, Diablo en Linux
 ============================
 
 Dependencias previas:
-sudo apt-get install libsodium-dev --no-install-recommends
+sudo apt-get install libsodium-dev libbz2-dev --no-install-recommends
 
 Bajamos la última estable de:
 https://github.com/diasurgical/devilutionX/releases
 
 Configuramos con:
-cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF \
+cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DCMAKE_BUILD_TYPE=Release -DBINARY_RELEASE=ON -DDEBUG=OFF -DASAN=OFF \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 
 Compilamos y metemos en el directorio ~/diablo:
@@ -6497,9 +6497,7 @@ Bajamos la última estable de:
 https://github.com/ihhub/fheroes2/releases
 
 Compilamos con:
-WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
 
-Para Raspberry Pi 4:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
