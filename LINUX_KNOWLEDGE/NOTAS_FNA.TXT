@@ -85,20 +85,22 @@ para el BASTION funciona así)
 
 2--INSTALAR PIPEWIRE
 
-Necesitamos compilar SDL2 para que use PIPEWIRE en lugar de ALSA directamente, y especificar el driver PIPEWIRE cuando lancemos
+Necesitamos compilar SDL2 para que tenga soporte del backend PIPEWIRE, y especificar el driver PIPEWIRE cuando lancemos
 un juego de SDL2.
 
-Esto es porque en la Raspberry Pi, usando el dispositivo de audio vc4-hdmi, NO funciona DMIX por el tema del formato extraño que soporta vc4-hdmi.
+(Esto es porque en la Raspberry Pi, usando el dispositivo de audio vc4-hdmi, NO funciona DMIX por el tema del formato extraño que soporta vc4-hdmi.
 Eso es un problema para los juegos FNA, ya que abren varias veces el mismo dispositivo de audio, cosa imposible sin DMIX porque no
 se pueden reproducir varios streams de audio a la vez.
 Por ello, al no tener DMIX en ALSA, necesitamos un servidor de audio que mezcle los diferentes streams de audio de los juegos.
-Ese servidor de audio es PIPEWIRE.
+Ese servidor de audio es PIPEWIRE.)
 
 Con instalar esto sería suficiente, en teoría, y luego reconfigurar y recompilar SDL2:
 sudo apt-get install libpipewire-0.3-dev
 ...PERO EN DEBIAN 11 ESTO NO ES POSIBLE, PORQUE SÓLO TIENE HASTA PIPEWIRE 0.3.19 Y SDL2 NECESITA PIPEWIRE 0.3.20 MÍNIMO.
 (O sea que cuando salga Debian 12, simplemente instalaremos libpipewire y recompilaremos SDL2, y ya podremos
 borrar el siguiente bloque).
+ADEMÁS, necesitamos un session manager que conecte los programas con el PIPEWIRE. Ese session manager es el WIREPLUMBER,
+que lo vamos a instalar también. Veamos....
 
 ========================================================================================
 ==BLOQUE PARA COMPILAR E INSTALAR PIPEWIRE + WIREPLUMBER A MANO EN DEBIAN 11 BULLSEYE ==
