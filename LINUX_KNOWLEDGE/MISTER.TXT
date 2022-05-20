@@ -309,6 +309,14 @@ RECUERDA que tienes que marcar lo de VENTANA->MOSTRAR->TODOS LOS FICHEROS para p
 -Abres el LHA de actualización con el mARK (en la barra de arriba), lo descomprimes a RAM:, y dentro hay un script de actualización.
 Se ejecuta y ya.
 
+*********APUNTES CORE DE PSX*************************************************************
+
+-Para que cada juego tenga su memory card en forma de .SAV en /media/fat/saves/PSX, mete cada juego en una carpeta que se llame
+exactamente igual que el .CHD del juego (sin la extensión .CHD, claro).
+En el menú debes tener activas las opciones "Automount Memory Card 1" y "Autosave".
+(O si no tienes Autosave, tendrías que darle manualmente a "Save Memory Cards" cada vez que quieras volcalas a la microSD).
+NO necesitas ningún fichero .MCD ni nada por el estilo.
+
 *********HACER QUE EL UPDATE_ALL NO ACTUALIZE LOS CHEATS*********************************
 
 Editamos /media/fat/downloader.ini y añadimos:
@@ -323,4 +331,4 @@ https://github.com/MiSTer-devel/Distribution_MiSTer#list-of-tags-that-you-may-us
 COMO LO VENIMOS HACIENDO AHORA MISMO:
 
 [mister]
-filter = !cheats !acornatom !acornelectron !adventurevision !alicemc10 !altair8800 !amstrad-pcw !apogee !apple-i !aquarius !ay-3-8500 !bk0011m !c16 !channelf !arcadia !archie !astrocade !c16 !chess !chip8 !coco2 !coco3 !coleco !colecovision !edsac !flappybird !galaksija !gameoflife !handheld2p !intellivision !interact !jupiter !laser !laser310 !lynx48 !multicomp !odyssey2 !ondra_spo186 !orao !oric !pdp1 !pet2001 !pmd85 !ql !rx78 !sharpmz !sordm5 !specialist !svi328 !tatungeinstein !ti994a !trs-80 !tsconf !uk101 !vc4000 !vector-06c !vectrex !vic20 !zx81
+filter = !cheats !acornatom !acornelectron !adam !adventurevision !alicemc10 !altair8800 !amstrad-pcw !apogee !apple-i !aquarius !ay-3-8500 !bk0011m !c16 !channelf !arcadia !archie !astrocade !c16 !chess !chip8 !coco2 !coco3 !coleco !colecovision !edsac !flappybird !galaksija !gameoflife !handheld2p !intellivision !interact !jupiter !laser !laser310 !lynx48 !multicomp !odyssey2 !ondra_spo186 !orao !oric !pdp1 !pet2001 !pmd85 !ql !rx78 !sharpmz !sordm5 !specialist !svi328 !tatungeinstein !ti994a !trs-80 !tsconf !uk101 !vc4000 !vector-06c !vectrex !vic20 !zx81

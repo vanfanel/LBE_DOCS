@@ -153,16 +153,8 @@ AUDIO EN DEVUAN
 	 RECUERDA que ninguno de los parámetros hdmi_* de config.txt funciona en modo KMS! El modo de vídeo, por ejemplo,
 	 se establecería añadiendo a cmdline.txt algo como:
 	 video="HDMI-A-1:1280x720@60"
-	-Si falla speakertest, mira que tengas en /usr/share/alsa/cards/vc4-hdmi.conf lo que pone en el post de DOM en
-	 https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769&p=1636828#p1636828
-	 OJO! PARECE QUE SEGÚN SE ACTUALIZA EL KERNEL, LOS CONTENIDOS DE /usr/share/alsa/cards/vc4-hdmi.conf hay que irlos cambiando
-	 a veces. Así que si no te va, mira o pregunta en ese hilo.
-	 (NOTA: Puedes acceder directamente al vc4-hdmi SIN DMIX de por medio mediante la combinación de dispositivo:tarjeta
-	 hw:vc4hdmi0, como en speaker-test con "speaker-test -Dhw:vc4hdmi0", pero no se puede usar directamente porque sólo
-	 acepta un formato llamado IEC958_SUBFRAME_LE).
-	-Si falla algo, pregunta en este hilo a dom:https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769
-     Y YA. CON ESTO TIENE QUE FUNCIONAR SÍ O SÍ. 
-
+	-Si falla speakertest, mira que tengas en /usr/share/alsa/cards/vc4-hdmi.conf exactamente lo mismo que aquí:
+	 https://raw.githubusercontent.com/HiassofT/LibreELEC.tv/le11-alsa/projects/RPi/filesystem/usr/share/alsa/cards/vc4-hdmi.conf
 
 ACTUALIZACIÓN DEL KERNEL Y EL FIRMWARE DE LA RASPBERRY EN DEVUAN
 ================================================================
