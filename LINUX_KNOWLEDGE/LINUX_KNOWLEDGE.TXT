@@ -663,7 +663,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
 
-******Space Cadet pinball en la Raspberry Pi*********
+******Space Cadet pinball en GNU/Linux*********
 
 Bajamos los últimos sources estables de aquí:
 
@@ -680,7 +680,7 @@ make -j4
 Copiamos el ejecutable y los datos del juego (que los tienes ya preparados en el disco duro de backup) y a jugar.
 Puedes ajustar la configuración (fullscreen, uncapped framerate, etc..) usando ~/.local/share/SpaceCadetPinball/imgui_pb.ini
 
-******Juegos JAVA que usan GL/GLES en la Raspberry Pi***************************************************************
+******Juegos JAVA que usan GL/GLES en GNU/Linux*********************************************************************
 
 Lo primero sería compilar esta librería:
 https://github.com/LWJGL/lwjgl3
@@ -907,58 +907,6 @@ Ahora los metes en un WAD (con SLADE en Linux vale para crear WADs)
 Y le pasamos ese WAD con -file así:
 ./russian-heretic -file heretic-music.wad
 
-******Compilar driver VULKAN en la raspberry pi 3 con aarch64*********
-
-Instalamos dependencias previas:
-
-sudo apt-get install --no-install-recommends libmtdev-dev libevdev-dev
-
-VAMOS PRIMERO A POR LAS VULKAN HEADERS (no hace falta compilar nada para instalarlas):
-
-git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Headers.git
-mkdir b3
-cd b3
-cmake ..
-sudo make install
-export VULKAN_HEADERS_INSTALL_DIR=/usr/local
-
-VAMOS AHORA A POR EL VULKAN-LOADER:
-
-git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Loader.git
-mkdir b3
-cd b3
-cmake -DBUILD_WSI_WAYLAND_SUPPORT=OFF -DBUILD_WSI_XLIB_SUPPORT=OFF -DBUILD_WSI_XCB_SUPPORT=OFF ..
-make -j4
-sudo make install
-
-AHORA VAMOS A POR EL DRIVER VULKAN EN SÍ:
-
-Clonamos el repo
-git clone --depth 1 https://github.com/Yours3lf/rpi-vk-driver.git
-
-cd rpi-vk-driver
-
-Editamos CMakeLists.txt y añadimos el flag -fpermissive, para lo cual añadimos estas dos líneas debajo de la línea de cmake_minumun_required...:
-SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fpermissive")
-
-Debajo añadimos también la línea para poner la arquitectura a armv8-a:
-SET(RPI_ARCH "armv8-a")
-
-Editamos test/CMakeLists.txt, y eliminamos la línea:
-add_subdirectory(inputTest)
-(La eliminamos porque este test necesita libinput-dev, que tiene un montón de dependencias absurdas y de todos modos es una librería
-para X11 y Wayland, así que a nosotros nos sobra la librería.. y el test este).
-
-Configuramos y compilamos con:
-mkdir b3
-cd b3
-cmake -DRPI_ARCH=armv8-a ..
-make
-NOS DARÁ ERRORES CON VkImageView. Cada vez que nos de un error de esos, editamos le fichero correspondiente y cambiamos depthImageView por depthImage, y seguimos compilando como si no hubiera pasado nada XD
-
-Ahora instalamos:
-sudo make install
-
 ******Compilando OpenBOR*********************************************************************
 
 Dependencias previas: sudo apt-get install libvpx-dev
@@ -1005,17 +953,17 @@ Paks/bor.pak (0 bytes)
 data (del juego que sea)
 Y ya puedes hacer "./OpenBOR Paks/bor.pak" y te lanzará el juego desempaquetado.
 
-******Another World en la Raspberry Pi******************************************************
+******Another World GNU/Linux******************************************************
 
 Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
 
 -En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
-Los CXXFLAGS son: -O2 -march=native -mtune=native -O2
+Los CXXFLAGS son: -O2 -march=native -mtune=native
 Y añade la línea de optimiación agresiva debajo de la original de CFLAGS:
 CXXFLAGS += -flto
 (NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
 
--En mixer.cpp, ajusta el tamanio del buffer de 4096 a 1024
+-En mixer.cpp, ajusta el tamaño del buffer de 4096 a 1024
 -En systemstub_sdl.cp, descomenta el SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 1) y ponlo como SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear")
 
 Lanzamos con:
@@ -1085,17 +1033,17 @@ El bootloader es el mismo para todos los NZW 37x y los 38x. El ROCKBOX en sí, i
 -Resetea el dispositivo, si hace falta a base de meter algo en el agujero de reset que tiene detrás (a mi no me hizo falta pero tuve que conectarlo por USB para que se "despertara"
 porque no se encendía tras meter el bootloader y el ROCKBOX en la raíz), y se iniciará en ROCKBOX, o deberia.
 
-******Copiar y pegar usando GNU/Screen**********************************************************************************************************************************
+******Copiar y pegar usando GNU/Screen***************************************************************
 
 Hacemos CTRL+A y [ , con lo que nos ponemos en modo copia. Ahora nos ponemos donde queramos empezar a copiar, le damos al espacio, seleccionamos el texto a copiar,
 le damos al espacio otra vez cuando acabemos y al intro para acabar. Ya tenemos el texto copiado a un buffer. Lo pegamos con CTRL+A y luego ] . 
 
-******Cosas a borrar después de actualizar el firmware en una Raspberry Pi...************************************************************************************************
+******Cosas a borrar después de actualizar el firmware en una Raspberry Pi...************************
 
 /lib/modules.bak
 /boot.bak
 
-******GRAFX2 en la Raspberry Pi*******************************************************************************************************************************************
+******GRAFX2 en GNU/Linux****************************************************************************
 
 Si tenemos SDL2 instalado y funcionando, podemos tener este increíble programa de dibujo en 2D que se usa para sprites y gráficos raster!
 Tenemos que tener también SDL2_image con soporte para JPG, PNG y TIFF, así que comprueba que tienes esos formatos soportados al configurar SDL2_image.
@@ -1128,7 +1076,7 @@ Skin_file = skin_modern.png
 Lanzamos con:
 ./grafx2-sdl2 -mode 640x360
 
-******Compilar VICE en la Raspberry Pi*********
+******Compilar VICE en GNU/Linux*********
 Necesitaremos tener instalados los paquetes flex y bison durante la configuración.
 Configuramos con:
 
@@ -1225,30 +1173,6 @@ Miseria y muerte a Microsoft y a todos los malnacidos que trabajan en ella.
 
 /lastlog -file <archivo>.log
 
-*******SDL1 en la Raspberry Pi**********
-
-SDL1 está roto en la Rpi hasta el punto de que con versiones recientes del hardware, a veces tenemos pantallazo negro.
-Para evitarlo, bajamos los dos tar.gz de aquí:
-
-http://malus.exotica.org.uk/~buzz/pi/sdl/sdl1/deb-src/
-
-El más pequeño contiene unos parches que aplicamos con
-
-patch -p1 < nombre_parche.diff
-
-IMPRESCINDIBLE APLICAR EL PARCHE RPI.DIFF!!!! O TENDREMOS PANTALLAZOS NEGROS AL LANZAR PROGRAMAS ALEATORIAMENTE!!!
-
-Configuuramos con mi scrip MAC_ConfigureSDL1.sh que contiene:
-
-CFLAGS="-Ofast -mfpu=vfp -march=armv6j -mfloat-abi=hard" ./configure --disable-video-opengl --disable-video-dispmanx --enable-video-fbcon --disable-video-kms --disable-video-directfb --enable-cdrom --disable-oss --disable-alsatest --disable-pulseaudio --disable-pulseaudio-shared --disable-arts --disable-nas --disable-esd --disable-nas-shared --disable-diskaudio --disable-dummyaudio --disable-mintaudio --disable-video-x11 --prefix="/usr" --disable-input-tslib
-
-make y sudo make install.
-
-El hilo en que se hacía referencia a esto es el siguiente:
-
-https://github.com/raspberrypi/firmware/issues/354
-
-
 *******DOSBOX STAGING en la Pi***************************************************************************************************
 
 Clonamos su repo:
@@ -1271,120 +1195,6 @@ ninja -j4
 Copia al directorio ~/dos tanto el ejecutable dosbox como el subdirectorio subprojects tal cual.
 Cuando lo ejecutes te genera un .conf en ~/.config/dosbox. Cópialo a ~/dos, y se lo puedes pasar a dosbox con:
 ./dosbox -conf dosbox.conf
-
-*******DOSBOX en la Pi**************************************************************************************************************
-
-Clonamos el repo principal, que sigue estando en SF:
-
-svn checkout https://svn.code.sf.net/p/dosbox/code-0/dosbox/trunk dosbox-code-0
-
-Bajamos el último parche de este hilo y lo aplicamos:
-
-https://www.vogons.org/viewtopic.php?f=41&t=34770&start=120
-
-patch -p0 < parche.patch
-
-Editamos el configure, y cambiamos "-g -O2" por los flags:
--O2 -march=native -mtune=native -O2
-porque si no algunos Makefiles van a tener los flags antiguos.
-
-Editamos configure y ponemos a "no" todos los have... relacionados con opengl y x11.
-
-Configuraríamos para SDL2. 
-
-CXXFLAGS="-O2 -march=native -mtune=native -O2" ./configure
-
-Cambiamos "AR = ar" por "AR = gcc-ar" y "RANLIB = ranlib" por "RANLIB = gcc-ranlib" en todos los Makefile (hay varios, en distintos subdirectorios) y forzamos los CFLAGS
-que nos interesan en ellos, ya que no llegan desde el configure a algunos Makefiles, con:
-
-find ./ -name Makefile -exec sed -i 's/AR = ar/AR = gcc-ar/g' {} \;
-
-find ./ -name Makefile -exec sed -i 's/RANLIB = ranlib/RANLIB = gcc-ranlib/g' {} \;
-
-find ./ -name Makefile -exec sed -i 's/-g -O2/-O2 -march=native -mtune=native -O2/g' {} \;
-
-(Siempre que ejecutes configure, te tocará sustutuir AR y RANLIB y reajustar los CFLAGS con el find como acabas de ver, porque el configure lo pone mal otra vez en los makefiles).
-
-Luego en el conf nos interesará tener la opción output=texture o texturenb. Pasa que texturenb a veces falla, usa texture que se ve mejor.
-En renderer pon renderer=auto y fullscreen=true, o no se verá nada. SDL2 luego ya usa el renderer "opengles2" por debajo... Pero dosbox no admite este valor.
-El caso es que no dejes puesto renderer=opengl porque ese no se ve.
-Pon el scaler a none también.
-
-NOTA: A continuación indico cómo activar el cynarec en ARM. No hace falta hacer todo eso, porque ya lo detecta solo, e incluso funciona dynarec para ARMv8.
-
-Hemos encontrado las las instrucciones para dynarec ARM y para UNALIGNED MEMORY ACCESS en estas páginas:
-
-https://www.raspberrypi.org/forums/viewtopic.php?f=78&t=95421
-http://boards.openpandora.org/topic/7544-dosbox-dynrec-update/
-
-El asunto se reduce a dejar config.h con estas cosas así para Pi1:
-
-#define C_DYNREC 1
-#define C_TARGETCPU ARMV4LE
-#define C_UNALIGNED_MEMORY 1
-
-Así para Pi2 y Pi3:
-
-#define C_DYNREC 1
-#define C_TARGETCPU ARMV7LE
-#define C_UNALIGNED_MEMORY 1
-
-Yo esto lo pongo más o menos en la línea 99, debajo de 
-/* Define to 1 to use a unaligned memory access */
-/* #undef C_UNALIGNED_MEMORY */
-...habiendo comentado antes el #define C_TARGETCPU UNKNOWN que hay justo encima. No parece necesario porque lo redefinimos nosotros, pero por si acaso.
-
-Meto el bloque entero y así funciona.
-
-NO TE OLVIDES de usar core=dynamic en el .conf: deberías tener ~35-37% de uso de CPU en TOP.
-
-PUEDES QUITAR el splash screen comentando la parte donde se crea y se usa splash_surf en src/gui/sdlmain.cpp
-
-Ahora sólo queda parchear el refresco de pantalla...Mira a continuación cómo añadir un control de refresco!
-
-AÑADIR CONTROL DE REFRESCO DE PANTALLA DESDE FICHERO DE CONFIGURACIÓN
-=======================================================================
-
-La info actualizada la he sacado de esta versión de dosbox:
-https://github.com/joncampbell123/dosbox-x
-mirando en su vga_draw.cpp.
-
-Empezamos con src/gui/sdlmain.cpp
-Busca la línea donde recupera el valor de "display" del fichero de configuración. Es así esa línea que buscas:
-
-sdl.displayNumber=section->Get_int("display");
-
-Vale, pues justo encima,o debajo, pero por ahí, nosotros vamos a recuperar el valor de "refresh", de este modo:
-      vga.refreshRate=atof(section->Get_string("refresh"));
-      LOG_MSG("Physical refresh rate %f \n", vga.refreshRate);
-
-Ahora tenemos que añadir ese nuevo valor a los valores del fichero. Busca donde se añade el valor "fullscreen", por ejemplo, que es una sección que tiene esta pinta:
-        Pbool = sdl_sec->Add_bool("fullscreen",Property::Changeable::Always,false);
-        Pbool->Set_help("Start dosbox directly in fullscreen. (Press ALT-Enter to go back)");
-
-Pues debajo o así añadimos nosotros refresh, de una forma parecida:
-       // Add refreshrate
-        Pstring = sdl_sec->Add_string("refresh",Property::Changeable::Always,"60.0000");
-        Pstring->Set_help("Screen refresh rate.");
-
-Ahora, nos vamos al fichero include/vga.h, que lo ven tanto vga_draw.cpp como sdl_main.cpp, y en la estructura VGA_Type, al final, añadimos:
-double refreshRate;
-
-Ahora ya lo tenemos: sólo queda irse a src/hardware/vga_draw.cpp y cambiar esto:
-fps=(double)clock/(vtotal*htotal);
-..por esto otro:
-       // Force the VGA refresh rate by setting fps and bending the clock to our will
-        fps=vga.refreshRate;
-        //clock=((double)(vtotal*htotal))*fps;
-
-Por último, a nuestro .conf le añadimos algo como:
-refresh=60.016804;
-Eso debería darnos un refresco de 60.016804 HZ, que es la apropiada con audio a 44100Hz.
-
-CAMBIA BOTONES O TECLAS
-========================
-
-Sacamos el mapper con CTRL+F1. Hacemos los cambios que queramos, y luego el fichero .map lo especificamos en el campo mapperfile del .conf que vayamos a usar.
 
 JUEGOS DE JAVA DE MÓVIL CON FREEJ2ME
 ====================================
@@ -1598,8 +1408,8 @@ Activamos y desactivamos lo que queramos, sobre todo estas cosas:
 -Compilar una RELEASE en vez de una versión DEBUG.
 -Usar libmikmod del sistema, NO el libmikmod incluido que como ya hemos dicho suena mal en la Pi.
 
-Ahora editamos build.vars, y ahí añadimos las CFLAGS y CXXFLAGS de la Pi4:
--march=native -mtune=native -O2
+Ahora editamos build.vars, y ahí buscamos el "-O3" y añadimos las CFLAGS y CXXFLAGS al lado:
+-march=native -mtune=native
 
 Ahora editamos src/libs/graphics/sdl/sdl2_pure.c, y en la llamada de SDL_CreateRenderer(), metemos los flags:
 SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
@@ -1688,7 +1498,7 @@ bind F1 ""
 Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake
 te mande al menú de RA.
 
-*******TYRQUAKE standalone en la Raspberry Pi****************************************************************************************************
+*******TYRQUAKE standalone en GNU/Linux****************************************************************************************************
 
 clonamos su repo:
 git clone --depth 1 git://disenchant.net/tyrquake
@@ -2454,28 +2264,8 @@ Y para revertir los cambios, hacemos:
 patch -R -p1 < parche.diff
 
 **********Usar FIND correctamente**************************************************************************************************************
+
 find . -name 'openmsx'
-
-***********GPSP en la Raspberry Pi**************************************************************************************************************
-
-El único fallo que tiene este emulador es que no calcula bien el ratio si usas por ejemplo una resolución de 640x480.
-Así que editamos gles_video.c y dejamos la última parte de la función video_init() tal que así, a partir de la llamada a gles2_create():
-
-        gles2_create();
-
-        float r = ((float)_width / (float)_height);
-        int h = screen_height;
-        int w = screen_height * r;
-        if (w > screen_width)
-                w = screen_width;
-
-        //h y w son las dimensiones de la ventana en que veremos el juego
-        //screen_width y screen_height son las del display físico
-        glViewport((screen_width-w)/2, (screen_height-h)/2, w, h);
-        SetOrtho(proj, -0.5f, +0.5f, +0.5f, -0.5f, -1.0f, 1.0f, 1.0f ,1.0f );
-        video_set_filter(filter);
-
-Luego ponemos los CFLAGS típicos en el Makefile, compilamos y listo.
 
 ***********ERRROR: Programa no encuentra librería en tiempo de ejecución, pero sí la encuentra en tiempo de linkado (no hay undefined symbols)******
 
@@ -3435,7 +3225,7 @@ Ahora, creamos ~/raze y metemos allí el ejecutable resultante ("raze"), raze.pk
 Para ejecutarlo con el renderer VULKAN, lo lanzamos con: +vid_preferbackend 1
 Puedes desactivar TODO el antialiasing, poner FPS a UNLIMITED, etc
 
-***********EDUKE32: Duke Nukem 3D en la Raspberry Pi*********************************************************************************************
+***********EDUKE32: Duke Nukem 3D en GNU/Linux*********************************************************************************************
 
 Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
 
@@ -3494,7 +3284,7 @@ make -j8 USE_LIBVPX=0 USE_LIBPNG=0 WITHOUT_GTK=1 USE_OPENGL=0 CROSS=bcm2708hardf
 
 Para usar por ejemplo una banda sonora custom, le puedes pasar /x <ruta al archivo .def>
 
-************Schismtracker en la Raspberry Pi con SDL2 y escalado de lujo*******************************************************************
+************Schismtracker en GNU/Linux*******************************************************************
 
 Ni que decir tiene que antes de nada tenemos que tener las SDL2 listas.
 Clonamos el repo que tiene el branch de SDL2:
@@ -3650,7 +3440,7 @@ SI ES UN PARCHE XDELTA3:
 En este caso, tienes que usar el comando xdelta3, NO el xdelta.
 xdelta3 -d -s original parche resultado
 
-************Wolf4SDL (Wolfenstein 3D) en la Raspberry Pi*********************************************************************************
+************Wolf4SDL (Wolfenstein 3D) en GNU/Linux*************************************************************************************
 
 Compilaro y hacerlo funcionar me llevó un rato. Editamos "version.h" y nos vamos a los "defines used for different versions", donde dejamos descomentados
 estos solamente:
@@ -4444,7 +4234,7 @@ do
     fi
 done
 
-*************MiniVMAC en la Raspberry Pi******************************************************************************************
+*************MiniVMAC en GNU/Linux******************************************************************************************
 
 Para compilar la versión más o menos ideal que usa mi backend de Dispmanx, he usado las siguientes opciones:
 
@@ -4584,7 +4374,7 @@ sudo swapon /dev/sda1
 
 ldd <nombre_del_ejecutable>
 
-*************Vanilla-Conquer: Command and Conquer en la Raspberry Pi**************************************************************
+*************Vanilla-Conquer: Command and Conquer en GNU/Linux**********************************************************************
 
 Notas previas:
 -El C&C original se llama "tiberian dawn". Así que el ejecutable es vanillatd, mientras que vanillara es para el RED ALERT.
@@ -4611,7 +4401,7 @@ La primera vez que ejecutemos vanillatd o vanillara, se nos creará .config/vani
 Editamos ese conquer.ini y ponemos Scaler a nearest, etc.
 Queda pendiente que se incorpore un commit que permite ajustar el aspect ratio a 4:3.
 
-*************SONIC CD Y SONIC 1/2 NATIVOS en la Raspberry Pi***********************************************************************************
+*************SONIC CD Y SONIC 1/2 NATIVOS en GNU/Linux***********************************************************************************
 
 Instalamos unas dependencias previas...
 
@@ -4697,8 +4487,7 @@ Copiamos el directorio data que viene con los sources al mismo directorio donde 
 Para que se ejecute en modo fullscreen, sin cambiar resolución, sin escalado XBRZ y con escalado 1x, ejecutamos con:
 ./hcl -f -d -x1 --no-xbrz
 
-
-*************CELESTE nativo en la Raspberry Pi***************
+*************CELESTE nativo en GNU/Linux**************
 
 Clonamos su repo:
 git clone --depth 1 https://github.com/lemon32767/ccleste.git
@@ -4727,7 +4516,7 @@ CCLESTE_START_FULLSCREEN=1 ./ccleste
 
 Se sale con la tecla DELETE
 
-*************MightyMike en la Raspberry Pi*********************
+*************MightyMike en GNU/Linux*********************
 
 git clone --recurse-submodules --depth 1 https://github.com/jorio/MightyMike.git
 
@@ -4746,7 +4535,7 @@ cmake .. \
 
 Copiamos el ejecutable MightyMike y el directorio "Data" que viene con los sources a ~/mightymike
 
-*************Nanosaur en la Raspberry Pi*********************
+*************Nanosaur en GNU/Linux*********************
 
 Clonamos su repo:
 
@@ -4763,11 +4552,11 @@ cmake .. \
 
 Copiamos el ejecutable Nanosaur y el directorio "Data" que viene con los sources a ~/nanosaur
 
-*************Commander Genius en la Raspberry Pi*************
+*************Commander Genius en GNU/Linux*************
 
 Podemos bajarnos una release (lo más recomendado), la última de aquí:
 
-https://gitlab.com/Dringgstein/Commander-Genius/-/tags
+https://gitlab.com/Dringgstein/Commander-Genius/-/releases
 
 O si decidimos clonar el repo, se requieren tres pasos:
 
@@ -4803,7 +4592,7 @@ lo que hay en hqp/keen2 a ~/keen/games/keen2, etc...
 
 También puedes editar cgenius.cfg, y poner EnableLogfile=false para que no te genere un log en HTML cada vez que se ejecuta el juego.
 
-*************Doomretro en la Raspberry Pi*************************************************************************************
+*************Doomretro en GNU/Linux*************************************************************************************
 
 Bajamos la última stable de https://github.com/bradharding/doomretro/releases
 
@@ -4881,7 +4670,7 @@ Metemos los datos del juego en ~/sshock/res/data
 Ejecutamos con:
 ./systemshock -nosplash
 
-*************Chocolate DOOM en la Raspberry Pi con SDL2**********************************************************************
+*************Chocolate DOOM en GNU/Linux**********************************************************************
 
 Usamos el branch sdl2-branch, que clonamos con:
 
@@ -4905,6 +4694,7 @@ Listo!
 NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da igual.
 
 **************SWAP de emergencia*************************************************************************************************
+
 Algunos sistemas, como la Raspberry Pi, no usan swap normalmente porque nos cargaríamos la SD rápido.
 Así que, si necesitamos un swap de emergencia para algo concreto, como compilar o linkar un programa grande que por razones de falta de 
 RAM no se puede compilar en la Pi ni con distcc (esto suele pasar con el linkado, que siempre se hace de manera local), lo mejor es usar un swap
@@ -4926,7 +4716,7 @@ si no queremos colgar el sistema.
 
 Podemos comprobar cómo se usa la swap con "free" mientras se linka.
 
-**************Tyrian en la Raspberry Pi**********************************************************************************************
+**************Tyrian en Linux**********************************************************************************************
 
 Clonamos el repo de:
 
@@ -4946,8 +4736,11 @@ así que irá a unos 30FPS suaves que no está mal).
 -Añadimos SDL_RENDERER_PRESENTVSYNC a SDL_CreateRenderer()
 -Añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear"); antes de la llamada a SDL_CreateRenderer()
 
-Editamos Makefile y añadimos al lado de -O2 los flags de la Pi4:
--march=native -mtune=native -O2
+-Editamos src/keyboard.c y comentamos entera la sección que dice "Show system mouse pointer if outside screen",
+que es simplemente un SDL_ShowCursor() que sobra totalmente.
+
+Editamos Makefile y añadimos al lado de -O2 los flags:
+-march=native -mtune=native
 
 Compilamos con:
 make -j4
@@ -5103,7 +4896,7 @@ Para procesar todo un árbol de directorios quitando esos ridículos ^M de los d
 
 find ./ -name '*.cpp' | xargs dos2unix
 
-**************VIM con color en la Raspberry Pi****************************************************************************************
+**************VIM con color en la TTY***********************************************************************************************
 
 Tan simple como crear .vimrc en mi carpeta de usuario y añadir
 
@@ -5876,11 +5669,11 @@ switchres 1280 720 50 -s -k
 ...O bien compilando RetroArch con soporte para SwitchRes y luego configurando la resolución que queramos en:
 Settings->Video->CRT SwitchRes
 
-****************************Milkytracker en la Raspberry Pi****************************
+****************************Milkytracker en Linux****************************
 
 Para evitar undefined symbols en tiempo de linkado, hacemos:
 
-CFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard -lasound" CXXFLAGS="-Ofast -march=armv6 -mfpu=vfp -mfloat-abi=hard -lasound" ./configure
+CFLAGS="-O2 -march=native -mtune=native -lasound" CXXFLAGS="-O2 -march=native -mtune=native -lasound" ./configure
 
 ***************************Menú XBM en RetroArch con carátulas, autolanzado de cores, etc...**********************************
 
@@ -6256,8 +6049,8 @@ ZELDA OOT EN LINUX
 
 Instrucciones WIP en: https://github.com/mrneo240/ooot-lite/blob/master/Instructions.md
 
-FLARE, un engine RPG libre en la Raspberry Pi
-=============================================
+FLARE, un engine RPG libre en GNU/Linux
+=======================================
 
 Clonamos el repo del engine y del juego:
 git clone --depth 1 https://github.com/flareteam/flare-engine.git
@@ -6277,42 +6070,10 @@ cd flare-game
 cp -R ../flare-engine/mods/default mods/
 cp -R mods ~/flare
 
-Ahora ya podemos ejecutar el juego y activar la campania.
+Ahora ya podemos ejecutar el juego y activar la campaña.
 
-NUVIE (Ultima VI) en la Raspberry Pi
+EXULT, Ultima VII en GNU/Linux
 ==============================
-
-Clonamos:
-
-git clone --depth 1 https://github.com/nuvie/nuvie.git
-
-Ejecutamos el autogen.sh
-
-Añadimos 
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-en screen/Screen.cpp, justo antes de SDL_CreateWindowAndRenderer()
-
-Configuramos así:
-
-CFLAGS="-march=native -mtune=native -O2" \
-CXXFLAGS="-march=native -mtune=native -O2" ./configure --disable-debug
-
-Compilamos:
-
-make -j8
-
-Creamos el directorio ~/ultima6 donde meteremos el ejecutable "nuvie" resulante, y allí dentro copiamos el directorio data que viene con los surces, 
-y creamos otro directorio ultima6data donde metemos todos los datos del juego.
-O sea que nos tiene que quedar:
-~/ultima6/nuvie  <---Este es el ejecutable que hemos generado
-~/ultima6/data/<aquí los contenidos originales del directorio data de los sources>
-~/ultima6/ultima6data/<aquí los datos originales del juego>
-
-En ~/.nuvierc tenemos que poner el gamedir apuntando a ./ultima6data
-Si queremos ajustar cosas, en ~/.nuvierc (puedes poner <show_console> a "no", por ejemplo...)
-
-EXULT, Ultima VII en la Raspberry Pi
-====================================
 
 Cosas que debemos instalar previamente:
 sudo apt-get install autoconf automake libtool
@@ -6370,8 +6131,8 @@ AR Correction: Disabled
 
 Y listo!
 
-LOVE2D en la Raspberry Pi (love)
-============================
+LOVE2D en GNU/Linux (love)
+==========================
 
 Bajamos los últimos source estables de:
 https://github.com/love2d/love/releases
@@ -6387,8 +6148,8 @@ cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
 
 Instala copiando el ejecutable love donde quieras.
 
-INSTALAR JACKD2 EN LA RASPBERRY PI
-=================================
+INSTALAR JACKD2 GNU/LINUX
+=========================
 FUENTES: http://jrigg.co.uk/linuxaudio/jack2debian7.html
 		 http://jackaudio.org/faq/linux_rt_config.html
 
@@ -6444,7 +6205,7 @@ Y aunque la pudieras bajar da igual porque la latencia de audio que tienes viene
 Con esos 21ms hay algo de cracking, así que mejor nos quedamos con el driver ALSA y ya.
 
 UN SCRIPT PARA DETECTAR SI ESTAMOS EN UNA RPI
-===========================================
+=============================================
 
 if grep -q BCM2708 /proc/cpuinfo; then
         echo "Estamos en una Raspberry Pi"
@@ -6519,18 +6280,18 @@ El fichero de configuración es ~/.config/fheroes2/fheroes2.cfg
 Se genera cuando ejecutas el engine por primera vez.
 Ahí puedes ponerlo a pantalla completa, activar el vsync, hacer que no salga la cutre-intro con "show game intro = off", etc.
 
-LIBOPENAL en la Raspberry Pi
-============================
+LIBOPENAL en GNU/Linux
+======================
 
 Por si alguna vez lo necesitas para algo.
 Bajamos la última release de: https://github.com/kcat/openal-soft/tags
 Configuramos así:
-cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF \
+cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_PIPEWIRE=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 
-STUNT CAR RACER EN LA RASPBERRY PI
-==================================
+STUNT CAR RACER EN GNU/LINUX
+============================
 
 Instalamos una dependencia previa (a parte de openal, justo encima lo tienes):
 sudo apt-get install libglm-dev
@@ -6544,8 +6305,8 @@ SDL_GL_SetSwapInterval(1);
 Compilamos con:
 make -j4 LINUX=1 SDL=2 DEBUG=0
 
-ELDRITCH en la Raspberry Pi
-===========================
+ELDRITCH en GNU/LINUX
+=====================
 
 Clonamos su repo:
 git clone --depth 1 https://github.com/ptitSeb/Eldritch.git
@@ -6638,8 +6399,8 @@ Queda pendiente investigar el setting de lzdoom.ini: gl_es
 
 Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
 
-NETHACK EN LA RASPBERRY PI
-==========================
+NETHACK EN GNU/LINUX
+====================
 
 Se instala con:
 
@@ -6654,8 +6415,8 @@ porque Nethack necesita que nos movamos en diagonal (o se gasta comida innecesar
 
 Para salir del juego, pulsa #, escribe quit, y dale al intro.
 
-DUNGEON CRAWL STONE SOUP EN LA PI
-=================================
+DUNGEON CRAWL STONE EN GNU/LINUX
+================================
 
 Instalamos una dependencias previas (se puede compilar contra LUA o contra LUA-JIT, que es más rápido en la Pi):
 sudo apt-get install libluajit-5.1-dev python3-yaml
@@ -6798,8 +6559,8 @@ sudo apt-get install iotop
 Nos permite ver cuánto se ha escrito en disco, estadísticas después de dejarlo correr minutos u horas, etc:
 iotop -oPa
 
-XASH3D, ENGINE DE HALF LIFE EN LA RASPBERRY PI
-=============================================
+XASH3D, ENGINE DE HALF LIFE EN GNU/LINUX
+========================================
 
 Clonamos el repo de:
 git clone --depth 1 https://github.com/FWGS/xash3d.git
@@ -6848,7 +6609,7 @@ Para fluidsynth haríamos algo como:
 sudo fluidsynth --audio-driver=alsa -s Downloads/WeedsGM3.sf2
 
 INSTALAR VARIOS SISTEMAS OPERATIVOS EN LA RASPBERRY PI SIN DHCP, USANDO IP ESTÁTICA
-================================================================================
+===================================================================================
 
 Usamos NOOBS (nos vale tanto la version light esa como la completa) pero hacemos algunas modificaciones a capón.
 Arrancamos el NOOBS este y nos vamos a la consola TTY2 con CTRL+ALT+F2
@@ -6999,9 +6760,11 @@ Bajamos la última versión estable de libepoxy desde:
 https://github.com/anholt/libepoxy/releases
 
 Configuramos, compilamos e instalamos:
+
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson -Dx11=false ..
+
 ninja -j4
 sudo ninja install
 
@@ -7246,8 +7009,8 @@ make install
 Para desinstalar, es a mano porque no hay uninstall, y se haría con:
 rm /usr/local/sbin/wpa_*
 
-GLEW EN LA RASPBERRY PI
-=======================
+GLEW EN GNU/LINUX
+=================
 
 GLEW es usado por los Sonic-1-2-2013 y SonicCD decompilation projects, por Scummvm para el render OpenGL de los juegos 3D
 (NO para el modo OpenGL de los juegos 2D, y a parte para el render de los juegos 3D también se puede usar GLES2, así que
@@ -7493,7 +7256,9 @@ SDL_ShowCursor(SDL_DISABLE);
 Ahora edita el Makefile y:
 -Pon sound a NONE si no quieres sonido en modo texto (sin SDL). En sfrotz el sonido va por las SDL,
  así que usa SFROTZ para los juegos que tienen sonido, y ya.
--Comenta la línea de los CFLAGS del -g, y en la que tiene el -O3, y añade el flag -fsigned-char y los flags propios de la Pi4.
+-Comenta la línea de los CFLAGS del -g, y deja así la línea de los CFLAGS:
+CFLAGS="-march=native -mtune=native -fsigned-char"
+(Los valores de align y tal no tienen sentido porque los valores son incorrectos, -O2 ya activa los valores correctos).
 
 Ahora compila con "make frotz" (hay "make sfrotz" para SDL, etc...)
 Y sudo make install
@@ -7572,8 +7337,8 @@ Y la línea de LDFLAGS quedará así:
 jpeg/libjpeg.a -lSDL2 -lSDL2_mixer -lz -lfreetype -lpng
 (Como ves, no le pasamos -ljpeg, sino que directamente le pasamos la librería estática al linker y listo).
 
-CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN LA RASPBERRY PI
-=================================================================================
+CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN GNU/LINUX
+=========================================================================
 
 Instalamos los paquetes requeridos para usar hcitools y todo eso:
 
@@ -8087,8 +7852,8 @@ widescreen=false
 ...Donde data_pc es un directorio donde están los datos del juego (ver README para saber qué archivos se necesitan).
 Las teclas son las flechas F, G y H.
 
-Neverball en la Raspberry Pi
-============================
+Neverball en GNU/LINUX
+======================
 
 Clonamos su repo en:
 git clone --depth 1 https://github.com/Neverball/neverball.git
@@ -8098,8 +7863,8 @@ CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 make ENABLE_OPENGLES=1 ENABLE_FS=stdio ENABLE_NLS=0 BUILD=release -j4
 
-VVVVVV en la Raspberry Pi
-=========================
+VVVVVV en GNU/LINUX
+===================
 
 Entramos en su repo y clonamos
 
@@ -8348,8 +8113,8 @@ sudo apt-get upgrade
 Opcionalmente, si quieres, puedes quitar el hold del paquete del kernel al acabar, haciendo:
 sudo apt-mark unhold raspberrypi-kernel
 
-REVENGE OF TITANS EN LA RASPBERRY PI
-====================================
+REVENGE OF TITANS EN GNU/LINUX
+==============================
 
 Hay un tutorial aquí:
 https://www.raspberrypi.org/forums/viewtopic.php?t=290589
