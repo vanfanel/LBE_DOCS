@@ -17,28 +17,10 @@ PATH=$PATH:$HOME/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin
 
 Al pasarle como host la Raspberry Pi (--host=raspberrypi), compilará contra SDL2 automáticamente, porque se pone _sdl-config a sdl2-config.
 
-Para compilación rápida de prueba, sólo con engine SCUMMVM:
-
-CFLAGS="-march=native -mtune=native -O2" \
-CXXFLAGS="-march=native -mtune=native -O2" \
-./configure --disable-debug --enable-release --enable-optimizations \
---opengl-mode=gles2 --force-opengl-game-es2 --disable-hq-scalers \
---disable-eventrecorder --disable-cloud --disable-savegame-timestamp \
---enable-mt32emu --enable-nuked-opl --disable-timidity --disable-flac --disable-alsa \
---enable-vorbis --disable-mad --disable-tremor --disable-theoradec \
---disable-taskbar --disable-sdlnet --disable-libcurl --enable-plugins --default-dynamic \
---disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,private,twine,stark,adl,agi,mohawk,dreamweb,grim,groovie,agos,ags,kyra,saga,sci,sky,made,neverhood,toon,ultima,sword1,sword2,xeen,glk,hadesch,twine,asylum,stark
-
-Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
-
-*********COMPILAR SCUMMVM EN LOCAL EN LA PI***************
-
-==PARA RELEASE, CON PLUGINS DINÁMICOS==
-
-Para hacer una release (engines como plugins dinámicos, todos los que vienen activados por defecto estarán activados, necesitarás libjpeg-dev, libpng-dev y libvorbis-dev, aunque estos no tienen por qué ser sus nombres exatctos, para engines como Sword 2.5 o Wintermute):
+*********COMPILAR SCUMMVM***************
 
 COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
-(Hay que instalar libmpeg2-4-dev para que funcionen los Broken Sword)
+Dependencias previas: apt-get install libmpeg2-4-dev
 
 Para que no salga el cursor de sistema, editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse
 comentamos todo el "if" y lo que hay dentro.
@@ -70,6 +52,9 @@ Tienes que hacer un par de cambios en el script configure:
 -ve a sección "Check for endianness" y pon _endian=little sin que se haga la comprobación (el problema es que el objeto generado para testear ahí el endianness,
 si lo compilas con -flto, no contendrá las cadenas que se buscan. No lo vamos a arreglar, así que ponemos el endianness manualmente y listo.
 
+==PARA RELEASE, CON PLUGINS DINÁMICOS==
+
+Para hacer una release (engines como plugins dinámicos, todos los que vienen activados por defecto estarán activados, necesitarás libjpeg-dev, libpng-dev y libvorbis-dev, aunque estos no tienen por qué ser sus nombres exatctos, para engines como Sword 2.5 o Wintermute):
 
 *************Compilar core Scummvm para RetroArch******************************************************************************************
 

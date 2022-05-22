@@ -606,11 +606,14 @@ ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
 
 ******Compilar el core SameBoy (GB/GBC) para Raspberry Pi 4**********
 
-Lo primero, clona este repo:
+Lo primero, clona este repo PERO usa la versión 0.5.2 porque la actual no funciona:
 
-git clone --depth 1 https://github.com/gbdev/rgbds.git
+git clone https://github.com/gbdev/rgbds.git
+git fetch --tags
+git checkout v0.5.2
+make -j4
 
-Simplemente compílalo con el Makefile que trae, y copia a mano a /usr/local/bin los ejecutables generados: rgbasm, rgbgfx y rgblink.
+Ahora copia a mano a /usr/local/bin los ejecutables generados: rgbasm, rgbgfx y rgblink.
 
 Ahora clona el repo del SameBoy upstream:
 
@@ -980,14 +983,13 @@ apt-get install libmodplug-dev --no-install-recommends
 
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
-CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=native -mtune=native -O2
+CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=native -mtune=native
 
-Editamos sdl_systemstub.cpp y cambiamos:
+Editamos systemstub_sdl.cpp y cambiamos:
 desired.samples = 2048;
 por
 desired.samples = 512;
-Y también aniadomos SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
-Así mismo, cambia SDL_INIT_JOYSTICK por SDL_INIT_GAMECONTROLLER en SDL_Init() si quieres joystick.
+Y también añadimos SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
 
 Creamos el directorio data y allí metemos los datos de la versión MS-DOS.
 Dentro de data creamos music y ahí metemos los MODs de:
@@ -3912,7 +3914,9 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 Hay que leer el INSTALL para saber cómo se compila, pero esencialmente:
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_BACKEND=SDL2 -DOPENGL_BACKEND=None -DDISABLE_WERROR=1 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_BACKEND=SDL2 -DOPENGL_BACKEND=None -DDISABLE_WERROR=1 \
+-DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DDISABLE_VIDEOCORE=1 \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
 
 make -j4
 
@@ -4398,8 +4402,8 @@ Creamos el directorio ~/cc, y metemos ahí los datos del juego.
 Copiamos el ejecutable (vanillatd para el C&C original, o vanillara para el RED ALERT) al directorio del juego, y listo!
 
 La primera vez que ejecutemos vanillatd o vanillara, se nos creará .config/vanilla-conquer/[vanillatd|vanillara]/conquer.ini
-Editamos ese conquer.ini y ponemos Scaler a nearest, etc.
-Queda pendiente que se incorpore un commit que permite ajustar el aspect ratio a 4:3.
+(A NO SER que tengamos un conquer.ini entre los datos del juego, en cuyo caso lo primero es borrar ese conquer.ini).
+Editamos ese conquer.ini y ponemos Scaler a "linear", etc.
 
 *************SONIC CD Y SONIC 1/2 NATIVOS en GNU/Linux***********************************************************************************
 
