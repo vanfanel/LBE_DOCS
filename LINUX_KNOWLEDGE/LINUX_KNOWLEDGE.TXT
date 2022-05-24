@@ -118,6 +118,9 @@ chdman createcd -i image.cue -o image.chd
 Y para comprimir todos los CUE/BIN de un directorio a CHD:
 for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd"; done
 
+Y para extraer todos los CHD de un directorio a CUE/BIN:
+for i in *.chd; do chdman extractcd -i "$i" -o "${i%.*}.cue"; done
+
 Y para extraer de CHD a CUE/BIN:
 chdman extractcd -i image.chd -o image.cue -ob image.bin
 
