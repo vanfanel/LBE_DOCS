@@ -451,6 +451,11 @@ para que resamplee de los 70HZ a los ~60HZ de nuestro monitor (a cambio de la su
 La configuración general (ciclos, emulación de la CPU usada, tarjetas de vídeo y audio, etc) se hace desde las OPTIONS del core.
 Y luego, para que en el inicio monte un directorio y se meta en él, debes pasarle un .conf que sólo haga eso, así:
 
+[autoexec]
+mount c: ~/root/dos/superfrog
+sf.exe
+exit
+
 PARA EL TECLADO COMPLETO: En SETTINGS->INPUT->HOTKEYS, en HOTEY ENABLE pon la tecla WINDOWS/PI (se llama "lsuper", lo verás al darle)
 y déjalo así para todos los cores.
 
