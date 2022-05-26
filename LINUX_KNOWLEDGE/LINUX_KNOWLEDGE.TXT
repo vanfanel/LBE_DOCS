@@ -7265,6 +7265,8 @@ SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
 -Añade esta línea antes de que se creen la ventana y el renderer
 SDL_ShowCursor(SDL_DISABLE);
 
+Ahora edita src/curses/ux_init.c y comenta el bloque de "I won't run as root".
+
 Ahora edita el Makefile y:
 -Pon sound a NONE si no quieres sonido en modo texto (sin SDL). En sfrotz el sonido va por las SDL,
  así que usa SFROTZ para los juegos que tienen sonido, y ya.
