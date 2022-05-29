@@ -631,7 +631,7 @@ Y entramos en el directorio "libretro" y compilamos con:
 
 make platform=rpi4_64 -j4
 
-******Compilar el core FLYCAST (UPSTREAM) para Raspberry Pi 4********
+******Compilar el core FLYCAST (UPSTREAM) en GNU/Linux********
 
 Clonamos su repo:
 git clone --depth 1 https://github.com/flyinghead/flycast.git
@@ -653,7 +653,36 @@ Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
-******Core PCSX2 libretro****************************
+******Compilar FLYCAST STANDALONE en GNU/Linux*******
+
+git clone --depth 1 https://github.com/flyinghead/flycast.git
+git submodule update --init
+
+Configuramos y compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+
+Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
+Y ya podemos lanzar juegos en GDI, CDI o CHD.
+
+******Compilar core MAME libretro con soporte sólo para unos ciertos drivers************
+
+git clone --depth 1 https://github.com/libretro/mame.git
+
+Ahora, editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
+SOURCES = src/mame/drivers/dlair.cpp,src/mame/drivers/dlair2.cpp
+
+Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+REGENIE=1 make -f Makefile.libretro -j4
+
+******Compilar core PCSX2 libretro****************************
 
 Instalamos dependencia previa:
 sudo apt-get install liblzma-dev
