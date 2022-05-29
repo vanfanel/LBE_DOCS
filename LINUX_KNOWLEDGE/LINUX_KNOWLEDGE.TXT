@@ -684,6 +684,9 @@ REGENIE=1 make -f Makefile.libretro -j4
 
 ******Compilar DOLPHIN standalone en GNU/Linux****************
 
+Dependencias previas:
+sudo apt-get install libevdev-dev
+
 git clone --depth 1 https://github.com/dolphin-emu/dolphin.git
 git submodule update --init
 
