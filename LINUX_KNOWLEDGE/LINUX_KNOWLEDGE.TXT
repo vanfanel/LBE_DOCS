@@ -682,6 +682,17 @@ CFLAGS="-O2 -march=native -mtune=native -O2" \
 CXXFLAGS="-O2 -march=native -mtune=native -O2" \
 REGENIE=1 make -f Makefile.libretro -j4
 
+******Compilar DOLPHIN standalone en GNU/Linux****************
+
+git clone --depth 1 https://github.com/dolphin-emu/dolphin.git
+git submodule update --init
+
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DENABLE_QT=OFF -DENABLE_PULSEAUDIO=OFF -DENABLE_LLVM=OFF -DENABLE_TESTS=OFF -DUSE_DISCORD_PRESENCE=OFF \
+-DUSE_MGBA=OFF -DENABLE_AUTOUPDATE=OFF -DUSE_UPNP=OFF -DENABLE_ANALYTICS=OFF -DENCODE_FRAMEDUMPS=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+
 ******Compilar core PCSX2 libretro****************************
 
 Instalamos dependencia previa:
