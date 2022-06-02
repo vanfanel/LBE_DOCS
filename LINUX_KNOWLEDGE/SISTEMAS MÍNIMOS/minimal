@@ -114,9 +114,9 @@ modprobe xpad
 #done
 
 # Re-montamos el root como lectura/escritura.
-# Podríamos la opción "sync" después de otra coma para que las escrituras
-# sean inmediatas, lo que mejora mucho la predictibilidad del sistema
-# al no haber escrituras retardadas.
+# Podríamos poner la opción "sync" después de otra coma para que las escrituras
+# sean inmediatas, lo que mejora mucho la predictibilidad del sistema al no haber
+# escrituras retardadas.
 mount -o remount,rw,noatime,nodiratime /
 
 # Montamos también la partición de BOOT
