@@ -448,6 +448,11 @@ En TIMING->FRAME TIMING MODE->EXTERNAL
 Y para que los juegos a 70HZ también vayan suaves, "SETTINGS->AUDIO->SYNCHRONIZATION->MAXIUM TIMING SKEW" a 20% o más,
 para que resamplee de los 70HZ a los ~60HZ de nuestro monitor (a cambio de la suavidad, el se oirá sonido un poco ralentizaaaaaado).
 
+Para evitar que el sonido vaya ralentizaaaaaado en los juegos de 70Hz, editamos src/hardware/vga_draw.cpp y cambiamos esto:
+fps=(double)clock/(vtotal*htotal);
+por esto:
+fps=(double)60;
+
 La configuración general (ciclos, emulación de la CPU usada, tarjetas de vídeo y audio, etc) se hace desde las OPTIONS del core.
 Y luego, para que en el inicio monte un directorio y se meta en él, debes pasarle un .conf que sólo haga eso, así:
 
@@ -6102,7 +6107,41 @@ Si aun así da error, borra el fichero con el que da error (el tool que da el er
 ZELDA OOT EN LINUX
 ==================
 
-Instrucciones WIP en: https://github.com/mrneo240/ooot-lite/blob/master/Instructions.md
+PARTE 1: EXTRACCIÓN DE LOS DATOS
+
+Dependencias previas:
+sudo apt-get install libglew-dev libbz2-dev
+
+Clonamos el repo principal del proyecto SOH:
+
+git clone --depth 1 -b zelda64 https://github.com/HarbourMasters/Shipwright.git
+(Sí, incluso para la extracción de datos, necesitamos que si estamos en un sistema de 64 bits, usemos los sources para 64 bits). 
+
+Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
+y la copiamos a "OTRExporter/baserom.z64".
+Ahora nos vamos al directorio "soh" de los sources, y hacemos:
+make setup
+
+PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ
+
+Clonamos el branch "zelda64" del repositorio:
+
+git clone --depth 1 -b zelda64 https://github.com/HarbourMasters/Shipwright.git
+
+Editamos libultraship/libultraship/Lib/Fast3D/gfx_glx.cpp y le ponemos un "#if 0" al principio y un "#endif" al final.
+Editamos libultraship/Window.cpp y comentamos la parte en la que se asume que Linux usa PulseAudio,
+y la inclusión de libultraship/PulseAudioPlayer.h
+Editamos libultraship/libultraship/PulseAudioPlayer.cpp y metemos todo entre un "#if 0" al principio y un "#endif" al final.
+
+Entramos en el directorio "soh", y hacemos:
+
+make -j2
+(OJO, -j4 nos consume la RAM y la compilación falla).
+
+PROBLEMAS
+-Dependencia de PA
+-Dependencia de GLX
+-Dependencia de GLEW
 
 FLARE, un engine RPG libre en GNU/Linux
 =======================================
