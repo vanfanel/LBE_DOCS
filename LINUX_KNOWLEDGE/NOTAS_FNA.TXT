@@ -122,8 +122,8 @@ Configuramos y compilamos con meson así:
 
 CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
-meson -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
--Dv4l2=disabled -Dpipewire-v4l2=disabled -Dudev=disabled -Ddbus=disabled -Dsession-managers='' -Dman=disabled ..
+meson -Dsession-managers='' -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
+-Dv4l2=disabled -Dpipewire-v4l2=disabled -Dudev=disabled -Ddbus=disabled -Dman=disabled ..
 
 ninja -j4
 sudo ninja install
