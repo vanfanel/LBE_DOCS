@@ -147,7 +147,11 @@ es una configuración especial que vale PRECISAMENTE para cuando queremos usar P
 y queremos que WIREPLUMBER sea el session manager para los programas que usan PIPEWIRE.
 Si tuviéramos un session manager en el sistema, usaríamos el pipewire.conf "normal", no el minimal, pero no es nuestro caso).
 
-git clone --depth 1 https://gitlab.freedesktop.org/pipewire/wireplumber.git
+Nos bajamos la última estable de:
+https://gitlab.freedesktop.org/pipewire/wireplumber/-/releases
+
+Configuramos y compilamos así:
+
 mkdir b4
 cd b4
 
