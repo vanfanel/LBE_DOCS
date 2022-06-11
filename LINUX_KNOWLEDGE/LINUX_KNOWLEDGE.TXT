@@ -6117,10 +6117,17 @@ Clonamos el repo principal del proyecto SOH:
 git clone --depth 1 -b zelda64 https://github.com/HarbourMasters/Shipwright.git
 (Sí, incluso para la extracción de datos, necesitamos que si estamos en un sistema de 64 bits, usemos los sources para 64 bits). 
 
+Editamos soh/Makefile y en las LDLIBS ponemos "ultraship" y "storm" por encima de las demás.
+
+Editamos ZAPDTR/Makefile y cambiamos la línea de LDFLAGS por esta, que tiene el órden correcto de linkado:
+LDFLAGS := -L../StormLib/build -L../libultraship -lultraship -lpng -lSDL2 -lpulse -lX11 -lGLEW -lGL -lstorm -lz -lbz2
+Y movemos "$(LDFLAGS)" antes de "lib/libgfxd/libgfxd.a" en la regla de ZAPD.out
+
+
 Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
 y la copiamos a "OTRExporter/baserom.z64".
 Ahora nos vamos al directorio "soh" de los sources, y hacemos:
-make setup
+make setup -j4
 
 PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ
 

@@ -108,7 +108,7 @@ que lo vamos a instalar también. Veamos....
 
 Lo primero es instalar los últimos MESON y NINJA, porque los que trae DEBIAN 11 BULLSEYE son viejos y las versiones
 actuales de pipewire necesitan versiones actuales para compilar:
-sudo apt-ger purge ninja meson
+sudo apt-get purge ninja meson
 sudo apt install python3-pip --no-install-recommends
 python3 -m pip install ninja
 python3 -m pip install meson
@@ -123,7 +123,7 @@ Configuramos y compilamos con meson así:
 CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 meson -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
--Dv4l2=disabled -Dpipewire-v4l2=disabled -Dudev=disabled -Ddbus=disabled -Dman=disabled ..
+-Dv4l2=disabled -Dpipewire-v4l2=disabled -Dudev=disabled -Ddbus=disabled -Dsession-managers='' -Dman=disabled ..
 
 ninja -j4
 sudo ninja install
@@ -134,7 +134,7 @@ sudo ldconfig
 Ahora editamos "/usr/local/share/pipewire/minimal.conf", y:
 -Comentamos el dispositivo "source" (porque la Pi no tiene dispositivo de grabación, y si no lo comentamos da error).
 -En el dispositivo "sink", que está justo debajo (los sink son los dispositivos que "consumen" audio) hacemos los siguientes cambios:
-	-Ponemos el valor "device" a "hdmi:vc4hmi0"
+	-Ponemos el valor "device" a "hdmi:vc4hdmi0"
 	-Ponemos a false los valores "resample.disable" y "channelmix.disable"
 	-Descomentamos la sección "node.param.Props", donde como ves se espedifica el formato del audio a S16 y esto es necesario.
 	-Ponemos "support.dbus" a "false"
