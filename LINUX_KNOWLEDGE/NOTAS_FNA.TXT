@@ -34,9 +34,13 @@ Los juegos suelen traer su propio FNA.dll, y de hecho el FNA.dll es el mismo en 
 pero nos conviene compilar TODO EL ECOSISTEMA FNA, ya que algunas sub-librerías de FNA pueden necesitar cambios.
 (Por ejemplo, BASTION sólo funciona tras parchear FNA3D, como veremos, que es una sub-librería de FNA).
 
-Clonamos su repo:
-git clone --depth 1 https://github.com/FNA-XNA/FNA.git
-git submodule update --init --recursive
+Bajamos el último ZIP de los sources estables de aquí:
+https://github.com/FNA-XNA/FNA/releases
+(OJO, debe ser el ZIP, si no le faltarán las dependencias internas y como no es un repo git no podemos hacer
+el típico "git submodule update --init --recursive").
+
+Descomprimimos tranquilamente (NO nos deja nada tirado, tranquilo!)
+unzip FNA-<versión>.zip
 
 Compilamos con:
 make release -j4
@@ -58,20 +62,18 @@ para el BASTION funciona así)
 		cmake .. -DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer"
 
+		make -j4
+
 		cp libFAudio.so* ~/bastion/game/lib64/
 
-	-(OPCIONAL: ESTO ES UN HACK Y SÓLO ES PARA BASTION Y NO VA BIEN, QUEDA AQUÍ CON FINES DOCUMENTALES, PERO NO LO HAGAS)
-	Entramos en FNA3D (que incluye libmojoshader estáticamente linkado así que NO hay que compilar libmojoshader a parte) y hacemos:
-		-Editamos lib/FNA3D/src/FNA3D_Driver_OpenGL.c, nos vamos a "static int32_t XNAToGL_TextureInternalFormat[]"
-		y cambiamos GL_RGB5_A1, GL_RGBA4 y GL_RGBA8 por GL_BGRA.
-		(Sí, GL_BGRA aparecerá varias veces en la matriz, no hay problema, es lo que queremos: que aparezca GL_BGRA
-		en vez de GL_RGB5_A1, GL_RGBA4 y GL_RGBA8).
-		-Compilamos con:
+	-Entramos en lib/FNA3D y hacemos:
 		mkdir b4
 		cd b4
 
 		cmake .. -DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer"
+		
+		make -j4
 		
 		cp libFNA3D.so* ~/bastion/game/lib64/
 
