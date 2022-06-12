@@ -8249,6 +8249,21 @@ Tienes que montar la ISO desde la barra superior cuando estés ejecutando la má
 
 -OJO: Usa USB 2.0 en los dispositivos USB del VirtualBox (en Settings->USB), si usas USB 3.0 probablemente no funcione.
 
+EXTRAER ARCHIVOS DE SWITCH EN LINUX
+===================================
+
+Clonamos el repo de la herramienta que se usa:
+git clone --depth 1 https://github.com/jakcron/nstool.git
+git submodule update --init
+
+compilamos:
+make deps -j4
+make -j4
+
+Para extraer simplemente hacemos:
+
+nstool -x ./extract_dir/ some_file.nsp
+
 AMS (Advanced Mac Substitute) en LINUX
 =======================================
 
