@@ -6104,8 +6104,26 @@ rm tools/audiofile/libaudiofile.a
 make clean
 Si aun así da error, borra el fichero con el que da error (el tool que da el error seguramente ya lo hayas borrado antes).
 
-ZELDA OOT EN LINUX
-==================
+SM64-COOP, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
+==================================================
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/djoslin0/sm64ex-coop
+
+Metemos la ROM en el directorio raiz de los sources como "baserom.us.z64"
+
+Compilamos así:
+
+make TARGET_RPI=1 DISCORD_SDK=0 BETTERCAMERA=0 -j4
+
+----PARA HOSTEAR O CONECTARNOS A UNA PARTIDA----
+
+Busca e instala, en Aurora Store, el "FWD PORT FORWARDER".
+(Es totalmente opensource y está en github, solo que no está en FDRoid).
+
+ZELDA OOT EN GNU/LINUX
+======================
 
 PARTE 1: EXTRACCIÓN DE LOS DATOS
 
