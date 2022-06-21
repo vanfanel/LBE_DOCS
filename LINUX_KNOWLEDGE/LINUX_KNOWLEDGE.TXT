@@ -436,22 +436,19 @@ git clone --depth 1 https://github.com/realnc/dosbox-core.git
 Entramos en el directorio "libretro" y hacemos:
 
 COMMONFLAGS="-march=native -mtune=native" \
-make -j4 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
+make -j2 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0
 
+(No uses -j4 en la Pi4 con 2GB porque se agota la RAM y no compila).
 (Desactivo FLUIDSYNTH porque compila un montón de mierdas como libsndfile y demás que consumen CPU,
  con la emulación de GRAVIS vas que chutas en DOS).
 (También desactivo la emulación de tarjetas Voodoo, el PINHACK que es para ver completas las mesas de pinball sin scroll, etc).
 
 Para que todo vaya suave, en OPTIONS del core:
 En TIMING->FRAME TIMING MODE->EXTERNAL
+Para evitar que el sonido vaya ralentizaaaaaado en los juegos de 70Hz, ponemos "TIMING->VGA_REFRESH" a 60.
 Y para que los juegos a 70HZ también vayan suaves, "SETTINGS->AUDIO->SYNCHRONIZATION->MAXIUM TIMING SKEW" a 20% o más,
-para que resamplee de los 70HZ a los ~60HZ de nuestro monitor (a cambio de la suavidad, el se oirá sonido un poco ralentizaaaaaado).
-
-Para evitar que el sonido vaya ralentizaaaaaado en los juegos de 70Hz, editamos src/hardware/vga_draw.cpp y cambiamos esto:
-fps=(double)clock/(vtotal*htotal);
-por esto:
-fps=(double)60;
+para que resamplee de los 70HZ a los ~60HZ de nuestro monitor.
 
 La configuración general (ciclos, emulación de la CPU usada, tarjetas de vídeo y audio, etc) se hace desde las OPTIONS del core.
 Y luego, para que en el inicio monte un directorio y se meta en él, debes pasarle un .conf que sólo haga eso, así:
@@ -941,7 +938,7 @@ make -j4
 Copiamos el directorio "src/base" tal cual (tiene wads dentro para el engine) a ~/heretic
 cp -R src/base ~/heretic/
 
-Copiamos los ejecutables inter-* (que están en src) a ~/doom
+Copiamos los ejecutables inter-* (que están en src) a ~/heretic
 cp src/inter-* ~/heretic/
 
 Ejecutamos el juego por primera vez para que nos genere russian-heretic.ini.
