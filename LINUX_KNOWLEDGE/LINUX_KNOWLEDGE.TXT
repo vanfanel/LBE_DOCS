@@ -445,8 +445,8 @@ WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WIT
 (También desactivo la emulación de tarjetas Voodoo, el PINHACK que es para ver completas las mesas de pinball sin scroll, etc).
 
 Para que todo vaya suave, en OPTIONS del core:
-En TIMING->FRAME TIMING MODE->EXTERNAL
-Para evitar que el sonido vaya ralentizaaaaaado en los juegos de 70Hz, ponemos "TIMING->VGA_REFRESH" a 60.
+En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
+Para evitar que el sonido vaya ralentizaaaaaado en los juegos de 70Hz, ponemos "TIMING->OVERRIDE EMULATED VIDEO REFRESH RATE" a 60.
 Y para que los juegos a 70HZ también vayan suaves, "SETTINGS->AUDIO->SYNCHRONIZATION->MAXIUM TIMING SKEW" a 20% o más,
 para que resamplee de los 70HZ a los ~60HZ de nuestro monitor.
 
