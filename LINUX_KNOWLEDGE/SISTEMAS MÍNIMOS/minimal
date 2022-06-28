@@ -105,8 +105,9 @@ modprobe xpad
 
 # Aquí elegiríamos el governor de cada core, ahora que ya tenemos el sysfs
 # preparado y cargados los módulos que permiten controlar la frecuencia
-# de la CPU, pero NO lo hacemos aquí sino añadiendo a la línea de parámetros
-# del kernel: "cpufreq.default_governor=performance".
+# de la CPU, pero NO lo hacemos aquí sino poniendo force_turbo=1 en config.txt,
+# o añadiendo a la línea de parámetros del kernel:
+# "cpufreq.default_governor=performance".
 # Esto está aquí sólo a efectos de documentación de cómo setear cosas en sysfs.
 #for numcore in 0 1 2 3
 #do

@@ -1,0 +1,48 @@
+LAKKA ESTABLE EN PICADE
+=======================
+
+Nos bajamos la última versión estable de LAKKA (Pi4 aarch64) de aquí:
+http://www.lakka.tv/get/linux/rpi/
+
+Lo único especial que hay que hacer es hacer funcionar el PIHAT para el tema de los controles, y decirle qué salida de audio queremos usar.
+Veamos cómo hacemos todo ello.
+
+Entramos en Lakka por SSH (tenemos que activar el servicio SSH en LAKKA y conectamos a una WIFI, y podremos ver la IP
+de la máquina en INFORMATION->NETWORK INFORMATION. La contraseña para el usuario root es "root").
+
+Nos descargamos este fichero:
+https://github.com/pimoroni/picade-hat/archive/master.zip
+Lo descomprimimos.
+
+Ahora compilamos el dts (viene instalado todo lo necesario):
+dtc -I dts -O dtb -o picade.dtbo picade.dts
+
+Montamos la partición de arranque como lectura/escritura, porque vamos a hacer varios cambios en ella
+y LAKKA la monta como sólo lectura:
+
+mount -o remount,rw /flash
+
+Ahora copiamos el dtbo resultante y unas rules de udev cada cosa a su sitio:
+cp picade.dtbo /flash/overlays/
+cp etc/udev/rules.d/10-picade.rules /etc/udev/rules.d/10-picade.rules
+
+Ahora editamos /flash/cmdline.txt y añadimos:
+video="HDMI-A-1:1024x768@60"
+
+Ahora editamos /flash/config.txt y añadimos:
+hdmi_force_hotplug=1
+dtoverlay=picade
+dtparam=audio=off
+arm_freq=1800
+..Y ponemos force_turbo a 1, para que siempre vaya la CPU a velocidad máxima.
+
+Ahora, como ya hemos acabado, re-montamos la partición de arranque como sólo lectura:
+mount -o remount,ro /flash
+
+Ahora reiniciamos Lakka, nos vamos a SETTINGS->AUDIO->OUTPUT y en DEVICE ponemos (a mano) lo siguiente:
+sysdefault:CARD=sndrpihifiberry
+
+Como driver de vídeo, por ahora elegimos GL, ya que con VULKAN reporta una frecuencia de pantalla errónea.
+
+Puedes bajar la latencia de audio a 32ms sin problemas con el driver ALSA.
+Para que se vea bien con el shader crt-pi y escalado INTEGER puesto a OFF, puedes subir el SCANLINE GAP BRIGHTNESS a 0.80.
