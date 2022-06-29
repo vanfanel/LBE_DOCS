@@ -45,4 +45,5 @@ sysdefault:CARD=sndrpihifiberry
 Como driver de vídeo, por ahora elegimos GL, ya que con VULKAN reporta una frecuencia de pantalla errónea.
 
 Puedes bajar la latencia de audio a 32ms sin problemas con el driver ALSA.
-Para que se vea bien con el shader crt-pi y escalado INTEGER puesto a OFF, puedes subir el SCANLINE GAP BRIGHTNESS a 0.80.
+Para que se vea bien con INTEGER puesto a OFF, puedes coger el shader FAKELOTTES, copiarlo a LAKKA_DISK/shaders, y comentar la curvatura
+y las "extra masks" en el código del shader (de ese modo no pierdes mucha velocidad debido al shader).
