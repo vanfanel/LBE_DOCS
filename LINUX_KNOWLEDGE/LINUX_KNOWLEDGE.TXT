@@ -5773,7 +5773,7 @@ Esto es imprescindible en consolas sin teclado, porque si no, no tienes manera d
  Yo lo que he hecho ha sido configurar playlist_directory para que apunte a ~/retro/db/playlists, y ahí he metido las playlists que ya tenía, y ahí meterá XMB las nuevas
  que vaya creando.
 
--Si además quieres fotos de las carátulas, etc.. en las playlist, pues te bajas los thumbnails de aquí: http://thumbnailpacks.libretro.com/
+-Si además quieres fotos de las carátulas, etc.. en las playlist, pues te bajas los thumbnails de aquí: https://thumbnails.libretro.com/
  Los mandas a donde quieras, hay que descomprimir el zip. y luego apuntas el setting thumbnails_directory a ese directorio. Por ejemplo, yo me creé ~/home/pi/retro/db/thumbnails,
 o sea, mandé los thumbnails a un directorio bajo retro/db, y ahí dentro tengo Atari\ -\ 7800, etc...
 Pues  pongo thumbnails_directory apuntando a ~/home/pi/retro/db/thumbnails. Así de sencillo. Lo puedes hacer desde el propio XMB en Settings > Directory

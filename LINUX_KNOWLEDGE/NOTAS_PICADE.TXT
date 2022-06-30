@@ -50,3 +50,21 @@ Para que se vea bien con INTEGER puesto a OFF, puedes coger el shader FAKELOTTES
 y comentar la curvatura y las "extra masks" en el código del shader (de ese modo no pierdes mucha velocidad debido al shader).
 Puedes usar el mismo shader para los juegos verticales si le pones SCANLINE INTENSITY a 0: Crea un directorio arcade_vertical
 para meter allí todos los juegos verticales, y luego salva los parámetros del shader para ese directorio solamente.
+
+Para tener carátulas (thumbnails) debes hacer que LAKKA añada los juegos a una PLAYLIST, y tener los THUMNAILS del sistema correspondiente
+en /storage/thumbnails. AMBAS COSAS se tienen que cumplir para que se vean.
+Eso se hace yendo a IMPORT CONTENT->MANUAL SCAN y ahí en CONTENT DIRECTORY seleccionamos el directorio que queremos escanear,
+en SYSTEM NAME elegimos "FBNeo - Arcade Games", en DEFAULT CORE elegimos "Arcace (Final Burn Neo)",
+en ARCADE DAT FILE elegimos la última versión del fichero "Final Burn Neo (ClrMame Pro XML, Arcade only)" que nos podemos bajar de:
+https://github.com/libretro/FBNeo/tree/master/dats
+(Yo suelo meter el DAT en /storage/roms/Downloads)
+...Y una vez que lo tenemos todo le damos a START SCAN abajo del todo y esperamos.
+Esto tenemos que hacerlo contra ROMs descargadas de https://www.retroroms.info, yéndonos a "FBNeo" y luego a "currentroms",
+ya que son las más actuales y se supone que son contra las que se ha creado el DAT.
+
+Otra manera más automática sería dándole a IMPORT CONTENT (el icono que tiene un signo "[+]")
+y luego a SCAN DIRECTORY y entrando en el directorio de ROMs que quieras escanear. Déjalo acabar y en el menú principal te saldrá
+la nueva playlist. Ahora puedes irte a SETTINGS->PLAYLISTS->MANAGE PLAYLISTS y asignarle un DEFAULT CORE a cada una de ellas, o borrarla
+o lo que quieras. PERO tienen las versiones de las ROMs tienen que coincidir con las del DAT que trae el LAKKA, y es un lio porque
+unos juegos te van a coincidir con el DAT de un core, y otros con el DAT de otro core. Así que HAZLO CON "MANUAL SCAN" COMO SE HA EXPLICADO
+ANTES.
