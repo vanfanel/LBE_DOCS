@@ -7901,14 +7901,14 @@ Dentro del directorio Data de los datos del engine, si te fijas verás que hay d
 Nos interesa el directorio Dos_CD: ahí es donde meteremos los datos del juego en su versión DOS, que tiene más colores. Sólo nos hace falta el archivo CF_ENG.DAT.
 Por si te lo preguntas, los datos de Amiga aún no parecen funcionar bien con el engine, da segfaults y movidas. Pero con la versión DOS, la música suena también en MOD, así que nos vale.
 
-HEART OF DARKNESS en linux (HODE)
-=================================
+HEART OF DARKNESS en GNU/Linux (HODE)
+=====================================
 
 Bajamos la última versión de los sources de:
 http://cyxdown.free.fr/hode/
 
 Editamos el Makefile:
--Quitamos el -g y añadimos en su lugar los FLAGS: -O2 -march=native -mtune=native -O2
+-Quitamos el -g y añadimos en su lugar los FLAGS: -O2 -march=native -mtune=native
 
 Editamos system_sdl2.cpp  y:
 
