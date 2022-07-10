@@ -63,6 +63,57 @@ por una versión del último kernel Linux, aunque no coincidan las versiones del
 Te vale la de la última versión de Raspberry Pi OS o de tu sistema custom.
 Si no actualizas "/flash/overlays/vc4-kms-dpi-generic.dtbo" siempre se va a ver desplazado a la derecha.
 
+-PARA EL APAGADO SEGURO AL DARLE AL INTERRUPTOR:
+	-Creamos el directorio /storage/scripts
+	-Nos bajamos el script de apagado seguro y lo guardamos ahí:
+	wget https://raw.githubusercontent.com/333mhz/GPiCase2-Script/main/lakka_SafeShutdown_gpi2.py -O /storage/scripts/shutdown.py
+	-PARA QUE LAKKA lance al inicio el script "shutdown.py", lo metemos en "/storage/.config/autostart.sh":
+	echo "python /storage/scripts/shutdown.py &" >> /storage/.config/autostart.sh
+	(Posiblemente no tengas aún el fichero "/storage/.config/autostart.sh", esto lo creará y listo.
+	-Editamos "/storage/scripts/shutdown.py" y de la parte de __main__ eliminamos toda referencia a "audiofix" y a "lcdrun",
+	y las propias funciones "audiofix" y "lcdrun".
+	Si quieres ahorrar tiempo, dejamos el contenido de "shutdown.py" tal que así:
+
+#######################EMPIEZA EL CONTENIDO DE "SHUTDOWN.PY"########################
+	
+import RPi.GPIO as GPIO
+import os
+import time
+from multiprocessing import Process
+
+powerPin = 26
+powerenPin = 27
+
+#initialize GPIO settings
+def init():
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(powerPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(powerenPin, GPIO.OUT, initial=GPIO.HIGH)
+        GPIO.output(powerenPin, GPIO.HIGH)
+        GPIO.setwarnings(False)
+
+#waits for user to hold button up to half a second before issuing poweroff command
+def poweroff():
+        while True:
+                GPIO.wait_for_edge(powerPin, GPIO.FALLING)
+                os.system("systemctl stop retroarch")
+                time.sleep(0.5)
+                os.system("systemctl poweroff")
+
+if __name__ == "__main__":
+        #initialize GPIO settings
+        init()
+        #create a multiprocessing.Process instance for each function to enable parallelism
+        powerProcess = Process(target = poweroff)
+        powerProcess.start()
+        powerProcess.join()
+        GPIO.cleanup()
+
+#######################FIN CONTENIDO DE "SHUTDOWN.PY"###############################
+
+-Para que no se vean letras en la consola y desactivar las mitigations, añade a cmdline.txt:
+mitigations=off vt.global_cursor_default=0 console=null
+
 CONFIGURAR LINUX PARA QUE USE LA PANTALLA DPI DE LA CONSOLA
 ============================================================
 

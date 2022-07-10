@@ -62,7 +62,7 @@ https://github.com/libretro/FBNeo/tree/master/dats
 Esto tenemos que hacerlo contra ROMs descargadas de https://www.retroroms.info, yéndonos a "FBNeo" y luego a "currentroms",
 ya que son las más actuales y se supone que son contra las que se ha creado el DAT.
 
-Otra manera más automática sería dándole a IMPORT CONTENT (el icono que tiene un signo "[+]")
+Otra manera (¡¡¡¡¡NO RECOMENDADA!!!!) más automática sería dándole a IMPORT CONTENT (el icono que tiene un signo "[+]")
 y luego a SCAN DIRECTORY y entrando en el directorio de ROMs que quieras escanear. Déjalo acabar y en el menú principal te saldrá
 la nueva playlist. Ahora puedes irte a SETTINGS->PLAYLISTS->MANAGE PLAYLISTS y asignarle un DEFAULT CORE a cada una de ellas, o borrarla
 o lo que quieras. PERO tienen las versiones de las ROMs tienen que coincidir con las del DAT que trae el LAKKA, y es un lio porque
