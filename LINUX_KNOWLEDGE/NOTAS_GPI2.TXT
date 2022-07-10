@@ -25,7 +25,42 @@ Una vez que se haya flasheado, ya podemos acceder a las particiones boot y root 
 LAKKA EN LA GPI CASE 2
 ======================
 
-Hay una imágen preparada en el canal de DISCORD de la GPI CASE 2, de momento en la sala de betatesting.
+-Bajamos la última versión estable de LAKKA para Raspberry Pi 4 (aarch64) de:
+
+La flasheamos en la CM4.
+(Para ello, ya sabes que debes ejecutar "rpiboot" y encender la consola, y una vez hecho esto ya puedes flashearla con dd).
+
+-Clonamos el repo:
+git clone --depth 1 https://github.com/333mhz/GPiCase2-Script.git
+
+-Copiamos el archivo "GPi_Case2_patch_lakka3.6/patch_files/config_lcd.txt" a "LAKKA/config.txt".
+Arrancamos LAKKA, que aunque tarde un poco ya se verá por la pantalla interna de la consola.
+
+-En Settings->Audio->Output->Device ponemos "default:Device".
+¡OJO con las minúsculas y mayúsculas!
+
+(Puedes comprobar el audio interno de la consola conectándote por SSH y haciendo:
+aplay -L
+speaker-test -Ddefault:Device)
+
+-Para hacer cambios en config.txt o cmdline.txt, hacemos:
+mount -o remount,rw /flash
+Y ya podemos guardar los cambios.
+
+-En cmdline.txt tenemos que pasar al kernel esto:
+video="DPI-1:640x480@60"
+
+-En config.txt, tenemos que tener esto para configurar la pantalla con los specs del fabricante:
+dtoverlay=vc4-kms-v3d,cma-size=402653184
+dtoverlay=vc4-kms-dpi-generic,clock-frequency=24000000
+dtparam=hactive=640,hfp=41,hsync=40,hbp=41
+dtparam=vactive=480,vfp=18,vsync=9,vbp=18
+dtparam=rgb666-padhi
+
+-Para que la pantalla aparezca centrada, debes sustituir "/flash/overlays/vc4-kms-dpi-generic.dtbo"
+por una versión del último kernel Linux, aunque no coincidan las versiones del kernel.
+Te vale la de la última versión de Raspberry Pi OS o de tu sistema custom.
+Si no actualizas "/flash/overlays/vc4-kms-dpi-generic.dtbo" siempre se va a ver desplazado a la derecha.
 
 CONFIGURAR LINUX PARA QUE USE LA PANTALLA DPI DE LA CONSOLA
 ============================================================
