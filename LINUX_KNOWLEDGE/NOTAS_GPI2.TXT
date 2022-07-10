@@ -26,6 +26,7 @@ LAKKA EN LA GPI CASE 2
 ======================
 
 -Bajamos la última versión estable de LAKKA para Raspberry Pi 4 (aarch64) de:
+http://www.lakka.tv/get/linux/rpi/
 
 La flasheamos en la CM4.
 (Para ello, ya sabes que debes ejecutar "rpiboot" y encender la consola, y una vez hecho esto ya puedes flashearla con dd).
