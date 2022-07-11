@@ -97,7 +97,7 @@ def poweroff():
         while True:
                 GPIO.wait_for_edge(powerPin, GPIO.FALLING)
                 os.system("systemctl stop retroarch")
-                os.system("systemctl poweroff")
+                os.system("poweroff -p -f")
 
 if __name__ == "__main__":
         #initialize GPIO settings
@@ -110,10 +110,20 @@ if __name__ == "__main__":
 -Para que no se vean letras en la consola y desactivar las mitigations, añade a cmdline.txt:
 mitigations=off vt.global_cursor_default=0 console=null
 
+-Para tener sonido completo (la consola sólo tiene uno de los canales soldado al altavoz mono que trae...),
+en RetroArch vamos a "settings->audio->dsp plugin" y seleccionamos "Mono.dsp".
+
 -Para desactivar el logo de LAKKA, que aparece deformado porque no está preparado para pantallas de 4:3, haz:
 touch /flash/oemsplash.png
 Si quieres un logo, tienes que usar una imágen de exactamente 1024x768. Esto es muy fácil, porque puedes bajar
 una imágen del tamaño que quieras y en GIMP, usando IMAGE->CANVAS SIZE puedes dejarla del tamaño que quieras sin deformarla.
+
+-Como shader, usa fakelottes modificado: copia los shaders slang crt (para obtener los shaders slang
+clona el repo https://github.com/libretro/slang-shaders.git) a /storage/shaders, edita /storage/shaders/crt/shaders/fakelottes.slang,
+y deja comentara la curvatura, extra masks y scanlines.
+Ahora, para poder elegir el shader fakelottes customizado que acabamos de hacer, ve a settings->directory y pon "video shaders"
+apuntando a /storage/shaders.
+Recomiendo usar ShadowMask 2.00, CRT Gamma a 2.65 y Monitor Gamma a 2.60. 
 
 CONFIGURAR LINUX PARA QUE USE LA PANTALLA DPI DE LA CONSOLA
 ============================================================
