@@ -97,22 +97,23 @@ def poweroff():
         while True:
                 GPIO.wait_for_edge(powerPin, GPIO.FALLING)
                 os.system("systemctl stop retroarch")
-                time.sleep(0.5)
                 os.system("systemctl poweroff")
 
 if __name__ == "__main__":
         #initialize GPIO settings
         init()
-        #create a multiprocessing.Process instance for each function to enable parallelism
-        powerProcess = Process(target = poweroff)
-        powerProcess.start()
-        powerProcess.join()
+        poweroff()
         GPIO.cleanup()
 
 #######################FIN CONTENIDO DE "SHUTDOWN.PY"###############################
 
 -Para que no se vean letras en la consola y desactivar las mitigations, añade a cmdline.txt:
 mitigations=off vt.global_cursor_default=0 console=null
+
+-Para desactivar el logo de LAKKA, que aparece deformado porque no está preparado para pantallas de 4:3, haz:
+touch /flash/oemsplash.png
+Si quieres un logo, tienes que usar una imágen de exactamente 1024x768. Esto es muy fácil, porque puedes bajar
+una imágen del tamaño que quieras y en GIMP, usando IMAGE->CANVAS SIZE puedes dejarla del tamaño que quieras sin deformarla.
 
 CONFIGURAR LINUX PARA QUE USE LA PANTALLA DPI DE LA CONSOLA
 ============================================================
