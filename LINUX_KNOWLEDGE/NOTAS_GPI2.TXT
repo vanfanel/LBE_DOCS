@@ -123,7 +123,7 @@ clona el repo https://github.com/libretro/slang-shaders.git) a /storage/shaders,
 y deja comentara la curvatura, extra masks y scanlines.
 Ahora, para poder elegir el shader fakelottes customizado que acabamos de hacer, ve a settings->directory y pon "video shaders"
 apuntando a /storage/shaders.
-Recomiendo usar ShadowMask 2.00, CRT Gamma a 2.65 y Monitor Gamma a 2.60. 
+Recomiendo usar ShadowMask 2.00, CRT Gamma a 2.65 y Monitor Gamma a 2.80. 
 
 CONFIGURAR LINUX PARA QUE USE LA PANTALLA DPI DE LA CONSOLA
 ============================================================

@@ -99,6 +99,18 @@ USAR SHADERS CUSTOM
 ===================
 
 Los shaders custom los puedes meter en STORAGE/shaders
-Luego los tienes que seleccionar desde el menú de Emulation Station, no desde RetroArch, cambiar los parámetros del shader que quieras,
-salvarlo como GLOBAL PRESET, y luego elegir en Emulation Station "RetroArch.glsl" como shader (que es donde queda guardado el global preset).
-Eso o, supongo, cambiar el directorio de los shaders en RetroArch, en SETTINGS->DIRECTORIES.
+Luego entras en RetroArch, te vas a SETTINGS->DIRECTORY y en VIDEO SHADER seleccionas el directorio STORAGE/SHADER.
+Luego seleccionas el shader que quieras, cambias los parámetros del shader a tu gusto, y le das salvar como GLOBAL PRESET.
+Luego, en Emulation Station, vas a GAME SETTNIGS y eliges "RetroArch.glsl" como shader (que es donde queda guardado el global preset
+que acabamos de salvar).
+Tras eso, ya controlas el shader desde RetroArch.
+
+INSTALAR LOS PORTS
+==================
+
+Nos vamos a:
+https://amberelec.org/portmaster.html
+Y nos bajamos la última versión estable del ZIP. Lo descomprimimos en /STORAGE/roms/ports, y ya podemos instalar lo que queramos.
+Para (desinstalar, es a mano: borra el .sh y el directorio del port que quieras eliminar de /STORAGE/roms/ports, y listo.)
+Para los shaders de los ports que son cores de libretro, tienes que volver a hacer lo que acabo de explicar en "USAR SHADERS CUSTOM",
+porque los settings para los ports van a parte.
