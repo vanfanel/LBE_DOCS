@@ -98,6 +98,20 @@ LYNX BIEN
 -Mete lynxboot.img en roms/bios
 -Las ROMS que te valen son las mismas que las que usas en la MiSTer.
 
+MINIMIZAR EL TIEMPO DE ARRANQUE
+===============================
+
+Entra por SSH y deshabilita estos servicios:
+
+systemctl mask pulseaudio
+systemctl mask avahi-daemon
+systemctl mask connman-vpn
+systemctl mask debug-shell
+systemctl mask userconfig
+systemctl mask swap.service
+systemctl mask swap.target
+systemctl mask wait-time-sync.service
+
 USAR SHADERS CUSTOM
 ===================
 

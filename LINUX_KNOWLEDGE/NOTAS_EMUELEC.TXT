@@ -60,14 +60,15 @@ systemctl mask pulseaudio
 systemctl mask avahi-daemon
 systemctl mask connman-vpn
 systemctl mask debug-shell
-systemctl mask systemd-journald
-systemctl mask systemd-journald.socket
-systemctl mask systemd-journald-dev-log.socket
 systemctl mask userconfig
 systemctl mask swap.service
 systemctl mask swap.target
+systemctl mask wait-time-sync.service
 
---NO quites el servicio systemd-logind si quieres que la máquina se hiberne pulsando una vez el botón de powe.
+--NO quites el servicio systemd-logind si quieres que la máquina se hiberne pulsando una vez el botón de power.
+
+--Para saber qué volúmen tienes puesto en alsa, puedes usar "amixer" e ir viendo cómo cambian los valores al darle
+a los botones de volúmen.
 
 --SERVICIOS QUE HACEN FALTA PARA ACCEDER POR SSH:
 connman
