@@ -6377,8 +6377,8 @@ https://github.com/ihhub/fheroes2/releases
 
 Compilamos con:
 
-CFLAGS="-march=native -mtune=native -O2" \
-CXXFLAGS="-march=native -mtune=native -O2" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
 
 SI TIENES MOVIMIENTO ERRÁTICO DEL RATÓN: Desconecta el mando USB.
