@@ -6212,7 +6212,8 @@ Configuramos con:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-./configure --disable-all-hq-scalers --disable-nxbr --disable-tools --disable-timidity-midi --disable-alsa \
+./configure --disable-all-hq-scalers --disable-nxbr --disable-tools \
+--disable-timidity-midi --disable-alsa --disable-sdl-parachute \
 --enable-lto --with-optimization=normal --prefix=$HOME/ultima7
 
 PODRÍAS PONER --with-optimization=heavy EN LUGAR DE --with-optimization=normal, PERO ESO CAUSA SEGFAULTS A VECES.
