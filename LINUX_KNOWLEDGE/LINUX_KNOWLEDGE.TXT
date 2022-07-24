@@ -6130,14 +6130,12 @@ sudo apt-get install libglew-dev libbz2-dev
 Clonamos el repo principal del proyecto SOH:
 
 git clone --depth 1 -b zelda64 https://github.com/HarbourMasters/Shipwright.git
-(Sí, incluso para la extracción de datos, necesitamos que si estamos en un sistema de 64 bits, usemos los sources para 64 bits). 
 
 Editamos soh/Makefile y en las LDLIBS ponemos "ultraship" y "storm" por encima de las demás.
 
 Editamos ZAPDTR/Makefile y cambiamos la línea de LDFLAGS por esta, que tiene el órden correcto de linkado:
 LDFLAGS := -L../StormLib/build -L../libultraship -lultraship -lpng -lSDL2 -lpulse -lX11 -lGLEW -lGL -lstorm -lz -lbz2
 Y movemos "$(LDFLAGS)" antes de "lib/libgfxd/libgfxd.a" en la regla de ZAPD.out
-
 
 Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
 y la copiamos a "OTRExporter/baserom.z64".
@@ -6146,9 +6144,9 @@ make setup -j4
 
 PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ
 
-Clonamos el branch "zelda64" del repositorio:
+Clonamos el repositorio:
 
-git clone --depth 1 -b zelda64 https://github.com/HarbourMasters/Shipwright.git
+git clone --depth 1 https://github.com/HarbourMasters/Shipwright.git
 
 Editamos libultraship/libultraship/Lib/Fast3D/gfx_glx.cpp y le ponemos un "#if 0" al principio y un "#endif" al final.
 Editamos libultraship/Window.cpp y comentamos la parte en la que se asume que Linux usa PulseAudio,
@@ -6164,6 +6162,30 @@ PROBLEMAS
 -Dependencia de PA
 -Dependencia de GLX
 -Dependencia de GLEW
+
+MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
+============================================
+
+Instalamos dependencias previas:
+sudo apt-get install libboost-system-dev libboost-dev --no-install-recommends
+
+clonamos su repo:
+git clone --depth 1 https://github.com/thobbsinteractive/magic-carpet-2-hd.git
+git submodule update --init
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+cmake -DCMAKE_BUILD_TYPE=Release ..
+
+Ahora crea ~/carpet2, y mete ahí:
+-el ejecutable "remc2".
+-el fichero "config.ini", que viene con los sources.
+-el directorio "font" que viene con los sources. Está en "magic-carpet-2-hd/x64/Debug/font".
+Ahora copia el directorio NETHERW de los datos del juego a "~/carpet2/NETHERW"
+(Es decir, los datos del juego deben estar en "~/carpet2/NETHERW").
 
 FLARE, un engine RPG libre en GNU/Linux
 =======================================
