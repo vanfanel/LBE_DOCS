@@ -6128,10 +6128,29 @@ git clone --depth 1 https://github.com/HarbourMasters/Shipwright.git
 ---PARTE 1: ARREGLOS A LOS SOURCES---
 
 Editamos libultraship/libultraship/Lib/Fast3D/gfx_glx.cpp y le ponemos un "#if 0" al principio y un "#endif" al final.
+
 Editamos libultraship/libultraship/Window.cpp y comentamos la parte en la que se asume que Linux usa PulseAudio,
 y la inclusión de libultraship/PulseAudioPlayer.h
+
 Editamos libultraship/libultraship/PulseAudioPlayer.cpp y metemos todo entre un "#if 0" al principio y un "#endif" al final.
-Editamos ZAPD/Makefile, y eliminamos "-lpulse" y "-lX11" de la línea donde aparecen.
+
+Editamos libultraship/libultraship/WindowShim.cpp y comentamos la parte en que se asigna como sistema gráfico GLX,
+que es el bloque donde está esto: "*WmApi = &gfx_glx;".
+
+Editamos ZAPDTR/Makefile, cambiamos "-lGL" por "-lOpenGL", y eliminamos "-lpulse" y "-lX11" de la línea donde aparecen.
+
+Editamos soh/Makefile y borramos "-msse2 -mfpmath=sse", y las líneas a "pulse \" y "X11 \", y cambiamos
+"GL \" por "OpenGL \".
+
+Editamos soh/src/code/fault_drawer.c y cambiamos la línea:
+void FaultDrawer_VPrintf(const char* str, char* args);
+por:
+void FaultDrawer_VPrintf(const char* str, va_list args);
+
+Editamos soh/include/functions.h y cambiamos la línea:
+FaultDrawer_VPrintf(const char*, char*);
+por:
+FaultDrawer_VPrintf(const char*, va_list);
 
 ---PARTE 2: EXTRACCIÓN DE LOS DATOS---
 
@@ -6150,6 +6169,12 @@ Entramos en el directorio "soh", y hacemos:
 
 make -j2 OPTFLAGS=-O2 DEBUG=0
 (OJO, -j4 nos consume la RAM y la compilación falla).
+
+---PARTE 4: EJECUTANDO EL JUEGO---
+
+Puedes correr el ejecutable resultante, llamado "sah.elf".
+Para establecer la resolución, que empiece a pantalla completa, etc... edita el fichero "shipofharkinian.json"
+y haz ahí los cambios necesarios.
 
 PROBLEMAS
 -Dependencia de PA
