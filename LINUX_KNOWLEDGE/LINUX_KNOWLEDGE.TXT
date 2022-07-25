@@ -6122,40 +6122,33 @@ Busca e instala, en Aurora Store, el "FWD PORT FORWARDER".
 ZELDA OOT EN GNU/LINUX
 ======================
 
-PARTE 1: EXTRACCIÓN DE LOS DATOS
+Clonamos el repo principal del proyecto SOH:
+git clone --depth 1 https://github.com/HarbourMasters/Shipwright.git
+
+---PARTE 1: ARREGLOS A LOS SOURCES---
+
+Editamos libultraship/libultraship/Lib/Fast3D/gfx_glx.cpp y le ponemos un "#if 0" al principio y un "#endif" al final.
+Editamos libultraship/libultraship/Window.cpp y comentamos la parte en la que se asume que Linux usa PulseAudio,
+y la inclusión de libultraship/PulseAudioPlayer.h
+Editamos libultraship/libultraship/PulseAudioPlayer.cpp y metemos todo entre un "#if 0" al principio y un "#endif" al final.
+Editamos ZAPD/Makefile, y eliminamos "-lpulse" y "-lX11" de la línea donde aparecen.
+
+---PARTE 2: EXTRACCIÓN DE LOS DATOS---
 
 Dependencias previas:
 sudo apt-get install libglew-dev libbz2-dev
 
-Clonamos el repo principal del proyecto SOH:
-
-git clone --depth 1 -b zelda64 https://github.com/HarbourMasters/Shipwright.git
-
-Editamos soh/Makefile y en las LDLIBS ponemos "ultraship" y "storm" por encima de las demás.
-
-Editamos ZAPDTR/Makefile y cambiamos la línea de LDFLAGS por esta, que tiene el órden correcto de linkado:
-LDFLAGS := -L../StormLib/build -L../libultraship -lultraship -lpng -lSDL2 -lpulse -lX11 -lGLEW -lGL -lstorm -lz -lbz2
-Y movemos "$(LDFLAGS)" antes de "lib/libgfxd/libgfxd.a" en la regla de ZAPD.out
-
 Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
 y la copiamos a "OTRExporter/baserom.z64".
 Ahora nos vamos al directorio "soh" de los sources, y hacemos:
-make setup -j4
 
-PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ
+make setup -j3 OPTFLAGS=-O2 DEBUG=0
 
-Clonamos el repositorio:
-
-git clone --depth 1 https://github.com/HarbourMasters/Shipwright.git
-
-Editamos libultraship/libultraship/Lib/Fast3D/gfx_glx.cpp y le ponemos un "#if 0" al principio y un "#endif" al final.
-Editamos libultraship/Window.cpp y comentamos la parte en la que se asume que Linux usa PulseAudio,
-y la inclusión de libultraship/PulseAudioPlayer.h
-Editamos libultraship/libultraship/PulseAudioPlayer.cpp y metemos todo entre un "#if 0" al principio y un "#endif" al final.
+---PARTE 3: COMPILACIÓN DEL ENGINE EN SÍ---
 
 Entramos en el directorio "soh", y hacemos:
 
-make -j2
+make -j3 OPTFLAGS=-O2 DEBUG=0
 (OJO, -j4 nos consume la RAM y la compilación falla).
 
 PROBLEMAS
@@ -6184,8 +6177,12 @@ Ahora crea ~/carpet2, y mete ahí:
 -el ejecutable "remc2".
 -el fichero "config.ini", que viene con los sources.
 -el directorio "font" que viene con los sources. Está en "magic-carpet-2-hd/x64/Debug/font".
-Ahora copia el directorio NETHERW de los datos del juego a "~/carpet2/NETHERW"
+
+PARA INSTALAR LOS DATOS DEL JUEGO (NO NECESARIO YA QUE TIENES LOS DATOS PREPARADOS EN EL DISCO DURO DE BACKUP):
+-Copia el directorio "NETHERW" de los datos del juego instalado a "~/carpet2/NETHERW"
 (Es decir, los datos del juego deben estar en "~/carpet2/NETHERW").
+-Crea el directorio "~/carpet2/CD_Files" y copia allí los contenidos de la ISO del CD original
+PERO renombrando TODOS los archivos a mayúsculas.
 
 FLARE, un engine RPG libre en GNU/Linux
 =======================================
