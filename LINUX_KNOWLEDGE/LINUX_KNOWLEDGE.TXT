@@ -6142,13 +6142,13 @@ Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (
 y la copiamos a "OTRExporter/baserom.z64".
 Ahora nos vamos al directorio "soh" de los sources, y hacemos:
 
-make setup -j3 OPTFLAGS=-O2 DEBUG=0
+make setup -j2 OPTFLAGS=-O2 DEBUG=0
 
 ---PARTE 3: COMPILACIÓN DEL ENGINE EN SÍ---
 
 Entramos en el directorio "soh", y hacemos:
 
-make -j3 OPTFLAGS=-O2 DEBUG=0
+make -j2 OPTFLAGS=-O2 DEBUG=0
 (OJO, -j4 nos consume la RAM y la compilación falla).
 
 PROBLEMAS
