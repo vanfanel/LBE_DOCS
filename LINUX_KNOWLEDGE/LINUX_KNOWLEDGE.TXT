@@ -6122,37 +6122,10 @@ Busca e instala, en Aurora Store, el "FWD PORT FORWARDER".
 ZELDA OOT EN GNU/LINUX
 ======================
 
-Clonamos el repo principal del proyecto SOH:
-git clone --depth 1 https://github.com/HarbourMasters/Shipwright.git
+Clonamos el repo de Zaxus:
+git clone --depth 1 -b less-dependencies-pr https://github.com/Zaxus125/Shipwright.git
 
----PARTE 1: ARREGLOS A LOS SOURCES---
-
-Editamos libultraship/libultraship/Lib/Fast3D/gfx_glx.cpp y le ponemos un "#if 0" al principio y un "#endif" al final.
-
-Editamos libultraship/libultraship/Window.cpp y comentamos la parte en la que se asume que Linux usa PulseAudio,
-y la inclusión de libultraship/PulseAudioPlayer.h
-
-Editamos libultraship/libultraship/PulseAudioPlayer.cpp y metemos todo entre un "#if 0" al principio y un "#endif" al final.
-
-Editamos libultraship/libultraship/WindowShim.cpp y comentamos la parte en que se asigna como sistema gráfico GLX,
-que es el bloque donde está esto: "*WmApi = &gfx_glx;".
-
-Editamos ZAPDTR/Makefile, cambiamos "-lGL" por "-lOpenGL", y eliminamos "-lpulse" y "-lX11" de la línea donde aparecen.
-
-Editamos soh/Makefile y borramos "-msse2 -mfpmath=sse", y las líneas a "pulse \" y "X11 \", y cambiamos
-"GL \" por "OpenGL \".
-
-Editamos soh/src/code/fault_drawer.c y cambiamos la línea:
-void FaultDrawer_VPrintf(const char* str, char* args);
-por:
-void FaultDrawer_VPrintf(const char* str, va_list args);
-
-Editamos soh/include/functions.h y cambiamos la línea:
-FaultDrawer_VPrintf(const char*, char*);
-por:
-FaultDrawer_VPrintf(const char*, va_list);
-
----PARTE 2: EXTRACCIÓN DE LOS DATOS---
+---PARTE 1: EXTRACCIÓN DE LOS DATOS---
 
 Dependencias previas:
 sudo apt-get install libglew-dev libbz2-dev
@@ -6161,25 +6134,20 @@ Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (
 y la copiamos a "OTRExporter/baserom.z64".
 Ahora nos vamos al directorio "soh" de los sources, y hacemos:
 
-make setup -j2 OPTFLAGS=-O2 DEBUG=0
+make setup -j2 NO_GLEW=1 NO_PULSE=1 USE_OPENGLES=1 OPTFLAGS=-O2 DEBUG=0
 
----PARTE 3: COMPILACIÓN DEL ENGINE EN SÍ---
+---PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ---
 
 Entramos en el directorio "soh", y hacemos:
 
-make -j2 OPTFLAGS=-O2 DEBUG=0
+make -j2 NO_GLEW=1 NO_PULSE=1 USE_OPENGLES=1 OPTFLAGS=-O2 DEBUG=0
 (OJO, -j4 nos consume la RAM y la compilación falla).
 
----PARTE 4: EJECUTANDO EL JUEGO---
+---PARTE 3: EJECUTANDO EL JUEGO---
 
 Puedes correr el ejecutable resultante, llamado "sah.elf".
 Para establecer la resolución, que empiece a pantalla completa, etc... edita el fichero "shipofharkinian.json"
 y haz ahí los cambios necesarios.
-
-PROBLEMAS
--Dependencia de PA
--Dependencia de GLX
--Dependencia de GLEW
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
