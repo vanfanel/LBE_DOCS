@@ -1011,20 +1011,24 @@ Y ya puedes hacer "./OpenBOR Paks/bor.pak" y te lanzará el juego desempaquetado
 
 ******Another World GNU/Linux******************************************************
 
-Para compilar rawgl para la Raspberry, como rawgl usa desktopgl y no tenemos de eso, hacemos:
-
--En el Makefile: quitar -DUSE_GL de los CXXFLAGS , -lGL de los SDL_LIBS y graphics_gl.cpp de SRCS
-Los CXXFLAGS son: -O2 -march=native -mtune=native
+-En el Makefile:
+	-Cambiamos -lGL por -lOpenGL en la línea de SDL_LIBS, 
+	-Añadimos los CXXFLAGS que son: -O2 -march=native -mtune=native
 Y añade la línea de optimiación agresiva debajo de la original de CFLAGS:
 CXXFLAGS += -flto
 (NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
 
 -En mixer.cpp, ajusta el tamaño del buffer de 4096 a 1024
--En systemstub_sdl.cp, descomenta el SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 1) y ponlo como SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear")
+-En systemstub_sdl.cp:
+	-Descomenta el SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 1) y ponlo como SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear")
+	-Añade SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
 
-Lanzamos con:
+Si queremos renderer por software, lanzamos con:
 ./rawgl --language=us --render=software --fullscreen-ar --datapath=data_dos
 (usar --render=original provoca errores como tiras en las piernas de los enemigos en lugar de ser sólidas).
+
+Si queremos renderer por OpenGL, lanzamos con:
+./rawgl --language=us --render=gl --fullscreen-ar --datapath=data_dos
 
 ******FLASHBACK en la Rasberry Pi*********
 
@@ -6140,6 +6144,8 @@ make setup -j2 NO_GLEW=1 NO_PULSE=1 USE_OPENGLES=1 OPTFLAGS=-O2 DEBUG=0
 
 Entramos en el directorio "soh", y hacemos:
 
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 make -j2 NO_GLEW=1 NO_PULSE=1 USE_OPENGLES=1 OPTFLAGS=-O2 DEBUG=0
 (OJO, -j4 nos consume la RAM y la compilación falla).
 
