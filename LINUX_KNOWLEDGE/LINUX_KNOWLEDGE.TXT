@@ -3346,37 +3346,61 @@ Para usar por ejemplo una banda sonora custom, le puedes pasar /x <ruta al archi
 ************Schismtracker en GNU/Linux*******************************************************************
 
 Ni que decir tiene que antes de nada tenemos que tener las SDL2 listas.
-Clonamos el repo que tiene el branch de SDL2:
+Clonamos el repo:
 
-git clone --depth 1 -b sdl2 https://github.com/davvid/schismtracker.git
+git clone --depth 1 https://github.com/schismtracker/schismtracker.git
 
 Instala autoconf:
 
 sudo apt-get install autoconf
 
-Editamos configure.ac y borramos la línea de AM_PATH_SDL
-
 Ejecutamos: 
 autoreconf -vif
-./configure --without-x
 
-Editamos schism/video.c, y movemos la llamada a 
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-al principio de la función en la que está, que se llama void video_init().
+Ahora ya configuramos con:
 
-Comentamos la línea
+CFLAGS="-O2 -march=native -mtune=native" ./configure --without-x
+
+En el fichero schism/video.c comentamos la línea:
 SDL_WM_SetIcon(icon, NULL);
-en ese mismo fichero, schism/video.c
-
-Editamos Makefile y dejamos la línea de CFLAGS así: (el Makefile es un poco lioso porque es de generación automática, busca -g y te lleva al sitio)
-
-CFLAGS = -O2 -marm -mfpu=vfp -mfloat-abi=hard -march=armv6j
-
-Quitamos el -O2 y el -g de OBJFLAGS.
 
 Añadimos -lm a LDFLAGS.
 
 Compilamos y listo!
+
+************GISH en GNU/Linux**************************************************************************************************************
+
+Clonamos el único repo que tiene una versión SDL2:
+git clone --depth 1 https://github.com/EXL/Gish.git
+
+Entramos en "gish/src/main/cpp", y creamos el directorio de compilación y configuramos y compilamos:
+cd gish/src/main/cpp
+mkdir b4
+cd b4
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
+
+También se podría compilar igual usando el repo: https://github.com/ScrelliCopter/gish.git
+
+************AQUARIA en GNU/Linux***********************************************************************************************************
+
+Dependencias previas: Necesita OpenAL y SDL2 en el sistema, como muchos otros sourceports.
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/AquariaOSE/Aquaria.git
+
+Creamos el directorio de compilación, entramos y configuramos con:
+mkdir b4
+cd b4
+cmake -DAQUARIA_USE_SDL2=TRUE \
+-DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
+
+Para ejecutarlo:
+-Creamos nuestro directorio "~/aquaria"
+-Metemos el ejecutable "aquaria" en ~/aquaria
+-Metemos los datos de una instalación juego en el directorio ~/aquaria
+NOTA: Tienes los datos listos ya en el disco duro de backup.
+-Copiamos el contenido del directorio "files" que viene con los sources a ~/aquaria, sobreescribiendo así parte de los datos del juego.
+OJO: Es el contenido de "files" lo que tenemos que copiar, no el directorio.
 
 ************ECWOLF, el mejor port del Wolfenstein 3D, en la Pi*****************************************************************************
 
@@ -3778,7 +3802,7 @@ Ejecutamos autogen.sh
 Editamos configure y quitamos los O2 y los -g que encontremos antes de ejecutar configure.
 Ahora ya ejecutamos configure así:
 
-CFLAGS="-O2 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O2 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --prefix=/usr --disable-oss-support --disable-aufile-support  --disable-dbus-support
+CFLAGS="-O2 -march=native -mtune=native" CXXFLAGS="-O2 -march=native -mtune=native" ./configure --prefix=/usr --disable-oss-support --disable-aufile-support  --disable-dbus-support
 
 Y POR ÚLTIMO compilamos.
 
@@ -4309,7 +4333,7 @@ luego he editado src/MYOSGLUE.c y he cambiado el bpp de SetVideoMode() de 8 a 16
 Para la velocidad original del Macintosh plus, tendrías que poner "-speed z"
 
 Compilar con los flags en el makefile así:
-mk_COptions = -c -Wall -Wmissing-prototypes -Wno-uninitialized -Wundef -Wstrict-prototypes -O2 -marm -mfpu=vfp -mfloat -abi=hard -march=armv6j
+mk_COptions = -c -Wall -Wmissing-prototypes -Wno-uninitialized -Wundef -Wstrict-prototypes -O2 -march=native -mtune=native
 
 Para hacerte un HFV con juegos y programas, bájate los system disks de la 6.0.8 de aquí:
 http://www.gryphel.com/c/sw/system/sys60/index.html
@@ -4744,7 +4768,7 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 Ahora editamos configure.ac ponemos el optimization level a 3 y quitamos y el -g que encontremos.
 Ahora configuramos con 
-CFLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure
 NO LE PASES el -O2 al script de configuración: ya lo has puesto en el configure.ac.
 
 Compilamos con
@@ -5709,7 +5733,7 @@ https://github.com/procount/pinn/blob/master/README_PINN.md#cmdline-options
 
 Cambia automake-1.13 a automake-1.11 en el Makefile.
 Configura con: 
-CFLAGS="-O2 -mfpu=vfp -mfloat-abi=hard -march=armv6j" CXXFLAGS="-O2 -mfpu=vfp -mfloat-abi=hard -march=armv6j" ./configure --enable-static
+CFLAGS="-O2 -march=native -mtune=native" CXXFLAGS="-O2 -march=native -mtune=native" ./configure --enable-static
 
 ****************************Cambiar la resolución al vuelo en KMSDRM*******************
 
@@ -6116,7 +6140,9 @@ Metemos la ROM en el directorio raiz de los sources como "baserom.us.z64"
 
 Compilamos así:
 
-make TARGET_RPI=1 DISCORD_SDK=0 BETTERCAMERA=0 -j4
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+make TARGET_RPI=1 DISCORD_SDK=0 -j4
 
 ----PARA HOSTEAR O CONECTARNOS A UNA PARTIDA----
 
