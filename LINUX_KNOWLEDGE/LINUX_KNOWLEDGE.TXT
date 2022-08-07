@@ -6175,24 +6175,38 @@ ZELDA OOT EN GNU/LINUX
 Clonamos el repo de Zaxus:
 git clone --depth 1 -b less-dependencies-pr https://github.com/Zaxus125/Shipwright.git
 
+PREVIO: HAY QUE ACTUALIZAR CMAKE.
+Como mínimo se necesita CMake 3.19, y Debian 11 trae Cmake 3.18.x. Vamos a actualizarlo:
+-Bajamos los últimos binarios estables (en forma de .sh para nuestra arquitectura) de aquí: https://cmake.org/download/
+-Damos permiso de ejecución al .sh y lo ejecutamos. Se descomprimirá cmake (pone que se instalará, pero
+simplemente se descomprime).
+-Copiamos el contenido del directorio "bin" del cmake descomprimido a /usr/local/bin/ 
+-Hacemos "ln -s /usr/local/bin/cmake /usr/bin/cmake"
+-Ya podemos comprobar qué versión de cmake tenemos, con "cmake --version".
+
 ---PARTE 1: EXTRACCIÓN DE LOS DATOS---
 
 Dependencias previas:
-sudo apt-get install libglew-dev libbz2-dev
+sudo apt-get install libbz2-dev
 
 Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
 y la copiamos a "OTRExporter/baserom.z64".
-Ahora nos vamos al directorio "soh" de los sources, y hacemos:
+Ahora el raiz de los sources hacemos:
 
-make setup -j2 NO_GLEW=1 NO_PULSE=1 USE_OPENGLES=1 OPTFLAGS=-O2 DEBUG=0
+cmake -H. -Bbuild-cmake -GNinja \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DNO_GLEW=ON -DNO_PULSE=ON -DUSE_OPENGLES=ON -DUSE_X11=OFF -DCMAKE_BUILD_TYPE=Release
+
+Se nos habrá creado el directorio "build-cmake". Ahora seguimos con los siguientes pasos pasándole ese directorio a cmake:
+cmake --build build-cmake --target ExtractAssets
 
 ---PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ---
 
-Entramos en el directorio "soh", y hacemos:
+Desde el raiz de los sources hacemos:
 
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-make -j2 NO_GLEW=1 NO_PULSE=1 USE_OPENGLES=1 OPTFLAGS=-O2 DEBUG=0
+make --build build-cmake
+
 (OJO, -j4 nos consume la RAM y la compilación falla).
 
 ---PARTE 3: EJECUTANDO EL JUEGO---
