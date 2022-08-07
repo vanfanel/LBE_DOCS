@@ -10,6 +10,14 @@ video="HDMI-A-2:1280x720@60"
 -Además añadimos estos parámetros:
 "mitigations=off audit=0"
 
+******Sonido HDMI en Linux************
+
+Mirando la info de "aplay -L", deducimos que speaker-test funciona con:
+
+speaker-test -Dhdmi:PCH,2 -c2
+
+En LAKKA, el DEVICE que debes poner es: hdmi:PCH,2
+
 ******SERVICIOS A DESACTIVAR**********
 --Desactivar swap--
 

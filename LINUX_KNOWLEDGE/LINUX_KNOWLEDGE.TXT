@@ -3370,16 +3370,36 @@ Compilamos y listo!
 
 ************GISH en GNU/Linux**************************************************************************************************************
 
-Clonamos el único repo que tiene una versión SDL2:
-git clone --depth 1 https://github.com/EXL/Gish.git
+Clonamos este repo, que tiene una versión SDL2:
 
-Entramos en "gish/src/main/cpp", y creamos el directorio de compilación y configuramos y compilamos:
-cd gish/src/main/cpp
+git clone --depth 1 https://github.com/ScrelliCopter/gish.git
+
+Editamos CMakeLists.txt y:
+-Comentamos la línea:
+find_package(OpenGL REQUIRED)
+-Cambiamos en la última línea: "OpenGL:OpenGL" por simplemente "OpenGL"
+
+Creamos el directorio de compilación y configuramos y compilamos así:
+
 mkdir b4
 cd b4
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
 
-También se podría compilar igual usando el repo: https://github.com/ScrelliCopter/gish.git
+Para ejecutar el juego, copia los datos del juego tal cual al mismo directorio donde tengas el ejecutable.
+TIENES los datos del juego listos en el disco duro de backup.
+
+--REPOSITORIO ALTERNATIVO (NO recomendado, no te compliques)--
+
+git clone --depth 1 https://github.com/EXL/Gish.git
+
+Creamos el directorio de compilación y configuramos y compilamos así:
+(OJO, que le tenemos que pasar un directorio concreto a CMake como ves)
+
+mkdir b4
+cd b4
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" -DGLES=ON ../gish/src/main/cpp
+
+Se ejecuta igual que el del otro repo.
 
 ************AQUARIA en GNU/Linux***********************************************************************************************************
 
