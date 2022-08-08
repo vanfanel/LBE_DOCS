@@ -7475,7 +7475,7 @@ sudo apt-get install fonts-dejavu-extra
 -Crea el fichero ~/.sfrotzrc con el contenido:
 
 [Window]
-AcWidth = 1280
+AcWidth = 1440
 AcHeight = 800 
 
 [Fonts]
@@ -7505,19 +7505,19 @@ mételas en /usr/local/share/fonts y listo).
 El ~/.sfrotzrc quedaría así:
 
 [Window]
-AcWidth = 1280
-AcHeight = 720 
+AcWidth = 1440
+AcHeight = 800 
 
 [Fonts]
 fontdir=/usr/local/share/fonts
-textroman=TerminusTTF.ttf@30
-textbold=TerminusTTF-Bold.ttf@30
-textitalic=TerminusTTF-Italic.ttf@30
-textbolditalic=TerminusTTF-Bold-Italic.ttf@30
-fixedroman=TerminusTTF.ttf@30
-fixedbold=TerminusTTF-Bold.ttf@30
-fixeditalic=TerminusTTF-Italic.ttf@30
-fixedbolditalic=TerminusTTF-Bold-Italic.ttf@30
+textroman=TerminusTTF.ttf@34
+textbold=TerminusTTF-Bold.ttf@34
+textitalic=TerminusTTF-Italic.ttf@34
+textbolditalic=TerminusTTF-Bold-Italic.ttf@34
+fixedroman=TerminusTTF.ttf@34
+fixedbold=TerminusTTF-Bold.ttf@34
+fixeditalic=TerminusTTF-Italic.ttf@34
+fixedbolditalic=TerminusTTF-Bold-Italic.ttf@34
 antialias=1
 
 PARA CONVERTIR JUEGOS DE THE QUILL A FROTZ
