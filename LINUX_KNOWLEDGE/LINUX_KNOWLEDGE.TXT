@@ -6196,18 +6196,18 @@ Ahora el raiz de los sources hacemos:
 cmake -H. -Bbuild-cmake -GNinja \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DNO_GLEW=ON -DNO_PULSE=ON -DUSE_OPENGLES=ON -DUSE_X11=OFF -DCMAKE_BUILD_TYPE=Release
+-DNO_GLEW=ON -DNO_PULSE=ON -DUSE_OPENGLES=ON -DUSE_X11=OFF -DBUILD_OTR_GUI=OFF -DCMAKE_BUILD_TYPE=Release
 
 Se nos habrá creado el directorio "build-cmake". Ahora seguimos con los siguientes pasos pasándole ese directorio a cmake:
-cmake --build build-cmake --target ExtractAssets
+cmake --build build-cmake --target ExtractAssets -j2
+(OJO: NO le pases más que -j2 o se irá la memoria a tomalporculo).
 
 ---PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ---
 
 Desde el raiz de los sources hacemos:
 
-make --build build-cmake
-
-(OJO, -j4 nos consume la RAM y la compilación falla).
+make --build build-cmake -j2
+(OJO: NO le pases más que -j2 o se irá la memoria a tomalporculo).
 
 ---PARTE 3: EJECUTANDO EL JUEGO---
 
