@@ -6199,15 +6199,15 @@ cmake -H. -Bbuild-cmake -GNinja \
 -DNO_GLEW=ON -DNO_PULSE=ON -DUSE_OPENGLES=ON -DUSE_X11=OFF -DBUILD_OTR_GUI=OFF -DCMAKE_BUILD_TYPE=Release
 
 Se nos habrá creado el directorio "build-cmake". Ahora seguimos con los siguientes pasos pasándole ese directorio a cmake:
-cmake --build build-cmake --target ExtractAssets -j2
-(OJO: NO le pases más que -j2 o se irá la memoria a tomalporculo).
+cmake --build build-cmake --target ExtractAssets -j4
+(Recuerda que tienes que tener un disco externo de swap o la compilación fallará).
 
 ---PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ---
 
 Desde el raiz de los sources hacemos:
 
-make --build build-cmake -j2
-(OJO: NO le pases más que -j2 o se irá la memoria a tomalporculo).
+cmake --build build-cmake -j4
+(Recuerda que tienes que tener un disco externo de swap o la compilación fallará).
 
 ---PARTE 3: EJECUTANDO EL JUEGO---
 
@@ -7496,6 +7496,29 @@ los mismos caracteres por línea que con la fuente VGA original.
 
 NOTA2: Para que, al salvar partida o al cargar, SFROTZ no nos saque diálogos gráficos, sino que nos pida el filename a mano como debe ser,
 le pasamos el parámetro -T.
+
+OTRA ALTERNATIVA ES USAR ESTA FUENTE, que es la de la consola pero en TTF:
+https://files.ax86.net/terminus-ttf/
+(NOTA: La tienes lista en el disco duro de backup, con los nombres de archivo adecuados y todo,
+mételas en /usr/local/share/fonts y listo).
+
+El ~/.sfrotzrc quedaría así:
+
+[Window]
+AcWidth = 1280
+AcHeight = 720 
+
+[Fonts]
+fontdir=/usr/local/share/fonts
+textroman=TerminusTTF.ttf@30
+textbold=TerminusTTF-Bold.ttf@30
+textitalic=TerminusTTF-Italic.ttf@30
+textbolditalic=TerminusTTF-Bold-Italic.ttf@30
+fixedroman=TerminusTTF.ttf@30
+fixedbold=TerminusTTF-Bold.ttf@30
+fixeditalic=TerminusTTF-Italic.ttf@30
+fixedbolditalic=TerminusTTF-Bold-Italic.ttf@30
+antialias=1
 
 PARA CONVERTIR JUEGOS DE THE QUILL A FROTZ
 Puedes convertir juegos de THE QUILL a .z5 para el frotz con el unquill: https://www.seasip.info/Unix/UnQuill/
