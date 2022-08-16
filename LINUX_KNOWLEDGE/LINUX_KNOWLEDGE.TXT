@@ -3374,10 +3374,8 @@ Clonamos este repo, que tiene una versión SDL2:
 
 git clone --depth 1 https://github.com/ScrelliCopter/gish.git
 
-Editamos CMakeLists.txt y:
--Comentamos la línea:
-find_package(OpenGL REQUIRED)
--Cambiamos en la última línea: "OpenGL:OpenGL" por simplemente "OpenGL"
+Editamos src/sdl/video.c y añadimos esta línea justo debajo de SDL_CreateWindow():
+SDL_GL_SetSwapInterval(1);
 
 Creamos el directorio de compilación y configuramos y compilamos así:
 
@@ -3397,7 +3395,7 @@ Creamos el directorio de compilación y configuramos y compilamos así:
 
 mkdir b4
 cd b4
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" -DGLES=ON ../gish/src/main/cpp
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ../gish/src/main/cpp
 
 Se ejecuta igual que el del otro repo.
 
@@ -6175,15 +6173,6 @@ ZELDA OOT EN GNU/LINUX
 Clonamos el repo de Zaxus:
 git clone --depth 1 -b less-dependencies-pr https://github.com/Zaxus125/Shipwright.git
 
-PREVIO: HAY QUE ACTUALIZAR CMAKE.
-Como mínimo se necesita CMake 3.19, y Debian 11 trae Cmake 3.18.x. Vamos a actualizarlo:
--Bajamos los últimos binarios estables (en forma de .sh para nuestra arquitectura) de aquí: https://cmake.org/download/
--Damos permiso de ejecución al .sh y lo ejecutamos. Se descomprimirá cmake (pone que se instalará, pero
-simplemente se descomprime).
--Copiamos el contenido del directorio "bin" del cmake descomprimido a /usr/local/bin/ 
--Hacemos "ln -s /usr/local/bin/cmake /usr/bin/cmake"
--Ya podemos comprobar qué versión de cmake tenemos, con "cmake --version".
-
 ---PARTE 1: EXTRACCIÓN DE LOS DATOS---
 
 Dependencias previas:
@@ -7520,6 +7509,25 @@ fixeditalic=TerminusTTF-Italic.ttf@34
 fixedbolditalic=TerminusTTF-Bold-Italic.ttf@34
 antialias=1
 
+OTRA ALTERNATIVA es usar esta fuente: https://archive.org/details/LessPerfectDOSVGA
+La renombramos a dosvga.ttf, y el ~/.sfrotzrc quedaría así:
+
+[Window]
+AcWidth =  1440
+AcHeight = 800 
+
+[Fonts]
+fontdir=/usr/local/share/fonts
+textroman=dosvga.ttf@34
+textbold=dosvga.ttf@34
+textitalic=dosvga.ttf@34
+textbolditalic=dosvga.ttf@34
+fixedroman=dosvga.ttf@34
+fixedbold=dosvga.ttf@34
+fixeditalic=dosvga.ttf@34
+fixedbolditalic=dosvga.ttf@34
+antialias=1
+
 PARA CONVERTIR JUEGOS DE THE QUILL A FROTZ
 Puedes convertir juegos de THE QUILL a .z5 para el frotz con el unquill: https://www.seasip.info/Unix/UnQuill/
 Pero el unquill recibe .SNA, y lo más que hay por ahí son .Z80, así que para pasar .SNA a .Z80 usa el spconv:
@@ -8002,6 +8010,13 @@ https://github.com/OpenFodder/data/releases
 Dentro del directorio Data de los datos del engine, si te fijas verás que hay directorios preparados para cada juego.
 Nos interesa el directorio Dos_CD: ahí es donde meteremos los datos del juego en su versión DOS, que tiene más colores. Sólo nos hace falta el archivo CF_ENG.DAT.
 Por si te lo preguntas, los datos de Amiga aún no parecen funcionar bien con el engine, da segfaults y movidas. Pero con la versión DOS, la música suena también en MOD, así que nos vale.
+
+JAZZ JACKRABBIT 2 en GNU/Linux (jazz2-native)
+=============================================
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/deathkiller/jazz2-native.git
 
 HEART OF DARKNESS en GNU/Linux (HODE)
 =====================================
