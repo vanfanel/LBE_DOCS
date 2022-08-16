@@ -8011,12 +8011,24 @@ Dentro del directorio Data de los datos del engine, si te fijas verás que hay d
 Nos interesa el directorio Dos_CD: ahí es donde meteremos los datos del juego en su versión DOS, que tiene más colores. Sólo nos hace falta el archivo CF_ENG.DAT.
 Por si te lo preguntas, los datos de Amiga aún no parecen funcionar bien con el engine, da segfaults y movidas. Pero con la versión DOS, la música suena también en MOD, así que nos vale.
 
-JAZZ JACKRABBIT 2 en GNU/Linux (jazz2-native)
-=============================================
+JAZZ JACKRABBIT 2 en GNU/Linux (jazz2resurrection-native)
+=========================================================
 
 Clonamos su repo:
 
 git clone --depth 1 https://github.com/deathkiller/jazz2-native.git
+
+Juegos PICO8 en GNU/Linux
+========================= 
+
+Clonamos el repo:
+
+git clone --depth 1 https://github.com/jtothebell/fake-08.git
+git submodule update --init
+
+Compilamos con:
+
+make sdl2 -j4
 
 HEART OF DARKNESS en GNU/Linux (HODE)
 =====================================
