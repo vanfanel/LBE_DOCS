@@ -259,7 +259,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
 
 Ahora es tan simple como cargar el Maldita Castilla con:
-./loader Maldita_Castilla.apk
+./gmloader Maldita_Castilla.apk
 (Se usa la versión para Ouya que está en la página de Locomalito)
 
 Para Metroid am2r, tenemos que bajarnos la versión 1.1 y parchearla a la última versión que haya en ese momento:
