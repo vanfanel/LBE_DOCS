@@ -251,12 +251,18 @@ Clonamos el repo:
 git clone --depth 1 https://github.com/JohnnyonFlame/droidports.git
 git submodule update --init --recursive
 
+Editamos "ports/gmloader/sdl2_media.c", y añadimos justo antes de la llamada a SDL_CreateWindow():
+SDL_ShowCursor(SDL_DISABLE);
+
 Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+
+Para que las scanlines se vean bien y para quitar las mitigations, etc, añade a cmdline.txt:
+video="HDMI-A-1:1536x864@60" mitigations=off audit=0
 
 Ahora es tan simple como cargar el Maldita Castilla con:
 ./gmloader Maldita_Castilla.apk

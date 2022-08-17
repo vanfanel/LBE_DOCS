@@ -27,7 +27,7 @@ cp picade.dtbo /flash/overlays/
 cp etc/udev/rules.d/10-picade.rules /etc/udev/rules.d/10-picade.rules
 
 Ahora editamos /flash/cmdline.txt y añadimos:
-video="HDMI-A-1:1024x768@60" mitigations=off vt.global_cursor_default=0 console=null
+video="HDMI-A-1:1024x768@60" mitigations=off audit=0 vt.global_cursor_default=0 console=null
 
 Ahora editamos /flash/config.txt y añadimos:
 hdmi_force_hotplug=1
