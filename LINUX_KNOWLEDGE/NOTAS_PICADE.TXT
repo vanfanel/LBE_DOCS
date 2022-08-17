@@ -42,7 +42,17 @@ mount -o remount,ro /flash
 Ahora reiniciamos Lakka, nos vamos a SETTINGS->AUDIO->OUTPUT y en DEVICE ponemos (a mano) lo siguiente:
 sysdefault:CARD=sndrpihifiberry
 
-Como driver de vídeo, por ahora elegimos GL, ya que con VULKAN reporta una frecuencia de pantalla errónea.
+Si elegimos el driver de vídeo Vulkan, en ~/.config/retroarch/retroarch.cfg, pon el modo de vídeo que usa el sistema en los parámetros:
+(OJO, no te olvides de deshabilitar temporalmente el salvado automático de la configuración al salir de RetroArch, porque si no,
+lo que vas a cambiar en retroarch.cfg se sobreescribirá al reiniciar)
+
+video_fullscreen = "true"
+video_fullscreen_x = "1024"
+video_fullscreen_y = "768"
+
+Y así ya usará en modo de vídeo de 1024x768 a 60Hz y no el de 1152x864 a 75Hz que es el preferido del monitor
+pero que NO nos conviene (recuerda que RetroArch, cuando se usa el driver Vulkan, pone el modo de vídeo preferido
+del monitor, que en este caso es a 75Hz y no nos conviene para nada).
 
 Puedes bajar la latencia de audio a 32ms sin problemas con el driver ALSA.
 

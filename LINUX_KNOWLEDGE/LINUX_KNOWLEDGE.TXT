@@ -3345,7 +3345,6 @@ Para usar por ejemplo una banda sonora custom, le puedes pasar /x <ruta al archi
 
 ************Schismtracker en GNU/Linux*******************************************************************
 
-Ni que decir tiene que antes de nada tenemos que tener las SDL2 listas.
 Clonamos el repo:
 
 git clone --depth 1 https://github.com/schismtracker/schismtracker.git
@@ -8018,16 +8017,20 @@ Clonamos su repo:
 
 git clone --depth 1 https://github.com/deathkiller/jazz2-native.git
 
-Juegos PICO8 en GNU/Linux
-========================= 
+Juegos PICO8 en GNU/Linux usando el core de libretro "fake-08"
+==============================================================
 
 Clonamos el repo:
 
-git clone --depth 1 https://github.com/jtothebell/fake-08.git
+git clone --depth 1 -b libretro-core https://github.com/jtothebell/fake-08.git
 git submodule update --init
 
-Compilamos con:
+cd fake-08/platform/libretr
+make -j4
 
+También podríamos compilar una versión SDL2 usando el branch principal, con:
+
+git clone --depth 1 https://github.com/jtothebell/fake-08.git
 make sdl2 -j4
 
 HEART OF DARKNESS en GNU/Linux (HODE)
