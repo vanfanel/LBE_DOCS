@@ -717,19 +717,24 @@ Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sa
  y la aniades en /etc/profile usando la variable de entorno SDL_GAMECONTROLLERCONFIG, tal que así:
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
-Para SDL2_Mixer (instalar antes estas dependencias: apt-get install libmpg123-dev libogg-dev libflac-dev libmodplug-dev):
+Para SDL2_Mixer:
+-Instalar antes estas dependencias: apt-get install libmpg123-dev libogg-dev libflac-dev libmodplug-dev
+-Nos bajamos la última versión estable de: https://github.com/libsdl-org/SDL_mixer/releases 
+-Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
 
-Para SDL2_Image
+Para SDL2_Image:
+-Nos bajamos la última versión estable de: https://github.com/libsdl-org/SDL_image/releases 
+-Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-./configure --without-x
+./configure
 
 Para SDL2_ttf:
-Bajamos la última release de aquí: https://github.com/libsdl-org/SDL_ttf/releases)
-
+-Nos bajamos la última versión estable de: https://github.com/libsdl-org/SDL_ttf/releases
+-Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --without-x --disable-freetype-builtin --disable-harfbuzz

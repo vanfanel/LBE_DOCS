@@ -6469,7 +6469,7 @@ LIBOPENAL en GNU/Linux
 Por si alguna vez lo necesitas para algo.
 Bajamos la última release de: https://github.com/kcat/openal-soft/tags
 Configuramos así:
-cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_PIPEWIRE=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF \
+cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_REQUIRE_PIPEWIRE=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 
