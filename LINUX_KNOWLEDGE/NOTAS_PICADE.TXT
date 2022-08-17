@@ -40,7 +40,8 @@ Ahora, como ya hemos acabado, re-montamos la partición de arranque como sólo l
 mount -o remount,ro /flash
 
 Ahora reiniciamos Lakka, nos vamos a SETTINGS->AUDIO->OUTPUT y en DEVICE ponemos (a mano) lo siguiente:
-sysdefault:CARD=sndrpihifiberry
+hw:CARD=sndrpihifiberry
+(NOTA: Antes usaba "sysdefault:CARD=sndrpihifiberry", pero se supone que "hw:CARD=sndrpihifiberry" es más directo según "aplay -L").
 
 Si elegimos el driver de vídeo Vulkan, en ~/.config/retroarch/retroarch.cfg, pon el modo de vídeo que usa el sistema en los parámetros:
 (OJO, no te olvides de deshabilitar temporalmente el salvado automático de la configuración al salir de RetroArch, porque si no,
@@ -54,7 +55,8 @@ Y así ya usará en modo de vídeo de 1024x768 a 60Hz y no el de 1152x864 a 75Hz
 pero que NO nos conviene (recuerda que RetroArch, cuando se usa el driver Vulkan, pone el modo de vídeo preferido
 del monitor, que en este caso es a 75Hz y no nos conviene para nada).
 
-Puedes bajar la latencia de audio a 45ms con el driver ALSA. Se podría bajar a 32ms con 44100Hz en vez de 48000Hz.
+Puedes bajar la latencia de audio a 45ms con el driver ALSA.
+Se podría bajar a 32ms con 44100Hz en vez de 48000Hz.
 
 Para que se vea bien con INTEGER puesto a OFF, puedes coger el shader FAKELOTTES, copiarlo a LAKKA_DISK/shaders,
 y comentar la curvatura y las "extra masks" en el código del shader (de ese modo no pierdes mucha velocidad debido al shader).
