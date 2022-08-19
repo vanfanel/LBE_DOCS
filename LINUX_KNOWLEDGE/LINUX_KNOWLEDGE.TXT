@@ -251,8 +251,9 @@ Clonamos el repo:
 git clone --depth 1 https://github.com/JohnnyonFlame/droidports.git
 git submodule update --init --recursive
 
-Editamos "ports/gmloader/sdl2_media.c", y añadimos justo antes de la llamada a SDL_CreateWindow():
-SDL_ShowCursor(SDL_DISABLE);
+Editamos "ports/gmloader/sdl2_media.c" y:
+-Añadimos justo antes de la llamada a SDL_CreateWindow() el típico "SDL_ShowCursor(SDL_DISABLE);"
+-Añadimos SDL_WINDOW_FULLSCREEN_DESKTOP a las flags de SDL_CreateWindow().
 
 Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
@@ -262,11 +263,48 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
 
 Para que las scanlines se vean bien y para quitar las mitigations, etc, añade a cmdline.txt:
-video="HDMI-A-1:1536x864@60" mitigations=off audit=0
+video="HDMI-A-1:1152x864@60" mitigations=off audit=0
+(La resolución original del Maldita Castilla es 256x224, y coincide que el monitor de la PICADE soporta 1152x864 como modo preferido,
+que tiene el mismo número de líneas que 4x224. ¡Genial!).
 
 Ahora es tan simple como cargar el Maldita Castilla con:
 ./gmloader Maldita_Castilla.apk
 (Se usa la versión para Ouya que está en la página de Locomalito)
+
+SI VAS A USARLO EN LA PICADE:
+-Para poder controlar el volúmen, tienes que activar softvol. Tienes varias soluciones en el fichero de documentación NOTAS_ALSACONF.TXT
+Pero vamos, que tienes que poner /etc/asound.conf como:
+
+pcm.hifiberry {
+    type softvol
+    slave.pcm "plughw:0"
+    control.name "Master"
+    control.card 0
+}
+
+pcm.!default {
+    type             plug
+    slave.pcm       "hifiberry"
+}
+
+Y luego cargar el juego como:
+aplay /dev/zero -s 1 -q
+amixer set Master 230 -q
+./gmloader maldita.apk
+
+-Para arreglar los controles, los valores UTF8 de CRTL y ALT (que son las teclas que envían los botones que sueles usar de la Picade) son
+[162] = "L Control";
+[163] = "R Control";
+[164] = "L Alt";
+[165] = "R Alt";
+(Sacado de https://forum.yoyogames.com/index.php?threads/how-do-i-convert-key-code-to-its-correct-key.76372/,
+en el post #6 tienes la lista de todos los códigos de las teclas).
+Puedes metérselos a la sección gml_Object_obj_control_Other_2 del código del juego: para editar el código del juego,
+tienes que hacerlo con el UndertaleModTool: tienes notas sobre esto más abajo.
+ALTERNATIVA: En teoría, es posible cambiar ID_INPUT_KEYBOARD por ID_INPUT_JOYSTICK en etc/udev/rules.d/10-picade.rules
+("10-picade.rules" es uno de los ficheros que tendremos que instalar en cualquier sistema GNU/Linux que metamos en la Picade,
+mírate NOTAS_PICADE.TXT para más información).
+
 
 Para Metroid am2r, tenemos que bajarnos la versión 1.1 y parchearla a la última versión que haya en ese momento:
 

@@ -56,3 +56,120 @@ que aparentemente es lo mismo, no lleva DMIX ni nada de eso).
 En el PC podemos acceder con:
 
 speaker-test -D plughw:Generic
+
+Esto lo sacamos de "aplay -L".
+
+NOTAS RASPBERRY (PARTE 2: EL CONTROL DE VOLÚMEN POR SOFTWARE DEL HIFIBERRY-LITE DE LA PICADE)
+=============================================================================================
+
+Para añadir un control de volúmen por software, llamado softvol (algunos chips como el hifiberry LITE no tienen control de volúmen por hw)
+dejamos /etc/asound.conf así:
+
+pcm.hifiberry {
+    type softvol
+    slave.pcm "plughw:0"
+    control.name "Master"
+    control.card 0
+}
+
+pcm.!default {
+    type             plug
+    slave.pcm       "hifiberry"
+}
+
+Esta es la solución con dmix:
+(Fuente: https://github.com/pimoroni/picade-hat/issues/38)
+
+pcm.!default {
+    type            plug
+    slave.pcm       "softvol"   #make use of softvol
+}
+
+pcm.softvol {
+    type            softvol
+    slave {
+        pcm         "dmix"      #redirect the output to dmix (instead of "hw:0,0")
+    }
+    control {
+        name        "PCM"       #override the PCM slider to set the softvol volume level globally
+        card        0
+    }
+}
+
+O bien, si queremos asegurarnos de que no haya conversiones por software en medio:
+
+pcm.hifiberry {
+    type softvol
+    slave {
+        pcm {
+            type plug
+            slave {
+                pcm "hw:0"
+                format unchanged
+                channels unchanged
+                rate unchanged
+            }
+        }
+    }
+    control.name "Master"
+    control.card 0
+}
+
+pcm.!default {
+    type             plug
+    slave.pcm       "hifiberry"
+}
+
+¡¡¡¡OJO!!!!Antes de que se vean los controles en alsamixer, debes hacer:
+aplay /dev/zero -s 1 -q
+Si no envías un sonido antes, no se ven los controles aunque hayas conseguido añadir un solfvol.
+
+Así, por ejemplo, para establecer el volúmen antes de un juego haríamos:
+aplay /dev/zero -s 1 -q
+amixer set Master 230 -q
+
+Y si quisiéramos mandarlo por DMIX para que varios programas lo puedan usar a la vez:
+
+pcm.monkey {
+  type hw card 0
+}
+
+pcm.dmixer {
+  type dmix
+  ipc_key 1024
+  slave {
+    pcm "monkey"
+    channels 2
+  }
+}
+
+ctl.dmixer {
+  type hw
+  card 0
+}
+
+pcm.!default {
+    type            plug
+    slave.pcm       "softvol"
+}
+
+pcm.softvol {
+    type            softvol
+    slave {
+        pcm         "dmixer"
+    }
+    control {
+        name        "PCM"
+        card        0
+    }
+}
+
+Si tenemos que resetear la configuración, hacemos:
+
+rm -R /var/lib/alsa/asound.state
+rm -R /var/lib/alsa
+
+
+FUENTES:
+https://support.hifiberry.com/hc/en-us/community/posts/201847441-DAC-Lite-Software-volume-control
+
