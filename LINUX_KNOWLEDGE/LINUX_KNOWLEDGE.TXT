@@ -3432,6 +3432,7 @@ CFLAGS="-O2 -march=native -mtune=native" ./configure --without-x
 Compilamos y listo!
 
 Para configurar el vídeo, editamos ~/.schism/config, y ponemos fullscreen e interpolation a 1.
+También podemos poner classic_mode a 1 para que las pantallas sean las del Impulse Tracker original.
 
 ************GISH en GNU/Linux**************************************************************************************************************
 
