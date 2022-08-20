@@ -263,7 +263,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
 
 Para que las scanlines se vean bien y para quitar las mitigations, etc, añade a cmdline.txt:
-video="HDMI-A-1:1152x864@60" mitigations=off audit=0
+video="HDMI-A-1:1152x864@60" mitigations=off audit=0 fsck.mode=skip
 (La resolución original del Maldita Castilla es 256x224, y coincide que el monitor de la PICADE soporta 1152x864 como modo preferido,
 que tiene el mismo número de líneas que 4x224. ¡Genial!).
 
@@ -271,7 +271,14 @@ Ahora es tan simple como cargar el Maldita Castilla con:
 ./gmloader Maldita_Castilla.apk
 (Se usa la versión para Ouya que está en la página de Locomalito)
 
-SI VAS A USARLO EN LA PICADE:
+Para cargarlo en la PICADE, donde hay que establecer el volúmen al empezar tras activar softvol mediante /etc/asound.conf,
+lo cago así:
+
+aplay /dev/zero -s 1 -q
+amixer set Master 120 -q
+SDL_VIDEO_DOUBLE_BUFFER=1 ./gmloader maldita.apk
+
+####SI VAS A USARLO EN LA PICADE:#####
 -Para poder controlar el volúmen, tienes que activar softvol. Tienes varias soluciones en el fichero de documentación NOTAS_ALSACONF.TXT
 Pero vamos, que tienes que poner /etc/asound.conf como:
 
@@ -292,19 +299,22 @@ aplay /dev/zero -s 1 -q
 amixer set Master 230 -q
 ./gmloader maldita.apk
 
--Para arreglar los controles, los valores UTF8 de CRTL y ALT (que son las teclas que envían los botones que sueles usar de la Picade) son
-[162] = "L Control";
-[163] = "R Control";
+-Para arreglar los controles, tienes dos opciones:
+1) (RECOMENDADA) Configurar la Picade para que los botones y palanca envíen los códigos que usa el juego, que se mueve con las flechas del teclado
+y las teclas Z y X. Para ello, en config.txt, en la línea de "dtoverlay=picade" haríamos:
+dtoverlay=picade,button5=44,button6=45
+(Los valores 44 y 45 los sacamos de pulsar X y Z mientras "showkey" está ejecutándose.
+
+2) (MÁS ROLLO PORQUE HAY QUE EDITAR EL CÓDIGO DEL JUEGO) Poner el valor de button1 y button 2 en el juego para que se usen los valores UTF8
+de CRTL y ALT (que son las teclas que envían los botones que sueles usar de la Picade) son
 [164] = "L Alt";
-[165] = "R Alt";
+[162] = "L Control";
 (Sacado de https://forum.yoyogames.com/index.php?threads/how-do-i-convert-key-code-to-its-correct-key.76372/,
 en el post #6 tienes la lista de todos los códigos de las teclas).
 Puedes metérselos a la sección gml_Object_obj_control_Other_2 del código del juego: para editar el código del juego,
 tienes que hacerlo con el UndertaleModTool: tienes notas sobre esto más abajo.
-ALTERNATIVA: En teoría, es posible cambiar ID_INPUT_KEYBOARD por ID_INPUT_JOYSTICK en etc/udev/rules.d/10-picade.rules
-("10-picade.rules" es uno de los ficheros que tendremos que instalar en cualquier sistema GNU/Linux que metamos en la Picade,
-mírate NOTAS_PICADE.TXT para más información).
 
+####FIN SECCIÓN PICADE####
 
 Para Metroid am2r, tenemos que bajarnos la versión 1.1 y parchearla a la última versión que haya en ese momento:
 
@@ -334,8 +344,12 @@ https://github.com/krzys-h/UndertaleModTool/releases
 
 NO usamos la última versión porque se cuelga al salvar archivos de juego después de editarlos.
 
-Instalamos la versión de .NET que nos pida. Por ejemplo, para la versión 0.3.5.8 nos pide .NET 4.6.2, así que hacemos:
+Instalamos la versión de .NET que nos pida. Por ejemplo, para la versión 0.3.5.8 nos pide .NET 4.6.2 que además DEBE ser
+la de 32bits, así que hacemos:
+sudo rm -R ~/.wine
+WINEPREFIX="$HOME/.wine" WINEARCH=win32 wine wineboot
 winetricks dotnet462
+(OJO: No es un proceso desatendido, te pedirá varias veces que reinicies, NO LO HAGAS).
 
 Ejecutamos el UndertaleTool.exe con wine.
 
@@ -356,12 +370,18 @@ A CONTINUACIÓN, NOTAS DE COSAS QUE YA HEMOS BUSCADO, PARA DEJAR CIERTOS ASPECTO
  (Esto hace que todo vaya interpolado, naturalmente, y si se activa el overlay irá interpolado también, que dentro
  de lo que cabe queda mejor).
 -EDITAMOS "gml_Object_obj_control_Other_2", y ahí podemos desactivar poner el "speedrun" a 0,
-configurar los controles, etc.
+configurar los controles (para usar los botones típicos de la PICADE, que envían las pulsaciones LCTRL y LALT,
+debes poner button1 a 164 y button2 a 162), etc.
 También podríamos poner el "overlay" a 0, pero no lo recomiendo porque el juego se ve mejor con overlay si ponemos
 una resolución adecuada.
 
 Salvamos, sobreescribiendo el archivo .droid, y reempaquetamos el .APK comprimiendo el directorio del juego con ZIP,
-PERO SIN COMPRIMIR, SÓLO "STORE".
+PERO SIN COMPRIMIR, SÓLO "STORE". Si lo haces desde la consola, es:
+cd <directorio_del_APK_descomprimido>
+zip -0 -r maldita.apk *
+(¡¡¡OJO!!!: Hay que hacerlo exactamente así, entrando en el directorio del juego descomprimido, NO pasándole el directorio a zip,
+porque no funcionará).
+
 Para comprimirlo con sólo store y guardando los archivos y directorios como se debe, entramos en el directorio donde tenemos
 descomprimido el APK y hacemos:
 zip -r -0 maldita.apk *
@@ -7875,34 +7895,6 @@ echo "All done."
 Y para convertir todos los cue/bin de un directorio, usa este script:
 for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd"; done
 
-ESCRIBIENDO Y GESTIONANDO SERVICIOS EN SYSTEMD
-==============================================
-
-Por ejemplo, he creado el servicio retroarch.service y lo he puesto en /etc/systemd/system/retroarch.service
-
-El contenido de retroarch.service es:
-
-[Unit]
-Description=RetroArch service
-
-[Service]
-User=root
-Group=root
-ExecStart=/usr/local/bin/retroarch
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-
-Para habilitarlo, lo que hago es:
-systemctl enable retroarch
-
-En realidad esto lo único que hace es copiar /etc/systemd/system/retroarch.service a /etc/systemd/system/multi-user.target.wants/retroarch.service, es decir, lo mete en el directorio del target "multiuser", que es el último, supongo, cuando se inicia el sistema. (Bueno, crea un symlink, pero ya me entiendes).
-
-Naturalmente, "systemctl disable retroarch" hace lo contrario: borra /etc/systemd/system/multi-user.target.wants/retroarch.service.
-
-Saber esto nos permite habilitar y deshabilitar servicios manualmente sin necesidad de que arranque el sistema, accediendo al rootfs desde otro ordenador.
-
 MÚSICA GRAVIS ULTRASOUND Y EFECTOS DE SONIDO EN DUNGEON MASTER 2 EN DOSBOX
 ==========================================================================
 
@@ -8000,6 +7992,12 @@ WantedBy=multi-user.target
 
 y activaríamos el unit con 
 sudo systemctl enable retroarch.service
+
+En realidad esto lo único que hace es copiar /etc/systemd/system/retroarch.service a /etc/systemd/system/multi-user.target.wants/retroarch.service, es decir, lo mete en el directorio del target "multiuser", que es el último, supongo, cuando se inicia el sistema. (Bueno, crea un symlink, pero ya me entiendes).
+
+Naturalmente, "systemctl disable retroarch" hace lo contrario: borra /etc/systemd/system/multi-user.target.wants/retroarch.service.
+
+Saber esto nos permite habilitar y deshabilitar servicios manualmente sin necesidad de que arranque el sistema, accediendo al rootfs desde otro ordenador.
 
 Naturalmente, el ejecutable tiene que estar en /root/bin/retroarch, o donde sea pero que coincida con lo que dice el .service
 Puedes quitar el Restart=always para hacer pruebas, porque al quitarlo se sale al TTY1 si tienes una consola ahí.

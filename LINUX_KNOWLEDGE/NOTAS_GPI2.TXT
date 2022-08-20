@@ -107,8 +107,8 @@ if __name__ == "__main__":
 
 #######################FIN CONTENIDO DE "SHUTDOWN.PY"###############################
 
--Para que no se vean letras en la consola y desactivar las mitigations, añade a cmdline.txt:
-mitigations=off vt.global_cursor_default=0 console=null
+-Para que no se vean letras en la consola y desactivar las mitigations, el fsck, etc... añade a cmdline.txt:
+mitigations=off vt.global_cursor_default=0 console=null fsck.mode=skip
 
 -Para tener sonido completo (la consola sólo tiene uno de los canales soldado al altavoz mono que trae...),
 en RetroArch vamos a "settings->audio->dsp plugin" y seleccionamos "Mono.dsp".

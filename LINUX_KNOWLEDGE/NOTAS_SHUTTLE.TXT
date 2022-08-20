@@ -8,7 +8,7 @@ video="HDMI-A-2:1280x720@60"
 "net.ifnames=0"
 
 -Además añadimos estos parámetros:
-"mitigations=off audit=0"
+"mitigations=off audit=0 fsck.mode=skip"
 
 ******Sonido HDMI en LAKKA y Linux en general************
 
@@ -24,7 +24,7 @@ Para poder escribir en la partición de boot:
 mount -o remount,rw /flash
 
 Y ahora editamos /flash/EFI/BOOT/grub.cfg y añadimos a la línea de parámetros del kernel:
-mitigations=off audit=0 video="HDMI-A-2:1280x720@60"
+mitigations=off audit=0 fsck.mode=skip video="HDMI-A-2:1280x720@60"
 
 Y dejamos la partición boot como sólo lectura:
 mount -o remount,ro /flash

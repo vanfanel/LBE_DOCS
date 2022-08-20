@@ -27,14 +27,27 @@ cp picade.dtbo /flash/overlays/
 cp etc/udev/rules.d/10-picade.rules /etc/udev/rules.d/10-picade.rules
 
 Ahora editamos /flash/cmdline.txt y añadimos:
-video="HDMI-A-1:1024x768@60" mitigations=off audit=0 vt.global_cursor_default=0 console=null
+video="HDMI-A-1:1024x768@60" mitigations=off audit=0 vt.global_cursor_default=0 console=null fsck.mode=skip
 
 Ahora editamos /flash/config.txt y añadimos:
 hdmi_force_hotplug=1
-dtoverlay=picade
+#Esto es para que los seis botones manden las pulsaciones de las teclas Z,X,C,V,B,N, en lugar de las teclas que envían por defecto,
+#que no nos interesan porque incluyen CTRL, ALT, etc.. ya que provocan caractes raros en la consola. Los valores vienen de showkeys.
+dtoverlay=picade,button1=44,button2=45,button3=46,button4=47,button5=48,button6=49
 dtparam=audio=off
 arm_freq=1800
 ..Y ponemos force_turbo a 1, para que siempre vaya la CPU a velocidad máxima.
+
+(NOTA NO NECESARIA EN LAKKA: Para que funcione el botón de apagado (poweroff/shutdown) en Raspberry Pi OS necesitamos
+que el servicio systemd-logind esté activo, que a su vez depende de que tengamos instalado el paquete "dbus"
+y que tengamos systemd-journald.service y systemd-journald.socket activos también.
+Para activar systemd-logind, se haría con el viejo interface sysvinit:
+service systemd-logind enable
+service systemd-logind start
+Si no está activo systemd-logind, el sistema recibe el keycode 116 pero no se apaga.
+EN TEORÍA es posible hacer lo mismo sin systemd, según la documentación original del overlay "gpio-shutdown":
+https://github.com/raspberrypi/firmware/blob/915a7080ccfbf253053e249bde6489a5be908498/boot/overlays/README#L1273
+).
 
 Ahora, como ya hemos acabado, re-montamos la partición de arranque como sólo lectura:
 mount -o remount,ro /flash
@@ -60,8 +73,17 @@ Se podría bajar a 32ms con 44100Hz en vez de 48000Hz.
 
 Para que se vea bien con INTEGER puesto a OFF, puedes coger el shader FAKELOTTES, copiarlo a LAKKA_DISK/shaders,
 y comentar la curvatura y las "extra masks" en el código del shader (de ese modo no pierdes mucha velocidad debido al shader).
+Los parámetros modificados para que no se vean patrones en las scanlines y que no haga daño a la vista son:
+Scanline Intensity	- 20
+CRT Gamma			- 2.20
+Monitor Gamma		- 2.50
+
 Puedes usar el mismo shader para los juegos verticales si le pones SCANLINE INTENSITY a 0: Crea un directorio arcade_vertical
 para meter allí todos los juegos verticales, y luego salva los parámetros del shader para ese directorio solamente.
+
+Para mapear los botones a otras teclas distintas en vez de las que vienen por defecto, se hace mediante dparams del dtoverlay=picade,
+mira esto: https://github.com/pimoroni/picade-hat
+Y en particular esto: https://github.com/pimoroni/picade-hat/blob/master/picade.txt
 
 Para tener carátulas (thumbnails) debes hacer que LAKKA añada los juegos a una PLAYLIST, y tener los THUMBNAILS de los sistemas
 que quieras en /storage/thumbnails. AMBAS COSAS se tienen que cumplir para que se vean.
