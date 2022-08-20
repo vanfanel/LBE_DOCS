@@ -95,7 +95,7 @@ PARTE 4: WESTON (EL COMPOSITOR DE REFERENCIA, PARA UN DESCRITORIO COMPLETO USA W
 --------------------------------------------------------------------------------------
 
 -Instalamos dependencias previas:
-sudo apt-get install libpam0g-dev libfontconfig1-dev libevdev-dev --no-insta--recommends
+sudo apt-get install libpam0g-dev libfontconfig1-dev libevdev-dev --no-install--recommends
 
 -Instalamos manualmente su dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
 --Bajamos los últimos sources estables de aquí:
