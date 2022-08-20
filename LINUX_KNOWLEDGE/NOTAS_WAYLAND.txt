@@ -2,7 +2,7 @@ INSTALAR WAYLAND
 ================
 
 Lo primero: para correr WAYBOX, CAGE, o cualquier otro compositor, necesitas WAYLAND y WLROOTS.
-A su vez, WLROORS necesita WAYLAND-PROTOCOLS y LIBSEAT
+A su vez, WLROOTS necesita WAYLAND-PROTOCOLS y LIBSEAT
 
 PARTE 1: WAYLAND EN SÍ
 ----------------------
