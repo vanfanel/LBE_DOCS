@@ -3409,13 +3409,18 @@ Para usar por ejemplo una banda sonora custom, le puedes pasar /x <ruta al archi
 
 ************Schismtracker en GNU/Linux*******************************************************************
 
-Clonamos el repo:
+Dependencias previas:
+sudo apt-get install autoconf
 
+Clonamos su repo:
 git clone --depth 1 https://github.com/schismtracker/schismtracker.git
 
-Instala autoconf:
+Editamos schism/audio_playback.c y, en la función _audio_open(), comentamos la sección que empieza con:
+"if ((driver_name = SDL_GetCurrentAudioDriver()) != NULL && !strcmp(driver_name, "alsa"))"
+(NO queremos que se fuerce el dispositivo "hw" si el driver es "alsa", es estúpido hacer eso y no funciona)
 
-sudo apt-get install autoconf
+Editamos schism/video.c y la llamada a SDL_RenderSetLogicalSize() la dejamos así:
+SDL_RenderSetLogicalSize(video.renderer, 4, 3);
 
 Ejecutamos: 
 autoreconf -vif
@@ -3424,12 +3429,9 @@ Ahora ya configuramos con:
 
 CFLAGS="-O2 -march=native -mtune=native" ./configure --without-x
 
-En el fichero schism/video.c comentamos la línea:
-SDL_WM_SetIcon(icon, NULL);
-
-Añadimos -lm a LDFLAGS.
-
 Compilamos y listo!
+
+Para configurar el vídeo, editamos ~/.schism/config, y ponemos fullscreen e interpolation a 1.
 
 ************GISH en GNU/Linux**************************************************************************************************************
 
@@ -4615,6 +4617,11 @@ CXXFLAGS="-O2 -march=native -mtune=native -O2 -DGLEW_NO_GLU" make -j4
 El ejecutable queda en bin/RSDKv4
 
 Ahora, para ejecutarlo, necesitamos Data.rsdk (preferiblemente de la versión de PC).
+
+El archivo de configuración está:
+-Para SonicCD, en ~/.local/share/RSDKv3/settings.ini
+-Para Sonic 1 y 2, en ~/.local/share/RSDKv4/settings.ini
+
 En el caso de Sonic CD, la versión de PC tiene un pequeño error en la pantalla del título, que se soluciona poniendo
 screenWidth a 400 en settings.ini. La versión de Steam es la de PC, así que también tiene este error.
 Pensarás que la versión de Android entonces es mejor, pero NO: aunque no tenga este errorcillo, tiene controles en pantalla
