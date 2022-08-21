@@ -105,10 +105,8 @@ modprobe xpad
 
 # Aquí elegiríamos el governor de cada core, ahora que ya tenemos el sysfs
 # preparado y cargados los módulos que permiten controlar la frecuencia
-# de la CPU, pero NO lo hacemos aquí, sino añadiendo a la línea de
-# parámetros del kernel "cpufreq.default_governor=performance",
-# o en el caso de la Raspberry Pi 4 poniendo "force_turbo=1" y "arm_freq=1800"
-# en config.txt.
+# de la CPU, pero NO lo hacemos aquí sino añadiendo a la línea de parámetros
+# del kernel: "cpufreq.default_governor=performance".
 # Esto está aquí sólo a efectos de documentación de cómo setear cosas en sysfs.
 #for numcore in 0 1 2 3
 #do
@@ -124,12 +122,12 @@ mount -o remount,rw,noatime,nodiratime /
 # Montamos también la partición de BOOT
 mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
 
-# Montamos /tmpfs, /run y /var/log en RAM, para que no se escriban temporales ni logs
-# en disco.
+# Montamos /tmpfs, /run y /var en RAM, para que no se escriban temporales ni
+# logs en disco.
 # No especificamos un tamaño, así que como mucho pueden ocupar el 50% de la RAM.
 mount -t tmpfs tmpfs /tmp
 mount -t tmpfs tmpfs /run
-mount -t tmpfs tmpfs /var/log
+mount -t tmpfs tmpfs /var
 
 # Creamos el enlace simbólico de /run a /var/run, ya que algunos programas
 # aún usan /var/run en vez de /run, como wpa_supplicant.
@@ -159,8 +157,13 @@ hostname minimal
 setupcon
 
 # Restablecemos la última fecha conocida de /etc/fake-hwclock.data, para que
-# al menos no estemos en los 70s. Importante para qie GIT funcione.
+# al menos no estemos en los 70s. Importante para que GIT funcione correctamente.
 fake-hwclock load >> /dev/null
+
+# Creamos unos directorios y archivos que necesitan DPKG y APT para funcionar.
+# Recuerda que tememos que hacerlo en cada arranque porque /var está en RAM.
+mkdir -p /var/lib/dpkg
+touch /var/lib/dpkg/status
 
 # Antes de establecer el volúmen, tenemos que reproducir un audio aunque sea
 # inexistente, o el controlador del volúmen por software (softvol) no estará
@@ -196,7 +199,8 @@ killall -u root
 umount /sys
 umount /proc
 umount /tmp
-umount /var/log
+umount /run
+umount /var
 umount /boot
 
 # El desmontaje del rootfs de un kernel en ejecución no se supone
