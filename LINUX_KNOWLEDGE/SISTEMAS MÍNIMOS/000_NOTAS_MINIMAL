@@ -156,12 +156,18 @@ Puede ser necesario cuando volvamos a Wayland, ya que no sé si LINUXRAW funcion
 Para ello:
 	-Clonamos su repo: git clone --depth 1 https://github.com/illiliti/libudev-zero.git
 
-	-Borramos a mano libudev (en Devuan es libeudev, un drop-in replacement de udev que no depende de systemd, pero los ficheros son los mismos):
-	apt-get purge libeudev-dev
-	rm /usr/lib/aarch64-linux-gnu/libudev*
-	rm /usr/lib/aarch64-linux-gnu/pkgconfig/libudev.pc
-	rm -R /usr/lib/udev
-	(Lo borramos a mano porque borrarlo usando "apt-get purge" se lleva por delante componentes del sistema muy importantes como el propio apt!)
+	-Borramos a mano libudev de uno de estos modos:
+
+		-En Debian normal y en otras distros:
+			rm /usr/lib/aarch64-linux-gnu/libudev*
+			rm /usr/lib/aarch64-linux-gnu/pkgconfig/libudev.pc
+			rm -R /usr/lib/udev
+			(Lo borramos a mano porque borrarlo usando "apt-get purge" se lleva por delante componentes del sistema
+			muy importantes como el APT!!!).
+
+		-En Devuan es libeudev, un drop-in replacement de udev que no depende de systemd, pero los ficheros son los mismos):
+			apt-get purge libeudev-dev
+
 
 	NO OLVIDES, TRAS DESINSTALARLO, LIMPIAR LA CACHÉ DE LIBRERÍAS:
 	rm /etc/ld.so.cache

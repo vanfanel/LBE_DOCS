@@ -1695,9 +1695,19 @@ PS1="\u@\H\w$ "
 
 ******Quitar versión de kernel y lastlogin************************************************************************
 
-Editamos /etc/pam.d/login
-y comentamos
-#session optional pam_lastlog.so
+Editamos /etc/pam.d/login y comentamos:
+
+#session    optional     pam_motd.so  motd=/run/motd.dynamic
+#session    optional     pam_motd.so noupdate
+#session    optional     pam_mail.so standard noenv # [1]
+#session	optional	 pam_lastlog.so
+
+Editamos 
+/etc/pam.d/sshd y comentamos:
+
+#session    optional     pam_motd.so  motd=/run/motd.dynamic
+#session    optional     pam_motd.so noupdate
+#session    optional     pam_mail.so standard noenv # [1]
 
 *******El comando IP**********************************************************************************************
 
@@ -2671,8 +2681,15 @@ update-initramfs -u
 Reiniciamos y ya no debería estar.
 
 -Borramos /etc/motd
--Para quitar el lastlogin, editamos sudo vim /etc/pam.d/login y comentamos la línea:
-session optional pam_lastlog.so
+-Para quitar el lastlogin, el motd, etc... editamos sudo vim /etc/pam.d/login y comentamos las líneas:
+#session    optional     pam_motd.so  motd=/run/motd.dynamic
+#session    optional     pam_motd.so noupdate
+#session    optional     pam_mail.so standard noenv # [1]
+-Para hacer lo mismo para cuando nos conectamos por ssh, editamos sudo vim /etc/pam.d/sshd y comentamos las líneas:
+#session    optional     pam_motd.so  motd=/run/motd.dynamic
+#session    optional     pam_motd.so noupdate
+#session    optional     pam_mail.so standard noenv # [1]
+
 En este mismo fichero, puedes quitar otros mensajes del login, como la versión del kernel y tal.
 Para ello comenta las dos líneas siguientes a esta de lastlog.
 -Para quitar el delay de login editamos /etc/pam.d/common-auth y añadimos a la línea de pam_unix el "nodelay",
@@ -3818,7 +3835,7 @@ Y configuramos desde un directorio de build que creamos nosotros:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
+cmake .. -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
 
 Y compilamos con make -j4, e instalamos con:
 sudo make install
@@ -4866,6 +4883,11 @@ Verificamos que no hay -g, que se compila con -O2 y que los flags de cpu son cor
 Listo!
 
 NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da igual.
+
+**************Regenerar la caché de LDD******************************************************************************************
+
+rm /etc/ld.so.cache
+ldconfig
 
 **************SWAP de emergencia*************************************************************************************************
 
@@ -5956,7 +5978,7 @@ y listo.
 
 
 ERROR DE LANGUAGE DE PERL al acceder por ssh a una máquina
-=====================================================
+==========================================================
 
 Esto ocurre porque la máquina desde la que accedemos exporta los settings de lenguaje a la máquina a la que estamos accediendo, y en esa no está instalado el 
 soporte para el lenguaje que sea.
