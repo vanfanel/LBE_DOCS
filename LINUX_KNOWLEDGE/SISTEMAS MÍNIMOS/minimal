@@ -147,6 +147,12 @@ mount -t tmpfs tmpfs /dev/shm
 # se empezarán a guardar en /. Así que esto hay que hacerlo SIEMPRE.
 export HOME=/root
 
+# También exportamos $XDG_RUNTIME_DIR a /run. Como usuario normal,
+# $XDG_RUNTIME_DIR sería algo como /run/user/1000, pero como root,
+# debe apuntar a /run simplemente, ya que no hay login manager.
+# Esto nos ahorra muchos problemas después con Wayland, Pipewire, etc.
+export XDG_RUNTIME_DIR=/run
+
 # Setupcon configura la fuente y el teclado de la consola,
 # leyendo la configuración de /etc/default/console-setup y /etc/default/keyboard.
 hostname minimal

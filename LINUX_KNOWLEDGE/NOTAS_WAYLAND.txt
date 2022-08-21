@@ -184,6 +184,9 @@ if test -z "${XDG_RUNTIME_DIR}"; then
     fi  
 fi
 
+(OJO: Si estás como root, XDG_RUNTIME_DIR sería directamente /run ya que estando como root no hay login manager.
+Y de todos modos esto ya lo exportas en /etc/minimal si estás arrancando tu propio sistema mínimo).
+
 Ahora lanzamos WESTON:
 weston-launch
 (Se sale con Ctrl+Alt+Backspace)
