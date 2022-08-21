@@ -135,7 +135,7 @@ mount -t tmpfs tmpfs /var/log
 # aún usan /var/run en vez de /run, como wpa_supplicant.
 # Lo tenemos que hacer siempre que arrancamos porque ya sabes que todo esto
 # está en RAM, no en un disco persistente.
-mkdir -ln /run /var/run
+ln -s /run /var/run
 
 # Montamos /dev/shm que es el directorio de memoria compartida que usan los
 # programas para acceder a porciones de memoria de otros programas.
