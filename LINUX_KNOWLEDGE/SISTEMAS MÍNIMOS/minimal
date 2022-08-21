@@ -116,24 +116,27 @@ modprobe xpad
 # Re-montamos el root como lectura/escritura.
 # Podríamos poner la opción "sync" después de otra coma para que las escrituras
 # sean inmediatas, lo que mejora mucho la predictibilidad del sistema al no haber
-# escrituras retardadas.
+# escrituras retardadas, pero todo sería mucho más lento (comprobado).
 mount -o remount,rw,noatime,nodiratime /
 
 # Montamos también la partición de BOOT
 mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
 
-# Montamos /tmpfs, /run y /var en RAM, para que no se escriban temporales ni
-# logs en disco.
+# Montamos /tmpfs, /run y /var/log en RAM, para que no se escriban temporales ni
+# logs en disco (no metemos /var entero en RAM porque DPKG y APT meten ahí los
+# metadatos y si lo hiciésemos tendríamos que ejecutar "apt-get update" en cada
+# nuevo arranque del sistema).
 # No especificamos un tamaño, así que como mucho pueden ocupar el 50% de la RAM.
 mount -t tmpfs tmpfs /tmp
 mount -t tmpfs tmpfs /run
-mount -t tmpfs tmpfs /var
+mount -t tmpfs tmpfs /var/log
 
-# Creamos el enlace simbólico de /run a /var/run, ya que algunos programas
-# aún usan /var/run en vez de /run, como wpa_supplicant.
-# Lo tenemos que hacer siempre que arrancamos porque ya sabes que todo esto
-# está en RAM, no en un disco persistente.
-ln -s /run /var/run
+# Creamos el enlace simbólico de /run a /var/run si no está creado ya.
+# Es necesario porque algunos programas aún usan /var/run en vez de /run,
+# como por ejemplo wpa_supplicant.
+if [ ! -d "/var/run" ]; then
+    ln -s /run /var/
+fi
 
 # Montamos /dev/shm que es el directorio de memoria compartida que usan los
 # programas para acceder a porciones de memoria de otros programas.
@@ -159,11 +162,6 @@ setupcon
 # Restablecemos la última fecha conocida de /etc/fake-hwclock.data, para que
 # al menos no estemos en los 70s. Importante para que GIT funcione correctamente.
 fake-hwclock load >> /dev/null
-
-# Creamos unos directorios y archivos que necesitan DPKG y APT para funcionar.
-# Recuerda que tememos que hacerlo en cada arranque porque /var está en RAM.
-mkdir -p /var/lib/dpkg
-touch /var/lib/dpkg/status
 
 # Antes de establecer el volúmen, tenemos que reproducir un audio aunque sea
 # inexistente, o el controlador del volúmen por software (softvol) no estará
@@ -195,12 +193,15 @@ fake-hwclock save
 killall -u root
 
 # Desmontamos todo lo que hemos montado.
-# El desmontaje conlleva la sincronización de los discos.
+# (El desmontaje conlleva la sincronización en el caso de los discos).
 umount /sys
 umount /proc
 umount /tmp
+umount /var/log
+# Como /var/run es un symlink a /run, para desmontar /run sin errores
+# tenemos que borrar antes el symlink que apunta a él.
+rm -R /var/run
 umount /run
-umount /var
 umount /boot
 
 # El desmontaje del rootfs de un kernel en ejecución no se supone
