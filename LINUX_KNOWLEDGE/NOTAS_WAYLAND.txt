@@ -51,17 +51,39 @@ python3 -m pip install ninja
 python3 -m pip install meson
 PATH="/usr/local/bin:$PATH"
 
-// BLOQUE PARA DEBIAN 11, QUE YA TIENE UN PAQUETE LIBSEAT Y SU VERSIÓN DE LIBINPUT ES ACTUAL, ASÍ QUE ES TODO MÁS SENCILLO:
+// BLOQUE PARA DEBIAN MINIMAL (DEBIAN SIN SYSTEMD)
+
+Como no tenemos systemd, para libseat/seatd tenemos que usar el seatd de DEVUAN, ya que libseat normal requiere systemd corriendo
+para funcionar.
+
+Clonamos su repo:
+git clone --depth 1 https://git.devuan.org/devuan/seatd.git
+
+--Configuramos, compilamos e instalamos:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release -Dexamples=disabled -Dlogind=disabled -Dman-pages=disabled ..
+
+ninja -j4
+sudo ninja install
+
+// FIN BLOQUE PARA DEBIAN MINIMAL (DEBIAN SIN SYSTEMD)
+
+// BLOQUE PARA DEBIAN 12, QUE YA TIENE UN PAQUETE LIBSEAT, ASÍ QUE ES TODO MÁS SENCILLO:
 
 -Instalamos dependencias previas: sudo apt-get install libpixman-1-dev libxkbcommon-dev libinput-dev libseat-dev --no-install-recommends
-(OJO: Si no estás usando libudev-zero, también tienes que instalar libudev-dev).
+(OJO: Si no estás usando libudev-zero, que es lo que usas en sistemas mínimos, también debes instalar libudev-dev).
 
-// FIN BLOQUE DEBIAN 11
+// FIN BLOQUE DEBIAN 12
 
-// BLOQUE SÓLO PARA DEBIAN 10, YA QUE NO TIENE EL PAQUETE LIBSEAT Y SU VERSIÓN DE LIBINPUT ES VIEJA
+// BLOQUE SÓLO PARA DEBIAN 11, YA QUE NO TIENE EL PAQUETE LIBSEAT
 
--Instalamos dependencias previas: sudo apt-get install libudev-dev libpixman-1-dev libxkbcommon-dev --no-install-recommends
--Instalamos manualmente la dependencia LIBSEAT, que no está como paquete en DEBIAN 10. Para ello:
+-Instalamos dependencias previas: sudo apt-get install libpixman-1-dev libxkbcommon-dev --no-install-recommends
+(OJO: Si no estás usando libudev-zero, que es lo que usas en sistemas mínimos, debes instalar también libudev-dev).
+-Instalamos manualmente la dependencia LIBSEAT, que no está como paquete en DEBIAN 11. Para ello:
 --Bajamos los últimos sources estables de aquí: https://git.sr.ht/~kennylevinsen/seatd
 --Configuramos, compilamos e instalamos:
 mkdir b4
@@ -69,12 +91,12 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dexamples=disabled ..
+meson -Dbuildtype=release -Dexamples=false ..
 
 ninja -j4
 sudo ninja install
 
--Instalamos manualmente la dependencia LIBINPUT, que la versión que trae DEBIAN 10 es vieja y no nos vale. Para ello:
+-Instalamos manualmente la dependencia LIBINPUT, que la versión que trae DEBIAN 11 es vieja y no nos vale. Para ello:
 --Instalamos dependencias previas de LIBINPUT: sudo apt-get install libmtdev-dev
 --Bajamos los últimos sources estables de aquí: http://www.freedesktop.org/software/libinput
 --Configuramos, compilamos e instalamos:
@@ -88,17 +110,29 @@ meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddoc
 ninja -j4
 sudo ninja install
 
-// FIN BLOQUE DEBIAN 10
+// FIN BLOQUE DEBIAN 11
 
+--Instalamos dependencias previas:
+apt-get install glslang-dev glslang-tools
+--Actualizamos nuestra versión de libvulkan y libvulkan-dev, ya que WLROOT necesita una reciente si activamos
+el renderer VULKAN, para lo cual:
+	--Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
+		echo "deb http://deb.debian.org/debian bullseye-backports main" | sudo tee /etc/apt/sources.list.d/buster-backports.list
+		apt-get update
+	--Actualizamos nuestra versión de libvulkan (como ves tenemos que especificarle que la pille de backports):
+		apt-get -t bullseye-backports install libvulkan1
+		apt-get -t bullseye-backports install libvulkan-dev (<---Este probablemente no se te actualize, don't worry.)
 -Instalamos WLROOTS en sí. Para ello:
---Bajamos los últimos sources estables de aquí: https://gitlab.freedesktop.org/wlroots/wlroots/-/releases
+--Bajamos los últimos sources de WLROOTS estables de aquí: https://gitlab.freedesktop.org/wlroots/wlroots/-/releases
 --Configuramos, compilamos e instalamos:
+
 mkdir b4
 cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled -Dx11-backend=disabled -Dxcb-errors=disabled ..
+meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled \
+-Dbackends=drm -Drenderers=gles2,vulkan -Dxcb-errors=disabled ..
 
 ninja -j4
 sudo ninja install
@@ -107,11 +141,12 @@ PARTE 4: WESTON (EL COMPOSITOR DE REFERENCIA, PARA UN DESCRITORIO COMPLETO USA W
 --------------------------------------------------------------------------------------
 
 -Instalamos dependencias previas:
-sudo apt-get install libpam0g-dev libfontconfig1-dev libevdev-dev --no-install--recommends
+(--POSIBLEMENTE SOBRA--)sudo apt-get install libpam0g-dev libfontconfig1-dev libevdev-dev --no-install-recommends
+sudo apt-get install libinput-dev --no-install-recommends
 
 -Instalamos manualmente su dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
 --Bajamos los últimos sources estables de aquí:
-https://gitlab.freedesktop.org/cairo/cairo/-/tags
+https://gitlab.freedesktop.org/cairo/cairo/-/releases
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
@@ -132,7 +167,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false -Dbackend-fbdev=false \
+meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false \
 -Dxwayland=false -Dremoting=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
 -Dcolor-management-lcms=false -Dcolor-management-colord=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false \
 -Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false ..
