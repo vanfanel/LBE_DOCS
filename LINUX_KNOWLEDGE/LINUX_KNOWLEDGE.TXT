@@ -4912,6 +4912,13 @@ si no queremos colgar el sistema.
 
 Podemos comprobar cómo se usa la swap con "free" mientras se linka.
 
+**************Establecer un modo de vídeo "al vuelo" en GNU/Linux con KMS/DRM***************************************************
+
+modetest -M vc4 -s 32:640x480 -d
+
+El truco está en el "-d", que hace que modetest "suelte" el master (drop master) con lo que el siguiente programa aparece en
+el modo que le hayamos dicho mientras modetest esté corriendo.
+
 **************Tyrian en GNU/Linux con OpenTyrian********************************************************************************
 
 Clonamos el repo de:

@@ -28,7 +28,7 @@ comentamos todo el "if" y lo que hay dentro.
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-debug --enable-release --enable-optimizations \
---opengl-mode=gles2 --disable-hq-scalers \
+--opengl-mode=gles2 --disable-hq-scalers --disable-fribidi \
 --disable-eventrecorder --disable-cloud --disable-savegame-timestamp \
 --enable-mt32emu --enable-nuked-opl --disable-timidity --disable-flac --disable-alsa \
 --enable-vorbis --disable-mad --disable-tremor --disable-theoradec \
