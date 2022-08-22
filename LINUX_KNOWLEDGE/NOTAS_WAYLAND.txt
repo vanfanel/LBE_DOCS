@@ -13,8 +13,8 @@ Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Ddtd_validation=false -Ddocumentation=false ..
 
 ninja -j4
@@ -29,8 +29,8 @@ Cofiguramos, compilamos e instalamos:
 mkdir b4
 cd b4
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dtests=false ..
 
 ninja -j4
@@ -55,8 +55,8 @@ PARTE 3: WLROOTS
 mkdir b4
 cd b4
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dexamples=disabled ..
 
 ninja -j4
@@ -69,8 +69,8 @@ sudo ninja install
 mkdir b4
 cd b4
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false ..
 
 ninja -j4
@@ -84,8 +84,8 @@ sudo ninja install
 mkdir b4
 cd b4
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled -Dx11-backend=disabled -Dxcb-errors=disabled ..
 
 ninja -j4
@@ -104,8 +104,8 @@ Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release ..
 
 ninja -h4
@@ -118,8 +118,8 @@ Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false -Dbackend-fbdev=false \
 -Dxwayland=false -Dremoting=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
 -Dcolor-management-lcms=false -Dcolor-management-colord=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false \
@@ -378,8 +378,8 @@ Para compilar GTK3 (la versión más compatible con programas actualmente y que 
 -Configuramos como:
 mkdir b4
 cd b4
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 meson .. -Dbuildtype=release \
 -Dwayland-backend=true -Dx11-backend=false -Dmedia-ffmpeg=disabled -Dmedia-gstreamer=disabled -Dprint-cups=disabled \
 -Dprint-cloudprint=disabled -Dvulkan=enabled -Dxinerama=disabled -Dintrospection=disabled -Ddemos=false \
@@ -391,8 +391,8 @@ Para compilar GTK4 sería:
 -Bajamos los últimos sources estables de: https://download.gnome.org/sources/gtk/
 mkdir b4
 cd b4
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 meson .. -Dbuildtype=release \
 -Dwayland-backend=true -Dx11-backend=false -Dmedia-ffmpeg=disabled -Dmedia-gstreamer=disabled -Dprint-cups=disabled \
 -Dvulkan=enabled -Dintrospection=disabled -Ddemos=false -Dbuild-examples=false -Dbuild-tests=false 
@@ -420,8 +420,8 @@ Compilamos con:
 mkdir b4
 cd b4
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
-CXXFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 meson .. --buildtype=release
 
 ninja -j4
@@ -447,7 +447,7 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DGLFW_USE_WAYLAND=1 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mcpu=native -O2 -ftree-vectorize -pipe -fomit-frame-pointer"
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
 make -j4
 sudo make install
@@ -458,7 +458,7 @@ AHORA VAMOS A POR KITTY EN SÍ...
 
 git clone --depth 1 https://github.com/kovidgoyal/kitty
 
-CFLAGS="-march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize -pipe -fomit-frame-pointer" \
+CFLAGS="-march=native -mtune=native" \
 ./configure
 
 make -j4
