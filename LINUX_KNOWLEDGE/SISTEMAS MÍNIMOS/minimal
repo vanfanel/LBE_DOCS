@@ -120,7 +120,7 @@ modprobe xpad
 mount -o remount,rw,noatime,nodiratime /
 
 # Montamos también la partición de BOOT
-mount /dev/mmcblk0p10 /boot -o rw,sync,noatime,nodiratime
+mount /dev/mmcblk0p1 /boot -o rw,sync,noatime,nodiratime
 
 # Montamos /tmpfs, /run y /var/log en RAM, para que no se escriban temporales ni
 # logs en disco (no metemos /var entero en RAM porque DPKG y APT meten ahí los
@@ -178,10 +178,14 @@ amixer set PCM 230 -q
 # es redireccionada a tty1.
 # Se puede usar bash o bien sh. Si usamos bash, hay que pasarle el --login
 # porque si no, no lee /etc/profile y nos faltan cosas en el $PATH.
-setsid sh -c 'cd /root;exec bash --login </dev/tty1 >/dev/tty1 2>&1'
+# setsid sh -c 'cd /root;exec bash --login </dev/tty1 >/dev/tty1 2>&1'
 
 # En caso de querer un único programa corriendo:
 # setsid sh -c 'exec /usr/local/bin/retroarch </dev/tty1 >/dev/tty1 2>&1'
+
+# Para arrancar Wayland, Weston concretamente. El -l -f es para que no
+# mande logs a la consola.
+setsid sh -c 'cd root/;exec /usr/local/bin/weston -l -f </dev/tty1 >/dev/tty1 2>&1'
 
 # Salvamos la última fecha conocida, que va al fichero /etc/fake-hwclock.data
 fake-hwclock save
@@ -196,11 +200,11 @@ killall -u root
 # El desmontaje conlleva la sincronización en el caso de los discos.
 # No nos molestamos en desmontar /run porque siempre da error (posiblemente
 # porque el propio mount también lo usa) y como está en RAM no se pierde nada.
+
 umount /sys
 umount /proc
 umount /tmp
 umount /var/log
-umount /boot
 
 # El desmontaje del rootfs de un kernel en ejecución no se supone
 # que sea posible, así que lo re-montamos como sólo lectura y así el kernel

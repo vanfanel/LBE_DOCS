@@ -157,12 +157,11 @@ ninja install
 // BLOQUE DEBIAN CON SYSTEMD
 
 -Instalamos dependencias previas:
-(--POSIBLEMENTE SOBRA--)sudo apt-get install libpam0g-dev libfontconfig1-dev libevdev-dev --no-install-recommends
 sudo apt-get install libinput-dev --no-install-recommends
 
 // FIN BLOQUE DEBIAN CON SYSTEMD
 
--Instalamos manualmente su dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
+-Instalamos manualmente la dependencia previa de WESTON, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
 --Instalamos dependencias previas: apt-get install libfontconfig-dev
 --Bajamos los últimos sources estables de aquí:
 https://gitlab.freedesktop.org/cairo/cairo/-/releases
@@ -194,10 +193,12 @@ meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreens
 ninja -j4
 sudo ninja install
 
+// BLOQUE PARA USUARIOS NORMALES NO ROOT
 Ahora hacemos setuid-root al ejecutable weston-launch, creamos el grupo weston-launch y añadimos al usuario al grupo weston-launch:
 sudo chmod 4755 /usr/local/bin/weston-launch
 sudo gropuadd weston-launch
 sudo usermod -a -G weston-launch pi
+// FIN BLOQUE PARA USUARIOS NORMALES NO ROOT
 
 Ahora creamos ~/.config/weston.ini con este contenido:
 (RECUERDA que puedes ver los modos de vídeo disponibles con: modetest |grep -50 modes
@@ -238,7 +239,10 @@ vt-switching=false
 # Aquí acaba el contenido de weston.ini
 #
 
-Ahora añadimos esto a /etc/profile
+
+// BLOQUE SÓLO PARA DEBIAN CON SYSTEMD (sin systemd, ya se exporta XDG_RUNTIME en el script de inicio /etc/minimal)
+
+Añadimos esto a /etc/profile
 
 # Prepare the runtime dir if we haven't done so yet.
 if test -z "${XDG_RUNTIME_DIR}"; then
@@ -253,8 +257,10 @@ fi
 (OJO: Si estás como root, XDG_RUNTIME_DIR sería directamente /run ya que estando como root no hay login manager.
 Y de todos modos esto ya lo exportas en /etc/minimal si estás arrancando tu propio sistema mínimo).
 
+// FIN BLOQUE SÓLO PARA DEBIAN CON SYSTEMD
+
 Ahora lanzamos WESTON:
-weston-launch
+weston
 (Se sale con Ctrl+Alt+Backspace)
 
 Si queremos que se autoarranque, tenemos dos opciones:
