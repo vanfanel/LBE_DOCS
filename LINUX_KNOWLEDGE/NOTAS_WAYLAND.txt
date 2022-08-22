@@ -41,9 +41,20 @@ PARTE 3: WLROOTS
 ----------------
 -Previamente necesitamos KMS/DRM funcionando. Así que deberías ser capaz de ejecutar los tests de SDL2 sobre KMSDR.
 
+Lo primero es instalar la última versión de MESON, porque la que trae DEBIAN siempre son viejos y las versiones
+actuales de WLROOTS necesitan versiones actuales de MESON para compilar (DEBIAN nunca coge a WLROOTS con la versión
+de MESON necesaria):
+
+sudo apt-get purge meson
+sudo apt install python3-pip --no-install-recommends
+python3 -m pip install ninja
+python3 -m pip install meson
+PATH="/usr/local/bin:$PATH"
+
 // BLOQUE PARA DEBIAN 11, QUE YA TIENE UN PAQUETE LIBSEAT Y SU VERSIÓN DE LIBINPUT ES ACTUAL, ASÍ QUE ES TODO MÁS SENCILLO:
 
--Instalamos dependencias previas: sudo apt-get install libudev-dev libpixman-1-dev libxkbcommon-dev libinput-dev libseat-dev --no-install-recommends
+-Instalamos dependencias previas: sudo apt-get install libpixman-1-dev libxkbcommon-dev libinput-dev libseat-dev --no-install-recommends
+(OJO: Si no estás usando libudev-zero, también tienes que instalar libudev-dev).
 
 // FIN BLOQUE DEBIAN 11
 
@@ -80,7 +91,7 @@ sudo ninja install
 // FIN BLOQUE DEBIAN 10
 
 -Instalamos WLROOTS en sí. Para ello:
---Bajamos los últimos sources estables de aquí: https://github.com/swaywm/wlroots/releases
+--Bajamos los últimos sources estables de aquí: https://gitlab.freedesktop.org/wlroots/wlroots/-/releases
 --Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
