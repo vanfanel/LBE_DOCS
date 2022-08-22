@@ -544,6 +544,8 @@ FIN NOCIONES PREVIAS
 sudo usermod -a -G render pi
 
 Empezamos con libDRM:
+Elimimanos el libDRM del sistema:
+apt-get purge libdrm*
 Instalamos estas dependencias previas: 
 sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make cmake automake pkg-config gcc g++ meson python3-setuptools --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
