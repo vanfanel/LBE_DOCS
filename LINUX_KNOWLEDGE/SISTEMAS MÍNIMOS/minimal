@@ -193,9 +193,9 @@ fake-hwclock save
 killall -u root
 
 # Desmontamos todo lo que hemos montado.
-# (El desmontaje conlleva la sincronización en el caso de los discos).
-# No nos molestamos en desmontar /run, porque siempre da error y como está
-# en RAM no se pierde nada de todos modos.
+# El desmontaje conlleva la sincronización en el caso de los discos.
+# No nos molestamos en desmontar /run porque siempre da error (posiblemente
+# porque el propio mount también lo usa) y como está en RAM no se pierde nada.
 umount /sys
 umount /proc
 umount /tmp

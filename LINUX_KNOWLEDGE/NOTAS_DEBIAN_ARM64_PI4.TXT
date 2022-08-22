@@ -739,6 +739,13 @@ CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --without-x --disable-freetype-builtin --disable-harfbuzz
 
+Para SDL2_net:
+-Nos bajamos la última versión estable de: https://github.com/libsdl-org/SDL_net/releases 
+-Configuramos con:
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+./configure
+
 INSTALAR RETROARCH
 ===================
 

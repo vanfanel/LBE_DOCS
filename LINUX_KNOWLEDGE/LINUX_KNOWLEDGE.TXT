@@ -7293,7 +7293,7 @@ GLEW es usado por los Sonic-1-2-2013 y SonicCD decompilation projects, por Scumm
 (NO para el modo OpenGL de los juegos 2D, y a parte para el render de los juegos 3D también se puede usar GLES2, así que
 glew no es necesario ni para juegos 2D ni para aceleración de juegos 3D en Scummvm) y por otros programas que no recuerdo ahora. 
 
-GLWE sólo conoce de OpenGL/ES, no sabe nada de sistemas de ventanas (X11, Wayland, KMSDRM).
+GLEW sólo conoce de OpenGL/ES, no sabe nada de sistemas de ventanas (X11, Wayland, KMSDRM).
 
 Dependencias previas:
 
@@ -7515,7 +7515,7 @@ COMPILAR FROTZ
 ===============
 
 Instala las ncursesw, que es una versión más mehó de las ncurses:
-sudo apt-get install libncursesw5-dev
+sudo apt-get install libncursesw5-dev libjpeg-dev
 
 Si quieres sonido en modo texto, instala estas dependencias antes, PERO NO HACE FALTA PORQUE SFROTZ TIENE SONIDO
 A TRAVÉS DE LAS SDL, así que simplemente los juegos con audio lánzalos con sfrotz.

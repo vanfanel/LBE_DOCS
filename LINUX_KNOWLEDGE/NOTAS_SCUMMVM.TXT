@@ -20,7 +20,7 @@ Al pasarle como host la Raspberry Pi (--host=raspberrypi), compilará contra SDL
 *********COMPILAR SCUMMVM***************
 
 COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
-Dependencias previas: apt-get install libmpeg2-4-dev
+Dependencias previas: apt-get install libmpeg2-4-dev libvorbis-dev
 
 Para que no salga el cursor de sistema, editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse
 comentamos todo el "if" y lo que hay dentro.
