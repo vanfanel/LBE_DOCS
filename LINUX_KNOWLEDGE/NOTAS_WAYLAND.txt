@@ -194,10 +194,10 @@ ninja -j4
 sudo ninja install
 
 // BLOQUE PARA USUARIOS NORMALES NO ROOT
-Ahora hacemos setuid-root al ejecutable weston-launch, creamos el grupo weston-launch y añadimos al usuario al grupo weston-launch:
-sudo chmod 4755 /usr/local/bin/weston-launch
-sudo gropuadd weston-launch
-sudo usermod -a -G weston-launch pi
+Ahora hacemos setuid-root al ejecutable weston, creamos el grupo weston y añadimos al usuario al grupo weston:
+sudo chmod 4755 /usr/local/bin/weston
+sudo gropuadd weston
+sudo usermod -a -G weston pi
 // FIN BLOQUE PARA USUARIOS NORMALES NO ROOT
 
 Ahora creamos ~/.config/weston.ini con este contenido:
@@ -271,8 +271,8 @@ ESTO A SU VEZ SE PUEDE HACER DE DOS MANERAS:
 
 1.1) OPCIÓN 1
 
-Añadimos esto a /etc/profile (que se ejecutará al ejecutarse weston-launch,
-ya que se loguea como el usuario que le pasamos a weston-launch con la opción -u):
+Añadimos esto a /etc/profile (que se ejecutará al ejecutarse weston,
+ya que se loguea como el usuario que le pasamos a weston con la opción -u):
 
 # Prepare the runtime dir if we haven't done so yet.
 if test -z "${XDG_RUNTIME_DIR}"; then
@@ -286,7 +286,7 @@ fi
 
 Creamos el fichero /etc/systemd/system/weston.service mínimo (ya que lo hacemos todo en el /etc/profile), con el contenido:
 
-# Service to launch Weston on boot, on the TTY specified to weston-launch.
+# Service to launch Weston on boot, on the TTY specified to weston.
 
 [Unit]
 Description=Weston Wayland compositor startup
@@ -295,7 +295,7 @@ RequiresMountsFor=/run
 [Service]
 User=pi
 EnvironmentFile=-/etc/default/weston
-ExecStart=/usr/bin/sudo -E /usr/local/bin/weston-launch -t /dev/tty7 -u pi
+ExecStart=/usr/bin/sudo -E /usr/local/bin/weston -t /dev/tty7 -u pi
 
 # This is like a 'cd' for the service so the terminal emulator starts there.
 WorkingDirectory=/home/pi
@@ -335,7 +335,7 @@ Environment="XDG_RUNTIME_DIR=/run/user/1000"
 ExecStartPre=/usr/bin/sudo /bin/mkdir -p /run/user/1000
 ExecStartPre=/usr/bin/sudo /bin/chown pi:pi /run/user/1000
 ExecStartPre=/bin/chmod 0700 /run/user/1000
-ExecStart=/usr/bin/sudo -E -- /bin/openvt -v -w -s -- su pi -l -c "XDG_RUNTIME_DIR=/run/user/1000 /usr/local/bin/weston-launch -- $OPTARGS 2>~/.weston-errors"
+ExecStart=/usr/bin/sudo -E -- /bin/openvt -v -w -s -- su pi -l -c "XDG_RUNTIME_DIR=/run/user/1000 /usr/local/bin/weston -- $OPTARGS 2>~/.weston-errors"
 
 # This is like a 'cd' for the service so the terminal emulator starts there.
 WorkingDirectory=/home/pi
@@ -386,7 +386,7 @@ fi
 
 # Start Weston automatically.
 if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/tty1 ]]; then
-	weston-launch
+	weston
 	logout
 fi
 
@@ -397,7 +397,7 @@ fi
 ############################################################
 
 Investigar si se puede hacer simplemente:
-sudo -E weston-launch -t /dev/tty7 -u pi
+sudo -E weston -t /dev/tty7 -u pi
 
 AÑADIR NUEVOS ATAJOS DE TECLADO A WESTON
 ========================================
