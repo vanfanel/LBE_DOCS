@@ -41,16 +41,6 @@ PARTE 3: WLROOTS
 ----------------
 -Previamente necesitamos KMS/DRM funcionando. Así que deberías ser capaz de ejecutar los tests de SDL2 sobre KMSDR.
 
-Lo primero es instalar la última versión de MESON, porque la que trae DEBIAN siempre son viejos y las versiones
-actuales de WLROOTS necesitan versiones actuales de MESON para compilar (DEBIAN nunca coge a WLROOTS con la versión
-de MESON necesaria):
-
-sudo apt-get purge meson
-sudo apt install python3-pip --no-install-recommends
-python3 -m pip install ninja
-python3 -m pip install meson
-PATH="/usr/local/bin:$PATH"
-
 // BLOQUE PARA DEBIAN MINIMAL (DEBIAN SIN SYSTEMD)
 
 Como no tenemos systemd, para libseat/seatd tenemos que usar el seatd de DEVUAN, ya que libseat normal requiere systemd corriendo
@@ -140,11 +130,40 @@ sudo ninja install
 PARTE 4: WESTON (EL COMPOSITOR DE REFERENCIA, PARA UN DESCRITORIO COMPLETO USA WAYBOX)
 --------------------------------------------------------------------------------------
 
+// BLOQUE DEBIAN SIN SYSTEMD
+
+Tenemos que instalar nuestras propias compilaciones de libinput, ya que compila contra UDEV
+y en los sistemas sin systemd usamos libudev-zero, compilada por nosotros, por lo que si usamos
+el libinput de Debian, falla el linkado de Weston.
+
+Pues eso, compilamos e instalamos libinput:
+-Instalamos dependencias previas: apt-get install libmtdev-dev libevdev-dev --no-install-recommends
+-Bajamos las últimas estables de aquí:
+https://www.freedesktop.org/software/libinput/libinput-1.19.4.tar.xz
+-Configuramos y compilamos con:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release -Dtests=false -Dinstall-tests=false -Dlibwacom=false -Ddebug-gui=false ..
+
+ninja -j4
+ninja install
+
+// FIN BLOQUE DEBIAN SIN SYSTEMD
+
+
+// BLOQUE DEBIAN CON SYSTEMD
+
 -Instalamos dependencias previas:
 (--POSIBLEMENTE SOBRA--)sudo apt-get install libpam0g-dev libfontconfig1-dev libevdev-dev --no-install-recommends
 sudo apt-get install libinput-dev --no-install-recommends
 
+// FIN BLOQUE DEBIAN CON SYSTEMD
+
 -Instalamos manualmente su dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
+--Instalamos dependencias previas: apt-get install libfontconfig-dev
 --Bajamos los últimos sources estables de aquí:
 https://gitlab.freedesktop.org/cairo/cairo/-/releases
 Configuramos, compilamos e instalamos:

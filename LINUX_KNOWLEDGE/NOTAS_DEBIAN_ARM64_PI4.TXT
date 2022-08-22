@@ -555,7 +555,7 @@ python3 -m pip install ninja
 python3 -m pip install meson
 PATH="/usr/local/bin:$PATH"
 
-...Ahora ya vamos con DRM en sí...
+...Ahora ya vamos con libDRM en sí...
 Elimimanos el libDRM del sistema, que es viejo siempre:
 apt-get purge libdrm*
 Instalamos estas dependencias previas: 
@@ -588,7 +588,7 @@ sudo apt-get install --no-install-recommends \
     flex bison python3-mako python3-setuptools \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
-    zlib1g-dev pkg-config meson
+    zlib1g-dev pkg-config
 
 SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
 sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommends
