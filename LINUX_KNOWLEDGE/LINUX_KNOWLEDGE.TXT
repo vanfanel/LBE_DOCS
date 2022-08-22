@@ -4912,7 +4912,7 @@ si no queremos colgar el sistema.
 
 Podemos comprobar cómo se usa la swap con "free" mientras se linka.
 
-**************Tyrian en Linux**********************************************************************************************
+**************Tyrian en GNU/Linux con OpenTyrian********************************************************************************
 
 Clonamos el repo de:
 
@@ -4939,7 +4939,7 @@ Editamos Makefile y añadimos al lado de -O2 los flags:
 -march=native -mtune=native
 
 Compilamos con:
-make -j4
+make WITH_NETWORK=false -j4
 
 Se ejecuta sin más, con los datos del juego original en el mismo directorio que el ejecutable.
 Puedes bajar el original de:
