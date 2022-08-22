@@ -260,7 +260,8 @@ Y de todos modos esto ya lo exportas en /etc/minimal si estás arrancando tu pro
 // FIN BLOQUE SÓLO PARA DEBIAN CON SYSTEMD
 
 Ahora lanzamos WESTON:
-weston
+weston -f '' -l ''
+(Lo de -f '' -l '' es para que no mande logs a la consola ni a ningún lado).
 (Se sale con Ctrl+Alt+Backspace)
 
 Si queremos que se autoarranque, tenemos dos opciones:
