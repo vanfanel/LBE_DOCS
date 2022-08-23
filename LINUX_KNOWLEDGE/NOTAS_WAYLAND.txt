@@ -201,6 +201,7 @@ sudo usermod -a -G weston pi
 // FIN BLOQUE PARA USUARIOS NORMALES NO ROOT
 
 Ahora creamos ~/.config/weston.ini con este contenido:
+(RECUERDA que weston.ini puede estar en cualquier ruta que exportes en $XDG_CONFIG_HOME)
 (RECUERDA que puedes ver los modos de vídeo disponibles con: modetest |grep -50 modes
  PERO lo mejor es poner mode=current y así no hay cambio de modo.)
 
@@ -215,6 +216,8 @@ idle-time=0
 locking=false
 animation=zoom
 startup-animation=fade
+background-image=none
+background-color=0xFF555555
 
 [terminal]
 font=monospace
