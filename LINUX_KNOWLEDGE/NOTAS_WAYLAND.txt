@@ -222,7 +222,7 @@ font-size=18
 
 [launcher]
 icon=/usr/local/share/weston/terminal.png
-path=/usr/local/bin/weston-terminal
+path=/usr/local/bin/weston-terminal --shell=/bin/bash
 
 [input-method]
 path=/usr/local/libexec/weston-keyboard
@@ -436,7 +436,7 @@ Y un atajo de teclado sería por ejemplo:
 
 [keybind]
 key=ctrl+alt+t
-exec=weston-terminal
+exec=weston-terminal --shell=/bin/bash
 
 NOTA: Si alguna vez el weston keybinder deja de funcionar, puedes añadir key bindings a mano en los sources de weston.
 Se definen en: weston/src/shell.c, en la función shell_add_bindings().
@@ -544,6 +544,18 @@ meson -Dbuildtype=release -Ddocs=disabled -Dgrapheme-clustering=disabled -Dtests
 
 ninja -j4
 ninja install
+
+Creamos ~/config/foot/foot.ini con este contenido:
+(OJO: Puedes tener foot/foot.ini donde quieras si exportas un valor de $XDG_CONFIG_HOME).
+
+shell=bash
+term=foot
+
+initial-window-size-chars=90x20
+
+[bell]
+urgent=no
+notify=no
 
 KITTY, UN EMULADOR DE TERMINAL PARA WAYLAND
 -------------------------------------------
