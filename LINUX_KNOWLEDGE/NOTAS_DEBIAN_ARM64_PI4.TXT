@@ -220,9 +220,12 @@ PARTE 3: FINETUNING THE SYSTEM
 
 Una vez que hemos arrancado nativamente, tenemos mucho que hacer.
 
--RECUERDA que para poder logearte por SSH como ROOT tienes que editar /etc/ssh/sshd_config
-y añadir PermitRootLogin yes
-
+-RECUERDA que para poder logearte por SSH como ROOT tienes que editar /etc/ssh/sshd_config y: 
+	-Poner "PermitRootLogin" a "yes"
+	-Ya que estás, deja comentada la línea:
+		#AcceptEnv LANG LC_*
+	...lo que nos ahorra errores de LOCALES cuando usamos APT-GET por SSH.
+	
 -Crear el usuario pi:
 sudo adduser pi
 sudo adduser pi sudo
@@ -322,6 +325,12 @@ sudo dpkg-reconfigure locales
 ya que necesitamos los LOCALES de la máquina cliente también).
 sudo dpkg-reconfigure keyboard-configuration
 Tras reiniciar (sí, hay que reiniciar), ya tendría que ir la Ñ, los acentos y todo eso.
+
+Otra manera más sencilla de evitar esos errores por SSH es editar /etc/ssh/sshd_config y comentar:
+	# Allow client to pass locale environment variables
+	# AcceptEnv LANG LC_*
+Si lo haces así no necesitas regenerar es_ES.utf8, con en_US.utf8 vale.	
+
 Si queremos cambiar la distribución del teclado de nuevo (porque cambiamos de sistema y/o teclado) basta con volver a hacer:
 sudo dpkg-reconfigure keyboard-configuration
 Eso sí, asegúrate antes de que el comando "locale" nos dice que está todo a en_US.UTF-8.

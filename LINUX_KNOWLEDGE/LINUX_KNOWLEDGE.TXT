@@ -2525,6 +2525,11 @@ son necesarios en "systemd-analyze blame" y lo que tienes que gestionar desde rc
 -Ponemos la fuente de la consola: dpkg-reconfigure console-setup
 -Ponemos los LOCALES con: dpkg-reconfigure locales. Elegimos que se generen en_US.UTF8 y es_ES.UTF, y dejamos puesto en_US.UTF8.
 ESTO nos quita errores de teclado a través de SSH, ya que necesitamos los LOCALES de la máquina cliente también.
+Otra manera más sencilla de evitar esos errores por SSH es editar /etc/ssh/sshd_config y comentar:
+	# Allow client to pass locale environment variables
+	# AcceptEnv LANG LC_*
+Si lo haces así no necesitas regenerar es_ES.utf8, con en_US.utf8 vale.
+
 -Ponemos el idioma del teclado con raspi-config, y expandimos el filesystem, overclocking y demás movidas. El layout del teclado no se cambia hasta reboot.
 -Ponemos una IP estática. Para ello:
 	-Eliminamos del sistema estas cosas para que no se sobreescriba resolv.conf en cada arranque:

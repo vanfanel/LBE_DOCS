@@ -156,6 +156,12 @@ export HOME=/root
 # Esto nos ahorra muchos problemas después con Wayland, Pipewire, etc.
 export XDG_RUNTIME_DIR=/run
 
+# También exportamos el locale por defecto. Previamente debemos haber
+# regenerado el locale que queramos especificar,
+# usando "dpkg-reconfigure locales".
+# Raspbery Pi OS, por ejemplo, viene sólo con en_GB.utf8, cuidado.
+export LANG=en_US.utf8
+
 # Setupcon configura la fuente y el teclado de la consola,
 # leyendo la configuración de /etc/default/console-setup y /etc/default/keyboard.
 hostname minimal

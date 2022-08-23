@@ -524,6 +524,27 @@ cage <nombre_ejecutable>
 Y si es con parámetros, usamos -- entre cage y el nombre del ejecutable, así:
 cage -- <nombre_ejecutable> <parámetros>
 
+FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
+==========================================
+
+Instalamos dependencias previas:
+apt-get install libtllist-dev --no-install-recommends
+
+clonamos su repo:
+git clone --depth 1 
+
+Configuramos y compilamos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release -Ddocs=disabled -Dgrapheme-clustering=disabled -Dtests=false ..
+
+ninja -j4
+ninja install
+
 KITTY, UN EMULADOR DE TERMINAL PARA WAYLAND
 -------------------------------------------
 
