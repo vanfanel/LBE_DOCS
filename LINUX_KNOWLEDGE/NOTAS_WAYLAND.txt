@@ -122,10 +122,13 @@ cd b4
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled \
--Dbackends=drm -Drenderers=gles2,vulkan -Dxcb-errors=disabled ..
+-Dbackends=drm,libinput -Drenderers=gles2,vulkan -Dxcb-errors=disabled ..
 
 ninja -j4
 sudo ninja install
+
+RECUERDA que WLROORS soporta renderizado con Vulkan. Para ello, lanzaríamos el compositor que queramos con:
+WLR_RENDERER=vulkan <compositor>
 
 PARTE 4: WESTON (EL COMPOSITOR DE REFERENCIA, PARA UN DESCRITORIO COMPLETO USA WAYBOX)
 --------------------------------------------------------------------------------------
@@ -266,6 +269,9 @@ Ahora lanzamos WESTON:
 weston -f '' -l ''
 (Lo de -f '' -l '' es para que no mande logs a la consola ni a ningún lado).
 (Se sale con Ctrl+Alt+Backspace)
+
+Si queremos WESTON sobre Vulkan, aprovechando que WLROOTS soporta Vulkan, haríamos:
+WLR_RENDERER=vulkan weston -f '' -l ''
 
 Si queremos que se autoarranque, tenemos dos opciones:
 
