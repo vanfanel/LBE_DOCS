@@ -602,4 +602,20 @@ kitty --start-as fullscreen
 cambiamos lo que sea y guardamos.
 De este modo, se nos crea ~/.config/kitty/kitty.conf, que podemos editar luego y cambiar lo que queramos.
 
+DEBUGEAR PROGRAMAS SDL2 SOBRE WAYLAND POR SSH
+=============================================
 
+Miramos qué valor tiene WAYLAND_DISPLAY en la máquina donde corre SDL2 en WAYLAND:
+
+env | grep WAYLAND_DISPLAY
+
+...Y exportamos eso en la sesión SSH.
+
+Por ejemplo, si WAYLAND_DISPLAY tiene el valor wayland-1: 
+
+export WAYLAND_DISPLAY=wayland-1
+<programa>
+
+O bien
+
+WAYLAND_DISPLAY=wayland-1 <programa>
