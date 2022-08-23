@@ -540,7 +540,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Ddocs=disabled -Dgrapheme-clustering=disabled -Dtests=false ..
+meson -Dbuildtype=release -Ddocs=disabled -Dgrapheme-clustering=disabled -Dtests=false -Dime=false ..
 
 ninja -j4
 ninja install
