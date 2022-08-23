@@ -400,6 +400,22 @@ fi
 Investigar si se puede hacer simplemente:
 sudo -E weston -t /dev/tty7 -u pi
 
+QUITAR ERRORES DE WESTON
+========================
+
+--Para quitar los errores:
+	could not load cursor 'dnd-move'
+	could not load cursor 'dnd-copy'
+
+	Instalamos:
+	apt-get adwaita-icon-theme --no-install-recommends
+
+	Y añadimos en .config/weston.ini, en la sección [shell]:
+
+	[shell]
+	cursor-theme=adwaita
+(Se podría usar otro tema más ligero, pero no lo conozco).
+
 AÑADIR NUEVOS ATAJOS DE TECLADO A WESTON
 ========================================
 
