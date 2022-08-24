@@ -1,8 +1,11 @@
 INSTALAR WAYLAND
 ================
 
-Lo primero: para correr WAYBOX, CAGE, o cualquier otro compositor, necesitas WAYLAND y WLROOTS.
-A su vez, WLROOTS necesita WAYLAND-PROTOCOLS y LIBSEAT
+Lo primero: para correr SWAY, WAYBOX, CAGE ... necesitas WAYLAND y WLROOTS, ya que la mayoría de los compositores se basan en WLROOTS.
+A su vez, WLROOTS necesita WAYLAND-PROTOCOLS y LIBSEAT.
+
+Pero OJO, WESTON NO SE BASA EN WLROOTS. NO NECESITAS WLROOTS PARA WESTON. WESTON ES "STANDALONE". Lo malo de eso, es que WLROOTS tiene
+un renderer Vulkan, que desde WESTON no puedes aprovechar por no basarse en WLROOTS.
 
 PARTE 1: WAYLAND EN SÍ (libwayland)
 -----------------------------------
@@ -619,3 +622,6 @@ export WAYLAND_DISPLAY=wayland-1
 O bien
 
 WAYLAND_DISPLAY=wayland-1 <programa>
+
+(Normalmente, SSH usaría PAM y pillaría las mismas variables de entorno para todas las sesiones de un usuario, pero PAM
+depende de SystemD y no usamos SystemD).
