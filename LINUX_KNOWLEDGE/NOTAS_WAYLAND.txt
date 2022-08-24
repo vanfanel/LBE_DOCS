@@ -3,6 +3,12 @@ INSTALAR WAYLAND
 
 Lo primero: para correr SWAY, WAYBOX, CAGE ... necesitas WAYLAND y WLROOTS, ya que la mayoría de los compositores se basan en WLROOTS.
 A su vez, WLROOTS necesita WAYLAND-PROTOCOLS y LIBSEAT.
+***LIBSEAT SÓLO ES NECESARIO PARA COMPOSITORES BASADOS EN WLROOTS, POR LO QUE EN WESTON NO HACE FALTA PORQUE WESTON NO ESTÁ BASADO EN WLROOTS.
+***LIBSEAT SÓLO ES NECESARIO SI NO TENEMOS CORRIENDO EL SERVICIO "LOGIND" QUE EN SYSTEMD ES "systemd-logind"
+   Y QUE EN OTROS INIT DISTINTOS DE SYSTEMD ES "elogind".
+   LÓGICAMENTE, EN UN SISTEMA "MINIMAL" DE LOS MIOS, PARA USAR UN COMPOSITOR BASADO EN WLROOTS, LIBSEAT HACE FALTA PORQUE NO TIENES
+   NINGÚN SERVICIO DE LOGIN CORRIENDO
+***PERO SI VAS A USAR WESTON, NO HACE FALTA LIBSEAT NUNCA!!!
 
 Pero OJO, WESTON NO SE BASA EN WLROOTS. NO NECESITAS WLROOTS PARA WESTON. WESTON ES "STANDALONE". Lo malo de eso, es que WLROOTS tiene
 un renderer Vulkan, que desde WESTON no puedes aprovechar por no basarse en WLROOTS.
@@ -40,17 +46,16 @@ meson -Dbuildtype=release -Dtests=false ..
 ninja -j4
 sudo ninja install
 
-PARTE 3: WLROOTS
-----------------
+PARTE 3: WLROOTS (NO NECESARIO PARA WESTON!!)
+---------------------------------------------
 -Previamente necesitamos KMS/DRM funcionando. Así que deberías ser capaz de ejecutar los tests de SDL2 sobre KMSDR.
 
-// BLOQUE PARA DEBIAN MINIMAL (DEBIAN SIN SYSTEMD)
-
-Como no tenemos systemd, para libseat/seatd tenemos que usar el seatd de DEVUAN, ya que libseat normal requiere systemd corriendo
-para funcionar.
+-Si no tenemos systemd (sistema "minimal"), o si tenemos systemd sin los servicios "systemd-logind" o "elogind"
+(que es lo más normal, porque siempre lo deshabilitas), necesitamos libseat/seatd.
+Para instalar libseat:
 
 Clonamos su repo:
-git clone --depth 1 https://git.devuan.org/devuan/seatd.git
+git clone --depth 1 https://git.sr.ht/~kennylevinsen/seatd
 
 --Configuramos, compilamos e instalamos:
 mkdir b4
@@ -62,8 +67,6 @@ meson -Dbuildtype=release -Dexamples=disabled -Dlogind=disabled -Dman-pages=disa
 
 ninja -j4
 sudo ninja install
-
-// FIN BLOQUE PARA DEBIAN MINIMAL (DEBIAN SIN SYSTEMD)
 
 // BLOQUE PARA DEBIAN 12, QUE YA TIENE UN PAQUETE LIBSEAT, ASÍ QUE ES TODO MÁS SENCILLO:
 
@@ -643,7 +646,7 @@ DEBUGEAR PROGRAMAS SOBRE WAYLAND POR SSH
 
 LO PRIMERO ES ENTENDER cómo va esto.
 Los programas que corren en Wayland necesitan XDG_RUNTIME_DIR (que en nuestro sistema mínimo apunta a /run, almacenado en RAM),
-para poder encontrar el fichero "wayland-0", o "wayland-1" o lo que sea, que estará en XDG_RUNTIME_DIR cuando haya una sesión wayland en marcha.
+para así poder encontrar el fichero "wayland-0", o "wayland-1" o lo que sea, que estará en XDG_RUNTIME_DIR cuando haya una sesión wayland en marcha.
 Y del otro lado, el compositor debe exportar WAYLAND_DISPLAY=wayland-0, WAYLAND_DISPLAY=wayland-1...
 
 Vamos, que tenemos que tener seteadas correctamente las variables de entorno XDG_RUNTIME_DIR y WAYLAND_DISPLAY.
