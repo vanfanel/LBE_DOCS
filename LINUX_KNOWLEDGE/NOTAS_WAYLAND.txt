@@ -531,6 +531,19 @@ dwl
 
 Se sale de dwl con ALT+SHIFT+Q
 
+Si al compilar da un error de que no encuentra "wlr/backend/libinput.h" es porque compilaste WLROOTS sin pasarle libinput
+a -Dbackends. Deberías pasarle tanto "drm" como "libinput", así: -Dbackends=drm,libinput.
+Lo tienes en las instrucciones de compilación de WLROOTS.
+
+Para que no te cambie la resolución a la resolución preferida del monitor, usa el parche monitor-config de aquí:
+https://github.com/djpohly/dwl/wiki/Patches
+Te lo bajas y haces: patch -p1 < monfig.patch
+(Si falla, entra en el discord de DWL y díselo a Palanix, que es el encargao).
+
+Para quitar el borde rojo cuando la ventana está activa, edita config.h y en "focuscolor" quita la componente roja.
+
+
+
 CAGE, UN COMPOSITOR PARA APLICACIONES EMBEDIDAS
 ===============================================
 
@@ -625,23 +638,60 @@ kitty --start-as fullscreen
 cambiamos lo que sea y guardamos.
 De este modo, se nos crea ~/.config/kitty/kitty.conf, que podemos editar luego y cambiar lo que queramos.
 
-DEBUGEAR PROGRAMAS SDL2 SOBRE WAYLAND POR SSH
-=============================================
+DEBUGEAR PROGRAMAS SOBRE WAYLAND POR SSH
+========================================
 
-Miramos qué valor tiene WAYLAND_DISPLAY en la máquina donde corre SDL2 en WAYLAND:
+LO PRIMERO ES ENTENDER cómo va esto.
+Los programas que corren en Wayland necesitan XDG_RUNTIME_DIR (que en nuestro sistema mínimo apunta a /run, almacenado en RAM),
+para poder encontrar el fichero "wayland-0", o "wayland-1" o lo que sea, que estará en XDG_RUNTIME_DIR cuando haya una sesión wayland en marcha.
+Y del otro lado, el compositor debe exportar WAYLAND_DISPLAY=wayland-0, WAYLAND_DISPLAY=wayland-1...
+
+Vamos, que tenemos que tener seteadas correctamente las variables de entorno XDG_RUNTIME_DIR y WAYLAND_DISPLAY.
+
+///BLOQUE WESTON///
+
+Si usamos WESTON, es posible que los programas de Wayland no necesiten WAYLAND_DISPLAY, con:
+
+export XDG_RUNTIME_DIR=/run # (Sólo si no estamos usando systemd, y sólo si hemos exportado XDG_RUNTIME_DIR=/run en /etc/minimal).
+weston -S wayland-0
+
+Y de ese modo ya no hace falta setear WAYLAND_DISPLAY. PERO sólo vale para Weston, con otros compositors sí hace falta.
+
+///BLOQUE RESTO DE COMPOSITORES///
+
+--Para XDG_RUNTIME_DIR--
+
+Miramos qué valor tiene XDG_RUNTIME_DIR en la máquina donde corre WAYLAND:
+
+env | grep XDG_RUNTIME_DIR
+
+...Y exportamos eso en la sesión SSH.
+
+Por ejemplo, si XDG_RUNTIME_DIR tiene el valor /run: 
+
+export XDG_RUNTIME_DIR=/run
+<programa>
+
+O bien
+
+WAYLAND_DISPLAY=wayland-0 <programa>
+
+--Para WAYLAND_DISPLAY-- 
+
+Miramos qué valor tiene WAYLAND_DISPLAY en la máquina donde corre WAYLAND:
 
 env | grep WAYLAND_DISPLAY
 
 ...Y exportamos eso en la sesión SSH.
 
-Por ejemplo, si WAYLAND_DISPLAY tiene el valor wayland-1: 
+Por ejemplo, si WAYLAND_DISPLAY tiene el valor wayland-0: 
 
-export WAYLAND_DISPLAY=wayland-1
+export WAYLAND_DISPLAY=wayland-0
 <programa>
 
 O bien
 
-WAYLAND_DISPLAY=wayland-1 <programa>
+WAYLAND_DISPLAY=wayland-0 <programa>
 
 (Normalmente, SSH usaría PAM y pillaría las mismas variables de entorno para todas las sesiones de un usuario, pero PAM
 depende de SystemD y no usamos SystemD).
