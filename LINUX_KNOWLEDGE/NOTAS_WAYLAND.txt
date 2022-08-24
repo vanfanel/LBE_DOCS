@@ -130,8 +130,10 @@ meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled \
 ninja -j4
 sudo ninja install
 
-RECUERDA que WLROORS soporta renderizado con Vulkan. Para ello, lanzaríamos el compositor que queramos con:
+RECUERDA que WLROORS soporta renderizado con Vulkan, por lo que los renderers basados en WLROOTS (como DWL, SWAY, WAYBOX...) pueden usarlo.
+Para ello, lanzaríamos el compositor que queramos con:
 WLR_RENDERER=vulkan <compositor>
+(OJO!! WESTON no usa WLROOTS)
 
 PARTE 4: WESTON (EL COMPOSITOR DE REFERENCIA, PARA UN DESCRITORIO COMPLETO USA WAYBOX)
 --------------------------------------------------------------------------------------
@@ -272,9 +274,6 @@ Ahora lanzamos WESTON:
 weston -f '' -l ''
 (Lo de -f '' -l '' es para que no mande logs a la consola ni a ningún lado).
 (Se sale con Ctrl+Alt+Backspace)
-
-Si queremos WESTON sobre Vulkan, aprovechando que WLROOTS soporta Vulkan, haríamos:
-WLR_RENDERER=vulkan weston -f '' -l ''
 
 Si queremos que se autoarranque, tenemos dos opciones:
 
@@ -511,8 +510,29 @@ Empezamos con una dependencia, libfm:
 Ahora vamos con PCMANFM en sí:
 -Bajamos los últimos sources estables de: https://github.com/lxde/pcmanfm/releases
 
+DWL, EL COMPOSITOR DE ESCRITORIO BASADO EN WLROOTS MÁS BÁSICO QUE HAY
+=====================================================================
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/djpohly/dwl.git
+
+Compilamos con:
+CFLAGS="-O2 -march=native -mtune=native" \
+CXXFLAGS="-O2 -march=native -mtune=native" \
+make -j4
+
+PARA EJECUTARLO SIN SYSTEMD:
+Necesitamos seatd instalado (Se explica en este mismo documento más arriba).
+Lanzaríamos seatd como daemon y justo a continuación dlw, así:
+
+seatd -u root -l silent &
+dwl
+
+Se sale de dwl con ALT+SHIFT+Q
+
 CAGE, UN COMPOSITOR PARA APLICACIONES EMBEDIDAS
------------------------------------------------
+===============================================
 
 Bajamos los últimos sources estables de:
 https://github.com/Hjdskes/cage/releases
@@ -543,7 +563,7 @@ Instalamos dependencias previas:
 apt-get install libtllist-dev --no-install-recommends
 
 clonamos su repo:
-git clone --depth 1 
+git clone --depth 1 https://codeberg.org/dnkl/foot.git
 
 Configuramos y compilamos con:
 
