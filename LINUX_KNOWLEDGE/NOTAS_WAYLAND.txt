@@ -545,7 +545,10 @@ Te lo bajas y haces: patch -p1 < monfig.patch
 
 Para quitar el borde rojo cuando la ventana está activa, edita config.h y en "focuscolor" quita la componente roja.
 
+TINYWL+, UN COMPOSITOR BASADO EN TINYWL PERO CON MÁS FUNCIONES
+==============================================================
 
+https://cppdig.com/c/a-simple-stacking-wayland-compositor-based-on-tinywl
 
 CAGE, UN COMPOSITOR PARA APLICACIONES EMBEDIDAS
 ===============================================
@@ -566,7 +569,7 @@ sudo ninja install
 
 Lanzaríamos el programa que queramos así:
 -Lo primero, lanzamos el seatd, para loguear al usuario Pi en un asiento y poder lanzar el cage:
-sudo seatd -u pi
+sudo seatd -u pi &
 -Ahora lanzamos el cage y le pasamos el ejecutable que queramos:
 cage <nombre_ejecutable>
 Y si es con parámetros, usamos -- entre cage y el nombre del ejecutable, así:
