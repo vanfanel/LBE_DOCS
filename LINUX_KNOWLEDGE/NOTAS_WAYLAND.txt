@@ -433,7 +433,62 @@ QUITAR ERRORES DE WESTON
 AÑADIR NUEVOS ATAJOS DE TECLADO A WESTON
 ========================================
 
-Compila e instala el "weston keybinder": es muy sencillo.
+TIENES DOS OPCIONES:
+
+1) Añadir los atajos a mano:
+Para ello, editamos desktop-shell/shell.c y:
+
+-Añadimos #include <fcntl.h> a los includes del principio.
+-Añadimos las funciones (justo encima de la función shell_add_bindings(), si quieres):
+
+static void
+execvp_suppressed(const char *file, char *const argv[])
+{
+	int pid = fork();
+
+	if (pid)
+		return;
+
+	int fd = open("/dev/null", O_WRONLY);
+
+	dup2(fd, 1);
+	dup2(fd, 2);
+
+	close(fd);
+
+	execvp(file, argv);
+}
+
+static void 
+binder_callback_ctrl_alt(struct weston_keyboard *keyboard,
+                         const struct timespec *time, uint32_t key, 
+                         void *data)
+{
+	/* These are the keybinds that include CTRL+ALT+<something> */
+	switch (key) {
+
+		/* Open a terminal */
+		case KEY_T:
+			execvp_suppressed("weston-terminal", (char * const[]) {"weston-terminal", NULL});
+			break;
+
+	}
+}
+
+-En la función shell_add_bindings(), añadimos (debajo de la última llamada a "weston_compositor_add_key_binding()", si quieres):
+
+/* Add bindings with CTRL+ALT */
+weston_compositor_add_key_binding(ec, KEY_T, MODIFIER_CTRL | MODIFIER_ALT,
+                                  binder_callback_ctrl_alt, NULL);
+
+Y YA ESTÁ. Como ves, podemos añadir todos los atajos que queramos muy fácilmente, añadiéndolos con diferentes "case KEY_loquesea".
+
+FUENTE: Sacado del código del "weston keybinder", cuyo primer commit está aquí:
+https://github.com/tarvi-verro/weston-binder/commit/40b3112f221ef3a1c42f536d8047b8565ee3f2d8
+(Hay mucho más código del necesario ahí porque tiene que parsear las opciones del .ini, etc.
+ Fíjate sólo en binder_add_bindings() y binder_callback_ctrl_alt(). ).
+ 
+2) Compila e instala el "weston keybinder": 
 
 git clone --depth 1 https://github.com/tarvi-verro/weston-binder.git
 make -j4
@@ -452,13 +507,6 @@ Y un atajo de teclado sería por ejemplo:
 key=ctrl+alt+t
 exec=weston-terminal --shell=/bin/bash
 
-NOTA: Si alguna vez el weston keybinder deja de funcionar, puedes añadir key bindings a mano en los sources de weston.
-Se definen en: desktop-shell/shell.c, en la función shell_add_bindings().
-Mira un ejemplo aquí:
-https://github.com/tarvi-verro/weston-binder/commit/40b3112f221ef3a1c42f536d8047b8565ee3f2d8
-(Hay mucho más código del necesario ahí porque tiene que parsear las opciones del .ini, etc.
- Fíjate sólo en binder_add_bindings() y binder_callback_ctrl_alt(). ).
- 
 CONSTRUIR UN ESCRITORIO COMPLETO BASADO EN WAYLAND
 ==================================================
 
