@@ -446,8 +446,11 @@ Para ello, editamos desktop-shell/shell.c y:
 -Añadimos #include <fcntl.h> a los includes del principio.
 -Añadimos las funciones (justo encima de la función shell_add_bindings(), si quieres):
 
+/**
+ * Much like system(3) but doesn't wait for exit and outputs to /dev/null.
+ */
 static void
-execvp_suppressed(const char *file, char *const argv[])
+system_nowait(const char *file, char *const argv[])
 {
 	int pid = fork();
 
@@ -470,16 +473,17 @@ binder_callback_ctrl_alt(struct weston_keyboard *keyboard,
                          const struct timespec *time, uint32_t key, 
                          void *data)
 {
-	/* These are the keybinds that include CTRL+ALT+<something> */
-	switch (key) {
+        /* These are the keybinds that include CTRL+ALT+<something> */
+        switch (key) {
 
-		/* Open a terminal */
-		case KEY_T:
-			execvp_suppressed("weston-terminal", (char * const[]) {"weston-terminal", NULL});
-			break;
-
-	}
+         /* Open a terminal */
+        case KEY_T:
+                system_nowait("weston-terminal",
+                              (char * const[]) {"weston-terminal", "--shell=/bin/bash", data, NULL});
+        break;
+        }    
 }
+
 
 -En la función shell_add_bindings(), añadimos (debajo de la última llamada a "weston_compositor_add_key_binding()", si quieres):
 
