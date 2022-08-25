@@ -215,6 +215,8 @@ Ahora creamos ~/.config/weston.ini con este contenido:
 (RECUERDA que weston.ini puede estar en cualquier ruta que exportes en $XDG_CONFIG_HOME)
 (RECUERDA que puedes ver los modos de vídeo disponibles con: modetest |grep -50 modes
  PERO lo mejor es poner mode=current y así no hay cambio de modo.)
+(RECUERDA que si, como en este ejemplo, tienes puesto el cursor-theme llamado adwaita, tienes que instalarlo con:
+ apt-get install adwaita-icon-theme).
 
 #
 # Contenido de weston.ini
@@ -228,6 +230,8 @@ locking=false
 binding-modifier=alt
 animation=zoom
 startup-animation=fade
+cursor-theme=adwaita
+cursor-size=24
 background-image=none
 background-color=0xFF555555
 
