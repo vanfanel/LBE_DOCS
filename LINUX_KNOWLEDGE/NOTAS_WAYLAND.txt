@@ -444,18 +444,12 @@ TIENES DOS OPCIONES:
 Para ello, editamos desktop-shell/shell.c y:
 
 -Añadimos #include <fcntl.h> a los includes del principio.
--Añadimos estas estructuras y funciones (justo encima de la función shell_add_bindings(), si quieres):
-
-struct binder_process {
-        struct weston_process wp;
-        const char *exec;
-};
+-Añadimos funciones (justo encima de la función shell_add_bindings(), si quieres):
 
 /* Process executed via keybind failed. status is the exit value. */
 static void 
 process_cleanup(struct weston_process *process, int status)
 {
-
         free(process);
 }
 
@@ -481,9 +475,9 @@ system_nowait(const char *file, char *const argv[])
 	exit(1);
 }
 
-static void
+static void 
 terminal_binding_callback(struct weston_keyboard *keyboard,
-                         const struct timespec *time, uint32_t key,
+                         const struct timespec *time, uint32_t key, 
                          void *data)
 {
         struct weston_compositor *compositor = data;
@@ -494,14 +488,13 @@ terminal_binding_callback(struct weston_keyboard *keyboard,
         if (spawn == -1) {
                 weston_log("Failed spawning process %s\n", (char *) data);
                 return;
-        }
+        }    
 
-        struct binder_process *bp = malloc(sizeof(*bp));
-        bp->wp.pid = spawn;
-        bp->wp.cleanup = process_cleanup;
+        struct weston_process wp;
+        wp.pid = spawn;
+        wp.cleanup = process_cleanup;
 
-        bp->exec = (char *) data;
-        wet_watch_process(compositor, &bp->wp);
+        wet_watch_process(compositor, &wp);
 }
 
 -En la función shell_add_bindings(), añadimos (debajo de la última llamada a "weston_compositor_add_key_binding()", si quieres):
@@ -522,7 +515,7 @@ https://github.com/tarvi-verro/weston-binder/commit/40b3112f221ef3a1c42f536d8047
 
 git clone --depth 1 https://github.com/tarvi-verro/weston-binder.git
 make -j4
-sudo make install
+cp binder.so /usr/local/lib/aarch64-linux-gnu/weston/
 
 Y ahora sólo queda añadir a ~/.config/weston.ini la carga del módulo keybinder que acabas de compilar, así como los atajos que quieras. 
 
