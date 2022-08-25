@@ -457,6 +457,7 @@ execvp_suppressed(const char *file, char *const argv[])
 	close(fd);
 
 	execvp(file, argv);
+	exit(1);
 }
 
 static void 
