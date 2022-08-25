@@ -440,7 +440,7 @@ AÑADIR NUEVOS ATAJOS DE TECLADO A WESTON
 
 TIENES DOS OPCIONES:
 
-1) Añadir los atajos a mano:
+1) RECOMENDADO: Añadir los atajos a mano:
 Para ello, editamos desktop-shell/shell.c y:
 
 -Añadimos #include <fcntl.h> a los includes del principio.
@@ -510,7 +510,8 @@ terminal_binding_callback(struct weston_keyboard *keyboard,
         weston_compositor_add_key_binding(ec, KEY_T, MODIFIER_CTRL | MODIFIER_ALT,
                                           terminal_binding_callback, ec);
                                           
-Y YA ESTÁ. Como ves, podemos añadir todos los atajos que queramos muy fácilmente, añadiéndolos con diferentes "case KEY_loquesea".
+Y YA ESTÁ. Como ves, podemos añadir todos los atajos que queramos muy fácilmente, añadiéndolos como nuevas llamadas a
+weston_compositor_add_key_binding().
 
 FUENTE: Sacado del código del "weston keybinder", cuyo primer commit está aquí:
 https://github.com/tarvi-verro/weston-binder/commit/40b3112f221ef3a1c42f536d8047b8565ee3f2d8
