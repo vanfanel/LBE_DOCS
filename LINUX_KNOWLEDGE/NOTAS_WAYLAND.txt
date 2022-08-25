@@ -493,11 +493,11 @@ terminal_binding_callback(struct weston_keyboard *keyboard,
                 return;
         }    
 
-        struct weston_process wp;
-        wp.pid = spawn;
-        wp.cleanup = process_cleanup;
+        struct weston_process *wp = malloc(sizeof(*wp));;
+        wp->pid = spawn;
+        wp->cleanup = process_cleanup;
 
-        wet_watch_process(compositor, &wp);
+        wet_watch_process(compositor, wp);
 }
 
 -En la función shell_add_bindings(), añadimos (debajo de la última llamada a "weston_compositor_add_key_binding()", si quieres):
