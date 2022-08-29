@@ -113,7 +113,7 @@ sudo ninja install
 
 --Instalamos dependencias previas:
 apt-get install glslang-dev glslang-tools
---Actualizamos nuestra versión de libvulkan y libvulkan-dev, ya que WLROOT necesita una reciente si activamos
+--Actualizamos nuestra versión de libvulkan y libvulkan-dev, ya que WLROOTS necesita una reciente si activamos
 el renderer VULKAN, para lo cual:
 	--Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
 		echo "deb http://deb.debian.org/debian bullseye-backports main" | sudo tee /etc/apt/sources.list.d/buster-backports.list
