@@ -61,14 +61,24 @@ git clone --depth 1 https://git.sr.ht/~kennylevinsen/seatd
 mkdir b4
 cd b4
 
+//SIN SYSTEMD://
+
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dexamples=disabled -Dlibseat-logind=disabled -Dman-pages=disabled ..
 
+//CON SYSTEMD://
+
+sudo apt-get install libsystemd-dev
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" meson -Dbuildtype=release -Dexamples=disabled -Dman-pages=disabled -Dlibseat-logind=systemd ..
+
+//
+
 ninja -j4
 sudo ninja install
 
-Se lanzará, cuando nos haga falta, con:
+--seatd se lanzará, cuando nos haga falta, con:
 seatd -u root -l silent &
 
 // BLOQUE PARA DEBIAN 12, QUE YA TIENE UN PAQUETE LIBSEAT, ASÍ QUE ES TODO MÁS SENCILLO:
