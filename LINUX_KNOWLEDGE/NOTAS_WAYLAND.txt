@@ -123,8 +123,48 @@ el renderer VULKAN, para lo cual:
 	--Actualizamos nuestra versión de libvulkan (como ves tenemos que especificarle que la pille de backports):
 		apt-get -t bullseye-backports install libvulkan1
 		apt-get -t bullseye-backports install libvulkan-dev (<---Este probablemente no se te actualize, don't worry.)
+
 -Instalamos WLROOTS en sí. Para ello:
+
 --Bajamos los últimos sources de WLROOTS estables de aquí: https://gitlab.freedesktop.org/wlroots/wlroots/-/releases
+
+--Hackeamos los sources para que se le pueda decir a los compositors que no pongan la resolución PREFERRED. Para ello:
+
+	-Editamos backend/drm/drm.c y buscamos dónde se asigna:
+	wlr_conn->output.phys_width = drm_conn->mmWidth;
+	Justo encima, ponemos esto para inicializar output->current_mode al modo que está usando KMS al inicio:
+	
+						size_t modeinfo_len = 0;
+                        drmModeModeInfo *modeinfo = (drmModeModeInfo *)get_drm_prop_blob(
+                         drm->fd, wlr_conn->crtc->id, wlr_conn->crtc->props.mode_id, &modeinfo_len);
+     
+                        /* Even if wlt_conn->ouput.current_mode is declared as wlr_output_mode,
+                           current_mode has to be declared as wlr_drm_mode, because current_mode
+                           pointers are later cast into wlr_drm_mode pointers to access both
+                           the wlr_output_mode and wlr_drm_mode info (see drm_connector_state_init) */
+                        struct wlr_drm_mode *current_mode = calloc(1, sizeof(*current_mode));   
+
+                        current_mode->drm_mode = *modeinfo;
+                        current_mode->wlr_mode.width = modeinfo->hdisplay;
+                        current_mode->wlr_mode.height = modeinfo->vdisplay;
+                        current_mode->wlr_mode.refresh = calculate_refresh_rate(modeinfo);
+
+                        wlr_conn->output.current_mode = (struct wlr_output_mode*) current_mode;
+
+                        wlr_conn->output.width = modeinfo->hdisplay;
+                        wlr_conn->output.height = modeinfo->vdisplay;
+
+                        wlr_conn->crtc->mode_id = wlr_conn->crtc->props.mode_id;
+                        
+                        free(modeinfo);
+
+	-Editamos types/output/output.c y en output_compare_state(), en el case WLR_OUTPUT_STATE_MODE_FIXED, comentamos la línea:
+						unchanged = output->current_mode == state->mode;
+	...De esa manera, se hará modesetting sin que cambie el modo de vídeo.
+	
+	-Ahora, en nuestro compositor buscamo la llamada a wlr_output_set_mode(), y si le están pasando el preferred mode, pues tú
+	pásale "wlr_output->current_mode". Y ya no cambiará de modo de vídeo al inicio.
+
 --Configuramos, compilamos e instalamos:
 
 mkdir b4
