@@ -4889,6 +4889,14 @@ Listo!
 
 NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da igual.
 
+**************ACTUALIZAR MESON***************************************************************************************************
+
+sudo apt-get purge meson
+sudo apt install python3-pip --no-install-recommends
+sudo python3 -m pip install ninja
+sudo python3 -m pip install meson
+PATH="/usr/local/bin:$PATH"
+
 **************Regenerar la caché de LDD******************************************************************************************
 
 rm /etc/ld.so.cache

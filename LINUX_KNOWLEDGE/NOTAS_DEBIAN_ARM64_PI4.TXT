@@ -560,8 +560,8 @@ de MESON necesaria). Así que ahorra tiempo ahora si vas a usar WAYLAND, y deja 
 
 sudo apt-get purge meson
 sudo apt install python3-pip --no-install-recommends
-python3 -m pip install ninja
-python3 -m pip install meson
+sudo python3 -m pip install ninja
+sudo python3 -m pip install meson
 PATH="/usr/local/bin:$PATH"
 
 ...Ahora ya vamos con libDRM en sí...
