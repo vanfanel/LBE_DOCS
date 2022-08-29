@@ -50,6 +50,8 @@ PARTE 3: WLROOTS (NO NECESARIO PARA WESTON!!)
 ---------------------------------------------
 -Previamente necesitamos KMS/DRM funcionando. Así que deberías ser capaz de ejecutar los tests de SDL2 sobre KMSDR.
 
+LO PRIMERO, SEATD (SÓLO SI NO TENEMOS SYSTEMD!)
+
 -Si no tenemos systemd (sistema "minimal"), o si tenemos systemd sin los servicios "systemd-logind" o "elogind"
 (que es lo más normal, porque siempre lo deshabilitas), necesitamos libseat/seatd.
 Para instalar libseat:
@@ -61,19 +63,9 @@ git clone --depth 1 https://git.sr.ht/~kennylevinsen/seatd
 mkdir b4
 cd b4
 
-//SIN SYSTEMD://
-
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dexamples=disabled -Dlibseat-logind=disabled -Dman-pages=disabled ..
-
-//CON SYSTEMD://
-
-sudo apt-get install libsystemd-dev
-
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" meson -Dbuildtype=release -Dexamples=disabled -Dman-pages=disabled -Dlibseat-logind=systemd ..
-
-//
 
 ninja -j4
 sudo ninja install
