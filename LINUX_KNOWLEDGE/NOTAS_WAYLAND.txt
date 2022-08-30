@@ -154,10 +154,13 @@ el renderer VULKAN, para lo cual:
                         wlr_conn->output.width = modeinfo->hdisplay;
                         wlr_conn->output.height = modeinfo->vdisplay;
 
-                        wlr_conn->crtc->mode_id = wlr_conn->crtc->props.mode_id;
-                        
-                        free(modeinfo);
+                        uint64_t mode_id = 0; 
+                        get_drm_prop(drm->fd, wlr_conn->crtc->id, wlr_conn->crtc->props.mode_id, &mode_id);
 
+                        wlr_conn->crtc->mode_id = mode_id;
+
+                        free(modeinfo);
+                        
 	-Editamos types/output/output.c y en output_compare_state(), en el case WLR_OUTPUT_STATE_MODE_FIXED, comentamos la línea:
 						unchanged = output->current_mode == state->mode;
 	...De esa manera, se hará modesetting sin que cambie el modo de vídeo.
@@ -828,3 +831,8 @@ HABILITAR LOGS DE DEBUGGING DE DRM
 echo 0x19F | sudo tee /sys/module/drm/parameters/debug
 
 dmesg -C
+
+AYUDA WLROOTS
+=============
+
+irc.libera.chat, canal #sway-devel
