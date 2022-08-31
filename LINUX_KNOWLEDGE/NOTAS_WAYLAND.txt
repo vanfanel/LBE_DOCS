@@ -134,10 +134,12 @@ el renderer VULKAN, para lo cual:
 	wlr_conn->output.phys_width = drm_conn->mmWidth;
 	Justo encima, ponemos esto para inicializar output->current_mode al modo que está usando KMS al inicio:
 	
-						size_t modeinfo_len = 0;
+                        ///MAC ////////////////
+
+                        size_t modeinfo_len = 0; 
                         drmModeModeInfo *modeinfo = (drmModeModeInfo *)get_drm_prop_blob(
                          drm->fd, wlr_conn->crtc->id, wlr_conn->crtc->props.mode_id, &modeinfo_len);
-     
+
                         /* Even if wlt_conn->ouput.current_mode is declared as wlr_output_mode,
                            current_mode has to be declared as wlr_drm_mode, because current_mode
                            pointers are later cast into wlr_drm_mode pointers to access both
@@ -151,15 +153,21 @@ el renderer VULKAN, para lo cual:
 
                         wlr_conn->output.current_mode = (struct wlr_output_mode*) current_mode;
 
-                        wlr_conn->output.width = modeinfo->hdisplay;
-                        wlr_conn->output.height = modeinfo->vdisplay;
+                        /* Update width, height, refresh and transform_matrix on this conn's output. */
+                        wlr_output_update_custom_mode(&wlr_conn->output,
+                                current_mode->wlr_mode.width,
+                                current_mode->wlr_mode.height,
+                                current_mode->wlr_mode.refresh);
 
-                        uint64_t mode_id = 0; 
+                        uint64_t mode_id = 0;
                         get_drm_prop(drm->fd, wlr_conn->crtc->id, wlr_conn->crtc->props.mode_id, &mode_id);
 
                         wlr_conn->crtc->mode_id = mode_id;
 
                         free(modeinfo);
+
+                        //////////
+
                         
 	-Editamos types/output/output.c y en output_compare_state(), en el case WLR_OUTPUT_STATE_MODE_FIXED, comentamos la línea:
 						unchanged = output->current_mode == state->mode;
