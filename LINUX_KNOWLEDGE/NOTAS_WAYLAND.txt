@@ -136,36 +136,38 @@ el renderer VULKAN, para lo cual:
 	
                         ///MAC ////////////////
 
-                        size_t modeinfo_len = 0; 
-                        drmModeModeInfo *modeinfo = (drmModeModeInfo *)get_drm_prop_blob(
-                         drm->fd, wlr_conn->crtc->id, wlr_conn->crtc->props.mode_id, &modeinfo_len);
+                        if (!(wlr_conn->crtc == NULL)) {
+                                size_t modeinfo_len = 0;
+                                drmModeModeInfo *modeinfo = (drmModeModeInfo *)get_drm_prop_blob(
+                                 drm->fd, wlr_conn->crtc->id, wlr_conn->crtc->props.mode_id, &modeinfo_len);
 
-                        /* Even if wlt_conn->ouput.current_mode is declared as wlr_output_mode,
-                           current_mode has to be declared as wlr_drm_mode, because current_mode
-                           pointers are later cast into wlr_drm_mode pointers to access both
-                           the wlr_output_mode and wlr_drm_mode info (see drm_connector_state_init) */
-                        struct wlr_drm_mode *current_mode = calloc(1, sizeof(*current_mode));   
+                                /* Even if wlr_conn->ouput.current_mode is declared as wlr_output_mode,
+                                   current_mode has to be declared as wlr_drm_mode, because current_mode
+                                   pointers are later cast into wlr_drm_mode pointers to access both
+                                   the wlr_output_mode and wlr_drm_mode info (see drm_connector_state_init) */
+                                struct wlr_drm_mode *current_mode = calloc(1, sizeof(*current_mode));
 
-                        current_mode->drm_mode = *modeinfo;
-                        current_mode->wlr_mode.width = modeinfo->hdisplay;
-                        current_mode->wlr_mode.height = modeinfo->vdisplay;
-                        current_mode->wlr_mode.refresh = calculate_refresh_rate(modeinfo);
+                                current_mode->drm_mode = *modeinfo;
+                                current_mode->wlr_mode.width = modeinfo->hdisplay;
+                                current_mode->wlr_mode.height = modeinfo->vdisplay;
+                                current_mode->wlr_mode.refresh = calculate_refresh_rate(modeinfo);
 
-                        wlr_conn->output.current_mode = (struct wlr_output_mode*) current_mode;
+                                wlr_conn->output.current_mode = (struct wlr_output_mode*) current_mode;
 
-                        /* Update width, height, refresh and transform_matrix on this conn's output. */
-                        wlr_output_update_custom_mode(&wlr_conn->output,
-                                current_mode->wlr_mode.width,
-                                current_mode->wlr_mode.height,
-                                current_mode->wlr_mode.refresh);
+                                /* Update width, height, refresh and transform_matrix on this conn's output. */
+                                wlr_output_update_custom_mode(&wlr_conn->output,
+                                        current_mode->wlr_mode.width,
+                                        current_mode->wlr_mode.height,
+                                        current_mode->wlr_mode.refresh);
 
-                        uint64_t mode_id = 0;
-                        get_drm_prop(drm->fd, wlr_conn->crtc->id, wlr_conn->crtc->props.mode_id, &mode_id);
+                                uint64_t mode_id = 0;
+                                get_drm_prop(drm->fd, wlr_conn->crtc->id, wlr_conn->crtc->props.mode_id, &mode_id);
 
-                        wlr_conn->crtc->mode_id = mode_id;
+								wlr_conn->crtc->mode_id = mode_id;
 
-                        free(modeinfo);
-
+                                free(modeinfo);
+                        }
+                        
                         //////////
                         	
 	-Ahora, en nuestro compositor buscamo la llamada a wlr_output_set_mode(), y la quitamos.
@@ -834,3 +836,25 @@ AYUDA WLROOTS
 =============
 
 irc.libera.chat, canal #sway-devel
+irc.oftc.net, canal #dri-devel
+
+DEBUGUEAR O INVESTIGAR PROBLEMAS DE WLROOTS
+===========================================
+
+-Activamos el modo debug del driver DRM del kernel, con 
+echo 0x19F | sudo tee /sys/module/drm/parameters/debug
+-Con GDB, nos ponemos en atomic_commit(), y justo antes de que se ejecute drmAtomicCommit(), hacemos un "dmesg -C" para limpiar dmesg,
+ejecutamos drmAtomicCommit(), y ejecutamos dmesg. Vemos qué propiedades se van a modificar: son las de las líneas en que pone: "Added..."
+-Si ahí no vemos errores ni propiedades problemáticas, volvemos a iniciar el compositor con GDB y nos vamos a atomic_crtc_commit(), y
+vamos viendo cúales de las llamadas de atomic_add() se ejecutan entre atomic_begin() y atomic_finish(), y ahí ya vemos clarísimamente qué
+propiedades del CONNECTOR o del CRTC se van a modificar en la siguiente llamada a atomic_commit(). Porque recuerda que todas estas funciones
+están double-buffered, es decir, no tienen efectos hasta que haya una llamada a atomic_commit().
+
+
+* Un problema muy típico es que se modifiquen propiedades que necesitan full modeset sin que se esté haciendo un full modeset,
+es decir, sin que se esté activando el flag DRM_MODE_ATOMIC_ALLOW_MODESET.
+Las propiedades que necesitan un full modeset son:
+-Que se cambie el CRTC de un conector
+-Que se cambie el modo de vídeo de un CRTC
+-Que se cambie el estado entre ACIVO/INACTIVO de un CRTC
+-...Y que hayamos averiguado por las malas, que se cambie el max_bpc de un CONNECTOR
