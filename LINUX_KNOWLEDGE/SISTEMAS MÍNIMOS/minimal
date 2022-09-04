@@ -191,9 +191,18 @@ setsid sh -c 'cd /root;exec bash --login </dev/tty1 >/dev/tty1 2>&1'
 # En caso de querer un único programa corriendo:
 # setsid sh -c 'exec /usr/local/bin/retroarch </dev/tty1 >/dev/tty1 2>&1'
 
-# Para arrancar Wayland, Weston concretamente. El -l '' -f '' es para que no
-# mande logs a la consola y desconectar el "flight control", lo que ahorra RAM.
-# setsid sh -c 'cd root/;exec /usr/local/bin/weston -l '' -f '' </dev/tty1 >/dev/tty1 2>&1'
+# BLOQUE para arrancar Wayland, Weston concretamente.
+# Lo del punto para ejecutar profile es porque en sh no podemos hacer
+# "source /etc/profile" porque el comando "source" es propio de bash.
+# Necesitamos cargar el profile para que se exporte el PATH, necesario
+# para que Weston encuentre los programas que cargamos con los atajos
+# de teclado.
+# Los parámetros "-l" y "-f" de Weston son para que no mande logs a la consola
+# y para desactivar el autopilot que no sé lo que es ni me interesa.
+# setsid sh -c '
+# . /etc/profile;
+# cd /root;
+# exec /usr/local/bin/weston -l '' -f '' </dev/tty1 >/dev/tty1 2>&1'
 
 # Salvamos la última fecha conocida, que va al fichero /etc/fake-hwclock.data
 fake-hwclock save
