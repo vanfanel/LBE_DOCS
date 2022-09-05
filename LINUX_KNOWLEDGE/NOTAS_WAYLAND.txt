@@ -208,7 +208,7 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false \
 -Dxwayland=false -Dremoting=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
--Dcolor-management-lcms=false -Dcolor-management-colord=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false \
+-Dcolor-management-lcms=false -Dcolor-management-lcms=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false \
 -Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false ..
 
 ninja -j4
@@ -600,6 +600,11 @@ DWL, EL COMPOSITOR DE ESCRITORIO BASADO EN WLROOTS MÁS BÁSICO QUE HAY
 Clonamos su repo:
 
 git clone --depth 1 https://github.com/djpohly/dwl.git
+(OJO, para compilarlo contra la última versión de los sources de WLROOTS en lugar de la versión estable,
+tendríamos que clonar el branch "wlroots-next"). 
+
+Editamos dwl.c y comentamos las llamadas a wlr_output_set_mode() y wlr_output_set_custom_mode(), etc
+Podemos quitar todo ese bloque, vamos.
 
 Compilamos con:
 CFLAGS="-O2 -march=native -mtune=native" \
@@ -662,8 +667,8 @@ FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
 Instalamos dependencias previas:
 apt-get install libtllist-dev --no-install-recommends
 
-clonamos su repo:
-git clone --depth 1 https://codeberg.org/dnkl/foot.git
+Bajamos la última versión estable de aquí:
+https://codeberg.org/dnkl/foot/releases
 
 Configuramos y compilamos con:
 
