@@ -445,8 +445,8 @@ QUITAR ERRORES DE WESTON
 	cursor-theme=adwaita
 (Se podría usar otro tema más ligero, pero no lo conozco).
 
-AÑADIR NUEVOS ATAJOS DE TECLADO A WESTON
-========================================
+AÑADIR ATAJOS DE TECLADO A WESTON
+=================================
 
 TIENES DOS OPCIONES:
 
@@ -454,7 +454,7 @@ TIENES DOS OPCIONES:
 Para ello, editamos desktop-shell/shell.c y:
 
 -Añadimos #include <fcntl.h> a los includes del principio.
--Añadimos funciones (justo encima de la función shell_add_bindings(), si quieres):
+-Añadimos estas funciones (justo encima de la función shell_add_bindings(), si quieres):
 
 /* Process executed via keybind failed. status is the exit value. */
 static void 
@@ -466,13 +466,13 @@ process_cleanup(struct weston_process *process, int status)
 /**
  * Much like system(3) but doesn't wait for exit and outputs to /dev/null.
  */
-static void
+static pid_t
 system_nowait(const char *file, char *const argv[])
 {
-	int pid = fork();
+	pid_t pid = fork();
 
 	if (pid)
-		return;
+		return pid;
 
 	int fd = open("/dev/null", O_WRONLY);
 
