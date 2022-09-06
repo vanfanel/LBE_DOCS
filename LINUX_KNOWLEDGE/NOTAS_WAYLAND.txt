@@ -146,7 +146,7 @@ sudo ninja install
 RECUERDA que WLROORS soporta renderizado con Vulkan, por lo que los renderers basados en WLROOTS (como DWL, SWAY, WAYBOX...) pueden usarlo.
 Para ello, lanzaríamos el compositor que queramos con:
 WLR_RENDERER=vulkan <compositor>
-(OJO!! WESTON no usa WLROOTS)
+(OJO!! WESTON NO USA WLROOTS!!)
 
 PARTE 4: WESTON (EL COMPOSITOR DE REFERENCIA, PARA UN DESCRITORIO COMPLETO USA WAYBOX)
 --------------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ sudo ninja install
 
 -Instalamos WESTON en sí:
 Bajamos los últimos sources estables de:
-https://gitlab.freedesktop.org/wayland/weston/-/tags
+https://gitlab.freedesktop.org/wayland/weston/-/releases
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
