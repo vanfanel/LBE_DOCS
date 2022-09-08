@@ -1,17 +1,17 @@
 INSTALAR WAYLAND
 ================
 
-Lo primero: para correr SWAY, WAYBOX, CAGE ... necesitas WAYLAND y WLROOTS, ya que la mayoría de los compositores se basan en WLROOTS.
+Lo primero: para correr COMPOSITORS BASADOS EN WLROOTS (DWL, TINYWL, SWAY, WAYBOX, CAGE) necesitas WAYLAND y WLROOTS, ya que la mayoría de los compositores se basan en WLROOTS.
 A su vez, WLROOTS necesita WAYLAND-PROTOCOLS y LIBSEAT.
-***LIBSEAT SÓLO ES NECESARIO PARA COMPOSITORES BASADOS EN WLROOTS, POR LO QUE EN WESTON NO HACE FALTA PORQUE WESTON NO ESTÁ BASADO EN WLROOTS.
+LUEGO A PARTE ESTÁ WESTON, QUE NO ESTÁ BASADO EN WLROOTS NI LO NECESITA.
+***LIBSEAT ES NECESARIO PARA COMPOSITORES BASADOS EN WLROOTS Y AHORA TAMBIÉN PARA WESTON (ANTES NO HACÍA FALTA, PERO AHORA, WESTON NECESITA
+O BIEN LIBSEAT O BIEN, SI USAS SYSTEMD, EL SERVICIO SYSTEMD-LOGIND ACTIVO: UNA DE LAS DOS COSAS).
 ***LIBSEAT SÓLO ES NECESARIO SI NO TENEMOS CORRIENDO EL SERVICIO "LOGIND" QUE EN SYSTEMD ES "systemd-logind"
    Y QUE EN OTROS INIT DISTINTOS DE SYSTEMD ES "elogind".
    LÓGICAMENTE, EN UN SISTEMA "MINIMAL" DE LOS MIOS, PARA USAR UN COMPOSITOR BASADO EN WLROOTS, LIBSEAT HACE FALTA PORQUE NO TIENES
-   NINGÚN SERVICIO DE LOGIN CORRIENDO
-***PERO SI VAS A USAR WESTON, NO HACE FALTA LIBSEAT NUNCA!!!
+   NINGÚN SERVICIO DE LOGIN CORRIENDO!
 
-Pero OJO, WESTON NO SE BASA EN WLROOTS. NO NECESITAS WLROOTS PARA WESTON. WESTON ES "STANDALONE". Lo malo de eso, es que WLROOTS tiene
-un renderer Vulkan, que desde WESTON no puedes aprovechar por no basarse en WLROOTS.
+WLROOTS tiene un renderer Vulkan, que desde WESTON no puedes aprovechar por no basarse en WLROOTS.
 
 PARTE 1: WAYLAND EN SÍ (libwayland)
 -----------------------------------
@@ -148,16 +148,17 @@ Para ello, lanzaríamos el compositor que queramos con:
 WLR_RENDERER=vulkan <compositor>
 (OJO!! WESTON NO USA WLROOTS!!)
 
-PARTE 4: WESTON (EL COMPOSITOR DE REFERENCIA, PARA UN DESCRITORIO COMPLETO USA WAYBOX)
---------------------------------------------------------------------------------------
+=================================================================
+PARTE 4: INSTALAR WESTON (EL COMPOSITOR DE REFERENCIA DE WAYLAND)
+=================================================================
 
 // BLOQUE DEBIAN SIN SYSTEMD
 
-Tenemos que instalar nuestras propias compilaciones de libinput, ya que compila contra UDEV
-y en los sistemas sin systemd usamos libudev-zero, compilada por nosotros, por lo que si usamos
-el libinput de Debian, falla el linkado de Weston.
+Tenemos que instalar nuestras propias compilaciones de libinput y de libsead/seatd (es lo mismo libseat que seatd).
+Lo de libinput es porque compila contra UDEV, y en los sistemas sin systemd usamos libudev-zero, compilada por nosotros,
+por lo que si usamos el libinput de Debian, falla el linkado de Weston.
 
-Pues eso, compilamos e instalamos libinput:
+PRIMERO VAMOS A POR LIBINPUT
 -Instalamos dependencias previas: apt-get install libmtdev-dev libevdev-dev --no-install-recommends
 -Bajamos las últimas estables de aquí:
 https://www.freedesktop.org/software/libinput/libinput-1.19.4.tar.xz
@@ -171,6 +172,24 @@ meson -Dbuildtype=release -Dtests=false -Dinstall-tests=false -Dlibwacom=false -
 
 ninja -j4
 ninja install
+
+SEGUNDO VAMOS A POR LIBSEAT/SEATD
+Clonamos su repo:
+git clone --depth 1 https://git.sr.ht/~kennylevinsen/seatd
+
+--Configuramos, compilamos e instalamos:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release -Dexamples=disabled -Dlibseat-logind=disabled -Dman-pages=disabled ..
+
+ninja -j4
+sudo ninja install
+
+--seatd se lanzará, cuando nos haga falta, con:
+seatd -u root -l silent &
 
 // FIN BLOQUE DEBIAN SIN SYSTEMD
 
