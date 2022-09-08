@@ -687,12 +687,10 @@ Creamos ~/config/foot/foot.ini con este contenido:
 
 shell=bash
 term=foot
+font=monospace:size=24
 
-initial-window-size-chars=90x20
-
-[bell]
-urgent=no
-notify=no
+#initial-window-size-chars=90x20
+initial-window-mode=fullscreen
 
 KITTY, UN EMULADOR DE TERMINAL PARA WAYLAND
 -------------------------------------------
