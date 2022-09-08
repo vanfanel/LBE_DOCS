@@ -838,3 +838,20 @@ Las propiedades que necesitan un full modeset son:
 -Que se cambie el modo de vídeo de un CRTC
 -Que se cambie el estado entre ACIVO/INACTIVO de un CRTC
 -...Y que hayamos averiguado por las malas, que se cambie el max_bpc de un CONNECTOR
+
+NNN, FILE MANAGER LIGERO PARA EMULADOR DE TERMINAL
+==================================================
+
+Bajamos la última estable de:
+https://github.com/jarun/nnn/releases
+
+Nos bajamos la nerdfont que queramos de aquí para tener iconos al lado de los ficheros:
+https://www.nerdfonts.com/font-downloads
+Descomprimimos el zip, y mandamos la fuente TTF que queramos usar a /usr/local/share/fonts/nerdfont.ttf
+
+Compilamos e instalamos con:
+CFLAGS="-march=native -mtune=native" make O_NORL=1 O_NERD=1 -j4
+make install
+
+Si no te salen iconos al lado de los ficheros a pesar de haber instalado la nerdfont, simplemente reinicia la terminal
+y vuelve a lanzar nnn, y ya deberían salir.
