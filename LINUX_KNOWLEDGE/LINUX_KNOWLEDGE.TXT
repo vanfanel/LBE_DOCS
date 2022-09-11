@@ -4335,7 +4335,7 @@ MODIFICAR UN COMMIT DEL PASADO (QUE YA HEMOS PUSHEADO Y TODO)
 
 LO PRIMERO, NO DEBEMOS HABER CLONADO EL REPO CON "--depth 1" PORQUE ENTONCES NADA DE ESTO FUNCIONA.
 
-Empezamos un rebase. El número 2 es que vamos a incluir en el rebase los dos últimos commits, pero pueden ser 100 o 1000.
+Empezamos un rebase. El número 2 es que vamos a retroceder 2 commits, pero pueden ser 100 o 1000.
 Un rebase lo que hace es presentarnos en un editor los commits, y el que queramos cambiar lo pasamos de "pick" a "edit":
 
 git rebase -i HEAD~2
