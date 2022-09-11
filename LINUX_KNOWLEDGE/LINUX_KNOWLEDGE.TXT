@@ -4330,6 +4330,27 @@ git push -f origin main
 
 Y luego ya haríamos el pull request.
 
+MODIFICAR UN COMMIT DEL PASADO (QUE YA HEMOS PUSHEADO Y TODO)
+=============================================================
+
+LO PRIMERO, NO DEBEMOS HABER CLONADO EL REPO CON "--depth 1" PORQUE ENTONCES NADA DE ESTO FUNCIONA.
+
+Empezamos un rebase. El número 2 es que vamos a incluir en el rebase los dos últimos commits, pero pueden ser 100 o 1000.
+Un rebase lo que hace es presentarnos en un editor los commits, y el que queramos cambiar lo pasamos de "pick" a "edit":
+
+git rebase -i HEAD~2
+
+Ahora hacemos los cambios o correcciones que queramos en ese commit...Y una vez hechos los cambios, hacemos:
+
+git add .
+git commit --amend
+
+Y ahora finalizamos el rebase así, y ya quedamos en el último commit que hicimos:
+git rebase --continue
+
+Ahora si queremos subimos los cambios con:
+git push -f origin master
+
 ************RECUPERAR PARTIDAS EN EL GABRIEL KNIGHT DE SCUMMVM**********************************************************************************
 
 A los datos del juego les falta el archivo
