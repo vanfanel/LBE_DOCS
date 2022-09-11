@@ -124,7 +124,7 @@ el renderer VULKAN, para lo cual:
 		apt-get -t bullseye-backports install libvulkan1
 		apt-get -t bullseye-backports install libvulkan-dev (<---Este probablemente no se te actualize, don't worry.)
 
--Instalamos WLROOTS en sí. Para ello:
+-Instalar WLROOTS en sí. Para ello:
 
 --Bajamos los últimos sources de WLROOTS estables de aquí: https://gitlab.freedesktop.org/wlroots/wlroots/-/releases
 
@@ -442,7 +442,8 @@ fi
 ############################################################
 # SI NECESITAS AYUDA CON WAYLAND:                          #
 # -https://gitlab.freedesktop.org/wayland/weston/-/issues  #
-# -Canal #wayland en irc.oftc.net                          #
+# -Canal #dri-devel en irc.oftc.net                        #
+# -Canal #sway-devel en irc.libera.chat					   #
 ############################################################
 
 Investigar si se puede hacer simplemente:
