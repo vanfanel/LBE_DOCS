@@ -856,3 +856,21 @@ make install
 
 Si no te salen iconos al lado de los ficheros a pesar de haber instalado la nerdfont, simplemente reinicia la terminal
 y vuelve a lanzar nnn, y ya deberían salir.
+
+NOTAS PARA PODER USAR WAYLAND EN EL FUTURO
+==========================================
+
+Actualmente no es alternativa de uso diario porque todo lo de Vulkan va a tener lag debido a que siempre va a darnos un swapchain de 4:
+https://github.com/libretro/RetroArch/issues/13812
+Que da lugar a esta issue en gitlab:
+https://gitlab.freedesktop.org/mesa/mesa/-/issues/6249
+Hasta que no se resuelvan esas dos issues, Wayland no sirve para Vulkan sin latencia.
+
+Es un problema común de TODAS las implementaciones de Vulkan en Wayland, da igual que sea AMD, VC4, INTEL...
+Todo se reduce a que se haga un merge de esto en MESA:
+https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/12086
+
+Se podría usar GLES2 para RetroArch en lugar de Vulkan, pero el backend de contexto WAYLAND de RetroArch tampoco tiene un
+mecanismo explícito para esperar a que se complete el eglSwapBuffers() que hacemos en gfx_ctx_wl_swap_buffers()
+en gfx/drivers_context/wayland_ctx.c, así que simplemente se está haciendo eglSwapBuffers() y el driver decide. Mal.
+
