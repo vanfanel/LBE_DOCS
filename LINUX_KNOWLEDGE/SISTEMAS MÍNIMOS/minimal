@@ -186,7 +186,7 @@ amixer set PCM 230 -q
 # es redireccionada a tty1.
 # Se puede usar bash o bien sh. Si usamos bash, hay que pasarle el --login
 # porque si no, no lee /etc/profile y nos faltan cosas en el $PATH.
-# setsid sh -c 'cd /root;exec bash --login </dev/tty1 >/dev/tty1 2>&1'
+setsid sh -c 'cd /root;exec bash --login </dev/tty1 >/dev/tty1 2>&1'
 
 # En caso de querer un único programa corriendo:
 # setsid sh -c 'exec /usr/local/bin/retroarch </dev/tty1 >/dev/tty1 2>&1'
@@ -201,11 +201,12 @@ amixer set PCM 230 -q
 # de teclado.
 # Los parámetros "-l" y "-f" de Weston son para que no mande logs a la consola
 # y para desactivar el autopilot que no sé lo que es ni me interesa.
-seatd -u root -l silent &
-setsid sh -c '
-. /etc/profile;
-cd /root;
-exec /usr/local/bin/weston -l '' -f '' </dev/tty1 >/dev/tty1 2>&1'
+
+# seatd -u root -l silent &
+# setsid sh -c '
+# . /etc/profile;
+# cd /root;
+# exec /usr/local/bin/weston -l '' -f '' </dev/tty1 >/dev/tty1 2>&1'
 
 # Salvamos la última fecha conocida, que va al fichero /etc/fake-hwclock.data
 fake-hwclock save
