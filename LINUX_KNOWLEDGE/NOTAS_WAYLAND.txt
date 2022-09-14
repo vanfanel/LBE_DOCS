@@ -861,14 +861,18 @@ Si no te salen iconos al lado de los ficheros a pesar de haber instalado la nerd
 y vuelve a lanzar nnn, y ya deberían salir.
 
 PARA QUE LANCE SCRIPTS EJECUTABLES, QUE TENEMOS QUE DARLE LA EXTENSIÓN .run:
+
 1) Editamos plugins/nuke y añadimos, debajo de la sección "Log files", por ejemplo, nuestra propia sección para lanzar archivos .run:
 ## Run files
         run)
             /usr/bin/sh "${FPATH}"
             exit 0;;
-2) Copiamos plugins/nuke a /usr/local/bin
+
+2) Copiamos todos los plugins a ~/.config/nnn/plugins/
+(El directorio ~/.config/nnn/plugins/ se crea la primera vez que ejecutamos nnn).
+
 3) Añadimos a ~/.bashrc:
-export NNN_OPENER=nuke
+export NNN_OPENER=~/.config/nnn/plugins/nuke
 (La idea es que no se pueda ejecutar cualquier cosa, sino sólo los .run que nosotros creemos).
 
 NOTAS PARA PODER USAR WAYLAND EN EL FUTURO
