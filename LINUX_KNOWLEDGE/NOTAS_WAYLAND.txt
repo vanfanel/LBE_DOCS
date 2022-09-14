@@ -784,7 +784,10 @@ export XDG_RUNTIME_DIR=/run
 
 O bien
 
+WAYLAND_DISPLAY=wayland-1 <programa>
+o
 WAYLAND_DISPLAY=wayland-0 <programa>
+...el valor que tenga WAYLAND_DISPLAY.
 
 --Para WAYLAND_DISPLAY-- 
 
@@ -856,6 +859,17 @@ make install
 
 Si no te salen iconos al lado de los ficheros a pesar de haber instalado la nerdfont, simplemente reinicia la terminal
 y vuelve a lanzar nnn, y ya deberían salir.
+
+PARA QUE LANCE SCRIPTS EJECUTABLES, QUE TENEMOS QUE DARLE LA EXTENSIÓN .run:
+1) Editamos plugins/nuke y añadimos, debajo de la sección "Log files", por ejemplo, nuestra propia sección para lanzar archivos .run:
+## Run files
+        run)
+            /usr/bin/sh "${FPATH}"
+            exit 0;;
+2) Copiamos plugins/nuke a /usr/local/bin
+3) Añadimos a ~/.bashrc:
+export NNN_OPENER=nuke
+(La idea es que no se pueda ejecutar cualquier cosa, sino sólo los .run que nosotros creemos).
 
 NOTAS PARA PODER USAR WAYLAND EN EL FUTURO
 ==========================================
