@@ -206,7 +206,7 @@ setsid sh -c 'cd /root;exec bash --login </dev/tty1 >/dev/tty1 2>&1'
 # setsid sh -c '
 # . /etc/profile;
 # cd /root;
-# exec /usr/local/bin/weston -l '' -f '' </dev/tty1 >/dev/tty1 2>&1'
+# exec /usr/local/bin/weston -l '' -f '' </dev/tty1 >/dev/null 2>&1'
 
 # Salvamos la última fecha conocida, que va al fichero /etc/fake-hwclock.data
 fake-hwclock save
