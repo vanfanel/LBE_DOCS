@@ -875,6 +875,56 @@ PARA QUE LANCE SCRIPTS EJECUTABLES, QUE TENEMOS QUE DARLE LA EXTENSIÓN .run:
 export NNN_OPENER=~/.config/nnn/plugins/nuke
 (La idea es que no se pueda ejecutar cualquier cosa, sino sólo los .run que nosotros creemos).
 
+PARA QUE LANCE AUTOMÁTICAMENTE ROMS DE SISTEMAS EMULADOS
+
+Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
+
+        ## NES files
+        nes)
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/nestopia_libretro.so -- "${FPATH}"
+            exit 0;;
+
+        ## SMS files
+        sms)
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/genesis_plus_gx_libretro.so -- "${FPATH}"
+            exit 0;;
+
+        ## PCE files
+        pce)
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mednafen_pce_fast_libretro.so -- "${FPATH}"
+            exit 0;;
+
+        ## MD files
+        md)
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/genesis_plus_gx_libretro.so -- "${FPATH}"
+            exit 0;;
+
+        ## GBA files
+        gba)
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mgba_libretro.so -- "${FPATH}"
+            exit 0;;
+
+        ## SNES files
+        smc|sfc)
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/snes9x_libretro.so -- "${FPATH}"
+            exit 0;;
+
+        ## FBNEO files
+        fbneo)
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/fbneo_libretro.so -- "${FPATH}"
+            exit 0;;
+
+        ## MSX files
+        msx)
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/fbneo_libretro.so --subsystem=msx -- "${FPATH}"
+            exit 0;;
+
+...Y para crear los .fbneo, nos vamos al directorio de arcade o de neogeo o de lo que sea y creamos un link simbólico de cada .zip, así:
+for file in *.txt; do ln -s -- "$file" "${file%.zip}.fbneo"; done
+
+...Y para crear los .msx, nos vamos al directorio de msx y creamos un link simbólico de cada .zip, así:
+for file in *.txt; do ln -s -- "$file" "${file%.zip}.msx"; done
+
 NOTAS PARA PODER USAR WAYLAND EN EL FUTURO
 ==========================================
 
