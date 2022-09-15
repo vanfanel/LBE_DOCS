@@ -951,7 +951,7 @@ Instalamos libgtk3:
 -Nos bajamos los últimos sources estables de:
 -Configuramos con:
 meson .. -Dbuildtype=release -Ddemos=false -Dbuild-examples=false -Dbuild-tests=false -Dinstall-tests=false \
--Dx11-backend=false -Dintrospection=disabled
+-Dx11-backend=false -Dintrospection=disabled -Dvulkan=disabled -Dmedia-gstreamer=disabled
 
 AHORA VAMOS CON MUTTER EN SÍ
 Clonamos su repo:
