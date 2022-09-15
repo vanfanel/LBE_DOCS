@@ -952,7 +952,7 @@ Instalamos otra dependencia previa, gtk3+ (OJO, es GTK3+, NO GTK3 NI GTK4!!!, SI
 (Yo uso https://download.gnome.org/sources/gtk+/3.24/gtk%2B-3.24.34.tar.xz , ya que es lo que indica Linux From Scratch
  que hace falta para compilar mutter).
 -Configuramos gtk3+ con:
-meson .. -Dbuildtype=release -Ddemos=false  -Dx11_backend=false -Dintrospection=false
+meson .. -Dbuildtype=release -Ddemos=false -Dx11_backend=false -Dintrospection=false -Ddemos=false -Dexamples=false
 
 Instalamos otra diferencia previa, PANGO:
 -Bajamos los últimos sources estables de: https://github.com/GNOME/pango/tags
