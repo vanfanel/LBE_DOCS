@@ -945,7 +945,7 @@ apt-get install libgraphene-1.0-dev --no-install-recommends
 (OJO: para desinstalar libgraphene y sus dependencias, tenemos que hacerlo manualmente así o nos deja basura:
 apt-get purge gir1.2-freedesktop gir1.2-glib-2.0 gir1.2-graphene-1.0 gobject-introspection libgirepository-1.0-1 libgirepository1.0-dev libgraphene-1.0-0 libgraphene-1.0-dev python3-markdown)
 
-apt-get install python3-docutils libatk1.0-dev --no-install-recommends
+apt-get install python3-docutils libatk1.0-dev libgdk-pixbuf2.0-bin --no-install-recommends
 
 Instalamos otra dependencia previa, gtk3+ (OJO, es GTK3+, NO GTK3 NI GTK4!!!, SINO QUE DEBE SER EL QUE LLEVA EL "PLUS"):
 -Nos bajamos los últimos sources estables de: https://download.gnome.org/sources/gtk+ 
