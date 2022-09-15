@@ -942,12 +942,22 @@ INTENTO DE COMPILAR MUTTER, EL COMPOSITOR DE GNOME
 
 Instalamos dependencias previas:
 apt-get install libgraphene-1.0-dev --no-install-recommends
+(OJO: para desinstalar libgraphene y sus dependencias, tenemos que hacerlo manualmente así o nos deja basura:
+apt-get purge gir1.2-freedesktop gir1.2-glib-2.0 gir1.2-graphene-1.0 gobject-introspection libgirepository-1.0-1 libgirepository1.0-dev libgraphene-1.0-0 libgraphene-1.0-dev python3-markdown)
 
+apt-get install python3-docutils --no-install-recommends
+
+Instalamos libgtk3:
+-Nos bajamos los últimos sources estables de:
+-Configuramos con:
+meson .. -Dbuildtype=release -Ddemos=false -Dbuild-examples=false -Dbuild-tests=false -Dinstall-tests=false \
+-Dx11-backend=false -Dintrospection=disabled
+
+AHORA VAMOS CON MUTTER EN SÍ
 Clonamos su repo:
 
 git clone --depth 1 https://github.com/GNOME/mutter.git
 
-(Necesita libgtk...)
 
 INSTALAR SWAY, COMPOSITOR TILING
 ================================
@@ -971,4 +981,4 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson ..
 
-Copiamos el fichero "config" que viene con los sources a ~/.config/sway/config
+Copiamos el fichero "config" que viene con los sources a ~/.config/sway/config, y hacemos ahí los cambios que queramos.
