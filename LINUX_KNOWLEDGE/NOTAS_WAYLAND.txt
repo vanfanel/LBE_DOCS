@@ -988,4 +988,29 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release ..
 
-Copiamos el fichero "config" que viene con los sources a ~/.config/sway/config, y hacemos ahí los cambios que queramos.
+Copiamos el fichero "config" que viene con los sources a ~/.config/sway/config, y hacemos ahí los cambios que queramos, como por ejemplo:
+(Vamos buscando los comentarios y dejamos debajo los valores que queramos)
+
+-Para que la tecla MOD sea ALT, de manera que todos los demás atajos funcionen:
+# Logo key. Use Mod1 for Alt.
+set $mod Mod1
+
+-Para que se use el modo de vídeo actual:
+output HDMI-A-1 resolution 1280x720 position 0,0
+
+-Para tener el teclado en castellano:
+input type:keyboard {
+        xkb_layout es
+}
+
+-Para lanzar el terminal con CTRL+ALT+T:
+# Start a terminal
+bindsym Ctrl+$mod+t exec $term
+
+-Para cerrar ventanas con ALT+F4:
+# Kill focused window
+bindsym $mod+f4 kill
+
+-Para cerrar SWAY con CTRL+ALT+BACKSPACE, sin confirmación ni chorradas:
+# Exit sway (logs you out of your Wayland session)
+bindsym $mod+Ctrl+backspace exec swaymsg exit
