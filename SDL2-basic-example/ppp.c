@@ -39,7 +39,7 @@ int windowTest () {
 
 
     /* MULTIPLE DISPLAYS TESTING BLOCK */
-
+/*
     printf("===AVAILABLE DISPLAYS %d===\n", num_displays);
 
     for (i = 0; i < num_displays; i++) {
@@ -74,18 +74,18 @@ int windowTest () {
         200,                               // height, in pixels
         0      // flags - see below
     );
-
+*/
     /* MULTIPLE DISPLAYS TESTING BLOCK ENDS */
 
     // Create an application window with the following settings:
-    /*window = SDL_CreateWindow(
+    window = SDL_CreateWindow(
         "An SDL2 window",                  // window title
         SDL_WINDOWPOS_UNDEFINED,           // initial x position
         SDL_WINDOWPOS_UNDEFINED,           // initial y position
         320,                               // width, in pixels
         200,                               // height, in pixels
-        0      // flags - see below
-    );*/
+        SDL_WINDOW_FULLSCREEN_DESKTOP      // flags - see below
+    );
 
     // Check that the window was successfully created
     if (window == NULL) {
@@ -95,6 +95,9 @@ int windowTest () {
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    // Aspect rate correction
+    SDL_RenderSetLogicalSize(renderer, src_width, src_height);
 
     // Create texture
     texture = SDL_CreateTexture(renderer,
