@@ -1237,7 +1237,7 @@ los tenemos en .psf.gz. Así que ajustamos cosas en /etc/default/console-setup p
 Intercambia la altura y anchura, descomprime la fuente con gzip.. así hasta que la encuentre.
 Fuente: http://unix.stackexchange.com/questions/198791/how-do-i-permanently-change-the-console-tty-font-type-so-it-holds-after-reboot
 
-*******Escritorio Lubuntu sin tearing***************************************************************************************************************************************
+*******Escritorio Lubuntu sin tearing**************************************************************************************
 
 Sacado de https://wiki.archlinux.org/index.php/Intel_graphics#Tear-free_video
 
@@ -1261,6 +1261,10 @@ Section "Device"
 EndSection
 
 Reiniciamos el servidor gráfico. Magia!
+
+*******Eliminar accesos directos en el menu de Lubuntu*******************************************************************
+
+Borra los que quieras de ~/.local/share/applications/
 
 *******Comprimir un ZIP partiéndolo en varias partes*********************************************************************
 

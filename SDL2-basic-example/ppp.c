@@ -36,6 +36,8 @@ void init_video () {
 
     SDL_SetWindowMouseRect(window, &mrect);
 
+    SDL_SetWindowMouseGrab(window, SDL_TRUE);
+
     // Create texture
     texture = SDL_CreateTexture(renderer,
                                SDL_PIXELFORMAT_ARGB8888,
