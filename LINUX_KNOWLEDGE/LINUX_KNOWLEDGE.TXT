@@ -1241,6 +1241,8 @@ Fuente: http://unix.stackexchange.com/questions/198791/how-do-i-permanently-chan
 
 Sacado de https://wiki.archlinux.org/index.php/Intel_graphics#Tear-free_video
 
+Para GPUs INTEL:
+
 Creamos /usr/share/X11/xorg.conf.d/20-intel.conf con el contenido:
 
 Section "Device"
@@ -1252,7 +1254,9 @@ EndSection
 
 Si no te funcinona glxgears, cambia "sna" por "uxa".
 
-En AMDGPU, sería crear /usr/share/X11/xorg.conf.d/20-amdgpu.conf con el contenido:
+Para GPUs AMDGPU:
+
+Creamos /usr/share/X11/xorg.conf.d/20-amdgpu.conf con el contenido:
 
 Section "Device"
    Identifier  "AMD Graphics"
