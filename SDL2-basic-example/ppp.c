@@ -19,8 +19,8 @@ void init_video () {
         "An SDL2 window",                  // window title
         SDL_WINDOWPOS_UNDEFINED,           // initial x position
         SDL_WINDOWPOS_UNDEFINED,           // initial y position
-        320,                               // width, in pixels
-        200,                               // height, in pixels
+        src_width,                         // width, in pixels
+        src_height,                        // height, in pixels
         SDL_WINDOW_FULLSCREEN_DESKTOP      // flags - see below
     );
 
