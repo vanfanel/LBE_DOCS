@@ -11,8 +11,6 @@ uint32_t *screen_pixels;
 
 SDL_bool end_test = SDL_FALSE;
 
-
-
 void init_video () {
     // Create an application window with the following settings:
     window = SDL_CreateWindow(
