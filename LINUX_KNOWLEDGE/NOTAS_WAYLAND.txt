@@ -757,58 +757,19 @@ Los programas que corren en Wayland necesitan XDG_RUNTIME_DIR (que en nuestro si
 para así poder encontrar el fichero "wayland-0", o "wayland-1" o lo que sea, que estará en XDG_RUNTIME_DIR cuando haya una sesión wayland en marcha.
 Y del otro lado, el compositor debe exportar WAYLAND_DISPLAY=wayland-0, WAYLAND_DISPLAY=wayland-1...
 
-Vamos, que tenemos que tener seteadas correctamente las variables de entorno XDG_RUNTIME_DIR y WAYLAND_DISPLAY.
+Vamos, que tenemos que tener seteadas correctamente las variables de entorno XDG_RUNTIME_DIR y WAYLAND_DISPLAY
+en el PC normal.
 
-///BLOQUE WESTON///
-
-Si usamos WESTON, es posible que los programas de Wayland no necesiten WAYLAND_DISPLAY, con:
-
-export XDG_RUNTIME_DIR=/run # (Sólo si no estamos usando systemd, y sólo si hemos exportado XDG_RUNTIME_DIR=/run en /etc/minimal).
-weston -S wayland-0
-
-Y de ese modo ya no hace falta setear WAYLAND_DISPLAY. PERO sólo vale para Weston, con otros compositors sí hace falta.
-
-///BLOQUE RESTO DE COMPOSITORES///
-
---Para XDG_RUNTIME_DIR--
-
-Miramos qué valor tiene XDG_RUNTIME_DIR en la máquina donde corre WAYLAND:
-
+Se hace asi:
+Miramos en el sistema "servidor" el valor de las variables:
 env | grep XDG_RUNTIME_DIR
-
-...Y exportamos eso en la sesión SSH.
-
-Por ejemplo, si XDG_RUNTIME_DIR tiene el valor /run: 
-
-export XDG_RUNTIME_DIR=/run
-<programa>
-
-O bien
-
-WAYLAND_DISPLAY=wayland-1 <programa>
-o
-WAYLAND_DISPLAY=wayland-0 <programa>
-...el valor que tenga WAYLAND_DISPLAY.
-
---Para WAYLAND_DISPLAY-- 
-
-Miramos qué valor tiene WAYLAND_DISPLAY en la máquina donde corre WAYLAND:
-
 env | grep WAYLAND_DISPLAY
 
-...Y exportamos eso en la sesión SSH.
+Exportamos en el PC de debugueo:
+export XDG_RUNTIME_DIR=/run                 <---(Sólo si, NO USANDO systemd, hemos exportado XDG_RUNTIME_DIR=/run en /etc/minimal).
+export WAYLAND_DISPLAY=wayland-1
 
-Por ejemplo, si WAYLAND_DISPLAY tiene el valor wayland-0: 
-
-export WAYLAND_DISPLAY=wayland-0
-<programa>
-
-O bien
-
-WAYLAND_DISPLAY=wayland-0 <programa>
-
-(Normalmente, SSH usaría PAM y pillaría las mismas variables de entorno para todas las sesiones de un usuario, pero PAM
-depende de SystemD y no usamos SystemD).
+(Normalmente, si usasemos SSH usaría PAM y pillaría las mismas variables de entorno para todas las sesiones de un usuario).
 
 HABILITAR LOGS DE DEBUGGING DE DRM
 ==================================
