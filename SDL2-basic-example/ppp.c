@@ -69,14 +69,14 @@ void read_input () {
     // Event handler
     SDL_Event event;
 
-    //Handle events on queue
-    while (SDL_PollEvent( &event ) != 0) {
-        //User requests quit
+    // Handle events on queue
+    while (SDL_PollEvent(&event) != 0) {
+        // User requests quit
         if (event.type == SDL_QUIT)
         {
             end_test = SDL_TRUE;
         }	
-        //User presses a key
+        // User presses a key
         else if (event.type == SDL_KEYDOWN)
         {
             switch (event.key.keysym.sym)
