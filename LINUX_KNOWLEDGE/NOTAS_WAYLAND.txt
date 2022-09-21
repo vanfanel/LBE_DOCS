@@ -666,7 +666,7 @@ FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
 ==========================================
 
 Instalamos dependencias previas:
-apt-get install libtllist-dev --no-install-recommends
+apt-get install libfontconfig-dev --no-install-recommends
 
 Bajamos la última versión estable de aquí:
 https://codeberg.org/dnkl/foot/releases
