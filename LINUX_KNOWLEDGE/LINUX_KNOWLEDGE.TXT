@@ -98,7 +98,7 @@ Y ya deberíamos ser capaces de hacer ping al router en la 192.168.1.1, a la dns
 ******Convertir CUE/BIN a CHD*********************************************************************************************************
 
 Instalamos chdman:
-sudo apt-get install mame-tools
+sudo apt-get install mame-tools --no-install-recommends
 
 Y para comprimir de CUE/BIN a CHD:
 chdman createcd -i image.cue -o image.chd
@@ -8324,7 +8324,7 @@ git clone --depth 1 https://megous.com/git/megatools
 Creamos el directorio de compilación, entramos en él y configuramos con meson:
 mkdir b4
 cd b4
-meson ..
+meson -Dbuildtype=release ..
 
 Compilamos
 ninja -j4

@@ -579,7 +579,8 @@ Configuramos libdrm con esto:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-meson -Dudev=true -Dvc4=true -Dintel=false -Dvmwgfx=false -Dradeon=false -Damdgpu=false -Dnouveau=false -Dfreedreno=false \
+meson -Dudev=true -Dvc4=enabled -Dintel=disabled -Dvmwgfx=disabled -Dradeon=disabled -Damdgpu=disabled -Dnouveau=disabled \
+-Dfreedreno=disabled -Detnaviv=disabled \
 -Dinstall-test-programs=true ..
 
 Compilamos e instalamos:

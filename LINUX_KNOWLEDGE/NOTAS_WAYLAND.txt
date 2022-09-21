@@ -16,6 +16,9 @@ WLROOTS tiene un renderer Vulkan, que desde WESTON no puedes aprovechar por no b
 PARTE 1: WAYLAND EN SÍ (libwayland)
 -----------------------------------
 
+Instalamos dependencias previas:
+apt-get install libffi-dev --no-install-recommends
+
 Bajamos la última release estable de:
 https://wayland.freedesktop.org/releases.html
 
@@ -84,43 +87,19 @@ seatd -u root -l silent &
 
 -Instalamos dependencias previas: sudo apt-get install libpixman-1-dev libxkbcommon-dev --no-install-recommends
 (OJO: Si no estás usando libudev-zero, que es lo que usas en sistemas mínimos, debes instalar también libudev-dev).
--Instalamos manualmente la dependencia LIBSEAT, que no está como paquete en DEBIAN 11. Para ello:
---Bajamos los últimos sources estables de aquí: https://git.sr.ht/~kennylevinsen/seatd
---Configuramos, compilamos e instalamos:
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dexamples=false ..
-
-ninja -j4
-sudo ninja install
-
--Instalamos manualmente la dependencia LIBINPUT, que la versión que trae DEBIAN 11 es vieja y no nos vale. Para ello:
---Instalamos dependencias previas de LIBINPUT: sudo apt-get install libmtdev-dev
---Bajamos los últimos sources estables de aquí: http://www.freedesktop.org/software/libinput
---Configuramos, compilamos e instalamos:
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false ..
-
-ninja -j4
-sudo ninja install
+-Instalamos manualmente la dependencia LIBSEAT, que no está como paquete en DEBIAN 11. Para ello tenemos que instalarla desde backports.
+--Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
+		echo "deb http://deb.debian.org/debian bullseye-backports main" | sudo tee /etc/apt/sources.list.d/buster-backports.list
+		apt-get update
+--Instalamos libseat-dev especificando que la instalamos desde backports:
+		apt-get -t bullseye-backports install libseat-dev
 
 // FIN BLOQUE DEBIAN 11
 
 --Instalamos dependencias previas:
 apt-get install glslang-dev glslang-tools
 --Actualizamos nuestra versión de libvulkan y libvulkan-dev, ya que WLROOTS necesita una reciente si activamos
-el renderer VULKAN, para lo cual:
-	--Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
-		echo "deb http://deb.debian.org/debian bullseye-backports main" | sudo tee /etc/apt/sources.list.d/buster-backports.list
-		apt-get update
-	--Actualizamos nuestra versión de libvulkan (como ves tenemos que especificarle que la pille de backports):
+el renderer VULKAN, para lo cual actualizamos a la version de backports:
 		apt-get -t bullseye-backports install libvulkan1
 		apt-get -t bullseye-backports install libvulkan-dev (<---Este probablemente no se te actualize, don't worry.)
 
@@ -128,7 +107,7 @@ el renderer VULKAN, para lo cual:
 
 --Bajamos los últimos sources de WLROOTS estables de aquí: https://gitlab.freedesktop.org/wlroots/wlroots/-/releases
 
---En nuestro compositor (dwl, cage...) buscamo la llamada a wlr_output_set_mode(), y la quitamos.
+--En nuestro compositor (dwl, cage...) buscamos la llamada a wlr_output_set_mode(), y la quitamos.
 
 --Configuramos, compilamos e instalamos:
 
@@ -219,6 +198,7 @@ sudo ninja install
 -Instalar WESTON en sí:
 Bajamos los últimos sources estables de:
 https://gitlab.freedesktop.org/wayland/weston/-/releases
+
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
@@ -976,3 +956,16 @@ bindsym $mod+f4 kill
 -Para cerrar SWAY con CTRL+ALT+BACKSPACE, sin confirmación ni chorradas:
 # Exit sway (logs you out of your Wayland session)
 bindsym $mod+Ctrl+backspace exec swaymsg exit
+
+INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
+==========================================
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/labwc/labwc.git
+
+Configuramos con:
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release -Dxwayland=disabled ..
