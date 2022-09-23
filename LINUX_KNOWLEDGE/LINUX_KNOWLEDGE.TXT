@@ -3836,7 +3836,7 @@ Y configuramos desde un directorio de build que creamos nosotros:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-cmake .. -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
+cmake .. -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
 
 Y compilamos con make -j4, e instalamos con:
 sudo make install
@@ -4613,7 +4613,7 @@ Editamos ese conquer.ini y ponemos Scaler a "linear", etc.
 
 Instalamos unas dependencias previas...
 
-sudo apt install libvorbis-dev libogg-dev libtheora-dev
+sudo apt-get install libvorbis-dev libogg-dev libtheora-dev --no-install-recommends
 
 --COMPILANDO EL SONIC CD--
 
@@ -6584,8 +6584,8 @@ Creamos ~/heroes2
 Copiamos el ejecutable a ~/heroes2
 Copiamos el directorio files que viene con los sources a ~/heroes2, quedando ~/heroes2/files
 Copiamos el archivo heroes2.key que viene con los sources a ~/heroes2
-Creamos ~/heroes2/data y metemos ahí el contenido de DATA de una instalación del Heroes 2 de GOG
-Creamos ~/heroes2/maps y metemos ahí el contenido de MAPS de una instalación del Heroes 2 de GOG
+Copiamos los directorios DATA, MAPS, y ANIM de una instalación del Heroes 2 a ~/heroes2
+(Los nombres de los directorios pueden estar en mayusculas o en minusculas, da igual eso).
 Copiamos los .ogg que vienen en MUSIC de una instalación del Heroes 2 de GOG a ~/heroes2/music (los de GOG vienen desordenados,
 ya que van de 01 a 42 y deberían ir de 02 a 43! Es sólo moverlas una posición adelante todas al renombrarlas, que tienes que renombrarlas a Track02.ogg, Track03.ogg, etc).
 (No hace falta que les cambies el nombre ni nada, con que lleven en el nombre el número de pista, le vale).

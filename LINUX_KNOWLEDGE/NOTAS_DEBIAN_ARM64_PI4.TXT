@@ -745,11 +745,12 @@ SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast
 
 Para SDL2_Mixer:
 -Instalar antes estas dependencias: apt-get install libmpg123-dev libogg-dev libflac-dev libmodplug-dev
+-Instalar antes fluidsynth (tienes instrucciones en LINUX_KNOWLEDGE para instalarlas manualmente sin depender de X11)
 -Nos bajamos la última versión estable de: https://github.com/libsdl-org/SDL_mixer/releases 
 -Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-./configure --disable-music-midi-timidity --disable-music-midi-fluidsynth
+./configure --disable-music-midi-timidity
 
 Para SDL2_Image:
 -Nos bajamos la última versión estable de: https://github.com/libsdl-org/SDL_image/releases 
