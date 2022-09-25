@@ -3433,9 +3433,14 @@ sudo apt-get install autoconf
 Clonamos su repo:
 git clone --depth 1 https://github.com/schismtracker/schismtracker.git
 
-Editamos schism/audio_playback.c y, en la función _audio_open(), comentamos la sección que empieza con:
-"if ((driver_name = SDL_GetCurrentAudioDriver()) != NULL && !strcmp(driver_name, "alsa"))"
-(NO queremos que se fuerce el dispositivo "hw" si el driver es "alsa", es estúpido hacer eso y no funciona)
+Editamos schism/audio_playback.c y, en la función _audio_open(), comentamos:
+-ESTE "IF":
+if (!(getenv("SDL_AUDIODRIVER") || getenv("AUDIODEV") || getenv("SDL_PATH_DSP"))
+                 && (cfg_audio_driver[0] == '\0'))
+                 _audio_set_envvars(driver_spec);
+
+-ESTE "IF" Y TODO LO QUE HAY DENTRO:
+if ((driver_name = SDL_GetCurrentAudioDriver()) != NULL && !strcmp(driver_name, "alsa"))
 
 Editamos schism/video.c y la llamada a SDL_RenderSetLogicalSize() la dejamos así:
 SDL_RenderSetLogicalSize(video.renderer, 4, 3);
@@ -3516,6 +3521,7 @@ justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
 cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
+(SI DA ERRORES DE LINKADO CON SDL2_MIXER Y SDL2_NET, puedes probar a pasarle -DINTERNAL_SDL_MIXER=ON -DINTERNAL_SDL_NET=ON)
 (PARA compilar en modo verbose, haz make VERBOSE=1)
 
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
@@ -5989,6 +5995,12 @@ El V=1 es para ver las líneas de compilación y comprobar que nuestros flags se
 Si quieres compilar en modo debug, haz:
 make -j6 DEBUG=1 V=1
 y se le pasará -O0 -g al compilador, y nada de -O2 ni -O2
+
+COMPILAR CUALQUIER CORE DE LIBRETRO
+===================================
+
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
 
 COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
 ===========================================================================
