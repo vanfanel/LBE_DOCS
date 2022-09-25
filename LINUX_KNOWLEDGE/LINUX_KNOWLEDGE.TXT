@@ -6147,6 +6147,32 @@ https://www.raspberrypi.org/documentation/linux/kernel/building.md
 PERO ESO SÍ: RECOMIENDO COPIAR EL NUEVO KERNEL COMO "kernel7_rt.img" Y ARRANCAR OPCIONALMENTE DESDE ÉL PONIENDO
 kernel=kernel-myconfig.img EN CONFIG.TXT, POR SI NO ARRANCA NUESTRO KERNEL RT.
 
+KMSCON, EL EMULADOR DE TERMINAL PARA CONSOLA QUE USA KMS/DRM
+============================================================
+
+Instalamos una dependencia previa, libtsm (Debian no tiene ni tendra la version necesaria, ya que tiramos de forks para todo lo de kmscon):
+
+-Nos bajamos la ultima version estable de: https://github.com/Aetf/libtsm/releases
+
+-Configuramos con:
+
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+
+VAMOS CON KMSCON EN SI:
+
+-Clonamos su repo:
+git clone --depth 1 https://github.com/Aetf/kmscon.git
+
+-Configuramos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson .. -Dbuildtype=release -Dtests=false -Ddocs=disabled -Dvideo_fbdev=disabled
+
 COMPILAR EL KERNEL CON FULL PREEMPTION Y BFS PARA LA RASPBERRY PI
 =================================================================
 
