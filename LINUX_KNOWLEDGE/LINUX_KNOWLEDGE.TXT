@@ -312,7 +312,7 @@ Para Metroid am2r, tenemos que bajarnos la versión 1.1 y parchearla a la últim
 y lo guardamos dentro del directorio AM2R-Autopatcher-Linux como AM2R-Autopatcher-Linux/AM2R_11.zip
 (OJO: Bájalo por Torrent, ya sabes que todo lo de Archive se corta si te bajas el .zip directamente)
 
--Instamos el parcheador xdelta: sudo apt install python xdelta3
+-Instalamos el parcheador xdelta: sudo apt install python xdelta3
 
 -Bajamos la última versión del parche de DISCORD:
 wget -O AM2R-Autopatcher-Linux/data/droid.xdelta https://cdn.discordapp.com/attachments/829714741471215667/874800076017504326/droid.xdelta
@@ -6152,7 +6152,7 @@ KMSCON, EL EMULADOR DE TERMINAL PARA CONSOLA QUE USA KMS/DRM
 
 Instalamos una dependencia previa, libtsm (Debian no tiene ni tendra la version necesaria, ya que tiramos de forks para todo lo de kmscon):
 
--Nos bajamos la ultima version estable de: https://github.com/Aetf/libtsm/releases
+-Clonamos su repo: git clone --depth 1 https://github.com/Aetf/libtsm.git
 
 -Configuramos con:
 
