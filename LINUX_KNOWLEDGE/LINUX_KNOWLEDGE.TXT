@@ -6164,8 +6164,6 @@ VAMOS CON KMSCON EN SI:
 -Clonamos su repo:
 git clone --depth 1 https://github.com/Aetf/kmscon.git
 
--Editamos src/kmscon_terminal.c y comentamos la llamada a tsm_vte_set_backspace_sends_delete()
-
 -Configuramos con:
 
 mkdir b4
