@@ -117,13 +117,14 @@ cd b4
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled \
--Dbackends=drm,libinput -Drenderers=gles2,vulkan -Dxcb-errors=disabled ..
+-Dbackends=drm,libinput -Drenderers=gles2 -Dxcb-errors=disabled ..
 
 ninja -j4
 sudo ninja install
 
 RECUERDA que WLROORS soporta renderizado con Vulkan, por lo que los renderers basados en WLROOTS (como DWL, SWAY, WAYBOX...) pueden usarlo.
-Para ello, lanzaríamos el compositor que queramos con:
+Para ello tendriamos que pasar a meson: -Drenderers=gles2,vulkan
+Y anzaríamos el compositor que queramos con:
 WLR_RENDERER=vulkan <compositor>
 (OJO!! WESTON NO USA WLROOTS!!)
 
