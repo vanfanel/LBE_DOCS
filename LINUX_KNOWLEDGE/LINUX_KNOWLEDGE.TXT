@@ -3434,9 +3434,10 @@ Clonamos su repo:
 git clone --depth 1 https://github.com/schismtracker/schismtracker.git
 
 Editamos schism/video.c y la llamada a SDL_RenderSetLogicalSize() la dejamos así:
-SDL_RenderSetLogicalSize(video.renderer, 4, 3);
+SDL_RenderSetLogicalSize(video.renderer,
+						 NATIVE_SCREEN_WIDTH * 5, NATIVE_SCREEN_HEIGHT * 6); // 4:3
 
-Ejecutamos: 
+Ejecutamos:
 autoreconf -vif
 
 Ahora ya configuramos con:
@@ -3444,14 +3445,16 @@ Ahora ya configuramos con:
 CFLAGS="-O2 -march=native -mtune=native" ./configure --without-x
 
 En la Raspberry Pi, ejecutamos con:
-SDL_AUDIODRIVER="alsa" AUDIODEV="sysdefault" ./schismtracker
+AUDIODEV="sysdefault" ./schismtracker
 (En otros sistemas, lo suyo es pasar AUDIODEV="hw" y asi se consiguen tamaños de buffer menores, pero en la Raspberry Pi
-si usas vc4hdmi0, no se puede usar directamente el dispositivo "hw" porque no soporta mas que un formato de audio raro, como sabes).
+si usas la CARD vc4hdmi0, no se puede usar directamente el DEVICE llamado "hw" porque no soporta mas que un formato de audio raro,
+y por eso falla con un "unsopported audio format" si lo intentas).
+(Ya sabes que puedes ver los dispositivos con "aplay -L" y probarlos con "speaker-test -D<dispositivo>").
 
 Para configurar el vídeo, editamos ~/.schism/config, y ponemos fullscreen e interpolation a 1.
 También podemos poner classic_mode a 1 para que las pantallas sean las del Impulse Tracker original.
 
-////BLOQUE OPCIONAL (innecesario): Si no queremos tener que lanzar el Schismtracker con las variables de entorno SDL_ADIODRIVER y AUDIODEV:
+////BLOQUE OPCIONAL (innecesario): Si no queremos tener que lanzar el Schismtracker con la variable de entorno AUDIODEV:
 
 Editamos schism/audio_playback.c y, en la función _audio_open(), comentamos:
 -ESTE "IF" Y LO QUE HAY DENTRO:
@@ -3461,6 +3464,11 @@ if (!(getenv("SDL_AUDIODRIVER") || getenv("AUDIODEV") || getenv("SDL_PATH_DSP"))
 
 -ESTE "IF" Y TODO LO QUE HAY DENTRO:
 if ((driver_name = SDL_GetCurrentAudioDriver()) != NULL && !strcmp(driver_name, "alsa"))
+
+-POR SI ALGUNA VEZ LO QUIERES MODIFICAR, NECESITAS ENTENDER LO QUE PASA: La variable de entorno AUDIODEV es leida por el backend ALSA de SDL2,
+y Schismtracker lo que hace es exportar AUDIODEV="hw" cuando SDL_AUDIODRIVER es "alsa". Como el dispositivo "hw" no se puede usar directamente
+en la Raspberry cuando usas la tarjeta vc4hdmi porque solo soporta un formato de audio raro, falla.
+Por eso se arregla cuando exportamos AUDIODEV="sysdefault": porque usamos el backend "alsa" de las SDL2 y concretamente el dispositivo "sysdefault".
 
 /////FIN BLOQUE OPCIONAL
 
