@@ -3433,15 +3433,6 @@ sudo apt-get install autoconf
 Clonamos su repo:
 git clone --depth 1 https://github.com/schismtracker/schismtracker.git
 
-Editamos schism/audio_playback.c y, en la función _audio_open(), comentamos:
--ESTE "IF":
-if (!(getenv("SDL_AUDIODRIVER") || getenv("AUDIODEV") || getenv("SDL_PATH_DSP"))
-                 && (cfg_audio_driver[0] == '\0'))
-                 _audio_set_envvars(driver_spec);
-
--ESTE "IF" Y TODO LO QUE HAY DENTRO:
-if ((driver_name = SDL_GetCurrentAudioDriver()) != NULL && !strcmp(driver_name, "alsa"))
-
 Editamos schism/video.c y la llamada a SDL_RenderSetLogicalSize() la dejamos así:
 SDL_RenderSetLogicalSize(video.renderer, 4, 3);
 
@@ -3452,10 +3443,26 @@ Ahora ya configuramos con:
 
 CFLAGS="-O2 -march=native -mtune=native" ./configure --without-x
 
-Compilamos y listo!
+En la Raspberry Pi, ejecutamos con:
+SDL_AUDIODRIVER="alsa" AUDIODEV="sysdefault" ./schismtracker
+(En otros sistemas, lo suyo es pasar AUDIODEV="hw" y asi se consiguen tamaños de buffer menores, pero en la Raspberry Pi
+si usas vc4hdmi0, no se puede usar directamente el dispositivo "hw" porque no soporta mas que un formato de audio raro, como sabes).
 
 Para configurar el vídeo, editamos ~/.schism/config, y ponemos fullscreen e interpolation a 1.
 También podemos poner classic_mode a 1 para que las pantallas sean las del Impulse Tracker original.
+
+////BLOQUE OPCIONAL (innecesario): Si no queremos tener que lanzar el Schismtracker con las variables de entorno SDL_ADIODRIVER y AUDIODEV:
+
+Editamos schism/audio_playback.c y, en la función _audio_open(), comentamos:
+-ESTE "IF" Y LO QUE HAY DENTRO:
+if (!(getenv("SDL_AUDIODRIVER") || getenv("AUDIODEV") || getenv("SDL_PATH_DSP"))
+                 && (cfg_audio_driver[0] == '\0'))
+                 _audio_set_envvars(driver_spec);
+
+-ESTE "IF" Y TODO LO QUE HAY DENTRO:
+if ((driver_name = SDL_GetCurrentAudioDriver()) != NULL && !strcmp(driver_name, "alsa"))
+
+/////FIN BLOQUE OPCIONAL
 
 ************GISH en GNU/Linux**************************************************************************************************************
 
