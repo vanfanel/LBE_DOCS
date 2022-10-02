@@ -616,20 +616,12 @@ git clone --depth 1 https://github.com/djpohly/dwl.git
 (OJO, para compilarlo contra la última versión de los sources de WLROOTS en lugar de la versión estable,
 tendríamos que clonar el branch "wlroots-next"). 
 
-Editamos dwl.c y comentamos las llamadas a wlr_output_set_mode() y wlr_output_set_custom_mode(), etc
-Podemos quitar todo ese bloque, vamos.
+Editamos dwl.c y comentamos la llamada a wlr_output_set_mode() en createmon()
 
 Compilamos con:
 CFLAGS="-O2 -march=native -mtune=native" \
 CXXFLAGS="-O2 -march=native -mtune=native" \
 make -j4
-
-PARA EJECUTARLO SIN SYSTEMD:
-Necesitamos seatd instalado (Se explica en este mismo documento más arriba).
-Lanzaríamos seatd como daemon y justo a continuación dlw, así:
-
-seatd -u root -l silent &
-dwl
 
 Se sale de dwl con ALT+SHIFT+Q
 
@@ -637,12 +629,15 @@ Si al compilar da un error de que no encuentra "wlr/backend/libinput.h" es porqu
 a -Dbackends. Deberías pasarle tanto "drm" como "libinput", así: -Dbackends=drm,libinput.
 Lo tienes en las instrucciones de compilación de WLROOTS.
 
-Para que no te cambie la resolución a la resolución preferida del monitor, usa el parche monitor-config de aquí:
-https://github.com/djpohly/dwl/wiki/Patches
-Te lo bajas y haces: patch -p1 < monfig.patch
-(Si falla, entra en el discord de DWL y díselo a Palanix, que es el encargao).
-
 Para quitar el borde rojo cuando la ventana está activa, edita config.h y en "focuscolor" quita la componente roja.
+
+////BLOQUE OPCIONAL PARA EJECUTARLO SIN SYSTEMD:
+Necesitamos seatd instalado (Se explica en este mismo documento más arriba).
+Lanzaríamos seatd como daemon y justo a continuación dlw, así:
+
+seatd -u root -l silent &
+dwl
+////
 
 TINYWL+, UN COMPOSITOR BASADO EN TINYWL PERO CON MÁS FUNCIONES
 ==============================================================
