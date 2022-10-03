@@ -607,14 +607,19 @@ Empezamos con una dependencia, libfm:
 Ahora vamos con PCMANFM en sí:
 -Bajamos los últimos sources estables de: https://github.com/lxde/pcmanfm/releases
 
-DWL, EL COMPOSITOR DE ESCRITORIO BASADO EN WLROOTS MÁS BÁSICO QUE HAY
-=====================================================================
+DWL, EL COMPOSITOR DE ESCRITORIO BASADO EN WLROOTS MÁS BÁSICO QUE HAY (DOCS: "EVERY FRAME IS PERFECT")
+======================================================================================================
 
 Clonamos su repo:
 
 git clone --depth 1 https://github.com/djpohly/dwl.git
 (OJO, para compilarlo contra la última versión de los sources de WLROOTS en lugar de la versión estable,
 tendríamos que clonar el branch "wlroots-next"). 
+
+Aplicamos este parche para que el confinamiento del puntero funcione (para no tener puntero pegajoso en los lados
+en Scummvm a pantalla completa):
+https://github.com/djpohly/dwl/wiki/pointerConstraints
+patch -p1 < <NOMBRE_PARCHE>
 
 Editamos dwl.c y comentamos la llamada a wlr_output_set_mode() en createmon()
 
@@ -966,6 +971,9 @@ bindsym $mod+Ctrl+backspace exec swaymsg exit
 
 INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
 ==========================================
+
+Instalamos dependencias previas:
+apt-get install libxml2-dev --no-install-recommends
 
 Clonamos su repo:
 
