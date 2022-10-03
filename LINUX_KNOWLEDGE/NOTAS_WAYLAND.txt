@@ -969,6 +969,16 @@ bindsym $mod+f4 kill
 # Exit sway (logs you out of your Wayland session)
 bindsym $mod+Ctrl+backspace exec swaymsg exit
 
+-Para que las ventanas sean "floating windows" en lugar de tiling:
+
+for_window [app_id=".*"] floating enable
+for_window [app_id=".*"] border normal
+
+-Para implementar un ALT+TAB que cambia a la ventana de la izquierda, y con ALT+SHIFT+TAB a la ventana de la derecha, 
+añade en la seccion Key Bindings:
+bindsym $mod+Tab focus left
+bindsym $mod+Shift+Tab focus right
+
 INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
 ==========================================
 
