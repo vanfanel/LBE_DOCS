@@ -969,7 +969,10 @@ bindsym $mod+f4 kill
 # Exit sway (logs you out of your Wayland session)
 bindsym $mod+Ctrl+backspace exec swaymsg exit
 
--Para que las ventanas sean "floating windows" en lugar de tiling:
+-Para lanzar el terminal "foot" al arrancar Sway:
+exec swaymsg "workspace 1; exec foot;"
+
+-Para que las ventanas sean "floating windows" en lugar de tiling (NO recomendado):
 
 for_window [app_id=".*"] floating enable
 for_window [app_id=".*"] border normal
