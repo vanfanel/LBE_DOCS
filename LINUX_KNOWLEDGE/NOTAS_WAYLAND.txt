@@ -984,7 +984,7 @@ font monospace 16
 
 -Para tener una fuente chula en vez de la monospace por defecto:
 	-Instalamos: apt-get install fonts-jetbrains-mono
-	-En el config de sway: font JetBrainsMono 16
+	-En el config de sway: font JetBrainsMono 14
 	-En el config de foot: font=JetBrainsMono:size=10
 	
 -Para evitar que las ventanas maximizadas tengan bordes, que sobre todo los verticales quedan muy feos (se puede poner
@@ -1040,8 +1040,9 @@ systemctl enable sway.service
 Desactivamos el autologin en TTY con:
 systemctl disable getty@tty1
 
-Añadimos al PATH el diretorio actual, para lo cual añadimos en ~/.bashrc:
+Para añadir al PATH el diretorio actual y que no nos muestre todo el rato el usuario y el hostname, añadimos en ~/.bashrc:
 PATH=$PATH:.
+PS1="\W "
 
 INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
 ==========================================
