@@ -6272,7 +6272,7 @@ DEVILUTIONX, Diablo en Linux
 ============================
 
 Dependencias previas:
-sudo apt-get install libsodium-dev libbz2-dev --no-install-recommends
+sudo apt-get install libsodium-dev libbz2-dev smpq --no-install-recommends
 
 Bajamos la última estable de:
 https://github.com/diasurgical/devilutionX/releases
@@ -6284,9 +6284,10 @@ cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DCMAKE_BUILD_TYPE=Release -DDEBUG=OFF \
 
 Compilamos y metemos en el directorio ~/diablo:
 -El ejecutable "devilutionx"
--La versión actual del fichero "devilutionx.mpq" que se descarga de aquí:
-https://github.com/diasurgical/devilutionx-assets/releases
-(También se genera un "devilutionx.mpq" con el proceso de compilación si tienes smpq instalado).
+-El directorio "assets" que se nos crea en el directorio de compilacion.
+Como curiosidad, en su lugar podriamos copiar la versión actual del fichero "devilutionx.mpq" que se genera
+ con el proceso de compilación si tienes instalado smpq.
+ Es una cosa o la otra: o el directorio assets o el "devilutionx.mpq", yo para no instalar cosas prefiero meter el directorio "assets" y fuera.
 -El fichero de los datos del juego, que se llama "diabdat.mpq" y que tienes que conseguir por tu cuenta.
 
 La primera vez que ejecutemos el juego, se creará el fichero de configuración en ~/.local/share/diasurgical/devilution/diablo.ini
@@ -8101,7 +8102,7 @@ Y si hay algo nuevo, pues se actualizará. Más fácil imposible.
 Poner RETROARCH en el arranque de una manera moderna, basado en systemd
 =======================================================================
 
-Creamos el fichero del servicio en etc/systemd/system/retroarch.service, con este contenido:
+Creamos el fichero del servicio en /etc/systemd/system/retroarch.service, con este contenido:
 
 [Unit]
 Description=Systemd service and user to run Retroarch in stand-alone mode
@@ -8112,7 +8113,7 @@ Group=root
 PAMName=login
 WorkingDirectory=/root/retro
 ExecStart=
-ExecStart=-/usr/bin/retroarch
+ExecStart=-/usr/local/bin/retroarch
 Restart=always
 
 [Install]

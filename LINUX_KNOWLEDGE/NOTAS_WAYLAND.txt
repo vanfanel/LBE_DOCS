@@ -1003,6 +1003,37 @@ añade en la seccion Key Bindings:
 bindsym $mod+Tab focus left
 bindsym $mod+Shift+Tab focus right
 
+LANZAR SWAY COMO SERVICIO DE SYSTEMD
+====================================
+
+Creamos /etc/systemd/system/sway.service con el contenido:
+
+#############
+
+[Unit]
+Description=sway - User service
+
+[Service]
+User=root
+Group=root
+PAMName=login
+WorkingDirectory=%h
+ExecStart=
+ExecStart=-/usr/local/bin/sway
+Restart=always
+
+[Install]
+WantedBy=default.target
+
+#############
+*NOTA: El WorkingDirectory puesto a "%h" significa usar nuestro $HOME, que sera /root si no eres otro usario. 
+
+Ahora lo activamos con:
+systemctl enable sway.service
+
+Y desactivamos el autologin en TTY con:
+systemctl disable getty@tty1
+
 INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
 ==========================================
 
