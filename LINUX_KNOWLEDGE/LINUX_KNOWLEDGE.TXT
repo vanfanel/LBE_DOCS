@@ -3542,7 +3542,6 @@ justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
 
 cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
-(SI DA ERRORES DE LINKADO CON SDL2_MIXER Y SDL2_NET, puedes probar a pasarle -DINTERNAL_SDL_MIXER=ON -DINTERNAL_SDL_NET=ON)
 (PARA compilar en modo verbose, haz make VERBOSE=1)
 
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
@@ -6067,7 +6066,6 @@ echo "(O,O)   Service management is done via SystemD."
 echo "/)_)    This computer's local IP is $MY_IP"
 echo " ¨ ¨    Have fun!"  
 echo "     "
-
 
 ERROR DE LANGUAGE DE PERL al acceder por ssh a una máquina
 ==========================================================
