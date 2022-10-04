@@ -700,10 +700,16 @@ Creamos ~/config/foot/foot.ini con este contenido:
 
 shell=bash
 term=xterm-256color
-font=monospace:size=24
+font=monospace:size=12
+title=Command Console
 
 #initial-window-size-chars=90x20
-initial-window-mode=fullscreen
+#initial-window-mode=fullscreen
+initial-window-mode=maximized
+
+-Para tener una fuente chula en vez de la monospace por defecto:
+	-Instalamos: apt-get install fonts-jetbrains-mono
+	-En el foot.ini: font=JetBrainsMono:size=10
 
 KITTY, UN EMULADOR DE TERMINAL PARA WAYLAND
 -------------------------------------------
@@ -940,7 +946,8 @@ git clone --depth 1 https://github.com/swaywm/sway.git
 -Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release ..
+meson -Dbuildtype=release -Dswaybar=false -Dswaynag=false -Dgdk-pixbuf=disabled \
+-Dfish-completions=false -Dzsh-completions=false -Ddefault-wallpaper=false -Dman-pages=disabled ..
 
 Copiamos el fichero "config" que viene con los sources a ~/.config/sway/config, y hacemos ahí los cambios que queramos, como por ejemplo:
 (Vamos buscando los comentarios y dejamos debajo los valores que queramos)
@@ -971,6 +978,20 @@ bindsym $mod+Ctrl+backspace exec swaymsg exit
 
 -Para lanzar el terminal "foot" al arrancar Sway:
 exec swaymsg "workspace 1; exec foot;"
+
+-Para escalar la fuente monospace por defecto:
+font monospace 16
+
+-Para tener una fuente chula en vez de la monospace por defecto:
+	-Instalamos: apt-get install fonts-jetbrains-mono
+	-En el config de sway: font JetBrainsMono 16
+	-En el config de foot: font=JetBrainsMono:size=10
+
+-Para que no haga eso tan molesto de que cada vez que pones el raton en una ventana, esa ventana pilla el foco:
+focus_follows_mouse no
+
+-Para que las ventanas no tengan borde ni nombre ni nada:
+default_border none
 
 -Para que las ventanas sean "floating windows" en lugar de tiling (NO recomendado):
 
