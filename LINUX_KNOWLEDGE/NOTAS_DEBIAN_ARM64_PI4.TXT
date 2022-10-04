@@ -336,8 +336,7 @@ sudo dpkg-reconfigure keyboard-configuration
 Eso sí, asegúrate antes de que el comando "locale" nos dice que está todo a en_US.UTF-8.
 
 -Vamos quitando los servicios con:
-sudo systemctl mask <sevcio> 
--Al final, de acuerdo con systemd-analyze blame, sólo quedan iniciados estos:
+sudo systemctl mask <sevcio>
 
 -Para que funcione el teclado, ratón y joystick con las SDL2, creamos /etc/udev/rules.d/99-evdev.rules con el contenido:
 KERNEL=="event*", NAME="input/%k", MODE="666"
@@ -477,28 +476,16 @@ ExecStart=-/usr/bin/amixer set PCM 230 -q
 		options vc4 index=1
 	 De esta manera, el servicio de restauración de ALSA (alsa-restore.service) no debería fallar nunca, porque la primera tarjeta es siempre la hifiberry y aplicaría los
 	 valores guardados correctos para cada tarjeta en el arranque, ya que el ordering de las tarjetas no cambiaría nunca.
-
-
--Al final, sólo necesitas estos servicios de los que salen con systemd-analyze blame:
-pi@raspberrypi:~ $ sudo systemd-analyze blame
-          1.365s dev-mmcblk0p02.device
-           544ms systemd-udev-trigger.service
-           466ms systemd-remount-fs.service
-           450ms keyboard-setup.service
-           309ms boot.mount
-           196ms systemd-fsck@dev-disk-by\x2dpartuuid-521a4163\x2d0a.service
-           190ms alsa-restore.service
-           137ms systemd-udevd.service
-           119ms fake-hwclock.service
-            79ms dropbear.service
-            26ms console-setup.service
-            17ms rc-local.service
             
 Recuerda mirar las mierdas que lanza systemd en el arranque antes de ocultarlo, y mira los targets con
 sudo systemctl | grep <loquesea>
 Luego los vas quitando, al igual que los services, con systemctl mask <monbre service o target>
 Si metes la pata y el sistema no arranca más, elimina cosas de /etc/systemd/system, que es donde pone los links a /dev/null correspondientes a los services o targets que hayas eliminado
 sin deber hacerlo...
+
+-Para conectarte automaticamente a una WIFI, lo mejor es tener activado el servicio NetworkManager y meter la red/contraseña en raspi-config,
+en la seccion system->wireless lan.
+Las redes conocidas quedan guardadas en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
 
 -Si PING te da el error "ping: socket: Address family not supported by protocol", simplemente haz:
 sudo chmod 4755 /bin/ping

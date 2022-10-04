@@ -43,6 +43,12 @@ HDMI_DELAY=0
 Más info sobre parámetros del bootloader aquí:
 https://gitee.com/jikexianfeng/documentation/blob/master/hardware/raspberrypi/bcm2711_bootloader_config.md#/jikexianfeng/documentation/blob/master/hardware/raspberrypi/boot_diagnostics.md
 
+******Conectar a una red WIFI desde Raspberry Pi OS con SystemD (forma recomendada)************************************
+
+-Para conectarte automaticamente a una WIFI, lo mejor es tener activado el servicio NetworkManager y meter la red/contraseña en raspi-config,
+en la seccion system->wireless lan.
+Las redes conocidas quedan guardadas en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
+
 ******Conectar a una red WIFI desde la Raspberry PI usando el WIFI interno*********************************************
 
 PUEDE QUE NECESITES BAJAR MANUALMENTE EL FIRMWARE DEL WIFI SI AL HACER MODPROBE AL brcmfmac NO TE CREA EL INTERFACE WLAN0.
