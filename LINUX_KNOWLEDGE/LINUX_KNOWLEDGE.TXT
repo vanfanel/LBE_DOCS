@@ -3532,8 +3532,8 @@ OJO: Es el contenido de "files" lo que tenemos que copiar, no el directorio.
 
 ************ECWOLF, el mejor port del Wolfenstein 3D, en la Pi*****************************************************************************
 
-Pillamos la última versión de su repo:
-https://bitbucket.org/ecwolf/ecwolf/downloads/
+Clonamos su repo:
+git clone --depth 1 https://bitbucket.org/ecwolf/ecwolf.git
 
 Puedes añadir en src/sdlvideo.cpp el típico
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");

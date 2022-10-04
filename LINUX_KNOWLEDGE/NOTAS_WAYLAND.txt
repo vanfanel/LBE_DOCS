@@ -986,6 +986,10 @@ font monospace 16
 	-Instalamos: apt-get install fonts-jetbrains-mono
 	-En el config de sway: font JetBrainsMono 16
 	-En el config de foot: font=JetBrainsMono:size=10
+	
+-Para evitar que las ventanas maximizadas tengan bordes, que sobre todo los verticales quedan muy feos (se puede poner
+vertical, horizontal o both):
+hide_edge_borders both
 
 -Para que no haga eso tan molesto de que cada vez que pones el raton en una ventana, esa ventana pilla el foco:
 focus_follows_mouse no
@@ -1002,6 +1006,8 @@ for_window [app_id=".*"] border normal
 añade en la seccion Key Bindings:
 bindsym $mod+Tab focus left
 bindsym $mod+Shift+Tab focus right
+
+-PARA MAS OPCIONES: https://manpages.ubuntu.com/manpages/focal/man5/sway.5.html
 
 LANZAR SWAY COMO SERVICIO DE SYSTEMD
 ====================================
