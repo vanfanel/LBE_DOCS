@@ -1040,9 +1040,25 @@ systemctl enable sway.service
 Desactivamos el autologin en TTY con:
 systemctl disable getty@tty1
 
-Para añadir al PATH el diretorio actual y que no nos muestre todo el rato el usuario y el hostname, añadimos en ~/.bashrc:
+Ahora ya configuramos el BASH.
+Al principio del todo de ~/.bashrc ponemos esto para evitar problemas con el saludo y el scp:
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+Para añadir al PATH el diretorio actual, que no nos muestre todo el rato el usuario y el hostname,
+y que nos muestre un mensaje de bienvenida y la IP añadimos en ~/.bashrc:
 PATH=$PATH:.
 PS1="\W "
+MY_IP=$(ip -4 addr show wlan0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+
+echo " ^_^    Welcome to Debian 11 GNU/Linux aarch64."
+echo "(O,O)   Service management is done via SystemD."
+echo "/)_)    This computer's local IP is $MY_IP"
+echo " ¨ ¨    Have fun!"  
+echo "     "
 
 INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
 ==========================================
