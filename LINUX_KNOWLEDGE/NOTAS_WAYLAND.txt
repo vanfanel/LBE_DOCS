@@ -1031,8 +1031,11 @@ WantedBy=default.target
 Ahora lo activamos con:
 systemctl enable sway.service
 
-Y desactivamos el autologin en TTY con:
+Desactivamos el autologin en TTY con:
 systemctl disable getty@tty1
+
+Añadimos al PATH el diretorio actual, para lo cual añadimos en ~/.bashrc:
+PATH=$PATH:.
 
 INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
 ==========================================
