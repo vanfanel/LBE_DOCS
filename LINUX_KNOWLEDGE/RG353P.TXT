@@ -1,0 +1,26 @@
+CANAL Y PERSONA A PREGUNTAR POR PROBLEMAS DE REFRESCO DE PANTALLA
+=================================================================
+
+Servidor Discord: JELOS
+Canal: Mainline y preguntar a macroalpha, o canal general y preguntar a fewt para temas de compilacion del kernel de JELOS.
+
+Compilar el kernel de JELOS
+===========================
+
+Instalamos docker:
+
+sudo apt  install docker.io
+(Hay otras versiones que se instalan con SNAP y tal, pero esta no usa SNAP asi que es la que instalo).
+
+Clonamos el repo de JELOS distribution:
+
+git clone https://github.com/JustEnoughLinuxOS/distribution.git
+
+Nos bajamos la imagen de docker para compilarlo desde dentro de ese sistema:
+
+make docker-image-pull
+
+Compilamos:
+
+make docker-shell
+PROJECT=Rockchip DEVICE=RG353P ARCH=aarch64 ./scripts/build linux
