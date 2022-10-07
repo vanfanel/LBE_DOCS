@@ -5004,6 +5004,8 @@ así que irá a unos 30FPS suaves que no está mal).
 -Editamos src/keyboard.c y comentamos entera la sección que dice "Show system mouse pointer if outside screen",
 que es simplemente un SDL_ShowCursor() que sobra totalmente.
 
+-Editamos src/opentyr.c y comentamos la llamada a intro_logos()
+
 Editamos Makefile y añadimos al lado de -O2 los flags:
 -march=native -mtune=native
 
