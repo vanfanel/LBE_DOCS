@@ -2593,7 +2593,10 @@ sudo /usr/bin/ssh-keygen -A
 	-Metemos ambos ficheros esto:
 		[Service]
 		ExecStart=
-		ExecStart=-/sbin/agetty --autologin pi --noclear --skip-login %I 38400 linux
+		ExecStart=-/sbin/agetty --autologin root --noclear --skip-login %I 38400 linux
+		Restart=always
+		[Install]
+		WantedBy=multi-user.target
 	-Salvamos, recargamos la configuración de los daemons:
 		systemctl daemon-reload
 	-y reiniciamos

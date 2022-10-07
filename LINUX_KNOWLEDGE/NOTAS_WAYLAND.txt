@@ -1029,13 +1029,29 @@ ExecStart=-/usr/local/bin/sway
 Restart=always
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical.target
 
 #############
 *NOTA: El WorkingDirectory puesto a "%h" significa usar nuestro $HOME, que sera /root si no eres otro usario. 
 
-Ahora lo activamos con:
+NOTAS PREVIAS
+-Podemos ver los targets con: systemctl list-units --type target
+-Podemos ver los targets que hay en el sistema, aunque no esten activos, mirando en /lib/systemd/system
+
+Establecemos graphical.target como target por defecto:
+systemctl set-default graphical.target
+Podemos comprobarlo con:
+systemctl get-default
+(Si alguna vez quisieramos volver a un modo de texto, estableceriamos el target multi-user como target por defecto:
+systemctl set-default multi-user.target
+Y NO HARIA FALTA VOLVER A DESACTIVAR EL SERVICIO SWAY, YA QUE NOS QUEDAMOS EN EL TARGET MULTI-USER Y DE ESE MODO
+NO SE CARGA EL SERVICIO SWAY.)
+
+Ahora activamos el servicio SWAY con:
 systemctl enable sway.service
+(Recuerda que lo que hace esto es crear el symlink /etc/systemd/system/graphical.target.wants/sway.service apuntando
+a /etc/systemd/system/sway.service, que es logico porque el target graphical.target necesita sway.target tal como hemos
+especificado en la UNIT de sway). 
 
 Desactivamos el autologin en TTY con:
 systemctl disable getty@tty1
