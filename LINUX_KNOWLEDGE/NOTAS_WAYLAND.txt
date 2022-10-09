@@ -1033,9 +1033,14 @@ WantedBy=graphical.target
 
 #############
 *NOTA: El WorkingDirectory puesto a "%h" significa usar nuestro $HOME, que sera /root si no eres otro usario. 
-
-NOTAS PREVIAS
--Podemos ver los targets con: systemctl list-units --type target
+*NOTA: Si tuvieramos que añadir mas servicios, irian con:
+[Install]
+WantedBy=default.target
+...en vez de graphical.target, porque lo que nos interesa es que esos servicios se lancen sea cual sea el target
+que tengamos puesto como default, NO nos interesa que se lancen solo cuando el target puesto como default sea graphical.
+El caso de sway es especial, porque solo se tiene que lanzar cuando el target sea graphical).
+*NOTA
+-Podemos ver los targets activos con: systemctl list-units --type target
 -Podemos ver los targets que hay en el sistema, aunque no esten activos, mirando en /lib/systemd/system
 
 Establecemos graphical.target como target por defecto:
