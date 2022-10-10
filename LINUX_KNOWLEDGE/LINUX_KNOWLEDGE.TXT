@@ -4716,6 +4716,51 @@ Tienes todo preparado en el disco duro de backup.
 Edita settings.ini y pon VSync y Fullscreen a true, y "UseHQModes" a false.
 Si los colores ROJO y AZUL se ven invertidos en los vídeos, desactiva "EnhancedScaling" en settings.ini
 
+*************SonicMania Decomp en la Raspberry Pi*************************************************************************
+
+Clonamos su repositorio:
+git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-Decompilation.git
+cd Sonic-Mania-Decompilation
+git submodule update --init --recursive
+cd dependencies/RSDKv5/
+
+---METODO 1: CON SDL2 (SIN SHADERS)
+
+Compilamos con:
+CXXFLAGS="-O2 -march=native -mtune=native -O2" make SUBSYSTEM=SDL2 -j4
+
+Copiamos Game.so y RSDKv5 de bin/Linux/SDL2 a ~/sonicmania
+
+Metemos Data.rsdk en ~/sonicmania, y ejecutamos con ./RSDKv5
+
+----METODO 2: CON GLFW (CON SHADERS)
+
+PREVIO: Necesitamos GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
+
+Dependencia previa: apt-get install --no-install-recommens extra-cmake-modules
+
+Nos bajamos la última estable de GLFW de:
+https://www.glfw.org/
+
+Y configuramos, compilamos e instalamos GLFW:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DGLFW_USE_WAYLAND=1 -DGLFW_USE_X11=0 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2"
+
+make -j4
+sudo make install
+
+VAMOS A POR SONICMANIA EN SI:
+
+Compilamos asi (es decir, lo mismo que para SDL2 pero sin "SUBSYSTEM=SDL2":
+CXXFLAGS="-O2 -march=native -mtune=native -O2" make -j4
+
+Ejecutamos con:
+MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ./RSDKv5
+(Esto es porque el engine le pide a GLFW un OPENGL 3.3 y la Pi4 solo soporta hasta OpenGL 2.1)
+
 *************HYDRA CASTLE LABYRINTH EN LA PI**************************************************************************************
 
 Clonamos su repo:
