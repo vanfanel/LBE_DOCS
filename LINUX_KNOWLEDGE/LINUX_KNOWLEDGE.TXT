@@ -4720,9 +4720,7 @@ Si los colores ROJO y AZUL se ven invertidos en los vídeos, desactiva "Enhanced
 
 Clonamos su repositorio:
 git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-Decompilation.git
-cd Sonic-Mania-Decompilation
-git submodule update --init --recursive
-cd dependencies/RSDKv5/
+cd Sonic-Mania-Decompilation/dependencies/RSDKv5/
 
 ---METODO 1: CON SDL2 (SIN SHADERS)
 
