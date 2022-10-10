@@ -3456,10 +3456,6 @@ sudo apt-get install autoconf
 Clonamos su repo:
 git clone --depth 1 https://github.com/schismtracker/schismtracker.git
 
-Editamos schism/video.c y la llamada a SDL_RenderSetLogicalSize() la dejamos así:
-SDL_RenderSetLogicalSize(video.renderer,
-						 NATIVE_SCREEN_WIDTH * 5, NATIVE_SCREEN_HEIGHT * 6); // 4:3
-
 Ejecutamos:
 autoreconf -vif
 
@@ -3474,7 +3470,9 @@ si usas la CARD vc4hdmi0, no se puede usar directamente el DEVICE llamado "hw" p
 y por eso falla con un "unsopported audio format" si lo intentas).
 (Ya sabes que puedes ver los dispositivos con "aplay -L" y probarlos con "speaker-test -D<dispositivo>").
 
-Para configurar el vídeo, editamos ~/.schism/config, y ponemos fullscreen e interpolation a 1.
+Para configurar el vídeo, editamos ~/.schism/config, y:
+-Ponemos fullscreen e interpolation a 1.
+-Ponemos want_fixed a 1 (para tener aspect ratio corregido)
 También podemos poner classic_mode a 1 para que las pantallas sean las del Impulse Tracker original.
 
 ////BLOQUE OPCIONAL (innecesario): Si no queremos tener que lanzar el Schismtracker con la variable de entorno AUDIODEV:
