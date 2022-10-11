@@ -4722,7 +4722,7 @@ cd Sonic-Mania-Decompilation/dependencies/RSDKv5/
 
 ---METODO 1: CON SDL2 (SIN SHADERS)
 
-Editamos RSDKv5/RSDK/Graphics/SDL2/SDL2RenderDevice.cpp y cambiamos:
+Editamos RSDKv5/RSDK/Graphics/SDL2/SDL2RenderDevice.cpp y cambiamos todas las ocurrencias de:
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 por:
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "bilinear");
@@ -4730,7 +4730,8 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "bilinear");
 Compilamos con:
 CXXFLAGS="-O2 -march=native -mtune=native -O2" make SUBSYSTEM=SDL2 -j4
 
-Copiamos Game.so y RSDKv5 de bin/Linux/SDL2 a ~/sonicmania
+Copiamos Game.so y RSDKv5 de bin/Linux/SDL2 a ~/sonicmania:
+cp bin/Linux/SDL2/* ~/sonicmania/
 
 Metemos Data.rsdk en ~/sonicmania, y ejecutamos con ./RSDKv5
 
