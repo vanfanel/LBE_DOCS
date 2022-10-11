@@ -4722,6 +4722,11 @@ cd Sonic-Mania-Decompilation/dependencies/RSDKv5/
 
 ---METODO 1: CON SDL2 (SIN SHADERS)
 
+Editamos RSDKv5/RSDK/Graphics/SDL2/SDL2RenderDevice.cpp y cambiamos:
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+por:
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "bilinear");
+
 Compilamos con:
 CXXFLAGS="-O2 -march=native -mtune=native -O2" make SUBSYSTEM=SDL2 -j4
 
