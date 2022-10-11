@@ -4722,11 +4722,6 @@ cd Sonic-Mania-Decompilation/dependencies/RSDKv5/
 
 ---METODO 1: CON SDL2 (SIN SHADERS)
 
-Editamos RSDKv5/RSDK/Graphics/SDL2/SDL2RenderDevice.cpp y cambiamos todas las ocurrencias de:
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
-por:
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "bilinear");
-
 Compilamos con:
 CXXFLAGS="-O2 -march=native -mtune=native -O2" make SUBSYSTEM=SDL2 -j4
 
@@ -4756,12 +4751,21 @@ sudo make install
 
 VAMOS A POR SONICMANIA EN SI:
 
+OPCIONAL: Si vamos a compilar para Raspberry Pi, que solo soporta OpenGL hasta 2.1, editamos RSDKv5/RSDK/Graphics/GLFW/GLFWRenderDevice.cpp
+y cambiamos:
+glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+por:
+glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+(Si no hacemos ese cambio, podemos luego ejecutar de todos modos con:
+MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ./RSDKv5)
+
 Compilamos asi (es decir, lo mismo que para SDL2 pero sin "SUBSYSTEM=SDL2":
 CXXFLAGS="-O2 -march=native -mtune=native -O2" make -j4
 
-Ejecutamos con:
-MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ./RSDKv5
-(Esto es porque el engine le pide a GLFW un OPENGL 3.3 y la Pi4 solo soporta hasta OpenGL 2.1)
+Copiamos Game.so y RSDKv5 de bin/Linux/SDL2 a ~/sonicmania:
+cp bin/Linux/SDL2/* ~/sonicmania/
 
 TANTO PARA GLFW COMO PARA SDL2:
 
