@@ -783,6 +783,12 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (SI TE DA ERROR AL LINKAR por funciones de slang, no le pases --disable-builtinglslang)
 
+Para solucionar lo del numero de buffers en Vulkan sobre Wayland, forzando asi a que se aplique el numero de buffers que nosotros
+queramos, editamos gfx/common/vulkan_common.c y comentamos:
+   /* Clamp images requested to what is supported by the implementation. */
+   if (desired_swapchain_images < surface_properties.minImageCount)
+      desired_swapchain_images = surface_properties.minImageCount;
+
 Compilar y listo.
 
 Si no quieres shimmering en las letras del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE
