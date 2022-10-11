@@ -4751,21 +4751,14 @@ sudo make install
 
 VAMOS A POR SONICMANIA EN SI:
 
-OPCIONAL: Si vamos a compilar para Raspberry Pi, que solo soporta OpenGL hasta 2.1, editamos RSDKv5/RSDK/Graphics/GLFW/GLFWRenderDevice.cpp
-y cambiamos:
-glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-por:
-glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-(Si no hacemos ese cambio, podemos luego ejecutar de todos modos con:
-MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ./RSDKv5)
-
 Compilamos asi (es decir, lo mismo que para SDL2 pero sin "SUBSYSTEM=SDL2":
 CXXFLAGS="-O2 -march=native -mtune=native -O2" make -j4
 
-Copiamos Game.so y RSDKv5 de bin/Linux/SDL2 a ~/sonicmania:
-cp bin/Linux/SDL2/* ~/sonicmania/
+Copiamos Game.so y RSDKv5 de bin/Linux/GL3 a ~/sonicmania:
+cp bin/Linux/GL3/* ~/sonicmania/
+
+En la Pi4, como el engine necesita GL 3 y la Pi4 solo soporta hasta GL 2.1, ejecutamos con:
+MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ./RSDKv5
 
 TANTO PARA GLFW COMO PARA SDL2:
 
