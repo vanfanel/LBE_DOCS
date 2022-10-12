@@ -87,10 +87,6 @@ Y reinicia. Ya no debería salir más.
 sudo systemctl enable getty@tty2.service
 Y ya podrás cambiar de TTY1 a TTY2!!!
 
--Fusiona el directorio /usr/lib y /usr/lib64, por si alguna librería se instala en la ruta no estándar /usr/lib64 y luego no se puede encontrar desde los programas que la usan:
-sudo ln -s /usr/lib /usr/lib64
-(Si /usr/lib64 no existe, bien, esto lo crea, y es como debería ser).
-
 ***BLOQUE ALSA****
 -PARA INSTALAR ALSA:
 Instalamos alsa-utils, pero NO desde el entorno chrooted sino nativamente.
@@ -200,7 +196,8 @@ force_color_prompt=yes
 
 -El mensaje que quieras que se vea en el inicio, ponlo en /etc/issue
 
--TENEMOS QUE QUITAR LOS RLIMITS, o los emuladores se empezarán a quejar al llegar al 80% de uso de la CPU!
+-PARA USUARIOS NORMALES SOLAMENTE:
+TENEMOS QUE QUITAR LOS RLIMITS, o los emuladores se empezarán a quejar al llegar al 80% de uso de la CPU!
 Para ello, editamos /etc/security/limits.conf, añadiendo unas cosillas para quitar ciertas limitaciones a los miembros de ese grupo:
 
 @audio   -  rtprio     99
