@@ -2581,99 +2581,18 @@ consoleblank=0
 RECUERDA que tienes que poder PRIMERO quiet, y luego loglevel: EN ESE PRECISO ÓRDEN, o el valor de loglevel será IGNORADO. Tengo cmdline.txt así:
 dwc_otg.lpm_enable=0 smsc95xx.turbo_mode=N console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=noop rootwait consoleblank=0 quiet loglevel=3 fastboot logo.nologo noswap
 
--Empezamos a eliminar mierda, que se hace en varias fases porque al eliminar libgtk* se instalan más mierdas:
-sudo apt-get purge avahi-daemon triggerhappy dbus plymouth ntp dphys-swapfile rsyslog openresolv dhcpcd5 libreoffice* webkit* libgtk* libreoffice*
-sudo apt-get purge greenfoot bluej 
-sudo apt-get purge oracle-java7-jdk pinentry-curses x11-common x11-* nfs-common
-sudo apt-get purge cron anacron
-(ponemos anacron también para que elimine cron y NO trate de instalar anacron en su lugar).
-
 -Si tras reiniciar no podemos entrar por ssh es porque se han perdido las keys. Lo confirmamos con systemctl status ssh y vemos que no puede leer 
 un archivo de claves. Para solucionarlo, las regeneramos. Hacemos:
 sudo /usr/bin/ssh-keygen -A
 
--Se nos van a lanzar una pila de ttys. Para que eso no ocurra, tenemos que deshabilitar el servicio getty-static.service.
-	sudo systemctl mask getty-static
--Lanzamos otra consola en tty2, habilitando el servicio getty@tty2:
-	sudo systemctl enable getty@tty2
-
--Ponemos autologin en tty1 y tty2:
-	-Creamos los ficheros: 
-	/etc/systemd/system/getty@tty1.service.d/autologin.conf
-	/etc/systemd/system/getty@tty2.service.d/autologin.conf
-	-Metemos ambos ficheros esto:
-		[Service]
-		ExecStart=
-		ExecStart=-/sbin/agetty --autologin root --noclear --nonewline --skip-login %I 38400 linux
-		Restart=always
-		[Install]
-		WantedBy=multi-user.target
-	-Activamos los servicios:
-		systemctl enable getty@tty1.service
-		systemctl enable getty@tty2.service	
-	-Recargamos la configuración de los daemons:
-		systemctl daemon-reload
-	-y reiniciamos
-
 -Repasamos los servicios activos. Podemos ver tooodas las units y su estado con:
 	systemctl list-unit-files
-
--Deshabilitamos el servicio que intenta salvar la hora de un reloj físico (que no tenemos) y que causa un FAILED al hacer shutdown:
-	sudo systemctl disable hwclock-save 
 
 -Desactivamos IPV6. Esto hay que hacerlo como root, así que primero establecemos una clave de root, que aún no la tenemos:
 sudo passwd
 su
 echo 'blacklist ipv6' >> /etc/modprobe.d/blacklist
 sed -i '/::/s%^%#%g' /etc/hosts
-
--Cambiamos el servidor ssh de openssh a dropbear, para ahorrar memoria:
-sudo apt-get install dropbear
-/etc/init.d/ssh stop
-Para que arranque al inicio
-sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-Mandamos el openssh al carajo y reiniciamos ya con dropbear:
-sudo apt-get purge openssh-server
-
--Para quitar el error: "Failed to connect stdout to the journal socket"
-Edita /etc/systemd/system.conf y pon LogTarget a "null" o a "console"
-
--Como el omxplayer depende de la MIERDA de dbus, nos va a instalar dbus al instalar el omxplayer. Nosotros nos vengamos evitando
-que dbus se lance al inicio, y evitamos que systemd-logind.service nos de errores al no encontrar dbus, porque tampoco lo usamos:
-sudo systemctl mask dbus
-sudo systemctl mask systemd-logind
-sudo systemctl mask dbus.socket
-
--Deshabilitamos más servicios que no nos hacen falta. Esto lo hemos hecho analizando con "systemd-analyze blame":
-sudo systemctl mask systemd-logingd
-sudo systemctl mask hdparm
-sudo systemctl mask sys-kernel-debug.mount
-sudo systemctl disable console-setup
-...y metemos a capón en rc.local:
-setfont Lat15-TerminusBold28x14
-sudo systemctl mask systemd-journal-flush
-sudo systemctl mask kmod-static-nodes
-sudo systemctl mask systemd-random-seed
-sudo systemctl mask dev-mqueue.mount
-sudo systemctl mask systemd-user-sessions
-sudo systemctl mask systemd-tmpfiles-setup
-sudo systemctl mask systemd-tmpfiles-setup-dev
-sudo systemctl mask systemd-update-utmp
-sudo systemctl mask systemd-update-utmp-runlevel
-sudo systemctl mask systemd-journald.service
-sudo systemctl mask systemd-journald.socket
-sudo systemctl mask systemd-journald-dev-log.socket
-...y como consecuencia, tenemos que añadir dropbear a rc.local:
-/etc/init.d/dropbear start
-...y deshabilitar su lanzamiento por parte de systemd:
-sudo systemctl disable dropbear
-
-sudo systemctl mask systemd-fsck-root
-sudo systemctl mask systemd-fsck@dev-mmcblk0p1
-sudo systemctl mask swap.target
-sudo systemctl mask urandom.service
-sudo systemctl mask cryptsetup.target
-sudo systemctl mask cryptsetup-pre.target
 
 -Comentamos la línea de i2c en /etc/modules-load.d/modules.conf
 -Evitamos que se cargue el módulo de IPV6 añadiendo esto al principio de /etc/modprobe.d/ipv6.conf :
@@ -2721,14 +2640,6 @@ Para ello comenta las dos líneas siguientes a esta de lastlog.
 auth        required      pam_unix.so nodelay
 -Para quitar la frase donde dice la versión de DEBIAN y tal, borra /etc/issue o pon allí lo que quieras que salga.
 
--Cambiamos el servidor ssh de openssh a dropbear, para ahorrar memoria:
-sudo apt-get install dropbear
-/etc/init.d/ssh stop
-Para que arranque al inicio
-sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-Mandamos el openssh al carajo y reiniciamos ya con dropbear:
-apt-get purge openssh-server
-
 -En config.txt ponemos boot_delay=0, verificamos los valores de overcloking (1Ghz para la Pi 1) y ponemos el modo de vídeo a group 2, mode 39.
   Podríamos añadir:
 # Disable undervoltage and overheat warnings
@@ -2737,69 +2648,6 @@ avoid_warnings=2
 
 -En config.txt desactivamos el watchdog:
 dtparam=watchdog=off
-
--Si te aparecen errores de EVIOCSKEYCODE, son del dmesg pero no deberían estarse viendo en la consola.. y no son importantes.
-Simplemente verifica que tienes cmdline.txt esto, y EN ESTE ÓRDEN PRECISO:  quiet loglevel=3
-Y ya no se te debería colar eso en la consola.
-
-									SECCIÓN RESÚMEN
-
-AL FINAL sólo tenemos que tener estos 11 servicios listados en systemd-analyze blame:
-pi@raspberrypi:~ $ sudo systemd-analyze blame
-          1.365s dev-mmcblk0p02.device
-           544ms systemd-udev-trigger.service
-           466ms systemd-remount-fs.service
-           450ms keyboard-setup.service
-           309ms boot.mount
-           196ms systemd-fsck@dev-disk-by\x2dpartuuid-521a4163\x2d0a.service
-           190ms alsa-restore.service
-           137ms systemd-udevd.service
-           119ms fake-hwclock.service
-            79ms dropbear.service
-            26ms console-setup.service
-            17ms rc-local.service
-
-SI UN SERVICIO NO ESTÁ EN ESTA LISTA, ES QUE NO ME HACE FALTA.
-
-ES POSIBLE LIBRARSE DE keyboard-setup.service!!!
-PARA ELLO:
-1) Arranca con el servicio activo y el teclado correctamente configurado en castellano.
-2) Haz dumpkeys > es.map y manda es.map a /etc
-3) Añade loadkeys /etc/es.map en /etc/rc.local
-4) Ya puedes hacer tranquilamente:
-	sudo systemctl mask keyboard-setup.service
-
-Y nuestro /etc/rc.local tendrá esto:
-
-echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-echo 0 > /proc/sys/vm/swappiness
-setfont Lat15-TerminusBold28x14
-ifconfig eth0 up
-ip addr add 192.168.5.8/24 dev eth0
-ip route add default via 192.168.5.7
-/etc/init.d/dropbear start
-
-Todo lo demás se lo dejamos gestionar a systemd.
-
-TENEMOS QUE QUITAR LOS RLIMITS, o los emuladores se empezarán a quejar al llegar al 80% de uso de la CPU!
-Para ello, editamos /etc/security/limits.conf, añadiendo unas cosillas para quitar ciertas limitaciones a los miembros de ese grupo:
-
-@audio   -  rtprio     99
-@audio   -  memlock    unlimited
-@audio   -  nice    -20
-pi   -  rtprio     99
-pi   -  memlock    unlimited
-pi   -  nice       -20
-
-
-De este modo, no hay límites para el usuario Pi ni para nadie del grupo audio, como jackd.
-
-Comprobamos que tenemos quitados esos límites con:
-ulimit -r -l
-Nos tiene que salir algo como:
-real-time priority (-r) 99
-max locked memory (kbytes, -l) unlimited
-¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
 ************Acutualizar el kernel de la Raspberry Pi sin tener las herramientas de broadcom***************************************
 

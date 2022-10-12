@@ -234,8 +234,10 @@ sudo adduser pi video
 (Esto último es importante, porque has estado dando vueltas y el kernel sí reconocía el audio interno y la hifiberry (cat /proc/asound/cards)
 pero aplay -L no listaba los dispositivos...¡porque no estabas en el grupo audio!)
 
--Desinstalamos loggers y cosas raras, que se llevan por delante servicios que no usamos:
-apt-get clean triggerhappy rsyslog cron dphys-swapfile
+-DESINSTALAMOS loggers y cosas raras, que se llevan por delante servicios que no usamos:
+apt-get clean triggerhappy rsyslog cron dphys-swapfile bluetooth avahi-* fake-hwclock
+(NOTA: fake-hwclock no se usa porque en su lugar uso systemd-timesyncd que sincroniza la hora al conectarase a la red
+ y guarda la hora en disco al reiniciar, con lo que fake-hwclock es redundante.)
 
 -Deshabilitamos estos servicios:
 systemctl mask e2scrub_all.timer
@@ -285,6 +287,18 @@ Y miras a ver cuáles están active loaded. Unos se quitan con mask, otros con d
 -Para eliminar el error de "automount point not supported", simplemente haz:
 sudo depmod -a
 Y reinicia. Ya no debería salir más.
+
+-Ponemos autologin en tty1 y tty2:
+	-Creamos los ficheros: 
+	/etc/systemd/system/getty@tty1.service.d/autologin.conf
+	/etc/systemd/system/getty@tty2.service.d/autologin.conf
+	-Metemos ambos ficheros esto:
+		[Service]
+		ExecStart=
+		ExecStart=-/sbin/agetty --autologin root --noclear --skip-login --nonewline %I $TERM
+	-Activamos los servicios:
+		systemctl enable getty@tty1.service
+		systemctl enable getty@tty2.service	
 
 -Si después de hacer lo del autologin no puedes cambiar a TTY2 (ctrl+alt+f2), es porque no has activado el servicio. Haz:
 sudo systemctl enable getty@tty2.service
