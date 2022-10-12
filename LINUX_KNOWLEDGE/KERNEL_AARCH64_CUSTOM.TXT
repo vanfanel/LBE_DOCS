@@ -1,0 +1,216 @@
+NOTAS PREVIAS
+==============
+
+En GNU/LInux en general, la arquitectura ARM de 64 bits se llama aarch64, con doble a. Sin embargo, en Debian se suele llamar arm64: así se refleja en el parámetro de
+arquitectura objetivo que se le pasa a debootstrap, por ejemplo. Sin embargo, el ejecutable de qemu-static lleva el subfijo aarch64, porque no es algo propio de Debian.
+
+PARTE 1: EL KERNEL AARCH64
+==========================
+
+Seguimos estos dos tutoriales:
+http://www.tal.org/tutorials/raspberry-pi3-build-64-bit-kernel
+http://www.tal.org/tutorials/booting-64-bit-kernel-raspberry-pi-3
+Al final el kernel, los módulos, los dtb y demás quedan en kernel-out, como en el tutorial.
+
+Si da error al compilar las binutils, mira que tengas instalado el paquete texinfo.
+Si te da error al compilar el gcc, modifica gcc/graphite.h y ponle includes para isl/id.h y isl/space.h
+
+Antes de empezar, siempre ponemos el crosscompilador de 64bits en el path:
+export PATH=$PATH:/opt/aarch64/bin/
+
+Cosas que hacemos distintas para instalar el kernel, módulos y dtbs:
+-Para empezar clonamos el kernel con:
+	git clone --depth 1 https://github.com/raspberrypi/linux.git -b rpi-4.19.y
+	git pull
+       (Puede que la versión sea más actual, pero NUNCA CLONES SIN PASARLE EL BRANCH, aunque parezca redundante, que si no luego git pull no funciona bien).
+
+-RECOMENDADO: SI QUEREMOS parchear el kernel para MUQSS scheduler, bajamos el parche correspondiente de:
+http://ck.kolivas.org/patches/
+(Aplica el parche completo, no sólo el del MUQSS scheduler sino el patch-set CK completo)
+(Nótese que con el MUQSS el kermel puede funcionar a 100Hz, no a 1000, y así podemos tener más thoughput a la vez que excelente latencia! El conjunto de parches de CK
+deberían poner el kernel a 100Hz por defecto si se usa MUQSS).
+Y parcheamos copiando el parche (.patch) al directorio raiz de los sources y haciendo:
+patch -p1 < parche
+Y luego elegimos el MUQSS como scheduler (GENERAL SETUP, primerísima opción) y ponemos los HZ a 100.
+SI VAS A APLICAR ESTE PARCHE, PRIMERO PON EL DEFCONFIG QUE VAYAS A USAR Y LUEGO PARCHEAS, Y LUEGO ENTRAS EN MENUCONFIG. En ese órden va bien.
+
+-OPCIONAL: SI QUEREMOS parchear el kernel para REALTIME, bajamos el parche correspondiente de:
+https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt
+Y parcheamos copiando el parche (.patch) al directorio raiz de los sources y haciendo:
+patch -p1 < parche.diff
+Y luego ajustamos GENERAL SETUP->PREEMPTION MODEL a FULLY PREEMPTIBLE KERNEL(RT).
+
+-Ponemos la configuración por defecto con:
+make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-  bcmrpi3_defconfig
+-Configuramos el kernel con:
+make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
+
+Ajustes al kernel:
+-Asegúrate de que el scheduler está en LOW LATENCY DESKTOP (GENERAL SETUP) y que el scheduler está a 100Hz si usas MUQSS y a 1000Hz si no lo usas (KERNEL FEATURES). 
+-En GENERAL SETUP, deshabilita EMBEDDED SYSTEM, lo que te perminirá desactivar CONFIGURE STANDARD KERNEL FEATURES, que es el symbol EXPERT=y (NO lo tienes que dejar a =y, sino desactivado, no lo dudes)
+-En GENERAL SETUP, deshabilita abajo del todo SLUB PER CPU PARTIAL CACHE y PROFILING SUPPORT
+Con esto desactivado, ya puedes ir a KERNEL HACKING y quitar KERNEL DEBUGGING.
+-Quita todo en KERNEL HACKING (debugeo.. todo!). Quita dentro del KERNEL HACKING, en Compile-time checks and compiler options, "Compile the kernel with debug info"
+-En KERNEL FEATURES, deshabilita "Speculative Store Bypass Disable" y el resto de mitigations
+-Si quieres WIFI:
+	En NETWORKING SUPPORT, activa WIRELESS, activa "CFG80211 wireless configuration api"
+	En DEVICE DRIVERS->Network Device Support->WIRELESS LAN->Broadcom Devices->Broadcom FULLMAC WLAN Driver
+	A parte, necesitas los ficheros brcmfmac43430-sdio.bin y brcmfmac43430-sdio.txt en /lib/firmware/brcm/ que se descargan de https://github.com/RPi-Distro/firmware-nonfree/blob/master/brcm
+	Sólo si tienes esos ficheros puedes hacer: sudo ifconfig wlan0 up 
+	Y deberías ver wlan0 levantado.
+
+-En I/O SCHEDULER, quita TODOS los i/o scheduler, lo que hará que por defecto se use el no-op. Eso es lo correcto para unidades de disco solido.
+-En CPU POWER MANAGEMENT, deja el governor performance solamente y ponlo por defecto.
+-ASEGÚRATE DE TENER ACTIVADO COMO MÓDULO EL DRIVER DE LA TARJETA ETHERNET: ES EL CONFIG_USB_LAN78XX en el .config, y está en:
+Device Drivers > Network device support > USB Network Adapters -> Microchip LAN78XX Based USB Ethernet Adapters
+Si no funciona ni así, haz un sudo ifconfig -a, porque igual sí que funciona solo que no está puesto como eth0 (mira más abajo para ver cómo arreglarlo en tal caso).
+-OJO, NO desactives el SYNOPSIS DWC en DEVICE DRIVERS->USB SUPPORT, porque es el USB host usado por la Raspberry Pi
+-OJO, NO desactives el WATCHDOG de BCM2835 (En DEVICE DRIVERS->WATCHDOG TIER SUPPORT->BROADCOM BCM2835), o si no, no se reiniciará ni se apagará la Pi.
+-OJO, NO desactives el FILE LOCKING API, en FILESYSTEMS. Es necesario para que funcione flock(), y flock() lo usan dpkg y apt-get.
+-OJO, NO desaactives-> Device Drivers -> Graphics support -> Direct Rendering Manager -> Enable legacy fbdev support for your modesetting driver,
+porque en el viejo FBDev es donde se pinta la consola TTY de texto!!
+-OJO, ACTIVA como módulo Device Drivers->Input device support->Mouse interface (es para que funcione el servicio GPM, que nos da ratón en gestores de ventanas en modo texto como
+TWIN, SCREEN, etc). Ya que estás aquí, DESACTIVA "Support for memoryless force-feedback devices"
+-El único RTC que necesitas en DEVICE DRIVERS->REAL TIME CLOCK es el DALLAS/MAXIM DS1307
+
+-Compilamos el kernel y los módulos así:
+make -j6 O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+
+-Instalamos los módulos del kernel así: (OJO!!!!!!!!!!!! MUCHO CUIDADO QUE UNAS VECES LA PARTICIÓN APARECE COMO CUSTOM_ROOT Y OTRAS COMO CUSTOM_ROOT1!!!!
+SI LE PASAS LA RUTA EQUIVOCADA, TE FALTARÁN LOS MÓDULOS Y EL KERNEL ARRANCA PERO SIN MÓDULOS, POR LO QUE TENDRÁS UN BONITO PANTALLAZO NEGRO CON KMS, CUELGUES AL REINICIO, ETC)
+sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/media/manuel/CUSTOM_ROOT modules_install
+(kernel_out es nuestro directorio de salida del kernel, los módulos, los dtbs y tal. Así va en esos tutoriales que usamos: mandando los resultados a un directorio a parte).
+
+-Instalamos el kernel con:
+cp ../kernel-out/arch/arm64/boot/Image /media/manuel/CUSTOM_BOOT/kernel8.img
+
+-Nosotros no instalamos los módulos del kernel hasta el final, después de instalar el rootfs (que es la segunda parte de este documento
+que estás leyendo). De momento instala el kernel (kernel8.img) y los dtb, y los overlays.
+Los overlays están en arch/arm64/boot/dts/overlays/*.dtb* y los tienes que pasar a overlays, un directorio que cuelga directamente del raiz de la partición de boot (FAT32) de la SD.
+(Vamos, como en Raspbian más o menos).
+cp ../kernel-out/arch/arm64/boot/dts/broadcom/*.dtb /media/manuel/CUSTOM_BOOT/
+cp ../kernel-out/arch/arm64/boot/dts/overlays/*.dtbo /media/manuel/CUSTOM_BOOT/overlays/
+
+-En config.txt nosotros ponemos (a consecuencia de cómo tenemos las cosas instaladas):
+device_tree=bcm2710-rpi-3-b-plus.dtb
+overlay_prefix=overlays/
+kernel=kernel8.img
+arm_control=0x200
+
+Puedes actualizar el firmware con el contenido de boot de este repo:
+https://github.com/raspberrypi/firmware.git
+
+PARTE 2: EL ROOTFS
+==================
+
+Seguimos el tutorial de:
+https://www.debian.org/releases/stable/arm64/apds03.en.html
+
+Lo primero formateamos la partición EXT4:
+sudo mkfs.ext4 /dev/sdb2
+Lo montamos como /mnt/LINUX
+sudo mount /dev/sdb2 /mnt/LINUX
+
+Instalamos el debootstrap:
+sudo apt-get install debootstrap
+
+La línea para hacer el debootstrap a un filesystem EXT4 vacío y montado en /mnt/LINUX es:
+sudo debootstrap --foreign --arch arm64 buster /mnt/LINUX http://ftp.es.debian.org/debian
+
+Ahora copiamos el quemu-static al nuevo sistema:
+sudo cp /usr/bin/qemu-aarch64-static /mnt/LINUX/usr/bin/
+
+Ahora chrooteamos al nuevo sistema (aún no hace falta que hagas el mount bind de dev, sys y proc, sólo con un chroot básico vale):
+LANG=C.UTF-8 sudo chroot /mnt/LINUX qemu-aarch64-static /bin/bash
+
+Exportamos el modelo de terminal del host:
+export TERM=xterm-color
+
+Y ahora empezamos con el 2nd stage del nuevo sistema! (Recuerda que para tener debootstrap/debootstrap has tenido que pasar la opción "--foreign" ahí arriba,
+cuando ejecutaste debootstrap en el host al principio para empezar):
+/debootstrap/debootstrap --second-stage
+
+Aprovecha para:
+
+-Crear el /etc/fstab con el contenido:
+
+proc                    /proc           proc            defaults                0       0
+PARTUUID=521a4163-0a    /boot           vfat            defaults                0       2
+PARTUUID=521a4163-0b    /               ext4            defaults,noatime        0       1
+# Keep /tmp and /var/log in RAM(=tmpfs)
+tmpfs					/tmp			tmpfs			defaults,nosuid			0		0
+tmpfs					/var/log		tmpfs			defaults,nosuid			0		0
+
+(el PARTUUID lo puedes obtener con sudo blkid /dev/...)
+(NUNCA pongas en TMPFS todo /var, porque de verdad que ahí hay cosas que los programas instalan y dejan fijas, como configuraciones
+y bases de datos como por ejemplo los metadatos de apt-get!! Así que borrar todo /var es liarla MUY gorda).
+
+-Como ya tienes tanto /tmp como /var/log montados en TMPS, es decir que están en RAM, ya no te hace falta el servicio que los limpia en cada reinicio.
+(Ese servicio se llamará algo como *bootclean, al menos así es en devuan, no sé cuál es en sistemas con systemd). 
+
+-Ajustar el PARTUUID en cmdline.txt de la partición de boot.
+-Instalar el VIM, sudo, net-tools, sshd... (sí, ¡funciona con la red del host!):
+apt install vim sudo net-tools 
+OJO!!!! NO INSTALES alsa-utils desde un entorno chrooted!!!! LO DEL AUDIO CON ALSA VA LUEGO!!!! TIENE SU PROPIA SECCIÓN!!!! NO LO HAGAS AQUÍ!!!!
+-Para que sudo no de el error (unable to resolve host), en /etc/hosts, añade la línea:
+127.0.1.1    raspi
+(suponiendo que hayas llamado al sistema raspi en /etc/hostname, claro. Si lo has llamado de otra manera, pon el nombre correspondiente).
+-Cambiar el password de root  mientras estás chrooteado
+-Ajustar el hostname, en /etc/hostname.
+-Arreglar el nombre del interface de red, que aparece como enx..., para que aparezca como eth0:
+Editar /lib/udev/rules.d/73-usb-net-by-mac.rules y dejar así la línea de IMPORT, para que el interface ethernet se llame eth0 y no un churro basado en la MAC address:
+IMPORT{builtin}="net_id", NAME="eth0"
+Y para que futuras actualizaciones no nos jodan el arreglo, haz:
+cp /lib/udev/rules.d/73-usb-net-by-mac.rules /etc/udev/rules.d/
+
+-Instala bash-completion si quieres que funcione autocompletar cuando usas sudo:
+apt-get install bash-completion
+-Instala psmisc para tener killall:
+apt-get install psmisc
+
+¡¡¡Sólo si hemos hecho el rootfs en un disco y lo transferimos a otro!!!
+Transferimos el rootfs desde el disco duro del host a la partición EXT4 de la tarjeta con:
+cd debian_arm64
+sudo rsync -avP --numeric-ids ./ /mnt/LINUX/
+
+-QUE NO SE TE OLVIDE: Ahora instalamos los módulos del kernel en nuestro nuevo rootfs, QUE NO SE TE OLVIDE JAMÁS!!!!:
+sudo make O=../kernel-out/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=/mnt/LINUX/ modules_install
+
+-Y ahora ya, arranca el sistema en nativo. Adelante!!
+
+OJO!!!!!!!!!! SI NO VES NADA EN LA PANTALLA (PANTALLA NEGRA!!!), LO MÁS PROBABLE ES QUE NO HAYAS INSTALADO LOS MÓDULOS DEL KERNEL!!!!!
+ACABAS DE CONFIGURAR UN ROOTFS NUEVO, Y PRETENDES USAR UN KERNEL ANTERIOR O ALGO ASÍ, Y NO HAS INSTALADOS LOS MÓDULOS!!!!! INSTÁLALOS!!!!!
+
+OJO!!!!!!!!!! SI AL EJECUTAR apt-get o dpkg TE DA ERRORES DE LOCKS, Y NO TE LOS DA ACCEDIENDO AL MISMO SISTEMA OBJETIVO POR CHROOT, ES QUE TIENES DESACTIVADO
+EL FILE LOCKING API EN EL KERNEL, EN FILESYSTEMS->FILE LOCKING API. El file locking API es usado por flock(), que a su vez es usado por DPKG y APT. ACTÍVALO Y LISTO!!!!
+
+!!!!!!!!!!!!!!!!!!!!!
+SI TE DEJAS ALGO que no se pueda hacer en la máquina objetivo, puedes volver a chrootearte en la partición EXT4 de la SD después de haber transferido el rootfs,
+y lo puedes hacer tantas veces como sea necesario, pero pasándole a chroot la ruta del raiz del EXT4 de la SD:
+
+LANG=C.UTF-8 sudo chroot /media/manuel/CUSTOM_ROOT qemu-aarch64-static /bin/bash
+
+Puede ser necesario hacer:
+mount --rbind /dev dev/
+Pero hazlo sólo si tienes problemas al instalar cosas en el entorno chrooted (como que apt-get se quede en "0% WAITING FOR HEADERS" clavado)!
+Lo normal es que no te haga falta si no has borrado el contenido estático de /dev
+(El contenido estático de /dev NO es necesario para un funcionamiento normal del sistema, pero sí para estas cosas. Si no lo borraste, no hace falta que hagas el mount binding de dev este).
+
+***
+Si te chrooteas y al ejecutar un simple "ls" te da un error "bash: /bin/ls: cannot execute binary file: Exec format error", debes reinstalar el qemu en el host, y luego copiarlo de nuevo
+al sistema debian que estás instalando. O sea, si el rootfs del sistema está ya en /media/manuel/CUSTOM_ROOT:
+sudo apt-get install qemu-user-static
+sudo cp /usr/bin/qemu-aarch64-static /media/manuel/CUSTOM_ROOT/usr/bin/
+LANG=C.UTF-8 sudo chroot /media/manuel/CUSTOM_ROOT qemu-aarch64-static /bin/bash
+***
+!!!!!!!!!!!!!!!!!!!!!!!!
+
+OJO A ESTO QUE SIGUE: SI NO VES NADA EN LA PANTALLA HASTA EL LOGIN, NO ES QUE TE FALTE NADA EN /dev. SI TIENES console=tty1 EN CMDLINE.TXT SE TIENE QUE VER.
+EL PROBLEMA ES QUE SYSTEMD LIMPIA LA CONSOLA TAN RÁPIDO ANTES DEL LOGIN, QUE PARECE QUE NO SALE NADA EN PANTALLA PERO ES MENTIRA.
+¡¡NO NECESITAS FICHEROS PERMANENTES EN /dev PARA VER LOS MENSAJES DEL KERNEL Y DE SYSTEMD EN EL INICIO!!! NO TE RAYES. ¡¡¡NO NECESITAS NINGÚN FICHERO PERMANENTE EN /dev, CON LOS QUE CREA UDEV EN EL ARRANQUE ES SUFICIENTE!!! (QUE SON INVISIBLES SI HACES UN CHROOT AL ROOTFS EN VEZ DE ARRANCAR EN ÉL DE VERDAD) 
+Ahora hacemos que systemd deje de borrarnos la consola en el incio, o no veremos nada del arranque (ni del kernel ni de los procesos que va levantando systemd):
+Para ello creamos el fichero:
+/etc/systemd/system/getty@.service.d/noclear.conf
+Con el contenido:
+[Service]
+TTYVTDisallocate=no
