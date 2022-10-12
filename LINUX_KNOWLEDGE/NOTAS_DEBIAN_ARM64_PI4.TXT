@@ -256,7 +256,13 @@ systemctl mask systemd-rfkill.socket
 (OJO: Servicios que NO DEBES DESHABILITAR:
 	-NetworkManager, que se usa para conectarse a la Wifi usando raspi-config y que deja las redes conocidas en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
 	-systemd-journald, que lo usaremos para ver los mensajes de inicio del kernel y los servicios con el comando "journalctl"
-	-los servicios que preparan o limpian las tmpfiles, aunque mandes todo eso a RAM
+	-Los servicios que preparan o limpian las tmpfiles, aunque mandes todo eso a RAM
+	-El servicio system-getty.slice, que sirve para gestionar los recursos de GETTY en las TTYs,
+	aunque nos spawnee una getty por cada TTY del 1 al 6.
+	Si lo deshabilitas, el autologin en la TTY funciona, pero el servicio no respawnea al hacer un logout escribiendo "exit".
+	El truco es dejar system-getty.slice vivo, editar /etc/systemd/logind.conf y poner NAutoVTs a 1 o 2,
+	dependiendo si quieres autologin en una TTY o en dos, o vamos, en las que vayas a usar concretamente.
+	De ese modo nos funciona el autologin en las TTYs que queramos, y ademas funciona el respawn al escribir "exit".
 )
 
 -Deshabilita los timers de actualización diaria de APT:
