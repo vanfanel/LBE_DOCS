@@ -234,6 +234,31 @@ sudo adduser pi video
 (Esto último es importante, porque has estado dando vueltas y el kernel sí reconocía el audio interno y la hifiberry (cat /proc/asound/cards)
 pero aplay -L no listaba los dispositivos...¡porque no estabas en el grupo audio!)
 
+-Desinstalamos loggers y cosas raras, que se llevan por delante servicios que no usamos:
+apt-get clean triggerhappy rsyslog cron dphys-swapfile
+
+-Deshabilitamos estos servicios:
+systemctl mask e2scrub_all.timer
+systemctl mask e2scrub_reap.service
+systemctl mask man-db.service
+systemctl mask man-db.timer
+systemctl mask raspi-config.service
+systemctl mask rc-local.service
+systemctl mask rpcbind.service
+systemctl mask rpcbind.socket
+systemctl mask rpi-eeprom-update.service
+systemctl mask run-rpc_pipefs.mount
+systemctl mask sys-fs-fuse-connections.mount
+systemctl mask sys-kernel-debug.mount
+systemctl mask sys-kernel-tracing.mount
+systemctl mask systemd-rfkill.service
+systemctl mask systemd-rfkill.socket
+(OJO: Servicios que NO DEBES DESHABILITAR:
+	-NetworkManager, que se usa para conectarse a la Wifi usando raspi-config y que deja las redes conocidas en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
+	-systemd-journald, que lo usaremos para ver los mensajes de inicio del kernel y los servicios con el comando "journalctl"
+	-los servicios que preparan o limpian las tmpfiles, aunque mandes todo eso a RAM
+)
+
 -Deshabilita los timers de actualización diaria de APT:
 sudo systemctl disable apt-daily-upgrade.timer
 sudo systemctl disable apt-daily.timer
@@ -245,8 +270,7 @@ APT::Periodic::Enable "0";
 -Deshabilita el target de swap:
 sudo systemctl mask swap.target
 
--Deshabilita los timers de cleaning de tmp y el timer de rotación diaria de logs:
-sudo systemctl mask systemd-tmpfiles-clean.timer
+-Deshabilita el timer de rotación diaria de logs:
 sudo systemctl disable logrotate.timer
 Otros timers activos los puedes buscar con:
 sudo systemclt | grep timer
@@ -342,10 +366,10 @@ sudo systemctl mask <sevcio>
 KERNEL=="event*", NAME="input/%k", MODE="666"
 Y reiniciamos.
 
--Para quitar el error de DMESG: "Failed to connect stdout to the journal socket"
+-SI QUITAS systemd-journald (NO RECOMENDADO)
+---Para quitar el error de DMESG: "Failed to connect stdout to the journal socket"
 Edita /etc/systemd/system.conf y pon LogTarget=null.
-
--Para quitar el error: "Failed to listen on journal socket"
+---Para quitar el error: "Failed to listen on journal socket"
 Mira a ver qué sockets están activos con:
 systemctl | grep socket
 ...Y le haces un "systemctl mask" a los que queden.
@@ -518,6 +542,33 @@ sudo apt-get upgrade
 
 Opcionalmente, si quieres, puedes quitar el hold del paquete del kernel al acabar, haciendo:
 sudo apt-mark unhold raspberrypi-kernel
+
+GUARDAR TODOS LOS LOGS EN RAM
+=============================
+
+Lo primero es desisntalar rsyslog
+apt-get purge rsyslog
+(RECUERDA: con systemd-journald nos vale para que nos guarde los logs de sistema,
+puedes usar el comando "journalctl" sin mas para ver los mensajes de inicio/parada del kernely los servicios).
+
+Ahora borra los logs de disco:
+
+rm -R /tmp/* 
+rm -R /var/tmp/*
+rm -R /var/log/*
+rm -R /var/spool/* 
+
+Ahora, añade estas lineas a /etc/fstab:
+
+# Added 4 lines to use RAM instead of SSD for temp and log files
+tmpfs /tmp tmpfs defaults,noatime,mode=1777 0 0
+tmpfs /var/tmp tmpfs defaults,noatime,mode=1777 0 0
+tmpfs /var/log tmpfs defaults,noatime,mode=0755 0 0
+tmpfs /var/spool tmpfs defaults,noatime,mode=1777 0 0
+
+¡¡¡CUIDADO!!! NUNCA mandes /var a RAM, porque ahi guardan apt-get y otros programas importantes sus datos.
+SOLO puedes mandar a RAM esos subdirectorios de /var que te he dicho.
+Y NUNCA borres el contenido de /var, solo el contenido de esos subdirectorios que te he dicho.
 
 INSTALAR MESA
 ==============
