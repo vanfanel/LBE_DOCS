@@ -82,6 +82,11 @@ Y reinicia. Ya no debería salir más.
 	-Activamos los servicios:
 		systemctl enable getty@tty1.service
 		systemctl enable getty@tty2.service	
+	-Si queremos que la consola no se limpie al acabar el inicio del sistema o al hacer logout, creamos
+	/etc/systemd/system/getty@tty1.service.d/noclean.conf
+	con el contenido:
+		[Service]
+		TTYVTDisallocate=no
 
 -Si después de hacer lo del autologin no puedes cambiar a TTY2 (ctrl+alt+f2), es porque no has activado el servicio. Haz:
 sudo systemctl enable getty@tty2.service
