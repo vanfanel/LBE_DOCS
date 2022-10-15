@@ -41,6 +41,8 @@ systemctl mask systemd-rfkill.socket
 (OJO: Servicios que NO DEBES DESHABILITAR:
 	-NetworkManager, que se usa para conectarse a la Wifi usando raspi-config y que deja las redes conocidas en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
 	-systemd-journald, que lo usaremos para ver los mensajes de inicio del kernel y los servicios con el comando "journalctl"
+	-systemd-logind, que lo usaremos para que libseat sepa que estamos logueados sin tener que usar el servicio seatd
+	 (seatd lo usaremos en sistemas embedidos sin systemd). Esto sirve para poder levantar Wayland compositors.
 	-Los servicios que preparan o limpian las tmpfiles, aunque mandes todo eso a RAM
 	-El servicio system-getty.slice, que sirve para gestionar los recursos de GETTY en las TTYs,
 	aunque nos spawnee una getty por cada TTY del 1 al 6.
