@@ -1341,10 +1341,8 @@ Cuando lo ejecutes te genera un .conf en ~/.config/dosbox. Cópialo a ~/dos, y s
 JUEGOS DE JAVA DE MÓVIL CON FREEJ2ME
 ====================================
 
-LO PRIMERO es entender que necesitamos un JAR que nos permita a su vez cargar los JAR de los juegos con la máquina JAVA de nuestra máquina, y además necesitamos
-un interface SDL2 que va a pintar la pantalla de JAVA usando SDL2.
-
-Instalamos dependencias previas:
+Instalamos dependencias previas (nos instalará la máquina virtual de JAVA, openjdk, en versión headless, que es necesaria
+porque es la que va a correr los juegos JAVA realmente):
 sudo apt-get install ant
 
 Nos bajamos los últimos sources:
@@ -1352,8 +1350,28 @@ git clone --depth 1 https://github.com/hex007/freej2me.git
 
 Entramos en freej2me y simplemente escribimos:
 ant
+Se nos generará build/freej2me-sdl.jar, build/freej2me-lr.jar, etc
+Dependiendo de si vamos a compilar la versión LIBRETRO o la versión SDL2, copiamos
+el freej2me-sdl.jar o freej2me-lr.jar que acabamos de generar a ~/.config/retroarch/system
+
+Creamos ~/j2me, y ahí meteremos los juegos que nos bajemos en .jar
+
+COMPILAR VERSIÓN LIBRETRO
+
+cd src/libretro
+
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2"
+make -j4
+
+cp freej2me_libretro.so ~/.config/retroarch/cores
+
+COMPILAR VERSIÓN SDL2
+
+Entramos en freej2me y simplemente escribimos:
+ant
 Se nos generará build/freej2me-sdl.jar.
-Creamos el directorio ~/java, y copiamos el freej2me-sdl.jar que acabamos de generar a ~/java
+Creamos el directorio ~/j2me, y copiamos el freej2me-sdl.jar que acabamos de generar a ~/java
 y metemos ahí los juegos que nos bajemos en .jar
 
 Ahora generamos el interface de gráficos SDL, llamado sdl_interface. Para ello, entramos en src/sdl2, y hacemos:
@@ -1364,7 +1382,6 @@ Esto simplemente nos mandará el interface de gráficos sdl_interface a /usr/loc
 Ejecutamos el juego que queramos con:
 java -jar freej2me-sdl.jar DoomRPG.jar 240 320 -i linear
 Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altura mayor, de 320.
-
 
 FS-UAE (FSUAE), EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
 ==========================================================================
@@ -1381,8 +1398,8 @@ git clone --depth 1 https://github.com/FrodeSolheim/fs-uae.git
 Ejecutamos el script bootstrap incluido con los sources, y ya podemos ejecutar ./configure
 
 Configuramos con:
-CFLAGS="-O3 -march=native -mtune=native -O2" \
-CXXFLAGS="-O3 -march=native -mtune=native -O2" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --without-x11 --with-alsa --without-midi --without-libmpeg2 --without-openal --disable-x86 --disable-qemu-cpu --disable-drivesound --disable-netplay --disable-slirp
 
 Editamos src/fsemu-background.c y comentamos la línea:
