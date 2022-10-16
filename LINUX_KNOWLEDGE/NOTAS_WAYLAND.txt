@@ -136,6 +136,20 @@ WLR_RENDERER=vulkan <compositor>
 PARTE 4: INSTALAR WESTON (EL COMPOSITOR DE REFERENCIA DE WAYLAND)
 =================================================================
 
+/////////////////////////////// BLOQUE DEBIAN CON SYSTEMD
+
+-Instalamos dependencias previas, libinput-dev:
+sudo apt-get install libinput-dev --no-install-recommends
+
+-Instalamos dependencias previas: libseat-dev
+--Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
+		echo "deb http://deb.debian.org/debian bullseye-backports main" | sudo tee /etc/apt/sources.list.d/buster-backports.list
+		apt-get update
+--Instalamos libseat-dev especificando que la instalamos desde backports:
+		apt-get -t bullseye-backports install libseat-dev
+
+/////////////////////////////// FIN BLOQUE DEBIAN CON SYSTEMD
+
 ////////////////// BLOQUE DEBIAN SIN SYSTEMD
 
 Tenemos que instalar nuestras propias compilaciones de libinput y de libsead/seatd (es lo mismo libseat que seatd).
@@ -177,23 +191,8 @@ seatd -u root -l silent &
 
 /////////////////////////////// FIN BLOQUE DEBIAN SIN SYSTEMD
 
-
-/////////////////////////////// BLOQUE DEBIAN CON SYSTEMD
-
--Instalamos dependencias previas, libinput-dev:
-sudo apt-get install libinput-dev --no-install-recommends
-
--Instalamos dependencias previas: libseat-dev
---Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
-		echo "deb http://deb.debian.org/debian bullseye-backports main" | sudo tee /etc/apt/sources.list.d/buster-backports.list
-		apt-get update
---Instalamos libseat-dev especificando que la instalamos desde backports:
-		apt-get -t bullseye-backports install libseat-dev
-
-/////////////////////////////// FIN BLOQUE DEBIAN CON SYSTEMD
-
 -Instalamos manualmente la dependencia previa de WESTON, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
---Instalamos dependencias previas: apt-get install libfontconfig-dev
+--Instalamos dependencias previas de CAIRO: apt-get install libfontconfig-dev
 --Bajamos los últimos sources estables de aquí:
 https://gitlab.freedesktop.org/cairo/cairo/-/releases
 Configuramos, compilamos e instalamos:
@@ -279,157 +278,63 @@ vt-switching=false
 # Aquí acaba el contenido de weston.ini
 #
 
+// BLOQUE SÓLO PARA DEBIAN CON SYSTEMD, PARA LANZAR WESTON COMO SERVICIO
 
-// BLOQUE SÓLO PARA DEBIAN CON SYSTEMD (sin systemd, ya se exporta XDG_RUNTIME en el script de inicio /etc/minimal)
+Creamos /etc/systemd/system/weston.service con el contenido:
 
-Añadimos esto a /etc/profile
+#############
 
-# Prepare the runtime dir if we haven't done so yet.
-if test -z "${XDG_RUNTIME_DIR}"; then
-    export XDG_RUNTIME_DIR=/run/user/1000
-    if ! test -d "${XDG_RUNTIME_DIR}"; then
-        sudo mkdir -p "${XDG_RUNTIME_DIR}"
-        sudo chown pi:pi "${XDG_RUNTIME_DIR}"
-        chmod 0700 "${XDG_RUNTIME_DIR}"
-    fi  
-fi
+[Unit]
+Description=weston - User service
 
-(OJO: Si estás como root, XDG_RUNTIME_DIR sería directamente /run ya que estando como root no hay login manager.
-Y de todos modos esto ya lo exportas en /etc/minimal si estás arrancando tu propio sistema mínimo).
+[Service]
+User=root
+Group=root
+PAMName=login
+WorkingDirectory=%h
+ExecStart=
+ExecStart=-/usr/local/bin/weston
+Restart=always
+
+[Install]
+WantedBy=graphical.target
+
+#############
+*NOTA: El WorkingDirectory puesto a "%h" significa usar nuestro $HOME, que sera /root si no eres otro usario. 
+*NOTA: Si tuvieramos que añadir mas servicios, irian con:
+[Install]
+WantedBy=default.target
+...en vez de graphical.target, porque lo que nos interesa es que esos servicios se lancen sea cual sea el target
+que tengamos puesto como default, NO nos interesa que se lancen solo cuando el target puesto como default sea graphical.
+El caso de un compositor wayland es especial, porque solo se tiene que lanzar cuando el target sea graphical).
+*NOTA
+-Podemos ver los targets activos con: systemctl list-units --type target
+-Podemos ver los targets que hay en el sistema, aunque no esten activos, mirando en /lib/systemd/system
+
+Establecemos graphical.target como target por defecto:
+systemctl set-default graphical.target
+Podemos comprobarlo con:
+systemctl get-default
+(Si alguna vez quisieramos volver a un modo de texto, estableceriamos el target multi-user como target por defecto:
+systemctl set-default multi-user.target
+Y NO HARIA FALTA VOLVER A DESACTIVAR EL SERVICIO WESTON, YA QUE NOS QUEDAMOS EN EL TARGET MULTI-USER Y DE ESE MODO
+NO SE CARGA EL SERVICIO WESTON).
+
+Ahora activamos el servicio WESTON con:
+systemctl enable weston.service
+(Recuerda que lo que hace esto es crear el symlink /etc/systemd/system/graphical.target.wants/weston.service apuntando
+a /etc/systemd/system/weston.service, que es logico porque el target graphical.target necesita weston.target tal como hemos
+especificado en la UNIT de weston). 
+
+Desactivamos el autologin en TTY con:
+systemctl disable getty@tty1
 
 // FIN BLOQUE SÓLO PARA DEBIAN CON SYSTEMD
 
-Ahora lanzamos WESTON:
+Podemos lanzar WESTON con:
 weston -f '' -l ''
 (Lo de -f '' -l '' es para que no mande logs a la consola ni a ningún lado).
 (Se sale con Ctrl+Alt+Backspace)
-
-Si queremos que se autoarranque, tenemos dos opciones:
-
-1) FORMA MÁS ELEGANTE: USANDO UN SERVICIO DE SYSTEMD.
-
-ESTO A SU VEZ SE PUEDE HACER DE DOS MANERAS:
-
-1.1) OPCIÓN 1
-
-Añadimos esto a /etc/profile (que se ejecutará al ejecutarse weston,
-ya que se loguea como el usuario que le pasamos a weston con la opción -u):
-
-# Prepare the runtime dir if we haven't done so yet.
-if test -z "${XDG_RUNTIME_DIR}"; then
-    export XDG_RUNTIME_DIR=/run/user/1000
-    if ! test -d "${XDG_RUNTIME_DIR}"; then
-        sudo mkdir -p "${XDG_RUNTIME_DIR}"
-        sudo chown pi:pi "${XDG_RUNTIME_DIR}"
-        chmod 0700 "${XDG_RUNTIME_DIR}"
-    fi  
-fi
-
-Creamos el fichero /etc/systemd/system/weston.service mínimo (ya que lo hacemos todo en el /etc/profile), con el contenido:
-
-# Service to launch Weston on boot, on the TTY specified to weston.
-
-[Unit]
-Description=Weston Wayland compositor startup
-RequiresMountsFor=/run
-
-[Service]
-User=pi
-EnvironmentFile=-/etc/default/weston
-ExecStart=/usr/bin/sudo -E /usr/local/bin/weston -t /dev/tty7 -u pi
-
-# This is like a 'cd' for the service so the terminal emulator starts there.
-WorkingDirectory=/home/pi
-
-# These are so Weston restarts an unlimited number of times when we close it.
-Restart=always
-StartLimitIntervalSec=0
-StartLimitBurst=0
-
-# Or, if you prefer, comment out the previous block and uncomment this one
-# so system reboots after you close Weston via CTRL+ALT+BACKSPACE.
-# ExecStopPost=/usr/bin/sudo -E /sbin/reboot
-
-[Install]
-WantedBy=multi-user.target
-
-# Service file ends here.
-
-1.2) OPCIÓN 2
-
-NO añadimos nada a /etc/profile, pero creamos este fichero /etc/systemd/system/weston.service,
-que es mucho más grande porque se hace en él lo que haríamos en el /etc/profile.
-Además, si te fijas, se usa openvt y en la otra opción no se usa:
-
-# Service to launch Weston on boot, on the first available tty using openvt
-# REMEMBER that the openvt "--console=..." parameter specifies a TTY.
-# Don't use a TTY on which you have setup getty autologin, it won't work.
-
-[Unit]
-Description=Weston Wayland compositor startup
-RequiresMountsFor=/run
-
-[Service]
-User=pi
-EnvironmentFile=-/etc/default/weston
-Environment="XDG_RUNTIME_DIR=/run/user/1000"
-ExecStartPre=/usr/bin/sudo /bin/mkdir -p /run/user/1000
-ExecStartPre=/usr/bin/sudo /bin/chown pi:pi /run/user/1000
-ExecStartPre=/bin/chmod 0700 /run/user/1000
-ExecStart=/usr/bin/sudo -E -- /bin/openvt -v -w -s -- su pi -l -c "XDG_RUNTIME_DIR=/run/user/1000 /usr/local/bin/weston -- $OPTARGS 2>~/.weston-errors"
-
-# This is like a 'cd' for the service so the terminal emulator starts there.
-WorkingDirectory=/home/pi
-
-# These are so Weston restarts an unlimited number of times when we close it.
-Restart=always
-StartLimitIntervalSec=0
-StartLimitBurst=0
-
-# Or, if you prefer, comment out the previous block and uncomment this one
-# so system reboots after you close Weston via CTRL+ALT+BACKSPACE.
-# ExecStopPost=/usr/bin/sudo -E /sbin/reboot
-
-[Install]
-WantedBy=multi-user.target
-
-# Service file ends here.
-
-FIN DE OPCIONES: DE AQUÍ EN ADELANTE ES TODO COMÚN.
-
-Ahora hacemos sudo systemctl enable weston.service (lo que nos creará un symlink en /etc/systemd/system/multiuser.want/, ya que
-es necesario para el target "multiuser").
-
-OJO!! NO es compatible con tener autologin en la TTY en la que lanzamos el WESTON. Aunque como nosotros lo lanzamos en TTY7 no hay problema.
-PERO por ejemplo, si lo lanzásemos en la TTY1 o TTY2, tendríamos que deshabilitar el autologin en la TTY1 o en la TTY2,
-ya que NO ES COMPATIBLE con este método y el servicio falla si lo tienes activo.
-sudo systemctl disable getty@tty1
-sudo systemctl disable getty@tty2
-
-RECUERDA que si te quedas sin acceso al sistema porque WESTON no arranca y no tienes manera de restablecer el autologin desde la propia Pi,
-puedes restablecer los servicios de autologin a mano creando sendos links simbólicos en el directorio del target multiuser, así:
-sudo ln -s getty@tty1.service.d multi-user.target.wants/getty@tty1.service
-sudo ln -s getty@tty2.service.d multi-user.target.wants/getty@tty2.service
-(En realidad, lo único que hace systemctl enable o disable es crear o borrar estos links simbólicos).
-
-2) FORMA MÁS CHAPUCERA: Que se autoarranque al hacerse nuestro típco autologin en la TTY1 (mirar cómo hacer el autologin en la TTY1 y la TTY2),
-simplemente tenemos que añadir esto al fichero ~/.profile del usuario para el cual está hecho el autologin:
-
-# Prepare the runtime dir if we haven't done so yet.
-if test -z "${XDG_RUNTIME_DIR}"; then
-    export XDG_RUNTIME_DIR=/run/user/1000
-    if ! test -d "${XDG_RUNTIME_DIR}"; then
-        sudo mkdir -p "${XDG_RUNTIME_DIR}"
-        sudo chown pi:pi "${XDG_RUNTIME_DIR}"
-        chmod 0700 "${XDG_RUNTIME_DIR}"
-    fi  
-fi
-
-# Start Weston automatically.
-if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/tty1 ]]; then
-	weston
-	logout
-fi
 
 ############################################################
 # SI NECESITAS AYUDA CON WAYLAND:                          #
@@ -710,6 +615,11 @@ initial-window-mode=maximized
 -Para tener una fuente chula en vez de la monospace por defecto:
 	-Instalamos: apt-get install fonts-jetbrains-mono
 	-En el foot.ini: font=JetBrainsMono:size=10
+
+-Para tener un cursor como el de la TTY:
+[cursor]
+style=underline
+blink=yes
 
 KITTY, UN EMULADOR DE TERMINAL PARA WAYLAND
 -------------------------------------------
