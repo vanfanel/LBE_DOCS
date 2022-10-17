@@ -286,3 +286,9 @@ TERM=xterm-256color
 color_prompt=yes
 export LS_OPTIONS='--color=auto'
 alias ls='ls $LS_OPTIONS'
+
+PARA QUE SE ARRANQUE EL ORDENADOR SIN PULSAR EL BOTÓN FRONTAL DE POWER
+======================================================================
+
+Esto es útil para montar arcades, donde el botón de la Shuttle no estará accesible desde fuera.
+Simplemente tenemos que retirar el jumper JP1 que está debajo de la zona del disco duro.
