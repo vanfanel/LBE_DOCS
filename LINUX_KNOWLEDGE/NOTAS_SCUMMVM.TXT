@@ -39,6 +39,9 @@ PARA TENER UN TEMA que no sea el built-in, copia el directorio gui/themes que vi
 y en el scummvm pon en PATHS el "THEME PATH" apuntando a ~/scummvm/themes, y luego en MISC selecciona el tema.
 
 PARA TENER ICONOS en el modo GRID VIEW del menú, bájate todos los archivos de aquí: https://downloads.scummvm.org/frs/icons/
+	Para descargarlos todos de un plumazo sin que se metan en su path remoto completo y sin archivos index* raros, hacemos:
+	cd ~/scummvm/icons
+	wget -r -np -nd -R "index.html*" https://downloads.scummvm.org/frs/icons/
 (No tienes que renombrarlos, tienen que estar con sus nombres originales que llevan una fecha, porque son incrementales).
 Los metes en ~/scummvm/icons y pones el "ICON PATH" apuntando a ~/scummvm/icons. Y ya se deberían ver.
 
