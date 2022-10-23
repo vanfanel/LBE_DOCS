@@ -1945,11 +1945,11 @@ sudo systemctl status rc-local.service
 
 ... y ya debería ejecutarse lo que hayamos puesto en /etc/rc.local
 
-*******Averiguar IP externa************************************************************************************************************************
+*******Averiguar IP externa***********************************************************************************************************************
 
 curl ipecho.net/plain ; echo
 
-*******Conocer la IP de un equipo de casa en todo momento desde fuera, mediante un email cada vez que cambia*****************************************
+*******Conocer la IP de un equipo de casa en todo momento desde fuera, mediante un email cada vez que cambia**************************************
 
 Para linuxeros en general: Recibir un correo con la IP de tu equipo de casa (sólo Linux):
 
@@ -1992,7 +1992,7 @@ sudo crontab -e
 
 sudo service cron restart 
 
-*******Captura de pantalla en Linux y apertura automática con el PINTA*******************************************************************************
+*******Captura de pantalla en Linux y apertura automática con el PINTA*****************************************************************************
 
 Creamos un script, captura, con permisos de ejecución y el siguiente contenido:
 
@@ -2038,6 +2038,28 @@ Ahora ya podemos agregar contactos de whatsapp con normalidad!
 
 Si tienes problemas de conectividad, edita ~/.purple/accounts.xml y busca el servidor, versión de android, puerto...
 
+*********DISCORDO, un cliente de discord para GNU/Linux en consola******************
+
+Instalamos el compilador de go:
+
+sudo apt-get install golang
+(HAY una versión de gcc que compila lenguaje GO, pero no soporta la última versión del lenguaje y falla).
+
+Clonamos el repo del DISCORDO:
+
+git clone --depth 1 https://github.com/ayntgl/discordo.git
+
+Entramos en el directorio de los sources y hacemos:
+
+go mod download github.com/gdamore/tcell/v2
+
+Compilamos con:
+
+make build -j4
+
+Ejeculamos con:
+
+discordo --token <nuestro_token_de_autentificación>
 
 *********Evitar desconexión de red WIFI cuando la batería está baja*****************
 
