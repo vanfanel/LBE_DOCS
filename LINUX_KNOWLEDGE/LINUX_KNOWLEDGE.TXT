@@ -2053,8 +2053,10 @@ Compilamos con:
 
 make build -j4
 
-Ejeculamos con:
+Se ejecuta directamente con: ./discordo
+El pass es el que acaba en 5555.
 
+También podríamos pasarle un token de identificación con:
 discordo --token <nuestro_token_de_autentificación>
 
 *********Evitar desconexión de red WIFI cuando la batería está baja*****************
