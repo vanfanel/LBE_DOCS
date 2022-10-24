@@ -2049,10 +2049,6 @@ Clonamos el repo del DISCORDO:
 
 git clone --depth 1 https://github.com/ayntgl/discordo.git
 
-Entramos en el directorio de los sources y hacemos:
-
-go mod download github.com/gdamore/tcell/v2
-
 Compilamos con:
 
 make build -j4
