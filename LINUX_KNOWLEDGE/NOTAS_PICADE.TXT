@@ -37,6 +37,8 @@ dtoverlay=picade,button1=44,button2=45,button3=46,button4=47,button5=48,button6=
 dtparam=audio=off
 arm_freq=1800
 ..Y ponemos force_turbo a 1, para que siempre vaya la CPU a velocidad máxima.
+OJO!!!! NO PONGAS dtparam=audio=off EN MONTAJES DONDE QUIERAS SACAR EL SONIDO POR HDMI!! ES SÓLO PARA PICADE Y SIMILARES
+QUE LLEVAN SONIDO POR HIFIBERRY!!!
 
 (NOTA NO NECESARIA EN LAKKA: Para que funcione el botón de apagado (poweroff/shutdown) en Raspberry Pi OS necesitamos
 que el servicio systemd-logind esté activo, que a su vez depende de que tengamos instalado el paquete "dbus"

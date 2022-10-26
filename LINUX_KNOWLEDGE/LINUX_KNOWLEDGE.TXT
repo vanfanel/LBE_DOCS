@@ -2056,6 +2056,9 @@ make build -j4
 Se ejecuta directamente con: ./discordo
 El pass es el que acaba en 5555.
 
+SI ENTRAS Y NO SE VEN LOS SERVIDORES Y CANALES, entra desde la web y muévelos un poco, moviendo unos arriba y otros abajo, etc.
+Y curiosamente ya se verán.
+
 También podríamos pasarle un token de identificación con:
 discordo --token <nuestro_token_de_autentificación>
 

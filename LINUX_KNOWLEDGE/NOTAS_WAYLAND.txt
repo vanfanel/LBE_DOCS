@@ -49,8 +49,8 @@ meson -Dbuildtype=release -Dtests=false ..
 ninja -j4
 sudo ninja install
 
-PARTE 3: WLROOTS (NO NECESARIO PARA WESTON!!)
----------------------------------------------
+PARTE 3: INSTALAR WLROOTS (NO NECESARIO PARA WESTON!!)
+------------------------------------------------------
 -Previamente necesitamos KMS/DRM funcionando. Así que deberías ser capaz de ejecutar los tests de SDL2 sobre KMSDR.
 
 LO PRIMERO, SEATD (SÓLO SI NO TENEMOS SYSTEMD!)
@@ -512,8 +512,8 @@ Empezamos con una dependencia, libfm:
 Ahora vamos con PCMANFM en sí:
 -Bajamos los últimos sources estables de: https://github.com/lxde/pcmanfm/releases
 
-DWL, EL COMPOSITOR DE ESCRITORIO BASADO EN WLROOTS MÁS BÁSICO QUE HAY (DOCS: "EVERY FRAME IS PERFECT")
-======================================================================================================
+INSTALAR DWL, EL COMPOSITOR DE ESCRITORIO BASADO EN WLROOTS MÁS BÁSICO QUE HAY (DOCS: "EVERY FRAME IS PERFECT")
+===============================================================================================================
 
 Clonamos su repo:
 
