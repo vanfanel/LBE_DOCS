@@ -309,6 +309,11 @@ RECUERDA que tienes que marcar lo de VENTANA->MOSTRAR->TODOS LOS FICHEROS para p
 -Abres el LHA de actualización con el mARK (en la barra de arriba), lo descomprimes a RAM:, y dentro hay un script de actualización.
 Se ejecuta y ya.
 
+
+*********APUNTES CORE PCXT***************************************************************
+
+En PCXT BIOS va "pcxt_original.rom", en TANDY BIOS va "tandy.rom", y en EC00 BIOS va "ide_xtl.rom" 
+
 *********APUNTES CORE DE PSX*************************************************************
 
 -Para que cada juego tenga su memory card en forma de .SAV en /media/fat/saves/PSX, mete cada juego en una carpeta que se llame
