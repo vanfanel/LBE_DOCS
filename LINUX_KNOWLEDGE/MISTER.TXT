@@ -322,6 +322,48 @@ En el menú debes tener activas las opciones "Automount Memory Card 1" y "Autosa
 (O si no tienes Autosave, tendrías que darle manualmente a "Save Memory Cards" cada vez que quieras volcalas a la microSD).
 NO necesitas ningún fichero .MCD ni nada por el estilo.
 
+*********APUNTES CORE AMIGA (MINIMIG)****************************************************
+
+Para crear una imágen de disco (HDF) basta con entrar por SSH en la MiSTer y hacer:
+dd if=/dev/zero of=AmigaHDD.hdf bs=256M count=1
+
+Ahora simplemente cargamos un ADF del Workbench (disco "INSTALL" de un set completo de discos del WB)
+y con el HDToolBox vamos a "Change Drive Type" y pinchamos en "Read Configuration From Drive" y nos lo detectará
+correctamente como un disco de 256MB.
+Aplicamos los cambios, le damos a "Partition Drive" para dejar sólo una partición de 256MB, reiniciamos y formateamos.
+
+Para montar el HDF, NUNCA LO MONTES DESDE LINUX (AUNQUE SEA POSIBLE HACERLO), usa InstallRTG.adf (que procede de las utilidades
+de Amiga para la MiSTer) que trae dentro InstallShared, que monta el directorio /media/fat/games como "Mister:" en AmigaOS.
+
+Si necesitas el LHA
+-Para ROMs 2.x y 3.x necesitas este: https://aminet.net/package/util/arc/lha
+-Para ROM 1.3 necesitas esta versión: http://aminet.net/package/util/arc/LhA_e138
+
+Para ejecutar juegos instalados en disco en ROM 1.3, como WHDLoad no funciona porque requiere 2.x, puedes usar JST para
+cargar slaves de WHDLOAD: https://jotd.pagesperso-orange.fr/amiga.html
+
+Tienes siempre las últimas versiones de los slaves de WHDLoad en:
+http://ftp.grandis.nu/turran/FTP/Retroplay%20WHDLoad%20Packs/Commodore_Amiga_-_WHDLoad_-_Games
+
+Para dar permisos de ejecución a un archivo es con: PROTECT nombre_archivo +e
+Si no puedes borrar un archivo porque está protegido: PROTECT nombre_archivo d
+
+PARA QUE VAYAN LOS JUEGOS DE WHDLOAD EN VERSIÓN NTSC:
+Ve a Storage:Monitors y arrastra el monitor NTSC a Devs:Monitors, y pon el chipset ECS (el OCS-A500 no cambia
+entre PAL y NTSC al vuelo).
+
+PARA QUE SE VEAN LOS ICONOS DE WHLOAD:
+Bájate esto:  https://aminet.net/package/util/libs/IconLib_46.4
+De ahí, copia Libs/68000/icon.library a Libs:, y copia ThirdParty/LoadResident a C:
+Ahora edita S:Startup-Sequence, y al principio del todo, añade:
+
+Version > NIL: icon.library 46 REVISION 4
+If WARN
+  LoadResdient >NIL: LIBS:icon.library REBOOT
+EndIf
+
+...Reinicia y ya debería verse los iconos de los juegos de WHDLoad sin problema.
+
 *********HACER QUE EL UPDATE_ALL NO ACTUALIZE LOS CHEATS*********************************
 
 Editamos /media/fat/downloader.ini y añadimos:

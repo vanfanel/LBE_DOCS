@@ -107,3 +107,10 @@ la nueva playlist. Ahora puedes irte a SETTINGS->PLAYLISTS->MANAGE PLAYLISTS y a
 o lo que quieras. PERO tienen las versiones de las ROMs tienen que coincidir con las del DAT que trae el LAKKA, y es un lio porque
 unos juegos te van a coincidir con el DAT de un core, y otros con el DAT de otro core. Así que HAZLO CON "MANUAL SCAN" COMO SE HA EXPLICADO
 ANTES.
+
+--CONECTAR LOS JOYSTICKS Y BOTONES DE 2 JUGADORES DIRECTAMENTE AL GPIO--
+
+En config.txt se carga el overlay gpio-keyboard, que es de propósito general, y luego se asigna los pines a pulsaciones de teclas así:
+
+Usando este esquema para saber cuál es cada pin del GPIO:
+https://discourse.osmc.tv/t/how-to-use-harware-buttons-on-raspberry-pi-zero-with-gpio-key/86594
