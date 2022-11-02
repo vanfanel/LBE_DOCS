@@ -28,10 +28,7 @@ Crea el fichero
 /media/fat/linux/u-boot.txt
 
 Con el contenido
-v=loglevel=4 usbhid.jspoll=1
-
-Y reincia. Comprueba que todo está bien con:
-systool -m usbhid -A jspoll
+v=loglevel=4 usbhid.jspoll=1 xpad.cpoll=1
 
 TECLADO EN CASTELLANO EN LA CONSOLA DE LINUX
 ============================================
