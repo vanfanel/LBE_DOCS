@@ -353,6 +353,15 @@ Ve a Storage:Monitors y arrastra el monitor NTSC a Devs:Monitors, y pon el chips
 entre PAL y NTSC al vuelo).
 
 PARA QUE SE VEAN LOS ICONOS DE WHLOAD:
+
+OPCIÓN 1: INSTALAR NEWICONS
+Nos lo bajamos de https://aminet.net/package/util/wb/NewIcons46, extraemos, copiamos C/Newicons a C:,
+copiamos Libs:NewIcons.library a Libs:, y añadimos al final de S:Startup-Sequence:
+Run <>NIL: C:NewIcons
+Wait 1
+....Y aquí ya cargaríamos WB, o TinyLauncher o lo que sea.
+
+OPCIÓN 2: INSTALAR ICONLIB
 Bájate esto:  https://aminet.net/package/util/libs/IconLib_46.4
 De ahí, copia Libs/68000/icon.library a Libs:, y copia ThirdParty/LoadResident a C:
 Ahora edita S:Startup-Sequence, y al principio del todo, añade:
@@ -363,6 +372,17 @@ If WARN
 EndIf
 
 ...Reinicia y ya debería verse los iconos de los juegos de WHDLoad sin problema.
+
+UN STARTUP-SEQUENCE MÍNIMO PARA TINYLAUNCHER (ideal para sistemas con poca memoria)
+
+SetPatch >NIL:
+Stack 8192
+Makedir RAM:ENV
+Assign ENV: RAM:ENV
+Run <>NIL: C:NewIcons
+Wait 1
+SYS:Programs/TL/TinyLauncher.exe
+reboot
 
 *********HACER QUE EL UPDATE_ALL NO ACTUALIZE LOS CHEATS*********************************
 

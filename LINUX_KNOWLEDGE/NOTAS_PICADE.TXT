@@ -110,7 +110,51 @@ ANTES.
 
 --CONECTAR LOS JOYSTICKS Y BOTONES DE 2 JUGADORES DIRECTAMENTE AL GPIO--
 
-En config.txt se carga el overlay gpio-keyboard, que es de propósito general, y luego se asigna los pines a pulsaciones de teclas así:
-
-Usando este esquema para saber cuál es cada pin del GPIO:
+En config.txt se carga el overlay gpio-keyboard, que es de propósito general, se conectar los pines siguiendo este esquema:
 https://discourse.osmc.tv/t/how-to-use-harware-buttons-on-raspberry-pi-zero-with-gpio-key/86594
+
+Y en config.txt asignamos los GPIO a pulsaciones de teclado así:
+
+##### PLAYER 1 #####
+
+# Down, up, left, right
+dtoverlay=gpio-key,gpio=2,active_low=1,gpio_pull=up,keycode=103
+dtoverlay=gpio-key,gpio=3,active_low=1,gpio_pull=up,keycode=108
+dtoverlay=gpio-key,gpio=4,active_low=1,gpio_pull=up,keycode=105
+dtoverlay=gpio-key,gpio=17,active_low=1,gpio_pull=up,keycode=106
+
+# select, start
+dtoverlay=gpio-key,gpio=27,active_low=1,gpio_pull=up,keycode=54
+dtoverlay=gpio-key,gpio=22,active_low=1,gpio_pull=up,keycode=28
+
+# x,z,w
+dtoverlay=gpio-key,gpio=10,active_low=1,gpio_pull=up,keycode=44
+dtoverlay=gpio-key,gpio=9,active_low=1,gpio_pull=up,keycode=45
+dtoverlay=gpio-key,gpio=11,active_low=1,gpio_pull=up,keycode=17
+
+# a,s,q
+dtoverlay=gpio-key,gpio=0,active_low=1,gpio_pull=up,keycode=30
+dtoverlay=gpio-key,gpio=5,active_low=1,gpio_pull=up,keycode=31
+dtoverlay=gpio-key,gpio=6,active_low=1,gpio_pull=up,keycode=16
+
+##### PLAYER 2 #####
+
+# i,k,j,l (up,down,left,right)
+dtoverlay=gpio-key,gpio=14,active_low=1,gpio_pull=up,keycode=23
+dtoverlay=gpio-key,gpio=15,active_low=1,gpio_pull=up,keycode=37
+dtoverlay=gpio-key,gpio=18,active_low=1,gpio_pull=up,keycode=36
+dtoverlay=gpio-key,gpio=23,active_low=1,gpio_pull=up,keycode=38
+
+# c, v, e
+dtoverlay=gpio-key,gpio=21,active_low=1,gpio_pull=up,keycode=46
+dtoverlay=gpio-key,gpio=20,active_low=1,gpio_pull=up,keycode=47
+dtoverlay=gpio-key,gpio=16,active_low=1,gpio_pull=up,keycode=18
+
+# d, f, r
+dtoverlay=gpio-key,gpio=1,active_low=1,gpio_pull=up,keycode=32
+dtoverlay=gpio-key,gpio=7,active_low=1,gpio_pull=up,keycode=33
+dtoverlay=gpio-key,gpio=8,active_low=1,gpio_pull=up,keycode=19
+
+# period,comma (select,start)
+dtoverlay=gpio-key,gpio=24,active_low=1,gpio_pull=up,keycode=51
+dtoverlay=gpio-key,gpio=25,active_low=1,gpio_pull=up,keycode=52
