@@ -87,9 +87,7 @@ Para mapear los botones a otras teclas distintas en vez de las que vienen por de
 mira esto: https://github.com/pimoroni/picade-hat
 Y en particular esto: https://github.com/pimoroni/picade-hat/blob/master/picade.txt
 
-Para tener carátulas (thumbnails) debes hacer que LAKKA añada los juegos a una PLAYLIST, y tener los THUMBNAILS de los sistemas
-que quieras en /storage/thumbnails. AMBAS COSAS se tienen que cumplir para que se vean.
-Lo de añadir juegos a una PLAYLIST lo vamos a ver con los juegos arcade de FBNeo como ejemplo.
+Para añadir juegos a una PLAYLIST, lo vamos a ver con los juegos arcade de FBNeo como ejemplo.
 Vamos a IMPORT CONTENT->MANUAL SCAN y ahí:
 -En CONTENT DIRECTORY, seleccionamos el directorio que queremos escanear
 -En SYSTEM NAME elegimos "FBNeo - Arcade Games"
@@ -107,6 +105,16 @@ la nueva playlist. Ahora puedes irte a SETTINGS->PLAYLISTS->MANAGE PLAYLISTS y a
 o lo que quieras. PERO tienen las versiones de las ROMs tienen que coincidir con las del DAT que trae el LAKKA, y es un lio porque
 unos juegos te van a coincidir con el DAT de un core, y otros con el DAT de otro core. Así que HAZLO CON "MANUAL SCAN" COMO SE HA EXPLICADO
 ANTES.
+
+Para tener carátulas (thumbnails) debes hacer que LAKKA añada los juegos a una PLAYLIST, luego tenemos dos opciones:
+La más sencilla es conectar el sistema a Internet, e ir a Main Menu->Online Updater->Playlist Thumbnail Updater para que se descarguen solas
+las carátulas de la playlist que queramos.
+La otra, más LENTA y complicada, es meter a mano los THUMBNAILS de los sistemas que quieras en /storage/thumbnails, y ya se verán en las playlist.
+
+Para que no se vea el logo de Lakka durante el inicio:
+mount /flash -o remount,rw
+touch /flash/oemsplash.cfg
+Esto, junto con "vt.global_cursor_default=0 console=null" que tendremos en cmdline.txt, hará que no se vea nada durante el inicio. 
 
 --CONECTAR LOS JOYSTICKS Y BOTONES DE 2 JUGADORES DIRECTAMENTE AL GPIO--
 
