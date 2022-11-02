@@ -53,55 +53,20 @@ PARTE 3: INSTALAR WLROOTS (NO NECESARIO PARA WESTON!!)
 ------------------------------------------------------
 -Previamente necesitamos KMS/DRM funcionando. Así que deberías ser capaz de ejecutar los tests de SDL2 sobre KMSDR.
 
-LO PRIMERO, SEATD (SÓLO SI NO TENEMOS SYSTEMD!)
-
--Si no tenemos systemd (sistema "minimal"), o si tenemos systemd sin los servicios "systemd-logind" o "elogind"
-(que es lo más normal, porque siempre lo deshabilitas), necesitamos libseat/seatd.
-Para instalar libseat:
-
-Clonamos su repo:
-git clone --depth 1 https://git.sr.ht/~kennylevinsen/seatd
-
---Configuramos, compilamos e instalamos:
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dexamples=disabled -Dlibseat-logind=disabled -Dman-pages=disabled ..
-
-ninja -j4
-sudo ninja install
-
---seatd se lanzará, cuando nos haga falta, con:
-seatd -u root -l silent &
-
-// BLOQUE PARA DEBIAN 12, QUE YA TIENE UN PAQUETE LIBSEAT, ASÍ QUE ES TODO MÁS SENCILLO:
-
--Instalamos dependencias previas: sudo apt-get install libpixman-1-dev libxkbcommon-dev libinput-dev libseat-dev --no-install-recommends
-(OJO: Si no estás usando libudev-zero, que es lo que usas en sistemas mínimos, también debes instalar libudev-dev).
-
-// FIN BLOQUE DEBIAN 12
-
-// BLOQUE SÓLO PARA DEBIAN 11, YA QUE NO TIENE EL PAQUETE LIBSEAT
-
 -Instalamos dependencias previas: sudo apt-get install libpixman-1-dev libxkbcommon-dev --no-install-recommends
-(OJO: Si no estás usando libudev-zero, que es lo que usas en sistemas mínimos, debes instalar también libudev-dev).
 -Instalamos manualmente la dependencia LIBSEAT, que no está como paquete en DEBIAN 11. Para ello tenemos que instalarla desde backports.
 --Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
-		echo "deb http://deb.debian.org/debian bullseye-backports main" | sudo tee /etc/apt/sources.list.d/buster-backports.list
+		echo "deb http://deb.debian.org/debian bullseye-backports main" | sudo tee /etc/apt/sources.list.d/bullseye-backports.list
 		apt-get update
 --Instalamos libseat-dev especificando que la instalamos desde backports:
 		apt-get -t bullseye-backports install libseat-dev
 
-// FIN BLOQUE DEBIAN 11
-
---Instalamos dependencias previas:
+--Instalamos más dependencias previas:
 apt-get install glslang-dev glslang-tools
 --Actualizamos nuestra versión de libvulkan y libvulkan-dev, ya que WLROOTS necesita una reciente si activamos
 el renderer VULKAN, para lo cual actualizamos a la version de backports:
-		apt-get -t bullseye-backports install libvulkan1
-		apt-get -t bullseye-backports install libvulkan-dev (<---Este probablemente no se te actualize, don't worry.)
+		apt-get -t bullseye-backports install libvulkan1 --no-install-recommends
+		apt-get -t bullseye-backports install libvulkan-dev --no-install-recommends (<---Este probablemente no se te actualize, don't worry.)
 
 -Instalar WLROOTS en sí. Para ello:
 
@@ -121,7 +86,7 @@ cd b4
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled \
--Dbackends=drm,libinput -Drenderers=gles2 -Dxcb-errors=disabled ..
+-Dbackends=drm,libinput -Drenderers=gles2,vulkan -Dxcb-errors=disabled ..
 
 ninja -j4
 sudo ninja install
@@ -136,8 +101,6 @@ WLR_RENDERER=vulkan <compositor>
 PARTE 4: INSTALAR WESTON (EL COMPOSITOR DE REFERENCIA DE WAYLAND)
 =================================================================
 
-/////////////////////////////// BLOQUE DEBIAN CON SYSTEMD
-
 -Instalamos dependencias previas, libinput-dev:
 sudo apt-get install libinput-dev --no-install-recommends
 
@@ -147,49 +110,6 @@ sudo apt-get install libinput-dev --no-install-recommends
 		apt-get update
 --Instalamos libseat-dev especificando que la instalamos desde backports:
 		apt-get -t bullseye-backports install libseat-dev
-
-/////////////////////////////// FIN BLOQUE DEBIAN CON SYSTEMD
-
-////////////////// BLOQUE DEBIAN SIN SYSTEMD
-
-Tenemos que instalar nuestras propias compilaciones de libinput y de libsead/seatd (es lo mismo libseat que seatd).
-Lo de libinput es porque compila contra UDEV, y en los sistemas sin systemd usamos libudev-zero, compilada por nosotros,
-por lo que si usamos el libinput de Debian, falla el linkado de Weston.
-
-PRIMERO VAMOS A POR LIBINPUT
--Instalamos dependencias previas: apt-get install libmtdev-dev libevdev-dev --no-install-recommends
--Bajamos las últimas estables de aquí:
-https://www.freedesktop.org/software/libinput/libinput-1.19.4.tar.xz
--Configuramos y compilamos con:
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dtests=false -Dinstall-tests=false -Dlibwacom=false -Ddebug-gui=false ..
-
-ninja -j4
-ninja install
-
-SEGUNDO VAMOS A POR LIBSEAT/SEATD
-Clonamos su repo:
-git clone --depth 1 https://git.sr.ht/~kennylevinsen/seatd
-
---Configuramos, compilamos e instalamos:
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dexamples=disabled -Dlibseat-logind=disabled -Dman-pages=disabled ..
-
-ninja -j4
-sudo ninja install
-
---seatd se lanzará, cuando nos haga falta, con:
-seatd -u root -l silent &
-
-/////////////////////////////// FIN BLOQUE DEBIAN SIN SYSTEMD
 
 -Instalamos manualmente la dependencia previa de WESTON, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
 --Instalamos dependencias previas de CAIRO: apt-get install libfontconfig-dev
@@ -541,14 +461,6 @@ Lo tienes en las instrucciones de compilación de WLROOTS.
 
 Para quitar el borde rojo cuando la ventana está activa, edita config.h y en "focuscolor" quita la componente roja.
 
-////BLOQUE OPCIONAL PARA EJECUTARLO SIN SYSTEMD:
-Necesitamos seatd instalado (Se explica en este mismo documento más arriba).
-Lanzaríamos seatd como daemon y justo a continuación dlw, así:
-
-seatd -u root -l silent &
-dwl
-////
-
 TINYWL+, UN COMPOSITOR BASADO EN TINYWL PERO CON MÁS FUNCIONES
 ==============================================================
 
@@ -850,7 +762,16 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release ..
 
-Ahora vamos a por sway en sí:
+-Instalamos otra dependencia previa: libinput desde su última versión estable, ya que Debian no tiene una versión suficientemente actual
+ni siquiera en backports.
+-Instalamos dependencias previas de libinput: apt-get install libmtdev-dev libevdev-dev
+-Nos bajamos los últimos sources estables de libinput de: https://gitlab.freedesktop.org/libinput/libinput/-/releases
+-Configuramos libinput con:
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false 
+
+Ahora vamos a por SWAY en sí:
 -Clonamos su repo:
 git clone --depth 1 https://github.com/swaywm/sway.git
 -Configuramos con:
