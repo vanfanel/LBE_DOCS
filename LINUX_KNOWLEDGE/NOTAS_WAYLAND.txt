@@ -75,7 +75,8 @@ el renderer VULKAN, para lo cual actualizamos a la version de backports:
 --Editamos backend/drm/drm.c y comentamos la llamada a dealloc_crtc() que hay al principio drm_connector_destroy_output().
 Esto se hacia por seguridad pero no tiene sentido y quitarlo no hace nada malo, ver: https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/3497#note_1575334
 
---En nuestro compositor (dwl, cage...) buscamos la llamada a wlr_output_set_mode(), y la quitamos.
+--En nuestro compositor (dwl, cage...) buscamos las llamadas a wlr_output_set_mode() y wlr_output_enable(), y las quitamos,
+ya que ambas causan full modesettings y por tanto apagado y encendido de la pantalla.
 En el caso de Sway, basta con poner nuestro modo de video actual en ~/.config/sway/config
 
 --Configuramos, compilamos e instalamos:
@@ -446,7 +447,8 @@ en Scummvm a pantalla completa):
 https://github.com/djpohly/dwl/wiki/pointerConstraints
 patch -p1 < <NOMBRE_PARCHE>
 
-Editamos dwl.c y comentamos la llamada a wlr_output_set_mode() en createmon()
+Editamos dwl.c, nos vamos a la función createmon() y comentamos las llamadas a wlr_output_enable() wlr_output_set_mode() que hay allí,
+ya que ambas causan full modesettings y por tanto apagado y encendido de la pantalla.
 
 Compilamos con:
 CFLAGS="-O2 -march=native -mtune=native" \
