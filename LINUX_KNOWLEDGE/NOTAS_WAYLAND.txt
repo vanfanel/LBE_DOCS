@@ -447,7 +447,7 @@ en Scummvm a pantalla completa):
 https://github.com/djpohly/dwl/wiki/pointerConstraints
 patch -p1 < <NOMBRE_PARCHE>
 
-Editamos dwl.c, nos vamos a la función createmon() y comentamos las llamadas a wlr_output_enable() wlr_output_set_mode() que hay allí,
+Editamos dwl.c, nos vamos a la función createmon() y comentamos las llamadas a wlr_output_enable() y wlr_output_set_mode() que hay allí,
 ya que ambas causan full modesettings y por tanto apagado y encendido de la pantalla.
 
 Compilamos con:
