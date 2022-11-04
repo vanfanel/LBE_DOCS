@@ -76,8 +76,11 @@ el renderer VULKAN, para lo cual actualizamos a la version de backports:
 Esto se hacia por seguridad pero no tiene sentido y quitarlo no hace nada malo, ver: https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/3497#note_1575334
 
 --En nuestro compositor (dwl, cage...) buscamos las llamadas a wlr_output_set_mode() y wlr_output_enable(), y las quitamos,
-ya que ambas causan full modesettings y por tanto apagado y encendido de la pantalla.
-En el caso de Sway, basta con poner nuestro modo de video actual en ~/.config/sway/config
+ya que ambas causan full modesettings y por tanto apagado y encendido de la pantalla (AKA flickering).
+(Si piensas que un compositor debería detectar si un output ya está enabled antes de llamar wlr_output_enable() sobre él, recuerda
+que según emersion, detectar si un conector está activado NO ES FIABLE, por eso los compositores llaman wlr_output_enable() por sistema).
+En el caso de Sway, deberíamos poner nuestro modo de video actual en ~/.config/sway/config, pero eso no evita la llamada a  wlr_output_enable(),
+por lo que el flickering es inevitable.
 
 --Configuramos, compilamos e instalamos:
 
@@ -87,7 +90,7 @@ cd b4
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled \
--Dbackends=drm,libinput -Drenderers=gles2,vulkan -Dxcb-errors=disabled ..
+-Dbackends=drm,libinput -Drenderers=gles2 -Dxcb-errors=disabled ..
 
 ninja -j4
 sudo ninja install
@@ -448,7 +451,9 @@ https://github.com/djpohly/dwl/wiki/pointerConstraints
 patch -p1 < <NOMBRE_PARCHE>
 
 Editamos dwl.c, nos vamos a la función createmon() y comentamos las llamadas a wlr_output_enable() y wlr_output_set_mode() que hay allí,
-ya que ambas causan full modesettings y por tanto apagado y encendido de la pantalla.
+ya que ambas causan full modesettings y por tanto apagado y encendido de la pantalla (AKA flickering).
+(Si piensas que un compositor debería detectar si un output ya está enabled antes de llamar wlr_output_enable() sobre él, recuerda
+que según emersion, detectar si un conector está activado NO ES FIABLE, por eso los compositores llaman wlr_output_enable() por sistema).
 
 Compilamos con:
 CFLAGS="-O2 -march=native -mtune=native" \

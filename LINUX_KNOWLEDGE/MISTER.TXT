@@ -321,10 +321,20 @@ NO necesitas ningún fichero .MCD ni nada por el estilo.
 
 *********APUNTES CORE AMIGA (MINIMIG)****************************************************
 
-Para crear una imágen de disco (HDF) basta con entrar por SSH en la MiSTer y hacer:
-dd if=/dev/zero of=AmigaHDD.hdf bs=256M count=1
 
-Ahora simplemente cargamos un ADF del Workbench (disco "INSTALL" de un set completo de discos del WB)
+Ahora, para particionar y formatear el disco, tenemos dos opciones:
+
+1) Para sistemas con ROM 1.x
+-Para crear una imágen de disco (HDF) usamos la utilidad "HDF Creator" del FS-UAE-LAUNCHER que podemos bajar de aquí para Linux:
+https://fs-uae.net/download#linux
+Creamos una imágen tipo RBD del tamaño que queramos, pero menor de 1 GB.
+-Para particionar y formatear el disco, arrancamos con el disco de preparación de la unidad A590, abrimos el SHELL que trae
+y escribimos "execute PrepHD drive 0", después reiniciamos y en el mismo shell ponemos "FORMAT DRIVE DH0: NAME SystemDisk FFS QUICK"
+
+2) Para sistemas con ROM 2.x o 3.x:
+-Para crear una imágen de disco (HDF) basta con entrar por SSH en la MiSTer y hacer:
+dd if=/dev/zero of=AmigaHDD.hdf bs=256M count=1
+-Para particionar y formatear el disco, cargamos un ADF del Workbench (disco "INSTALL" de un set completo de discos del WB)
 y con el HDToolBox vamos a "Change Drive Type" y pinchamos en "Read Configuration From Drive" y nos lo detectará
 correctamente como un disco de 256MB.
 Aplicamos los cambios, le damos a "Partition Drive" para dejar sólo una partición de 256MB, reiniciamos y formateamos.
@@ -360,15 +370,13 @@ Wait 1
 
 OPCIÓN 2: INSTALAR ICONLIB
 Bájate esto:  https://aminet.net/package/util/libs/IconLib_46.4
-De ahí, copia Libs/68000/icon.library a Libs:, y copia ThirdParty/LoadResident a C:
+De ahí, copia Libs/68000/icon.library a Libs:, y copia ThirdParty/RemLib a C:
 Ahora edita S:Startup-Sequence, y al principio del todo, añade:
 
-Version > NIL: icon.library 46 REVISION 4
-If WARN
-  LoadResdient >NIL: LIBS:icon.library REBOOT
-EndIf
+RemLib >NIL: icon.library
 
-...Reinicia y ya debería verse los iconos de los juegos de WHDLoad sin problema.
+...Eso descargará la icon.library de la ROM y hará que se cargue Libs:icon.library.
+Reinicia y ya debería verse los iconos de los juegos de WHDLoad sin problema.
 
 UN STARTUP-SEQUENCE MÍNIMO PARA TINYLAUNCHER (ideal para sistemas con poca memoria)
 
