@@ -633,31 +633,39 @@ NNN, FILE MANAGER LIGERO PARA EMULADOR DE TERMINAL
 Bajamos la última estable de:
 https://github.com/jarun/nnn/releases
 
-Nos bajamos la nerdfont que queramos de aquí para tener iconos al lado de los ficheros:
-https://www.nerdfonts.com/font-downloads
-Descomprimimos el zip, y mandamos la fuente TTF que queramos usar a /usr/local/share/fonts/nerdfont.ttf
-
 Compilamos e instalamos con:
 CFLAGS="-march=native -mtune=native" make O_NORL=1 O_NERD=1 -j4
 make install
+
+Para tener iconos gráficos junto a los nombres de archivo, tenemos que tener una fuente puesta en el emulador de terminal que los soporte,
+es decir que por ejemplo el emulador de terminal FOOT tiene que tener una fuente parcheada con NERD. Tienes las instrucciones para instalarlas
+en la sección de cómo instalar SWAY.
 
 Si no te salen iconos al lado de los ficheros a pesar de haber instalado la nerdfont, simplemente reinicia la terminal
 y vuelve a lanzar nnn, y ya deberían salir.
 
 PARA QUE LANCE SCRIPTS EJECUTABLES, QUE TENEMOS QUE DARLE LA EXTENSIÓN .run:
 
-1) Editamos plugins/nuke y añadimos, debajo de la sección "Log files", por ejemplo, nuestra propia sección para lanzar archivos .run:
+1) Copiamos el contenido del directorio "plugins" que viene con los sources a ~/.config/nnn/plugins/
+(El directorio ~/.config/nnn/plugins/ se crea la primera vez que ejecutamos nnn).
+
+2) La idea es que no se pueda ejecutar cualquier cosa, sino sólo los .run que nosotros creemos. A tal efecto,
+editamos ~/.config/nnn/plugins/nuke y añadimos, debajo de la sección "Log files", por ejemplo, nuestra propia sección para lanzar archivos .run:
 ## Run files
         run)
             /usr/bin/sh "${FPATH}"
             exit 0;;
 
-2) Copiamos todos los plugins a ~/.config/nnn/plugins/
-(El directorio ~/.config/nnn/plugins/ se crea la primera vez que ejecutamos nnn).
+3) Ahora tenemos que decirle a nnn con qué plugin queremos abrir los archivos. Para ello, creamos un script que setee ciertas
+variables de entorno y luego lance el nnn, que llamaremos /usr/local/bin/run_nnn, con el contenido:
+export PATH=$PATH:$HOME/.config/nnn/plugins
+export NNN_OPENER=nuke
+(NOTA: NO podemos añadir el seteo de estas variables de entorno a .bash_profile, ni a /etc/profile ni a /etc/environment porque
+todos esos ficheros son leidos por un bash, que nosotros no lanzamos porque lanzamos directamente nnn: por eso las seteamos
+en el script de lanzamiento de nnn, ese tal /usr/local/bin/run_nnn).
 
-3) Añadimos a ~/.bashrc:
-export NNN_OPENER=~/.config/nnn/plugins/nuke
-(La idea es que no se pueda ejecutar cualquier cosa, sino sólo los .run que nosotros creemos).
+4) Como la idea es que si usamos nnn sea nuestro shell y no tener que escribir comandos, añadimos a ~/.config/foot/foot.ini:
+shell=run_nnn
 
 PARA QUE LANCE AUTOMÁTICAMENTE ROMS DE SISTEMAS EMULADOS
 
@@ -820,10 +828,18 @@ exec swaymsg "workspace 1; exec foot;"
 -Para escalar la fuente monospace por defecto:
 font monospace 16
 
--Para tener una fuente chula en vez de la monospace por defecto:
-	-Instalamos: apt-get install fonts-jetbrains-mono
-	-En el config de sway: font JetBrainsMono 14
-	-En el config de foot: font=JetBrainsMono:size=10
+-Para tener una fuente chula en vez de la monospace por defecto, tanto por defecto en el escritorio como en la terminal:
+	-Bajamos el zip de una fuente parcheada nerdfont de aquí: https://www.nerdfonts.com/font-downloads
+	 (Son fuentes que podrías instalarte como paquetes desde Debian, pero estas versiones parcheadas Nerd traen glifos
+	 que permiten mostrar iconos gráficos en la consola.)
+	 Por ejemplo, yo me suelo bajar JetBrainsMono. Metemos los contenidos del zip en /usr/local/share/fonts/truetype/jetbrains.
+	-Instalamos la herramientra que nos permite regenerar la caché de fuentes del sistema: apt-get install fontconfig
+	-Regeneramos la caché de fuentes del sistema, y confirmamos qué fuentes de la famila JetBrains están reconocidas en él:
+		fc-cache -f -v
+	    fc-list | grep JetBrains
+	-Supongamos que queremos, de entre las fuentes listadas que tenemos en la caché, la llamada "JetBrainsMono Nerd Font". Pues pondremos:
+		-En el ~/.config/sway/config: font JetBrainsMono Nerd Font 14
+	    -En el ~/.config/foot/foot.ini: font=JetBrainsMono Nerd Font:size=10
 	
 -Para evitar que las ventanas maximizadas tengan bordes, que sobre todo los verticales quedan muy feos (se puede poner
 vertical, horizontal o both):
@@ -918,6 +934,9 @@ echo "(O,O)   Service management is done via SystemD."
 echo "/)_)    This computer's local IP is $MY_IP"
 echo " ¨ ¨    Have fun!"  
 echo "     "
+
+Para que no se vea el cursor parpadeante de la TTY, añadimos a cmdline.txt:
+vt.global_cursor_default=0
 
 INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
 ==========================================
