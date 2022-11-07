@@ -4901,10 +4901,9 @@ el modo que le hayamos dicho mientras modetest esté corriendo.
 
 Clonamos el repo de:
 
-https://github.com/opentyrian/opentyrian.git
+git clone --depth 1 https://github.com/opentyrian/opentyrian.git
 
-Editamos src/nortsong.c y cambiamos la función JE_setTimerInt() y JE_resetTimerInt() y simplemente dejamos esto ambas funciones:
-jasondelay = 0;
+Editamos src/nortsong.c y en la función setDelaySpeed() dejamos delayPeriod = 0
 (Con esto conseguimos que no se espere a ningún timer interno).
 
 Editamos src/video.c, y:
