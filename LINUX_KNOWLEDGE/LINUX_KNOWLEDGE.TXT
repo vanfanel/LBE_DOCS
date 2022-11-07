@@ -7610,14 +7610,14 @@ AcHeight = 720
 
 [Fonts]
 fontdir=/usr/local/share/fonts/truetype/jetbrains
-textroman=JetBrains Mono Regular Nerd Font Complete Mono.ttf@24
-textbold=JetBrains Mono Bold Nerd Font Complete.ttf@24
-textitalic=JetBrains Mono Medium Italic Nerd Font Complete.ttf@24
-textbolditalic=JetBrains Mono Bold Italic Nerd Font Complete.ttf@24
-fixedroman=JetBrains Mono Regular Nerd Font Complete Mono.ttf@24
-fixedbold=JetBrains Mono Bold Nerd Font Complete.ttf@24
-fixeditalic=JetBrains Mono Medium Italic Nerd Font Complete.ttf@24
-fixedbolditalic=JetBrains Mono Bold Italic Nerd Font Complete.ttf@24
+textroman=JetBrains Mono Regular Nerd Font Complete Mono.ttf@20
+textbold=JetBrains Mono Bold Nerd Font Complete.ttf@20
+textitalic=JetBrains Mono Medium Italic Nerd Font Complete.ttf@20
+textbolditalic=JetBrains Mono Bold Italic Nerd Font Complete.ttf@20
+fixedroman=JetBrains Mono Regular Nerd Font Complete Mono.ttf@20
+fixedbold=JetBrains Mono Bold Nerd Font Complete.ttf@20
+fixeditalic=JetBrains Mono Medium Italic Nerd Font Complete.ttf@20
+fixedbolditalic=JetBrains Mono Bold Italic Nerd Font Complete.ttf@20
 antialias=1
 
 NOTA: Se podrían usar valores de AcWidth y AcHeight que fuesen múltiplos de los 640x400 originales que usa sfrotz,
