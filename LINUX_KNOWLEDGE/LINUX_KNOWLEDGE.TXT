@@ -3410,7 +3410,7 @@ Puedes añadir en src/sdlvideo.cpp el típico
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
-Para compilar contra SDL2, SDL2_net y SDL2_mixer, y ya pasándole los flags de la Pi a cmake:
+Compilamos con:
 
 cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
 (PARA compilar en modo verbose, haz make VERBOSE=1)
@@ -7595,27 +7595,32 @@ sfrotz SHERLOCK.Z5 SHERLOCK.BLB
 OJO que para que Sherlock suene necesitas el .DAT o .Z5 (son lo mismo) de la versión de Amiga, NO la de PC.
 
 PARA CAMBIAR LA FUENTE DE LETRA POR UNA TRUETYPE ESCALADA CON ANTIALIAS (o sea, un lujazo!)
--Instala el paquete:
-sudo apt-get install fonts-jetbrains-mono
--Crea el fichero ~/.sfrotzrc con el contenido:
+
+-Instalamos una fuente truetype adecuada. Para ello bajamos el zip de una fuente parcheada nerdfont de aquí:
+https://www.nerdfonts.com/font-downloads
+(Son fuentes que podrías instalarte como paquetes desde Debian, pero estas versiones parcheadas Nerd traen glifos
+que permiten mostrar iconos gráficos en la consola.)
+Por ejemplo, yo me suelo bajar JetBrainsMono. Metemos los contenidos del zip en /usr/local/share/fonts/truetype/jetbrains.
+
+-Creamos el fichero ~/.sfrotzrc con el contenido:
 
 [Window]
-AcWidth = 1440
-AcHeight = 800 
+AcWidth = 1280
+AcHeight = 720 
 
 [Fonts]
-fontdir=/usr/share/fonts/truetype/jetbrains-mono
-textroman=JetBrainsMono-Regular.ttf@24
-textbold=JetBrainsMono-Bold.ttf@24
-textitalic=JetBrainsMono-ThinItalic.ttf@24
-textbolditalic=JetBrainsMono-BoldItalic.ttf@24
-fixedroman=JetBrainsMono-Regular.ttf@24
-fixedbold=JetBrainsMono-Bold.ttf@24
-fixeditalic=JetBrainsMono-ThinItalic.ttf@24
-fixedbolditalic=JetBrainsMono-BoldItalic.ttf@24
+fontdir=/usr/local/share/fonts/truetype/jetbrains
+textroman=JetBrains Mono Regular Nerd Font Complete Mono.ttf@24
+textbold=JetBrains Mono Bold Nerd Font Complete.ttf@24
+textitalic=JetBrains Mono Medium Italic Nerd Font Complete.ttf@24
+textbolditalic=JetBrains Mono Bold Italic Nerd Font Complete.ttf@24
+fixedroman=JetBrains Mono Regular Nerd Font Complete Mono.ttf@24
+fixedbold=JetBrains Mono Bold Nerd Font Complete.ttf@24
+fixeditalic=JetBrains Mono Medium Italic Nerd Font Complete.ttf@24
+fixedbolditalic=JetBrains Mono Bold Italic Nerd Font Complete.ttf@24
 antialias=1
 
-NOTA: Los valores de AcWidth y AcHeight se han elegido por ser múltiplos de los 640x400 originales que usa sfrotz,
+NOTA: Se podrían usar valores de AcWidth y AcHeight que fuesen múltiplos de los 640x400 originales que usa sfrotz,
 de manera que las imágenes gráficas se escalan correctamente y además se usa una fuente DejaVu tamaño 30 para que salgan
 los mismos caracteres por línea que con la fuente VGA original.
 
