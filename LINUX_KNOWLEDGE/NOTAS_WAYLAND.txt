@@ -874,18 +874,24 @@ Creamos /etc/systemd/system/sway.service con el contenido:
 Description=sway - User service
 
 [Service]
+Type=oneshot
 User=root
 Group=root
 PAMName=login
 WorkingDirectory=%h
 ExecStart=
 ExecStart=-/usr/local/bin/sway
-Restart=always
+ExecStartPost=/usr/bin/systemctl poweroff
+Restart=on-failure
 
 [Install]
 WantedBy=graphical.target
 
 #############
+*NOTA: Tal como está, está pensado para que al salir de SWAY el sistema se apague. Esto nos interesa porque puede que no
+ arranquemos a una consola de comandos y por tanto no tendríamos manera de apagarlo a mano sin esto.
+ Si quisiésemos que al salir de SWAY se volviese a levantar el servicio, pondríamos Restart=always y quitaríamos las líneas
+ de Type=oneshot y ExecStartPost=...
 *NOTA: El WorkingDirectory puesto a "%h" significa usar nuestro $HOME, que sera /root si no eres otro usario. 
 *NOTA: Si tuvieramos que añadir mas servicios, irian con:
 [Install]
