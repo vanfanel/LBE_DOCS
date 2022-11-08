@@ -321,30 +321,41 @@ NO necesitas ningún fichero .MCD ni nada por el estilo.
 
 *********APUNTES CORE AMIGA (MINIMIG)****************************************************
 
+Creamos la imágen de disco del tamaño que queramos en la propia MiSTer, con el comando:
 
-Ahora, para particionar y formatear el disco, tenemos dos opciones:
+dd if=/dev/zero of=Amiga\ 1.3\ HDD.hdf bs=128M count=1
 
-1) Para sistemas con ROM 1.x
--Para crear una imágen de disco (HDF) usamos la utilidad "HDF Creator" del FS-UAE-LAUNCHER que podemos bajar de aquí para Linux:
-https://fs-uae.net/download#linux
-Creamos una imágen tipo RBD del tamaño que queramos, pero menor de 1 GB.
--Para particionar y formatear el disco, arrancamos con el disco de preparación de la unidad A590, abrimos el SHELL que trae
-y escribimos "execute PrepHD drive 0", después reiniciamos y en el mismo shell ponemos "FORMAT DRIVE DH0: NAME SystemDisk FFS QUICK"
+Para particionar y formatear el disco, tienes dos opciones:
 
-2) Para sistemas con ROM 2.x o 3.x:
--Para crear una imágen de disco (HDF) basta con entrar por SSH en la MiSTer y hacer:
-dd if=/dev/zero of=AmigaHDD.hdf bs=256M count=1
--Para particionar y formatear el disco, cargamos un ADF del Workbench (disco "INSTALL" de un set completo de discos del WB)
-y con el HDToolBox vamos a "Change Drive Type" y pinchamos en "Read Configuration From Drive" y nos lo detectará
-correctamente como un disco de 256MB.
-Aplicamos los cambios, le damos a "Partition Drive" para dejar sólo una partición de 256MB, reiniciamos y formateamos.
+-Para sistemas 1.3, arrancamos el disco "A590 HD Setup Disk" y  
 
-Para montar el HDF, NUNCA LO MONTES DESDE LINUX (AUNQUE SEA POSIBLE HACERLO), usa InstallRTG.adf (que procede de las utilidades
-de Amiga para la MiSTer) que trae dentro InstallShared, que monta el directorio /media/fat/games como "Mister:" en AmigaOS.
+-Para sistemas 2.x/3.x, arrancamos con un ADF del Workbench (disco "INSTALL" de un set completo de discos del WB)
+
+En ambos casos, en HDToolBox vamos a "Change Drive Type" y pinchamos en "Read Configuration From Drive" y nos lo detectará
+correctamente como un disco del tamaño que lo hayamos creado.
+Aplicamos los cambios, le damos a "Partition Drive" para dejar sólo una partición, reiniciamos y formateamos.
+Luego puedes instalar el Workbench en el disco:
+
+-Para instalar WB1.3, tienes que arrancar desde el disco "A590 HD Setup Disk"
+y usa la utilidad de formateo que trae, que también te instalará el sistema.  
+
+-Para instalar WB 2.x o 3.x, usamos el HDInstall que trae el primer disco de WB.
+
+Para montar el HDF, NUNCA LO MONTES DESDE LINUX (AUNQUE SEA POSIBLE HACERLO)
+
+-En sistemas 1.x, usa un HDF de intercambio donde metes las cosas desde Linux, y luego las pasas de ese HDF al HDF de Amiga.
+Para montar una partición de intercambio de 256MB:
+sudo mount -t affs -o loop,rw,offset=580608,sizelimit=267660288 Intercambio.hdf /mnt/
+
+-En sistemas 3.x usa InstallRTG.adf (que procede de las utilidades de Amiga para la MiSTer) que trae dentro InstallShared,
+que monta el directorio /media/fat/games como "Mister:" en AmigaOS.
 
 Si necesitas el LHA
--Para ROMs 2.x y 3.x necesitas este: https://aminet.net/package/util/arc/lha
 -Para ROM 1.3 necesitas esta versión: http://aminet.net/package/util/arc/LhA_e138
+-Para ROMs 2.x y 3.x necesitas este: https://aminet.net/package/util/arc/lha
+
+Para hacer un archivo ejecutable hazle: protect <archivo> +e
+Y si es un script ejecutable: protect <archivo> +se 
 
 Para ejecutar juegos instalados en disco en ROM 1.3, como WHDLoad no funciona porque requiere 2.x, puedes usar JST para
 cargar slaves de WHDLOAD: https://jotd.pagesperso-orange.fr/amiga.html
