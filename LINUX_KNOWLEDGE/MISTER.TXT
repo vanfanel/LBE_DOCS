@@ -333,21 +333,20 @@ Para particionar y formatear el disco, tienes dos opciones:
 
 En ambos casos, en HDToolBox vamos a "Change Drive Type" y pinchamos en "Read Configuration From Drive" y nos lo detectará
 correctamente como un disco del tamaño que lo hayamos creado.
-Aplicamos los cambios, le damos a "Partition Drive" para dejar sólo una partición, reiniciamos y formateamos.
+Aplicamos los cambios, le damos a "Partition Drive" para dejar sólo una partición, REINICIAMOS
+(EL SISTEMA NO VERÁ EL DISCO HASTA QUE REINICIEMOS!!!) y formateamos.
 Luego puedes instalar el Workbench en el disco:
 
 -Para instalar WB1.3, tienes que arrancar desde el disco "A590 HD Setup Disk"
-y usa la utilidad de formateo que trae, que también te instalará el sistema.  
+y usar la utilidad de formateo que trae, que también te instalará el sistema.  
 
 -Para instalar WB 2.x o 3.x, usamos el HDInstall que trae el primer disco de WB.
 
 Para montar el HDF, NUNCA LO MONTES DESDE LINUX (AUNQUE SEA POSIBLE HACERLO)
 
--En sistemas 1.x, usa un HDF de intercambio donde metes las cosas desde Linux, y luego las pasas de ese HDF al HDF de Amiga.
-Para montar una partición de intercambio de 256MB:
-sudo mount -t affs -o loop,rw,offset=580608,sizelimit=267660288 Intercambio.hdf /mnt/
-
--En sistemas 3.x usa InstallRTG.adf (que procede de las utilidades de Amiga para la MiSTer) que trae dentro InstallShared,
+-En cualquier sitema, usa el FS-UAE para montar el HDF y un directorio compartido de Linux, que funciona desde cualquier versión de Kickstart.
+Para instalar FS-UAE y FS-UAE-LAUNCHER, que es con lo que se hace todo: https://fs-uae.net/download#ubuntu
+A parte, en sistemas 3.x podrías InstallRTG.adf (que procede de las utilidades de Amiga para la MiSTer) que trae dentro InstallShared,
 que monta el directorio /media/fat/games como "Mister:" en AmigaOS.
 
 Si necesitas el LHA
@@ -362,9 +361,23 @@ cargar slaves de WHDLOAD: https://jotd.pagesperso-orange.fr/amiga.html
 
 Tienes siempre las últimas versiones de los slaves de WHDLoad en:
 http://ftp.grandis.nu/turran/FTP/Retroplay%20WHDLoad%20Packs/Commodore_Amiga_-_WHDLoad_-_Games
+Y tienes todos los juegos en ADF desprotegidos aquí (porque algunos juegos se instalan desde ADF):
+http://ftp.grandis.nu/turran/FTP/TOSEC/Games/Commodore Amiga - Games - [ADF]/
 
-Para dar permisos de ejecución a un archivo es con: PROTECT nombre_archivo +e
+Para dar permisos de ejecución a un archivo es con: PROTECT nombre_archivo e
 Si no puedes borrar un archivo porque está protegido: PROTECT nombre_archivo d
+Puedes ver los permisos de los archivos con el comando LIST, y a partir de ahí las modificas como quieras.
+Por ejemplo, para que tenga permiso de lectura, escritura, ejecución y borrado sería:
+PROTECT nombre_archivo rwed
+
+CONSEJOS GENERALES PARA INSTALAR JUEGOS EN DISCO DURO EVITANDO USAR INSTALACIONES WHDLOAD:
+-Mira en HOL (https://hol.abime.net) si el juego tiene instalador, o si hay notas sobre su instalación a mano.
+ Si tiene instalador nativo o se puede instalar a mano, mira a ver si el juego tiene versiones crackeadas
+ en http://ftp.grandis.nu/turran/FTP/TOSEC/Games/Commodore Amiga - Games - [ADF]
+ y lo debes instalar de una versión crackeada de esas.
+ (RECUERDA que puedes buscar el ejecutable del juego usando el comando FILE de GNU/Linux para ver qué archivos son ejecutables de AmigaOS).
+-Si no, busca un instalador nativo casro en http://ftp.grandis.nu/turran/FTP/Retroplay%20WHDLoad%20Packs/Commodore_Amiga_-_HD_Loaders_-_Games/ 
+-Si no, ya te toca tirar de JST para cargar los slaves de WHDLOAD.
 
 PARA QUE VAYAN LOS JUEGOS DE WHDLOAD EN VERSIÓN NTSC:
 Ve a Storage:Monitors y arrastra el monitor NTSC a Devs:Monitors, y pon el chipset ECS (el OCS-A500 no cambia
