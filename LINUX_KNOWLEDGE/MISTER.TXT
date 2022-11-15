@@ -370,12 +370,18 @@ Puedes ver los permisos de los archivos con el comando LIST, y a partir de ahí 
 Por ejemplo, para que tenga permiso de lectura, escritura, ejecución y borrado sería:
 PROTECT nombre_archivo rwed
 
+Para pasar de NTSC a PAL y viceversa, puedes usar NTSC-PAL de Nico Francois, que son dos ejecutables que vienen en
+el FISH DISK 0387, que tienes aquí: http://aminet.net/package/misc/fish/fish-0387
+Recuerda que necesitas un ECS al menos para que funcione.
+
 CONSEJOS GENERALES PARA INSTALAR JUEGOS EN DISCO DURO EVITANDO USAR INSTALACIONES WHDLOAD:
 -Mira en HOL (https://hol.abime.net) si el juego tiene instalador, o si hay notas sobre su instalación a mano.
  Si tiene instalador nativo o se puede instalar a mano, mira a ver si el juego tiene versiones crackeadas
  en http://ftp.grandis.nu/turran/FTP/TOSEC/Games/Commodore Amiga - Games - [ADF]
  y lo debes instalar de una versión crackeada de esas.
  (RECUERDA que puedes buscar el ejecutable del juego usando el comando FILE de GNU/Linux para ver qué archivos son ejecutables de AmigaOS).
+ PARA SABER QUÉ ETIQUETA TIENE UN DISKETTE (POR SI TIENES QUE HACER ASSIGNS) SIMPLEMENTE EJECUTA EL COMANDO "ASSIGN" SIN PARÁMETROS
+ PARA VER LOS ASSIGNS QUE HAY HECHOS AL TENER EL DISKETTE(ADF) METIDO.
 -Si no, busca un instalador nativo casro en http://ftp.grandis.nu/turran/FTP/Retroplay%20WHDLoad%20Packs/Commodore_Amiga_-_HD_Loaders_-_Games/ 
 -Si no, ya te toca tirar de JST para cargar los slaves de WHDLOAD.
 
