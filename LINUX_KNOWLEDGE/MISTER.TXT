@@ -117,10 +117,29 @@ http://retrowiki.es/viewtopic.php?f=108&t=200035098&start=48
 
 Configuración del sistema que hay que usar con ella: ATARI MegaSTE 4Mb. TOS 2.06
 
+CREAR IMÁGENES DE DISCO PARA EL CORE PCXT
+=========================================
+
+Para crear la imágen simplemente desde el propio GNU/Linux de la Mister haz:
+dd if=/dev/zero of=hdd.vhd bs=128M count=1
+
+Ahora tenemos que particionarla y formatearla desde la MiSTER, para lo cual tenempos que arrancar desde una imágen de disco de MSDOS.
+Yo estoy usando estas de MSDOS 5.0: https://archive.org/details/dos-5.0-bootdisk
+RECUERDA que para que lea imágenes de 1.44MB, necesitamos usar la BIOS micro8088, que podemos descargar aquí:
+https://github.com/spark2k06/PCXT_MiSTer/tree/main/SW/ROMs
+PERO tenemos que editarla con HEXEDIT y machacar el primer byte (una letra "U") para que no cargue la XTIDE interna que lleva esa BIOS.
+
+Una vez que hemos arrancado desde el diskette de MSDOS y el core nos ha reconocido el disco, podemos particionarlo con fdisk y formatearlo
+con format.
+
+Para transferir directorios entre discos, montar los discos desde Linux así:
+sudo mount -t vfat -o loop,offset=32256 hdd.vhd mnt
+(TODOS los discos duros de MSDOS se montan igual)
+
 CREAR IMÁGENES DE DISCO DURO DE ATARIST Y LUEGO MONTARLAS EN LINUX
 ==================================================================
 
-PREVIO: El sistema y driver de discos original de Atari para los AtariST se llamaba AHDI. Tiene limitaciones del copón como que sólo puede arrancar desde particiones de tipo GEM de menos i igual de 16Megas,
+PREVIO: El sistema y driver de discos original de Atari para los AtariST se llamaba AHDI. Tiene limitaciones del copón como que sólo puede arrancar desde particiones de tipo GEM de tamaño menor o igual a 16MB,
 luego tampoco se pueden hacer particiones GEM de más de 32MB, etc.. es una mierda.
 TOTAL, que nosotros usamos HDDRIVER de: https://www.hddriver.net/en/
 ES DE PAGO, el fichero se llama hddr1016.zip
