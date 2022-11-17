@@ -108,14 +108,9 @@ int main () {
                                                         vdisp, vsyncstart - vdisp, vsyncend - vsyncstart, vtotal - vsyncend,
                                                         clock * 1000);
 
+*********APUNTES CORE PCXT***************************************************************
 
-IMAǴEN DE DISCO MAESTRA PARA ATARIST
-=====================================
-
-Viene de este hilo de Retrowiki:
-http://retrowiki.es/viewtopic.php?f=108&t=200035098&start=48
-
-Configuración del sistema que hay que usar con ella: ATARI MegaSTE 4Mb. TOS 2.06
+En PCXT BIOS va "pcxt_original.rom", en TANDY BIOS va "tandy.rom", y en EC00 BIOS va "ide_xtl.rom" 
 
 CREAR IMÁGENES DE DISCO PARA EL CORE PCXT
 =========================================
@@ -135,6 +130,14 @@ con format.
 Para transferir directorios entre discos, montar los discos desde Linux así:
 sudo mount -t vfat -o loop,offset=32256 hdd.vhd mnt
 (TODOS los discos duros de MSDOS se montan igual)
+
+IMAǴEN DE DISCO MAESTRA PARA ATARIST
+=====================================
+
+Viene de este hilo de Retrowiki:
+http://retrowiki.es/viewtopic.php?f=108&t=200035098&start=48
+
+Configuración del sistema que hay que usar con ella: ATARI MegaSTE 4Mb. TOS 2.06
 
 CREAR IMÁGENES DE DISCO DURO DE ATARIST Y LUEGO MONTARLAS EN LINUX
 ==================================================================
@@ -325,11 +328,6 @@ RECUERDA que tienes que marcar lo de VENTANA->MOSTRAR->TODOS LOS FICHEROS para p
 -Abres el LHA de actualización con el mARK (en la barra de arriba), lo descomprimes a RAM:, y dentro hay un script de actualización.
 Se ejecuta y ya.
 
-
-*********APUNTES CORE PCXT***************************************************************
-
-En PCXT BIOS va "pcxt_original.rom", en TANDY BIOS va "tandy.rom", y en EC00 BIOS va "ide_xtl.rom" 
-
 *********APUNTES CORE DE PSX*************************************************************
 
 -Para que cada juego tenga su memory card en forma de .SAV en /media/fat/saves/PSX, mete cada juego en una carpeta que se llame
@@ -378,7 +376,7 @@ Y si es un script ejecutable: protect <archivo> +se
 Para ejecutar juegos instalados en disco en ROM 1.3, como WHDLoad no funciona porque requiere 2.x, puedes usar JST para
 cargar slaves de WHDLOAD: https://jotd.pagesperso-orange.fr/amiga.html
 
-Tienes siempre las últimas versiones de los slaves de WHDLoad en:
+Tienes siempre las últimas versiones de los installs ya preparados de WHDLoad en:
 http://ftp.grandis.nu/turran/FTP/Retroplay%20WHDLoad%20Packs/Commodore_Amiga_-_WHDLoad_-_Games
 Y tienes todos los juegos en ADF desprotegidos aquí (porque algunos juegos se instalan desde ADF):
 http://ftp.grandis.nu/turran/FTP/TOSEC/Games/Commodore Amiga - Games - [ADF]/
