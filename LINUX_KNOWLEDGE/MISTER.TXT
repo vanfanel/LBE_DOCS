@@ -390,6 +390,11 @@ PROTECT nombre_archivo rwed
 Para pasar de NTSC a PAL y viceversa, puedes usar NTSC-PAL de Nico Francois, que son dos ejecutables que vienen en
 el FISH DISK 0387, que tienes aquí: http://aminet.net/package/misc/fish/fish-0387
 Recuerda que necesitas un ECS al menos para que funcione.
+JST permite también ejecutar en PAL/NTSC los juegos, con el tooltype PAL o NTSC (o sea, pasándole el parámetro PAL o NTSC a JST).
+
+¿PAL o NTSC? El sistema, arráncalo en NTSC siempre (o sea, configura el chipset como NTSC).
+Y luego, los juegos que tengan una banda gruesa abajo ponlos en NTSC y los que estando en PAL ocupen la pantalla completa,
+ejecútalos en PAL.
 
 CONSEJOS GENERALES PARA INSTALAR JUEGOS EN DISCO DURO EVITANDO USAR INSTALACIONES WHDLOAD:
 -Mira en HOL (https://hol.abime.net) si el juego tiene instalador, o si hay notas sobre su instalación a mano.
