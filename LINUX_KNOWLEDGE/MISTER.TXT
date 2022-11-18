@@ -112,8 +112,13 @@ int main () {
 
 En PCXT BIOS va "pcxt_original.rom", en TANDY BIOS va "tandy.rom", y en EC00 BIOS va "ide_xtl.rom" 
 
-CREAR IMÁGENES DE DISCO PARA EL CORE PCXT
-=========================================
+NOTAS SOBRE LAS IMÁGENES DE DISCO PARA EL CORE PCXT
+===================================================
+
+Para arrancar en modo TANDY y con disco duro IDE real, necesitamos una BIOS TANDY limpia (=sin XTIDE incluido, es decir, una BIOS TANDY 1000
+que te bajes de aquí: http://retrograde.inf.ua/tandyroms.htm) y cargar la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
+Lo mismo para arrancar con un PCXT original: BIOS de XT limpia (si no lo está tenemos que editarla con HEXEDIT y machacar el primer byte,
+que es una letra "U", para que no cargue la XTIDE interna que lleva esa BIOS) y cargar la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
 
 Para crear la imágen simplemente desde el propio GNU/Linux de la Mister haz:
 dd if=/dev/zero of=hdd.vhd bs=128M count=1
@@ -122,7 +127,8 @@ Ahora tenemos que particionarla y formatearla desde la MiSTER, para lo cual tene
 Yo estoy usando estas de MSDOS 5.0: https://archive.org/details/dos-5.0-bootdisk
 RECUERDA que para que lea imágenes de 1.44MB, necesitamos usar la BIOS micro8088, que podemos descargar aquí:
 https://github.com/spark2k06/PCXT_MiSTer/tree/main/SW/ROMs
-PERO tenemos que editarla con HEXEDIT y machacar el primer byte (una letra "U") para que no cargue la XTIDE interna que lleva esa BIOS.
+PERO esa viene con el XTIDE integrado, así que tenemos que editarla con HEXEDIT y machacar el primer byte (una letra "U")
+para que no cargue la XTIDE interna que lleva esa BIOS.
 
 Una vez que hemos arrancado desde el diskette de MSDOS y el core nos ha reconocido el disco, podemos particionarlo con fdisk y formatearlo
 con format.
@@ -130,6 +136,11 @@ con format.
 Para transferir directorios entre discos, montar los discos desde Linux así:
 sudo mount -t vfat -o loop,offset=32256 hdd.vhd mnt
 (TODOS los discos duros de MSDOS se montan igual)
+
+Tienes todos los juegos de entre 1981 y 1988 aquí: https://archive.org/details/tdl-hdd
+Monta la "tl hdd.img" porque ahí vienen los juegos hasta 1988, aunque están comprimidos en ZIP.
+En la otra están descomprimidos pero sólo vienen hasta 1987.
+La imágen procede de este hilo: https://misterfpga.org/viewtopic.php?t=5368
 
 IMAǴEN DE DISCO MAESTRA PARA ATARIST
 =====================================
