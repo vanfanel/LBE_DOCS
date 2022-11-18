@@ -6583,6 +6583,7 @@ WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
 
 SI TIENES MOVIMIENTO ERRÁTICO DEL RATÓN: Desconecta el mando USB.
 
+PARA INSTALAR EL JUEGO CON SUS DATOS POR PRIMERA VEZ:
 Creamos ~/heroes2
 Copiamos el ejecutable a ~/heroes2
 Copiamos el directorio files que viene con los sources a ~/heroes2, quedando ~/heroes2/files
