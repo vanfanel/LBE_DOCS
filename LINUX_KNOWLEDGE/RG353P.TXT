@@ -9,6 +9,9 @@ CONFIGURACIÓN PARA SCROLL SIN JITTERING/JUDDERING
 
 En menú de JELOS:
 System Settings -> Default CPU governor -> PERFORMANCE u ONDEMAND (INTERACTIVE causa jittering)
+UI Settings-> RetroArch menu driver a RGUI
+Game Settings -> AUTO SAVE/LOAD ON GAME LAUNCH a OFF, y en AI GAME TRANSLATION ponemos ENABLE AI TRANSLATION SERVICE a OFF también.
+Game Settings ->PER SYSTEM ADVANCED CONFIGURATION y vamos eligiendo el emulador para cada sistema.
 
 En menú de RetroArch:
 En vídeo, Max Swapchain Images a 2, y Threaded Video OFF.
@@ -17,4 +20,8 @@ Resampler quality a NORMAL, Output Rate a 44100 (ya que Genesis Plus GX saca 441
 Poner sonido a 44100 en las opciones de FBNeo también.
 Deshabilitar Settings-> AI SERVICE
 Deshabilitar Logging Verbosity en Settings->Logging
+Ir a Settings->Input->Hotkeys, el ir desactivando todo lo relacionado con savestates, cheats, etc... A base de
+ponerse encima de cada opción y pulsando START, que borra el botón asignado. También desactivamos "Confirm Quit", arriba del todo.
+Deshabilitar Settings->Input "Auxiliary Sensor Input".
 
+Puedes borrar los SAVESTATES que hayas hecho en /storage/roms/savestates.
