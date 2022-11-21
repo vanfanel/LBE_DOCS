@@ -29,3 +29,12 @@ Puedes borrar los SAVESTATES que hayas hecho en /storage/roms/savestates.
 PARA LOS SHADERS pudiendo configurar sus parámetros, ya sabes el truco: pon SHADER SET a NONE, carga un core, selecciona el shader
 que quieras desde RetroArch, configura sus parámetros, dale a SAVE GLOBAL PRESET, vuelve al menú de JELOS,
 y en SHADER SET selecciona RETROARCH.GLSLP.
+
+PARA TENER LAS CARÁTULAS CUANDO HAGAS EL SCRAPPING:
+-En "SCRAPPING DATABASE" deja "SCREENSCRAPER"
+-En "IMAGE SOURCE" pon "BOX 2D"
+-En "BOX SOURCE" pon "BOX 3D"
+-En "LOGO SOURCE" pon "NONE"
+-En user/pass, vanfanel/Manuel22
+Si has escrapeado sin hacer esto, te bajará screenshots de cada juego: te toca borrar el directorio "images" de cada sistema en /STORAGE/roms
+y volver a scrapear con estas cosas puestas como acabo de indicar.
