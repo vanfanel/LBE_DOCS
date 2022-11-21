@@ -347,7 +347,36 @@ En el menú debes tener activas las opciones "Automount Memory Card 1" y "Autosa
 (O si no tienes Autosave, tendrías que darle manualmente a "Save Memory Cards" cada vez que quieras volcalas a la microSD).
 NO necesitas ningún fichero .MCD ni nada por el estilo.
 
-*********APUNTES CORE AMIGA (MINIMIG)****************************************************
+=================================
+= APUNTES CORE AMIGA (MINIMIG)  =
+=================================
+
+CREAR IMÁGEN CON SISTEMA DE ARCHIVOS PFS3
+=========================================
+
+-Instalamos pip3 que es el gestor de paquetes de python:
+sudo apt-get install python3-pip
+
+-Instalamos las amitools:
+sudo pip3 install amitools
+
+-Creamos la imágen del disco RBD, y la inicializamos reservando 4 cilindros de espacio RBD para el driver de filesystem PSF3:
+rdbtool test.hdf create size=256Mi + init rdb_cyls=4
+
+-Le añadimos una partición que ocupará el 100% del disco y la llamaremos DH0:
+rdbtool test.hdf add size=100% DH0
+
+-Nos bajamos el filesystem PFS3 libre, llamado PFS3aio, de aquí:
+http://aminet.net/package/disk/misc/pfs3aio
+
+-Le añadimos el driver de filesystem PFS, que la ROM cargará y usará:
+rdbtool test.hdf fsadd pfs3aio
+
+-Formateamos la partición que creamos antes:
+xdftool /dev/disk1 open part=dh0 + format System
+
+CREAR IMÁGEN DE DISCO CON SISTEMA FFS PARA WB 1.3
+=================================================
 
 Creamos la imágen de disco del tamaño que queramos en la propia MiSTer, con el comando:
 
