@@ -4,60 +4,13 @@ CANAL Y PERSONA A PREGUNTAR POR PROBLEMAS DE REFRESCO DE PANTALLA
 Servidor Discord: JELOS
 Canal: Mainline y preguntar a macroalpha, o canal general y preguntar a fewt para temas de compilacion del kernel de JELOS.
 
-Compilar el kernel de JELOS con cambios propios para poner la pantalla a 60Hz
-=============================================================================
+CONFIGURACIÓN PARA SCROLL SIN JITTERING/JUDDERING
+=================================================
 
-Instalamos docker:
+En menú de JELOS:
+System Settings -> Default CPU governor -> PERFORMANCE u ONDEMAND (INTERACTIVE causa jittering)
 
-sudo apt  install docker.io
-(Hay otras versiones que se instalan con SNAP y tal, pero esta no usa SNAP asi que es la que instalo).
-
-Clonamos el repo de JELOS kernel para la maquina:
-
-git clone https://github.com/JustEnoughLinuxOS/rk356x-kernel.git
-
-Entramos en rk356x-kernel y editamos los ficheros donde se toca el timing de pantalla
-que luego va en el DTB que se usa para arrancar el dispositvo:
-
-
-	-En arch/arm64/boot/dts/rockchip/rk3568.dtsi, alrededor de la linea 827, añade un <&cru PLL_VPLL>, y mas abajo donde se asignan
-	los valores de los clocks, pon en la misma posicion el valor <241500000>
-
-
-	-En arch/arm64/boot/dts/rockchip/rk3568-evb-rg353p.dtsi, en la linea 521 que es donde se establece el valor de los 
-	display-timings, simplemente cambia el valor de clock-frequency a <241500000>
-
-Sacamos un parche con las diferencias de lo que hemos editado respecto a como estaba el repo cuando lo clonamos:
-
-git diff >screen_60hz.patch
-
-Reservamos el parche, luego lo usaremos...
-
-
-
-Clonamos el repo de JELOS distribution:
-
-git clone https://github.com/JustEnoughLinuxOS/distribution.git
-
-Entramos en el directorio de distribution: cd distribution
-
-Ahora nos bajamos la imagen de docker que usaremos para compilar la distro desde dentro de ese sistema "dockerizado":
-
-make docker-image-pull
-
-Metemos el parche de pantalla a 60Hz, que dejamos antes reservado en rk356x-kernel, en un directorio de parches dentro de distribution:
-
-mkdir -p projects/Rockchip/packages/linux/patches/RG353P
-cp ../rk356x-kernel/screen_60hz.patch projects/Rockchip/packages/linux/patches/RG353P
-
-Compilamos (el parche sera aplicado automaticamente durante el proceso de compilacion):
-
-make docker-shell
-PROJECT=Rockchip DEVICE=RG353P ARCH=aarch64 ./scripts/build linux
-
-
-
-Ahora, como solo necesitamos cambiar los timings de la pantalla, lo unico que tenemos que sobreescribir es el DTB que se usa para arrancar
-la maquina, no hace falta sobreescribir el kernel entero:
-
-cp build.JELOS-RG353P.aarch64/linux-7e1b435e1/.install_pkg/usr/share/bootloader/rk3566-rg353p-linux.dtb /media/manuel/JELOS/rk3566-rg353p-linux.dtb
+En menú de RetroArch:
+Driver de sonido Alsathread, 45ms de latencia.
+Resampler quality a NORMAL, Output Rate a 44100 (ya que Genesis Plus GX saca 44100Hz).
+Poner sonido a 44100 en las opciones de FBNeo también.
