@@ -25,3 +25,7 @@ ponerse encima de cada opción y pulsando START, que borra el botón asignado. T
 Deshabilitar Settings->Input "Auxiliary Sensor Input".
 
 Puedes borrar los SAVESTATES que hayas hecho en /storage/roms/savestates.
+
+PARA LOS SHADERS pudiendo configurar sus parámetros, ya sabes el truco: pon SHADER SET a NONE, carga un core, selecciona el shader
+que quieras desde RetroArch, configura sus parámetros, dale a SAVE GLOBAL PRESET, vuelve al menú de JELOS,
+y en SHADER SET selecciona RETROARCH.GLSLP.
