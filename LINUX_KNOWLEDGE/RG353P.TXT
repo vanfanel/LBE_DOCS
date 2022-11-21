@@ -11,6 +11,10 @@ En menú de JELOS:
 System Settings -> Default CPU governor -> PERFORMANCE u ONDEMAND (INTERACTIVE causa jittering)
 
 En menú de RetroArch:
+En vídeo, Max Swapchain Images a 2, y Threaded Video OFF.
 Driver de sonido Alsathread, 45ms de latencia.
 Resampler quality a NORMAL, Output Rate a 44100 (ya que Genesis Plus GX saca 44100Hz).
 Poner sonido a 44100 en las opciones de FBNeo también.
+Deshabilitar Settings-> AI SERVICE
+Deshabilitar Logging Verbosity en Settings->Logging
+
