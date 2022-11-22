@@ -363,8 +363,10 @@ sudo pip3 install amitools
 -Creamos la imágen del disco RBD, y la inicializamos reservando 4 cilindros de espacio RBD para el driver de filesystem PSF3:
 rdbtool test.hdf create size=256Mi + init rdb_cyls=4
 
--Le añadimos una partición que ocupará el 100% del disco y la llamaremos DH0:
-rdbtool test.hdf add size=100% DH0
+-Le añadimos una partición que ocupará el 100% del disco, la llamaremos DH0, temdrá un dostype que leen todas las versiones de AmigaDOS,
+tendrá un max_transfer que no corrompa el disco en el core Minimig, y será bootable:
+(Donde pone 0x444F5301 podríamos poner DOS1, es lo mismo)
+rdbtool test.hdf add size=100% DH0 dostype=0x444F5301 max_transfer=0x1fe00 bootable=true
 
 -Nos bajamos el filesystem PFS3 libre, llamado PFS3aio, de aquí:
 http://aminet.net/package/disk/misc/pfs3aio
@@ -372,8 +374,18 @@ http://aminet.net/package/disk/misc/pfs3aio
 -Le añadimos el driver de filesystem PFS, que la ROM cargará y usará:
 rdbtool test.hdf fsadd pfs3aio
 
--Formateamos la partición que creamos antes:
-xdftool /dev/disk1 open part=dh0 + format System
+-Formateamos la partición que creamos antes, poniéndole la etiqueta "Amiga"
+(Donde pone 0x444F5301 podríamos poner DOS1 o ffs, es lo mismo. Lo de list es para que al acabar nos muestre la info de las particiones):
+xdftool test.hdf open part=dh0 + format Amiga 0x444F5301 + list
+
+    ---HERRAMIENTAS ADICIONALES--
+
+PARA VER LA INFO DE LAS PARTICIONES DE LA IMÁGEN (el dostype, el maxtransfer, si es bootable o no...) LO HACEMOS ASÍ:
+rdbtool test.hdf info
+
+SI QUEREMOS MODIFICAR PARÁMETROS DE UNA PARTICIÓN YA CREADA (hacerla bootable, su dostype, su maxtransfer, etc...) LO HACEMOS ASÍ:
+rdbtool test.hdf change 0 dostype=0x444F5301 max_transfer=0x1fe00 bootable=true
+(En el ejemplo se modifica la partición número 0, para ver el número de las particiones usa "rdbtool test.hdf info").
 
 CREAR IMÁGEN DE DISCO CON SISTEMA FFS PARA WB 1.3
 =================================================
