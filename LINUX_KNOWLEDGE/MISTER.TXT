@@ -137,6 +137,10 @@ Para transferir directorios entre discos, montar los discos desde Linux así:
 sudo mount -t vfat -o loop,offset=32256 hdd.vhd mnt
 (TODOS los discos duros de MSDOS se montan igual)
 
+Para activar/desactivar los colores COMPOSITE dinámicamente (ya que los juegos en modo PCXT se ven genial con colores composite
+pero los colores composite hacen que la consola de texto de DOS se vea FATA) usa el XTCTL.EXE, que está aquí para descargar:
+https://github.com/MiSTer-devel/PCXT_MiSTer/tree/main/hdd
+
 Tienes todos los juegos de entre 1981 y 1988 aquí: https://archive.org/details/tdl-hdd
 Monta la "tl hdd.img" porque ahí vienen los juegos hasta 1988, aunque están comprimidos en ZIP.
 En la otra están descomprimidos pero sólo vienen hasta 1987.
@@ -365,7 +369,7 @@ rdbtool test.hdf create size=256Mi + init rdb_cyls=4
 
 -Le añadimos una partición que ocupará el 100% del disco, la llamaremos DH0, temdrá un dostype que leen todas las versiones de AmigaDOS,
 tendrá un max_transfer que no corrompa el disco en el core Minimig, y será bootable:
-(Donde pone 0x444F5301 podríamos poner DOS1, es lo mismo)
+(Donde pone 0x444F5301 podríamos poner DOS1 o ffs, es lo mismo)
 rdbtool test.hdf add size=100% DH0 dostype=0x444F5301 max_transfer=0x1fe00 bootable=true
 
 -Nos bajamos el filesystem PFS3 libre, llamado PFS3aio, de aquí:
