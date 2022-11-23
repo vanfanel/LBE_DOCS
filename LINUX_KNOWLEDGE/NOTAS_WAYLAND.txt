@@ -702,10 +702,10 @@ Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
             exit 0;;
 
 ...Y para crear los .fbneo, nos vamos al directorio de arcade o de neogeo o de lo que sea y creamos un link simbólico de cada .zip, así:
-for file in *.txt; do ln -s -- "$file" "${file%.zip}.fbneo"; done
+for file in *.zip; do ln -s -- "$file" "${file%.zip}.fbneo"; done
 
 ...Y para crear los .msx, nos vamos al directorio de msx y creamos un link simbólico de cada .zip, así:
-for file in *.txt; do ln -s -- "$file" "${file%.zip}.msx"; done
+for file in *.zip; do ln -s -- "$file" "${file%.zip}.msx"; done
 
 NOTAS PARA PODER USAR WAYLAND EN EL FUTURO
 ==========================================
