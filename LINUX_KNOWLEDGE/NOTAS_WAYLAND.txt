@@ -63,8 +63,8 @@ PARTE 3: INSTALAR WLROOTS (NO NECESARIO PARA WESTON!!)
 
 --Instalamos más dependencias previas:
 apt-get install glslang-dev glslang-tools
---Actualizamos nuestra versión de libvulkan y libvulkan-dev, ya que WLROOTS necesita una reciente si activamos
-el renderer VULKAN, para lo cual actualizamos a la version de backports:
+--SÓLO SI VAMOS A USAR EL RENDERER VULKAN: Actualizamos nuestra versión de libvulkan y libvulkan-dev,
+ya que WLROOTS necesita una reciente, para lo cual actualizamos a la version de backports:
 		apt-get -t bullseye-backports install libvulkan1 --no-install-recommends
 		apt-get -t bullseye-backports install libvulkan-dev --no-install-recommends (<---Este probablemente no se te actualize, don't worry.)
 

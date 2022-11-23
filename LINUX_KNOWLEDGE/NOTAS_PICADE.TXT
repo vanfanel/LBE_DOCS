@@ -131,7 +131,7 @@ dtoverlay=gpio-key,gpio=3,active_low=1,gpio_pull=up,keycode=108
 dtoverlay=gpio-key,gpio=4,active_low=1,gpio_pull=up,keycode=105
 dtoverlay=gpio-key,gpio=17,active_low=1,gpio_pull=up,keycode=106
 
-# select, start
+# select (rshift), start (enter)
 dtoverlay=gpio-key,gpio=27,active_low=1,gpio_pull=up,keycode=54
 dtoverlay=gpio-key,gpio=22,active_low=1,gpio_pull=up,keycode=28
 
