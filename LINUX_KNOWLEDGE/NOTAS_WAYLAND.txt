@@ -652,10 +652,10 @@ export PATH=$PATH:$HOME/.config/nnn/plugins
 export NNN_OPENER=nuke
 (NOTA: NO podemos añadir el seteo de estas variables de entorno a .bash_profile, ni a /etc/profile ni a /etc/environment porque
 todos esos ficheros son leidos por un bash, que nosotros no lanzamos porque lanzamos directamente nnn: por eso las seteamos
-en el script de lanzamiento de nnn, ese tal /usr/local/bin/run_nnn).
+en el script de lanzamiento de nnn, ese tal /usr/local/bin/n).
 
 4) Como la idea es que si usamos nnn sea nuestro shell y no tener que escribir comandos, añadimos a ~/.config/foot/foot.ini:
-shell=run_nnn
+shell=n
 
 PARA QUE LANCE AUTOMÁTICAMENTE ROMS DE SISTEMAS EMULADOS
 
@@ -676,8 +676,8 @@ Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mednafen_pce_fast_libretro.so -- "${FPATH}"
             exit 0;;
 
-        ## MD files
-        md)
+        ## SMD files (Don't use MD because these are markdown text files for hithub projects!)
+        smd)
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/genesis_plus_gx_libretro.so -- "${FPATH}"
             exit 0;;
 

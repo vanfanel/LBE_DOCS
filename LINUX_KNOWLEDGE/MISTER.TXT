@@ -439,6 +439,11 @@ http://ftp.grandis.nu/turran/FTP/Retroplay%20WHDLoad%20Packs/Commodore_Amiga_-_W
 Y tienes todos los juegos en ADF desprotegidos aquí (porque algunos juegos se instalan desde ADF):
 http://ftp.grandis.nu/turran/FTP/TOSEC/Games/Commodore Amiga - Games - [ADF]/
 
+Si usas WHDLoad, no te olvides de crear s:whdload.prefs con el contenido:
+PRELOAD
+SplashDelay=0
+ConfigDelay=0
+
 Para dar permisos de ejecución a un archivo es con: PROTECT nombre_archivo e
 Si no puedes borrar un archivo porque está protegido: PROTECT nombre_archivo d
 Puedes ver los permisos de los archivos con el comando LIST, y a partir de ahí las modificas como quieras.
