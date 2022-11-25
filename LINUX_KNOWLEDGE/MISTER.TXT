@@ -366,8 +366,8 @@ sudo apt-get install python3-pip
 -Instalamos las amitools:
 sudo pip3 install amitools
 
--Creamos la imágen del disco RBD, y la inicializamos reservando 4 cilindros de espacio RBD para el driver de filesystem PSF3:
-rdbtool test.hdf create size=256Mi + init rdb_cyls=4
+-Creamos la imágen del disco RBD, y la inicializamos reservando 8 cilindros de espacio RBD para el driver de filesystem PSF3:
+rdbtool test.hdf create size=256Mi + init rdb_cyls=8
 
 -Le añadimos una partición que ocupará el 100% del disco, la llamaremos DH0, y tendrá un max_transfer que
 no corrompa el disco en el core Minimig, y será bootable:
