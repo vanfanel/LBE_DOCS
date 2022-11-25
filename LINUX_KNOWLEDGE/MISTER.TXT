@@ -377,9 +377,10 @@ http://aminet.net/package/disk/misc/pfs3aio
 -Creamos la imágen del disco RBD, la inicializamos reservando 8 cilindros de espacio RBD para el driver de filesystem PSF3,
 le instalamos el driver de filesystem PFS3, etc:
 
-rdbtool -f -p DH test.hdf create size=512Mi + init rdb_cyls=8 + fsadd pfs3aio + fsadd pfs3aio dostype=PFS3 + add size=98% name=DH0 bootable=true automount=true pri=1 Bla max_transfer=0x0001fe00 mask=0x7ffffffe num_buffer=30
+rdbtool -f -p DH test.hdf create size=512Mi + init rdb_cyls=8 + fsadd pfs3aio dostype=PFS3 + add size=98% name=DH0 bootable=true automount=true pri=1 Bla max_transfer=0x0001fe00 mask=0x7ffffffe num_buffer=30
 
-(Si quisiésemos que fuese en WB 1.x. añadiríamos "dostype=DOS1" en el fsadd, y "fs=DOS1" en add).
+(Si quisiésemos que fuese compatible con KS 1.3. añadiríamos otro fsadd así: "fsadd <path_al_filesystem_ffs> dostype=DOS1",
+y añadiríamos "fs=DOS1" en el add).
 
 -Formateamos la partición con las herramientas del PFS3 original, que se bajan desde aquí:
 https://aminet.net/package/disk/misc/PFS3_53
