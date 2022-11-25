@@ -139,6 +139,11 @@ Para transferir directorios entre discos, montar los discos desde Linux así:
 sudo mount -t vfat -o loop,offset=32256 hdd.vhd mnt
 (TODOS los discos duros de MSDOS se montan igual)
 
+Para que el primer DIR no tarde taaaaaanto, puedes descargarte el FREESPT.COM de aquí:
+https://github.com/ChartreuseK/FREESP/releases
+Y meterlo en el AUTOEXEC.BAT como:
+LH FREESPT.COM C
+
 Para activar/desactivar los colores COMPOSITE dinámicamente (ya que los juegos en modo PCXT se ven genial con colores composite
 pero los colores composite hacen que la consola de texto de DOS se vea FATA) usa el XTCTL.EXE, que está aquí para descargar:
 https://github.com/MiSTer-devel/PCXT_MiSTer/tree/main/hdd
@@ -366,24 +371,25 @@ sudo apt-get install python3-pip
 -Instalamos las amitools:
 sudo pip3 install amitools
 
--Creamos la imágen del disco RBD, y la inicializamos reservando 8 cilindros de espacio RBD para el driver de filesystem PSF3:
-rdbtool test.hdf create size=256Mi + init rdb_cyls=8
-
--Le añadimos una partición que ocupará el 100% del disco, la llamaremos DH0, y tendrá un max_transfer que
-no corrompa el disco en el core Minimig, y será bootable:
-(Si quisiésemos que fuese en WB 1.x. pondríamos también dostype=0x444F5301 o DOS1 o ffs, es lo mismo)
-rdbtool test.hdf add size=100% DH0 max_transfer=0x1fe00 bootable=true
-
 -Nos bajamos el filesystem PFS3 libre, llamado PFS3aio, de aquí:
 http://aminet.net/package/disk/misc/pfs3aio
 
--Le añadimos el driver de filesystem PFS, que la ROM cargará y usará:
-rdbtool test.hdf fsadd pfs3aio
+-Creamos la imágen del disco RBD, la inicializamos reservando 8 cilindros de espacio RBD para el driver de filesystem PSF3,
+le instalamos el driver de filesystem PFS3, etc:
 
--Formateamos la partición que creamos antes, poniéndole la etiqueta "Amiga"
-(Si quisiésemos que fuese en WB 1.x. pondríamos también dostype=0x444F5301 o DOS1 o ffs, es lo mismo)
-(Lo de list es para que al acabar nos muestre la info de las particiones):
-xdftool test.hdf open part=dh0 + format Amiga + list
+rdbtool -f -p DH test.hdf create size=512Mi + init rdb_cyls=8 + fsadd pfs3aio + fsadd pfs3aio dostype=PFS3 + add size=98% name=DH0 bootable=true automount=true pri=1 Bla max_transfer=0x0001fe00 mask=0x7ffffffe num_buffer=30
+
+(Si quisiésemos que fuese en WB 1.x. añadiríamos "dostype=DOS1" en el fsadd, y "fs=DOS1" en add).
+
+-Formateamos la partición con las herramientas del PFS3 original, que se bajan desde aquí:
+https://aminet.net/package/disk/misc/PFS3_53
+Lo hacemos desde AmigaOS así (lo más fácil es hacerlo desde fs-uae: metiendo pfsformat en una carpeta de Linux que montamos desde
+fs-uae-launcher para tener acceso a ella desde el lado del Amiga, y arrancando con el disco Workbench del set de ADFs del WB 3.1):
+
+PFSFormat DEVICE DH0: NAME Amiga NOICONS FNSIZE=107
+
+(Podríamos añadir "quick" para un formateo rápido, pero para un primer formateo lo hacemos normal ya que si no la imágen de disco
+no tiene el tamaño completo desde el principio).
 
     ---HERRAMIENTAS ADICIONALES--
 
