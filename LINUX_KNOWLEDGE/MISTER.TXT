@@ -388,8 +388,9 @@ PARA VER LA INFO DE LAS PARTICIONES DE LA IMÁGEN (el dostype, el maxtransfer, s
 rdbtool test.hdf info
 
 SI QUEREMOS MODIFICAR PARÁMETROS DE UNA PARTICIÓN YA CREADA (hacerla bootable, su dostype, su maxtransfer, etc...) LO HACEMOS ASÍ:
-rdbtool test.hdf change 0 dostype=0x444F5301 max_transfer=0x1fe00 bootable=true
+rdbtool test.hdf change 0 dostype=DOS5 max_transfer=0x1fe00 bootable=true
 (En el ejemplo se modifica la partición número 0, para ver el número de las particiones usa "rdbtool test.hdf info").
+(Recuerda que KS 3.1 sólo soporta hasta DOS5 para FFS, para DOS7 ya necesitarías KS 3.1.4 en adelante. Para KS 1.3 sería DOS1 o DOS0).
 
 CREAR IMÁGEN DE DISCO CON SISTEMA FFS PARA WB 1.3
 =================================================
