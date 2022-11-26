@@ -374,24 +374,13 @@ sudo pip3 install amitools
 -Nos bajamos el filesystem PFS3 libre, llamado PFS3aio, de aquí:
 http://aminet.net/package/disk/misc/pfs3aio
 
--Arrancamos con el disco 1 del set de discos de Workbench (llamado "Install") y extraemos l:FastFilesystem
+-Creamos la imágen del disco RBD, la inicializamos reservando 4 cilindros de espacio RBD para el driver de filesystem PSF3,
+le instalamos el driver de filesystem PFS3, etc:
 
--Creamos la imágen del disco RBD, la inicializamos reservando 8 cilindros de espacio RBD: 4 para el driver de filesystem FFS y 4 para el PSF3,
-le instalamos los drivers de filesystem FFS y PFS3, etc:
+rdbtool -f -p DH test.hdf create size=512Mi + init rdb_cyls=4 + fsadd pfs3aio dostype=PFS3 + add size=98% name=DH0 fs=PFS3 bootable=true automount=true pri=1 Bla max_transfer=0x0001fe00 mask=0x7ffffffe num_buffer=30
 
-rdbtool -f -p DH test.hdf create size=512Mi + init rdb_cyls=8 + fsadd FastFilesystem dostype=DOS7 + fsadd pfs3aio dostype=PFS3 + add size=98% name=DH0 fs=DOS7 bootable=true automount=true pri=1 Bla max_transfer=0x0001fe00 mask=0x7ffffffe num_buffer=30
-
-(Si quisiésemos que fuese compatible con KS 1.3 usaríamos dostype=DOS1 en el primer fsadd y fs=DOS1 en el add).
-
--Formateamos la partición con las herramientas del PFS3 original, que se bajan desde aquí:
-https://aminet.net/package/disk/misc/PFS3_53
-Lo hacemos desde AmigaOS así (lo más fácil es hacerlo desde fs-uae: metiendo pfsformat en una carpeta de Linux que montamos desde
-fs-uae-launcher para tener acceso a ella desde el lado del Amiga, y arrancando con el disco Workbench del set de ADFs del WB 3.1):
-
-PFSFormat DEVICE DH0: NAME Amiga NOICONS FNSIZE=107
-
-(Podríamos añadir "quick" para un formateo rápido, pero para un primer formateo lo hacemos normal ya que si no la imágen de disco
-no tiene el tamaño completo desde el principio).
+-Formateamos la partición desde AmigaOS, pinchando en el icono y dándole a icon->format. Al final nos saldrá una confirmación de que estamos
+ usando PFS3AIO.
 
     ---HERRAMIENTAS ADICIONALES--
 
