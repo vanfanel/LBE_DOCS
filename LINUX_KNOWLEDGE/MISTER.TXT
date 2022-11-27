@@ -382,6 +382,14 @@ rdbtool -f -p DH test.hdf create size=512Mi + init rdb_cyls=4 + fsadd pfs3aio do
 -Formateamos la partición desde AmigaOS, pinchando en el icono y dándole a icon->format. Al final nos saldrá una confirmación de que estamos
  usando PFS3AIO.
 
+NOTA: Podemos crear una imágen de disco adicional secundaria para los juegos de Laserdisc así (en esta no ponemos una partición bootable
+y tampoco necesitamos una prioridad por lo mismo, etc):
+
+rdbtool -f -p DH laserdisc.hdf create size=1200Mi + init rdb_cyls=4 + fsadd pfs3aio dostype=PFS3 + add size=98% name=DH0 fs=PFS3 automount=true Bla max_transfer=0x0001fe00 mask=0x7ffffffe num_buffer=30
+
+OJO!!! Para que el core Minimig de la MiSTer reconozca ambas imágenes a la vez, tenemos que ejecutar HDToolBox con ambas imágenes conectadas,
+y nos dirá que ha habido cambios o algo de eso: le damos a salvar cambios, y al reiniciar ya nos reconoce las dos imágenes y nos las monta normal.
+
     ---HERRAMIENTAS ADICIONALES--
 
 PARA VER LA INFO DE LAS PARTICIONES DE LA IMÁGEN (el dostype, el maxtransfer, si es bootable o no...) LO HACEMOS ASÍ:
