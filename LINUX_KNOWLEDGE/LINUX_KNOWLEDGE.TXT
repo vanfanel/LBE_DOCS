@@ -8645,7 +8645,7 @@ PARTE 1: ffmpeg
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 ./configure --enable-libv4l2 --disable-network --disable-debug --disable-encoders --disable-muxers --disable-indevs \
---disable-outdev=fbdev --disable-outdev=oss
+--disable-outdev=fbdev --disable-outdev=oss --disable-bsfs
 
 (OJO: No desactives el soporte SDL2 con --disable-sdl2 si quieres que se compile ffplay, ya que ffplay, de hecho, está hecho
 precisamente como un player simple sobre SDL2 y es el único backend que tiene).
