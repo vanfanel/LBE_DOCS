@@ -272,6 +272,11 @@ mount -o loop,offset=32256 msdos622.vhd /mnt
 
 sudo mount -o loop,rw,offset=65536 boot.vhd /mnt
 
+NOTAS CORE MSX
+==============
+
+Tienes TODO el software de MSX1/MSX2 en: https://download.file-hunter.com/
+
 ***********Montar un VHD de MSX para la MiSTer******************************************************************************************
 
 ---Averiguamos dónde empieza con parted. Necesitamos saberlo en BYTES para poder pasárselo a mount, NO en sectores como nos lo dice FDISK. Por eso usamos parted:

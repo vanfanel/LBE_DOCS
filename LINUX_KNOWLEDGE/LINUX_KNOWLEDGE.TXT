@@ -6227,10 +6227,10 @@ cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DCMAKE_BUILD_TYPE=Release -DDEBUG=OFF \
 
 Compilamos y metemos en el directorio ~/diablo:
 -El ejecutable "devilutionx"
--El directorio "assets" que se nos crea en el directorio de compilacion.
-Como curiosidad, en su lugar podriamos copiar la versión actual del fichero "devilutionx.mpq" que se genera
- con el proceso de compilación si tienes instalado smpq.
- Es una cosa o la otra: o el directorio assets o el "devilutionx.mpq", yo para no instalar cosas prefiero meter el directorio "assets" y fuera.
+-El fichero "devilutionx.mpq" que se nos crea en el directorio de compilacion.
+Como curiosidad, en su lugar podriamos copiar el directorio "assets" que se genera en el directorio de compilación aunque no tengas instalado smpq.
+ Es una cosa o la otra: o el directorio assets o el "devilutionx.mpq". Yo, como instalo smpq en las dependencias previas,
+ prefiero meter el fichero "devolutionx.mpq" y ya.
 -El fichero de los datos del juego, que se llama "diabdat.mpq" y que tienes que conseguir por tu cuenta.
 
 La primera vez que ejecutemos el juego, se creará el fichero de configuración en ~/.local/share/diasurgical/devilution/diablo.ini
@@ -8565,6 +8565,60 @@ EJECUTAR VKCUBE SIN LAS X
 
 vkcube -m khr -k 0:0:0
 (display 0, modo 0, plano 0. Usa --help para más información).
+
+AUTOMONJATE DE DISPOSITIVOS DE ALMACENAMIENTO USB EN GNU/LINUX
+==============================================================
+
+-Al más bajo nivel, para que cuando udev detecte el disco se active el servicio de montaje,
+creamos /etc/udev/rules.d/99-local.rules con el contenido:
+
+
+KERNEL=="sd[a-z][0-9]", SUBSYSTEMS=="usb", ACTION=="add", RUN+="/bin/systemctl start usbmount@%k.service"
+KERNEL=="sd[a-z][0-9]", SUBSYSTEMS=="usb", ACTION=="remove", RUN+="/bin/systemctl stop usbmount@%k.service"
+
+
+-Ahora creamos el servicio de montaje, que llamaremos usbmount, en /etc/systemd/system/usbmount@.service, con el contenido:
+
+
+[Unit]
+Description=Mount USB Drive on %i
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/local/bin/usbmount add %i
+ExecStop=/usr/local/bin/usbmount remove %i
+
+
+-Creamos el script de montaje, que también llamaremos usbmount, en /usr/local/bin/usbmount con el contenido:
+
+#!/bin/bash
+ACTION=$1
+DEVBASE=$2
+DEVICE="/dev/${DEVBASE}"
+MOUNT_POINT=$(/bin/mount | /bin/grep ${DEVICE} | /usr/bin/awk '{ print $3 }')  # See if this drive is already mounted
+case "${ACTION}" in
+    add)
+        if [[ -n ${MOUNT_POINT} ]]; then exit 1; fi          # Already mounted, exit
+        eval $(/sbin/blkid -o udev ${DEVICE})                # Get info for this drive: $ID_FS_LABEL, $ID_FS_UUID, and $ID_FS_TYPE
+        OPTS="rw,relatime"                                   # Global mount options
+        if [[ ${ID_FS_TYPE} == "vfat" ]]; then OPTS+=",users,gid=100,umask=000,shortname=mixed,utf8=1,flush"; fi     # File system type specific mount options
+        if ! /bin/mount -o ${OPTS} ${DEVICE} /media/; then exit 1; fi          # Error during mount process: cleanup mountpoint
+        ;;
+    remove)
+        if [[ -n ${MOUNT_POINT} ]]; then /bin/umount -l ${DEVICE}; fi
+        ;;
+esac
+
+
+-Le damos permisos de ejecución:
+chmod +x /usr/local/bin/usbmount
+
+-Recargamos las udev rules y los servicios:
+udevadm control --reload-rules
+systemctl daemon-reload
+
+...Y ya deberíamos tener los dispositivos de almacenamiento USB automáticamente montados en /media/...
 
 ACELERACIÓN DE VÍDEO EN LA PI4 CON MPV
 ======================================

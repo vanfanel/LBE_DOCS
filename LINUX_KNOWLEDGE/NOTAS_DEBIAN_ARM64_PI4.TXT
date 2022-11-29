@@ -650,8 +650,6 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (SI TE DA ERROR AL LINKAR por funciones de slang, no le pases --disable-builtinglslang)
 
-
-
 Compilar y listo.
 
 Si no quieres shimmering en las letras del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE
