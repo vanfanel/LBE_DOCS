@@ -8590,7 +8590,9 @@ ExecStart=/usr/local/bin/usbmount add %i
 ExecStop=/usr/local/bin/usbmount remove %i
 
 
--Creamos el script de montaje, que también llamaremos usbmount, en /usr/local/bin/usbmount con el contenido:
+-Creamos el script de montaje, que será llamado/usado por el servicio de montaje para hacer el montaje en sí,
+y que también llamaremos usbmount, en /usr/local/bin/usbmount con el contenido:
+
 
 #!/bin/bash
 ACTION=$1
@@ -8611,7 +8613,7 @@ case "${ACTION}" in
 esac
 
 
--Le damos permisos de ejecución:
+-Le damos permisos de ejecución al script de montaje:
 chmod +x /usr/local/bin/usbmount
 
 -Recargamos las udev rules y los servicios:
