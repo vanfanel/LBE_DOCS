@@ -8680,15 +8680,16 @@ PARTE 1: ffmpeg
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 ./configure --enable-libv4l2 --disable-network --disable-debug --disable-encoders --disable-muxers --disable-indevs \
---disable-outdev=fbdev --disable-outdev=oss --disable-doc --disable-bsfs
-(OJO: No desactives el soporte SDL2 con --disable-sdl2 si quieres que se compile ffplay, ya que ffplay, de hecho, está hecho
-precisamente como un player simple sobre SDL2 y es el único backend que tiene).
+--disable-outdev=fbdev --disable-outdev=oss --disable-doc --disable-bsfs --disable-ffprobe --disable-sdl2
 
-Llegados a este este punto, podemos reproducir vídeos con ffplay, para ello:
+(NOTA: para tener ffplay, activa el soporte SDL2 quitando --disable-sdl2 : ffplay, está hecho precisamente como un player simple
+sobre SDL2 y es el único backend que tiene).
 
+(NOTA: Llegados a este este punto, SI HUBIÉSEMOS ACTIVADO EL SOPORTE DE SDL2, podríamos reproducir vídeos con ffplay, para ello:
 Lo primero, vermos qué codecs puede hacer por hardware la Pi: ffmpeg -codecs | grep v4l2m2m
+Y ahora elegimos un codec y reproducimos el vídeo usándolo: ffplay -codec:v h264_v4l2m2m -fs <fichero_vídeo>
+PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
 
-Y ahora elegimos un codec y reproducimos el vídeo usándolo: ffplay -codec:v h264_v4l2m2m -fs <fichero_vídeo> 
 
 PARTE 2: MPV
 
