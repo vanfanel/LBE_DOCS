@@ -4929,7 +4929,10 @@ Editamos Makefile y añadimos al lado de -O2 los flags:
 Compilamos con:
 make WITH_NETWORK=false -j4
 
-Se ejecuta sin más, con los datos del juego original en el mismo directorio que el ejecutable.
+Metemos el ejecutable "opentyrian" en ~/tyrian, y los datos del juego en ~/tyrian/data,
+y ejecutamos con:
+opentyrian --data=data
+
 Puedes bajar el original de:
 https://exodos.the-eye.us/public/eXo/
 Los archivos originales de DOS vienen todos en mayúsculas, los puedes pasar a minúsculas con:
