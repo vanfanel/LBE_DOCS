@@ -8695,7 +8695,7 @@ PARTE 2: MPV
 
 -Instalamos dependencias previas: sudo apt-get install libass-dev --no-install-recommends
 
--Clonamos su repo: git clone --depth 1 https://github.com/mpv-player/mpv.git
+-Bajamos su última versión estable de aquí: https://github.com/mpv-player/mpv/releases
 
 -Ejecutamos:
 ./bootstrap.py
@@ -8706,7 +8706,7 @@ PARTE 2: MPV
 -Ahora configuramos con:
 
 CFLAGS="-march=native -mtune=native -DEGL_NO_X11" CXXFLAGS="-DEGL_NO_X11" \
-./waf configure --disable-rpi-mmal --enable-ffmpeg-strict-abi
+./waf configure --disable-rpi-mmal
 
 -Y ahora compilamos e instalamos:
 ./waf build -j4
