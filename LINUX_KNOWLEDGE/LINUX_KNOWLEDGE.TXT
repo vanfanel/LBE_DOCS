@@ -8606,17 +8606,47 @@ y que también llamaremos usbmount, en /usr/local/bin/usbmount con el contenido:
 ACTION=$1
 DEVBASE=$2
 DEVICE="/dev/${DEVBASE}"
-MOUNT_POINT=$(/bin/mount | /bin/grep ${DEVICE} | /usr/bin/awk '{ print $3 }')  # See if this drive is already mounted
+
+# See if this drive is already mounted, and if so, where
+MOUNT_POINT=$(/bin/mount | /bin/grep ${DEVICE} | /usr/bin/awk '{ print $3 }')
+
+# Mount or dismount
 case "${ACTION}" in
-    add)
-        if [[ -n ${MOUNT_POINT} ]]; then exit 1; fi          # Already mounted, exit
-        eval $(/sbin/blkid -o udev ${DEVICE})                # Get info for this drive: $ID_FS_LABEL, $ID_FS_UUID, and $ID_FS_TYPE
-        OPTS="rw,relatime"                                   # Global mount options
-        if [[ ${ID_FS_TYPE} == "vfat" ]]; then OPTS+=",users,gid=100,umask=000,shortname=mixed,utf8=1,flush"; fi     # File system type specific mount options
-        if ! /bin/mount -o ${OPTS} ${DEVICE} /media/; then exit 1; fi          # Error during mount process: cleanup mountpoint
+
+	add)
+		# If already mounted, exit
+		if [[ -n ${MOUNT_POINT} ]]; then exit 1; fi
+
+		# Get info for this drive: $ID_FS_LABEL, $ID_FS_UUID, and $ID_FS_TYPE
+		eval $(/sbin/blkid -o udev ${DEVICE})
+
+		# Figure out the mount point to use, based on the device label
+		LABEL=${ID_FS_LABEL}	
+		MOUNT_POINT="/media/${LABEL}"
+
+		# Create the mountpoint
+		/bin/mkdir -p ${MOUNT_POINT}
+
+		# Global mount options
+		OPTS="rw,relatime"				
+
+		# FAT file system specific mount options (meh)
+		if [[ ${ID_FS_TYPE} == "vfat" ]]; then
+			OPTS+=",users,gid=100,umask=000,shortname=mixed,utf8=1,flush"
+		fi
+
+		# Let's mount! Delete the mountpoint and exit if failed
+		if ! /bin/mount -o ${OPTS} ${DEVICE} ${MOUNT_POINT}; then
+			/bin/rmdir ${MOUNT_POINT}
+			exit 1
+		fi
         ;;
-    remove)
-        if [[ -n ${MOUNT_POINT} ]]; then /bin/umount -l ${DEVICE}; fi
+
+	remove)
+		if [[ -n ${MOUNT_POINT} ]]; then
+			/bin/umount -l ${DEVICE}
+			/bin/rmdir ${MOUNT_POINT}
+		fi
         ;;
 esac
 
