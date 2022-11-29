@@ -8694,13 +8694,20 @@ PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
 PARTE 2: MPV
 
 -Instalamos dependencias previas: sudo apt-get install libass-dev --no-install-recommends
+
 -Clonamos su repo: git clone --depth 1 https://github.com/mpv-player/mpv.git
+
 -Ejecutamos:
 ./bootstrap.py
+
 -Ahora vemos lo que podemos activar y desactivar con:
 ./waf configure --help
--Ahora configuramos:
-CFLAGS="-DEGL_NO_X11" CXXFLAGS="-DEGL_NO_X11" ./waf configure --disable-rpi-mmal --enable-ffmpeg-strict-abi
+
+-Ahora configuramos con:
+
+CFLAGS="-march=native -mtune=native -DEGL_NO_X11" CXXFLAGS="-DEGL_NO_X11" \
+./waf configure --disable-rpi-mmal --enable-ffmpeg-strict-abi
+
 -Y ahora compilamos e instalamos:
 ./waf build -j4
 sudo ./waf install
