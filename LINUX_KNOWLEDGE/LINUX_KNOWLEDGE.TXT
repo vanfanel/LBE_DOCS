@@ -6217,6 +6217,14 @@ DEVILUTIONX, Diablo en Linux
 Dependencias previas:
 sudo apt-get install libsodium-dev libbz2-dev smpq --no-install-recommends
 
+(OJO: EN DEBIAN 11 ESTO NO FUNCIONA AÚN PORQUE USA LIBSTORM 9.22).
+Si quieres que los assets del juego (incluidos con los sources, son diferentes de los DATOS del juego, los datos los tienes que poner tú)
+queden en un solo fichero llamado "devilutionx.mpq" en vez de en el directorio "assets",
+para lo cual tu distro debe usar una versión de smpq que use una libstorm superior a la versión 9.22 ya que libstorm 9.22 está rota en aarch64:
+sudo apt-get install smpq --no-install-recommends
+
+---Vamos con DevilutionX en sí:---
+
 Bajamos la última estable de:
 https://github.com/diasurgical/devilutionX/releases
 
@@ -6227,10 +6235,10 @@ cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DCMAKE_BUILD_TYPE=Release -DDEBUG=OFF \
 
 Compilamos y metemos en el directorio ~/diablo:
 -El ejecutable "devilutionx"
--El fichero "devilutionx.mpq" que se nos crea en el directorio de compilacion.
-Como curiosidad, en su lugar podriamos copiar el directorio "assets" que se genera en el directorio de compilación aunque no tengas instalado smpq.
- Es una cosa o la otra: o el directorio assets o el "devilutionx.mpq". Yo, como instalo smpq en las dependencias previas,
- prefiero meter el fichero "devolutionx.mpq" y ya.
+-El diectorio "assets" que se nos crea en el directorio de compilacion.
+ En su lugar, podríamos usar "devilutionx.mpq" que se nos generaría en el directorio de compilación si hubiésemos instalado smpq
+ en las dependencias previas, cosa que no podemos hacer en Debian 11 porque su smpq usa la versión de libstorm 9.22, que está rota
+ en aarch64.
 -El fichero de los datos del juego, que se llama "diabdat.mpq" y que tienes que conseguir por tu cuenta.
 
 La primera vez que ejecutemos el juego, se creará el fichero de configuración en ~/.local/share/diasurgical/devilution/diablo.ini
