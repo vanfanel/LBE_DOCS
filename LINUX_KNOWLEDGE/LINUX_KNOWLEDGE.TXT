@@ -8634,8 +8634,10 @@ PARTE 1: ffmpeg
 -Clonamos su repo: git clone --depth 1 https://git.ffmpeg.org/ffmpeg.git
 -Configuramos con:
 
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
 ./configure --enable-libv4l2 --disable-network --disable-debug --disable-encoders --disable-muxers --disable-indevs \
---disable-outdev=fbdev --disable-outdev=oss
+--disable-outdev=fbdev --disable-outdev=oss --disable-sdl2
 
 Llegados a este este punto, podemos reproducir vídeos con ffplay, para ello:
 
