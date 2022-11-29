@@ -525,7 +525,7 @@ initial-window-mode=maximized
 	-Instalamos: apt-get install fonts-jetbrains-mono
 	-En el foot.ini: font=JetBrainsMono:size=10
 
--Para tener un cursor como el de la TTY:
+-Para tener un cursor como el de la TTY (aunque yo prefiero últimamente style=block):
 [cursor]
 style=underline
 blink=yes
