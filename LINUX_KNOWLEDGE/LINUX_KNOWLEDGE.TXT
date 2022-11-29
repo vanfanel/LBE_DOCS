@@ -8641,7 +8641,7 @@ CXXFLAGS="-march=native -mtune=native" \
 
 Llegados a este este punto, podemos reproducir vídeos con ffplay, para ello:
 
-Lo primero, vermos qué codecs puede hacer desde hardware la Pi: ffmpeg -codecs | grep v4l2m2m
+Lo primero, vermos qué codecs puede hacer por hardware la Pi: ffmpeg -codecs | grep v4l2m2m
 
 Y ahora elegimos un codec y reproducimos el vídeo usándolo: ffplay -codec:v h264_v4l2m2m -fs <fichero_vídeo> 
 
