@@ -815,6 +815,9 @@ bindsym $mod+f4 kill
 # Exit sway (logs you out of your Wayland session)
 bindsym $mod+Ctrl+backspace exec swaymsg exit
 
+-Para ocultar el cursor del ratón cuando no lo estamos usando (al cabo de 3 segundos en este ejemplo):
+seat seat0 hide_cursor 3000
+
 -Para lanzar el terminal "foot" al arrancar Sway:
 exec swaymsg "workspace 1; exec foot;"
 
@@ -928,6 +931,7 @@ PATH=$PATH:.
 PS1="\W "
 MY_IP=$(ip -4 addr show wlan0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 
+echo "                                               "
 echo " ^_^    Welcome to Debian 11 GNU/Linux aarch64."
 echo "(O,O)   Service management is done via SystemD."
 echo "/)_)    This computer's local IP is $MY_IP"
