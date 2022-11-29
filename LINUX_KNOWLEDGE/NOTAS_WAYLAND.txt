@@ -530,6 +530,9 @@ initial-window-mode=maximized
 style=underline
 blink=yes
 
+-Para instalar un tema, simplemente cópiate el contenido del tema que quieras (están en /usr/local/shared/foot/themes)
+ al final del foot.ini, y listo.
+
 KITTY, UN EMULADOR DE TERMINAL PARA WAYLAND
 -------------------------------------------
 
