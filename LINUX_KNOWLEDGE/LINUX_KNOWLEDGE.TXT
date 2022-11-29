@@ -1595,6 +1595,8 @@ Para que no nos mande mensajes a la consola, lo podemos ejecutar con:
 ./uqm --logfile=/dev/null
 Se sale del juego con F10 o F12.
 
+Como mejor se ve es en 640x480, sin filtro bilineal y con scanlines.
+
 *******vkQuake en la Pi***********************************************************
 
 Bajamos la última estable de:
