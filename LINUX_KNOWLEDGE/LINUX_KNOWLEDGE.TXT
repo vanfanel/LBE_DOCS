@@ -8713,20 +8713,21 @@ CXXFLAGS="-march=native -mtune=native" \
 
 (La configuración la sacamos de https://github.com/jc-kynesim/rpi-ffmpeg/blob/test/4.3.5/rpi_main/pi-util/conf_arm64_native.sh)
 
-(NOTA: para tener ffplay, activa el soporte SDL2 quitando --disable-sdl2 : ffplay, está hecho precisamente como un player simple
-sobre SDL2 y es el único backend que tiene).
-
-(NOTA: Llegados a este este punto, SI HUBIÉSEMOS ACTIVADO EL SOPORTE DE SDL2, podríamos reproducir vídeos con ffplay, para ello:
-Lo primero, vermos qué codecs puede hacer por hardware la Pi: ffmpeg -codecs | grep v4l2m2m
-Y ahora elegimos un codec y reproducimos el vídeo usándolo: ffplay -codec:v h264_v4l2m2m -fs <fichero_vídeo>
-PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
-
 LLEGADOS A ESTE PUNTO, podemos probar que la reproducción por hardware funciona:
 ./ffmpeg -no_cvt_hw -c:v h264_v4l2m2m -i video.mkv -f vout_egl /dev/null
 (VER ESTE HILO para encontrar ejemplos: https://github.com/jc-kynesim/rpi-ffmpeg/issues/45)
 
 SI QUEREMOS REPRODUCIR vídeos en HEVC, tenemos que añadir a config.txt:
 dtoverlay=rpivid-v4l2
+
+(NOTA: para tener ffplay, activa el soporte SDL2 quitando --disable-sdl2 : ffplay, está hecho precisamente como un player simple
+sobre SDL2 y es el único backend que tiene).
+
+(NOTA: SI HUBIÉSEMOS ACTIVADO EL SOPORTE DE SDL2, podríamos reproducir vídeos con ffplay, para ello:
+Lo primero, vermos qué codecs puede hacer por hardware la Pi: ffmpeg -codecs | grep v4l2m2m
+Y ahora elegimos un codec y reproducimos el vídeo usándolo: ffplay -codec:v h264_v4l2m2m -fs <fichero_vídeo>
+PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
+
 
 PARTE 2: MPV
 
