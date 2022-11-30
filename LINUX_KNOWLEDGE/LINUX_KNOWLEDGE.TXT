@@ -8697,17 +8697,18 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 ./configure --disable-network --disable-debug --disable-encoders --disable-muxers --disable-indevs \
 --disable-outdev=fbdev --disable-outdev=oss --disable-doc --disable-bsfs --disable-ffprobe --disable-sdl2 \
---disable-mmal --enable-sand \
 --disable-stripping \
 --disable-thumb \
+--disable-mmal \
+--enable-sand \
 --enable-v4l2-request \
 --enable-libdrm \
---enable-vout-egl \
+--enable-epoxy \
+--enable-libudev \
 --enable-vout-drm \
---enable-gpl \
---extra-version="rpi"
+--enable-vout-egl
 
-(La configuración la sacamos de https://github.com/jc-kynesim/rpi-ffmpeg/blob/test/4.3.5/rpi_main/pi-util/conf_native.sh)
+(La configuración la sacamos de https://github.com/jc-kynesim/rpi-ffmpeg/blob/test/4.3.5/rpi_main/pi-util/conf_arm64_native.sh)
 
 (NOTA: para tener ffplay, activa el soporte SDL2 quitando --disable-sdl2 : ffplay, está hecho precisamente como un player simple
 sobre SDL2 y es el único backend que tiene).
