@@ -8698,7 +8698,7 @@ PARTE 1: ffmpeg
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-./configure --disable-network --disable-debug --disable-encoders --disable-muxers --disable-indevs \
+./configure --disable-network --disable-debug --disable-muxers --disable-indevs \
 --disable-outdev=fbdev --disable-outdev=oss --disable-doc --disable-bsfs --disable-ffprobe --disable-sdl2 \
 --disable-stripping \
 --disable-thumb \
@@ -8708,13 +8708,12 @@ CXXFLAGS="-march=native -mtune=native" \
 --enable-libdrm \
 --enable-epoxy \
 --enable-libudev \
---enable-vout-drm \
---enable-vout-egl
+--enable-vout-drm
 
 (La configuración la sacamos de https://github.com/jc-kynesim/rpi-ffmpeg/blob/test/4.3.5/rpi_main/pi-util/conf_arm64_native.sh)
 
 LLEGADOS A ESTE PUNTO, podemos probar que la reproducción por hardware funciona:
-./ffmpeg -no_cvt_hw -c:v h264_v4l2m2m -i video.mkv -f vout_egl /dev/null
+ffmpeg -no_cvt_hw -c:v h264_v4l2m2m -i video.mkv -f vout_drm /dev/null
 (VER ESTE HILO para encontrar ejemplos: https://github.com/jc-kynesim/rpi-ffmpeg/issues/45)
 
 SI QUEREMOS REPRODUCIR vídeos en HEVC, tenemos que añadir a config.txt:
