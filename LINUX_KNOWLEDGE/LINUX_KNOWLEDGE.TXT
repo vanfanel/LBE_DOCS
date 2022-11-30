@@ -8721,6 +8721,8 @@ Lo primero, vermos qué codecs puede hacer por hardware la Pi: ffmpeg -codecs | 
 Y ahora elegimos un codec y reproducimos el vídeo usándolo: ffplay -codec:v h264_v4l2m2m -fs <fichero_vídeo>
 PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
 
+LLEGADOS A ESTE PUNTO, podemos probar que la reproducción por hardware funciona:
+./ffmpeg -no_cvt_hw -c:v h264_v4l2m2m -i video.mkv -f vout_egl /dev/null
 
 PARTE 2: MPV
 
