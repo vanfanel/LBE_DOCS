@@ -8689,8 +8689,11 @@ Instalamos dependencias previas:
 sudo apt-get install libv4l-dev --no-install-recommends
 
 PARTE 1: ffmpeg
--Clonamos este repo que es un fork con soporte específico para la Pi:
- git clone --depth 1 https://github.com/jc-kynesim/rpi-ffmpeg.git
+
+-Clonamos este repo que es un fork con soporte específico para la Pi. Usamos un branch con las cosas específicas de la Pi,
+ porque el principal no se actualiza, se actualizan los branches:
+ git clone --depth 1 https://github.com/jc-kynesim/rpi-ffmpeg.git -b test/4.3.5/rpi_main 
+
 -Configuramos con:
 
 CFLAGS="-march=native -mtune=native" \
