@@ -8725,6 +8725,9 @@ LLEGADOS A ESTE PUNTO, podemos probar que la reproducción por hardware funciona
 ./ffmpeg -no_cvt_hw -c:v h264_v4l2m2m -i video.mkv -f vout_egl /dev/null
 (VER ESTE HILO para encontrar ejemplos: https://github.com/jc-kynesim/rpi-ffmpeg/issues/45)
 
+SI QUEREMOS REPRODUCIR vídeos en HEVC, tenemos que añadir a config.txt:
+dtoverlay=rpivid-v4l2
+
 PARTE 2: MPV
 
 -Instalamos dependencias previas: sudo apt-get install libass-dev --no-install-recommends
