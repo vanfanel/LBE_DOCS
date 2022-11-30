@@ -8579,6 +8579,21 @@ EJECUTAR VKCUBE SIN LAS X
 vkcube -m khr -k 0:0:0
 (display 0, modo 0, plano 0. Usa --help para más información).
 
+INSTALAR CERTIFICADO DIGITAL
+============================
+
+Nos vamos a https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-software
+Este va a ser nuestro índice general desde el que vamos haciendo las cosas.
+
+-Primero nos bajamos el programa de Configuración previa, que es un .DEB. 
+¡¡¡CUIDADO!!! Antes de instalarlo, instalamos sus dependencias previas:
+sudo apt-get install libcanberra-gtk-module libcanberra-gtk3-module --no-install-recommends
+Luego ya lo instalamos:
+sudo dpkg -i configuradorfnmt_1.0.1-0_amd64.deb
+
+-Ahora nos vamos a la parte de "Solicitud via internet de su certificado". Rellenamos el formulario y lo enviamos.
+Nos llegará al correo un código, que junto con el DNI se presenta en un registro (Ayto por ejemplo) y nos dan el certificado.
+
 AUTOMONJATE DE DISPOSITIVOS DE ALMACENAMIENTO USB EN GNU/LINUX
 ==============================================================
 
@@ -8674,13 +8689,22 @@ Instalamos dependencias previas:
 sudo apt-get install libv4l-dev --no-install-recommends
 
 PARTE 1: ffmpeg
--Clonamos su repo: git clone --depth 1 https://git.ffmpeg.org/ffmpeg.git
+-Clonamos este repo que es un fork con soporte específico para la Pi:
+ git clone --depth 1 https://github.com/jc-kynesim/rpi-ffmpeg.git
 -Configuramos con:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-./configure --enable-libv4l2 --disable-network --disable-debug --disable-encoders --disable-muxers --disable-indevs \
---disable-outdev=fbdev --disable-outdev=oss --disable-doc --disable-bsfs --disable-ffprobe --disable-sdl2
+./configure --disable-network --disable-debug --disable-encoders --disable-muxers --disable-indevs \
+--disable-outdev=fbdev --disable-outdev=oss --disable-doc --disable-bsfs --disable-ffprobe --disable-sdl2 \
+--disable-mmal --enable-sand \
+--disable-stripping \
+--disable-thumb \
+--enable-v4l2-request \
+--enable-libdrm \
+--enable-vout-egl \
+--enable-vout-drm \
+--enable-gpl
 
 (NOTA: para tener ffplay, activa el soporte SDL2 quitando --disable-sdl2 : ffplay, está hecho precisamente como un player simple
 sobre SDL2 y es el único backend que tiene).
