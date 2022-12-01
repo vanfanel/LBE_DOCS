@@ -8764,20 +8764,18 @@ PARTE 2: MPV
 
 -Bajamos su última versión estable de aquí: https://github.com/mpv-player/mpv/releases
 
--Ejecutamos:
-./bootstrap.py
+-Ahora configuramos con (recuerda que podemos ver qué actuvar y qué desactivar en meson_options.txt):
 
--Ahora vemos lo que podemos activar y desactivar con:
-./waf configure --help
+mkdir b4
+cd b4
 
--Ahora configuramos con:
-
-CFLAGS="-march=native -mtune=native -DEGL_NO_X11" CXXFLAGS="-DEGL_NO_X11" \
-./waf configure --disable-rpi-mmal
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson ..
 
 -Y ahora compilamos e instalamos:
-./waf build -j4
-sudo ./waf install
+ninja -j4
+ninja install
 
 Para usar wayland:
 mpv -fs --vo=gpu --hwdec=v4l2m2m-copy --gpu-context=wayland <fichero_vídeo>
