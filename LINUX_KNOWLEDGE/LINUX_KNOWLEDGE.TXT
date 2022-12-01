@@ -229,6 +229,36 @@ En QUICK MENU->OPTIONS, ponemos NEO-GEO MODE a UNIBIOS.
 Ahora, una vez dentro del juego, mantenemos pulsado START y nos sale un menú donde podemos activar varias cosas,
 entre ellas la sangre roja o poner el juego en idiomas locos.
 
+******Legend of Zelda: A Link to the Past (ZELDA3) nativo en GNU/Linux*******************************************************
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/snesrev/zelda3.git
+
+--Si NO tenemos los datos extraidos:
+	-Instalamos las dependencias necesarias para extraer los datos de la ROM:
+	python3 -m pip install -r requirements.txt
+	-Copiamos la ROM USA a tables/zelda3.sfc, para que se extraigan los datos al compilar.
+--Si ya tenemos los datos extraidos, para que NO se intenten extraer los datos sino sólo generar el ejecutable:
+Editamos Makefile y dejamos la parte:
+all: $(TARGET_EXEC) tables/zelda3_assets.dat
+como:
+all: $(TARGET_EXEC)
+
+Compilamos con:
+
+CFLAGS="-march=native -mtune=native" make -j4
+
+Ahora, mete el ejecutable resultante "zelda3", el "zelda3.ini" y tables/zelda3_assets.dat en ~/zelda3
+(O sea, los datos tienen que quedar en ~/zelda3/assets/zelda3_assets.dat)
+
+Nos metemos en el directorio ~/zelda3, y clonamos los shaders allí:
+
+git clone --depth 1 https://github.com/snesrev/glsl-shaders
+
+Editamos zelda3.ini y ponemos "Fullscreen" a 1, "OutputMethod" a OpenGL, "LinearFiltering" a 1, y
+"Shader" a "glsl-shaders/crt/fakelottes.glslp".
+
 ******Cargar juegos de GameMaker (GM) de Android en GNU/Linux****************************************************************
 
 OJO!!! Se tiene que hacer con un Linux de 32bits (armhf).
