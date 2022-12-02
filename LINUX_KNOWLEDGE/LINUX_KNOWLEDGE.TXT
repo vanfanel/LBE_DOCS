@@ -8777,11 +8777,15 @@ meson ..
 ninja -j4
 ninja install
 
-Ahora, para ver los códecs de vídeo disponibles para el decoding (los acelerados son los que llevan "v4l2m2m" en el nombre) haríamos:
-mpv --vd=help
+Creamos el fichero de configuración ~/.config/mpv/mpv.conf, con el contenido:
 
-Para usar el códec H264 acelerado en Wayland haremos:
-mpv -fs --vo=gpu --gpu-context=wayland --vd=h264_v4l2m2m <fichero_vídeo>
+vo=gpu
+fs=yes
+#hwdec=v4l2m2m-copy
+hwdec=v4l2m2m
 
-Y sin wayland:
-mpv -fs --vo=gpu --gpu-context=drm --drm-connector=1.HDMI-A-1 --vd=h264_v4l2m2m <fichero_vídeo>
+RECUERDA: Para ver los códecs de vídeo acelerados disponibles para el decoding:
+mpv --hwcodec=help
+También podríamos ver las salidas de vídeo disponibles con:
+mpv --vo=help
+...con el resto de cosas de las que quieras ver qué hay disponible, igual.
