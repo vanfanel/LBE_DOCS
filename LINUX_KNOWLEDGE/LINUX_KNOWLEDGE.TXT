@@ -8761,7 +8761,7 @@ PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
 PARTE 2: MPV
 
 -Instalamos dependencias previas: sudo apt-get install libass-dev --no-install-recommends
----Sólo si vamos a usar el renderer VULKAN: instalamos la dependencia adicional libplacebo---
+-Instalamos la dependencia adicional libplacebo---
 -Clonamos su repo:
 git clone --depth 1 https://code.videolan.org/videolan/libplacebo.git
 cd libplacebo
@@ -8786,17 +8786,9 @@ VAMOS CON MPV EN SÍ:
 mkdir b4
 cd b4
 
-CON VULKAN:
-
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dvulkan=enabled ..
-
-SIN VULKAN:
-
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson ..
 
 -Y ahora compilamos e instalamos:
 ninja -j4
@@ -8805,12 +8797,17 @@ ninja install
 Creamos el fichero de configuración ~/.config/mpv/mpv.conf, con el contenido:
 
 vo=gpu
-fs=yes
-#hwdec=v4l2m2m-copy
+gpu-api=vulkan
 hwdec=v4l2m2m
+fs=yes
+
+RECUERDA: Para usar hwdec=v4l2m2m, que consume mucha menos CPU que hwdec=v4l2m2m-copy, tienes que haber compilado MPV con soporte para Vulkan.
+(Tal como está en estas instrucciones, vamos). Si no tienes Vulkan, puedes usar hwdec=v4l2m2m-copy, que consume más CPU.
 
 RECUERDA: Para ver los códecs de vídeo acelerados disponibles para el decoding:
 mpv --hwcodec=help
 También podríamos ver las salidas de vídeo disponibles con:
 mpv --vo=help
+También podríamos ver las APIs de la GPU disponibles con:
+mpv --gpu-api=help
 ...con el resto de cosas de las que quieras ver qué hay disponible, igual.
