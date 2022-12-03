@@ -8798,11 +8798,11 @@ Creamos el fichero de configuración ~/.config/mpv/mpv.conf, con el contenido:
 
 vo=gpu
 gpu-api=vulkan
-hwdec=v4l2m2m
+hwdec=v4l2m2m-copy
 fs=yes
 
-RECUERDA: Para usar hwdec=v4l2m2m, que consume mucha menos CPU que hwdec=v4l2m2m-copy, tienes que haber compilado MPV con soporte para Vulkan.
-(Tal como está en estas instrucciones, vamos). Si no tienes Vulkan, puedes usar hwdec=v4l2m2m-copy, que consume más CPU.
+RECUERDA: Para usar hwdec=v4l2m2m, aunque consume más CPU que hwdec=v4l2m2m-copy, tienes que haber compilado MPV con soporte para Vulkan.
+(Tal como está en estas instrucciones, vamos). Sin Vulkan, sólo puedes usar hwdec=v4l2m2m-copy.
 
 RECUERDA: Para ver los códecs de vídeo acelerados disponibles para el decoding:
 mpv --hwcodec=help
