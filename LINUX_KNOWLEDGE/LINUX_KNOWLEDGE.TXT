@@ -8761,6 +8761,23 @@ PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
 PARTE 2: MPV
 
 -Instalamos dependencias previas: sudo apt-get install libass-dev --no-install-recommends
+---Sólo si vamos a usar el renderer VULKAN: instalamos la dependencia adicional libplacebo---
+-Clonamos su repo:
+git clone --depth 1 https://code.videolan.org/videolan/libplacebo.git
+cd libplacebo
+git submodule update --init --recursive
+-Configuramos y compilamos:
+mkdir b4
+cd b4
+	
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson -Ddemos=false ..
+
+ninja -j4
+ninja install
+
+VAMOS CON MPV EN SÍ:
 
 -Bajamos su última versión estable de aquí: https://github.com/mpv-player/mpv/releases
 
@@ -8768,6 +8785,14 @@ PARTE 2: MPV
 
 mkdir b4
 cd b4
+
+CON VULKAN:
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson -Dvulkan=enabled ..
+
+SIN VULKAN:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
