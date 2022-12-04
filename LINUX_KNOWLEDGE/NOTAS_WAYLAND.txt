@@ -938,6 +938,11 @@ echo "/)_)    This computer's local IP is $MY_IP"
 echo " ¨ ¨    Have fun!"  
 echo "     "
 
+Para poder ejecutar por ssh programas que corran sobre Wayland:
+export XDG_RUNTIME_DIR=/var/run/user/0
+export WAYLAND_DISPLAY=wayland-1
+(OJO: Si no funciona con estos valores, mira qué valores tienen estas variables de entorno en el sistema "servidor").
+
 Para que no se vea el cursor parpadeante de la TTY, añadimos a cmdline.txt:
 vt.global_cursor_default=0
 
