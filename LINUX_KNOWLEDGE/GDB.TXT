@@ -26,6 +26,9 @@ Supongamos que "letras" es un array unidimensional de letras:
 p letras@128
 Esto nos mostraría los 128 primeros elementos de ese array.
 
+SI LO QUE QUIERES es ver el contenido de una cadena de texto, simplemente haz:
+printf "%s\n",cadena
+
 =============ACTIVAR EL LOGGING A ARCHIVO===============================================================
 
 Sólo guarda el output, no nuestros comandos:
