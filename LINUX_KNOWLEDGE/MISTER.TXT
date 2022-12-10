@@ -516,6 +516,13 @@ Wait 1
 SYS:Programs/TL/TinyLauncher.exe
 reboot
 
+
+*********NOTAS CORE PDP2011**************************************************************
+
+Los discos de Unix sólo funcionan en los modelos 11/45. Para BSD2.x, es con una 11/70.
+Una vez que estás en el @, escribe unix y dale al intro. Puedes logearte como root, sin password.
+Más instrucciones de uso aquí: https://pdp2011.sytse.net/wordpress/howto/running/
+
 *********HACER QUE EL UPDATE_ALL NO ACTUALIZE LOS CHEATS*********************************
 
 Editamos /media/fat/downloader.ini y añadimos:
