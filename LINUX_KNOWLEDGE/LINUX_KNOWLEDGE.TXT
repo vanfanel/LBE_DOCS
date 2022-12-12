@@ -231,14 +231,18 @@ entre ellas la sangre roja o poner el juego en idiomas locos.
 
 ******Legend of Zelda: A Link to the Past (ZELDA3) nativo en GNU/Linux*******************************************************
 
-Clonamos su repo:
-
+Clonamos mi fork de momento hasta que hagan merge del PR que arregla GLES:
+git clone --depth 1 -b gles-fix https://github.com/vanfanel/zelda3.git
+El repo original, para uso futuro es:
 git clone --depth 1 https://github.com/snesrev/zelda3.git
 
---Si NO tenemos los datos extraidos:
+(PASO INNECESARIO: tienes los datos ya extraidos como zelda3_assets.dat en el disco de backup, sólo es meterlos en "~/zelda3/tables"):
+--Si NO tenemos los datos extraidos
 	-Instalamos las dependencias necesarias para extraer los datos de la ROM:
 	python3 -m pip install -r requirements.txt
 	-Copiamos la ROM USA a tables/zelda3.sfc, para que se extraigan los datos al compilar.
+
+
 --Si ya tenemos los datos extraidos, para que NO se intenten extraer los datos sino sólo generar el ejecutable:
 Editamos Makefile y dejamos la parte:
 all: $(TARGET_EXEC) tables/zelda3_assets.dat
@@ -247,7 +251,7 @@ all: $(TARGET_EXEC)
 
 Compilamos con:
 
-CFLAGS="-march=native -mtune=native" make -j4
+CFLAGS="-DUSE_GLES=1 -march=native -mtune=native" make -j4
 
 Ahora, mete el ejecutable resultante "zelda3", el "zelda3.ini" y tables/zelda3_assets.dat en ~/zelda3
 (O sea, los datos tienen que quedar en ~/zelda3/assets/zelda3_assets.dat)
