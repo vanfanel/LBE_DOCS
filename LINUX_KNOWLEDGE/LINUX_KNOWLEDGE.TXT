@@ -251,7 +251,7 @@ all: $(TARGET_EXEC)
 
 Compilamos con:
 
-CFLAGS="-DUSE_GLES=1 -march=native -mtune=native" make -j4
+CFLAGS="-DUSE_GLES=1 -O3 -fomit-frame-pointer -march=native -mtune=native" make -j4
 
 Ahora, mete el ejecutable resultante "zelda3", el "zelda3.ini" y tables/zelda3_assets.dat en ~/zelda3
 (O sea, los datos tienen que quedar en ~/zelda3/assets/zelda3_assets.dat)
