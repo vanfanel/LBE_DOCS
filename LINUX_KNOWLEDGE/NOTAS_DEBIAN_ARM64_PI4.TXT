@@ -644,7 +644,7 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
 --disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra \
---disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled \
+--disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
 --enable-egl --enable-opengles --enable-opengles3 --enable-vulkan --disable-builtinglslang
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
