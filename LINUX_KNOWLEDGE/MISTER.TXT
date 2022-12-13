@@ -126,7 +126,6 @@ Para crear la imágen simplemente desde el propio GNU/Linux de la Mister haz:
 dd if=/dev/zero of=hdd.vhd bs=128M count=1
 
 Ahora tenemos que particionarla y formatearla desde la MiSTER, para lo cual tenempos que arrancar desde una imágen de disco de MSDOS.
-Yo estoy usando estas de MSDOS 5.0: https://archive.org/details/dos-5.0-bootdisk
 RECUERDA que para que lea imágenes de 1.44MB, necesitamos usar la BIOS micro8088, que podemos descargar aquí:
 https://github.com/spark2k06/PCXT_MiSTer/tree/main/SW/ROMs
 PERO esa viene con el XTIDE integrado, así que tenemos que editarla con HEXEDIT y machacar el primer byte (una letra "U")
@@ -148,10 +147,8 @@ Para activar/desactivar los colores COMPOSITE dinámicamente (ya que los juegos 
 pero los colores composite hacen que la consola de texto de DOS se vea FATA) usa el XTCTL.EXE, que está aquí para descargar:
 https://github.com/MiSTer-devel/PCXT_MiSTer/tree/main/hdd
 
-Tienes todos los juegos de entre 1981 y 1988 aquí: https://archive.org/details/tdl-hdd
-Monta la "tl hdd.img" porque ahí vienen los juegos hasta 1988, aunque están comprimidos en ZIP.
-En la otra están descomprimidos pero sólo vienen hasta 1987.
-La imágen procede de este hilo: https://misterfpga.org/viewtopic.php?t=5368
+Hay muchos juegos preparados para XT de verdad aquí: https://www.pcjs.org
+Se pueden descargar dándole a SAVE.
 
 IMAǴEN DE DISCO MAESTRA PARA ATARIST
 =====================================
