@@ -236,6 +236,18 @@ git clone --depth 1 -b gles-fix https://github.com/vanfanel/zelda3.git
 El repo original, para uso futuro es:
 git clone --depth 1 https://github.com/snesrev/zelda3.git
 
+(ARREGLO TEMPORAL HASTA QUE MERGEEN MIS CAMBIOS)
+-Editamos opengl.c y dejamos la línea:
+viewport_width = viewport_height * g_draw_width / g_draw_height;  // limit width
+como:
+viewport_width = viewport_height * 4 / 3;  // limit width
+(Podríamos también editar main.c y dejar la línea:
+SDL_RenderSetLogicalSize(renderer, g_snes_width, g_snes_height);
+como:
+SDL_RenderSetLogicalSize(renderer, 4, 3);
+...pero no es necesario porque usaremos el renderer OpenGL, NO el SDL, así que no nos aporta nada).
+
+
 (PASO INNECESARIO: tienes los datos ya extraidos como zelda3_assets.dat en el disco de backup, sólo es meterlos en "~/zelda3/tables"):
 --Si NO tenemos los datos extraidos
 	-Instalamos las dependencias necesarias para extraer los datos de la ROM:
@@ -8794,7 +8806,9 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dvulkan=enabled ..
+meson ..
+
+(Si queremos soporte Vulkan, añadimos "-Dvulkan=enabled" entre meson y los dos puntos).
 
 -Y ahora compilamos e instalamos:
 ninja -j4
