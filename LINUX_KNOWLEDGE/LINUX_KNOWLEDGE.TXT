@@ -272,8 +272,8 @@ Nos metemos en el directorio ~/zelda3, y clonamos los shaders allí:
 
 git clone --depth 1 https://github.com/snesrev/glsl-shaders
 
-Editamos zelda3.ini y ponemos "Fullscreen" a 1, "OutputMethod" a OpenGL, "LinearFiltering" a 1, y
-"Shader" a "glsl-shaders/crt/fakelottes.glslp".
+Editamos zelda3.ini y ponemos "Fullscreen" a 1, "OutputMethod" a OpenGL, "LinearFiltering" a 1, "DisableFrameDelay" a 1,
+"EnhancedMode7" a 0, y "Shader" a "glsl-shaders/crt/fakelottes.glslp".
 
 ******Cargar juegos de GameMaker (GM) de Android en GNU/Linux****************************************************************
 
