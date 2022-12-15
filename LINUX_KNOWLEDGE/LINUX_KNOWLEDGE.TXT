@@ -7841,6 +7841,16 @@ sudo python setup.py install
 Y para que guarde en PDF:
 pip install reportlab
 
+EJECUTAR PROTON (PROT-ON), EL SISTEMA DE ENCRIPTACIÓN / DESENCRIPTACIÓN USADO EN LA ACADEMIA, EN GNU/LINUX
+===========================================================================================================
+
+Es posible hacerlo sin una máquina virtual.
+Lo primero es bajarnos el archivo NetFx64.exe (Es parte de .NET Framework 2.0 x64, por si lo quieres hacer con Winetricks).
+No especifico de dónde bajarlo, supongo que Microsoft lo tiene para bajar.
+Lo instalamos usando Wine: wine NetFx64.exe
+Y ya podemos instalar el PROT-ON sin errores. Al ejecutar prot-on, queda en la barra de tareas puesto, abajo a la derecha,
+como si de un programa de Linux nativo se tratase, y nos permite abrir documentos y vídeos protegidos sin problemas.
+
 DESHABILITAR SCREEN LOCK (BLOQUEO DE PANTALLA) TRAS SUSPENDER
 =============================================================
 
@@ -8738,7 +8748,7 @@ PARTE 1: ffmpeg
 
 -Clonamos este repo que es un fork con soporte específico para la Pi. Usamos un branch con las cosas específicas de la Pi,
  porque el principal no se actualiza, se actualizan los branches:
- git clone --depth 1 https://github.com/jc-kynesim/rpi-ffmpeg.git -b test/4.3.5/rpi_main 
+ git clone --depth 1 https://github.com/jc-kynesim/rpi-ffmpeg.git -b dev/5.1.2/rpi_import_1 
 
 -Configuramos con:
 
@@ -8778,7 +8788,7 @@ PARTE 2: MPV
 
 -Instalamos dependencias previas: sudo apt-get install libass-dev --no-install-recommends
 
-(SÓLO SI VAMOS A USAR VULKAN)
+(SÓLO SI VAMOS A USAR VULKAN, QUE NO ES NECESARIO PARA TENER ACELERACIÓN Y BAJO USO DE CPU)
 -Instalamos la dependencia adicional libplacebo---
 -Clonamos su repo:
 git clone --depth 1 https://code.videolan.org/videolan/libplacebo.git
@@ -8808,7 +8818,7 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson ..
 
-(Si queremos soporte Vulkan, añadimos "-Dvulkan=enabled" entre meson y los dos puntos).
+(Si queremos soporte Vulkan, que no es necesario en absoluto, añadimos "-Dvulkan=enabled" entre meson y los dos puntos).
 
 -Y ahora compilamos e instalamos:
 ninja -j4
@@ -8816,13 +8826,9 @@ ninja install
 
 Creamos el fichero de configuración ~/.config/mpv/mpv.conf, con el contenido:
 
+vd=h264_v4l2m2m
 vo=gpu
-gpu-api=vulkan
-hwdec=v4l2m2m-copy
 fs=yes
-
-RECUERDA: Para usar hwdec=v4l2m2m, aunque consume más CPU que hwdec=v4l2m2m-copy, tienes que haber compilado MPV con soporte para Vulkan.
-(Tal como está en estas instrucciones, vamos). Sin Vulkan, sólo puedes usar hwdec=v4l2m2m-copy.
 
 RECUERDA: Para ver los códecs de vídeo acelerados disponibles para el decoding:
 mpv --hwcodec=help
