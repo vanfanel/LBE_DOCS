@@ -8752,19 +8752,15 @@ PARTE 1: ffmpeg
 
 -Configuramos con:
 
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-./configure --disable-network --disable-debug --disable-muxers --disable-indevs \
---disable-outdev=fbdev --disable-outdev=oss --disable-doc --disable-bsfs --disable-ffprobe --disable-sdl2 \
---disable-stripping \
---disable-thumb \
---disable-mmal \
---enable-sand \
---enable-v4l2-request \
---enable-libdrm \
---enable-epoxy \
---enable-libudev \
---enable-vout-drm
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --disable-network --disable-debug \
+--disable-muxers --disable-indevs \
+--disable-outdev=fbdev --disable-outdev=oss \
+--disable-doc --disable-bsfs --disable-ffprobe \
+--disable-sdl2 --disable-stripping \
+--disable-thumb --disable-mmal \
+--enable-sand --enable-v4l2-request \
+--enable-libdrm --enable-epoxy \
+--enable-libudev --enable-vout-drm
 
 (La configuración la sacamos de https://github.com/jc-kynesim/rpi-ffmpeg/blob/test/4.3.5/rpi_main/pi-util/conf_arm64_native.sh)
 
