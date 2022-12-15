@@ -8822,9 +8822,10 @@ ninja install
 
 Creamos el fichero de configuración ~/.config/mpv/mpv.conf, con el contenido:
 
-vd=h264_v4l2m2m
+hwdec=auto
 vo=gpu
 fs=yes
+sub-visibility=no
 
 RECUERDA: Para ver los códecs de vídeo acelerados disponibles para el decoding:
 mpv --hwcodec=help
