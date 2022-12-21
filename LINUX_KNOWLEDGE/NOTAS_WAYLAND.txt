@@ -250,6 +250,10 @@ weston -f '' -l ''
 (Lo de -f '' -l '' es para que no mande logs a la consola ni a ningún lado).
 (Se sale con Ctrl+Alt+Backspace)
 
+SI TE DA EL ERROR: "Error: Failed to connect to parent Wayland compositor: No such file or directory"
+...Es porque estás exportando WAYLAND_DISPLAY=... (posiblemente en bashrc, para debugear programas por ssh) y Weston interpreta
+que ya hay un servidor Wayland corriendo, y peta. No lo exportes y funcionará.
+
 ############################################################
 # SI NECESITAS AYUDA CON WAYLAND:                          #
 # -https://gitlab.freedesktop.org/wayland/weston/-/issues  #

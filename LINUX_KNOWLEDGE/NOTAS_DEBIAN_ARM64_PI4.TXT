@@ -461,20 +461,6 @@ ninja -4
 sudo ninja install
 (Y "sudo ninja uninstall" para desinstalar)
 
-(NO RECOMENDADO)SI QUIERES OPENGL COMPLETO SOBRE GLX EN LUGAR DE USAR LIBGLVND, NECESITAS TODAS ESTAS MIERDAS DE X11:
-sudo apt-get install --no-install-recommends --reinstall \
-    flex bison python3-mako libexpat1-dev \
-    libxcb-dri3-dev libxcb-dri2-0-dev \
-    libxcb-glx0-dev libx11-xcb-dev \
-    libxcb-present-dev libxcb-sync-dev \
-    libxshmfence-dev libxxf86vm-dev libxrandr-dev \
-    libxdamage-dev libxext-dev libxfixes-dev \
-    x11proto-dri2-dev x11proto-dri3-dev \
-    x11proto-present-dev x11proto-gl-dev \
-    libudev-dev gettext \
-    ca-certificates xz-utils \
-    zlib1g-dev pkg-config meson
-
 NO TE OLVIDES DE AÑADIR AL USUARIO AL GRUPO RENDER:
 sudo adduser pi render
 (Si ves un error como "MESA-LOADER: failed to open kms_swrast", es porque no lo has hecho).
@@ -493,27 +479,20 @@ CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO ME
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-meson -Dglx=disabled -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro \
+meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers=broadcom -Ddri-drivers='' -Dgallium-drivers=v3d,vc4,kmsro \
 -Dglvnd=true -Dbuildtype=release ..
 
-(SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
+(Si no quieres soporte para Wayland, usa -Dplatforms='')
 
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-meson -Dglx=disabled -Dglvnd=true -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
-(SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
+meson -Dglx=disabled -Dglvnd=true -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 SI QUISIERAS SÓLO GLES Y GLES2, SIN OPENGL COMPLETO:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-meson -Dglx=disabled -Dplatforms='' -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
-(SI QUIERES SOPORTE PARA WAYLAND, USA -Dplatforms=wayland)
-
-SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLX:
-CFLAGS="-march=native -mtune=native -O2" \
-CXXFLAGS="-march=native -mtune=native -O2" \
-meson -Dglx=dri -Dplatforms=drm,x11 -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
+meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
 PARA COMPILAR:
 ninja -j4
@@ -650,7 +629,10 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (SI TE DA ERROR AL LINKAR por funciones de slang, no le pases --disable-builtinglslang)
 
-Compilar y listo.
+PARA COMPILAR CUALQUIER CORE:
+
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
 
 Si no quieres shimmering en las letras del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE
 y activar LINEAR FILTERING.
@@ -671,8 +653,6 @@ De ese repo, necesitas solamente el directorio ozone en el directorio de assets.
 de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/xmb
 Con assets/xmb y assets/rgui te vale, borra los demás.
 Con el RGUI es igual.
-
-SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
 PARA CUALQUIER PROBLEMA de librerías no encontradas pero que sí están instaladas, RECUERDA REGENERAR LA CACHE DE LDD:
 sudo rm /etc/ld.so.cache

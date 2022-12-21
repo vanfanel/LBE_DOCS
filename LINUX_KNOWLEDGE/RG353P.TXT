@@ -4,10 +4,16 @@ CANAL Y PERSONA A PREGUNTAR POR PROBLEMAS DE REFRESCO DE PANTALLA
 Servidor Discord: JELOS
 Canal: Mainline y preguntar a macroalpha, o canal general y preguntar a fewt para temas de compilacion del kernel de JELOS.
 
+SISTEMA OPERATIVO
+=================
+
+JELOS ya no saca binarios. It's dangerous to go alone, take this!!
+https://github.com/RetroGFX/UnofficialOS/releases
+
 CONFIGURACIÓN PARA SCROLL SIN JITTERING/JUDDERING
 =================================================
 
-En menú de JELOS:
+En menú de UNOFFICIAL OS:
 System Settings -> Default CPU governor -> PERFORMANCE u ONDEMAND (INTERACTIVE causa jittering)
 UI Settings-> RetroArch menu driver a RGUI
 Game Settings -> AUTO SAVE/LOAD ON GAME LAUNCH a OFF, y en AI GAME TRANSLATION ponemos ENABLE AI TRANSLATION SERVICE a OFF también.
@@ -32,7 +38,7 @@ edita storage/shaders/crt/shaders/fakelottes.glsl y comenta las SCANLINES, los E
 Ese es el shader más óptimo que vas a poder tener en la máquina.
 
 Si quisieras usar otro shader pudiendo configurar sus parámetros, ya sabes el truco: pon SHADER SET a NONE, carga un core,
-selecciona el shader que quieras desde RetroArch, configura sus parámetros, dale a SAVE GLOBAL PRESET, vuelve al menú de JELOS,
+selecciona el shader que quieras desde RetroArch, configura sus parámetros, dale a SAVE GLOBAL PRESET, vuelve al menú de UNOFFICIAL OS,
 y en SHADER SET selecciona RETROARCH.GLSLP.
 
 PARA TENER LAS CARÁTULAS CUANDO HAGAS EL SCRAPPING:

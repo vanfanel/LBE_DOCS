@@ -1554,10 +1554,10 @@ git submodule update --init
 
 Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 512, comentando el while que hay debajo.
 Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(), en la llamada a SDL_SetHint(), "nearest" por "linear".
-Editamos jfaudiolib/Makefile, y eliminamos el "-g" ese que hay ahí perdido.
+Editamos jfaudiolib/Makefile, y eliminamos el "-g" ese que hay ahí perdido y cambia el -O1 que hay por -O2.
 
 Compilamos con:
-CFLAGS="-march=native -mtune=native -O2" \
+CFLAGS="-march=native -mtune=native" \
 make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GLES2
 
 Mete el duke3d.grp en el mismo directorio que el ejecutable.
@@ -4577,7 +4577,7 @@ Editamos RSDKv3/Audio.cpp y ahí cambiamos:
 	#define AUDIO_SAMPLES   (0x200)
 
 Compilamos con:
-CXXFLAGS="-O2 -march=native -mtune=native -O2 -DGLEW_NO_GLU" make -j4
+CXXFLAGS="-O2 -march=native -mtune=native -DGLEW_NO_GLU" make -j4
 
 El ejecutable queda en bin/RSDKv3
 
