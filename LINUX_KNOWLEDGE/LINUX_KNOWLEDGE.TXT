@@ -998,6 +998,8 @@ retroarch -L ~/.config/retroarch/cores/fbneo_libretro.so --subsystem=msx msx/pen
 O bien en el RetroArch, nos vamos a "load core", cargamos el core FBNeo, y luego vamos a "load content" y nos aparecerá
 "subsystem", allí elegimos MSX, y luego volvemos a "subsystem" y le damos a "start content" y elegimos otra vez MSX.
 
+RECUERDA QUE TIENES QUE TENER EN SETTINGS->INPUT->MAXIMUM USERS MÍNIMO 3, YA QUE EL TECLADO VA EN EL PLAYER 3.
+
 RECUERDA LO PRIMERO DESMAPEAR LAS TECLAS DE TECLADO A BOTONES DE JOYSTICK EN LOS SETTINGS PRINCIPALES DE RETROARCH!
 De lo contrario, cualdo pulsas una tecla de cursor, por ejemplo, estás enviando tanto la pulsación de teclado como la de joystick...
 Esto también pasa en el core dosbox-core, así que quítalas. No pierdes nada, te vas a poder seguir moviendo por el menú de RA igual,
@@ -3365,7 +3367,7 @@ autoreconf -vif
 
 Ahora ya configuramos con:
 
-CFLAGS="-O2 -march=native -mtune=native" ./configure --without-x
+CFLAGS="-O2 -march=native -mtune=native" ./configure --without-x --without-flac
 
 En la Raspberry Pi, ejecutamos con:
 AUDIODEV="sysdefault" ./schismtracker
@@ -3375,7 +3377,7 @@ y por eso falla con un "unsopported audio format" si lo intentas).
 (Ya sabes que puedes ver los dispositivos con "aplay -L" y probarlos con "speaker-test -D<dispositivo>").
 
 Para configurar el vídeo, editamos ~/.schism/config, y:
--Ponemos fullscreen e interpolation a 1.
+-Ponemos fullscreen a 1 e interpolation a linear.
 -Ponemos want_fixed a 1 (para tener aspect ratio corregido)
 También podemos poner classic_mode a 1 para que las pantallas sean las del Impulse Tracker original.
 
