@@ -74,7 +74,9 @@ https://github.com/FIX94/Nintendont/raw/master/controllerconfigs/HID_Test.dol
 Lo metes en la SD como /apps/<nombre que quieras>/boot.dol, y el HB CHANNEL lo detectará sin problema
 (o el lanzador de homebrew del USBLoaderGX, vamos).
 Ahora, si en el HID TEST cambian cosas al pulsar botones, es que el mando te vale y lo vas a poder usar! Yay!
-Pero tienes que configurarlo. Para ello, vas apuntando cosas en /controller.ini en la SD. Va así:
+Tienes ficheros de configuración para distintos mandos USB en: https://github.com/FIX94/Nintendont/tree/master/controllerconfigs
+Eliges uno, y lo guardas como /controller.ini en la SD
+Pero si no hay uno para tu mando, tienes que configurarlo. Para ello, vas apuntando cosas en /controller.ini en la SD. Va así:
 Supongamos que quieres usar el botón X del mando como el A del mando de GC. Pues pulsas el botón X,
 y verás que cambia un numerito, el del tercer lugar, pasando a poner 04 en ese tercer lugar.
 Pues apuntas:
