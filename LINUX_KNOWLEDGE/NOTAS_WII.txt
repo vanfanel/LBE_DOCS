@@ -43,13 +43,18 @@ Así que vamos por partes:
 https://github.com/FIX94/Nintendont
 El Nintendont no se lanza, sino que es usado por el USBLoaderGX para lanzar juegos de GC desde allí, sin más.
 
-7) Para instalar juegos de Wii en el HDD USB en FAT32, tienes que meterlos en WBFS, y dentro de WBFS cada juego va en su directorio, que en el nombre tiene que llevar el gameID.
+7) Para instalar juegos de Wii: tienes que tener una partición FAT32, EXT4 o NTSC en un disco USB.
+Preferentemente, en EXT4 o NTFS, ya que hay juegos de Wii de más de 4GB.
+Los juegos tienes que meterlos en el directorio /wbfs, y dentro de /wbfs cada juego va en su directorio,
+que en el nombre tiene que llevar el gameID.
 Por ejemplo, si un juego tiene como gameID el RHDE8P, se instalará así:
 /wbfs/RHDE8P_<LO QUE NOS DE LA GANA>/RHDE8P.wbfs
-Puedes sacar los gameID de: http://crysweb.altervista.org/wiigameids/
-Si tienes que instalar juegos de más de 4GB, en FAT32 no se puede, así que formatea a EXT3 o EXT4 e instala ahí. Los juegos de GC no van a ir porque Nintendont no soporta EXT3 o 4, pero
-de todos modos los juegos de GC es mejor tenerlos en la SD porque salvan donde esté la ISO y eso no se puede cambiar, y si usas un pendrive USB en vez de un disco USB no se puede escribir en él, sólo leer...
-Así que, en conclusión, usa EXT3 o 4 para los juegos de Wii en pendrive USB, y mete los juegos de GC en la SD (tienes más abajo cómo se instalan los juegos de GC).
+Puedes sacar los gameID de: https://wii.fandom.com/wiki/WBFS_Sizes
+¡¡¡OJO!!! HAY UN MENÚ EN EL USBLOADERGX QUE TIENE UNA CHECKBOX QUE DEBE ESTAR ACTIVADA PARA MOSTRAR LOS JUEGOS DE WII!!
+SE ACCEDE PINCHANDO EN EL ICONO DE LAS TRES CAJITAS BLANCAS EN LA PARTE SUPERIO DE LA PANTALLA.
+Los juegos de GC no van a ir ahí porque Nintendont no soporta EXT4, pero de todos modos los juegos de GC es mejor tenerlos en la SD porque salvan donde esté la ISO y eso no se puede cambiar, y si usas un pendrive USB en vez de un disco USB no se puede escribir en él, sólo leer...
+Así que, en conclusión, usa EXT4 para los juegos de Wii en pendrive USB, y mete los juegos de GC en la SD (tienes más abajo cómo se instalan
+los juegos de GC).
 
 8) Para instalar juegos de Gamecube y que los detecte en USBLoaderGX con ayuda del Nintendont, tienes que instalarlos así:
 /games/<LO QUE NOS DE LA GANA>/game.iso
