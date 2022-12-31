@@ -1,33 +1,46 @@
-******Instalar juegos de Wii en disco duro desde Linux*********************************************************************************************************************
+******Instalar juegos de Wii en disco duro desde Linux************************************************************************************
 
 El USBLoader GX debería ser capaz de acceder a los juegos en formato .wbfs en una partición FAT32, si no lo hace es que necesitas actualizar el CIOS del slot 249.
-LO MÁS IMPORTANTE ES ESTO: CON TENER INSTALADO EL HOMEBREW CHANNEL (HMB) + EL CIOS 249, TODO FUNCIONA. CON ESAS DOS COSAS Y YA!! NO TE LIES A ACTUALIZAR NADA MÁS.
+LO MÁS IMPORTANTE ES ESTO: CON TENER INSTALADO EL HOMEBREW CHANNEL (HMB) + EL CIOS 249, TODO FUNCIONA.
+CON ESAS DOS COSAS Y YA!! NO TE LIES A ACTUALIZAR NADA MÁS.
 LO DICE EL MAESTRO CYAN AQUÍ: https://gbatemp.net/threads/modding-a-wii-in-2017.480932/
 "short path : if you are on Wii 4.3 (not vWii), install HBC and bootmii following Hackmii.please, then install cIOS d2x v8 final base57 in slot 249. 
 Done. that's all you need to make everything compatible. (HBC + 1 patched IOS, that's all !)"
 
 Así que vamos por partes:
-1) Para hackear la Wii en 2019, y dejarle así instalado el HBC, simplemente vete a que te genere un letterbomb metiendo la MAC de la consola aquí: https://please.hackmii.com/haxx
-     Pasa el "boot.elf" y el directorio "private" a la SD, y luego busca el letterbomb en el menú de novedades de la Wii. 
-     Como probablemente ya tienes el softmod hecho, este paso te lo puedes saltar.
+1) Para hackear la Wii en 2022, usamos el exploit BlueBomb siguiendo estas instrucciones: https://wii.guide/es_ES/bluebomb.html
+   Este exploit lo que hace es que nos instala el Homebrew Channel (HBC) y el BootMii. Una vez instalado el BootMii en la SD,
+   al reiniciar la Wii arrancará al menú de BootMii en vez de arrancar al menú original de la Wii. En el menú del Bootloader
+   NO funciona el mando: nos movemos usando el botón RESET de la consola, y usamos POWER para seleccionar la opción que queramos.
+   Esto es una situación temporal: lo que nos interesa es que la Wii arranque al SYSMENU, que puede ser el menú original de Wii u otra cosa.
+   En este punto, sacamos la SD y editamos /bootmii/config.ini y dejamos AUTOBOOT=SYSMENU. De este modo nos arrancará lo que tengamos
+   como SYSMENU, que en este momento es el menú original de la Wii. 
+   (La idea es que, usando un programa llamado Priiloader más adelante, establezcamos como SYSMENU el USBLoaderGX,
+    y de ese modo el BootMii arranca a USBLoader.
+    Lo vamos a ir haciendo paso por paso así que no te preocupes).
 2) Para actualizar el CIOS 249:
-	-Tienes que tener la consola conectada a internet, o si no (algún día los archivos van a dejar de estar disponibles) vas a tener que bajarte un archivo WAD a mano. Pero por ahora,
-	conéctala a internet.
-	-Te instalas el d2x-cios-installer-3.1-v6-v7-v8-v10-wii, que de momento está en http://www.mediafire.com/download/5ggh53tj9hhp1tr/d2x-cios-installer-3.1-v6-v7-v8-v10-wii.7z
+	-Tienes que tener la consola conectada a internet, o si no (algún día los archivos van a dejar de estar disponibles)
+	vas a tener que bajarte un archivo WAD a mano. Pero por ahora, conéctala a internet.
+	-Te instalas el d2x-cios-installer, que está en https://hbb1.oscwii.org/hbb/d2x-cios-installer/d2x-cios-installer.zip
 	Instalarlo significa meterlo en la SD, en /apps/<directorio que quieras>/, de manera que el HBC lo detecte y puedas lanzarlo desde el HBC.
-	-Entras en el dx2-cios-installer, y seleccionas para instalar, en el SLOT 249, en la BASE 57, la V8 FINAL. 
-	OJO, no instales otra versión aunque veas versiones superiores. Instala ESA, en ESA BASE y en ESE SLOT. Y sí, cuando te salga la matriz de slots, tienes que seleccionar el 249 y darle a la A
-	para instalarlo, y al acabar te tiene que salir ese slot en verde. Si te sale en rojo, es que ha fallado. Si es porque no tienes conexión a internet, o porque el archivo ya no está para descargar
-	automáticamente, tienes que mirar que WAD tienes que bajarte y ponerlo en la SD. Te sale qué WAD bajar cuando seleccionas el SLOT, BASE y versión, al principio.
+	-Entras en el dx2-cios-installer, y lo instalas siguendo las instrucciones aquí: https://wii.guide/es_ES/cios.html
+	Si esas instrucciones ya no estuviesen, seleccionas para instalar, en el SLOT 249, en la BASE 57, la V8 FINAL. 
+	OJO, no instales otra versión aunque veas versiones superiores. Instala ESA, en ESA BASE y en ESE SLOT.
+	Y sí, cuando te salga la matriz de slots, tienes que seleccionar el 249 y darle a la A para instalarlo, y al acabar
+	te tiene que salir ese slot en verde. Si te sale en rojo, es que ha fallado. Si es porque no tienes conexión a internet,
+	o porque el archivo ya no está para descargar automáticamente, tienes que mirar que WAD tienes que bajarte y ponerlo en la SD.
+	Te sale qué WAD bajar cuando seleccionas el SLOT, BASE y versión, al principio.
 3) Ahora simplemente bájate el último USBLoaderGX, y lo instalas en la SD en /apps/<directorio que quieras>
-4) Ahora bájate el forwarder para el USBLoaderGX, que es un WAD que contiene un canal que se instala para poder lanzar el USBLoaderGX desde el menú de Wii.
-     Lo puedes instalar con el WAD MANAGER 1.8 MOD, que a su vez tienes que instalar en la SD en /apps, como siempre.
-     Está en: https://sourceforge.net/projects/usbloadergx/files/Releases/Forwarders/USB%20Loader%20GX-UNEO_Forwarder_5_1_AHBPROT.wad
-5) Para borrar los canales que no quieras, las partidas en memoria de los juegos chachos cutres que usa la gente en la Wii, etc... Puedes hacerlo con el AnyTitleDeleter MOD 7.1 de RedSquirrel.
+4) Ahora bájate el forwarder para el USBLoaderGX, que es un WAD que contiene un canal que se instala para poder lanzar el USBLoaderGX desde el menú de Wii. Este forwarder está en: https://sourceforge.net/projects/usbloadergx/files/Releases/Forwarders/USB%20Loader%20GX-UNEO_Forwarder_5_1_AHBPROT.wad
+     Lo puedes instalar con el Some-YAWMM-Mod, un WAD MANAGER actual que está aquí: https://github.com/FIX94/Some-YAWMM-Mod/releases
+     y que a su vez tienes que instalar en la SD en /apps, como siempre.
+     
+5) Para borrar los canales que no quieras, las partidas en memoria de los juegos chachos cutres que usa la gente en la Wii, etc...
+   Puedes hacerlo con el AnyTitleDeleter MOD 7.1 de RedSquirrel.
      Naturalmente, lo tienes que meter en la SD, en /apps, como todo lo demás, aunque este tiene que tener un .txt en el directorio raiz de la SD.. Lo verás en cuanto lo vayas a instalar.
      NO BORRES EL CANAL TIENDA!!!
 6) Para jugar a los juegos de Gamecube, simplemente instálate el Nintendont en la SD. Las instrucciones las tienes aquí: 
-https://gbatemp.net/threads/nintendont.349258/#Setup
+https://github.com/FIX94/Nintendont
 El Nintendont no se lanza, sino que es usado por el USBLoaderGX para lanzar juegos de GC desde allí, sin más.
 
 7) Para instalar juegos de Wii en el HDD USB en FAT32, tienes que meterlos en WBFS, y dentro de WBFS cada juego va en su directorio, que en el nombre tiene que llevar el gameID.
@@ -41,16 +54,14 @@ Así que, en conclusión, usa EXT3 o 4 para los juegos de Wii en pendrive USB, y
 8) Para instalar juegos de Gamecube y que los detecte en USBLoaderGX con ayuda del Nintendont, tienes que instalarlos así:
 /games/<LO QUE NOS DE LA GANA>/game.iso
 OJO, que en TODOS los juegos la ISO se tiene que llamar así, "game.iso".
-Los juegos de GC salvan donde resida la ISO: el Nintendont no puede montar la unidad donde está la ISO y otra unidad al mismo tiempo. O sea que si tus juegos de GC están en un disco USB, va a salvar ahí,
-y no se puede cambiar eso.
+Los juegos de GC salvan donde resida la ISO: el Nintendont no puede montar la unidad donde está la ISO y otra unidad al mismo tiempo. O sea que si tus juegos de GC están en un disco USB, va a salvar ahí, y no se puede cambiar eso.
 Eso es un problema, porque si usas una unidad de memoria flash, como un pendrive, no se puede escribir en ella, sólo leer (sólo se puede escribir en discos duros USB normales, ni idea de por qué).
 Así que la solución sería tener los juegos de GC en la SD, y así el Nintendont salva ahí, en la SD, y lee el juego de la SD también.
 
-9) Para que arranque directamente al USBLoaderGX, tenemos que instalar el priiloader (https://www.wiibrew.org/wiki/Priiloader), y poner el .DOL de un forwarder en la raiz de la SD.
-Ahora arrancamos en el priiloader (mantén presionado RESET mientras le das al POWER para encender la Wii), y en el menú instalamos el .DOL, y en SETTINGS le decimos que arranque a installed file.
+9) Para que arranque directamente al USBLoaderGX, tenemos que instalar el priiloader (https://www.wiibrew.org/wiki/Priiloader).
+Una vez instalado desde su app, arrancamos en modo priiloader (mantén presionado RESET mientras le das al POWER para encender la Wii),
+y en el menú instalamos el USBLoaderGX, y en SETTINGS le decimos que arranque a installed file.
 (NOTA: si todo está bien, funciona, pero en una de las Wiis que tengo se cuelga...)
-El DOL que necesitas está aquí:
-https://sourceforge.net/projects/usbloadergx/files/Releases/Forwarders dols/UNEO Channel Booter for Priiloader.zip
 
 10) Para instalar WADs de Wiiware, como los Rebirth de KONAMI o el FF4 Afteryears, lo podemos hacer en la NAND de verdad o en la emunand, que es instalarlos en la SD.
 Para usar la emunand, entramos en el USBLoaderGX y nos vamos a: Settings > Features > Dump NAND > Full!
@@ -60,10 +71,12 @@ Ahora vamos a Settings > Features > EmuNand WAD manager, y ya podemos empezar a 
 
 11) Para poder usar un pad USB, lo primero es ver si HID TEST lo detecta. HID TEST está en:
 https://github.com/FIX94/Nintendont/raw/master/controllerconfigs/HID_Test.dol
-Lo metes en la SD como /apps/<nombre que quieras>/boot.dol, y el HB CHANNEL lo detectará sin problema (o el lanzador de homebrew del USBLoaderGX, vamos).
+Lo metes en la SD como /apps/<nombre que quieras>/boot.dol, y el HB CHANNEL lo detectará sin problema
+(o el lanzador de homebrew del USBLoaderGX, vamos).
 Ahora, si en el HID TEST cambian cosas al pulsar botones, es que el mando te vale y lo vas a poder usar! Yay!
 Pero tienes que configurarlo. Para ello, vas apuntando cosas en /controller.ini en la SD. Va así:
-Supongamos que quieres usar el botón X del mando como el A del mando de GC. Pues pulsas el botón X, y verás que cambia un numerito, el del tercer lugar, pasando a poner 04 en ese tercer lugar.
+Supongamos que quieres usar el botón X del mando como el A del mando de GC. Pues pulsas el botón X,
+y verás que cambia un numerito, el del tercer lugar, pasando a poner 04 en ese tercer lugar.
 Pues apuntas:
 A=2,04
 Apuntas 2 y no 3 porque se empieza a contar desde el 0.

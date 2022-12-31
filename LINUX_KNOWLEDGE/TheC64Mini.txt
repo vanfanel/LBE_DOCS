@@ -1,0 +1,22 @@
+CÓMO ARRANCAR EN FEL MODE
+=========================
+
+La info viene de este hilo: https://thec64community.online/thread/270/
+
+Nos bajamos el archivo: https://github.com/jj-0/C64Mini-FEL-boot/blob/master/C64Mini-FEL-boot-v1.1.zip
+Lo descomprimimos y entramos en el directorio "linux".
+
+Conectamos el C64Mini al PC por USB usando su conexión de alimentación.
+
+CÓMO PASARLA DE NSTC A PAL
+==========================
+
+La info viene de este hilo: https://thec64community.online/thread/614/c64-mini-ntsc-pal?page=1&scrollTo=10318
+
+Lo primero es tener una consola de comandos, que podemos conseguir en:
+
+https://thec64community.online/thread/806/the64-on-screen-command-line
+
+Descomprimimos eso, lo metemos en un pendrive junto con los archivos "the64" y "c64emu.rgl" que vienen en PCUAE, le damos a actualizar firmware y nos salta la consola de comandos.
+
+Ahora reemplazamos "/usr/bin/the64" y "/usr/lib/c64emu.rgl" con las versiones PAL que hemos metido en la SD, y listo.
