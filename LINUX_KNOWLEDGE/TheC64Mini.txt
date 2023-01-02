@@ -7,6 +7,9 @@ Nos bajamos el archivo: https://github.com/jj-0/C64Mini-FEL-boot/blob/master/C64
 Lo descomprimimos y entramos en el directorio "linux".
 
 Conectamos el C64Mini al PC por USB usando su conexión de alimentación.
+Para arrancar en modo FEL, tenemos que conectar el conector del LED rojo a los pines FEL: encajan sin problemas.
+
+Tienes backups de la nandb en este hilo: https://thec64community.online/post/6603/thread
 
 CÓMO PASARLA DE NSTC A PAL
 ==========================
@@ -20,3 +23,9 @@ https://thec64community.online/thread/806/the64-on-screen-command-line
 Descomprimimos eso, lo metemos en un pendrive junto con los archivos "the64" y "c64emu.rgl" que vienen en PCUAE, le damos a actualizar firmware y nos salta la consola de comandos.
 
 Ahora reemplazamos "/usr/bin/the64" y "/usr/lib/c64emu.rgl" con las versiones PAL que hemos metido en la SD, y listo.
+
+DESINSTALAR PCUAE
+=================
+
+En realidad no se instala en el fw de la consola, pero sí que mete un script para que arranque desde el pendrive que tengas metido
+al encender, llamado PCUAE-autoboot-start-up en /etc/init.d, lo borras y ya.
