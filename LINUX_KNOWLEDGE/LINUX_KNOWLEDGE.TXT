@@ -8652,6 +8652,19 @@ sudo dpkg -i configuradorfnmt_1.0.1-0_amd64.deb
 -Ahora nos vamos a la parte de "Solicitud via internet de su certificado". Rellenamos el formulario y lo enviamos.
 Nos llegará al correo un código, que junto con el DNI se presenta en un registro (Ayto por ejemplo) y nos dan el certificado.
 
+PARTE 2: AUTOFIRMA
+
+Instalamos dependencias previas:
+sudo apt-get install openjdk-11-jre libnss3-tools
+
+Se descarga un .deb desde:
+Lo instalamos con dpkg desde la consola de comandos. Este paquete instala:
+-El programa Autofirma, hecho en Java. En este punto, deberíamos ser capaces de ejecutar desde la consola "Autofirma" sin errores de Java.
+-Un certificado en /usr/lib/Autofirma, que nosotros tenemos que importar manualmente desde Firefox, que es lo que vamos a hacer a continuación.
+
+Ahora nos vamos en Firefox a Settings->Privacy & Security->Certificates, y en la pestaña de Authorities,
+importamos el certificado /usr/lib/Autofirma/AutoFirma_ROOT.cer
+
 AUTOMONJATE DE DISPOSITIVOS DE ALMACENAMIENTO USB EN GNU/LINUX
 ==============================================================
 
