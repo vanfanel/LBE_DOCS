@@ -111,12 +111,19 @@ La más sencilla es conectar el sistema a Internet, e ir a Main Menu->Online Upd
 las carátulas de la playlist que queramos.
 La otra, más LENTA y complicada, es meter a mano los THUMBNAILS de los sistemas que quieras en /storage/thumbnails, y ya se verán en las playlist.
 
-Para que no se vea el logo de Lakka durante el inicio:
-mount /flash -o remount,rw
-touch /flash/oemsplash.cfg
+Para cambiar el logo de Lakka durante el inicio, ponemos el PNG que queramos en la partición LAKKA, llamándolo "oemsplash.png" 
+Tiene que ser un PNG de 1920x1080, o no se mostrará. Como la pantalla es 4:3 (1024x768), nos conviene coger una imágen en 4:3
+y convertirla a 1920x1080 sin respetar el ratio original (luego al verse en pantalla se verá en 4:3, no te preocupes).
+Por ejemplo, cogemos esta imágen: https://github.com/anthonycaccese/es-theme-picade/blob/master/_inc/images/splashscreen.png
+..que es de 1024x768, y la escalamos a 1920x1080 sin respetar el ratio, así:
+convert splashscreen.png -resize 1920x1080! splash.png
+(El comando "convert" es parte del paquete imagemagik de GNU/Linux)-
+También podemos simplemente crear un archivo vacío con ese nombre y no se verá nada, haciendo
+"touch /media/manuel/LAKKA/oemsplash.png" desde el ordenador.
 Esto, junto con "vt.global_cursor_default=0 console=null" que tendremos en cmdline.txt, hará que no se vea nada durante el inicio. 
 
---CONECTAR LOS JOYSTICKS Y BOTONES DE 2 JUGADORES DIRECTAMENTE AL GPIO--
+
+--CONECTAR LOS JOYSTICKS Y BOTONES DE 2 JUGADORES DIRECTAMENTE AL GPIO (PARA MÁQUINAS ARCADE GRANDES)--
 
 En config.txt se carga el overlay gpio-keyboard, que es de propósito general, se conectar los pines siguiendo este esquema:
 https://discourse.osmc.tv/t/how-to-use-harware-buttons-on-raspberry-pi-zero-with-gpio-key/86594

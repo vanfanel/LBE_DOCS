@@ -8669,7 +8669,7 @@ PARTE 2: AUTOFIRMA
 Instalamos dependencias previas:
 sudo apt-get install openjdk-11-jre libnss3-tools
 
-Se descarga un .deb desde:
+Se descarga un .deb desde: https://firmaelectronica.gob.es/Home/Descargas.html
 Lo instalamos con dpkg desde la consola de comandos. Este paquete instala:
 -El programa Autofirma, hecho en Java. En este punto, deberíamos ser capaces de ejecutar desde la consola "Autofirma" sin errores de Java.
 -Un certificado en /usr/lib/Autofirma, que nosotros tenemos que importar manualmente desde Firefox, que es lo que vamos a hacer a continuación.

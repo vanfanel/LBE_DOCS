@@ -288,7 +288,7 @@ Number  Start   	End         	      Size                     Type        File sy
 
 ---Nos quedamos con el 65536. Y montamos así:
 
-sudo mount -t vfat -o loop,offset=65536 msx.vhd /mnt/hdd
+sudo mount -t vfat -o loop,offset=65536 boot.vhd /mnt
 
 *********ACTUALIZAR LA MISTER********************************************************
 

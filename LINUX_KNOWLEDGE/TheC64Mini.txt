@@ -19,10 +19,21 @@ Si queremos hacer cambios en la nandb, la montamos así:
 mount /dev/nandb /mnt
 
 Para restaurar la NANDB desde un backup:
-La info procede de este hilo este hilo: https://thec64community.online/post/6603/thread
-Nos bajamos NAND_RW_Menu.zip, disponible aquí: https://onedrive.live.com/?authkey=%21ABhy1XUuzXpmo74&id=DE6843E1C82A96C8%2152814&cid=DE6843E1C82A96C8
-Lo desomprimimos a la raiz del pendrive, lo montamos, y ejecutamos el script nandrw.sh
-Y seguimos los pasos. Nos detectará la flash que tenemos (hay varias marcas) y nos flasheará el backup correspondiente, etc
+-Nos bajamos la NANDB de: https://onedrive.live.com/?authkey=%21ABhy1XUuzXpmo74&id=DE6843E1C82A96C8%2160735&cid=DE6843E1C82A96C8
+(Si ya no está ahí, bájala de cualquier otro sitio teniendo en cuenta que tiene que ser una NANDB solamente, no un volcado completo
+de toda la NAND porque ahí ya tendría que coincidir el chip NAND con el que trae mi C64Mini y el mio es un ATO que sólo se usó
+en C64Mini NTSC)
+La pasamos a un pendrive. En mi caso, el volcado de la nandb se llama nandb-mini-pal.img
+-Arrancamos en modo FEL
+-Cargamos el driver de la NAND:
+insmod -f /opt/nand.ko
+-Montamos el pendrive y entramos:
+mount /dev/sda1 /mnt
+cd /mnt
+-Volcamos la nandb a la nuestra:
+dd if=nandb-mini-pal.img of=/dev/nandb
+..Y ya reiniciamos en modo normal y tenemos la NANDB que hemos flasheado.
+(De este modo podemos, por ejemplo, convertir un C64Mini PAL a NTSC).
 
 Entrar en una consola de comandos sin FEL MODE ni conexión UART
 ===============================================================
