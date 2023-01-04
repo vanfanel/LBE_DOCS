@@ -1735,6 +1735,12 @@ wait
 bind "JOY_R3" "IMPULSE 100"
 bind "JOY_L3" "IMPULSE 105"
 
+Hilos de interés de cómo cargar mods en el core tyrquake (por si quieres cargar algún día las expansiones oficiales, que
+a parte de un pak0.pak traen su propia música y tal):
+https://www.psx-place.com/threads/tyrquake-mods-for-retroarch.9539/
+https://forums.libretro.com/t/tyquake-qauke-mods-how/15631
+https://docs.libretro.com/library/tyrquake/
+
 *******TYRQUAKE standalone en GNU/Linux****************************************************************************************************
 
 clonamos su repo:
