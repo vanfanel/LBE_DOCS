@@ -1719,6 +1719,22 @@ bind F1 ""
 Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake
 te mande al menú de RA.
 
+--PARA CARGAR A CUJO--
+
+Te puedes bajar la última versión (cujo14.zip) de aquí: https://github.com/Jason2Brownlee/QuakeBotArchive/tree/main/bin
+El mod de Cujo es un sencillo archivo pak0.pak. Copia el pak0.pak a id1/pak2.pak, y ya se carga automáticamente al cargar el core.
+Ahora, para llamar a Cujo y encender su luz apretando los analógicos del mando hacia abajo, pon esto en id1/autoexe.cfg
+(Sí, aunque parezca raro hay que hacer unbind, wait, unbind, wait... y luego ya bind. Cosas que pasan).
+
+unbind "JOY_L3"
+unbind "JOY_R3"
+wait
+unbind "JOY_L3"
+unbind "JOY_R3"
+wait
+bind "JOY_R3" "IMPULSE 100"
+bind "JOY_L3" "IMPULSE 105"
+
 *******TYRQUAKE standalone en GNU/Linux****************************************************************************************************
 
 clonamos su repo:
