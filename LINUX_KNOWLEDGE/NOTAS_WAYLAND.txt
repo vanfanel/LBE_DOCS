@@ -673,8 +673,9 @@ Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/nestopia_libretro.so -- "${FPATH}"
             exit 0;;
 
-        ## SMS files
-        sms)
+        ## Master System, Megadrive and SG-1000 files (Don't use .md extension because these are
+        ## markdown text files!)
+        smd|sms|sg)
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/genesis_plus_gx_libretro.so -- "${FPATH}"
             exit 0;;
 
@@ -683,9 +684,9 @@ Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mednafen_pce_fast_libretro.so -- "${FPATH}"
             exit 0;;
 
-        ## SMD files (Don't use MD because these are markdown text files for hithub projects!)
-        smd)
-            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/genesis_plus_gx_libretro.so -- "${FPATH}"
+        ## Gameboy & Gameboy Color files
+        gb|gbc)
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/gambatte_libretro.so -- "${FPATH}"
             exit 0;;
 
         ## GBA files
