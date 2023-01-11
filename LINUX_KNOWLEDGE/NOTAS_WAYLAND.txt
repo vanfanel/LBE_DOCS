@@ -20,7 +20,7 @@ Instalamos dependencias previas:
 apt-get install libffi-dev --no-install-recommends
 
 Bajamos la última release estable de:
-https://wayland.freedesktop.org/releases.html
+https://gitlab.freedesktop.org/wayland/wayland/-/releases
 
 Configuramos, compilamos e instalamos:
 mkdir b4
@@ -36,7 +36,7 @@ sudo ninja install
 PARTE 2: WAYLAND-PROTOCOLS
 --------------------------
 Bajamos la ultima release estable de:
-https://wayland.freedesktop.org/releases.html
+https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases
 
 Cofiguramos, compilamos e instalamos:
 mkdir b4
@@ -844,6 +844,9 @@ font monospace 16
 -Para evitar que las ventanas maximizadas tengan bordes, que sobre todo los verticales quedan muy feos (se puede poner
 vertical, horizontal o both):
 hide_edge_borders both
+
+-Para que las ventanas no tengan el nombre arriba:
+default_border none
 
 -Para que no haga eso tan molesto de que cada vez que pones el raton en una ventana, esa ventana pilla el foco:
 focus_follows_mouse no
