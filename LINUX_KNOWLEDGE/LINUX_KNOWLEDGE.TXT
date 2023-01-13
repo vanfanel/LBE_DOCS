@@ -1253,7 +1253,24 @@ Skin_file = skin_modern.png
 Lanzamos con:
 ./grafx2-sdl2 -mode 640x360
 
+******EtherTherm, un emulador de terminal gráfica para GNU/Linux*******
+
+Instalamos dependencias previas:
+apt-get install libssh-dev libyaml-cpp-dev --no-install-recommends
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/M-griffin/EtherTerm.git
+
+Nos vamos al directorio linux y compilamos:
+
+cd linux
+
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+make -j4
+
 ******Compilar VICE en GNU/Linux*********
+
 Necesitaremos tener instalados los paquetes flex y bison durante la configuración.
 Configuramos con:
 
