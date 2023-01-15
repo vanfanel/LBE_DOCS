@@ -788,6 +788,17 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
 Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
 Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
+******Compilar core MOJOZORK libretro***************************************************
+
+git clone --depth 1 https://github.com/icculus/mojozork.git
+
+mkdir b4
+cd b4
+
+cmake .. -DMOJOZORK_MULTIZORK=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+
 ******Compilar core MAME libretro con soporte sólo para unos ciertos drivers************
 
 git clone --depth 1 https://github.com/libretro/mame.git
