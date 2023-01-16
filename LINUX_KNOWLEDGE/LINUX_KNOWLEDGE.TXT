@@ -908,14 +908,31 @@ Ahora ya, lo de las llaves va así:
 10)Y luego cada uno elige la predeterminación que desea.
 11)Llave finalizada.
 
-******Medir la temperatura en Raspberry Pi************
+******Overclockear la Raspberry Pi 4*******************************
 
-vcgencmd measure_temp
+[pi4]
+# Run as fast as firmware / board allows
+arm_boost=1
+
+[all]
+arm_freq=1800
+gpu_freq=600
+force_turbo=1
+
+(NO ES NECESARIO ningún valor de overvoltage, el firmware ajusta el voltaje automáticamente desde hace tiempo).
+(gpu_freq a 600 es necesario para que los shaders funcionen fullspeed en 1080p).
+
+******Vigilar la temperatura del SOC de la Raspberry Pi************
+
+watch -n 0.5 'cat /sys/class/thermal/thermal_zone0/temp'
+
+(Nos da la temperatura en milésimas de grados centígrados, así que con que mires las dos primeras cifras vale,
+y nos la mide cada 0.5 segundos.
+La Pi4 empieza a hacer throttling a los 80 grados, y hace full throttling a los 85).
 
 ******Medir velocidad de la CPU en Raspberry Pi**********
 
 sudo cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
-vcgencmd get_config arm_freq
 
 *****SDL2 en hardware genérico con mi driver KMSDRM******
 
@@ -2788,35 +2805,6 @@ sudo apt-get install rpi-eeprom
 sudo rpi-eeprom-update
 (Volvemos a borrar las libraspberrypi....)
 sudo apt-get purge libraspberrypi*
-
-************VALORES DE OVERCLOCKING PARA RASPBERRY PI 3***************************************************************************
-
-arm_freq=1350
-over_voltage=4
-sdram_freq=500
-sdram_schmoo=0x02000020
-sdram_over_voltage=2
-
-Valores más conservadores para la CPU serían:
-arm_freq=1300
-over_voltage=2
-
-O incluso:
-arm_freq=1300
-over_voltage=1
-
-Si usas 1350, DESACTIVA AL MENOS UNO DE LOS CORES (en cmdline.txt, maxcores=3), o el sistema se volverá inestable en carga máxima,
-como por ejemplo compilando con todos los cores (make -j6, etc)
-No tiene sentido overclockear el video core ya que aunque leas por ahí que la caché de nivel 2 es compartida con el video core,
-eso era en la Pi1 solamente.
-
-Y para overclockear la SD (OJO! Requiere que la tarjeta sea UHS):
-dtparam=sd_overclock=100
-
-Puedes medir la temperatura con:
-vcgencmd measure_temp
-
-Por defecto, al llegar a los 79-80º, se downclockeará, así que si con overclocking alcanza los 75, olvídate.
 
 ***********Scrips para levantar la red ETHERNET y la red WIFI manualmente****************************************************************
 

@@ -28,14 +28,12 @@ comentamos todo el "if" y lo que hay dentro.
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-debug --enable-release --enable-optimizations \
---disable-hq-scalers --disable-fribidi \
+--opengl-mode=gles2 --disable-hq-scalers --disable-fribidi \
 --disable-eventrecorder --disable-cloud --disable-savegame-timestamp \
 --enable-mt32emu --disable-timidity --disable-flac --disable-alsa \
 --enable-vorbis --disable-mad --disable-tremor --disable-theoradec \
 --disable-taskbar --disable-sdlnet --disable-libcurl --enable-plugins --default-dynamic \
 --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,hypno,hadesch,private,stark,ags,asylum,chewy,pink,mtropolis,glk,freescape,twine
-
-SI QUISIÉRAMOS FORZAR GLES2, pasaríamos también: "--opengl-mode=gles2" 
 
 PARA TENER UN TEMA que no sea el built-in, copia el directorio gui/themes que viene con los sources a ~/scummvm/themes,
 y en el scummvm pon en PATHS el "THEME PATH" apuntando a ~/scummvm/themes, y luego en MISC selecciona el tema.
