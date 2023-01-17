@@ -124,6 +124,10 @@ sudo ninja install
 Bajamos los últimos sources estables de:
 https://gitlab.freedesktop.org/wayland/weston/-/releases
 
+Editamos libweston/input.c, y en la función maybe_enable_pointer_constraint() y ahí...
+(Queda pendiente saber cómo hacer que se haga automáticamente el pointer constraint en aplicaciones fullscreen,
+ver issue: https://gitlab.freedesktop.org/wayland/weston/-/issues/667)
+
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
@@ -175,7 +179,8 @@ font-size=18
 
 [launcher]
 icon=/usr/local/share/weston/terminal.png
-path=/usr/local/bin/weston-terminal --shell=/bin/bash
+#path=/usr/local/bin/weston-terminal --shell=/bin/bash
+path=/usr/local/bin/foot
 
 [input-method]
 path=/usr/local/libexec/weston-keyboard
@@ -187,6 +192,10 @@ mode=current
 [keyboard]
 keymap_layout=es
 vt-switching=false
+
+[autolaunch]
+path=/usr/local/bin/foot
+watch=false
 
 #
 # Aquí acaba el contenido de weston.ini
@@ -522,8 +531,8 @@ font=monospace:size=12
 title=Command Console
 
 #initial-window-size-chars=90x20
-#initial-window-mode=fullscreen
-initial-window-mode=maximized
+initial-window-mode=fullscreen
+#initial-window-mode=maximized
 
 -Para tener una fuente chula en vez de la monospace por defecto:
 	-Instalamos: apt-get install fonts-jetbrains-mono
