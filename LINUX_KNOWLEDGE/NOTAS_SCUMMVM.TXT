@@ -45,9 +45,6 @@ PARA TENER ICONOS en el modo GRID VIEW del menú, bájate todos los archivos de 
 (No tienes que renombrarlos, tienen que estar con sus nombres originales que llevan una fecha, porque son incrementales).
 Los metes en ~/scummvm/icons y pones el "ICON PATH" apuntando a ~/scummvm/icons. Y ya se deberían ver.
 
-Si no le pasas --opengl-mode=gles2, intentará usar OpenGL normal para el OpenGL-in-game, así que tendrías que editar el configure
-y cambiar -lGL por -lOpenGL.
-
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
 
 Para poner un buffer de audio más pequeño, editamos backends/mixer/sdl/sdl-mixer.cpp y ponemos el número de milisegundos que queramos en la línea:
