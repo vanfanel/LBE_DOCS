@@ -54,9 +54,11 @@ https://github.com/raspberrypi/firmware/blob/915a7080ccfbf253053e249bde6489a5be9
 Ahora, como ya hemos acabado, re-montamos la partición de arranque como sólo lectura:
 mount -o remount,ro /flash
 
-Ahora reiniciamos Lakka, nos vamos a SETTINGS->AUDIO->OUTPUT y en DEVICE ponemos (a mano) lo siguiente:
+Ahora editamos desde el PC el fichero LAKKA_DISK/.config/retroarch/retroarch.cfg y en audio_device ponemos:
 hw:CARD=sndrpihifiberry
 (NOTA: Antes usaba "sysdefault:CARD=sndrpihifiberry", pero se supone que "hw:CARD=sndrpihifiberry" es más directo según "aplay -L").
+Lo normal sería irnos a SETTINGS->AUDIO->OUTPUT y en DEVICE lo elegimos, pero por si no te deja elegirlo desde el mando,
+pues lo mejor es eso, editar el fichero de configración a mano.
 
 Si elegimos el driver de vídeo Vulkan, en ~/.config/retroarch/retroarch.cfg, pon el modo de vídeo que usa el sistema en los parámetros:
 (OJO, no te olvides de deshabilitar temporalmente el salvado automático de la configuración al salir de RetroArch, porque si no,

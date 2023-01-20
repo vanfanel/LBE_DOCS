@@ -124,8 +124,8 @@ sudo ninja install
 Bajamos los últimos sources estables de:
 https://gitlab.freedesktop.org/wayland/weston/-/releases
 
-Editamos libweston/input.c, y en la función maybe_enable_pointer_constraint() y ahí...
-(Queda pendiente saber cómo hacer que se haga automáticamente el pointer constraint en aplicaciones fullscreen,
+Editamos desktop-shell/shell.c, vamos a la función set_fullscreen() y ahí...
+(Queda pendiente hacer como que se clicka en la surface para que el pointer constraint en aplicaciones fullscreen se aplique inmediatamente,
 ver issue: https://gitlab.freedesktop.org/wayland/weston/-/issues/667)
 
 Configuramos, compilamos e instalamos:
@@ -690,7 +690,7 @@ Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
 
         ## PCE files
         pce)
-            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mednafen_pce_fast_libretro.so -- "${FPATH}"
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mednafen_pce_libretro.so -- "${FPATH}"
             exit 0;;
 
         ## Gameboy & Gameboy Color files
@@ -779,7 +779,7 @@ apt-get install libjson-c-dev --no-install-recommends
 
 Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
 -Bajamos los últimos sources estables de: https://github.com/GNOME/pango/tags
--Cofiguramos con:
+-Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release ..
