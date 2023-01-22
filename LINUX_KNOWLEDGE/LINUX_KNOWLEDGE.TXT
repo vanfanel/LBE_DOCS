@@ -8009,6 +8009,24 @@ O bien, déjalo blacklisteado, y lo cargas manualmente en:
 
 sudo modprobe brcmfmac
 
+USAR YOUTUBE EN LIBREELEC USANDO EL PLUGIN DUFF YOU
+===================================================
+
+En 2023, el plugin Invidius ya no funciona, y el plugin Youtube sigue siendo una basura que pide unas keys.
+Sólo nos queda Duff You.
+
+Para instalarlo:
+1-En Sistema->Sistema->Add-Ons, activamos la opción "Orígenes desconocidos"
+2-En Sistema->Explorador de Archivos, nos vamos a "Añadir fuente" y añadimos la fuente: https://luarsource.github.io/Fuente
+y la llamamos "luar".
+3-Volvemos al menú principal y nos vamos a Add-Ons->Instalar desde un archivo zip->luar, y nos saldrán 3 zips ahí.
+  Elegimos "script.luar-0.8.1.zip" y hacemos doble click sobre él.
+  Con esto se nos instala el plugin Luar, que nos peromite instalar otros plugins desde él.
+4-Volvemos al menú principal y nos vamos a Add-Ons->Addons de programas, y desde el Luar instalamos el Duff You que está en los recomendados.
+
+NOTA: NO vas a poder instalar el plugin Duff You directamente por el hostigamiento de los cerdos de Google, así que hay que
+usar Luar para instalarlo sí o sí.
+
 INSTALAR LIBREELEC EN UNA SD CON NOOBS QUE YA TIENE OTROS SISTEMAS INSTALADOS
 =============================================================================
 
