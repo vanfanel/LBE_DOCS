@@ -8009,8 +8009,8 @@ O bien, déjalo blacklisteado, y lo cargas manualmente en:
 
 sudo modprobe brcmfmac
 
-USAR YOUTUBE EN LIBREELEC USANDO EL PLUGIN DUFF YOU
-===================================================
+USAR YOUTUBE EN KODI/LIBREELEC USANDO EL PLUGIN DUFF YOU
+========================================================
 
 En 2023, el plugin Invidius ya no funciona, y el plugin Youtube sigue siendo una basura que pide unas keys.
 Sólo nos queda Duff You.
@@ -8026,6 +8026,19 @@ y la llamamos "luar".
 
 NOTA: NO vas a poder instalar el plugin Duff You directamente por el hostigamiento de los cerdos de Google, así que hay que
 usar Luar para instalarlo sí o sí.
+
+VER CANALES DE TDT EN KODI/LIBREELEC
+====================================
+
+Instalamos el add-on "PVR IPTV Simple Client", que se instala simplemente desde:
+add-ons->instalar desde repositorio->todos los repositorios->clientes PVR->PVR IPTV Simple Client
+
+Ahora nos vamos a add-ons->clientes PVR->PVR IPTV Simple Client->Configurar
+...y en "Ruta a la lista M3U" le ponemos la dirección:
+https://www.tdtchannels.com/lists/tv.m3u8
+
+Si queremos también radio o alguna otra cosa, vienen aquí las listas de m3u:
+https://github.com/LaQuay/TDTChannels
 
 INSTALAR LIBREELEC EN UNA SD CON NOOBS QUE YA TIENE OTROS SISTEMAS INSTALADOS
 =============================================================================
