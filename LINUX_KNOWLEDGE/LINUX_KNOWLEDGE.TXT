@@ -1416,6 +1416,18 @@ Instalamos y arrancamos desde el disco duro. Si hemos instalado en modo CSM, deb
 Ya que estás, desactiva SECUREBOOT.
 Miseria y muerte a Microsoft y a todos los malnacidos que trabajan en ella.
 
+*******Mantener una sesión de IRSSI y conectarse a ella por SSH******************************************************************
+
+Lanzamos IRSSI bajo SCREEN, ya sea en local o por SSH, así:
+
+screen irssi
+
+Nos logueamos normalmente, abrimos los canales que queramos, etc
+
+Y ahora podemos recuperar la sesión abierta haciendo:
+
+screen -R -A -DD
+
 *******Guardar LOG de una ventana en el IRSSI********
 
 /lastlog -file <archivo>.log
