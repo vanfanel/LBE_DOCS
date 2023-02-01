@@ -37,8 +37,9 @@ Así que vamos por partes:
      
 5) Para borrar los canales que no quieras, las partidas en memoria de los juegos chachos cutres que usa la gente en la Wii, etc...
    Puedes hacerlo con el AnyTitleDeleter MOD 7.1 de RedSquirrel.
-     Naturalmente, lo tienes que meter en la SD, en /apps, como todo lo demás, aunque este tiene que tener un .txt en el directorio raiz de la SD.. Lo verás en cuanto lo vayas a instalar.
-     NO BORRES EL CANAL TIENDA!!!
+   Naturalmente, lo tienes que meter en la SD, en /apps, como todo lo demás, aunque este tiene que tener un .txt en el directorio raiz de la SD..
+   Lo verás en cuanto lo vayas a instalar.
+   NO BORRES EL CANAL TIENDA!!!
 6) Para jugar a los juegos de Gamecube, simplemente instálate el Nintendont en la SD. Las instrucciones las tienes aquí: 
 https://github.com/FIX94/Nintendont
 El Nintendont no se lanza, sino que es usado por el USBLoaderGX para lanzar juegos de GC desde allí, sin más.
@@ -167,3 +168,16 @@ NOTAS JUEGOS
 ============
 
 -Para que Luigi's Mansion y Zelda Wind Waker de GC vayan a 60Hz y en castellano, tiene que ser la versión PAL forzada a 60Hz y castellano desde el USBLoaderGX.
+
+MANIPULACIÓN DE WADS
+====================
+
+Para extraer y volver a empaquetar WADs, los programas que lo hacen necesitan el common-key.bin, que lo tienes en el disco duro de backup.
+
+Para extraer los contenidos de un WAD, compila esto y usa wadunpacker:
+https://github.com/Plombo/romextract
+
+Para re-empaquetar el WAD, usa wadpacker, cuyos sources vienen incluidos en este parche:
+https://gbatemp.net/threads/help-me-release-this-starblade-vc-arcade-translation.350059/
+(Aquí también viene wadunpacker, pero por alguna razón revienta porque debe ser alguna versión no compatible con 64bits).
+
