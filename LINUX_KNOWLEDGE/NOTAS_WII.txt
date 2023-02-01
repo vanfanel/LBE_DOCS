@@ -1,3 +1,8 @@
+******Instalar canales (WAD) en la Wii****************************************************************************************************
+
+Los WADs se instalan con el Some-YAWMM-Mod, un WAD MANAGER actual que está aquí: https://github.com/FIX94/Some-YAWMM-Mod/releases
+y que a su vez tienes que instalar en la SD en /apps, como siempre.
+
 ******Instalar juegos de Wii en disco duro desde Linux************************************************************************************
 
 El USBLoader GX debería ser capaz de acceder a los juegos en formato .wbfs en una partición FAT32, si no lo hace es que necesitas actualizar el CIOS del slot 249.
