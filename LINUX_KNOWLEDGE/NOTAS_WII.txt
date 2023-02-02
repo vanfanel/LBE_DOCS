@@ -186,3 +186,15 @@ Para re-empaquetar el WAD, usa wadpacker, cuyos sources vienen incluidos en este
 https://gbatemp.net/threads/help-me-release-this-starblade-vc-arcade-translation.350059/
 (Aquí también viene wadunpacker, pero por alguna razón revienta porque debe ser alguna versión no compatible con 64bits).
 
+CARGAR JUEGOS DE LA CONSOLA VIRTUAL DE OTRAS REGIONES
+=====================================================
+
+No basta con cambiar la región del WAD, hay que cargarlos desde una EmuNAND que emula una NAND como la interna de la consola pero en la SD.
+
+Para ello, lo primero es volcal la NAND a la SD, cosa que se hace desde BOOTMII, que se carga desde el PRIILOADER
+(Al PRIILOADER se accede arrancando con el RESET presionado).
+
+Luego abrimos ese backup de la NAND con el ShowMiiWads (que se baja de aquí https://github.com/WiiDatabase/showmiiwads-mod/releases y va en Wine)
+
+Más info de NEEK: https://sites.google.com/site/wiiflowiki4/emu-nand-and-neek2o
+Guía para seguir más adelante: https://www.elotrolado.net/hilo_que-es-neek2o_2117257
