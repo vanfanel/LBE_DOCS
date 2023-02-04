@@ -274,6 +274,13 @@ NOTAS CORE MSX
 
 Tienes TODO el software de MSX1/MSX2 en: https://download.file-hunter.com/
 
+Las BIOS que necesitas están en https://download.file-hunter.com/System%20ROMs/machines/philips/
+Y tienes que renombrarlas así y meterlas en /media/fat/games/MSX1/
+
+vg8240_basic-bios2.rom	--> boot0.rom
+vg8240_msx2sub.rom 		--> boot1.rom
+vg8240_disk.rom 		--> boot2.rom
+
 ***********Montar un VHD de MSX para la MiSTer******************************************************************************************
 
 ---Averiguamos dónde empieza con parted. Necesitamos saberlo en BYTES para poder pasárselo a mount, NO en sectores como nos lo dice FDISK. Por eso usamos parted:
