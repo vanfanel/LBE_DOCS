@@ -1,6 +1,18 @@
 ******Instalar canales (WAD) en la Wii****************************************************************************************************
 
-Los WADs se instalan con el Some-YAWMM-Mod, un WAD MANAGER actual que está aquí: https://github.com/FIX94/Some-YAWMM-Mod/releases
+-Los WADs en la EmuNAND se instalan desde el USBLoaderGX.
+Para ello, lo primero es volcar la NAND a la SD, cosa que se hace desde el USBLoaderGX con:
+Settings->Features->Dump NAND to EmuNand
+Ahora, para instalar WADs a la EmuNAND:
+-Metemos los WADs que queramos instalar en la SD, en "wads" por ejemplo.
+-Instalamos los WADs a la EmuNand con: Settings->Features->EmuNand WAD Manager
+ Sirve tanto para instalar como para desinstalar los WADs de la EmuNand.
+-AHORA, ve a "Select Title Sources" (es ese iconito que son unas cajitas blancas en la parte de arriba)
+ y marca "EmuNAND channels" y desmarca "Nand Channels", para que se nos vean los canales de la EmuNAND pero no los de la NAND,
+ porque si dejásemos los de la NAND nos saldrían duplicados.
+
+-Los WADs en la NAND real de la consola (no recomendado ya) se instalan con el Some-YAWMM-Mod,
+un WAD MANAGER actual que está aquí: https://github.com/FIX94/Some-YAWMM-Mod/releases
 y que a su vez tienes que instalar en la SD en /apps, como siempre.
 
 ******Instalar juegos de Wii en disco duro desde Linux************************************************************************************
@@ -189,12 +201,8 @@ https://gbatemp.net/threads/help-me-release-this-starblade-vc-arcade-translation
 CARGAR JUEGOS DE LA CONSOLA VIRTUAL DE OTRAS REGIONES
 =====================================================
 
-No basta con cambiar la región del WAD, hay que cargarlos desde una EmuNAND que emula una NAND como la interna de la consola pero en la SD.
+Desde el USBLoaderGX. Por ejemplo, el Starblade, que es japonés.
+Lo instalamos (ver cómo instalar WADs en la EmuNAND arriba del todo de este documento), y luego, en los Settings del juego,
+en la sección "Game Load", ponemos "Video Mode" a "Region Patch" y "Patch Country Settings" a "ON".
 
-Para ello, lo primero es volcal la NAND a la SD, cosa que se hace desde BOOTMII, que se carga desde el PRIILOADER
-(Al PRIILOADER se accede arrancando con el RESET presionado).
-
-Luego abrimos ese backup de la NAND con el ShowMiiWads (que se baja de aquí https://github.com/WiiDatabase/showmiiwads-mod/releases y va en Wine)
-
-Más info de NEEK: https://sites.google.com/site/wiiflowiki4/emu-nand-and-neek2o
-Guía para seguir más adelante: https://www.elotrolado.net/hilo_que-es-neek2o_2117257
+En el Starblade, meter créditos es con + y 1 a la vez, y START es con + y 2 a la vez. O algo así. 
