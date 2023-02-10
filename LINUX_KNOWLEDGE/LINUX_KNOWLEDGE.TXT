@@ -4594,7 +4594,7 @@ sudo swapon /dev/sda1
 
 ldd <nombre_del_ejecutable>
 
-*************Vanilla-Conquer: Command and Conquer en GNU/Linux**********************************************************************
+*************VanillaConquer: Command and Conquer en GNU/Linux**********************************************************************
 
 Notas previas:
 -El C&C original se llama "tiberian dawn". Así que el ejecutable es vanillatd, mientras que vanillara es para el RED ALERT.
@@ -4613,13 +4613,13 @@ Configuramos y compilamos con:
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 make -j4
 
-Creamos el directorio ~/cc, y metemos ahí los datos del juego.
+Creamos el directorio ~/cconquer, y metemos ahí los datos del juego.
 
 Copiamos el ejecutable (vanillatd para el C&C original, o vanillara para el RED ALERT) al directorio del juego, y listo!
 
 La primera vez que ejecutemos vanillatd o vanillara, se nos creará .config/vanilla-conquer/[vanillatd|vanillara]/conquer.ini
 (A NO SER que tengamos un conquer.ini entre los datos del juego, en cuyo caso lo primero es borrar ese conquer.ini).
-Editamos ese conquer.ini y ponemos Scaler a "linear", etc.
+Editamos ese conquer.ini y ponemos Scaler a "linear", el ratio a 4:3, etc.
 
 *************SONIC CD Y SONIC 1/2 NATIVOS en GNU/Linux***********************************************************************************
 
