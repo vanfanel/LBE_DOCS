@@ -385,22 +385,6 @@ Y un atajo de teclado sería por ejemplo:
 key=ctrl+alt+t
 exec=weston-terminal --shell=/bin/bash
 
-INSTALAR LABWC, UN COMPOSITOR STACKING LIGERO
-=============================================
-
-Instalamos depencendias previas:
-sudo apt-get install libxml2-dev --no-install-recommends
-
-Bajamos la última estable de:
-https://github.com/labwc/labwc/releases
-
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson .. -Dbuildtype=release -Dxwayland=disabled -Dman-pages=disabled -Dnls=disabled
-
 CONSTRUIR UN ESCRITORIO COMPLETO BASADO EN WAYLAND
 ==================================================
 
@@ -1012,6 +996,9 @@ meson -Dbuildtype=release -Dxwayland=disabled ..
 
 Podemos lanzar un programa a la vez que el compositor con:
 labwc -s foot
+
+Ahora, para configurarlo, podemos ver esta guía:
+https://labwc.github.io/getting-started.html
 
 CAMBIAR LA RESOLUCIÓN AL VUELO EN WAYLAND
 =========================================
