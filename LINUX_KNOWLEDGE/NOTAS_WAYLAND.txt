@@ -759,6 +759,7 @@ Instalamos otra dependencia previa, gtk3+ (OJO, es GTK3+, NO GTK3 NI GTK4!!!, SI
 meson .. -Dbuildtype=release -Ddemos=false -Dx11_backend=false -Dintrospection=false -Ddemos=false -Dexamples=false
 
 Instalamos otra diferencia previa, PANGO:
+-Desinstalamos el pango del sistema: apt-get purge libpango* && apt-get autoremove
 -Bajamos los últimos sources estables de: https://github.com/GNOME/pango/tags
 -Cofiguramos con:
 CFLAGS="-march=native -mtune=native" \
@@ -778,6 +779,7 @@ Instalamos dependencias previas:
 apt-get install libjson-c-dev --no-install-recommends
 
 Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
+-Desinstalamos el pango del sistema: apt-get purge libpango* && apt-get autoremove
 -Bajamos los últimos sources estables de: https://github.com/GNOME/pango/tags
 -Configuramos con:
 CFLAGS="-march=native -mtune=native" \
@@ -969,6 +971,7 @@ Instalamos dependencias previas:
 apt-get install libxml2-dev --no-install-recommends
 
 Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
+-Desinstalamos el pango del sistema: apt-get purge libpango* && apt-get autoremove
 -Bajamos los últimos sources estables de: https://github.com/GNOME/pango/tags
 -Configuramos con:
 CFLAGS="-march=native -mtune=native" \
@@ -997,8 +1000,72 @@ meson -Dbuildtype=release -Dxwayland=disabled ..
 Podemos lanzar un programa a la vez que el compositor con:
 labwc -s foot
 
-Ahora, para configurarlo, podemos ver esta guía:
-https://labwc.github.io/getting-started.html
+Ahora, para configurarlo (info sacada de esta guía: https://labwc.github.io/getting-started.html) hacemos lo siguiente:
+
+--Para teclado en español creamos ~/.config/labwc/environment con el contenido:
+XKB_DEFAULT_LAYOUT=es
+
+
+--Para poder ver los eventos de teclado desde wayland, usamos wev:
+git clone --depth 1 https://git.sr.ht/~sircmpwn/wev
+CFLAGS="-march=native -mtune=native" make -j4
+make install
+
+--Para ver ejemplos de atajos de teclado posibles:
+https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
+
+--Para atajo de teclado CTRL+ALT+T para lanzar la consola de comandos, creamos ~/.config/labwc/rc.xml con el contenido:
+
+<?xml version="1.0" ?>
+<labwc_config>
+
+  <keyboard>
+    <default />
+    <keybind key="C-A-t"><action name="Execute" command="foot" /></keybind>
+  </keyboard>
+
+</labwc_config>
+
+GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
+======================================
+
+-Instalamos dependencias previas:
+apt-get install libx11-dev libx11-xcb-dev libxdamage-dev libxcomposite-dev libxrender-dev libxxf86vm-dev libxtst-dev libxres-dev libxmu-dev --no-install-recommends
+
+-Instalamos dependencia previa, hwdata.
+--Primero desinstalamos la versión de Debian, ya que le faltan los archivos de pkg-config
+y el buildsystem de gamescope no la detecta:
+apt-get purge hwdata
+apt-get autoremove
+--Ahora nos bajamos la última estable de:
+https://github.com/vcrhonek/hwdata/releases
+Descomprimimos y directamente hacemos:
+./config
+make install
+(NO hay que compilar nada)
+
+git clone --depth 1 https://github.com/Plagman/gamescope.git
+cd gamescope
+git -c submodule."subprojects/openvr".update=none submodule update --init
+
+(^NOTA: el "git submodule update..." lo hacemos así para evitar a toda costa que se descargue el submódulo openvr, que no lo vamos a usar
+y ocupa 500 MB...)
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release -Denable_openvr_support=false -Dpipewire=disabled -Dxwayland=disabled ..
+
+ninja -j4
+ninja install
+
+Y ahora podemos lanzar lo que queramos con:
+gamescope -- <ejecutable>
+
+O podemos lanzar el gamescope desde la TTY directamente como otro compositor cualquiera con:
+gamescope -e -f -- foot
 
 CAMBIAR LA RESOLUCIÓN AL VUELO EN WAYLAND
 =========================================
