@@ -367,6 +367,11 @@ En el menú debes tener activas las opciones "Automount Memory Card 1" y "Autosa
 (O si no tienes Autosave, tendrías que darle manualmente a "Save Memory Cards" cada vez que quieras volcalas a la microSD).
 NO necesitas ningún fichero .MCD ni nada por el estilo.
 
+-Notas del image crop, por el creador del core:
+if you want a crt-like experience: use vblank and hblank on and set hcrop and vcrop on to 224
+if you want as less black borders as possible and maximum viewable area, the default settings
+(hblank fixed, vblank unfixed, no crop) works for 95% of the games. For the other 5% you need to optimize
+
 =================================
 = APUNTES CORE AMIGA (MINIMIG)  =
 =================================
