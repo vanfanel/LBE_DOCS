@@ -87,7 +87,7 @@ sudo ninja install
 
 RECUERDA que WLROORS soporta renderizado con Vulkan, por lo que los renderers basados en WLROOTS (como DWL, SWAY, WAYBOX...) pueden usarlo.
 Para ello tendriamos que pasar a meson: -Drenderers=gles2,vulkan
-Y anzaríamos el compositor que queramos con:
+Y lanzaríamos el compositor que queramos con:
 WLR_RENDERER=vulkan <compositor>
 (OJO!! WESTON NO USA WLROOTS!!)
 
@@ -96,7 +96,7 @@ PARTE 4: INSTALAR WESTON (EL COMPOSITOR DE REFERENCIA DE WAYLAND)
 =================================================================
 
 -Instalamos dependencias previas, libinput-dev:
-sudo apt-get install libinput-dev --no-install-recommends
+sudo apt-get install libinput-dev libpam0g-dev --no-install-recommends
 
 -Instalamos dependencias previas: libseat-dev
 --Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
@@ -134,10 +134,12 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dbackend-x11=false \
--Dxwayland=false -Dremoting=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
--Dcolor-management-lcms=false -Dcolor-management-lcms=false -Dlauncher-logind=false -Dtools=terminal -Dwcap-decode=false \
--Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false ..
+meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dremoting=false -Dpipewire=false \
+-Dbackend-drm-screencast-vaapi=false -Dbackend-vnc=false -Dbackend-x11=false \
+-Dxwayland=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
+-Dcolor-management-lcms=false -Dcolor-management-lcms=false -Dtools=terminal -Dwcap-decode=false \
+-Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false \
+-Dwcap-decode=false ..
 
 ninja -j4
 sudo ninja install

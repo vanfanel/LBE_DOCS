@@ -3309,10 +3309,12 @@ cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_N
 -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
 make -j4
 
-***********RIGEL, el engine de Duke Nukem II************************************************************
+***********RIGEL ENGINE, el engine de Duke Nukem II************************************************************
 
-Clonamos tu repo:
-git clone --depth 1 https://github.com/lethal-guitar/RigelEngine.git
+Nos vamos a mirar los tags de su repositorio, que están en: https://github.com/lethal-guitar/RigelEngine/tags
+Allí, buscamos la última release y nos quedamos con el nombre del tag de esa release.
+Sabiendo eso, clonamos el tag de la release, e inicializamos los submódulos:
+git clone --depth 1 --branch <nombre de la última release> https://github.com/lethal-guitar/RigelEngine.git
 git submodule update --init --recursive
 
 mkdir b4
