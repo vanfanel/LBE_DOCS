@@ -3426,8 +3426,8 @@ Para usar por ejemplo una banda sonora custom, le puedes pasar /x <ruta al archi
 Dependencias previas:
 sudo apt-get install autoconf
 
-Clonamos su repo:
-git clone --depth 1 https://github.com/schismtracker/schismtracker.git
+Bajamos la última estable de:
+https://github.com/schismtracker/schismtracker/releases
 
 Ejecutamos:
 autoreconf -vif
