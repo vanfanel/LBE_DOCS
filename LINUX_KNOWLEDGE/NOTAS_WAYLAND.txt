@@ -96,7 +96,7 @@ PARTE 4: INSTALAR WESTON (EL COMPOSITOR DE REFERENCIA DE WAYLAND)
 =================================================================
 
 -Instalamos dependencias previas, libinput-dev:
-sudo apt-get install libinput-dev libpam0g-dev --no-install-recommends
+sudo apt-get install libinput-dev --no-install-recommends
 
 -Instalamos dependencias previas: libseat-dev
 --Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
@@ -163,6 +163,9 @@ Ahora creamos ~/.config/weston.ini con este contenido:
 #
 
 [core]
+# El valor por defecto de "shell" es "desktop". Kiosk es un shell más ligero,
+# que sólo es para que se ejecute un programa, en nuestro caso el foot.
+shell=kiosk
 idle-time=0
 
 [shell]
@@ -196,6 +199,8 @@ keymap_layout=es
 vt-switching=false
 
 [autolaunch]
+# Podríamos poner "watch" a "true" si usamos el shell "kiosk" en la sección [core],
+# ya que así Weston termina al cerrar el foot (y se reinicia o se apaga el sistema).
 path=/usr/local/bin/foot
 watch=false
 
