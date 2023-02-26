@@ -1007,11 +1007,30 @@ meson -Dbuildtype=release -Dxwayland=disabled ..
 Podemos lanzar un programa a la vez que el compositor con:
 labwc -s foot
 
-Ahora, para configurarlo (info sacada de esta guía: https://labwc.github.io/getting-started.html) hacemos lo siguiente:
+////BLOQUE CONFIGURACIÓN DE LABWC////
+(info sacada de esta guía: https://labwc.github.io/getting-started.html)
+(para ver todas las opciones posibles: https://github.com/labwc/labwc/blob/master/docs/rc.xml.all)
 
 --Para teclado en español creamos ~/.config/labwc/environment con el contenido:
 XKB_DEFAULT_LAYOUT=es
 
+--Para que se lanze el foot automáticamente, creamos ~/.config/labwc/autostart con el contenido:
+/usr/local/bin/foot
+
+AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
+
+<?xml version="1.0" ?>
+<labwc_config>
+
+  <core>
+    <reuseOutputMode>yes</reuseOutputMode>
+  </core>
+
+  <keyboard>
+    <keybind key="C-A-t"><action name="Execute" command="foot" /></keybind>
+  </keyboard>
+
+</labwc_config>
 
 --Para poder ver los eventos de teclado desde wayland, usamos wev:
 git clone --depth 1 https://git.sr.ht/~sircmpwn/wev
@@ -1020,18 +1039,6 @@ make install
 
 --Para ver ejemplos de atajos de teclado posibles:
 https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
-
---Para atajo de teclado CTRL+ALT+T para lanzar la consola de comandos, creamos ~/.config/labwc/rc.xml con el contenido:
-
-<?xml version="1.0" ?>
-<labwc_config>
-
-  <keyboard>
-    <default />
-    <keybind key="C-A-t"><action name="Execute" command="foot" /></keybind>
-  </keyboard>
-
-</labwc_config>
 
 GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
 ======================================
