@@ -1028,6 +1028,7 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 
 	<keyboard>
 		<keybind key="C-A-t"><action name="Execute" command="foot" /></keybind>
+		<keybind key="C-A-BackSpace"><action name="Exit" /></keybind>
 	</keyboard>
 
 	<theme>
@@ -1042,6 +1043,9 @@ pero si nos empeñamos en verlo desde wayland, podemos usar wev:
 git clone --depth 1 https://git.sr.ht/~sircmpwn/wev
 CFLAGS="-march=native -mtune=native" make -j4
 make install
+
+--Para ver más acciones de labwc (como lo de Execute, Exit, etc...) que podrías asignar a combinaciones de teclado:
+https://labwc.github.io/labwc-actions.5.html
 
 --Para ver ejemplos de atajos de teclado posibles:
 https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
