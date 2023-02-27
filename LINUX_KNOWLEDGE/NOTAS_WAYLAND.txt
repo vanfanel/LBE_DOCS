@@ -1052,10 +1052,11 @@ https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
 
 --Para instalar temas:
 ----metemos los temas que queramos en ~/.local/share/themes. Cada tema debe incluir un directorio llamado openbox-3.
-    Por ejemplo, el tema "Numix-clone" quedará en ~/.local/share/themes/Numix-clone/openbox-3
+    Por ejemplo, el tema "Arc-Clone" quedará en ~/.local/share/themes/Arc-Clone/openbox-3
     Lo más fácil es hacer algo como esto para clonar un repo de temas en la ruta donde deben ir:
     git clone --depth 1 https://github.com/addy-dclxvi/openbox-theme-collections.git ~/.local/share/themes
 ----En rc.xml, ponemos el nombre del tema que queramos usar en la etiqueta <name>nombre_tema</name> de la categoría <theme>
+    Por ejemplo: <name>Arc-Clone</name>
 
 GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
 ======================================
