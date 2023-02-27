@@ -1022,23 +1022,36 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 <?xml version="1.0" ?>
 <labwc_config>
 
-  <core>
-    <reuseOutputMode>yes</reuseOutputMode>
-  </core>
+	<core>
+		<reuseOutputMode>yes</reuseOutputMode>
+	</core>
 
-  <keyboard>
-    <keybind key="C-A-t"><action name="Execute" command="foot" /></keybind>
-  </keyboard>
+	<keyboard>
+		<keybind key="C-A-t"><action name="Execute" command="foot" /></keybind>
+	</keyboard>
+
+	<theme>
+    	<name></name>
+	</theme>
+
 
 </labwc_config>
 
---Para poder ver los eventos de teclado desde wayland, usamos wev:
+--Para poder ver los eventos de teclado, podemos verlo desde un ordenador con X11 (son los mismos eventos),
+pero si nos empeñamos en verlo desde wayland, podemos usar wev:
 git clone --depth 1 https://git.sr.ht/~sircmpwn/wev
 CFLAGS="-march=native -mtune=native" make -j4
 make install
 
 --Para ver ejemplos de atajos de teclado posibles:
 https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
+
+--Para instalar temas:
+----metemos los temas que queramos en ~/.local/share/themes. Cada tema debe incluir un directorio llamado openbox-3.
+    Por ejemplo, el tema "Numix-clone" quedará en ~/.local/share/themes/Numix-clone/openbox-3
+    Lo más fácil es hacer algo como esto para clonar un repo de temas en la ruta donde deben ir:
+    git clone --depth 1 https://github.com/addy-dclxvi/openbox-theme-collections.git ~/.local/share/themes
+----En rc.xml, ponemos el nombre del tema que queramos usar en la etiqueta <name>nombre_tema</name> de la categoría <theme>
 
 GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
 ======================================
