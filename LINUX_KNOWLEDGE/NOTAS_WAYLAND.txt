@@ -534,16 +534,16 @@ Creamos ~/config/foot/foot.ini con este contenido:
 
 shell=bash
 term=xterm-256color
-font=monospace:size=12
+font=monospace:size=20
 title=Command Console
 
-#initial-window-size-chars=90x20
-initial-window-mode=fullscreen
+initial-window-size-chars=100x22
+#initial-window-mode=fullscreen
 #initial-window-mode=maximized
 
 -Para tener una fuente chula en vez de la monospace por defecto:
 	-Instalamos: apt-get install fonts-jetbrains-mono
-	-En el foot.ini: font=JetBrainsMono:size=10
+	-En el foot.ini: font=JetBrainsMono:size=20
 
 -Para tener un cursor como el de la TTY (aunque yo prefiero últimamente style=block):
 [cursor]
@@ -1029,10 +1029,17 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 	<keyboard>
 		<keybind key="C-A-t"><action name="Execute" command="foot" /></keybind>
 		<keybind key="C-A-BackSpace"><action name="Exit" /></keybind>
+		<keybind key="A-Tab"><action name="NextWindow" /></keybind>
+		<keybind key="A-F4"><action name="Close" /></keybind>
 	</keyboard>
 
 	<theme>
     	<name>Numix-Clone</name>
+    	<cornerRadius>0</cornerRadius>
+    	<font> 
+                <name>sans</name>
+                <size>14</size>
+        </font>
 	</theme>
 
 
@@ -1057,6 +1064,8 @@ https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
     git clone --depth 1 https://github.com/addy-dclxvi/openbox-theme-collections.git ~/.local/share/themes
 ----En rc.xml, ponemos el nombre del tema que queramos usar en la etiqueta <name>nombre_tema</name> de la categoría <theme>
     Por ejemplo: <name>Numix-Clone</name>
+----Si te gusta un tema y quieres modificar cosas, edita su fichero "themerc", todos tienen uno.
+	Por ejemplo, algunos temas no ponen bordes a las ventanas. Puedes cambiar eso poniendo border.width a 4 o así.
 
 GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
 ======================================
