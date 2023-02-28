@@ -1028,6 +1028,7 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 
 	<keyboard>
 		<keybind key="C-A-t"><action name="Execute" command="foot" /></keybind>
+		<keybind key="C-A-KP_Delete"><action name="Execute" command="reboot" /></keybind>
 		<keybind key="C-A-BackSpace"><action name="Exit" /></keybind>
 		<keybind key="A-Tab"><action name="NextWindow" /></keybind>
 		<keybind key="A-F4"><action name="Close" /></keybind>
@@ -1068,6 +1069,20 @@ https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
     Por ejemplo: <name>Numix-Clone</name>
 ----OPCIONAL: Si te gusta un tema y quieres modificar cosas, edita su fichero "themerc", todos tienen uno.
 	Por ejemplo, algunos temas no ponen bordes a las ventanas. Puedes cambiar eso poniendo border.width a 4 o así.
+
+RELOJ EN WAYLAND
+================
+
+git clone --depth 1 https://git.sr.ht/~leon_plickat/wlclock
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release ..
+
+ninja -j4
+ninja install
 
 GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
 ======================================
