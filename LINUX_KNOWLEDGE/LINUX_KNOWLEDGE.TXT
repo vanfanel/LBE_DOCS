@@ -5014,6 +5014,23 @@ modetest -M vc4 -s 32:640x480 -d
 El truco está en el "-d", que hace que modetest "suelte" el master (drop master) con lo que el siguiente programa aparece en
 el modo que le hayamos dicho mientras modetest esté corriendo.
 
+**************Text to speech en GNU/Linux con ESPEAK****************************************************************************
+
+Nos bajamos la última release estable de:
+https://github.com/espeak-ng/espeak-ng/releases
+
+Configuramos con:
+CFLAGS="-O2 -march=native -mtune=native" ./configure \
+--without-extdict-ru --without-extdict-cmn --without-extdict-yue --without-gradle\
+--without-mbrola --without-klatt --without-sonic --without-speechplayer
+
+ALTERNATIVA: flite
+
+apt-get install flite --no-install-recommends
+
+flite -voice slt -t "hello pal"
+(Para ver la lista de voices es con -vl)
+
 **************Tyrian en GNU/Linux con OpenTyrian********************************************************************************
 
 Clonamos el repo de:
@@ -5298,7 +5315,7 @@ Ahora actualiza el config.guess, que el que trae el rogue es viejo y no detecta 
 wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' -O config.guess
 
 Configurar y compilar:
-CFLAGS="-O2 -march=native -mtune=native -O2" ./configure
+CFLAGS="-O2 -march=native -mtune=native" ./configure
 make -j4
 
 Ayuda de teclas con shift+?

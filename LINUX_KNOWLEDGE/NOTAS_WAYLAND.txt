@@ -537,7 +537,7 @@ term=xterm-256color
 font=monospace:size=20
 title=Command Console
 
-initial-window-size-chars=100x22
+initial-window-size-chars=98x24
 #initial-window-mode=fullscreen
 #initial-window-mode=maximized
 
@@ -1006,6 +1006,8 @@ meson -Dbuildtype=release -Dxwayland=disabled ..
 
 Podemos lanzar un programa a la vez que el compositor con:
 labwc -s foot
+Pero lo suyo es meterlo en ~/.config/labwc/autostart así:
+/usr/local/bin/foot >/dev/null 2>&1 &
 
 ////BLOQUE CONFIGURACIÓN DE LABWC////
 (info sacada de esta guía: https://labwc.github.io/getting-started.html)
@@ -1070,6 +1072,20 @@ https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
 ----OPCIONAL: Si te gusta un tema y quieres modificar cosas, edita su fichero "themerc", todos tienen uno.
 	Por ejemplo, algunos temas no ponen bordes a las ventanas. Puedes cambiar eso poniendo border.width a 4 o así.
 
+--Para tener fondo de pantalla:
+Nos bajamos la última estable de aquí: https://github.com/swaywm/swaybg/releases
+Configuramos, compilamos e instalamos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release -Dgdk-pixbuf=disabled -Dman-pages=disabled ..
+
+Y en ~/.config/labwc/autostart:
+
+swaybg -i grid.png >/dev/null 2>&1 &
+
 RELOJ EN WAYLAND
 ================
 
@@ -1083,6 +1099,9 @@ meson -Dbuildtype=release ..
 
 ninja -j4
 ninja install
+
+Y en ~/.config/labwc/autostart:
+wlclock --border-size 4 --position top-left --size 150 --layer bottom --background-colour "#22373f" --b    order-colour "#152126" >/dev/null 2>&1 &
 
 GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
 ======================================
