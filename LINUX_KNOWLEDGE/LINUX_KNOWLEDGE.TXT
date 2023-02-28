@@ -5020,9 +5020,8 @@ Nos bajamos la última release estable de:
 https://github.com/espeak-ng/espeak-ng/releases
 
 Configuramos con:
-CFLAGS="-O2 -march=native -mtune=native" ./configure \
---without-extdict-ru --without-extdict-cmn --without-extdict-yue --without-gradle\
---without-mbrola --without-klatt --without-sonic --without-speechplayer
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
+cmake -DCMAKE_BUILD_TYPE=Release ..
 
 ALTERNATIVA: flite
 
@@ -6258,7 +6257,7 @@ Instalamos una dependencia previa, libtsm (Debian no tiene ni tendra la version 
 -Configuramos con:
 
 cmake .. -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 VAMOS CON KMSCON EN SI:
 
