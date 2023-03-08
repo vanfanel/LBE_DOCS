@@ -1,6 +1,6 @@
 --Lo primero, flasheamos la BIOS al SOC y particionamos/formateamos la MicroSD a FAT32, para todo lo cual seguimos estas instrucciones:
-https://github.com/eivindbohler/tinyllama#programming-the-bios
-https://github.com/eivindbohler/tinyllama#installing-dos
+https://github.com/eivindbohler/tinyllama2#programming-the-bios
+https://github.com/eivindbohler/tinyllama2#installing-dos
 
 --INSTALACIÓN DE FREEDOS
 (NOTA INICIAL: Lo más básico de FREEDOS ya está instalado si has seguido las instrucciones de particionado y formateo de la SD,
@@ -19,6 +19,14 @@ SI NO TENEMOS LOS ARCHIVOS LISTOS DE FREEDOS EN EL DISCO DE BACKUP:
 sudo mount -o loop FD13LIVE.iso mnt
 -Copiamos los contenidos de freedos/bin al FDOS/BIN de la SD. Y ya está. Ya deberían funcionarnos las opciones del menú
 de arranque y todo eso.
+
+--INSTALACIÓN DEL SONIDO
+
+Las instrucciones están aquí:
+https://github.com/eivindbohler/tinyllama2#programming-the-cs4237b-firmware
+
+Clonamos el repo de Eivind: git clone --depth 1 https://github.com/eivindbohler/tinyllama2.git
+Y copiamos los directorios CS4237B y UNISOUND a la raiz de la SD, y reiniciamos el Tinyllama.
 
 ======SECCIÓN EXPERIMENTOS=======
 
