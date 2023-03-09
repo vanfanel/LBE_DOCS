@@ -2,10 +2,108 @@
 https://github.com/eivindbohler/tinyllama2#programming-the-bios
 https://github.com/eivindbohler/tinyllama2#installing-dos
 
+PARA INSTALAR UN MS-DOS PROPIO, simplemente coge la instalación que tienes guardada en el disco de backup, cópiala tal cual
+a la SD, arranca en el Virtual Floppy ese del core, y escribe "SYS C:", y ya tiene que arrancar.
+
+--MENÚS CONFIG.SYS Y AUTOEXEC.BAT--
+
+****CONFIG.SYS****
+
+[MENU]
+MENUITEM=XMS, Arrancar con XMS 
+MENUITEM=EMS, Arrancar EMS y XMS 
+MENUITEM=CLEAN, Arrancar sin gestor de memoria ni drivers
+
+[XMS]
+DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF /Q
+DOS=HIGH,UMB
+BUFFERS=10
+FILES=40
+LASTDRIVE=H
+STACKS=9,256
+
+[EMS]
+DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF /Q
+DEVICE=C:\DOS\EMM386.EXE
+DOS=HIGH,UMB
+BUFFERS=10
+FILES=40
+LASTDRIVE=H
+STACKS=9,256
+
+[CLEAN]
+
+****AUTOEXEC.BAT****
+
+@ECHO OFF 
+PATH=C:\;C:\DOS
+SET DIRCMD=/A/OGN/P
+SET BLASTER=A220 I7 D1 P330 T4
+PROMPT $P$G
+
+GOTO %CONFIG%
+
+:XMS
+C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0
+C:\DOS\KEYB SP
+C:\DOS\EDOSKEY
+C:\DOS\CTMOUSE
+ECHO.
+GOTO END 
+
+:EMS
+LH C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0
+LH C:\DOS\KEYB SP
+LH C:\DOS\EDOSKEY
+LH C:\DOS\CTMOUSE
+ECHO.
+GOTO END
+
+:CLEAN
+
+:END
+
 --INSTALACIÓN DEL SONIDO
 
 Las instrucciones están aquí:
 https://github.com/eivindbohler/tinyllama2#programming-the-cs4237b-firmware
 
+NO HACE FALTA que flasheemos nada, el Crystal ya viene flasheado.
 Clonamos el repo de Eivind: git clone --depth 1 https://github.com/eivindbohler/tinyllama2.git
-Y copiamos los directorios CS4237B y UNISOUND a la raiz de la SD, y reiniciamos el Tinyllama.
+Y copiamos el directorio UNISOUND a la raiz de la SD, metemos estas cosas en el AUTOEXEC.BAT
+
+SET BLASTER=A220 I7 D1 P330 T4
+LH C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0
+
+Recuerda que LH es LOADHIGH, para que cargue en la memoria superior y NO ocupe a memoria convencional,
+y para ello se necesita tener cargado el HIMEM.SYS en CONFIG.SYS así:
+DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF /Q
+
+=================================
+---NOTAS COMPATIBILIDAD JUEGOS---
+=================================
+
+***TURRICAN 2***
+Necsita XMS, para lo cual en CONFIG.SYS debemos tener:
+DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF /Q
+Y a parte, en todas las páginas viene una versión que no funciona pero que se puede arreglar fácilmente. 
+Lo único que les falta a todas es establecer la variable de entorno "T2DIR" apuntando al diretorio "CFG" que viene con el juego.
+Para que funcione, simplemente créate un PLAY.BAT con este contenido (suponiendo que tenemos el juego en C:\JUEGOS\T2):
+
+@echo off
+cls
+set t2dir=c:\juegos\t2\cfg
+oversmpl on
+t2
+
+En c:\juegos\t2\cfg debes meter los archivos que vienen en el directorio TURRICAN.CFG que viene con las copias del juego
+que hay por ahí en internet.
+
+Con esto ya te saldrá el menú con todas sus opciones, y el juego funcionará bien.
+Para que vaya el audio, selecciona la SoundBlaster PRO y que detecte los parámetros.
+
+***WIZARDRY VI: BANE OF THE COSMIC FORGE***
+Desactivar la CACHE LEVEL 1
+
+***PREHISTORIK 2***
+Desactivar la CACHE LEVEL 1

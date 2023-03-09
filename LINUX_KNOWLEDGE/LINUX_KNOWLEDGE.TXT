@@ -8197,7 +8197,7 @@ Y ya debería ir... Ya sabes: Sound Blaster para los efectos, y GUS para la mús
 TURRICAN 2 EN DOSBOX
 ====================
 
-En todas las páginas viene una versión que no funciona. 
+En todas las páginas viene una versión que no funciona pero que se puede arreglar fácilmente. 
 Lo único que les falta a todas es establecer la variable de entorno "T2DIR" apuntando al diretorio "CFG" que viene con el juego.
 Para que funcione, simplemente créate un PLAY.BAT con este contenido (suponiendo que tenemos el juego en C:\JUEGOS\T2):
 
