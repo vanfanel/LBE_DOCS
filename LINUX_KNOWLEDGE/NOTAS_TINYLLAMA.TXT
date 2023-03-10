@@ -107,3 +107,10 @@ Desactivar la CACHE LEVEL 1
 
 ***PREHISTORIK 2***
 Desactivar la CACHE LEVEL 1
+
+***ALADDIN***
+Necesita EMS, y como no funciona con más de 32MB de RAM, tenemos que usar esto:
+https://github.com/kklis/memeater
+Hazte un BAT así:
+memeater 112000
+aladdin.exe
