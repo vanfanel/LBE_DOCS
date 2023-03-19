@@ -79,9 +79,20 @@ Recuerda que LH es LOADHIGH, para que cargue en la memoria superior y NO ocupe a
 y para ello se necesita tener cargado el HIMEM.SYS en CONFIG.SYS así:
 DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF /Q
 
+*********ACTUALIZAR LA BIOS**************
+
+Nos bajamos la última release de: https://github.com/eivindbohler/tinyllama2-bios/releases
+La metemos en la SD que hace de disco duro, o en un pendrive formateado a FAT16/32,
+y pulsando F12 al reiniciar, elegimos el Virtual Floppy. Si tenemos un pendrive metido, nos aparecerá
+como unidad C:, así que hacemos:
+ 
+A:\>anybios w c:\romfile.rom
+
 =================================
 ---NOTAS COMPATIBILIDAD JUEGOS---
 =================================
+
+Tienes los mejores juegos en castellano en abandonsocios.
 
 ***TURRICAN 2***
 Necsita XMS, para lo cual en CONFIG.SYS debemos tener:
@@ -111,6 +122,10 @@ Desactivar la CACHE LEVEL 1
 ***ALADDIN***
 Necesita EMS, y como no funciona con más de 32MB de RAM, tenemos que usar esto:
 https://github.com/kklis/memeater
-Hazte un BAT así:
+Hazte un BAT así para dejar sólo 16MB de RAM:
 memeater 112000
 aladdin.exe
+
+***PINBALL DREAMS y PINBALL FANTASIES***
+Tienes que arrancar con EMS + XMS, y dejar sólo 16MB de RAM, con MEMEATER 122000 por ejemplo dejas 8MB de RAM y van ambos.
+En el Pinball Dreams, Setsound.exe va, pero si le pones sonido el juego no se ve.
