@@ -1,4 +1,4 @@
---Lo primero, flasheamos la BIOS al SOC, particionamos/formateamos la MicroSD a FAT32, y le instalamos MSDOS 6.22, para todo lo cual seguimos estas instrucciones:
+--Lo primero, flasheamos la BIOS al SOC, particionamos/f+ormateamos la MicroSD a FAT32, y le instalamos MSDOS 6.22, para todo lo cual seguimos estas instrucciones:
 https://github.com/eivindbohler/tinyllama2#programming-the-bios
 https://github.com/eivindbohler/tinyllama2#installing-dos
 
@@ -8,6 +8,21 @@ a la SD, arranca en el Virtual Floppy ese del core, y escribe "SYS C:", y ya tie
 --INSTALAR DOS7--
 
 https://www.linuxandubuntu.com/home/dosbox-part-3-installing-dos-onto-a-virtual-hard-drive
+
+-Creamos la imágen desde Linux. Por ejemplo, vamos a crear una imágen de 120MB:
+dd if=/dev/zero of=hdd.img bs=1M count=120
+
+-Calculamos el número de cilindros. Se hace multiplicando los MB por 2.03125, así que:
+120 * 2.03125 = 244
+
+-Montamos la imágen en DOSBOX con:
+imgmount 2 hdd.img -size 512,63,16,244 -t hdd -fs none
+...donde 244 es el número de cilindros que hemos calculado y lo demás siempre es igual.
+
+-Arrancamos desde los diskettes desde dentro de DOSBOX:
+boot disk1.img disk2.img -l a
+(Para ir cambiando de un diskette a otro durante la instalación, es con CTRL+FN+F4, 
+y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
 
 --MENÚS CONFIG.SYS Y AUTOEXEC.BAT--
 
