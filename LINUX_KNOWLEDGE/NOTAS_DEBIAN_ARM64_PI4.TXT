@@ -606,14 +606,9 @@ sudo apt-get install glslang-dev glslang-tools spirv-tools
 LO PRIMERO, HAZ ESTO O EL CONFIGURE FALLARÁ:
 apt-get purge libraspberrypi*
 
--Para que no se nos cree una ventana con checkered pattern al lanzar RetroArch, editamos gfx/common/wayland_common.c
- y comentamos la llamada a draw_splash_screen().
+-Para que no se nos cree una ventana fantasma con el logo de RetroArch al ejecutar RetroArch, editamos gfx/common/wayland_common.c
+ y comentamos la llamada a draw_splash_screen() y el "if (wl->libdecor)" junto con lo que hay dentro de él y su "else".
  Si tienes varias pantallas conectadas y eso provoca errores, comenta la llamada a shm_buffer_paint_checkerboard() dentro de draw_splash_screen().
--Para solucionar lo del numero de buffers en Vulkan sobre Wayland, forzando asi a que se aplique el numero de buffers que nosotros
-queramos, editamos editamos gfx/common/vulkan_common.c y comentamos:
-   /* Clamp images requested to what is supported by the implementation. */
-   if (desired_swapchain_images < surface_properties.minImageCount)
-      desired_swapchain_images = surface_properties.minImageCount;
 
 Ahora, para configurar RetroArch con soporte de GLES y VULKAN, como lo venimos haciendo:
 
