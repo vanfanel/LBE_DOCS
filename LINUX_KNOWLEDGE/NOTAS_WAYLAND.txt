@@ -994,6 +994,8 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false 
 
+Instalar labwc en sí:
+
 Clonamos su repo:
 
 git clone --depth 1 https://github.com/labwc/labwc.git
