@@ -23,6 +23,8 @@ También añadimos la imágen ISO del DOS7 en la lista discos de la máquina, pa
 --Arrancamos la máquina, insertamos la ISO de DOS7 (pinchando en el icono del CD en la parte de abajo de la ventana
 mientras la máquina está arrancada) y reiniciamos la máquina DOS con el CD dentro. Y ya nos salta el instalador!
 
+--La instalación hazla COMPLETA (si no, no tienes ni el EDIT.COM) y SIN ADDONS.
+
 ********(CURIOSIDAD) INSTALAR DOS CON DOSBOX A UNA IMÁGEN DE DISCO (NO MUY ÚTIL PORQUE NO PODRÁS LUEGO TRANSFERIR EL SECTOR
  DE ARRANQUE, PERO AHÍ LO DEJO)*********
 
