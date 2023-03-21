@@ -5,7 +5,23 @@ https://github.com/eivindbohler/tinyllama2#installing-dos
 PARA INSTALAR UN MS-DOS PROPIO, simplemente coge la instalación que tienes guardada en el disco de backup, cópiala tal cual
 a la SD, arranca en el Virtual Floppy ese del core, y escribe "SYS C:", y ya tiene que arrancar.
 
---INSTALAR DOS7--
+*****INSTALAR DOS7 DESDE VIRTUALBOX A UN DISCO FÍSICO REAL*************************************
+
+--Re-creamos la tabla de particiones de la MicroSD desde GPARTED: No debe tener ninguna partición, nos las hará el instalador de DOS7.
+
+--Creamos el disco virtual de VirtualBOX que apunta al disco físico:
+sudo VBoxManage internalcommands createrawvmdk -filename "mi_disco.vmdk" -rawdisk /dev/sdb
+
+--Arrancamos VB COMO ROOT con "sudo VirtualBox" (ya que como usuario normal no podemos usar los VMDK que apuntan a cosas en /dev...),
+y creamos una máquina DOS, y le añadimos el disco VMDK a esta máquina DOS:
+También añadimos la imágen del primer floppy del DOS7 en la lista de floppys de la máquina, para poder seleccionarlo luego
+cuando arranquemos la máquina.
+
+--Insertamos el primer disco de DOS7 (pinchando en el icono del diskette en la parte de abajo de la ventana
+mientras la máquina está arrancada) y reiniciamos la máquina DOS con el floppy dentro. Y ya nos salta el instalador!
+
+********(CURIOSIDAD) INSTALAR DOS CON DOSBOX A UNA IMÁGEN DE DISCO (NO MUY ÚTIL PORQUE NO PODRÁS LUEGO TRANSFERIR EL SECTOR
+ DE ARRANQUE, PERO AHÍ LO DEJO)*********
 
 https://www.linuxandubuntu.com/home/dosbox-part-3-installing-dos-onto-a-virtual-hard-drive
 
@@ -24,7 +40,7 @@ boot disk1.img disk2.img -l a
 (Para ir cambiando de un diskette a otro durante la instalación, es con CTRL+FN+F4, 
 y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
 
---MENÚS CONFIG.SYS Y AUTOEXEC.BAT--
+********MENÚS CONFIG.SYS Y AUTOEXEC.BAT*****************
 
 ****CONFIG.SYS****
 
