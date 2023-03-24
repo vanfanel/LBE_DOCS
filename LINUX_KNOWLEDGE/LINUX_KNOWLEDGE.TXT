@@ -6077,6 +6077,21 @@ COMPILAR CUALQUIER CORE DE LIBRETRO
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
 
+COMPILAR EL CORE DIRKSIMPLE (LASERDISC EN RETROARCH!!!)
+=======================================================
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/icculus/DirkSimple.git
+
+Configuramos y compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DDIRKSIMPLE_SDL_DEFAULT=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
 COMPILAR UNA VERSIÓN MÍNIMA DEL CORE FBALPHA CON DRIVERS DESHABILITADOS
 ===========================================================================
 
