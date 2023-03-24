@@ -400,7 +400,6 @@ NOTA PREVIA: Mucha de la información viene de aquí: https://github.com/natpen/
 ---PARTE 1 - EL COMPOSITOR---
 
 -Elegimos un compositor que sea stacking, no tiling.
-Por ahora, Weston es el que instalamos. Pero para el tema de los atajos de teclado nos puede interesar waybox o labwc.
 Si insistes en usar Weston, puedes añadir nuevos keyboard shortcuts con esto:
 https://github.com/tarvi-verro/weston-binder
 
@@ -996,9 +995,8 @@ meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddoc
 
 Instalar labwc en sí:
 
-Clonamos su repo:
-
-git clone --depth 1 https://github.com/labwc/labwc.git
+Bajamos la última release estable de aquí:
+https://github.com/labwc/labwc/releases
 
 Configuramos con:
 
