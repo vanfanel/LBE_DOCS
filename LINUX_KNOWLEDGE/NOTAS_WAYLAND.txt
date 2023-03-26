@@ -1164,8 +1164,12 @@ ninja -j4
 ninja install
 
 Se usa igual que xrandr.
+
+Para poner 720p:
+wlr-randr --output HDMI-A-1 --mode 1280x720@60
+
 Para poner un modo de 50Hz:
-wlr-randr --output HDMI-A-1 --mode 1280x720@50
+wlr-randr --output HDMI-A-1 --mode 1920x1080@50
 
 Para RetroArch, de todos modos, no debería hacerse así.
 Por ejemplo para que RA nos ponga un modo de 50Hz al lanzar el core de Virtual Boy, activamos la opción video_autoswitch_refresh_rate = "1"
