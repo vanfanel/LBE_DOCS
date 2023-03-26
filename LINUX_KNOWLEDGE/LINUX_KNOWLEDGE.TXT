@@ -6444,6 +6444,7 @@ rm tools/n64graphics
 rm tools/n64cksum
 rm tools/audiofile/libaudiofile.a
 make clean
+
 Si aun así da error, borra el fichero con el que da error (el tool que da el error seguramente ya lo hayas borrado antes).
 
 SM64-COOP, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
