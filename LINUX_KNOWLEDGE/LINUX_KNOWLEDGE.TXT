@@ -619,7 +619,7 @@ y pon el DEVICE TYPE a "KEYBOARD+MOUSE", y dale a "SAVE CORE REMAP FILE".
 
 Juegos de DOS para bajar: te enganchas el TORRENT y bajas sólo los que vayas queriendo: https://www.retro-exo.com/exodos.html
 
-*******Compilar el core libretro Duckstation (Swanstation)***********
+*******Compilar el core libretro Swanstation (Duckstation)***********
 
 (OJO: en el repo oficial de ducktstation tienes cores ya compilados, pero NO funcionan cuando Retrorch funciona sobre KMSDRM.
 NO te molestes en reportarlo, porque el autor de duckstation es un poco gilipollas.)
@@ -5838,50 +5838,13 @@ sudo service lightdm stop
 
 y para volver, obviamente, start.
 
-**********Configuración óptima de RetroArch************
+**********Configuración óptima de RetroArch (En Wayland)************
 
-VIDEO: driver VULKAN, VSYNC off, MAX_SWAPCHAIN 2
-AUDIO: driver ALSA, 44100 Hz, 32ms, resampler quality normal
-(Si bajas el audio a 44100, bájalo también en las opciones del core FBNeo)
+VIDEO: driver VULKAN, VSYNC ON, MAX_SWAPCHAIN 2
+AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal
+(Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
-SHADER:
-
-Usamos el shader crt-pi, que está en /crt, con los parámetros:
-Curvature horizontal 		0.10
-Curvature vertical			0.15
-Mask brightness				0.70
-Scanline weight				6.00
-Scanline gap brightness 	0.90
-Bloom factor				1.00
-Input gamma					2.40
-Output gamma				2.20
-Y editamos el shader en ~/.config/retroarch/shaders/slang/crt/shaders/crt-pi.slang,
-y ponemos MASK TYPE a 1, que consume menos CPU y se ve mejor.
-(OJO!!! ESTE SHADER NECESITA QUE TENGAS "INTEGER SCALE" ACTIVADO Y "ASPECT RATIO" FORZADO A "4:3"
- EN SETTINGS->VIDEO->SCALING, O SE RALENTIZARÁ).
-
-(OJO!!! COMO ÚLTIMO RECURSO PARA QUE EL SHADER NO CAUSE DROPOUTS DE AUDIO EN LOS CORES EXIGENTES,
-edita el shader y comenta todos los defines posibles, dejando toda esa sección comentada así:
-//#define SCANLINES
-//#define CURVATURE
-//#define FAKE_GAMMA
-//#define GAMMA
-//#define SHARPER
-//#define MULTISAMPLE
-OJO!!! PARA EVITAR MOVIMIENTO HORIZONTAL "SUCIO", ya que estás editándolo, pon MASK_TYPE a 1.  
-)
-
-O bien usamos el shader ZFast, que está en /crt, con los parámetros:
-Blur amount:				1.00
-Scanline Darkness - Low:	0.00
-Scanline Darkness - High:	0.00
-Dark pixel brightnes boost: 1.25
-Mask effect amount:			0.80
-Mask/Scanline fade:			0.80
-(OJO!! Para que el efecto MASK se vea, edita el shader y comenta la línea "#define FINEMASK". Viene maqueado para pantallas de baja resolución.)
-(OJO!! ZFAST en realidad es más lento que CRT-PI, porque en ZFAST no podemos comentar las scanlines y dejar sólo la máscara).
-
-O bien usamos FAKELOTTES, que tiene una mask increíble, pero olvídate de mGBA y de SwanStation, claro.
+SHADER: usamos FAKELOTTES, que tiene una mask increíble.
 
 PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 
