@@ -799,7 +799,7 @@ ni siquiera en backports.
 -Configuramos libinput con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false 
+meson .. -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false 
 
 Ahora vamos a por SWAY en sí:
 -Bajamos la última estable o RC de: https://github.com/swaywm/sway/releases
