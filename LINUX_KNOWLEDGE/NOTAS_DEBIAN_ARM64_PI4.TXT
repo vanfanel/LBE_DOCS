@@ -629,6 +629,14 @@ PARA COMPILAR CUALQUIER CORE:
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
 
+		Configuración óptima de RetroArch (En Wayland)
+
+VIDEO: driver VULKAN, VSYNC ON, MAX_SWAPCHAIN 2
+AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal
+(Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
+
+SHADER: usamos FAKELOTTES, que tiene una mask increíble.
+
 Si no quieres shimmering en las letras del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE
 y activar LINEAR FILTERING.
 
@@ -655,4 +663,3 @@ sudo ldconfig
 
 Si quieres filtros por software, entra en gfx/video_filters y haz make, y copias los .so y los .filt a ~/.config/retroarch/filters/video/
 y luego los seleccionas en retroarch.
-
