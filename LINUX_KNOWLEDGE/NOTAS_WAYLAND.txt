@@ -724,11 +724,19 @@ Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/fbneo_libretro.so --subsystem=msx -- "${FPATH}"
             exit 0;;
 
+		## PSX files
+        psx)
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/swanstation_libretro.so -- "${FPATH}"
+            exit 0;; 
+
 ...Y para crear los .fbneo, nos vamos al directorio de arcade o de neogeo o de lo que sea y creamos un link simbólico de cada .zip, así:
 for file in *.zip; do ln -s -- "$file" "${file%.zip}.fbneo"; done
 
 ...Y para crear los .msx, nos vamos al directorio de msx y creamos un link simbólico de cada .zip, así:
 for file in *.zip; do ln -s -- "$file" "${file%.zip}.msx"; done
+
+...Y para crear los .psx, nos vamos al directorio de msx y creamos un link simbólico de cada .chd, así:
+for file in *.chd; do ln -s -- "$file" "${file%.chd}.psx"; done
 
 NOTAS PARA PODER USAR WAYLAND EN EL FUTURO
 ==========================================
