@@ -748,8 +748,7 @@ make platform=rpi4_64 -j4
 ******Compilar el core FLYCAST (UPSTREAM) en GNU/Linux********
 
 Clonamos su repo:
-git clone --depth 1 https://github.com/flyinghead/flycast.git
-git submodule update --init
+git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
 
 Configuramos y compilamos:
 
@@ -769,8 +768,7 @@ Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
 
-git clone --depth 1 https://github.com/flyinghead/flycast.git
-git submodule update --init
+git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
 
 Configuramos y compilamos con:
 
@@ -4679,47 +4677,53 @@ Si los colores ROJO y AZUL se ven invertidos en los vídeos, desactiva "Enhanced
 
 Clonamos el repo del juego (que incluye el engine, no te molestes en compilarlo a parte por ahora):
 git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-Decompilation.git
-cd Sonic-Mania-Decompilation/dependencies/RSDKv5/
 
----METODO 1: CON SDL2 (SIN SHADERS)
+----METODO 1: CON GLFW (CON SHADERS)
 
-Compilamos con:
-CXXFLAGS="-O2 -march=native -mtune=native -O2" make SUBSYSTEM=SDL2 -j4
+-Instalamos una dependencia previa: portaudio. Se podría instalar desde APT pero tiene a su vez dependencias que no queremos.
+ ---Bajamos su última release estable de aquí: https://github.com/PortAudio/portaudio/releases
+ ---Configuramos e instalamos con:
+ 	mkdir b4
+ 	cd b4
+ 	cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" -DPA_USE_JACK=OFF
 
-Copiamos Game.so y RSDKv5 de bin/Linux/SDL2 a ~/sonicmania:
-cp bin/Linux/SDL2/* ~/sonicmania/
-
-Metemos Data.rsdk en ~/sonicmania, y ejecutamos con ./RSDKv5
-
-----METODO 2: CON GLFW (CON SHADERS)
-
-PREVIO: Necesitamos GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
-
-Dependencia previa: apt-get install --no-install-recommens extra-cmake-modules
-
-Nos bajamos la última estable de GLFW de:
-https://www.glfw.org/
-
-Y configuramos, compilamos e instalamos GLFW:
-mkdir b4
-cd b4
-
-cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DGLFW_USE_WAYLAND=1 -D_GLFW_X11=0 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2"
-
-make -j4
-sudo make install
+-Instalamos otra dependencia previa: GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
+	---Dependencia previa: apt-get install --no-install-recommens extra-cmake-modules
+	---Nos bajamos la última estable de GLFW de: https://www.glfw.org/
+	---Configuramos, compilamos e instalamos GLFW:
+	mkdir b4
+	cd b4
+	cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DGLFW_USE_WAYLAND=1 -D_GLFW_X11=0 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
 VAMOS A POR EL JUEGO EN SI:
 
 Compilamos asi (es decir, lo mismo que para SDL2 pero sin "SUBSYSTEM=SDL2":
-CXXFLAGS="-O2 -march=native -mtune=native -O2" make -j4
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
-Copiamos Game.so y RSDKv5 de bin/Linux/GL3 a ~/sonicmania:
-cp bin/Linux/GL3/* ~/sonicmania/
+Desde dentro del directorio de compilación, copiamos libGame.so y RSDKv5 a ~/sonicmania:
+cp libGame.so dependencies/RSDKv5/RSDKv5U ~/sonicmania/
 
 En la Pi4, como el engine necesita GL 3 y la Pi4 solo soporta hasta GL 2.1, ejecutamos con:
-MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ./RSDKv5
+MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ./RSDKv5U
+
+
+
+---METODO 2: CON SDL2 (SIN SHADERS)
+
+Compilamos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DSUBSYSTEM=SDL2
+
+Desde dentro del directorio de compilación, copiamos Game.so y RSDKv5 de bin/Linux/SDL2 a ~/sonicmania:
+cp libGame.so dependencies/RSDKv5/RSDKv5U ~/sonicmania/
+
+Metemos Data.rsdk en ~/sonicmania, y ejecutamos con ./RSDKv5
+
+
 
 	Ajustes del juego:
 
