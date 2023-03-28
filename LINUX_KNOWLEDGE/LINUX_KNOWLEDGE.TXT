@@ -307,8 +307,8 @@ Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 Para que las scanlines se vean bien y para quitar las mitigations, etc, añade a cmdline.txt:
 video="HDMI-A-1:1152x864@60" mitigations=off audit=0 fsck.mode=skip
@@ -483,13 +483,13 @@ cd b4
 
 PARA WAYLAND:
 cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSE_VULKAN_DISPLAY_KHR=OFF -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2"
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
 PARA KMSDRM:
 cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=OFF -DUSE_VULKAN_DISPLAY_KHR=ON -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2"
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
 Si nos da un error al linkar relacionado con ffmpeg, tenemos que recompilar ffmpeg interno que trae, lo cual se hace con esta
 secuencia de comandos:
@@ -508,8 +508,8 @@ mkdir b4
 cd b4
 cmake .. -DLIBRETRO=ON -DUSE_VULKAN_DISPLAY_KHR=ON -DUSE_WAYLAND_WSI=OFF -DUSING_X11_VULKAN=OFF \
 -DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2"
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
 *******Compilar el core libretro Yabause***********
 
@@ -710,8 +710,8 @@ sudo apt-get install extra-cmake-modules --no-install-recommends
 Configuramos con:
 
 cmake .. \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
 -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON \
 -DBUILD_NOGUI_FRONTEND=ON -DBUILD_QT_FRONTEND=OFF -DHAVE_EGL=ON -DUSE_WAYLAND=ON -DUSE_SDL2=ON ..
 
@@ -756,8 +756,8 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 make -j4
 
@@ -776,8 +776,8 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
 Y ya podemos lanzar juegos en GDI, CDI o CHD.
@@ -816,8 +816,8 @@ git submodule update --init
 cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DENABLE_QT=OFF -DENABLE_PULSEAUDIO=OFF -DENABLE_LLVM=OFF -DENABLE_TESTS=OFF -DUSE_DISCORD_PRESENCE=OFF \
 -DUSE_MGBA=OFF -DENABLE_AUTOUPDATE=OFF -DUSE_UPNP=OFF -DENABLE_ANALYTICS=OFF -DENCODE_FRAMEDUMPS=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 ******Compilar core PCSX2 libretro****************************
 
@@ -837,8 +837,8 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 ******Space Cadet pinball en GNU/Linux*********
 
@@ -849,9 +849,9 @@ https://github.com/k4zmu2a/SpaceCadetPinball/releases
 Configuramos y compilamos con:
 mkdir b4
 cd b4
-cmake .. \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 make -j4
 
 Copiamos el ejecutable y los datos del juego (que los tienes ya preparados en el disco duro de backup) y a jugar.
@@ -869,7 +869,7 @@ git clone --recursive https://github.com/nesbox/TIC-80 --depth 1
 
 Configuramos con:
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native" ..
 
 Los juegos están en:
 https://tic80.com/play?cat=0
@@ -1062,7 +1062,7 @@ Compilamos con CMAKE:
 mkdir b4
 cd b4
 
-cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -fsigned-char" \
+cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -fsigned-char" \
 -DCMAKE_BUILD_TYPE=Release -DBUILD_PORTABLE=ON ..
 
 make -j4
@@ -1656,7 +1656,7 @@ cd libmikmod
 mkdir b4
 cd b4
 cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSE=0 -DENABLE_OSS=0 -DENABLE_DOC=0 \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native" ..
 sudo make install
 
 Y AHORA VAMOS A POR EL UQM EN SÍ:
@@ -3292,7 +3292,7 @@ Creamos el dir de compilación, entramos, configuramos y compilamos:
 mkdir b3
 cd b3
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native" ..
 make -j4
 
 ***********RIGEL ENGINE, el engine de Duke Nukem II************************************************************
@@ -3308,8 +3308,8 @@ cd b4
 
 Compilamos con GLES con:
 cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 
 ***********Compilar RAZE, el engine de Duke Nukem, Blood, Exhumed, etc para Linux****************************************************************
 
@@ -3329,7 +3329,7 @@ https://github.com/coelckers/ZMusic/releases
 Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 make -j4
 sudo make install
 
@@ -3340,7 +3340,7 @@ git clone --depth 1 https://github.com/coelckers/Raze.git
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 make -j4
 
 Ahora, creamos ~/raze y metemos allí el ejecutable resultante ("raze"), raze.pk3, el directorio soundfonts, y el duke3d.rgp
@@ -3465,7 +3465,7 @@ Creamos el directorio de compilación y configuramos y compilamos así:
 
 mkdir b4
 cd b4
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" ..
 
 Para ejecutar el juego, copia los datos del juego tal cual al mismo directorio donde tengas el ejecutable.
 TIENES los datos del juego listos en el disco duro de backup.
@@ -3479,7 +3479,7 @@ Creamos el directorio de compilación y configuramos y compilamos así:
 
 mkdir b4
 cd b4
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ../gish/src/main/cpp
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" ../gish/src/main/cpp
 
 Se ejecuta igual que el del otro repo.
 
@@ -3515,7 +3515,7 @@ justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
 Compilamos con:
 
-cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=native -mtune=native" ..
 (PARA compilar en modo verbose, haz make VERBOSE=1)
 
 Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
@@ -4099,7 +4099,7 @@ Hay que leer el INSTALL para saber cómo se compila, pero esencialmente:
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_BACKEND=SDL2 -DOPENGL_BACKEND=None -DDISABLE_WERROR=1 \
 -DUSE_SDLMIXER=0 -DUSE_OPENAL=1 -DUSE_LIBVLC=0 -DDISABLE_VIDEOCORE=1 \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 make -j4
 
@@ -4598,7 +4598,7 @@ mkdir b4
 cd b4
 
 Configuramos y compilamos con:
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 make -j4
 
 Creamos el directorio ~/cconquer, y metemos ahí los datos del juego.
@@ -4706,8 +4706,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=nati
 Desde dentro del directorio de compilación, copiamos libGame.so y RSDKv5 a ~/sonicmania:
 cp libGame.so dependencies/RSDKv5/RSDKv5U ~/sonicmania/
 
-En la Pi4, como el engine necesita GL 3 y la Pi4 solo soporta hasta GL 2.1, ejecutamos con:
-MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ./RSDKv5U
+Metemos Data.rsdk en ~/sonicmania, y ejecutamos con ./RSDKv5U
 
 
 
@@ -4721,7 +4720,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=nati
 Desde dentro del directorio de compilación, copiamos Game.so y RSDKv5 de bin/Linux/SDL2 a ~/sonicmania:
 cp libGame.so dependencies/RSDKv5/RSDKv5U ~/sonicmania/
 
-Metemos Data.rsdk en ~/sonicmania, y ejecutamos con ./RSDKv5
+Metemos Data.rsdk en ~/sonicmania, y ejecutamos con ./RSDKv5U
 
 
 
@@ -4748,8 +4747,8 @@ Compilamos con:
 mkdir b4
 cd b4
 cmake -DUSE_SDL2=ON -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 make -j4
 
 Copiamos el directorio data que viene con los sources al mismo directorio donde metamos el ejecutable.
@@ -4800,8 +4799,8 @@ cd b4
 
 cmake .. \
 -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 Copiamos el ejecutable MightyMike y el directorio "Data" que viene con los sources a ~/mightymike
 
@@ -4817,8 +4816,8 @@ cd b4
 
 cmake .. \
 -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 Copiamos el ejecutable Nanosaur y el directorio "Data" que viene con los sources a ~/nanosaur
 
@@ -4841,7 +4840,7 @@ cd b4
 Ahora configuramos:
 
 cmake .. -DUSE_OPENGL=0 -DDOWNLOADER=OFF -DUSE_VIRTUALPAD=OFF -DDISABLE_HOVER=ON -DUSE_BOOST=OFF -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 Ya sólo es hacer make -j4 en el directorio de compilación y debería ir.
 
@@ -4930,7 +4929,7 @@ Creamos el directorio de compilación, entramos, configuramos y compilamos:
 cd systemshock
 mkdir b4
 cd b4
-CFLAGS="-march=native -mtune=native -O2" cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_SDL2=ON -DENABLE_SOUND=ON -DENABLE_FLUIDSYNTH=ON -DOpenGL_GL_PREFERENCE=GLVND ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" -DENABLE_SDL2=ON -DENABLE_SOUND=ON -DENABLE_FLUIDSYNTH=ON -DOpenGL_GL_PREFERENCE=GLVND ..
 make -j4
 
 Ahora creamos ~/sshock y ahí dentro:
@@ -5012,8 +5011,7 @@ Nos bajamos la última release estable de:
 https://github.com/espeak-ng/espeak-ng/releases
 
 Configuramos con:
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
-cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS=="-march=native -mtune=native"
 
 ALTERNATIVA: flite
 
@@ -6328,7 +6326,7 @@ git submodule update --init --recursive
 Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
 cd b4
-CXXFLAGS="-march=native -mtune=native -O2" cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release ..
+cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native" ..
 
 DEVILUTIONX, Diablo en Linux
 ============================
@@ -6350,7 +6348,7 @@ https://github.com/diasurgical/devilutionX/releases
 Configuramos con:
 cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DCMAKE_BUILD_TYPE=Release -DDEBUG=OFF \
 -DASAN=OFF -DDISABLE_ZERO_TIER=ON -DBUILD_TESTING=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 
 Compilamos y metemos en el directorio ~/diablo:
 -El ejecutable "devilutionx"
@@ -6507,10 +6505,9 @@ git clone --depth 1 https://github.com/flareteam/flare-engine.git
 git clone --depth 1 https://github.com/flareteam/flare-game.git
 
 creamos el directorio de compilación, entramos en él, configuramos y compilamos:
-mkdir b3
-cd b3
-CXXFLAGS="-march=native -mtune=native -O2 -flto" \
-cmake -DCMAKE_BUILD_TYPE=Release ..
+mkdir b4
+cd b4
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 make -j4
 
 creamos ~/flare y mandamos el ejecutable flare allí.
@@ -6739,8 +6736,8 @@ Por si alguna vez lo necesitas para algo.
 Bajamos la última release de: https://github.com/kcat/openal-soft/tags
 Configuramos así:
 cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_REQUIRE_PIPEWIRE=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 
 STUNT CAR RACER EN GNU/LINUX
 ============================
@@ -6767,8 +6764,8 @@ Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir Code/b4
 cd Code/b4
 cmake -DGLES=ON -DWITH_SDL2=on -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 make -j4
 
 Para instalar el juego:
@@ -6802,7 +6799,7 @@ https://github.com/coelckers/ZMusic/releases
 Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 make -j4
 sudo make install
 
@@ -6822,8 +6819,8 @@ justo antes de SDL_CreateWindow(), como siempre.
 
 También debes poner a SDL_FALSE las llamadas de SDL_ShowCursor() en vim src/common/platform/posix/sdl/i_gui.cpp
 
-cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+cmake -DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_BUILD_TYPE=Release ..
 
 Y compilamos con make -j4
@@ -6916,8 +6913,8 @@ Configuramos y compilamos con:
 mkdir b4
 cd b4
 EDITOR_ENABLED=0 cmake -DCMAKE_BUILD_TYPE=Release -Wno-dev \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DFMOD_ENABLED=OFF -DOPENAL_ENABLED=ON  ..
 make -j4
 
@@ -6975,8 +6972,7 @@ Tenemos dos métodos para compilarlo:
 USANDO CMAKE (RECOMENDADO):
 mkdir b4
 cd b4
-cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2 -fsigned-char" \
--DCMAKE_BUILD_TYPE=Release ..
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native -fsigned-char"
 make -j4
 
 USANDO MAKE (RECOMENDADO SI FALLA CMAKE):
@@ -7228,8 +7224,8 @@ Configuramos y compilamos:
 mkdir b4
 cd b4
 cmake -DCMAKE_BUILD_TYPE=Release -DRENDERER=GLES2 \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 (Hay otros renderers disponibles, mira en el README)
 make -j4 
 
@@ -7506,7 +7502,7 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DGLFW_USE_WAYLAND=1 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native -O2"
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
 make -j4
 sudo make install
@@ -7553,8 +7549,8 @@ mkdir b4
 cd b4
 
 cmake ../src -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 make -j4
 
@@ -7651,8 +7647,8 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 make -j4
 
@@ -7819,7 +7815,7 @@ Empezamos compilando libjpeg-turbo, que nos va a hacer falta la versión estáti
 https://github.com/libjpeg-turbo/libjpeg-turbo/releases
 
 Ahora creamos directorio de compilación, entramos, y configuramos con CMAKE así:
-CFLAGS="-march=native -mtune=native -O2" cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 Ahora, clonamos el repo del FROTZ:
 git clone --depth 1 https://github.com/DavidGriffith/frotz.git
@@ -8421,8 +8417,8 @@ git clone --depth 1 https://github.com/TerryCavanagh/VVVVVV.git
 Entramos en desktop_version, creamos b4 y configuramos con:
 
 cmake -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-DNDEBUG -march=native -mtune=native -O2" \
--DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native -O2" ..
+-DCMAKE_C_FLAGS="-DNDEBUG -march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native" ..
 
 Bajamos el data.zip que viene con la versión Windows del VVVVVV, disponible aquí:
 https://thelettervsixtim.es/makeandplay/
