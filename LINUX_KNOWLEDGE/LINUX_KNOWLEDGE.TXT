@@ -4686,7 +4686,7 @@ git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-
  ---Configuramos e instalamos con:
  	mkdir b4
  	cd b4
- 	cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" -DPA_USE_JACK=OFF
+ 	cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" -DPA_USE_JACK=OFF -DPA_USE_OSS=OFF
 
 -Instalamos otra dependencia previa: GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
 	---Dependencia previa: apt-get install --no-install-recommens extra-cmake-modules
@@ -4716,7 +4716,7 @@ Metemos Data.rsdk en ~/sonicmania, y ejecutamos con ./RSDKv5U
 Compilamos con:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DSUBSYSTEM=SDL2
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DRETRO_SUBSYSTEM=SDL2
 
 Desde dentro del directorio de compilación, copiamos Game.so y RSDKv5 de bin/Linux/SDL2 a ~/sonicmania:
 cp libGame.so dependencies/RSDKv5/RSDKv5U ~/sonicmania/
