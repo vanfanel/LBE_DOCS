@@ -4712,6 +4712,9 @@ Metemos Data.rsdk en ~/sonicmania, y ejecutamos con ./RSDKv5U
 -Para tener shaders (las instrucciones son de https://github.com/Rubberduckycooly/RSDKv5-Decompilation/blob/master/dependencies/ogl/README.md#shaders)
 	---Creamos el directorio mods/GLShaders/Data
 	mkdir -p ~/sonicmania/mods/GLShaders/Data
+	---Creamos mods/modconfig.ini con este contenido:
+	[Mods]
+	GLShaders=y
 	---Dentro de mods/GLShaders creamos mod.ini con este contenido:
 	Name=GLShaders
 	Description=GL3 shaders to enable filters and stuff
@@ -4721,6 +4724,9 @@ Metemos Data.rsdk en ~/sonicmania, y ejecutamos con ./RSDKv5U
 	---Clonamos este repo: git clone --depth 1 https://github.com/Rubberduckycooly/RSDKv5-Decompilation.git
 	---Copiamos el directorio de Shaders del repo que acabamos de clonar al directorio Data del mod:
 	cp -R ~/src/RSDKv5-Decompilation/RSDKv5/Shaders ~/sonicmania/mods/GLShaders/Data/
+	---NOTA: Si el mod no carga, podemos activar el dev menu añadiendo "devMenu=1" en Settings.ini, en la sección [Game],
+	y desde ahí nos deja activar los mods que tengamos instalados. Esto lo que hace en realidad es crearnos el fichero
+	mods/modconfig.ini que hemos creado a mano antes, pero por si acaso pues aquí queda anotado.
 	
 ---METODO 2: CON SDL2 (SIN SHADERS)
 
