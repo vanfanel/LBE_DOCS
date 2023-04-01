@@ -222,7 +222,7 @@ real-time priority (-r) 99
 max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
--Para configurar el audio con el driver de audio HDMI del lado de ARM (que es como lo venimos haciendo en 2020):
+-Para configurar el audio con el driver de audio HDMI del lado de ARM (que es como lo venimos haciendo ahora):
 	PREVIO: En el momento en que usamos el sistema KMS (dtoverlay=vc4-kms-v3d) obtenemos el dispositivo ALSA de audio llamado vc4hdmi,
 	que mete los frames de audio en los periodos de blanking del vídeo.
 	Al usar KMS, el kernel se encarga del vídeo y de meter esos frames de audio en el blanking de vídeo, así que el audio del lado del
@@ -238,14 +238,9 @@ max locked memory (kbytes, -l) unlimited
 	 RECUERDA que ninguno de los parámetros hdmi_* de config.txt funciona en modo KMS! El modo de vídeo, por ejemplo,
 	 se establecería añadiendo a cmdline.txt algo como:
 	 video="HDMI-A-1:1280x720@60"
-	-Si falla speakertest, mira que tengas en /usr/share/alsa/cards/vc4-hdmi.conf lo que pone en el post de DOM en
-	 https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769&p=1636828#p1636828
-	 OJO! PARECE QUE SEGÚN SE ACTUALIZA EL KERNEL, LOS CONTENIDOS DE /usr/share/alsa/cards/vc4-hdmi.conf hay que irlos cambiando
-	 a veces. Así que si no te va, mira o pregunta en ese hilo.	
-	 (NOTA: Puedes acceder directamente al vc4-hdmi SIN DMIX de por medio mediante la combinación de dispositivo:tarjeta
-	 hw:vc4hdmi0, como en speaker-test con "speaker-test -Dhw:vc4hdmi0", pero no se puede usar directamente porque sólo
-	 acepta un formato llamado IEC958_SUBFRAME_LE).
-	-Si falla algo, pregunta en este hilo a dom:https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=269769
+	-Si falla speakertest, mira que tengas en /usr/share/alsa/cards/vc4-hdmi.conf la última versión que siempre está disponible
+	 en: https://github.com/alsa-project/alsa-lib/blob/master/src/conf/cards/vc4-hdmi.conf
+	-Si falla algo, pregunta a dom en el foro de Raspberry Pi.
      Y YA. CON ESTO TIENE QUE FUNCIONAR SÍ O SÍ. 
 
 -Si el guardado y restauración de los valores de alsamixer falla a veces, tienes DOS opciones:

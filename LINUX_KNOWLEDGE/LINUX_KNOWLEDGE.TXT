@@ -4699,7 +4699,7 @@ git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-
 
 VAMOS A POR EL JUEGO EN SI:
 
-Compilamos asi (es decir, lo mismo que para SDL2 pero sin "SUBSYSTEM=SDL2":
+Compilamos asi:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DUSE_SDL_AUDIO=1
