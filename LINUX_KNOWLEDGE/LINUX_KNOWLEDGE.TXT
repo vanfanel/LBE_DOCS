@@ -5864,7 +5864,7 @@ y para volver, obviamente, start.
 **********Configuración óptima de RetroArch (En Wayland)************
 
 VIDEO: driver VULKAN, VSYNC ON, MAX_SWAPCHAIN 2
-AUDIO: driver ALSA, 48000 Hz, 32ms, resampler quality normal
+AUDIO: driver ALSA, 48000 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 SHADER: usamos FAKELOTTES, que tiene una mask increíble.

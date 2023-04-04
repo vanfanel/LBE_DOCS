@@ -1,0 +1,11 @@
+Descargamos ARKOS de su WIKI:
+
+https://github.com/christianhaitian/arkos/wiki
+
+La imágen que hay ahí normalmente no es la última versión, así que tendremos que actualizar nada más arrancarla.
+
+Para arranque en RetroArch directamente, entrmos en modo BART (mantenemos presionado B durante el arranque)
+y podemos elegir que el sistema arranque siempre en modo EmulationStation o en modo RetroArch.
+
+
+sudo sed -i '/retroarch \"\$@\"/s//echo performance \| sudo tee \/sys\/devices\/platform\/fde60000.gpu\/devfreq\/fde60000.gpu\/governor\n      echo performance | sudo tee \/sys\/devices\/system\/cpu\/cpufreq\/policy0\/scaling_governor\n      echo performance | sudo tee \/sys\/devices\/platform\/dmc\/devfreq\/dmc\/governor\n      retroarch \"\$@\"/' /usr/bin/emulationstation/emulationstation.sh && sudo sed -i '/retroarch \"\$@\"/s//echo performance \| sudo tee \/sys\/devices\/platform\/fde60000.gpu\/devfreq\/fde60000.gpu\/governor\n      echo performance | sudo tee \/sys\/devices\/system\/cpu\/cpufreq\/policy0\/scaling_governor\n      echo performance | sudo tee \/sys\/devices\/platform\/dmc\/devfreq\/dmc\/governor\n      retroarch \"\$@\"/' /usr/bin/emulationstation/emulationstation.sh.ra
