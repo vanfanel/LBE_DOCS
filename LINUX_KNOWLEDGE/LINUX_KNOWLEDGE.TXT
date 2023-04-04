@@ -6,7 +6,7 @@ de housekeeping simultáneo)
 HABIENDO AISLADO LAS CPUs DEL 1 al 3 CON "isolcpus=1-3 nohz_full=1-3" EN CMDLINE.TXT: 
 -Para lanzar algo no multithread:
 taskset -c 3 ./retroarch
--Para lanzar algo MUY multithread (y que por tanto puede aprovechar varios cores) como el core swanstation:
+-Para lanzar algo MUY multithread (y que por tanto puede aprovechar varios cores):
 chrt -f 80 taskset -c 1-3 ./gzdoom
 CUIDADO con el -f 99: si se te cuelgan cosas bájalo a 80, a 50... 80 va bien y es lo que uso ahora.
 Con la otra política de tiempo real (SCHED_RR, que se usa pasando -r en lugar de -f pero que nos conviene menos porque reparte
@@ -639,7 +639,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
-ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
+ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)
+Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
+Y EN SETTINGS->AUDIO->OUTPUT PON "ALSATHREAD" CON UN "AUDIO LATENCY" DE 32.
 
 ********CROSSCOMPILAR el core libretro Duckstation************
 
@@ -5867,6 +5869,7 @@ AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal
 SHADER: usamos FAKELOTTES, que tiene una mask increíble.
 
 PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
+Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
 
 PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE SHADERS SE VERÁ MUY RARA.
 
