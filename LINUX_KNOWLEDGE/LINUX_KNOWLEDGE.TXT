@@ -640,8 +640,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)
-Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
-Y EN SETTINGS->AUDIO->OUTPUT PON "ALSATHREAD" CON UN "AUDIO LATENCY" DE 32.
+Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER"),
+Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
+A PARTE, EN "SETTINGS->AUDIO->OUTPUT" PON "ALSA" CON UN "AUDIO LATENCY" DE 32.
 
 ********CROSSCOMPILAR el core libretro Duckstation************
 
@@ -5863,13 +5864,14 @@ y para volver, obviamente, start.
 **********Configuración óptima de RetroArch (En Wayland)************
 
 VIDEO: driver VULKAN, VSYNC ON, MAX_SWAPCHAIN 2
-AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal
+AUDIO: driver ALSA, 48000 Hz, 32ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 SHADER: usamos FAKELOTTES, que tiene una mask increíble.
 
 PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
+Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
 
 PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE SHADERS SE VERÁ MUY RARA.
 
@@ -6054,6 +6056,15 @@ COMPILAR CUALQUIER CORE DE LIBRETRO
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
+
+COMPILAR EL CORE MUPEN64 DE LIBRETRO
+====================================
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/libretro/mupen64plus-libretro-nx.git
+
+Compilamos como cualquier otro core pero poniendo la variable de entorno FORCE_GLES3=1, y las variables HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1 HAVE_THR_AL=1 para que nos compile el plugin ANGRYLION que es el que soporta Vulkan. O sea, así:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" FORCE_GLES3=1 HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1 HAVE_THR_AL=1 make -j4
 
 COMPILAR EL CORE DIRKSIMPLE (LASERDISC EN RETROARCH!!!)
 =======================================================
