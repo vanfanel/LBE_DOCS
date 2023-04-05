@@ -32,7 +32,7 @@ Deshabilitar Settings->Input "Auxiliary Sensor Input".
 
 Puedes borrar los SAVESTATES que hayas hecho en /storage/roms/savestates.
 
-COMO SHADER, usa el fakelottes pero "ligerado" (por eso no podemos usar el fakelottes que trae).
+COMO SHADER, usa el fakelottes pero "aligerado" (por eso no podemos usar el fakelottes que trae).
 Para ello, copia el directorio "crt" del repo glsl-shaders de RetroArch a storage/shaders (quedaría como storage/shaders/crt),
 edita storage/shaders/crt/shaders/fakelottes.glsl y comenta las SCANLINES, los EXTRA MASK y la CURVATURA.
 Ese es el shader más óptimo que vas a poder tener en la máquina.
