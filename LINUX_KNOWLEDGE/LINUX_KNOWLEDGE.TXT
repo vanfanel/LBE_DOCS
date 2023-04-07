@@ -5875,6 +5875,8 @@ Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
 
 PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE SHADERS SE VERÁ MUY RARA.
 
+PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
+
 SI USAS INTEGER SCALING Y QUIERES UN BORDE PARA LA PANTALLA:
 -Clona el repo https://github.com/libretro/common-overlays.git, y mete los overlays que quieras en ~/.config/retroarch/overlay
 -Ve a QUICK MENU->ON-SCREEN OVERLAY, activa DISPLAY OVERLAY, y selecciona un overlay preset de los que has copiado.
