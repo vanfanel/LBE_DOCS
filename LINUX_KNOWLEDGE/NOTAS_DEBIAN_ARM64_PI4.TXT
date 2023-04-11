@@ -635,6 +635,13 @@ SHADER: usamos FAKELOTTES, que tiene una mask increíble.
 Si no quieres shimmering en las letras del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE
 y activar LINEAR FILTERING.
 
+Si quieres que aparezcan las opciones de SAVE/LOAD STATE, tienes dos opciones:
+-Activar la opción settings->core->"bypass core info save states"
+-O bien instalar los core info files, que se hace así:
+	--Clonamos el repo: git clone --depth 1 https://github.com/libretro/libretro-core-info.git
+	--Copiamos los .info a ~/.config/retroarch/cores, junto con los cores (suponiendo que tengamos ese directorio puesto
+	  como path para los core info, es la ruta por defecto).
+
 Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
 git clone --depth 1 https://github.com/libretro/libretro-super.git
 Y mandar el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/cores. Sí, junto con los cores. Así:
