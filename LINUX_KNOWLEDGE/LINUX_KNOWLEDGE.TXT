@@ -5874,7 +5874,7 @@ Monitor Gamma 2.10
 Si queremos pixelblending (MegaDrive...), ponemos SHADER PASSES a 2, y como shaders:
 -Como primer pass, el shader "gdapt-pass1.slang" que está entre los shaders de dithering
 -Como segudo pass, el shader el Fakelottes con los parámetros "CRT Gamma" a 2.00 y "Monitor Gamma" a 2.20,
-y con "Shader Filter" puesto a "Linear".
+ y con "Settings->Video->Bilinear Filtering" activado (o bien "Shader Filter" para Fakelottes puesto a "Linear", es lo mismo).
 
 PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
