@@ -5867,7 +5867,13 @@ VIDEO: driver VULKAN, VSYNC ON, MAX_SWAPCHAIN 2
 AUDIO: driver ALSA, 48000 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
-SHADER: usamos FAKELOTTES, que tiene una mask increíble.
+SHADER: usamos FAKELOTTES, que tiene una mask increíble, con:
+CRT GAMMA a 2.00
+Monitor Gamma 2.20
+
+Si queremos pixelblending (MegaDrive...), ponemos SHADER PASSES a 2, y como shaders:
+-Como primer pass, el shader "gdapt-pass1.slang" que está entre los shaders de dithering
+-Como segudo pass, el shader el Fakelottes con los parámetros que he dicho y con "Shader Filter" puesto a "Linear".
 
 PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
