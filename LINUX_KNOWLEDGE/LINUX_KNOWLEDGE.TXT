@@ -4684,7 +4684,8 @@ git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-
 
 ----METODO 1: CON GLFW (CON SHADERS)
 
--Instalamos una dependencia previa: portaudio. Se podría instalar desde APT pero tiene a su vez dependencias que no queremos.
+-(NO NECESARIO SI VAS A COMPILAR CON AUDIO SDL2 QUE ES COMO LO HACEMOS AHORA) Instalamos una dependencia previa: portaudio.
+ Se podría instalar desde APT pero tiene a su vez dependencias que no queremos.
  ---Bajamos su última release estable de aquí: https://github.com/PortAudio/portaudio/releases
  ---Configuramos e instalamos con:
  	mkdir b4
