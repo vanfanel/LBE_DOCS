@@ -4695,18 +4695,24 @@ git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-
 -Instalamos otra dependencia previa: GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
 	---Dependencia previa: apt-get install --no-install-recommens extra-cmake-modules
 	---Nos bajamos la última estable de GLFW de: https://www.glfw.org/
+	---TEMPORAL: Para que vaya el gamepad Khensu, editamos src/mappings.h y añadimos al final esta línea:
+"030000005e0400008e02000073060000,Khensu,a:b0,b:b1,x:b2,y:b3,back:b6,guide:b8,start:b7,leftstick:b9,rightstick:b10,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.0,dpleft:h0.8,dpright:h0.2,leftx:a0,lefty:a1,rightx:a3,righty:a4,lefttrigger:a2,righttrigger:a5,platform:Linux,",
+	NOTA: Eso sólo hay que hacerlo hasta que se habilite el soporte para cargar el "controllerdb.txt" que debe tener esa misma cadena
+	y estar en el mismo directorio que el ejecutable del juego.
 	---Configuramos, compilamos e instalamos GLFW:
 	mkdir b4
 	cd b4
-	cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DGLFW_USE_WAYLAND=1 -D_GLFW_X11=0 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
+	cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 \
+	-DGLFW_USE_WAYLAND=1 -D_GLFW_X11=0 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
+	-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
 VAMOS A POR EL JUEGO EN SI:
 
 Compilamos asi:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DUSE_SDL_AUDIO=1
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DUSE_SDL_AUDIO=1
 
 Desde dentro del directorio de compilación, copiamos libGame.so y RSDKv5 a ~/sonicmania:
 cp libGame.so dependencies/RSDKv5/RSDKv5U ~/sonicmania/
