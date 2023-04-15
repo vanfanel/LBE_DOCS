@@ -4618,13 +4618,13 @@ Editamos ese conquer.ini y ponemos Scaler a "linear", el ratio a 4:3, etc.
 NOTA: Si tienes algún problema en GNU/Linux con este engine, entra en discord y cita a Mephiles, que es un dev y usuario
 de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
 
--(NO NECESARIO SI VAS A COMPILAR CON AUDIO SDL2 QUE ES COMO LO HACEMOS AHORA) Instalamos una dependencia previa: portaudio.
+-Instalamos una dependencia previa: portaudio.
  Se podría instalar desde APT pero tiene a su vez dependencias que no queremos.
  ---Bajamos su última release estable de aquí: https://github.com/PortAudio/portaudio/releases
  ---Configuramos e instalamos con:
  	mkdir b4
  	cd b4
- 	cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" -DPA_USE_JACK=OFF -DPA_USE_OSS=OFF
+ 	cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" -DPA_USE_JACK=OFF
 
 -Instalamos otra dependencia previa: GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
 	---Dependencia previa: apt-get install --no-install-recommens extra-cmake-modules
@@ -4644,7 +4644,7 @@ PARTE 1: EL ENGINE
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DUSE_SDL_AUDIO=1
+-DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 Copiamos RSDKv5 a ~/sonicmania:
 cp RSDKv5U ~/sonicmania/
@@ -4685,13 +4685,18 @@ creamos en ~/sonicmania el fichero "gamecontrollerdb.txt" con el contenido:
 	---NOTA: Si el mod no carga, podemos activar el dev menu añadiendo "devMenu=1" en Settings.ini, en la sección [Game],
 	y desde ahí nos deja activar los mods que tengamos instalados. Esto lo que hace en realidad es crearnos el fichero
 	mods/modconfig.ini que hemos creado a mano antes, pero por si acaso pues aquí queda anotado.
-	
-SE PUEDE COMPILAR SIN GLFW, USANDO SDL2 EN SU LUGAR, PASÁNDOLE A CMAKE "-DRETRO_SUBSYSTEM=SDL2", PERO ENTONCES NO HAY SHADERS.
 
 Ajustes del juego:
 
 -Editamos Settings.ini, que el juego crea en el mismo directorio donde tengamos el ejecutable, y ponemos "faceButtonFlip" a "y",
 para que la X y el O en el mando actuen como esperamos para confirmar y cancelar.
+
+NOTAS ADICIONALES SOBRE EL ENGINE:
+	
+--SE PUEDE COMPILAR SIN GLFW, USANDO SDL2 EN SU LUGAR, PASÁNDOLE A CMAKE "-DRETRO_SUBSYSTEM=SDL2", PERO ENTONCES NO HAY SHADERS.
+--SE PUEDE COMPILAR CON GLFW PERO SIN PORTAUDIO, USANDO SDL2 EN SU LUGAR, PASÁNDOLE A CMAKE "-DUSE_SDL_AUDIO=1",PERO ENTONCES
+HAY MÁS LAG DE AUDIO Y ALGÚN ALSA BUFFER UNDERRUN AL PRINCIPIO DE LOS VÍDEOS.
+--SI COMPILAS CON "-DRETRO_SUBSYSTEM=SDL2" VA TODO CON SDL2 INCLUIDO EL AUDIO, NO NECESITAS PASARLE "-DUSE_SDL_AUDIO=1".
 
 *************HYDRA CASTLE LABYRINTH EN LA PI**************************************************************************************
 
