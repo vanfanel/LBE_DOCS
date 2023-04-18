@@ -408,7 +408,7 @@ PATH="/usr/local/bin:$PATH"
 Elimimanos el libDRM del sistema, que es viejo siempre:
 apt-get purge libdrm*
 Instalamos estas dependencias previas: 
-sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make cmake automake pkg-config gcc g++ meson python3-setuptools --no-install-recommends
+sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make cmake automake pkg-config gcc g++ python3-setuptools --no-install-recommends
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 Bajamos la última versión estable de:
 https://dri.freedesktop.org/libdrm/
