@@ -1,0 +1,92 @@
+INSTALAR MESA
+==============
+
+NOCIONES PREVIAS DE APIS, DEPENDENCIAS, Y SOPORTE DE OPENGL COMPLETO (NO GLES)
+
+Para tener OpenGL "completo" (no GLES), Mesa se puede compilar con GLX (lo que conlleva un cojón de dependencias de X11 y es un asco), o con GLVND (libglvnd, una librería muy ligera de NVIDIA que es libre).
+Compilar MESA con OpenGL completo para GLX nos produce libGL.so, y compilar MESA con OpenGL completo para GLVND nos produce libOpenGL.so  
+
+Si compilas con OpenGL completo mediante GLVND, las SDL2 deberían ya detectar y usar libOpenGL.so en vez de libGL.so, y los programas de SDL2
+que usen OpenGL completo funcionarán.
+Aún así, si algún programa intenta linkar con -lGL, no lo va a encontrar, así que cambia -lGL por -lOpenGL y ya linkará sin problemas.
+Si algún programa linka contra -lGLU, elimínalo y ya. No se necesita nada de ahí.
+
+Si MESA te da un error de que no encuentra GL/glxproto.h, reinstala el paquete x11proto-dev
+
+FIN NOCIONES PREVIAS
+
+Empezamos con libDRM:
+
+Lo primero es instalar la última versión de MESON, porque la que trae DEBIAN siempre son viejos y las versiones
+actuales de WLROOTS necesitan versiones actuales de MESON para compilar (DEBIAN nunca coge a WLROOTS con la versión
+de MESON necesaria). Así que ahorra tiempo ahora si vas a usar WAYLAND, y deja ya instalado el último MESON:
+
+sudo apt-get purge meson
+sudo apt install python3-pip --no-install-recommends
+sudo python3 -m pip install ninja
+sudo python3 -m pip install meson
+PATH="/usr/local/bin:$PATH"
+
+...Ahora ya vamos con libDRM en sí...
+Elimimanos el libDRM del sistema, que es viejo siempre:
+apt-get purge libdrm*
+Instalamos estas dependencias previas: 
+sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make cmake automake pkg-config gcc g++ python3-setuptools --no-install-recommends
+(libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
+
+Clonamos el repo de libdrm: git clone --depth 1 https://gitlab.freedesktop.org/mesa/drm
+
+mkdir b4
+cd b4
+
+Configuramos libdrm con esto:
+
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+meson -Dudev=true -Dvc4=disabled -Dintel=disabled -Dvmwgfx=disabled -Dradeon=disabled -Damdgpu=disabled -Dnouveau=disabled \
+-Dfreedreno=disabled -Detnaviv=disabled \
+-Dinstall-test-programs=true ..
+
+Compilamos e instalamos:
+ninja -j4
+sudo ninja install
+
+En este punto, puedes probar si libdrm te funciona bien haciendo:
+modetest -s 197:1280x720
+(donde 197 es un ID de conector válido: puedes ver los conectores con modetest|grep connected -b4).
+
+
+===
+https://forum.armbian.com/topic/26450-accelerated-video-options-for-installing-and-running/
+https://gitlab.com/panfork/mesa
+"PAN_MESA_DEBUG=gofaster"
+echo performance | tee /sys/class/devfreq/dmc/governor
+
+CFLAGS="-march=native -mtune=native -O2" CXXFLAGS="-march=native -mtune=native -O2" \
+meson -Dgallium-drivers=panfrost -Dvulkan-drivers= -Dllvm=disabled -Dglx=disabled -Dplatforms=wayland
+
+====
+
+PARA PODER LANZAR WAYLAND SIN TENER QUE HACER "export XDG_RUNTIME_DIR=/var/run/user/0"
+apt-get install dbus
+apt-get install libpam-systemd
+systemctl unmask systemd-logind
+
+====
+
+
+INSTALAR GLMARK2
+================
+
+Instalamos dependencias previas:
+apt-get install libpng-dev libjpeg-dev
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/glmark2/glmark2.git
+
+Configuramos con:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release -Dflavors=drm-glesv2,gbm-glesv2,wayland-glesv2 ..

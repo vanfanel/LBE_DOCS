@@ -4939,7 +4939,7 @@ sudo python3 -m pip install ninja
 sudo python3 -m pip install meson
 PATH="/usr/local/bin:$PATH"
 
-**************Regenerar caché de LDD*********************************************************************************************
+**************Regenerar caché LDD************************************************************************************************
 
 sudo rm /etc/ld.so.cache
 sudo ldconfig
