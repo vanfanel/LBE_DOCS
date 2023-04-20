@@ -595,6 +595,9 @@ CXXFLAGS="-march=native -mtune=native -O2" \
 INSTALAR RETROARCH
 ===================
 
+Instalamos dependencias previas:
+apt-get install libasound-dev
+
 Si vas a compilarlo con soporte para Vulkan, lo primero es instalar el compilador de shaders:
 sudo apt-get install glslang-dev glslang-tools spirv-tools
 
