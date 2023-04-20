@@ -59,8 +59,16 @@ modetest -s 197:1280x720
 ===
 https://forum.armbian.com/topic/26450-accelerated-video-options-for-installing-and-running/
 https://gitlab.com/panfork/mesa
-"PAN_MESA_DEBUG=gofaster"
+
+PONER AL INICIO USANDO dietpi-config->AutoStart->Custom->With Autologin:
+
 echo performance | tee /sys/class/devfreq/dmc/governor
+
+PONER EN /etc/environment
+
+PAN_MESA_DEBUG=gofaster
+
+PARA COMPILAR MESA PANFORK:
 
 CFLAGS="-march=native -mtune=native -O2" CXXFLAGS="-march=native -mtune=native -O2" \
 meson -Dgallium-drivers=panfrost -Dvulkan-drivers= -Dllvm=disabled -Dglx=disabled -Dplatforms=wayland
