@@ -55,6 +55,40 @@ En este punto, puedes probar si libdrm te funciona bien haciendo:
 modetest -s 197:1280x720
 (donde 197 es un ID de conector válido: puedes ver los conectores con modetest|grep connected -b4).
 
+DEPENDENCIAS PREVIAS DE MESA:
+
+SI QUIERES GLES Y GLES2 NECESITAS ESTAS DEPENDENCIAS:
+sudo apt-get install --no-install-recommends \
+    flex bison python3-mako python3-setuptools \
+    libexpat1-dev libudev-dev gettext \
+    ca-certificates xz-utils \
+    zlib1g-dev pkg-config
+
+SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
+sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommends
+
+SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, TIENES QUE INSTALAR LIBGLVND:
+Bajamos la última estable de aquí:
+https://gitlab.freedesktop.org/glvnd/libglvnd/-/tags
+Y configuramos con:
+CFLAGS="-march=native -mtune=native -O2" \
+meson -Dglx=disabled -Dx11=disabled ..
+
+SATISFECHAS SUS DEPENDENCIAS, PASAMOS A LA COMPILACIÓN DE MESA COMO TAL:
+
+Clonamos el repo de panfork:
+git clone --depth 1 https://gitlab.com/panfork/mesa.git
+
+Comentamos la línea "name_prefix" de los ficheros:
+src/mapi/shared-glapi/meson.build
+src/egl/meson.build
+src/mapi/es1api/meson.build
+src/mapi/es2api/meson.build
+
+PARA COMPILAR:
+
+CFLAGS="-march=native -mtune=native -O2" CXXFLAGS="-march=native -mtune=native -O2" \
+meson -Dgallium-drivers=panfrost -Dvulkan-drivers= -Dllvm=disabled -Dglx=disabled -Dplatforms=wayland
 
 ===
 https://forum.armbian.com/topic/26450-accelerated-video-options-for-installing-and-running/
@@ -67,11 +101,6 @@ echo performance | tee /sys/class/devfreq/dmc/governor
 PONER EN /etc/environment
 
 PAN_MESA_DEBUG=gofaster
-
-PARA COMPILAR MESA PANFORK:
-
-CFLAGS="-march=native -mtune=native -O2" CXXFLAGS="-march=native -mtune=native -O2" \
-meson -Dgallium-drivers=panfrost -Dvulkan-drivers= -Dllvm=disabled -Dglx=disabled -Dplatforms=wayland
 
 ====
 

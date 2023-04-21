@@ -446,15 +446,9 @@ sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommen
 SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, TIENES QUE INSTALAR LIBGLVND:
 Bajamos la última estable de aquí:
 https://gitlab.freedesktop.org/glvnd/libglvnd/-/tags
-mkdir b4
-cd b4
-
+Y configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 meson -Dglx=disabled -Dx11=disabled ..
-
-ninja -4
-sudo ninja install
-(Y "sudo ninja uninstall" para desinstalar)
 
 NO TE OLVIDES DE AÑADIR AL USUARIO AL GRUPO RENDER:
 sudo adduser pi render
