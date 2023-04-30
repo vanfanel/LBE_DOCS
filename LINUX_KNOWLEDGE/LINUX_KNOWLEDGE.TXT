@@ -8850,13 +8850,13 @@ PARTE 1: ffmpeg
 
 -Clonamos este repo que es un fork con soporte específico para la Pi. Usamos un branch con las cosas específicas de la Pi,
  porque el principal no se actualiza, se actualizan los branches:
- git clone --depth 1 https://github.com/jc-kynesim/rpi-ffmpeg.git -b dev/5.1.2/rpi_import_1 
+ git clone --depth 1 https://github.com/jc-kynesim/rpi-ffmpeg.git -b dev/6.0/rpi_import_1
 
 -Configuramos con:
 
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --disable-network --disable-debug \
 --disable-muxers --disable-indevs \
---disable-outdev=fbdev --disable-outdev=oss \
+--disable-outdev=fbdev,oss \
 --disable-doc --disable-bsfs --disable-ffprobe \
 --disable-sdl2 --disable-stripping \
 --disable-thumb --disable-mmal \
@@ -8886,8 +8886,8 @@ PARTE 2: MPV
 
 -Instalamos dependencias previas: sudo apt-get install libass-dev --no-install-recommends
 
-(SÓLO SI VAMOS A USAR VULKAN, QUE NO ES NECESARIO PARA TENER ACELERACIÓN Y BAJO USO DE CPU)
--Instalamos la dependencia adicional libplacebo---
+-Instalamos la dependencia adicional libplacebo (Es para poder usar Vulkan, que es necesario porque OpenGL no tiene soporte
+ para el formato yuv420p, que es lo que necesita el decoder v4l2m2m, con OpenGL sólo se puede usar v4l2m2m-copy que usa mucha más CPU)
 -Clonamos su repo:
 git clone --depth 1 https://code.videolan.org/videolan/libplacebo.git
 cd libplacebo
@@ -8906,6 +8906,7 @@ ninja install
 VAMOS CON MPV EN SÍ:
 
 -Bajamos su última versión estable de aquí: https://github.com/mpv-player/mpv/releases
+ (Si da fallo al compilar, usa el último código de GIT).
 
 -Ahora configuramos con (recuerda que podemos ver qué activar y qué desactivar en meson_options.txt):
 
@@ -8914,9 +8915,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson ..
-
-(Si queremos soporte Vulkan, que no es necesario en absoluto, añadimos "-Dvulkan=enabled" entre meson y los dos puntos).
+meson -Dvulkan=enabled ..
 
 -Y ahora compilamos e instalamos:
 ninja -j4
