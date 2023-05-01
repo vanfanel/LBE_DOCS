@@ -8923,8 +8923,8 @@ ninja install
 
 Creamos el fichero de configuración ~/.config/mpv/mpv.conf, con el contenido:
 
-hwdec=auto
-vo=gpu
+#hwdec=auto
+#vo=gpu
 video-sync=display-resample
 fs=yes
 sub-visibility=no
@@ -8932,6 +8932,8 @@ sub-visibility=no
 PARA ESTAR SEGURO de que la aceleración de descompresión de vídeo y de volcado de frames a pantalla funciona (son dos problemas distintos)
 la reproducción de un vídeo en H264 a 1080p debería consumir sobre un 10-15% de CPU, NO MÁS QUE ESO.
 Si consume un 50-60% es que falla la parte de la aceleración del dibujado en pantalla, y si se usa el 100-200% de CPU es que fallan ambas cosas, la descompresión y el dibujado.
+
+LAS INSTRUCCIONES CON TODAS LAS OPCIONES DE MPV ESTÁN EN: https://mpv.io/manual/stable/
 
 RECUERDA: Para ver los códecs de vídeo acelerados disponibles para el decoding:
 mpv --hwdec=help
