@@ -141,19 +141,19 @@ sudo chmod +x /usr/local/bin/ia_downloader
  
 Descargamos tal que así. Para bajarnos una colección completa al directorio actual...:
 
-ia_downloader download no-intro_romsets ./
+ia_downloader download -i no-intro_romsets ./
 
 Para bajarnos sólo unos ítems concretos de una colección (por ejemplo los romsets completos de SNES y Megadrive):
 
-ia_downloader download no-intro_romsets ./ -f Super\ Nintendo Megadrive
+ia_downloader download -i no-intro_romsets ./ -f Super\ Nintendo Megadrive
 
 Y para continuar si se cortó la bajada anterior:
 
-ia_downloader download no-intro_romsets ./ -f Super\ Nintendo Megadrive -r
+ia_downloader download -i no-intro_romsets ./ -f Super\ Nintendo Megadrive -r
 
 Y como lo venimos haciendo ahora, para descargar con una sola línea todos los romsets que solemos usar:
 
-ia_downloader download no-intro_romsets ./ -f Super\ Nintendo Mega Drive headered_NES2.0 Game\ Boy\ \(2022 Game\ Boy\ Color Game\ Gear Master\ System 32X Lynx PC\ Engine Atari\ -\ 2600 Atari\ -\ 5200 Atari\ -\ 7800 Jaguar WonderSwan ColecoVision Virtual\ Boy SG-1000 -r
+ia_downloader download -i no-intro_romsets ./ -f Super\ Nintendo Mega Drive headered_NES2.0 Game\ Boy\ \(2022 Game\ Boy\ Color Game\ Gear Master\ System 32X Lynx PC\ Engine Atari\ -\ 2600 Atari\ -\ 5200 Atari\ -\ 7800 Jaguar WonderSwan ColecoVision Virtual\ Boy SG-1000 -r
 
 ******Descargar vídeos de RTVE A LA CARTA*********************************************************************************************
 
@@ -1436,7 +1436,7 @@ cd b4
 Configuramos con:
 CFLAGS="-O2 -march=native -mtune=native -O2" \
 CXXFLAGS="-O2 -march=native -mtune=native -O2" \
-meson .. -Duse_opengl=false -Duse_sdl2_net=false
+meson .. -Dbuildtype=release -Duse_opengl=false -Duse_sdl2_net=false
 
 Compilamos con:
 ninja -j4
@@ -8838,6 +8838,25 @@ systemctl daemon-reload
 
 ...Y ya deberíamos tener los dispositivos de almacenamiento USB automáticamente montados en /media/...
 
+ACELERACIÓN DE VÍDEO EN LA PI4 CON VLC
+======================================
+
+--Clonamos su repo:
+git clone --depth 1 https://code.videolan.org/videolan/vlc.git
+--Antes de configurar:
+----Instalamos libtool:
+apt-get install libtool --no-install-recommends
+----Ejecutamos el script "bootstrap" que viene con los sources.
+
+--Configuramos con:
+meson -Dbuildtype=release -Dwayland=enabled -Dvideolan_manager=false -Drun_as_root=true -Dssp=disabled -Dbranch_protection=disabled \
+-Dqt=disabled -Dx11=disabled -Dlua=disabled -Dpulse=disabled -Ddbus=disabled -Davahi=disabled -Dgles2=enabled \
+-Dtheoraenc=disabled -Ddaalaenc=disabled ..
+
+NOTA: Si usamos el antiguo configure && make, configuramos con:
+./configure --without-x --disable-xcb --enable-wayland --disable-qt --disable-ncurses --enable-v4l2 --disable-mmal \
+--enable-gles2 --disable-lua --disable-a52 --disable-freerdp --disable-vnc
+
 ACELERACIÓN DE VÍDEO EN LA PI4 CON MPV
 ======================================
 
@@ -8886,42 +8905,32 @@ PARTE 2: MPV
 
 -Instalamos dependencias previas: sudo apt-get install libass-dev --no-install-recommends
 
--Instalamos la dependencia adicional libplacebo (Es para poder usar Vulkan, que es necesario porque OpenGL no tiene soporte
- para el formato yuv420p, que es lo que necesita el decoder v4l2m2m, con OpenGL sólo se puede usar v4l2m2m-copy que usa mucha más CPU)
--Clonamos su repo:
+(SÓLO SI VAMOS A COMPILAR CON SOPORTE PARA VULKAN, QUE NO ES NECESARIO POR AHORA)
+-Instalamos la dependencia adicional libplacebo
+--Clonamos su repo:
 git clone --depth 1 https://code.videolan.org/videolan/libplacebo.git
 cd libplacebo
 git submodule update --init --recursive
--Configuramos y compilamos:
-mkdir b4
-cd b4
-	
+--Configuramos con:	
+
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Ddemos=false ..
-
-ninja -j4
-ninja install
+meson -Ddemos=false -Dbuildtype=release ..
 
 VAMOS CON MPV EN SÍ:
 
 -Bajamos su última versión estable de aquí: https://github.com/mpv-player/mpv/releases
  (Si da fallo al compilar, usa el último código de GIT).
 
--Ahora configuramos con (recuerda que podemos ver qué activar y qué desactivar en meson_options.txt):
-
-mkdir b4
-cd b4
+-Configuramos con:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dvulkan=enabled ..
+meson -Dbuildtype=release ..
 
--Y ahora compilamos e instalamos:
-ninja -j4
-ninja install
+(Si quisiéramos soporte Vulkan, que NO es necesario, añadiríamos "-Dvulkan=enabled" entre "meson" y los dos puntos).
 
-Creamos el fichero de configuración ~/.config/mpv/mpv.conf, con el contenido:
+-Creamos el fichero de configuración ~/.config/mpv/mpv.conf, con el contenido:
 
 #hwdec=auto
 #vo=gpu
