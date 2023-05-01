@@ -8824,8 +8824,8 @@ NOTA: Si usamos el antiguo configure && make, configuramos con:
 ./configure --without-x --disable-xcb --enable-wayland --disable-qt --disable-ncurses --enable-v4l2 --disable-mmal \
 --enable-gles2 --disable-lua --disable-a52 --disable-freerdp --disable-vnc
 
-ACELERACIÓN DE VÍDEO EN LA PI4 CON MPV
-======================================
+REPRODUCCIÓN DE VÍDEO EN LA PI4 CON MPV + FFMPEG
+================================================
 
 Un hilo interesante sobre el asunto: https://www.raspberrypi.org/forums/viewtopic.php?t=316381
 
@@ -8905,6 +8905,8 @@ video-sync=display-resample
 fs=yes
 sub-visibility=no
 
+(El parámetro "hwdec" lo dejamos comentado para que no active la decodificación por hardware usando v4l2m2m porque ahora mismo
+es más lenta que la decodificación por software).
 (El resto de opciones de sincronización para "video-sync=..." las podemos ver en https://mpv.io/manual/stable/,
 se supone que "video-sync=display-resample" es mejor pero se basa en dibujar varias veces el mismo frame durante varios vblank así que
 es más intenso con la GPU y causa parones de audio y vídeo por falta de potencia en la Pi4).
