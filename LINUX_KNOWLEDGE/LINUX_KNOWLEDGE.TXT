@@ -8925,11 +8925,14 @@ Creamos el fichero de configuración ~/.config/mpv/mpv.conf, con el contenido:
 
 #hwdec=auto
 #vo=gpu
-video-sync=display-resample
+#video-sync=display-resample
+video-sync=display-desync
 fs=yes
 sub-visibility=no
 
-(El resto de opciones de sincronización para "video-sync=..." las podemos ver en https://mpv.io/manual/stable/)
+(El resto de opciones de sincronización para "video-sync=..." las podemos ver en https://mpv.io/manual/stable/,
+se supone que "video-sync=display-resample" es mejor pero se basa en dibujar varias veces el mismo frame durante varios vblank así que
+es más intenso con la GPU y causa parones de audio y vídeo por falta de potencia en la Pi4).
 
 PARA ESTAR SEGURO de que la aceleración de descompresión de vídeo y de volcado de frames a pantalla funciona (son dos problemas distintos)
 la reproducción de un vídeo en H264 a 1080p debería consumir sobre un 10-15% de CPU, NO MÁS QUE ESO.
