@@ -120,6 +120,10 @@ chdman extractcd -i image.chd -o image.cue -ob image.bin
 
 ******Descargar desde ARCHIVE.ORG desde la línea de comandos usando un download manager***********************************************
 
+(!!!!)NOTA: Lo más práctico y rápido NO para descargar de Archive NO es hacerlo desde la línea de comandos, sino descargar desde el navegador
+(!!!!)usando un DOWNLOAD MANAGER. El más recomendable es "Turbo Download Manager" que es una extensión para Firefox.
+PERO vamos, que si te quieres complicar, sigue leyendo...
+
 Normalmente se podría usar WGET, pero como hay items que sólo se pueden descargar estando logueado, y como archive.org usa HTTPS y no es posible
 loguearse por HTTPS con WGET, pues al final con muchos items no funciona WGET y nos da el famoso error 403: "forbidden".
 
@@ -7246,43 +7250,6 @@ sudo i2cdetect -y 1
 
 Si el i2cdetect no encuentra /dev/i2c-1, es que nos falta algo de los módulos. El pts debería estar en el 73 en la tabla que nos sale.
 
-MPV, ALTERNATIVA A OMXPLAYER EN LA PI
-=====================================
-
-El MPV tiene video output a KMS/DRM con --vo drm, y a la vez, por otra parte, decoding de vídeo por hardware usando mmal con -vd=lavc:h264_mmal
-El decoding usando mmal se hace mediante una versión de ffmpeg que tenga habilitada aceleración de mmal para Raspberry Pi.
-O sea, que lo primero es conseguir una versión de ffmpeg con aceleración mmal para Rpi.
-
-Ahora vamos a por ffmpeg:
-
-git clone --depth 1 https://git.ffmpeg.org/ffmpeg.git
-Y luego configurando con:
-./configure --enable-mmal --disable-debug --enable-shared
-
-Para comprobar que nuestro ffmpeg tiene aceleración mmal para Rpi, haz:
-ffmpeg -codecs
-
-Antes de compilar mpv, tenemos que compilar e instalar libass. La versión de libass que hace falta no viene en Raspbian, así que clonamos, compilamos e instalamos esto:
-git clone --depth 1 https://github.com/libass/libass.git
-
-Otras librerías que nos hacen falta son: libavutil libavcodec libavformat libswscale libavfilter y bien:
-libswresample o bien libavresample (son la misma librería y se instalan al instalar ffmpeg, creo)
-
-Ahora compilamos mpv con soporte para egl/drm:
-./bootstrap.py
-./waf configure --help
-./waf configure --enable-egl-drm --disable-x11 --disable-oss
-./waf
-./waf install
-
-Si tenemos todo, se debería poder hacer algo como:
-mpv --vd=lavc:h264_mmal --vo=drm somefile.mp4
-...y debería ir genial.
-Debemos tener
-lavc:h264_mmal
-en la lista de decoders si hacemos:
-mpv --vd=help
-
 SELECCIONAR LA SALIDA DE AUDIO CON MPV
 ======================================
 
@@ -8919,8 +8886,7 @@ meson -Ddemos=false -Dbuildtype=release ..
 
 VAMOS CON MPV EN SÍ:
 
--Bajamos su última versión estable de aquí: https://github.com/mpv-player/mpv/releases
- (Si da fallo al compilar, usa el último código de GIT).
+-Clonamos su repo: git clone --depth 1 https://github.com/mpv-player/mpv.git
 
 -Configuramos con:
 
@@ -8934,8 +8900,8 @@ meson -Dbuildtype=release ..
 
 #hwdec=auto
 #vo=gpu
-#video-sync=display-resample
-video-sync=display-desync
+#video-sync=display-desync
+video-sync=display-resample
 fs=yes
 sub-visibility=no
 
