@@ -4704,6 +4704,24 @@ NOTAS ADICIONALES SOBRE EL ENGINE:
 HAY MÁS LAG DE AUDIO Y ALGÚN ALSA BUFFER UNDERRUN AL PRINCIPIO DE LOS VÍDEOS.
 --SI COMPILAS CON "-DRETRO_SUBSYSTEM=SDL2" VA TODO CON SDL2 INCLUIDO EL AUDIO, NO NECESITAS PASARLE "-DUSE_SDL_AUDIO=1".
 
+*************SONICCD EN EL ENGINE RSDK5*******************************************************************************************
+
+-Extraemos los datos del .rsdk del SonicCD versión Sonic Origins, usando esto para extraerlos:
+ https://github.com/MainMemory/RSDKv5Extract/releases
+ (Tienes el Sonic Origins en el disco de backup).
+-Metemos esos datos en ~/soniccd/Data, y sustituimos el directorio "Scripts" por el directorio "Scripts" de este repo:
+ https://github.com/Rubberduckycooly/Sonic-CD-2011-Script-Decompilation
+-Cuidado! Si instalamos un mod y no carga, asegúrate de que en el mod.ini del mod la variable TargetVersion esté puesta a 3.
+
+Resolución de los vídeos de SonicMania: 1024x512
+
+Extraer sólo el audio de la versión de PC (el RSDKv5 necesita audio en 44100 pero los vídeos de PC vienen en 48000):
+ffmpeg -i Opening.ogv -vn -ar 44100 Opening.ogg
+
+Extraer sólo el vídeo de la versión de PC, escalándolo a 1024x512 que es lo que necesita el RSDKv5:
+(Pongo la calidad de vídeo a 9 porque a 10 sale un frame corrupto al principio)
+ffmpeg -i Opening.ogv -q:v 9 -vf scale=1024:512 -an Opening.ogv
+
 *************HYDRA CASTLE LABYRINTH EN LA PI**************************************************************************************
 
 Clonamos su repo:
