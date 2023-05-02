@@ -4706,19 +4706,39 @@ HAY MÁS LAG DE AUDIO Y ALGÚN ALSA BUFFER UNDERRUN AL PRINCIPIO DE LOS VÍDEOS.
 
 *************SONICCD EN EL ENGINE RSDK5*******************************************************************************************
 
--Extraemos los datos del .rsdk del SonicCD versión Sonic Origins, usando esto para extraerlos:
+-Extraemos los datos del .rsdk del SonicCD del Sonic Origins, usando esto para extraerlos:
  https://github.com/MainMemory/RSDKv5Extract/releases
  (Tienes el Sonic Origins en el disco de backup).
--Metemos esos datos en ~/soniccd/Data, y sustituimos el directorio "Scripts" por el directorio "Scripts" de este repo:
+ Metemos esos datos en ~/soniccd/Data/
+-Extraemos los datos del .rsdk del SonicCD versión 2011 con la misma herramienta, y copiamos los directorios "Music" y "SoundFX"
+ a ~/soniccd/Data, y sustituimos el directorio "Scripts" por el directorio "Scripts" de este repo:
  https://github.com/Rubberduckycooly/Sonic-CD-2011-Script-Decompilation
+ Nos faltará un fichero llamado "DropDash.wav", que viene en los datos del SonicMania. No te hace falta porque el SoniCD
+ no lo va a usar, pero si quieres pues lo puedes sacar del .rdsk del Sonic Mania.
+ 
 -Cuidado! Si instalamos un mod y no carga, asegúrate de que en el mod.ini del mod la variable TargetVersion esté puesta a 3.
 
+-Metemos los vídeos en OGV escalados a 1024x512 en Data/Videos (se tienen que llamar, con sus mayúsculas y minúsculas:
+"Opening.ogv", "Bad_Ending.ogv", "Good_Ending.ogv", "Pencil_Test.ogv").
+-Metemos los audios de los vídeos en OGG de 44100Hz en Data/Music. Se tienen que llamar como los vídeos pero con extensión .ogg
+
+Ahora vamos a retocar los scripts para que se reproduzcan los vídeos en OGV con audio OGG externo
+(es la única manera de tener los vídeos con su música). Para ello, nos vamos a Data/Scripts y tirando de "grep":
 -Donde veas una carga de un vídeo, como por ejemplo:
 LoadVideo("Opening")
 ...Lo sustituyes por un bloque así que carga su .ogg antes:
 SetMusicTrack("Opening.ogg", 0, 0)
-PlayMusic(0)    
+PlayMusic(0)
 LoadVideo("Opening")
+
+Los ficheros donde hay que cambiar eso son:
+Title/Select.txt
+R8/FadeScreen.txt
+Menu/LoadSaveMenu.txt
+Menu/MenuControl.txt
+Menu/ExtrasMenu.txt
+
+INFO POR SI TIENES QUE VOLVER A PREPARAR LOS VÍDEOS Y LA MÚSICA DE LOS VÍDEOS:
 
 Extraer sólo el audio de la versión de PC (el RSDKv5 necesita audio en 44100 pero los vídeos de PC vienen en 48000):
 ffmpeg -i Opening.ogv -vn -ar 44100 Opening.ogg
