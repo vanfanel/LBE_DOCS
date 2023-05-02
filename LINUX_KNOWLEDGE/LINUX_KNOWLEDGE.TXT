@@ -1767,7 +1767,7 @@ bgmvolume "0.500000"
 volume "0.200000"
 bind F1 ""
 
-También, en el shader fakelottes, pon CRT Gamma a 2.50 y Monitor Gamma a 3.20, así el Quake se verá con la oscuridad adecuada
+También, en el shader fakelottes, pon CRT Gamma a 2.20 y Monitor Gamma a 3.00, así el Quake se verá con la oscuridad adecuada
 y los juegos de FBNeo se verán bien también (sin zonas claras alrededor de las letras del spang o 3wonders, etc)
 
 Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake
@@ -5840,8 +5840,8 @@ AUDIO: driver ALSA, 48000 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 SHADER: usamos FAKELOTTES, que tiene una mask increíble, con:
-CRT GAMMA a 2.50
-Monitor Gamma 2.70
+CRT GAMMA a 2.20
+Monitor Gamma 3.00
 
 Si queremos pixelblending (MegaDrive...), ponemos SHADER PASSES a 2, y como shaders:
 -Como primer pass, el shader "gdapt-pass1.slang" que está entre los shaders de dithering
