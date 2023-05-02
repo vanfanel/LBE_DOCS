@@ -4713,7 +4713,12 @@ HAY MÁS LAG DE AUDIO Y ALGÚN ALSA BUFFER UNDERRUN AL PRINCIPIO DE LOS VÍDEOS.
  https://github.com/Rubberduckycooly/Sonic-CD-2011-Script-Decompilation
 -Cuidado! Si instalamos un mod y no carga, asegúrate de que en el mod.ini del mod la variable TargetVersion esté puesta a 3.
 
-Resolución de los vídeos de SonicMania: 1024x512
+-Donde veas una carga de un vídeo, como por ejemplo:
+LoadVideo("Opening")
+...Lo sustituyes por un bloque así que carga su .ogg antes:
+SetMusicTrack("Opening.ogg", 0, 0)
+PlayMusic(0)    
+LoadVideo("Opening")
 
 Extraer sólo el audio de la versión de PC (el RSDKv5 necesita audio en 44100 pero los vídeos de PC vienen en 48000):
 ffmpeg -i Opening.ogv -vn -ar 44100 Opening.ogg
