@@ -157,7 +157,7 @@ ia_downloader download -i no-intro_romsets ./ -f Super\ Nintendo Megadrive -r
 
 Y como lo venimos haciendo ahora, para descargar con una sola línea todos los romsets que solemos usar:
 
-ia_downloader download -i no-intro_romsets ./ -f Super\ Nintendo Mega Drive headered_NES2.0 Game\ Boy\ \(2022 Game\ Boy\ Color Game\ Gear Master\ System 32X Lynx PC\ Engine Atari\ -\ 2600 Atari\ -\ 5200 Atari\ -\ 7800 Jaguar WonderSwan ColecoVision Virtual\ Boy SG-1000 -r
+ia_downloader download -i no-intro_romsets ./ -f Super\ Nintendo Mega\ Drive Nintendo\ Entertainment\ System Game\ Boy\ \(2022 Game\ Boy\ Color Game\ Gear Master\ System 32X Lynx PC\ Engine Atari\ -\ 2600 Atari\ -\ 5200 Atari\ -\ 7800 Jaguar WonderSwan ColecoVision Virtual\ Boy SG-1000 -r
 
 ******Descargar vídeos de RTVE A LA CARTA*********************************************************************************************
 
@@ -1767,7 +1767,7 @@ bgmvolume "0.500000"
 volume "0.200000"
 bind F1 ""
 
-También, en el shader fakelottes, pon CRT Gamma a 1.80 y Monitor Gamma a 2.30, así el Quake se verá con la oscuridad adecuada
+También, en el shader fakelottes, pon CRT Gamma a 2.50 y Monitor Gamma a 3.20, así el Quake se verá con la oscuridad adecuada
 y los juegos de FBNeo se verán bien también (sin zonas claras alrededor de las letras del spang o 3wonders, etc)
 
 Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake
@@ -5840,12 +5840,12 @@ AUDIO: driver ALSA, 48000 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 SHADER: usamos FAKELOTTES, que tiene una mask increíble, con:
-CRT GAMMA a 1.80
-Monitor Gamma 2.10
+CRT GAMMA a 2.50
+Monitor Gamma 2.70
 
 Si queremos pixelblending (MegaDrive...), ponemos SHADER PASSES a 2, y como shaders:
 -Como primer pass, el shader "gdapt-pass1.slang" que está entre los shaders de dithering
--Como segudo pass, el shader el Fakelottes con los parámetros "CRT Gamma" a 2.00 y "Monitor Gamma" a 2.20,
+-Como segudo pass, el shader el Fakelottes con los parámetros "CRT Gamma" a 2.40 y "Monitor Gamma" a 2.50,
  y con "Settings->Video->Bilinear Filtering" activado (o bien "Shader Filter" para Fakelottes puesto a "Linear", es lo mismo).
 
 PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
