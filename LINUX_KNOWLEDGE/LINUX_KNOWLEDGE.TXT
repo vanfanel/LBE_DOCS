@@ -4706,37 +4706,63 @@ HAY MÁS LAG DE AUDIO Y ALGÚN ALSA BUFFER UNDERRUN AL PRINCIPIO DE LOS VÍDEOS.
 
 *************SONICCD EN EL ENGINE RSDK5*******************************************************************************************
 
--Extraemos los datos del .rsdk del SonicCD del Sonic Origins, usando esto para extraerlos:
- https://github.com/MainMemory/RSDKv5Extract/releases
- (Tienes el Sonic Origins en el disco de backup).
- Metemos esos datos en ~/soniccd/Data/
--Extraemos los datos del .rsdk del SonicCD versión 2011 con la misma herramienta, y copiamos los directorios "Music" y "SoundFX"
- a ~/soniccd/Data, y sustituimos el directorio "Scripts" por el directorio "Scripts" de este repo:
- https://github.com/Rubberduckycooly/Sonic-CD-2011-Script-Decompilation
- Nos faltará un fichero llamado "DropDash.wav", que viene en los datos del SonicMania. No te hace falta porque el SoniCD
- no lo va a usar, pero si quieres pues lo puedes sacar del .rdsk del Sonic Mania.
- 
--Cuidado! Si instalamos un mod y no carga, asegúrate de que en el mod.ini del mod la variable TargetVersion esté puesta a 3.
+-Cogemos el ejecutable RSDKv5U y lo copiamos en ~/soniccd
 
--Metemos los vídeos en OGV escalados a 1024x512 en Data/Videos (se tienen que llamar, con sus mayúsculas y minúsculas:
-"Opening.ogv", "Bad_Ending.ogv", "Good_Ending.ogv", "Pencil_Test.ogv").
--Metemos los audios de los vídeos en OGG de 44100Hz en Data/Music. Se tienen que llamar como los vídeos pero con extensión .ogg
+-Cogemos el fichero "SonicCDu.rsdk" del Sonic Origins y lo copiamos en ~/soniccd con el nombre "Data.rsdk" 
 
-Ahora vamos a retocar los scripts para que se reproduzcan los vídeos en OGV con audio OGG externo
-(es la única manera de tener los vídeos con su música). Para ello, nos vamos a Data/Scripts y tirando de "grep":
--Donde veas una carga de un vídeo, como por ejemplo:
+-Clonamos este repo: git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-2011-Script-Decompilation.git
+ Y metemos el directorio "Scripts" en ~/soniccd
+
+-En Settings.ini ponemos "gameType=1"
+
+-Metemos los mods que queramos en ~/soniccd/mods, y los cargamos desde el "dev menu" (tienes que tener "devMenu=y"
+en Settings.ini y darle a ESC para acceder a él)
+Tienes el mod de audio y vídeo del Sonic CD para RSDKv5U en el disco duro de backup, ya preparado.
+
+		***SOLO NECESARIO PARA VOLVER A CREAR EL MOD DE AUDIO Y VIDEO: SECCIÓN PARA RECREAR EL MOD DE AUDIO Y VÍDEO DEL SONIC CD EN RSDKv5U***
+
+Vamos a crear un MOD que nos permite que suenen los efectos de sonido, las músicas y se vean los vídeos del juego.
+Esto es necesario porque el .rsdk del SonicCD versión Origins no incluye estas cosas dentro.
+
+-Creamos los directorios ~/soniccd/mods/CD_FMVS_RSDKv5/Data
+
+-Extraemos los datos del .rsdk del SonicCD versión 2011 usando:
+https://github.com/MainMemory/RSDKv5Extract/releases
+y copiamos los directorios "Music" y "SoundFX" a ~/soniccd/mods/CD_FMVS_RSDKv5/Data
+(Nos faltará un fichero llamado "DropDash.wav", que viene en los datos del SonicMania. No te hace falta porque el SoniCD
+no lo va a usar, pero si quieres pues lo puedes sacar del .rdsk del Sonic Mania).
+
+-Copiamos los vídeos en OGV escalados a 1024x512 en ~/soniccd/mods/CD_FMVS_RSDKv5/Data/Videos
+(se tienen que llamar, con sus mayúsculas y minúsculas: "Opening.ogv", "Bad_Ending.ogv", "Good_Ending.ogv", "Pencil_Test.ogv").
+-Metemos los audios de los vídeos en OGG de 44100Hz en ~/soniccd/mods/CD_FMVS_RSDKv5/Data/Music.
+Se tienen que llamar como los vídeos pero con extensión .ogg
+
+-Ahora vamos a retocar los scripts para que se reproduzcan los vídeos en OGV con audio OGG externo
+(es la única manera de tener los vídeos con su música).
+Para ello, copia estos ficheros de ~/soniccd/Scripts a ~/soniccd/mods/CD_FMVS_RSDKv5/Scripts
+(tienes que crear sus directorios, claro):
+Title/Select.txt
+R8/FadeScreen.txt
+Menu/LoadSaveMenu.txt
+Menu/MenuControl.txt
+Menu/ExtrasMenu.txt
+Y ahora los vamos modificando. La idea es sencilla: Donde veas una carga de un vídeo, como por ejemplo:
 LoadVideo("Opening")
 ...Lo sustituyes por un bloque así que carga su .ogg antes:
 SetMusicTrack("Opening.ogg", 0, 0)
 PlayMusic(0)
 LoadVideo("Opening")
 
-Los ficheros donde hay que cambiar eso son:
-Title/Select.txt
-R8/FadeScreen.txt
-Menu/LoadSaveMenu.txt
-Menu/MenuControl.txt
-Menu/ExtrasMenu.txt
+-Por último, creamos ~/soniccd/mods/CD_FMVS_RSDKv5/mod.ini con este contenido:
+Name=CD_FMVS_RSDKv5
+Description= Sonic CD FMVs that work with RSDKv5U
+Author=Vanfanel
+Version=1.1
+TargetVersion=3
+TxtScripts=1
+
+Y ya sólo es cargar el mod desde el dev menu (tienes que tener "devMenu=y" en Settings.ini y darle a ESC para acceder a él),
+reiniciar con el mod cargado y debería ir.
 
 INFO POR SI TIENES QUE VOLVER A PREPARAR LOS VÍDEOS Y LA MÚSICA DE LOS VÍDEOS:
 
