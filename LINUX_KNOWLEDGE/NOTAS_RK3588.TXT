@@ -138,3 +138,24 @@ COMPILAR FLYCAST CONTRA GLES3.1
 cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
 -DUSE_VULKAN=OFF -DUSE_OPENGL=ON -DUSE_GLES=1 \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+FLASHEAR IMÁGEN ANDROID A MICROSD
+=================================
+
+La guía original es esta: https://wiki.radxa.com/Rock5/install/rockchip-flash-tools
+
+Hay que usar rkdeveloptool, pero concretamente esta versión:
+git clone --depth 1 https://github.com/radxa/rkdeveloptool.git
+
+Instalamos dependencias previas:
+sudo apt-get install libudev-dev libusb-1.0-0-dev dh-autoreconf
+
+Configuramos, compilamos e instalamos:
+cd rkdeveloptool
+autoreconf -i
+./configure
+make -j4
+cp rkdeveloptool /usr/local/bin/
+
+Grabamos la imágen de Android así:
+
