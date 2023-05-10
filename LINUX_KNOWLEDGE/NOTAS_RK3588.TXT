@@ -139,6 +139,15 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
 -DUSE_VULKAN=OFF -DUSE_OPENGL=ON -DUSE_GLES=1 \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
+SOPORTE PARA LA TARJETA WIFI OFICIAL DE LA ORANGE PI 5 EN DIETPI
+================================================================
+
+Editamos /boot/dietpiEnv.txt y añadimos la línea:
+
+overlays=opi5-wifi-ap6275p
+
+Reiniciamos, y dietpi-config ya debería ver la tarjeta sin problemas.
+
 FLASHEAR IMÁGEN ANDROID A MICROSD
 =================================
 
@@ -159,3 +168,13 @@ cp rkdeveloptool /usr/local/bin/
 
 Grabamos la imágen de Android así:
 
+...
+
+
+OpenFyde
+========
+
+Nos bajamos la última release de:
+https://github.com/openFyde/overlay-orangepi5-openfyde/releases
+
+Ejecutamos el .run y nos creará un .img que podemos grabar a la Micro SD usando dd.
