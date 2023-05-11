@@ -917,6 +917,7 @@ Ahora ya, lo de las llaves va así:
 arm_boost=1
 
 [all]
+over_voltage=4
 arm_freq=1800
 gpu_freq=600
 force_turbo=1
