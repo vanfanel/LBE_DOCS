@@ -7385,29 +7385,6 @@ Más información: https://trac.ffmpeg.org/wiki/Encode/MPEG-4
 Más ejemplos en: https://github.com/DirtBagXon/hypseus_singe_data
 Más juegos: https://archive.org/details/@dirtbagxon
 
-FFMPEG con aceleración MMAL en aarch64
-======================================
-
-Este hilo tiene información muy interesante:
-
-https://github.com/raspberrypi/userland/pull/586
-
-Se supone que hay que compilar ffmpeg con soporte para mmal.
-
-MMAL es parte del userland de la Pi, que está en:
-
-https://github.com/raspberrypi/userland
-
-EMPEZAMOS:
-
-Clonamos el repo:
-
-git clone --depth 1 https://git.ffmpeg.org/ffmpeg.git
-
-Puedes probal a reproducir un vídeo con:
-
-ffplay -vcodec h264_mmal -i test.mkv
-
 SINGE, el sistema de LASERDISC libre y abierto
 ==============================================
 
