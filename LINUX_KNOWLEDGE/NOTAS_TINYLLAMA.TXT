@@ -5,6 +5,16 @@ https://github.com/eivindbohler/tinyllama2#installing-dos
 PARA INSTALAR UN MS-DOS PROPIO, simplemente coge la instalación que tienes guardada en el disco de backup, cópiala tal cual
 a la SD, arranca en el Virtual Floppy ese del core, y escribe "SYS C:", y ya tiene que arrancar.
 
+*****INSTALAR FREEDOS**************************************************************************
+
+Nos bajamos la versión LITE (o la que queramos, pero la LITE trae todo lo necesario), y grabamos el IMG a una MicroSD con dd.
+Arrancamos la SD en el TinyLlama. Nos salimos del programa de instalación y particionamos el disco usando el FDISK que trae el FREEDOS.
+Reiniciamos.
+Esta vez, continuamos el programa de instalación, que ya nos dejará formatear el disco D: e instalar ahí (no te preocupes, porque luego
+aparece como C: al reiniciar).
+
+Ahora ya es cuestión de ajustar el FDCONFIG.SYS y el FDAUTO.BAT a nuestro gusto.
+
 *****INSTALAR DOS7 DESDE VIRTUALBOX A UN DISCO FÍSICO REAL*************************************
 
 Se puede descargar desde aquí:
@@ -47,63 +57,42 @@ y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
 
 ********MENÚS CONFIG.SYS Y AUTOEXEC.BAT*****************
 
-****CONFIG.SYS****
+Tengo el JEMMEX instalado en C:\SBEMU, por eso lo ves ahí. Es porque el SBEMU trae el JEMMEX incluido, no porque use el SBEMU en sí.
+
+**************CONFIG.SYS*********************
 
 [MENU]
-MENUITEM=XMS, Arrancar con XMS 
-MENUITEM=EMS, Arrancar EMS y XMS 
-MENUITEM=CLEAN, Arrancar sin gestor de memoria ni drivers
-
-[XMS]
-DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF /Q
-DOS=HIGH,UMB
-BUFFERS=10
-FILES=40
-LASTDRIVE=H
-STACKS=9,256
+MENUITEM=EMS, XMS and EMS + drivers
+MENUITEM=NOEMS, XMS ONLY + drivers
 
 [EMS]
-DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF /Q
-DEVICE=C:\DOS\EMM386.EXE
-DOS=HIGH,UMB
-BUFFERS=10
-FILES=40
-LASTDRIVE=H
-STACKS=9,256
 
-[CLEAN]
+DOS=HIGH
+DEVICE=C:\SBEMU\JEMMEX.EXE X=TEST X2MAX=8192 MAX=8192
+SHELL=C:\COMMAND.COM /E:2048 /P
 
-****AUTOEXEC.BAT****
+[NOEMS]
 
-@ECHO OFF 
-PATH=C:\;C:\DOS
+DOS=HIGH
+DEVICE=C:\SBEMU\JEMMEX.EXE X=TEST X2MAX=8192 MAX=8192 NOEMS
+SHELL=C:\COMMAND.COM /E:2048 /P
+
+****************AUTOEXEC.BAT******************
+
+@ECHO OFF
+PATH=C:\SBEMU;C:\;C:\DOS
 SET DIRCMD=/A/OGN/P
 SET BLASTER=A220 I7 D1 P330 T4
 PROMPT $P$G
 
-GOTO %CONFIG%
+MODE CON RATE=32 DELAY=1
 
-:XMS
+rem C:\DOS\EDOSKEY
+rem C:\DOS\CTMOUSE
 C:\UNISOUND\UNISOUND.COM /V90 /VW90 /VF90 /VL90 /VP90 /VC0 /VM0
-C:\DOS\KEYB SP
-C:\DOS\EDOSKEY
-C:\DOS\CTMOUSE
 ECHO.
-GOTO END 
 
-:EMS
-LH C:\UNISOUND\UNISOUND.COM /V90 /VW90 /VF90 /VL90 /VP90 /VC0 /VM0
-LH C:\DOS\KEYB SP
-LH C:\DOS\EDOSKEY
-LH C:\DOS\CTMOUSE
-ECHO.
-GOTO END
-
-:CLEAN
-
-:END
-
---INSTALACIÓN DEL SONIDO
+------------------------INSTALACIÓN DEL SONIDO----------------------------------
 
 Las instrucciones están aquí:
 https://github.com/eivindbohler/tinyllama2#programming-the-cs4237b-firmware
@@ -111,6 +100,7 @@ https://github.com/eivindbohler/tinyllama2#programming-the-cs4237b-firmware
 NO HACE FALTA que flasheemos nada, el Crystal ya viene flasheado.
 Clonamos el repo de Eivind: git clone --depth 1 https://github.com/eivindbohler/tinyllama2.git
 Y copiamos el directorio UNISOUND a la raiz de la SD, metemos estas cosas en el AUTOEXEC.BAT
+Tiene que ser exactamente así: El IRQ tiene que ser el 7, y lo lee de la variable BLASTER.
 
 SET BLASTER=A220 I7 D1 P330 T4
 LH C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0
@@ -135,9 +125,8 @@ A:\>anybios w c:\romfile.rom
 Tienes los mejores juegos en castellano en abandonsocios.
 
 ***TURRICAN 2***
-Necsita XMS, para lo cual en CONFIG.SYS debemos tener:
-DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF /Q
-Y a parte, en todas las páginas viene una versión que no funciona pero que se puede arreglar fácilmente. 
+
+En todas las páginas viene una versión que no funciona pero que se puede arreglar fácilmente. 
 Lo único que les falta a todas es establecer la variable de entorno "T2DIR" apuntando al diretorio "CFG" que viene con el juego.
 Para que funcione, simplemente créate un PLAY.BAT con este contenido (suponiendo que tenemos el juego en C:\JUEGOS\T2):
 
@@ -160,12 +149,18 @@ Desactivar la CACHE LEVEL 1
 Desactivar la CACHE LEVEL 1
 
 ***ALADDIN***
-Necesita EMS, y como no funciona con más de 32MB de RAM, tenemos que usar esto:
+Necesita EMS, y no funciona con más de 32MB de RAM.
+Para ello le pasamos al JEMMS el parámetro X2MAX=8192
+
+O podríamos usar esto:
 https://github.com/kklis/memeater
 Hazte un BAT así para dejar sólo 16MB de RAM:
 memeater 112000
 aladdin.exe
 
 ***PINBALL DREAMS y PINBALL FANTASIES***
-Tienes que arrancar con EMS + XMS, y dejar sólo 16MB de RAM, con MEMEATER 122000 por ejemplo dejas 8MB de RAM y van ambos.
+Tienes que arrancar con EMS + XMS, y dejar sólo 16MB de RAM, 
+Para ello le pasamos al JEMMS el parámetro X2MAX=8192
+
+O bien con MEMEATER 122000 por ejemplo dejas 8MB de RAM y van ambos.
 En el Pinball Dreams, Setsound.exe va, pero si le pones sonido el juego no se ve.

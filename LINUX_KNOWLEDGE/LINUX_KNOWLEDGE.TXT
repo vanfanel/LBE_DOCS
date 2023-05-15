@@ -8884,6 +8884,9 @@ systemctl daemon-reload
 ACELERACIÓN DE VÍDEO EN LA PI4 CON VLC
 ======================================
 
+El repo de VLC está en:
+https://code.videolan.org/videolan/vlc
+
 --Clonamos su repo:
 git clone --depth 1 https://code.videolan.org/videolan/vlc.git
 --Antes de configurar:
