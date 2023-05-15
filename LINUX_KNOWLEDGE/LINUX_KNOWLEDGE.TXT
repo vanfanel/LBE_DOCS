@@ -8897,7 +8897,7 @@ PARTE 1: ffmpeg
 -Configuramos con:
 
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --disable-network --disable-debug \
---disable-muxers --disable-indevs \
+--disable-muxers --disable-encoders --disable-indevs \
 --disable-outdev=fbdev,oss \
 --disable-doc --disable-bsfs --disable-ffprobe \
 --disable-sdl2 --disable-stripping \
@@ -8907,6 +8907,7 @@ CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./co
 --enable-libudev --enable-vout-drm
 
 (La configuración la sacamos de https://github.com/jc-kynesim/rpi-ffmpeg/blob/test/4.3.5/rpi_main/pi-util/conf_arm64_native.sh)
+(Podemos añadir --enable-muxer=null para hacer pruebas)
 
 LLEGADOS A ESTE PUNTO, podemos probar que la reproducción por hardware funciona:
 ffmpeg -no_cvt_hw -c:v h264_v4l2m2m -i video.mkv -f vout_drm /dev/null
