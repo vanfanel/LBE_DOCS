@@ -55,41 +55,35 @@ boot disk1.img disk2.img -l a
 (Para ir cambiando de un diskette a otro durante la instalación, es con CTRL+FN+F4, 
 y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
 
-********MENÚS CONFIG.SYS Y AUTOEXEC.BAT*****************
+********FDCONFIG.SYS Y FDAUTO.BAT para FREEDOS*****************
 
-Tengo el JEMMEX instalado en C:\SBEMU, por eso lo ves ahí. Es porque el SBEMU trae el JEMMEX incluido, no porque use el SBEMU en sí.
 
 **************CONFIG.SYS*********************
 
-[MENU]
-MENUITEM=EMS, XMS and EMS + drivers
-MENUITEM=NOEMS, XMS ONLY + drivers
+BUFFERS=20     
+FILES=40
+DOS=HIGH,UMB
+DEVICE=C:\FREEDOS\BIN\JEMMEX.EXE X2MAX=32767
 
-[EMS]
-
-DOS=HIGH
-DEVICE=C:\SBEMU\JEMMEX.EXE X=TEST X2MAX=8192 MAX=8192
-SHELL=C:\COMMAND.COM /E:2048 /P
-
-[NOEMS]
-
-DOS=HIGH
-DEVICE=C:\SBEMU\JEMMEX.EXE X=TEST X2MAX=8192 MAX=8192 NOEMS
-SHELL=C:\COMMAND.COM /E:2048 /P
+SHELLHIGH=C:\FreeDOS\BIN\COMMAND.COM C:\FreeDOS\BIN /E:1024 /P=C:\FDAUTO.BAT
 
 ****************AUTOEXEC.BAT******************
 
 @ECHO OFF
-PATH=C:\SBEMU;C:\;C:\DOS
+PATH=C:\;C:\FREEDOS\BIN
 SET DIRCMD=/A/OGN/P
 SET BLASTER=A220 I7 D1 P330 T4
 PROMPT $P$G
 
 MODE CON RATE=32 DELAY=1
+rem MODE CON CP PREPARE=((437) C:\DOS\EGA.CPI)
+rem MODE CON CP SELECT=437
 
-rem C:\DOS\EDOSKEY
-rem C:\DOS\CTMOUSE
 C:\UNISOUND\UNISOUND.COM /V90 /VW90 /VF90 /VL90 /VP90 /VC0 /VM0
+CTMOUSE
+
+mkeyb SP
+
 ECHO.
 
 ------------------------INSTALACIÓN DEL SONIDO----------------------------------
