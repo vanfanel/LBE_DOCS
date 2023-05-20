@@ -8899,7 +8899,7 @@ PARTE 1: ffmpeg
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --disable-network --disable-debug \
 --disable-muxers --disable-encoders --disable-indevs \
 --disable-outdev=fbdev,oss \
---disable-doc --disable-bsfs --disable-ffprobe \
+--disable-doc --disable-bsfs \
 --disable-sdl2 --disable-stripping \
 --disable-thumb --disable-mmal \
 --enable-sand --enable-v4l2-request \
@@ -8953,24 +8953,9 @@ meson -Dbuildtype=release ..
 
 (Si quisiéramos soporte Vulkan, que NO es necesario, añadiríamos "-Dvulkan=enabled" entre "meson" y los dos puntos).
 
--Creamos el fichero de configuración ~/.config/mpv/mpv.conf, con el contenido:
-
-#hwdec=auto
-#vo=gpu
-#video-sync=display-desync
-video-sync=display-resample
-fs=yes
+-Creamos ~/.config/mpv/mpv.conf con el contenido:
 sub-visibility=no
-
-(El parámetro "hwdec" lo dejamos comentado para que no active la decodificación por hardware usando v4l2m2m porque ahora mismo
-es más lenta que la decodificación por software).
-(El resto de opciones de sincronización para "video-sync=..." las podemos ver en https://mpv.io/manual/stable/,
-se supone que "video-sync=display-resample" es mejor pero se basa en dibujar varias veces el mismo frame durante varios vblank así que
-es más intenso con la GPU y causa parones de audio y vídeo por falta de potencia en la Pi4).
-
-PARA ESTAR SEGURO de que la aceleración de descompresión de vídeo y de volcado de frames a pantalla funciona (son dos problemas distintos)
-la reproducción de un vídeo en H264 a 1080p debería consumir sobre un 10-15% de CPU, NO MÁS QUE ESO.
-Si consume un 50-60% es que falla la parte de la aceleración del dibujado en pantalla, y si se usa el 100-200% de CPU es que fallan ambas cosas, la descompresión y el dibujado.
+fs=yes
 
 LAS INSTRUCCIONES CON TODAS LAS OPCIONES DE MPV ESTÁN EN: https://mpv.io/manual/stable/
 
@@ -8981,3 +8966,34 @@ mpv --vo=help
 También podríamos ver las APIs de la GPU disponibles con:
 mpv --gpu-api=help
 ...con el resto de cosas de las que quieras ver qué hay disponible, igual.
+
+PARTE 3: VÍDEO SUAVE CON MPV
+
+Tenemos dos opciones.
+1) Editar ~/.config/mpv/mpv.conf y añadir:
+video-sync=display-resample
+(Esta opción es la más sencilla, pero en la Raspberry Pi 4 no va bien con "hwdec=auto" porque display-resample
+lo que hace es dibujar el mismo frame en cada refresco físico de pantalla, con lo que en vez de 24 veces se acaba dibujando 60 veces
+y la Pi4 no llega a tanto por el ancho de banda de la memoria).
+
+2) Poner el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir, usando para ello este script:
+
+####SCRIPT PARA PONER EL REFRESCO DE PANTALLA DEL VÍDEO A REPRODUCIR, LANZAR MPV Y RESTAURAR REFRESCO ORIGINAL AL ACABAR####
+original_rate=`wlr-randr | grep current | cut -d ' ' -f 7`
+original_res=`wlr-randr | grep current | cut -d ' ' -f 5`
+new_rate=$(ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=r_frame_rate "$1")
+
+numerador=`echo $new_rate | cut -d/ -f 1`
+denominador=`echo $new_rate | cut -d/ -f 2`
+
+new_rate=`printf "%f\n" $((10**6 * numerador/denominador))e-6`
+
+#echo ${original_rate}
+echo "Setting rate: ${new_rate}"
+wlr-randr --output HDMI-A-1 --custom-mode $original_res@$new_rate
+echo "Rate set: `wlr-randr | grep current | cut -d ' ' -f 7`"
+
+mpv "$1"
+
+wlr-randr --output HDMI-A-1 --custom-mode $original_res@$original_rate
+####FIN SCRIPT####
