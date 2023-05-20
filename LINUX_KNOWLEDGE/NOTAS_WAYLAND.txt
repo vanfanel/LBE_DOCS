@@ -1186,7 +1186,7 @@ mkdir b4
 cd b4
 
 CFLAGS="-march=native -mtune=native" \
-meson ..
+meson -Dbuildtype=release ..
 
 ninja -j4
 ninja install
