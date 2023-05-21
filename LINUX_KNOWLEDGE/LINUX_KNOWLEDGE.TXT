@@ -8968,15 +8968,17 @@ mpv --gpu-api=help
 
 PARTE 3: VÍDEO SUAVE CON MPV
 
---OBLIGATORIO-- Editamos /boot/config.txt y añadimos en los overlays:
+--Añadimos en /boot/config.txt:
 dtoverlay=rpivid-v4l2
 
---OBLIGATORIO-- Añadimos a ~/.config/mpv/mpv.conf:
+--Añadimos en ~/.config/mpv/mpv.conf:
 video-sync=display-resample
+(Se puede usar "display-desync" en lugar de "display-resample" para intentar evitar el frame drop que se produce cada 15 min o así...)
+(NO uses esto sin poner el refresco de pantalla al framerate del vídeo que vas a reproducir, cosa que hacemos en el último paso
+usando un script para lanzar mpv, ya que si no, como display-resample pinta cada frame varias veces, no hay ancho de banda de la
+RAM y hay muchos frame drops).  
 
---COSAS OPCIONALES (Sin estas cosas va bien, el uso de CPU con contenido 1080P es del ~50%, y sospecho que una de estas dos cosas
-causa tirones ocasionales)--
----Añadimos a ~/.config/mpv/mpv.conf:
+---Añadimos en ~/.config/mpv/mpv.conf:
 hwdec=v4l2m2m-copy
 (El hwdec por defecto, v4l2m2m, parece usar menos CPU que v4l2m2m-copy, pero es incompatible con "video-sync=display-resample"
 porque al usan ambas cosas empiezan a aparecer frames dropped).
