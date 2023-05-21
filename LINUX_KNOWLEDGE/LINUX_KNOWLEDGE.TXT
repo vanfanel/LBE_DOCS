@@ -8954,7 +8954,6 @@ meson -Dbuildtype=release ..
 (Si quisiéramos soporte Vulkan, que NO es necesario, añadiríamos "-Dvulkan=enabled" entre "meson" y los dos puntos).
 
 -Creamos ~/.config/mpv/mpv.conf con el contenido:
-sub-visibility=no
 fs=yes
 
 LAS INSTRUCCIONES CON TODAS LAS OPCIONES DE MPV ESTÁN EN: https://mpv.io/manual/stable/
@@ -8969,14 +8968,20 @@ mpv --gpu-api=help
 
 PARTE 3: VÍDEO SUAVE CON MPV
 
---Editamos ~/.config/mpv/mpv.conf y añadimos:
-hwdec=v4l2m2m-copy
-video-sync=display-resample
-(el hwdec por defecto, v4l2m2m, parece usar menos CPU que v4l2m2m-copy, pero es incompatible con "video-sync=display-resample"
-porque al usan ambas cosas empiezan a aparecer frames dropped).
+--OBLIGATORIO-- Editamos /boot/config.txt y añadimos en los overlays:
+dtoverlay=rpivid-v4l2
 
---Ponemos el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir, usando para ello este script
-para lanzar el mpv:
+--OBLIGATORIO-- Añadimos a ~/.config/mpv/mpv.conf:
+video-sync=display-resample
+
+--COSAS OPCIONALES (Sin estas cosas va bien, el uso de CPU con contenido 1080P es del ~50%, y sospecho que una de estas dos cosas
+causa tirones ocasionales)--
+---Añadimos a ~/.config/mpv/mpv.conf:
+hwdec=v4l2m2m-copy
+(El hwdec por defecto, v4l2m2m, parece usar menos CPU que v4l2m2m-copy, pero es incompatible con "video-sync=display-resample"
+porque al usan ambas cosas empiezan a aparecer frames dropped).
+--Ponemos el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir,
+usando para ello este script para lanzar el mpv:
 
 ####SCRIPT PARA PONER EL REFRESCO DE PANTALLA DEL VÍDEO A REPRODUCIR, LANZAR MPV Y RESTAURAR REFRESCO ORIGINAL AL ACABAR####
 original_rate=`wlr-randr | grep current | cut -d ' ' -f 7`
