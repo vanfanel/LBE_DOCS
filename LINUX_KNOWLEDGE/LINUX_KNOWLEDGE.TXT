@@ -626,6 +626,7 @@ Juegos de DOS para bajar: te enganchas el TORRENT y bajas sólo los que vayas qu
 NOTAS JUEGOS DOSBOX
 
 --Lemmings se puede iniciar el modo high-performace sin tener que elegir nada con: lemvga /v /o
+--Wizardry necesita, para sonar bien, usar el Nuked OPL3. Menos mal que con pocos ciclos el juego va bien...
 --PsychoPinball tiene que estar en C:\PSYCHO, o sea que tienes que meterlo en ~/dos/psycho/psycho
 y luego montar ~/dos/psycho como C: en DOSBOX. Si no, se queda colgado en el DOS4GW.
 
@@ -8977,7 +8978,8 @@ PARTE 3: VÍDEO SUAVE CON MPV
 
 --Añadimos en ~/.config/mpv/mpv.conf:
 video-sync=display-resample
-(Se puede usar "display-desync" en lugar de "display-resample" para intentar evitar el frame drop que se produce cada 15 min o así...)
+(Se podría usar "display-desync" en lugar de "display-resample" para intentar evitar el frame drop que se produce cada 15 min o así,
+pero eso produce que el audio vaya desincronizado del vídeo...)
 (NO uses esto sin poner el refresco de pantalla al framerate del vídeo que vas a reproducir, cosa que hacemos en el último paso
 usando un script para lanzar mpv, ya que si no, como display-resample pinta cada frame varias veces, no hay ancho de banda de la
 RAM y hay muchos frame drops).  
