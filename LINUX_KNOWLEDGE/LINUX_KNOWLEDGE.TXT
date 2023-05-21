@@ -8968,9 +8968,6 @@ mpv --gpu-api=help
 
 PARTE 3: VÍDEO SUAVE CON MPV
 
---Añadimos en /boot/config.txt:
-dtoverlay=rpivid-v4l2
-
 --Añadimos en ~/.config/mpv/mpv.conf:
 video-sync=display-resample
 (Se puede usar "display-desync" en lugar de "display-resample" para intentar evitar el frame drop que se produce cada 15 min o así...)
@@ -8982,6 +8979,7 @@ RAM y hay muchos frame drops).
 hwdec=v4l2m2m-copy
 (El hwdec por defecto, v4l2m2m, parece usar menos CPU que v4l2m2m-copy, pero es incompatible con "video-sync=display-resample"
 porque al usan ambas cosas empiezan a aparecer frames dropped).
+
 --Ponemos el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir,
 usando para ello este script para lanzar el mpv:
 
