@@ -8969,14 +8969,14 @@ mpv --gpu-api=help
 
 PARTE 3: VÍDEO SUAVE CON MPV
 
-Tenemos dos opciones.
-1) Editar ~/.config/mpv/mpv.conf y añadir:
+--Editamos ~/.config/mpv/mpv.conf y añadimos:
+hwdec=v4l2m2m-copy
 video-sync=display-resample
-(Esta opción es la más sencilla, pero en la Raspberry Pi 4 no va bien con "hwdec=auto" porque display-resample
-lo que hace es dibujar el mismo frame en cada refresco físico de pantalla, con lo que en vez de 24 veces se acaba dibujando 60 veces
-y la Pi4 no llega a tanto por el ancho de banda de la memoria).
+(el hwdec por defecto, v4l2m2m, parece usar menos CPU que v4l2m2m-copy, pero es incompatible con "video-sync=display-resample"
+porque al usan ambas cosas empiezan a aparecer frames dropped).
 
-2) Poner el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir, usando para ello este script:
+--Ponemos el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir, usando para ello este script
+para lanzar el mpv:
 
 ####SCRIPT PARA PONER EL REFRESCO DE PANTALLA DEL VÍDEO A REPRODUCIR, LANZAR MPV Y RESTAURAR REFRESCO ORIGINAL AL ACABAR####
 original_rate=`wlr-randr | grep current | cut -d ' ' -f 7`
