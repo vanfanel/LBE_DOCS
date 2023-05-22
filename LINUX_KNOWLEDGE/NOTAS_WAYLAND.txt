@@ -741,6 +741,13 @@ Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mednafen_pce_fast_libretro.so -- "${FPATH%.pcd}.chd"
             exit 0;;
 
+		## VB files (Ponemos un modo de vídeo de 50Hz)
+        vb) 
+            wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@50
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mednafen_vb_libretro.so -- "${FPATH%}"
+            wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
+            exit 0;;
+
 ...Y para crear los .fbneo, nos vamos al directorio de arcade o de neogeo o de lo que sea y creamos un link simbólico de cada .zip, así:
 for file in *.zip; do ln -s -- "$file" "${file%.zip}.fbneo"; done
 
