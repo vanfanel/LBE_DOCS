@@ -8900,7 +8900,7 @@ PARTE 1: ffmpeg
 
 -Clonamos este repo que es un fork con soporte específico para la Pi. Usamos un branch con las cosas específicas de la Pi,
  porque el principal no se actualiza, se actualizan los branches:
- git clone --depth 1 https://github.com/jc-kynesim/rpi-ffmpeg.git -b dev/6.0/rpi_import_1
+ git clone --depth 1 https://github.com/jc-kynesim/rpi-ffmpeg.git -b release/5.1/main
 
 -Configuramos con:
 
