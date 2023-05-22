@@ -742,7 +742,7 @@ Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
             exit 0;;
 
 		## VB files (Ponemos un modo de vídeo de 50Hz)
-        vb) 
+        vb)
             wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@50
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mednafen_vb_libretro.so -- "${FPATH%}"
             wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
