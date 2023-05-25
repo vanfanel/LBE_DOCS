@@ -5159,7 +5159,7 @@ Ahora, dejamos el /etc/vim/vimrc.local de esta guisa:
 syntax on
 
 " Para que NO nos transforme 8 espacios en un TAB
-" set expandtab
+set expandtab
 
 set number
 set ls=2
