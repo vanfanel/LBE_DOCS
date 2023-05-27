@@ -372,6 +372,15 @@ tmpfs /var/spool tmpfs defaults,noatime,mode=1777 0 0
 SOLO puedes mandar a RAM esos subdirectorios de /var que te he dicho.
 Y NUNCA borres el contenido de /var, solo el contenido de esos subdirectorios que te he dicho.
 
+SACAR EL VÍDEO Y EL AUDIO SÓLO POR HDMI-0 O SÓLO POR HDMI-1
+===========================================================
+
+dtoverlay=vc4-kms-v3d,nohdmi0
+
+o bien
+
+dtoverlay=vc4-kms-v3d,nohdmi1
+
 INSTALAR MESA
 ==============
 
