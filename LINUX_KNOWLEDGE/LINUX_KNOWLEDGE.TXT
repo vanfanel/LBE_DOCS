@@ -2343,6 +2343,19 @@ find ./ -name gl*
 
 Lo de iname es para ignorar las mayúsculas o minúsculas.
 
+******************Compilar QEMU en la Pi4**************************************************************************************************
+
+-Clonamos su repo:
+
+git clone --depth 1 https://gitlab.com/qemu-project/qemu.git
+
+-Configuramos con:
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+configure --disable-gtk --disable-tpm --disable-pa --disable-oss --disable-vnc --disable-png --disable-sdl --disable-sdl-image \
+--disable-selinux --disable-opengl --disable-qom-cast-debug --disable-dbus-display --target-list=m68k-softmmu
+
 ******************Actualizar a de DEBIAN WHEEZY a DEBIAN JESSIE****************************************************************************
 
 Podemos usar el generador de sources.list que está en http://debgen.simplylinux.ch, o directamente dejar el /etc/apt/sources.list así:
