@@ -1503,6 +1503,19 @@ Ejecutamos el juego que queramos con:
 java -jar freej2me-sdl.jar DoomRPG.jar 240 320 -i linear
 Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altura mayor, de 320.
 
+CORE PUAE LIBRETRO, EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
+==============================================================================
+
+Se compila como los demás cores.
+
+No hace falta andar con HDFs, carga los .info de las carpetas que contengan juegos de WHDInstall,
+o los .slave de los juegos WHDLinstall, o directamente los .lha que contengan juegos de WHDInstall.
+
+Para pasarle parámetros CUSTOM de WHDLoad:
+Mantén presionados los botones RED y BLUE del mando de CD32 (que normalmente son el A y el B de un mando de SNES)
+y te aparecerá el README del WHDInstall del juego y a continuación podrás meter los CUSTOM que quieras y se quedarán guardados.
+(Para el segundo botón del Toki hay que pasarle "CUSTOM2=1", y para el Shadow of the Beast "CUSTOM4=2").
+
 FS-UAE (FSUAE), EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
 ==========================================================================
 
