@@ -1517,7 +1517,8 @@ https://gamesnostalgia.com/whdownload
 Para pasarle parámetros CUSTOM de WHDLoad:
 Mantén presionados los botones RED y BLUE del mando de CD32 (que normalmente son el A y el B de un mando de SNES)
 y te aparecerá el README del WHDInstall del juego y a continuación podrás meter los CUSTOM que quieras y se quedarán guardados.
-(Para el segundo botón del Toki hay que pasarle "CUSTOM2=1", y para el Shadow of the Beast "CUSTOM4=2").
+(Para el segundo botón del Toki hay que pasarle "CUSTOM2=1", y para el Shadow of the Beast "CUSTOM4=2" para el segundo botón
+y "CUSTOM1=1" para saltar la intro).
 
 FS-UAE (FSUAE), EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
 ==========================================================================
