@@ -746,10 +746,17 @@ Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mednafen_pce_fast_libretro.so -- "${FPATH%.pcd}.chd"
             exit 0;;
 
-		## VB files (Ponemos un modo de vídeo de 50Hz)
+		## Virtual Boy VB files (Ponemos un modo de vídeo de 50Hz)
         vb)
             wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@50
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/mednafen_vb_libretro.so -- "${FPATH%}"
+            wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
+            exit 0;;
+
+		## Amiga HDF files (Ponemos un modo de vídeo de 50Hz)
+        hdf)
+            wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@50
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/puae_libretro.so -- "${FPATH%}"
             wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
             exit 0;;
 
