@@ -473,6 +473,19 @@ PETAN EN LINUX, Y NO SE PUEDE USAR NATIVAMENTE PORQUE USA CIERDA MIERDA QUE LO H
 
 CON ESO QUE TE ACABO DE EXPLICAR, DEBERÍAS SER CAPAZ DE AVERIGUAR QUÉ APK PUEDES USAR COMO DONANTE PARA UN data.win/game.droid DETERMINADO.
 
+******RetroArch en Android***************************************************************************************************
+
+Instálalo desde FDroid. Viene sin cores. Para instalar los cores, lo primero ve a "Online Updater -> Update Core Info Files",
+y después ya puedes ir a "Online Updater->Core Downloader" y descargar los cores que quieras de la lista.
+
+Para que no estén cambiamos los botones de OK y CANCELAR del mando, ve a "Settings->Input->Menu Controls->Swap OK and Cancel Buttons"
+y desactívalo.
+
+Para poder usar el teclado, ve a "Settings->Input->Select Physical Keyboard" y selecciónalo.
+
+Para meterle juegos a saco, los puedes copiar en:
+/media/manuel/<nombre_partición_grande>/media/0/RetroArch/ROMS (tienes que crear "ROMS")
+y las BIOS van en /media/manuel/<nombre_partición_grande>/media/0/RetroArch/system
 
 ******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
 
