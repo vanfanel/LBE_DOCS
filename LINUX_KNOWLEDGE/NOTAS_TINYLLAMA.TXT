@@ -18,7 +18,7 @@ Ahora ya es cuestión de ajustar el FDCONFIG.SYS y el FDAUTO.BAT a nuestro gusto
 *****INSTALAR DOS7 DESDE VIRTUALBOX A UN DISCO FÍSICO REAL*************************************
 
 Se puede descargar desde aquí:
-https://winworldpc.com/product/ms-dos/7x
+https://archive.org/details/ms-dos-7.1-cd
 Nos bajamos la ISO de CD, es más útil que andar con las imágenes de diskette y VirtualBOX arranca la ISO inmediatamente sin problemas.
 
 --Re-creamos la tabla de particiones de la MicroSD desde GPARTED: No debe tener ninguna partición, nos las hará el instalador de DOS7.
