@@ -183,3 +183,28 @@ Nos bajamos la última release de:
 https://github.com/openFyde/overlay-orangepi5-openfyde/releases
 
 Ejecutamos el .run y nos creará un .img que podemos grabar a la Micro SD usando dd.
+
+
+INSTALAR DRIVERS PROPIETARIOS DE ARM HOLDINGS
+=============================================
+
+Vamos entrando en estos repos y bajando los .deb (usando wget), y dejándolos todos en un directorio:
+https://github.com/numbqq/mali-debs
+https://github.com/numbqq/mpp-rockchip-debs
+https://github.com/numbqq/rga-rockchip-debs
+https://github.com/numbqq/gstreamer-rockchip-debs
+
+Instalamos el paquete libdrm de la distro:
+apt-get install libdrm-dev --no-install-recommends
+
+Y empezamos a instalar los .deb, en este órden no hay problemas:
+dpkg -i linux-gpu-mali-wayland_1.1-g6p0-20230406_arm64.deb
+dpkg -i rockchip-rga_2.2.0-6_arm64.deb
+dpkg -i rockchip-rga-dev_2.2.0-6_arm64.deb
+dpkg -i rockchip-rga-sample_2.2.0-6_arm64.deb
+dpkg -i rockchip-mpp_1.5.0-8_arm64.deb
+dpkg -i rockchip-mpp-dev_1.5.0-8_arm64.deb
+dpkg -i rockchip-mpp-sample_1.5.0-8_arm64.deb 
+
+ANTES DE INSTALARLOS, instala libdrm (instrucciones más arriba).
+

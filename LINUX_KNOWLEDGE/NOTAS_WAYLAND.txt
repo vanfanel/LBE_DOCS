@@ -17,7 +17,7 @@ PARTE 1: WAYLAND EN SÍ (libwayland)
 -----------------------------------
 
 Instalamos dependencias previas:
-apt-get install libffi-dev --no-install-recommends
+apt-get install libffi-dev libexpat1-dev --no-install-recommends
 
 Bajamos la última release estable de:
 https://gitlab.freedesktop.org/wayland/wayland/-/releases
@@ -1021,7 +1021,7 @@ INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
 ==========================================
 
 Instalamos dependencias previas:
-apt-get install libxml2-dev --no-install-recommends
+apt-get install libxml2-dev libglib2.0-dev --no-install-recommends
 
 -Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
 --Instalamos dependencias previas de CAIRO: apt-get install libfontconfig-dev
