@@ -171,6 +171,11 @@ Grabamos la imágen de Android así:
 ...
 
 
+Ejecutar cosas sólo en los cores BIG
+====================================
+
+taskset -c 4-7 <programa>
+
 OpenFyde
 ========
 
