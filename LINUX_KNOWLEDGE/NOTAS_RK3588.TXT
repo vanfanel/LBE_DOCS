@@ -205,6 +205,7 @@ cp boot.img /media/manuel/<NOMBRE_PARTICIÓN_GRANDE>/media/0/Download/
 
 Desde dentro de Android, instalamos Magisk. Para ello nos bajamos el último APK estable de aquí:
 https://github.com/topjohnwu/Magisk/releases/tag/v26.1
+(USA EL APK DE ESE REPO, NO USES LA VERSIÓN DE FDROID QUE LUEGO NO FUNCIONA!!!)
 Ahora, parcheamos el boot.img desde Androd. Para ello, elegimos en METHOD lo de "Select and Patch a File", seleccionamos boot.img y la parcheamos.
 Al acabar, dale al icono del diskette que hay arriba a la derecha.  
 
@@ -219,6 +220,7 @@ sudo umount /dev/sdb*
 Y flasheamos la partición BOOT parcheada a la tarjeta:
 sudo dd if=magisk_patched.img of=/dev/sdb7
 
+Reiniciamos y ya deberíamos tener el gran Magik instalado!!!.
 
 NOTA: Para hacer lo mismo en un teléfono, en el caso de que tengamos el ZIP con el SO que vamos a instalar desde TWRP,
 lo descomprimimos, sacamos el boot.img, y lo parcheamos igual.
