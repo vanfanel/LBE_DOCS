@@ -8366,7 +8366,7 @@ WantedBy=multi-user.target
 OJO!!! doom.sh debe empezar con #!/bin/bash en la primera línea, o no funcionará! Esto igual para todos los scripts que lances desde units.
 
 OPENFODDER, versión opensource de Cannon Fodder 1 y 2
-==============================================
+=====================================================
 
 Clonamos el repo:
 
