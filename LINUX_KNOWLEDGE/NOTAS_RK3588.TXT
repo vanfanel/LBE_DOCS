@@ -253,8 +253,10 @@ Además establecemos el password para el usuario y para root usando passwd como 
 Ahora lanzamos el servidor SSH:
 sshd
 (Cuando acabemos, podemos parar el proceso con "pkill sshd", aquí no hay gestor de servicios!) 
+(Si tenemos problemas, se puede lanzar con "sshd -d" para ver detenidamente qué va haciendo y dónde falla)
 
-Y para loguearnos desde el PC (OJO: hay que pasarle el puerto! En teoría se podría especificar en puerto en el fichero de config, pero bah.):
+Y para loguearnos desde el PC (OJO: hay que pasarle el puerto!
+En teoría se podría especificar en puerto en el fichero de config, pero NO FUNCIONA, DÉJALO COMO ESTÁ EN EL 8022 POR DEFECTO.):
 ssh -p 8022 u0_a85@192.168.43.19
 
 INSTALAR ViperFX en ANDROID
