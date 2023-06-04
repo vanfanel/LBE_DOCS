@@ -49,6 +49,17 @@ https://gitee.com/jikexianfeng/documentation/blob/master/hardware/raspberrypi/bc
 en la seccion system->wireless lan.
 Las redes conocidas quedan guardadas en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
 
+******Conectar a una WIFI desde Debian usando nmcli********************************************************************
+
+-Activamos la WIFI
+nmcli r wifi on
+
+-Escaneamos las redes WIFI
+nmcli dev wifi
+
+-Nos conectamos a una red WIFI
+nmcli dev wifi connect "wifi_name" password "wifi_password"
+
 ******Conectar a una red WIFI desde la Raspberry PI usando el WIFI interno*********************************************
 
 PUEDE QUE NECESITES BAJAR MANUALMENTE EL FIRMWARE DEL WIFI SI AL HACER MODPROBE AL brcmfmac NO TE CREA EL INTERFACE WLAN0.
