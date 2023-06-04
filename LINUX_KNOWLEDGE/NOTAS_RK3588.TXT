@@ -203,8 +203,9 @@ sudo dd if=/dev/sdb7 of=boot.img
 Copiamos la partición de BOOT a la carpeta de descargas de la SD:
 cp boot.img /media/manuel/<NOMBRE_PARTICIÓN_GRANDE>/media/0/Download/
 
-Con la APP de Magisk, que se instala desde FDroid, parcheamos la partición BOOT.
-Para ello, elegimos en METHOD lo de "Select and Patch a File", seleccionamos boot.img y la parcheamos.
+Desde dentro de Android, instalamos Magisk. Para ello nos bajamos el último APK estable de aquí:
+https://github.com/topjohnwu/Magisk/releases/tag/v26.1
+Ahora, parcheamos el boot.img desde Androd. Para ello, elegimos en METHOD lo de "Select and Patch a File", seleccionamos boot.img y la parcheamos.
 Al acabar, dale al icono del diskette que hay arriba a la derecha.  
 
 Ahora, volvemos a meter la tarjeta en el PC.
