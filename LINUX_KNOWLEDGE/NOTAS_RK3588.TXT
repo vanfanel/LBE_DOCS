@@ -259,6 +259,11 @@ Y para loguearnos desde el PC (OJO: hay que pasarle el puerto!
 En teoría se podría especificar en puerto en el fichero de config, pero NO FUNCIONA, DÉJALO COMO ESTÁ EN EL 8022 POR DEFECTO.):
 ssh -p 8022 u0_a85@192.168.43.19
 
+ARREGLAR LA LATENCIA DE AUDIO EN ANDROID 12
+===========================================
+
+Editamos /vendor/etc/audio_policy_configuration.xml
+
 INSTALAR ViperFX en ANDROID
 ===========================
 
