@@ -184,6 +184,48 @@ https://github.com/openFyde/overlay-orangepi5-openfyde/releases
 
 Ejecutamos el .run y nos creará un .img que podemos grabar a la Micro SD usando dd.
 
+INSTALAR MAGISK EN ANDROID
+==========================
+
+La info se ha sacado de este buen tutorial de Magisk:
+https://www.xda-developers.com/how-to-install-magisk/
+
+Cogemos la tarjeta que tiene Android instalado, la metemos en el PC, desmontamos las particiones:
+sudo umount /dev/sdb*
+
+Miramos cuál es la partición de BOOT, para ello hacemos:
+sudo gparted /dev/sdb
+p
+
+Extraemos la partición de boot. En este caso, es la 7:
+sudo dd if=/dev/sdb7 of=boot.img
+
+Copiamos la partición de BOOT a la carpeta de descargas de la SD:
+cp boot.img /media/manuel/<NOMBRE_PARTICIÓN_GRANDE>/media/0/Download/
+
+Con la APP de Magisk, que se instala desde FDroid, parcheamos la partición BOOT.
+Para ello, elegimos en METHOD lo de "Select and Patch a File", seleccionamos boot.img y la parcheamos.
+Al acabar, dale al icono del diskette que hay arriba a la derecha.  
+
+Ahora, volvemos a meter la tarjeta en el PC.
+
+Nos traemos al PC la partición BOOT parcheada:
+cp /media/manuel/<NOMBRE_PARTICIÓN_GRANDE>/media/0/Download/magisk_patched.img ./
+
+Desmontamos de nuevo las particiones:
+sudo umount /dev/sdb*
+
+Y flasheamos la partición BOOT parcheada a la tarjeta:
+sudo dd if=magisk_patched.img of=/dev/sdb7
+
+
+NOTA: Para hacer lo mismo en un teléfono, en el caso de que tengamos el ZIP con el SO que vamos a instalar desde TWRP,
+lo descomprimimos, sacamos el boot.img, y lo parcheamos igual.
+Y si es un sistema que YA TENEMOS INSTALADO EN EL TELÉFONO, podemos conectarnos al teléfono por ADB y hacer esto:
+adb root
+adb shell dd if=/dev/block/by-name/boot of=/sdcard/boot.img
+<PARCHEAMOS EL BOOT.IMG>
+adb shell dd if=[patched_boot.img] of=/dev/block/by-name/boot 
 
 INSTALAR DRIVERS PROPIETARIOS DE ARM HOLDINGS
 =============================================
