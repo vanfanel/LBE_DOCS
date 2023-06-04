@@ -220,15 +220,8 @@ sudo umount /dev/sdb*
 Y flasheamos la partición BOOT parcheada a la tarjeta:
 sudo dd if=magisk_patched.img of=/dev/sdb7
 
-Reiniciamos y ya deberíamos tener el gran Magik instalado!!!.
+Reiniciamos y ya deberíamos tener el gran Magisk instalado!!!.
 
-PARA INSTALAR UN SERVIDOR SSH, nos bajamos el zip más reciente de aquí:
-https://gitlab.com/d4rcm4rc/MagiskSSH_releases
-Lo metemos en <NOMBRE_PARTICIÓN_GRANDE>/media/0/Download/, y lo instalamos desde Magisk.
-
-PARA INSTALAR ViperFX, nos bajamos el zip más reciente de aquí:
-https://github.com/programminghoch10/ViPER4AndroidRepackaged/releases
-Lo metemos en <NOMBRE_PARTICIÓN_GRANDE>/media/0/Download/, y lo instalamos desde Magisk.
 
 NOTA: Para hacer lo mismo en un teléfono, en el caso de que tengamos el ZIP con el SO que vamos a instalar desde TWRP,
 lo descomprimimos, sacamos el boot.img, y lo parcheamos igual.
@@ -237,6 +230,39 @@ adb root
 adb shell dd if=/dev/block/by-name/boot of=/sdcard/boot.img
 <PARCHEAMOS EL BOOT.IMG>
 adb shell dd if=[patched_boot.img] of=/dev/block/by-name/boot 
+
+
+ACCESO A ANDROID POR SSH
+========================
+La información se ha sacado de aquí:
+https://wiki.termux.com/wiki/Remote_Access
+
+TRAS INSTALAR MAGISK, LO SIGUIENTE ES INSTALAR UN EMULADOR DE TERMINAL+GESTOR DE PAQUETES
+Para ello, instala el paquete TERMUX desde FDroid.
+Si quieres VIM, desde TERMUX haz: pkg install vim
+Para accecer a todos los ficheros, pásate a root con "su" y saltará Magicsk pidiéndote que le des permiso de ROOT a TERMUX, y ya puedes.
+Para acceder por SSH:
+pkg upgrade
+pkg install openssh
+
+Para que podamos autentificarnos con el password del usuario, editamos $PREFIX/etc/ssh/sshd_config y añadimos:
+PasswordAuthentication yes
+
+Además establecemos el password para el usuario y para root usando passwd como en GNU/Linux.
+
+Ahora lanzamos el servidor SSH:
+sshd
+(Cuando acabemos, podemos parar el proceso con "pkill sshd", aquí no hay gestor de servicios!) 
+
+Y para loguearnos desde el PC (OJO: hay que pasarle el puerto! En teoría se podría especificar en puerto en el fichero de config, pero bah.):
+ssh -p 8022 u0_a85@192.168.43.19
+
+INSTALAR ViperFX en ANDROID
+===========================
+
+PARA INSTALAR ViperFX, nos bajamos el zip más reciente de aquí:
+https://github.com/programminghoch10/ViPER4AndroidRepackaged/releases
+Lo metemos en <NOMBRE_PARTICIÓN_GRANDE>/media/0/Download/, y lo instalamos desde Magisk.
 
 INSTALAR DRIVERS PROPIETARIOS DE ARM HOLDINGS
 =============================================

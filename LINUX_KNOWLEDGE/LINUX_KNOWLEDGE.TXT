@@ -5617,8 +5617,6 @@ Así, si queremos que el propietario tenga permisos de ejecución y lectura, ser
 Si queremos que el grupo tenga permisos de lectura solamente, será un 100, que es un 4.
 Y si queremos que el resto sólo tengan permisos de ejecución, será un 001, que es un 1.
 O sea que haremos chmod 541 nombrearchivo y nos quedaremos tan anchos.
- 
-
 
 ***************Escanear las Ips conectadas en red local (la misma del equipo en que estoy)***********************
 
