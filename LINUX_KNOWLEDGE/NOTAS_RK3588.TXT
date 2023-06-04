@@ -222,6 +222,10 @@ sudo dd if=magisk_patched.img of=/dev/sdb7
 
 Reiniciamos y ya deberíamos tener el gran Magik instalado!!!.
 
+PARA INSTALAR UN SERVIDOR SSH, nos bajamos el zip más reciente de aquí:
+https://gitlab.com/d4rcm4rc/MagiskSSH_releases
+Lo metemos en <NOMBRE_PARTICIÓN_GRANDE>/media/0/Download/, y lo instalamos desde Magisk.
+
 PARA INSTALAR ViperFX, nos bajamos el zip más reciente de aquí:
 https://github.com/programminghoch10/ViPER4AndroidRepackaged/releases
 Lo metemos en <NOMBRE_PARTICIÓN_GRANDE>/media/0/Download/, y lo instalamos desde Magisk.
