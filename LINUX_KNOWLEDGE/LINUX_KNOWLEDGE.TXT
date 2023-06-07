@@ -5151,11 +5151,8 @@ que es simplemente un SDL_ShowCursor() que sobra totalmente.
 
 -Editamos src/opentyr.c y comentamos la llamada a intro_logos()
 
-Editamos Makefile y añadimos al lado de -O2 los flags:
--march=native -mtune=native
-
 Compilamos con:
-CFLAGS="-O2 -march=native -mtune=native" CPPFLAGS="-O2 -march=native -mtune=native" make WITH_NETWORK=false -j4
+CFLAGS="-march=native -mtune=native" CPPFLAGS="-march=native -mtune=native" make WITH_NETWORK=false -j4
 
 Metemos el ejecutable "opentyrian" en ~/tyrian, y los datos del juego en ~/tyrian/data,
 y ejecutamos con:
@@ -8372,11 +8369,12 @@ Clonamos el repo:
 
 git clone --depth 1 https://github.com/OpenFodder/openfodder.git
 
-Entramos en los sources y editamos el Makefile, cambiando el clang++ por g++, y quitamos el -ferror-limit=100 que eso es específico del CLANG ese.
-Aniadimos las FLAGS que queramos, ya de paso.
+--Entramos en los sources y editamos el Makefile, cambiando el clang++ por g++, y quitamos el -ferror-limit=100 que eso es específico del CLANG ese.
+--Compilamos con:
+CXXFLAGS="-march=native -mtune=native -O2" make -j4
 
 Ahora, nos creamos ~/cf, y ahí:
--Copiamos el ejecutable que tendrás recién compilado en Run/OpenFodder
+-Copiamos el ejecutable (lo tienes en Run/OpenFodder)
 -Copiamos el archivo openfodder.ini.example a ~/cf/openfodder.ini, y lo dejamos a nuestro gusto
 -Descomprimimos directamente los contenidos de un ZIP de datos del engine que está aquí:
 https://github.com/OpenFodder/data/releases
