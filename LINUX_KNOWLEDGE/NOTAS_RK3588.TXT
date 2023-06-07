@@ -271,26 +271,49 @@ PARA INSTALAR ViperFX, nos bajamos el zip más reciente de aquí:
 https://github.com/programminghoch10/ViPER4AndroidRepackaged/releases
 Lo metemos en <NOMBRE_PARTICIÓN_GRANDE>/media/0/Download/, y lo instalamos desde Magisk.
 
-INSTALAR DRIVERS PROPIETARIOS DE ARM HOLDINGS
-=============================================
+COMPILAR RETROARCH PARA ANDROID DESDE LINUX
+===========================================
 
-Vamos entrando en estos repos y bajando los .deb (usando wget), y dejándolos todos en un directorio:
-https://github.com/numbqq/mali-debs
-https://github.com/numbqq/mpp-rockchip-debs
-https://github.com/numbqq/rga-rockchip-debs
-https://github.com/numbqq/gstreamer-rockchip-debs
+La información viene de esta guía
+https://docs.libretro.com/development/retroarch/compilation/android/
+PERO hay cosas de esa guía que NO debemos hacer así que sigue estas instrucciones:
 
-Instalamos el paquete libdrm de la distro:
-apt-get install libdrm-dev --no-install-recommends
+--Instalamos estos paquetes: sudo apt-get install android-sdk google-android-ndk-installer sdkmanager
+(El SDK es para compilar aplicaciones en JAVA, el NDK para aplicaciones nativas, es decir, en C/C++)
+Quedan instalados en /usr/lib/android-sdk y /usr/lib/android-ndk, respectivamente.
 
-Y empezamos a instalar los .deb, en este órden no hay problemas:
-dpkg -i linux-gpu-mali-wayland_1.1-g6p0-20230406_arm64.deb
-dpkg -i rockchip-rga_2.2.0-6_arm64.deb
-dpkg -i rockchip-rga-dev_2.2.0-6_arm64.deb
-dpkg -i rockchip-rga-sample_2.2.0-6_arm64.deb
-dpkg -i rockchip-mpp_1.5.0-8_arm64.deb
-dpkg -i rockchip-mpp-dev_1.5.0-8_arm64.deb
-dpkg -i rockchip-mpp-sample_1.5.0-8_arm64.deb 
+--Hacemos:
+sudo chown manuel /usr/lib/android-sdk -R
+export ANDROID_SDK_ROOT=/usr/lib/android-sdk
 
-ANTES DE INSTALARLOS, instala libdrm (instrucciones más arriba).
+--Clonamos el código:
+git clone --depth 1 https://github.com/libretro/libretro-super.git
+cd libretro-super
+./libretro-fetch.sh retroarch
 
+cd retroarch
+git submodule update --init
+
+cd pkg/android/phoenix
+
+--Ahora creamos el archivo "keystore.properties" con el contenido:
+storePassword=tuputamadre
+keyPassword=tuputamadre
+keyAlias=tuputamadre
+storeFile=keystore.jks
+
+Y creamos el keystroke.jks así (Nos hará una serie de preguntas que podemos contestar como nos de la gana):
+keytool -genkey -alias tuputamadre -keyalg RSA -keypass tuputamadre -keystore keystore.jks
+
+Ahora ejecutamos ./gradlew
+Si nos da un error tipo: NDK from ndk.dir at /usr/lib/android-ndk had version [x.xx.xxxx] which disagrees with android.ndkVersion...
+editamos build.gradle, buscamos "ndkVersion" y le ponemos la misma versión que el error nos dice que tenemos instalada,
+y volvemos a ejecutar ./gradlew
+
+Ahora hacemos:
+./gradlew
+
+Y cuando acabe eso, hacemos:
+./gradlew assembleAarch64
+(Si peta, es por falta de memoria: lo pones a que vuelva a hacerlo y suele terminar).
+El resultado queda en build/outputs/apk/aarch64/release/
