@@ -317,3 +317,12 @@ Y cuando acabe eso, hacemos:
 ./gradlew assembleAarch64
 (Si peta, es por falta de memoria: lo pones a que vuelva a hacerlo y suele terminar).
 El resultado queda en build/outputs/apk/aarch64/release/
+
+AUDIO POR HDMI EN JELOS
+=======================
+
+Si no suena por HDMI (deberían arreglarlo pronto), en el menú de EmulationStation (NO en el de RetroArch) ve a SYSTEM SETTINGS
+y en AUDIO verás que hay dos dispositivos que se llaman igual: "ROCKCHIP-HDMI (1:0)".
+Pues selecciona el que no viene seleccionado. Te dirá que se va a reniciar. Que se reinicie.. y ya deberías tener audio.
+
+Para DreamCast, etc.. NO TE OLVIDES de entrar en "PER-SYSTEM ADVANCED CONFIGURATION" y especificar que sólo se usen los cores BIG. 
