@@ -1,3 +1,13 @@
+JELOS EN EL SHUTTLE
+===================
+
+-Para que vaya el audio, en el menú de EmulationStation (NO en el menú de RetroArch), ve a SYSTEM SETTINGS y en AUDIO DEVICE elige HDMI(0:3).
+
+-Para que vaya mejor la CPU, edita JELOS/syslinux.cfg y añade: "mitigations=off audit=0"
+
+OTRAS NOTAS
+===========
+
 -Añadimos los parámetros del kernel que queramos en /etc/default/grub, y ejecutamos update-grub para que los meta en /boot/grub/grub.cfg
 (NUNCA editamos a mani /boot/grub/grub.cfg porque es sobreescrito por update-grub con info de /etc/default/grub)
 
