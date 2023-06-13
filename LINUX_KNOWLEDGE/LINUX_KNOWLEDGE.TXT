@@ -4430,6 +4430,18 @@ git rebase --continue
 Ahora si queremos subimos los cambios con:
 git push -f origin master
 
+============PROBAR UN PULL REQUEST QUE AÚN NO SE HA MERGEADO===============
+
+Clonamos el repo que sea.
+
+Ahora hacemos:
+git fetch origin pull/<NUMERO_DE_PR>/head:<NOMBRE_NUEVO_BRANCH>
+git checkout <NOMBRE_NUEVO_BRANCH>
+
+Y ya estaríamos en el nuevo branch con los cambios del PR.
+NOTA: En lugar de <NOMBRE_NUEVO_BRANCH> podemos poner el nombre del branch principal (MAIN, MASTER, lo que sea)
+y de ese modo no se nos crea un nuevo branch y no hace falta que hagamos el checkout.
+
 ************RECUPERAR PARTIDAS EN EL GABRIEL KNIGHT DE SCUMMVM**********************************************************************************
 
 A los datos del juego les falta el archivo
