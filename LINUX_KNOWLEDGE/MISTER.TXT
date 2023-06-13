@@ -296,6 +296,14 @@ Ahora por fin ejecutamos el createMSXpack con:
 python3 createMSXpack.py
 ...y no nos debería decir que falte nada.
 
+Ahora copiamos el directorio MSX con todo lo que tiene dentro a la SD de la MiSTer. Lo metemos en /media/fat/games/MSX1.
+
+Ahora, en el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos.
+Y en "Load FW PACK" cargamos el .MSX del pack de firmware que queramos (tenemos dos: CART_FW y CART_FW_EN). Ahí es donde va
+el firmware del FM PACK y todo es.
+En "SLOT A:" ponemos "FM-PACK" o "SCC" o lo que queramos, y en "SLOT B:" cargamos el juego que queramos, eligiendo el mapper
+correcto para cada juego.
+
 ***********Montar un VHD de MSX para la MiSTer******************************************************************************************
 
 ---Averiguamos dónde empieza con parted. Necesitamos saberlo en BYTES para poder pasárselo a mount, NO en sectores como nos lo dice FDISK. Por eso usamos parted:
