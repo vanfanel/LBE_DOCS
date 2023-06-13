@@ -274,12 +274,27 @@ NOTAS CORE MSX
 
 Tienes TODO el software de MSX1/MSX2 en: https://download.file-hunter.com/
 
-Las BIOS que necesitas están en https://download.file-hunter.com/System%20ROMs/machines/philips/
-Y tienes que renombrarlas así y meterlas en /media/fat/games/MSX1/
+Nos bajamos el último core de:
+https://github.com/MiSTer-devel/MSX1_MiSTer/tree/MSX2test/releases
 
-vg8240_basic-bios2.rom	--> boot0.rom
-vg8240_msx2sub.rom 		--> boot1.rom
-vg8240_disk.rom 		--> boot2.rom
+Ahora descargamos descargamos el CreateMSXPack de:
+https://github.com/MiSTer-devel/MSX1_MiSTer/tree/MSX2test/releases
+Y lo descomprimimos.
+
+Ahora descargamos el romset completo de las BIOS de MSX1 y MSX2 de:
+https://download.file-hunter.com/System%20ROMs/
+(El archivo que se llama "Full Set System Roms")
+...Y metemos su contenido tal cual (es decir, lo directorios "extensions", "machines", "misc"...)
+en el directorio ROM del CreateMSXPack.
+Descargamos también el archivo "Konami's Game Master - Konami (1985) [Japanese version] [RC-735] [GoodMSX] [1271].zip "
+de:
+https://download.file-hunter.com/Games/MSX1/ROM/
+..Y tras descomprimirlo, lo copiamos como: ROM/extensions/gm2.rom
+Entramos en ROM/extensions/ y descomprimimos mfrsd.gz con: gunzip mfrsd.gz
+
+Ahora por fin ejecutamos el createMSXpack con:
+python3 createMSXpack.py
+...y no nos debería decir que falte nada.
 
 ***********Montar un VHD de MSX para la MiSTer******************************************************************************************
 
