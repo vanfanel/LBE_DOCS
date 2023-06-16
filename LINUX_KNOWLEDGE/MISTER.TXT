@@ -320,6 +320,17 @@ Number  Start   	End         	      Size                     Type        File sy
 
 sudo mount -t vfat -o loop,offset=65536 boot.vhd /mnt
 
+FORMA ALTERNATIVA USANDO KPARTX
+
+sudo kpartx -a -v fichero.vhd
+(salen por pantalla los devices):
+
+sudo mount /dev/mapper/loop0p2 /mnt/
+
+luego umount y luego kpartx -d fichero.vhd y eso borra los mapper devices
+
+te hace un device por cada particion
+
 *********ACTUALIZAR LA MISTER********************************************************
 
 Usa el script update_all de aquí:
