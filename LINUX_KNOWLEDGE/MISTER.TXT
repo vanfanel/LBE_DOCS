@@ -311,6 +311,9 @@ el firmware del FM PACK y todo es.
 En "SLOT A:" ponemos "FM-PACK" o "SCC" o lo que queramos, y en "SLOT B:" cargamos el juego que queramos, eligiendo el mapper
 correcto para cada juego.
 
+PARA SNATCHER, NECESITAMOS TENER 256 KB de RAM, así que editamos el XML de la máquina que queramos, buscamos "RAM MAPPER"
+y cambiamos el "block_count" de 4 a 16, y volvemos a ejecutar el python3 createMSXpack.py
+
 ***********Montar un VHD de MSX para la MiSTer******************************************************************************************
 
 ---Averiguamos dónde empieza con parted. Necesitamos saberlo en BYTES para poder pasárselo a mount, NO en sectores como nos lo dice FDISK. Por eso usamos parted:
