@@ -6490,7 +6490,7 @@ Bajamos la última estable de:
 https://github.com/diasurgical/devilutionX/releases
 
 Configuramos con:
-cmake -DVERSION_NUM=<NUMERO_DE_VERSION> -DCMAKE_BUILD_TYPE=Release -DDEBUG=OFF \
+cmake -DCMAKE_BUILD_TYPE=Release -DDEBUG=OFF \
 -DASAN=OFF -DDISABLE_ZERO_TIER=ON -DBUILD_TESTING=OFF \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 
