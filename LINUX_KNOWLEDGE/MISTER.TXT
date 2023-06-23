@@ -311,7 +311,12 @@ el firmware del FM PACK y todo es.
 En "SLOT A:" ponemos "FM-PACK" o "SCC" o lo que queramos, y en "SLOT B:" cargamos el juego que queramos, eligiendo el mapper
 correcto para cada juego.
 
-PARA SNATCHER, NECESITAMOS TENER 256 KB de RAM, así que editamos el XML de la máquina que queramos, buscamos "RAM MAPPER"
+PARA SNATCHER EN INGLÉS DESDE VHD, NECESITAMOS ARRANCAR CON EL "MegaFlashROM SCC+ SD" EN EL "SLOT A",
+Y MIENTRAS ARRANCA, PRESIONAMOS "S" PARA ACTIVAR EL MODO DE COMPATIBILIDAD CON EL SCC ESPECIAL "SCC-I" QUE USA EL SNATCHER Y SD-SNATCHER.
+Más trucos para juegos desde disco duro:
+https://www.msx.org/wiki/MegaFlashROM_SCC%2B_SD_compatibility_settings 
+
+PARA SNATCHER EN INGLÉS DESDE FLOPPY, NECESITAMOS TENER 256 KB de RAM, así que editamos el XML de la máquina que queramos, buscamos "RAM MAPPER"
 y cambiamos el "block_count" de 4 a 16, y volvemos a ejecutar el python3 createMSXpack.py
 
 ***********Montar un VHD de MSX para la MiSTer******************************************************************************************
