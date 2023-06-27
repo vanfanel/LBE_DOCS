@@ -428,7 +428,7 @@ Configuramos libdrm con esto:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-meson -Dudev=true -Dvc4=enabled -Dintel=disabled -Dvmwgfx=disabled -Dradeon=disabled -Damdgpu=disabled -Dnouveau=disabled \
+meson setup -Dudev=true -Dvc4=enabled -Dintel=disabled -Dvmwgfx=disabled -Dradeon=disabled -Damdgpu=disabled -Dnouveau=disabled \
 -Dfreedreno=disabled -Detnaviv=disabled \
 -Dinstall-test-programs=true ..
 
@@ -457,7 +457,7 @@ Bajamos la última estable de aquí:
 https://gitlab.freedesktop.org/glvnd/libglvnd/-/tags
 Y configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
-meson -Dglx=disabled -Dx11=disabled ..
+meson setup -Dbuildtype=release -Dglx=disabled -Dx11=disabled ..
 
 NO TE OLVIDES DE AÑADIR AL USUARIO AL GRUPO RENDER:
 sudo adduser pi render
@@ -477,8 +477,8 @@ CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO ME
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers=broadcom -Dgallium-drivers=v3d,vc4,kmsro \
--Dglvnd=true -Dbuildtype=release ..
+meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers=broadcom -Dgallium-drivers=v3d,vc4,kmsro \
+-Dglvnd=true ..
 
 (Si no quieres soporte para Wayland, usa -Dplatforms='')
 

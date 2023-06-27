@@ -28,7 +28,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Ddtd_validation=false -Ddocumentation=false ..
+meson setup -Dbuildtype=release -Ddtd_validation=false -Ddocumentation=false ..
 
 ninja -j4
 sudo ninja install
@@ -44,7 +44,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dtests=false ..
+meson setup -Dbuildtype=release -Dtests=false ..
 
 ninja -j4
 sudo ninja install
@@ -53,29 +53,8 @@ PARTE 3: INSTALAR WLROOTS (NO NECESARIO PARA WESTON!!)
 ------------------------------------------------------
 -Previamente necesitamos KMS/DRM funcionando. Así que deberías ser capaz de ejecutar los tests de SDL2 sobre KMSDRM.
 
--Instalamos dependencias previas: sudo apt-get install libpixman-1-dev libxkbcommon-dev hwdata --no-install-recommends
--Instalamos manualmente la dependencia LIBSEAT, que no está como paquete en DEBIAN 11. Para ello tenemos que instalarla desde backports.
---Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
-		echo "deb http://deb.debian.org/debian bullseye-backports main" | sudo tee /etc/apt/sources.list.d/bullseye-backports.list
-		apt-get update
---Instalamos libseat-dev especificando que la instalamos desde backports:
-		apt-get -t bullseye-backports install libseat-dev
-
--Instalamos otra dependencia previa: libinput desde su última versión estable, ya que Debian no tiene una versión
- suficientemente actual ni siquiera en backports.
----Instalamos dependencias previas de libinput: apt-get install libmtdev-dev libevdev-dev
----Nos bajamos los últimos sources estables de libinput de: https://gitlab.freedesktop.org/libinput/libinput/-/releases
----Configuramos libinput con:
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false 
-
---Instalamos más dependencias previas:
-apt-get install glslang-dev glslang-tools
---SÓLO SI VAMOS A USAR EL RENDERER VULKAN: Actualizamos nuestra versión de libvulkan y libvulkan-dev,
-ya que WLROOTS necesita una reciente, para lo cual actualizamos a la version de backports:
-		apt-get -t bullseye-backports install libvulkan1 --no-install-recommends
-		apt-get -t bullseye-backports install libvulkan-dev --no-install-recommends (<---Este probablemente no se te actualize, don't worry.)
+-Instalamos dependencias previas: sudo apt-get install libseat-dev libpixman-1-dev libxkbcommon-dev hwdata \
+libinput-dev glslang-dev glslang-tools --no-install-recommends
 
 -Instalar WLROOTS en sí. Para ello:
 
@@ -88,7 +67,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dexamples=false -Dxwayland=disabled \
+meson setup -Dbuildtype=release -Dexamples=false -Dxwayland=disabled \
 -Dbackends=drm,libinput -Drenderers=gles2 -Dxcb-errors=disabled ..
 
 ninja -j4
@@ -105,14 +84,7 @@ PARTE 4: INSTALAR WESTON (EL COMPOSITOR DE REFERENCIA DE WAYLAND)
 =================================================================
 
 -Instalamos dependencias previas, libinput-dev:
-sudo apt-get install libinput-dev --no-install-recommends
-
--Instalamos dependencias previas: libseat-dev
---Instalamos el repositorio de backports, que son versiones del siguiente DEBIAN backporteados para el actual:
-		echo "deb http://deb.debian.org/debian bullseye-backports main" | sudo tee /etc/apt/sources.list.d/buster-backports.list
-		apt-get update
---Instalamos libseat-dev especificando que la instalamos desde backports:
-		apt-get -t bullseye-backports install libseat-dev
+sudo apt-get install libinput-dev libseat-dev --no-install-recommends
 
 -Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
 --Instalamos dependencias previas de CAIRO: apt-get install libfontconfig-dev
@@ -513,7 +485,7 @@ FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
 ==========================================
 
 Instalamos dependencias previas:
-apt-get install libfontconfig-dev libncurses-dev --no-install-recommends
+apt-get install libfontconfig-dev libncurses-dev libtllist-dev libfcft-dev --no-install-recommends
 
 Bajamos la última versión estable de aquí:
 https://codeberg.org/dnkl/foot/releases
@@ -525,7 +497,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Ddocs=disabled -Dgrapheme-clustering=disabled -Dtests=false -Dime=false ..
+meson setup -Dbuildtype=release -Ddocs=disabled -Dgrapheme-clustering=disabled -Dtests=false -Dime=false ..
 
 ninja -j4
 ninja install
@@ -828,7 +800,7 @@ INSTALAR SWAY, COMPOSITOR TILING
 ================================
 
 Instalamos dependencias previas:
-apt-get install libjson-c-dev --no-install-recommends
+apt-get install libjson-c-dev libinput-dev --no-install-recommends
 
 Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
 -Instalamos dependencias previas: apt-get install libglib2.0-dev libfontconfig-dev
@@ -838,15 +810,6 @@ Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de m
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
-
--Instalamos otra dependencia previa: libinput desde su última versión estable, ya que Debian no tiene una versión suficientemente actual
-ni siquiera en backports.
--Instalamos dependencias previas de libinput: apt-get install libmtdev-dev libevdev-dev
--Nos bajamos los últimos sources estables de libinput de: https://gitlab.freedesktop.org/libinput/libinput/-/releases
--Configuramos libinput con:
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson .. -Dbuildtype=release -Dlibwacom=false -Ddebug-gui=false -Dtests=false -Ddocumentation=false 
 
 Ahora vamos a por SWAY en sí:
 -Bajamos la última estable o RC de: https://github.com/swaywm/sway/releases
@@ -930,34 +893,154 @@ bindsym $mod+Shift+Tab focus right
 
 -PARA MAS OPCIONES: https://manpages.ubuntu.com/manpages/focal/man5/sway.5.html
 
-LANZAR SWAY COMO SERVICIO DE SYSTEMD
-====================================
+INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
+==========================================
 
-Creamos /etc/systemd/system/sway.service con el contenido:
+Instalamos dependencias previas:
+apt-get install libxml2-dev libglib2.0-dev --no-install-recommends
+
+-Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
+--Instalamos dependencias previas de CAIRO: apt-get install libfontconfig-dev
+--Bajamos los últimos sources estables de: https://gitlab.freedesktop.org/cairo/cairo/-/releases
+--Configuramos con:
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release -Dzlib=disabled -Dtests=disabled -Ddwrite=disabled ..
+
+Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
+-Instalamos dependencias previas: apt-get install libfribidi-dev libharfbuzz-dev libglib2.0-dev libfontconfig-dev --no-install-recommends
+-Desinstalamos el pango del sistema: apt-get purge libpango* && apt-get autoremove
+-Bajamos los últimos sources estables de: https://github.com/GNOME/pango/tags
+-Configuramos con:
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
+
+Instalar labwc en sí:
+
+Bajamos la última release estable de aquí:
+https://github.com/labwc/labwc/releases
+
+Configuramos con:
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release -Dxwayland=disabled ..
+
+PARA PODER LANZAR LABWC O CUALQUIER COMPOSITOR, ANTES TENEMOS QUE AÑADIR A ~/.bashrc:
+rundir="/var/run/user/0"
+if [[ ! -e $rundir ]]; then
+    mkdir -p $rundir
+fi
+export XDG_RUNTIME_DIR=$rundir
+
+Podemos lanzar un programa a la vez que el compositor con:
+labwc -s foot
+Pero lo suyo es meterlo en ~/.config/labwc/autostart así:
+/usr/local/bin/foot >/dev/null 2>&1 &
+
+////BLOQUE CONFIGURACIÓN DE LABWC////
+(info sacada de esta guía: https://labwc.github.io/getting-started.html)
+(para ver todas las opciones posibles: https://github.com/labwc/labwc/blob/master/docs/rc.xml.all)
+
+--Para teclado en español creamos ~/.config/labwc/environment con el contenido:
+XKB_DEFAULT_LAYOUT=es
+
+--Para que se lanze el foot automáticamente, creamos ~/.config/labwc/autostart con el contenido:
+/usr/local/bin/foot >/dev/null 2>&1 &
+
+AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
+
+<?xml version="1.0" ?>
+<labwc_config>
+
+	<core>
+		<reuseOutputMode>yes</reuseOutputMode>
+	</core>
+
+	<keyboard>
+		<keybind key="C-A-t"><action name="Execute" command="foot" /></keybind>
+		<keybind key="C-A-KP_Delete"><action name="Execute" command="reboot" /></keybind>
+		<keybind key="C-A-BackSpace"><action name="Exit" /></keybind>
+		<keybind key="A-Tab"><action name="NextWindow" /></keybind>
+		<keybind key="A-F4"><action name="Close" /></keybind>
+	</keyboard>
+
+	<theme>
+    	<name>BL-Lithium</name>
+    	<cornerRadius>0</cornerRadius>
+    	<font> 
+                <name>sans</name>
+                <size>14</size>
+        </font>
+	</theme>
+
+</labwc_config>
+
+--Para poder ver los eventos de teclado, podemos verlo desde un ordenador con X11 (son los mismos eventos),
+pero si nos empeñamos en verlo desde wayland, podemos usar wev:
+git clone --depth 1 https://git.sr.ht/~sircmpwn/wev
+CFLAGS="-march=native -mtune=native" make -j4
+make install
+
+--Para ver más acciones de labwc (como lo de Execute, Exit, etc...) que podrías asignar a combinaciones de teclado:
+https://labwc.github.io/labwc-actions.5.html
+
+--Para ver ejemplos de atajos de teclado posibles:
+https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
+
+--Para instalar temas:
+----Metemos los temas que queramos en ~/.local/share/themes. Cada tema debe incluir un directorio llamado "openbox-3".
+    Por ejemplo, el tema "BL-Lithium" tendrá que estar en "~/.local/share/themes/BL-Lithium" y dentro tendrá un directorio "openbox-3"
+    Vamos a instalar un pack de temas muy buenos:
+    git clone --depth 1 https://github.com/BunsenLabs/bunsen-themes.git
+    cd bunsen-themes/themes
+    cp -R * ~/.local/share/themes 
+----Ahora, en rc.xml, ponemos el nombre del tema que queramos usar en la etiqueta <name>nombre_tema</name> de la categoría <theme>
+    Por ejemplo: <name>BL-Lithium</name>
+----OPCIONAL: Si te gusta un tema y quieres modificar cosas, edita su fichero "themerc", todos tienen uno.
+	Por ejemplo, algunos temas no ponen bordes a las ventanas. Puedes cambiar eso poniendo border.width a 4 o así.
+
+--Para tener fondo de pantalla:
+Nos bajamos la última estable de aquí: https://github.com/swaywm/swaybg/releases
+Configuramos, compilamos e instalamos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+meson -Dbuildtype=release -Dgdk-pixbuf=disabled -Dman-pages=disabled ..
+
+Y en ~/.config/labwc/autostart:
+
+swaybg -i grid.png >/dev/null 2>&1 &
+
+LANZAR LABWC COMO SERVICIO DE SYSTEMD
+=====================================
+
+Creamos /etc/systemd/system/labwc.service con el contenido:
 
 #############
 
 [Unit]
-Description=sway - User service
+Description=labwc - User service
 
 [Service]
-Type=oneshot
 User=root
 Group=root
 PAMName=login
 WorkingDirectory=%h
 ExecStart=
-ExecStart=-/usr/local/bin/sway
-ExecStartPost=/usr/bin/systemctl poweroff
-Restart=on-failure
+ExecStart=-/usr/local/bin/labwc
+Restart=always
 
 [Install]
 WantedBy=graphical.target
 
 #############
-*NOTA: Tal como está, está pensado para que al salir de SWAY el sistema se apague. Esto nos interesa porque puede que no
+*NOTA: Tal como está, está pensado para que al salir de LABWC el sistema se apague. Esto nos interesa porque puede que no
  arranquemos a una consola de comandos y por tanto no tendríamos manera de apagarlo a mano sin esto.
- Si quisiésemos que al salir de SWAY se volviese a levantar el servicio, pondríamos Restart=always y quitaríamos las líneas
+ Si quisiésemos que al salir de LABWC se volviese a levantar el servicio, pondríamos Restart=always y quitaríamos las líneas
  de Type=oneshot y ExecStartPost=...
 *NOTA: El WorkingDirectory puesto a "%h" significa usar nuestro $HOME, que sera /root si no eres otro usario. 
 *NOTA: Si tuvieramos que añadir mas servicios, irian con:
@@ -965,7 +1048,7 @@ WantedBy=graphical.target
 WantedBy=default.target
 ...en vez de graphical.target, porque lo que nos interesa es que esos servicios se lancen sea cual sea el target
 que tengamos puesto como default, NO nos interesa que se lancen solo cuando el target puesto como default sea graphical.
-El caso de sway es especial, porque solo se tiene que lanzar cuando el target sea graphical).
+El caso de labwc es especial, porque solo se tiene que lanzar cuando el target sea graphical).
 *NOTA
 -Podemos ver los targets activos con: systemctl list-units --type target
 -Podemos ver los targets que hay en el sistema, aunque no esten activos, mirando en /lib/systemd/system
@@ -976,14 +1059,14 @@ Podemos comprobarlo con:
 systemctl get-default
 (Si alguna vez quisieramos volver a un modo de texto, estableceriamos el target multi-user como target por defecto:
 systemctl set-default multi-user.target
-Y NO HARIA FALTA VOLVER A DESACTIVAR EL SERVICIO SWAY, YA QUE NOS QUEDAMOS EN EL TARGET MULTI-USER Y DE ESE MODO
-NO SE CARGA EL SERVICIO SWAY.)
+Y NO HARIA FALTA VOLVER A DESACTIVAR EL SERVICIO LABWC, YA QUE NOS QUEDAMOS EN EL TARGET MULTI-USER Y DE ESE MODO
+NO SE CARGA EL SERVICIO LABWC.)
 
-Ahora activamos el servicio SWAY con:
-systemctl enable sway.service
-(Recuerda que lo que hace esto es crear el symlink /etc/systemd/system/graphical.target.wants/sway.service apuntando
-a /etc/systemd/system/sway.service, que es logico porque el target graphical.target necesita sway.target tal como hemos
-especificado en la UNIT de sway). 
+Ahora activamos el servicio LABWC con:
+systemctl enable labwc.service
+(Recuerda que lo que hace esto es crear el symlink /etc/systemd/system/graphical.target.wants/labwc.service apuntando
+a /etc/systemd/system/labwc.service, que es logico porque el target graphical.target necesita labwc.target tal como hemos
+especificado en la UNIT de labwc). 
 
 Desactivamos el autologin en TTY con:
 systemctl disable getty@tty1
@@ -1016,122 +1099,6 @@ export WAYLAND_DISPLAY=wayland-1
 
 Para que no se vea el cursor parpadeante de la TTY, añadimos a cmdline.txt:
 vt.global_cursor_default=0
-
-INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
-==========================================
-
-Instalamos dependencias previas:
-apt-get install libxml2-dev libglib2.0-dev --no-install-recommends
-
--Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
---Instalamos dependencias previas de CAIRO: apt-get install libfontconfig-dev
---Bajamos los últimos sources estables de: https://gitlab.freedesktop.org/cairo/cairo/-/releases
---Configuramos con:
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dzlib=disabled -Dtests=disabled -Ddwrite=disabled ..
-
-Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
--Instalamos dependencias previas: apt-get install libglib2.0-dev libfontconfig-dev
--Desinstalamos el pango del sistema: apt-get purge libpango* && apt-get autoremove
--Bajamos los últimos sources estables de: https://github.com/GNOME/pango/tags
--Configuramos con:
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
-
-Instalar labwc en sí:
-
-Bajamos la última release estable de aquí:
-https://github.com/labwc/labwc/releases
-
-Configuramos con:
-
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dxwayland=disabled ..
-
-Podemos lanzar un programa a la vez que el compositor con:
-labwc -s foot
-Pero lo suyo es meterlo en ~/.config/labwc/autostart así:
-/usr/local/bin/foot >/dev/null 2>&1 &
-
-////BLOQUE CONFIGURACIÓN DE LABWC////
-(info sacada de esta guía: https://labwc.github.io/getting-started.html)
-(para ver todas las opciones posibles: https://github.com/labwc/labwc/blob/master/docs/rc.xml.all)
-
---Para teclado en español creamos ~/.config/labwc/environment con el contenido:
-XKB_DEFAULT_LAYOUT=es
-
---Para que se lanze el foot automáticamente, creamos ~/.config/labwc/autostart con el contenido:
-/usr/local/bin/foot
-
-AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
-
-<?xml version="1.0" ?>
-<labwc_config>
-
-	<core>
-		<reuseOutputMode>yes</reuseOutputMode>
-	</core>
-
-	<keyboard>
-		<keybind key="C-A-t"><action name="Execute" command="foot" /></keybind>
-		<keybind key="C-A-KP_Delete"><action name="Execute" command="reboot" /></keybind>
-		<keybind key="C-A-BackSpace"><action name="Exit" /></keybind>
-		<keybind key="A-Tab"><action name="NextWindow" /></keybind>
-		<keybind key="A-F4"><action name="Close" /></keybind>
-	</keyboard>
-
-	<theme>
-    	<name>Numix-Clone</name>
-    	<cornerRadius>0</cornerRadius>
-    	<font> 
-                <name>sans</name>
-                <size>14</size>
-        </font>
-	</theme>
-
-
-</labwc_config>
-
---Para poder ver los eventos de teclado, podemos verlo desde un ordenador con X11 (son los mismos eventos),
-pero si nos empeñamos en verlo desde wayland, podemos usar wev:
-git clone --depth 1 https://git.sr.ht/~sircmpwn/wev
-CFLAGS="-march=native -mtune=native" make -j4
-make install
-
---Para ver más acciones de labwc (como lo de Execute, Exit, etc...) que podrías asignar a combinaciones de teclado:
-https://labwc.github.io/labwc-actions.5.html
-
---Para ver ejemplos de atajos de teclado posibles:
-https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
-
---Para instalar temas:
-----Metemos los temas que queramos en ~/.local/share/themes. Cada tema debe incluir un directorio llamado "openbox-3".
-    Por ejemplo, el tema "BL-Lithium" tendrá que estar en "~/.local/share/themes/BL-Lithium" y dentro tendrá un directorio "openbox-3"
-    Vamos a instalar un pack de temas muy buenos:
-    git clone --depth 1 https://github.com/BunsenLabs/bunsen-themes.git
-    cd bunsen-themes/themes
-    cp -R * ~/.local/share/themes 
-----Ahora, en rc.xml, ponemos el nombre del tema que queramos usar en la etiqueta <name>nombre_tema</name> de la categoría <theme>
-    Por ejemplo: <name>Numix-Clone</name>
-----OPCIONAL: Si te gusta un tema y quieres modificar cosas, edita su fichero "themerc", todos tienen uno.
-	Por ejemplo, algunos temas no ponen bordes a las ventanas. Puedes cambiar eso poniendo border.width a 4 o así.
-
---Para tener fondo de pantalla:
-Nos bajamos la última estable de aquí: https://github.com/swaywm/swaybg/releases
-Configuramos, compilamos e instalamos con:
-
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dgdk-pixbuf=disabled -Dman-pages=disabled ..
-
-Y en ~/.config/labwc/autostart:
-
-swaybg -i grid.png >/dev/null 2>&1 &
 
 RELOJ EN WAYLAND
 ================
