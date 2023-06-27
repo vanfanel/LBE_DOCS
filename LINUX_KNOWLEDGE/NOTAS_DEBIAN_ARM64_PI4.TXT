@@ -523,7 +523,7 @@ sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
 
 Bajamos la última versión estable de:
-https://www.libsdl.org/download-2.0.php
+https://github.com/libsdl-org/SDL/releases
 
 Ahora, para configurar:
 

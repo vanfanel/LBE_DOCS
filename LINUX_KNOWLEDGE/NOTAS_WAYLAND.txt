@@ -1035,11 +1035,11 @@ mkdir b4
 cd b4
 
 CFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dgdk-pixbuf=disabled -Dman-pages=disabled ..
+meson setup -Dbuildtype=release -Dgdk-pixbuf=disabled -Dman-pages=disabled ..
 
 Y en ~/.config/labwc/autostart:
 
-swaybg -i grid.png >/dev/null 2>&1 &
+swaybg -i cccp.png >/dev/null 2>&1 &
 
 LANZAR LABWC COMO SERVICIO DE SYSTEMD
 =====================================
