@@ -1,3 +1,29 @@
+PREVIO: EL LIO DE LOS SEAT MANAGERS Y LOS DIRECTORIOS COMO XDG_RUNTIME_DIR
+==========================================================================
+
+El metacompositor (sirve para hacer compositores) WLROOLS depende de LIBSEAT.
+LIBSEAT al instalarse instala seatd, un servicio que administra seats, pero NO establece el valor de XDG_RUNTIME_DIR,
+así que con WLROOTS y un compositor recién instalados, el compositor no funcionará hasta que le demos un valor a XDG_RUNTIME_DIR
+PARA ELLO, normalmente haremos esto en .bashrc:
+##################################
+rundir="/run/user/0"                                                                                    
+if [[ ! -e $rundir ]]; then                                                                                    
+    mkdir -p $rundir                                                                                           
+fi                                                                                                             
+export XDG_RUNTIME_DIR=$rundir
+##################################
+
+Si no queremos tener que establecer XDG_RUNTIME_DIR así a mano, podemos activar el servicio SYSTEMD-LOGIND,
+pero claro, eso ya depende de DBUS, etc...
+
+Actualmente, para lanzar labwc sin necesidad de tener SYSTEMD-LOGIND funcionando, lo que hago es que desde mi labwc.service
+llamo a un script de lanzamiento que he creado como "/usr/local/bin/launch-labwc" donde se establece XDG_RUNTIME_DIR antes de ejecutar labwc.
+Míralo en la sección correspondiente a cómo lanzar labwc como servicio.
+
+La alternativa para sistemas embedidos es elogind, que se encarga del seat management y de establecer XDG_RUNTIME_DIR.
+
+Si quieres ver cómo me aclaré con esto: https://docs.voidlinux.org/config/session-management.html
+
 INSTALAR WAYLAND
 ================
 
@@ -928,7 +954,7 @@ CXXFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release -Dxwayland=disabled ..
 
 PARA PODER LANZAR LABWC O CUALQUIER COMPOSITOR, ANTES TENEMOS QUE AÑADIR A ~/.bashrc:
-rundir="/var/run/user/0"
+rundir="/run/user/0"
 if [[ ! -e $rundir ]]; then
     mkdir -p $rundir
 fi
@@ -1018,12 +1044,26 @@ swaybg -i grid.png >/dev/null 2>&1 &
 LANZAR LABWC COMO SERVICIO DE SYSTEMD
 =====================================
 
+Creamos /usr/local/bin/launch-labwc con el contenido:
+
+#############
+
+#!/bin/bash                                                                                                    
+rundir="/run/user/0"
+if [[ ! -e $rundir ]]; then
+    mkdir -p $rundir
+fi
+export XDG_RUNTIME_DIR=/run/user/0                                                                             
+/usr/local/bin/labwc
+
+#############
+
 Creamos /etc/systemd/system/labwc.service con el contenido:
 
 #############
 
 [Unit]
-Description=labwc - User service
+Description=Wayland compositor
 
 [Service]
 User=root
@@ -1031,7 +1071,7 @@ Group=root
 PAMName=login
 WorkingDirectory=%h
 ExecStart=
-ExecStart=-/usr/local/bin/labwc
+ExecStart=-/usr/local/bin/launch-labwc
 Restart=always
 
 [Install]
@@ -1093,7 +1133,11 @@ echo " ¨ ¨    Have fun!"
 echo "     "
 
 Para poder ejecutar por ssh programas que corran sobre Wayland:
-export XDG_RUNTIME_DIR=/var/run/user/0
+rundir="/run/user/0"
+if [[ ! -e $rundir ]]; then
+    mkdir -p $rundir
+fi
+export XDG_RUNTIME_DIR=$rundir
 export WAYLAND_DISPLAY=wayland-1
 (OJO: Si no funciona con estos valores, mira qué valores tienen estas variables de entorno en el sistema "servidor").
 
