@@ -6489,12 +6489,12 @@ DEVILUTIONX, Diablo en Linux
 ============================
 
 Dependencias previas:
-sudo apt-get install libsodium-dev libbz2-dev smpq --no-install-recommends
+sudo apt-get install libsodium-dev libbz2-dev --no-install-recommends
 
 (OJO: EN DEBIAN 11 ESTO NO FUNCIONA AÚN PORQUE USA LIBSTORM 9.22).
 Si quieres que los assets del juego (incluidos con los sources, son diferentes de los DATOS del juego, los datos los tienes que poner tú)
 queden en un solo fichero llamado "devilutionx.mpq" en vez de en el directorio "assets",
-para lo cual tu distro debe usar una versión de smpq que use una libstorm superior a la versión 9.22 ya que libstorm 9.22 está rota en aarch64:
+tu distro debe usar una versión de smpq que use una libstorm superior a la versión 9.22 ya que libstorm 9.22 está rota en aarch64:
 sudo apt-get install smpq --no-install-recommends
 
 ---Vamos con DevilutionX en sí:---
