@@ -3504,7 +3504,7 @@ y por eso falla con un "unsopported audio format" si lo intentas).
 
 Para configurar el vídeo, editamos ~/.schism/config, y:
 -Ponemos fullscreen a 1 e interpolation a linear.
--Ponemos want_fixed a 1 (para tener aspect ratio corregido)
+-Añadimos la línea "want_fixed=1" (para tener aspect ratio corregido)
 También podemos poner classic_mode a 1 para que las pantallas sean las del Impulse Tracker original.
 
 ////BLOQUE OPCIONAL (innecesario): Si no queremos tener que lanzar el Schismtracker con la variable de entorno AUDIODEV:
