@@ -1154,10 +1154,12 @@ Editamos Makefile y:
 
 Antes de compilarlo, ejecutamos version.sh para que nos cree version.h
 
-En la Raspberry Pi:
+Entramos en el directorio "engine" y hacemos:
+
+-En la Raspberry Pi:
 make BUILD_LINUX_LE_arm=1 GCC_TARGET=64 -j4
 
-En el PC:
+-En el PC:
 make BUILD_LINUX_LE_x86_64=1 GCC_TARGET=64 -j4
 
 Para meter los juegos:
@@ -7806,7 +7808,7 @@ Ahora edita el Makefile y:
 -Pon sound a NONE si no quieres sonido en modo texto (sin SDL). En sfrotz el sonido va por las SDL,
  así que usa SFROTZ para los juegos que tienen sonido, y ya.
 -Comenta la línea de los CFLAGS del -g, y deja así la línea de los CFLAGS:
-CFLAGS="-march=native -mtune=native -fsigned-char"
+CFLAGS+= -march=native -mtune=native -fsigned-char
 (Los valores de align y tal no tienen sentido porque los valores son incorrectos, -O2 ya activa los valores correctos).
 
 Ahora compila con "make frotz" (hay "make sfrotz" para SDL, etc...)
