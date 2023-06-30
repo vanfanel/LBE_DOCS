@@ -130,7 +130,7 @@ mkdir b4
 cd b4
 
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dflavors=drm-glesv2,gbm-glesv2,wayland-glesv2 ..
+meson setup -Dbuildtype=release -Dflavors=drm-glesv2,gbm-glesv2,wayland-glesv2 ..
 
 COMPILAR FLYCAST CONTRA GLES3.1
 ===============================

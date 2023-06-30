@@ -1,0 +1,31 @@
+OVERCLOCKEAR A 1800 EVITANDO EL SOBRECALENTAMIENTO
+==================================================
+
+En dietpi-config ponemos el GOVERNOR a PERFORMANCE, 
+Y en el /boot/config.txt dejamos la parte de overclocking así:
+
+over_voltage=4                                                                                                 
+arm_freq=1800                                                                                                  
+gpu_freq=600
+
+Es decir, quitamos el "core_freq" y el "temp_limit" y dejamos los valores como ves. Nada más.
+
+HACER QUE FUNCIONE EL AUDIO
+===========================
+
+En dietpi_config seleccionamos el audio por HDMI con conversión automática,
+en /boot/config.txt comentamos la línea "dtparam=audio=on",
+y borramos el archivo /etc/asound.conf (el que se genera es erróneo).
+Con eso, el "default" de ALSA ya debería ser "default:CARD=vc4hdmi0" (lo puedes confirmar en aplay -L)
+y así speaker-test ya debería ir sin pasarle ningún parámetro.
+
+DESACTIVAR EL SWAP
+==================
+
+En dietpi-drive_manager, entramos en la unidad root (/) y en el tamaño de SWAP ponemos 0.
+
+PODER USAR SCP DESDE OTRA MÁQUINA PARA SUBIRLE ARCHIVOS
+=======================================================
+
+Instalamos:
+apt install ssh-client

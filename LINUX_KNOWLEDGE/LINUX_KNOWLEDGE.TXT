@@ -3903,14 +3903,14 @@ sudo apt-get install libglib2.0-dev --no-install-recommends
 Bajamos la última versión estable de fluidsynth de aquí:
 https://github.com/FluidSynth/fluidsynth/releases
 
-Y configuramos desde un directorio de build que creamos nosotros:
+Configuramos y compilamos:
+
+mkdir b4
+cd b4
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 cmake .. -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
-
-Y compilamos con make -j4, e instalamos con:
-sudo make install
 
 *************MIDI remoto con fluidsynth o timidity (MIDI over LAN)*************************************************************
 
@@ -5572,6 +5572,20 @@ sudo cp arch/arm/boot/zImage /media/manuel/BOOT/
 Para extraer un .config de un kernel que sabemos que funciona, en el directorio scripts de los kernel sources tenemos un script apropiado que funciona así:
 ./extract-ikconfig ~/panda/boot/uImage > ~/panda/.config
 
+****************INSTALAR GLMARK2****************************************************************************
+
+Instalamos dependencias previas:
+apt-get install libpng-dev libjpeg-dev
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/glmark2/glmark2.git
+
+Configuramos con:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release -Dflavors=drm-glesv2,gbm-glesv2,wayland-glesv2 ..
 
 ***********Recuperar un archivo corrupto de Abiword u otro procesador de textos que se niega a abrir*********
 
@@ -6515,7 +6529,7 @@ Manda la salida a /dev/null y fuera.
 SM64EX, port del Mario64 para GNU/Linux
 ========================================
 
-Clonamos los surces, y el repo de los parches:
+Clonamos los surces:
 git clone --depth 1 https://github.com/AloXado320/sm64ex-alo.git
 
 Editamos src/pc/gfx/gfx_sdl2.c y: 
