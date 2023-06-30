@@ -4708,7 +4708,7 @@ de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
  	cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" -DPA_USE_JACK=OFF
 
 -Instalamos otra dependencia previa: GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
-	---Dependencia previa: apt-get install --no-install-recommens extra-cmake-modules
+	---Dependencia previa: apt-get install --no-install-recommends extra-cmake-modules
 	---Nos bajamos la última estable de GLFW de: https://www.glfw.org/
 	---Configuramos, compilamos e instalamos GLFW:
 	mkdir b4
@@ -7370,7 +7370,7 @@ Configuramos, compilamos e instalamos:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-meson -Dx11=false ..
+meson setup -Dx11=false ..
 
 ninja -j4
 sudo ninja install
