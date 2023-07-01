@@ -4717,6 +4717,15 @@ de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
 	-DGLFW_USE_WAYLAND=1 -D_GLFW_X11=0 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
 	-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
+-Instalamos otra dependencia previa: LIBTHEROA, que si la instalamos desde APT nos instala CAIRO, que a su vez depende de
+las mierdas de X11. (Nosotros instalamos un CAIRO sin X11 a mano porque el metacompositor WLROOTS usa CAIRO).
+	--Nos bajamos la última estable: wget https://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.xz
+	--Configuramos, compilamos e instalamos:
+	CFLAGS="-O2 -march=native -mtune=native" CXXFLAGS="-O2 -march=native -mtune=native" \
+	./configure --build=aarch64-unknown-linux-gnu --disable-examples --disable-encode --disable-sdltest
+	make -j4
+	make install
+
 --VAMOS A POR EL JUEGO EN SI:
 
 PARTE 1: EL ENGINE
