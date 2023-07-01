@@ -8876,7 +8876,7 @@ Lo instalamos con dpkg desde la consola de comandos. Este paquete instala:
 Ahora nos vamos en Firefox a Settings->Privacy & Security->Certificates, y en la pestaña de Authorities,
 importamos el certificado /usr/lib/Autofirma/AutoFirma_ROOT.cer
 
-AUTOMONJATE DE DISPOSITIVOS DE ALMACENAMIENTO USB EN GNU/LINUX
+AUTOMONTAJE DE DISPOSITIVOS DE ALMACENAMIENTO USB EN GNU/LINUX
 ==============================================================
 
 -Al más bajo nivel, para que cuando udev detecte el disco se active el servicio de montaje,
