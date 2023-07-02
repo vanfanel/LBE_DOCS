@@ -676,8 +676,8 @@ Las propiedades que necesitan un full modeset son:
 NNN, FILE MANAGER LIGERO PARA EMULADOR DE TERMINAL
 ==================================================
 
-Bajamos la última estable de:
-https://github.com/jarun/nnn/releases
+Clonamos los últimos sources (la stable tiene problemas con los iconos):
+git clone --depth 1 https://github.com/jarun/nnn.git
 
 Compilamos e instalamos con:
 CFLAGS="-march=native -mtune=native" make O_NORL=1 O_NERD=1 -j4
