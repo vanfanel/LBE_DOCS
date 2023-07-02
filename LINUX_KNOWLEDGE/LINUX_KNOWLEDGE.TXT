@@ -8411,7 +8411,7 @@ CXXFLAGS="-march=native -mtune=native -O2" make -j4
 
 Ahora, nos creamos ~/cf, y ahí:
 -Copiamos el ejecutable (lo tienes en Run/OpenFodder)
--Copiamos el archivo openfodder.ini.example a ~/cf/openfodder.ini, y lo dejamos a nuestro gusto
+-Copiamos el archivo openfodder.ini.example a ~/cf/openfodder.ini, y ponemos "alternate-mouse" a "true", a parte de los cambios que quieras hacer.
 -Descomprimimos directamente los contenidos de un ZIP de datos del engine que está aquí:
 https://github.com/OpenFodder/data/releases
 
