@@ -698,10 +698,10 @@ Donde hemos añadido lo de los archivos .run, añadimos debajo cosas como estas:
             /usr/local/bin/retroarch -L ~/.config/retroarch/cores/nestopia_libretro.so -- "${FPATH}"
             exit 0;;
 
-        ## Master System, Megadrive and SG-1000 files (Don't use .md extension because these are
-        ## markdown text files!)
-        smd|sms|sg)
-            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/genesis_plus_gx_libretro.so -- "${FPATH}"
+        ## Master System, Megadrive, GameGear and SG-1000 files (Don't use .md extension because               
+        ## these are  markdown text files!)                                                                    
+        smd|sms|gg|sg)                                                                                         
+            /usr/local/bin/retroarch -L ~/.config/retroarch/cores/genesis_plus_gx_libretro.so -- "${FPATH}"    
             exit 0;;
 
         ## PCE files
@@ -1216,7 +1216,7 @@ mkdir b4
 cd b4
 
 CFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release ..
+meson setup -Dbuildtype=release ..
 
 ninja -j4
 ninja install
