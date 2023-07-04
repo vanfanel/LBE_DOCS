@@ -7386,7 +7386,7 @@ sudo ninja install
 
 AHORA VAMOS CON EL HURRICAN EN SÍ:
 Clonamos su repo:
-git clone --depth 1 --recurse-submodules https://github.com/drfiemost/Hurrican.git
+git clone --depth 1 --recurse-submodules https://github.com/HurricanGame/Hurrican.git
 cd Hurrican/Hurrican
 Configuramos y compilamos:
 mkdir b4
@@ -8414,10 +8414,13 @@ Ahora, nos creamos ~/cf, y ahí:
 -Copiamos el archivo openfodder.ini.example a ~/cf/openfodder.ini, y ponemos "alternate-mouse" a "true", a parte de los cambios que quieras hacer.
 -Descomprimimos directamente los contenidos de un ZIP de datos del engine que está aquí:
 https://github.com/OpenFodder/data/releases
-
-Dentro del directorio Data de los datos del engine, si te fijas verás que hay directorios preparados para cada juego.
-Nos interesa el directorio Dos_CD: ahí es donde meteremos los datos del juego en su versión DOS, que tiene más colores. Sólo nos hace falta el archivo CF_ENG.DAT.
-Por si te lo preguntas, los datos de Amiga aún no parecen funcionar bien con el engine, da segfaults y movidas. Pero con la versión DOS, la música suena también en MOD, así que nos vale.
+-Obtenemos los datos del Cannon Fodder de AMIGA. NO nos valen los datos de una instalación de WHDLOAD, los tenemos que extraer nosotros
+de un set de discos de AMIGA en IPF. Descargamos los IPF de AMIGA de aquí:
+https://edgeemu.net/browse-amiga-C.htm
+Y compilamos esta herramienta: https://github.com/OpenFodder/SOS_Unpacker
+Y metemos los IPF de AMIGA en el mismo directorio que el ejecutable SOS_Unpacker, lo ejecutamos, y nos deja los archivos extraidos en "out".
+Metemos los datos de AMIGA en ~/cf/Data/Amiga, y ya nos debería detectar el juego y aparecer como "Cannon Fodder" sin más en el menú al ejecutar
+el OpenFodder.
 
 JAZZ JACKRABBIT 2 en GNU/Linux (jazz2resurrection-native)
 =========================================================
