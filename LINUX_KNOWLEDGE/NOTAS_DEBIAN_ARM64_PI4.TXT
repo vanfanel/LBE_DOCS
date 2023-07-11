@@ -462,6 +462,8 @@ Y configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dx11=disabled ..
 
+SI ADEMÁS QUIERES QUE MESA FUNCIONE SOBRE WAYLAND, VE E INSTALA WAYLAND AHORA (Mira en el fichero de notas de Wayland).
+
 NO TE OLVIDES DE AÑADIR AL USUARIO AL GRUPO RENDER:
 sudo adduser pi render
 (Si ves un error como "MESA-LOADER: failed to open kms_swrast", es porque no lo has hecho).
@@ -495,20 +497,6 @@ CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers='' -Ddri-drivers='' -Dgallium-drivers=vc4,v3d,kmsro -Dbuildtype=release ..
 
-PARA COMPILAR:
-ninja -j4
-PARA INSTALAR:
-sudo ninja install
-Y NO TE OLVIDES DE HACER:
-sudo rm /etc/ld.so.cache
-sudo ldconfig
-Y SI HAS COMPILADO CON VULKAN pruebla que todo va bien ejecutando vulkaninfo.
-
-Y PARA DESINSTALAR:
-sudo ninja uninstall
-O ALTERNATIVAMENTE:
-meson introspect ./ --installed | python3 -c 'import sys; a = eval(sys.stdin.read()); print(" ".join(a.keys()))' | xargs rm
-
 COPIAR ARCHIVOS DESDE UN SISTEMA ANTIGUO
 =========================================
 
@@ -522,8 +510,9 @@ Lo primero borra esto:
 sudo rm -R /opt/vc
 
 Instalamos dependencias previas:
-sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg123-dev libmodplug-dev libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
-(libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
+
+sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg123-dev libmodplug-dev \
+libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 
 Bajamos la última versión estable de:
 https://github.com/libsdl-org/SDL/releases
@@ -609,10 +598,6 @@ sudo apt-get install glslang-dev glslang-tools spirv-tools
 
 LO PRIMERO, HAZ ESTO O EL CONFIGURE FALLARÁ:
 apt-get purge libraspberrypi*
-
--Para que no se nos cree una ventana fantasma con el logo de RetroArch al ejecutar RetroArch, editamos gfx/common/wayland_common.c
- y comentamos la llamada a draw_splash_screen() y el "if (wl->libdecor)" junto con lo que hay dentro de él y su "else".
- Si tienes varias pantallas conectadas y eso provoca errores, comenta la llamada a shm_buffer_paint_checkerboard() dentro de draw_splash_screen().
 
 Ahora, para configurar RetroArch con soporte de GLES y VULKAN, como lo venimos haciendo:
 

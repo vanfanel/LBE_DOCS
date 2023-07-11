@@ -1,3 +1,8 @@
+SELECCIONAR CORRECTAMENTE EL TECLADO EN ESPAÑOL
+===============================================
+
+Tenemos que seleccionar que NO TENGA deadkeys, si no la tilde (~) no sale bien.
+
 HACER QUE FUNCIONE EL AUTOCOMPLETAR DE APT-GET
 ==============================================
 
@@ -21,7 +26,7 @@ HACER QUE FUNCIONE EL AUDIO
 
 En dietpi_config, seleccionamos como dispositivo de audio el "rpi-bcm2835-hdmi"
 y activamos la conversión automática.
-En /boot/config.txt comentamos la línea "dtparam=audio=on",
+En /boot/config.txt comentamos la línea "dtparam=audio=on", nos aseguramos de que tenemos "dtoverlay=vc4-kms-v3d",
 y borramos el archivo /etc/asound.conf (el que se genera es erróneo).
 Con eso, el "default" de ALSA ya debería ser "default:CARD=vc4hdmi0" (lo puedes confirmar en aplay -L)
 y así speaker-test ya debería ir sin pasarle ningún parámetro.
@@ -36,3 +41,36 @@ PODER USAR SCP DESDE OTRA MÁQUINA PARA SUBIRLE ARCHIVOS
 
 Instalamos:
 apt install ssh-client
+
+PARA TENER EL DIRECTORIO ACTUAL EN EL PATH, PARA QUE FUNCIONEN LOS PROGRAMAS DE WAYLAND POR SSH... 
+==================================================================================================
+
+DEJAMOS ~/.bashrc ASÍ:
+
+########################
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# You may uncomment the following lines if you want `ls' to be colorized:
+export LS_OPTIONS='--color=auto'
+eval "$(dircolors)"
+alias ls='ls $LS_OPTIONS'
+alias ll='ls $LS_OPTIONS -l'
+alias l='ls $LS_OPTIONS -lA'
+
+rundir="/run/user/0"
+if [[ ! -e $rundir ]]; then
+    mkdir -p $rundir
+fi
+
+export XDG_RUNTIME_DIR=$rundir
+#export WAYLAND_DISPLAY=wayland-1
+
+#PS1="\W "
+PATH=$PATH:.
+
+#########################

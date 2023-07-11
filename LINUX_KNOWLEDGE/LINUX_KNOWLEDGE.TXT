@@ -4721,7 +4721,7 @@ de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
 las mierdas de X11. (Nosotros instalamos un CAIRO sin X11 a mano porque el metacompositor WLROOTS usa CAIRO).
 	--Nos bajamos la última estable: wget https://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.xz
 	--Configuramos, compilamos e instalamos:
-	CFLAGS="-O2 -march=native -mtune=native" CXXFLAGS="-O2 -march=native -mtune=native" \
+	CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
 	./configure --build=aarch64-unknown-linux-gnu --disable-examples --disable-encode --disable-sdltest
 	make -j4
 	make install
@@ -5312,7 +5312,7 @@ impide que funcione. Sí, esto me ha pasado.
 
 ===========================================================
 
-Para que VIM no entre en modo VISUAL cada vez que pinchamos con el ratón, editamos /usr/share/vim/vim82/defaults.vim y
+Para que VIM no entre en modo VISUAL cada vez que pinchamos con el ratón, editamos /usr/share/vim/vim90/defaults.vim y
 cambiamos
 set mouse=a
 por
