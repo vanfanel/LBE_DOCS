@@ -7576,9 +7576,9 @@ GLEW sólo conoce de OpenGL/ES, no sabe nada de sistemas de ventanas (X11, Wayla
 
 Dependencias previas:
 
-apt-get install python
+apt-get install python-is-python3
 
-Clonamos su repo:
+Clonamos su repo (NO USES LA ÚLTIMA ESTABLE PORQUE NO SOPORTA GLVN Y DARÁ ERROR):
 
 git clone --depth 1 https://github.com/nigels-com/glew.git
 
