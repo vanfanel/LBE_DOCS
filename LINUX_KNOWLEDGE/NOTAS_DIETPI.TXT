@@ -1,3 +1,9 @@
+HACER QUE FUNCIONE EL AUTOCOMPLETAR DE APT-GET
+==============================================
+
+En dietpi-config nos vamos a ADVANCED OPTIONS->APT CACHE y ponemos las opciones APT CACHE y APT LISTS a "ON DISK".
+Ahora salimos de dietpi-config y ejecutamos "apt-get update", y ya funcionará. 
+
 OVERCLOCKEAR A 1800 EVITANDO EL SOBRECALENTAMIENTO
 ==================================================
 
@@ -13,8 +19,9 @@ Es decir, quitamos el "core_freq" y el "temp_limit" y dejamos los valores como v
 HACER QUE FUNCIONE EL AUDIO
 ===========================
 
-En dietpi_config seleccionamos el audio por HDMI con conversión automática,
-en /boot/config.txt comentamos la línea "dtparam=audio=on",
+En dietpi_config, seleccionamos como dispositivo de audio el "rpi-bcm2835-hdmi"
+y activamos la conversión automática.
+En /boot/config.txt comentamos la línea "dtparam=audio=on",
 y borramos el archivo /etc/asound.conf (el que se genera es erróneo).
 Con eso, el "default" de ALSA ya debería ser "default:CARD=vc4hdmi0" (lo puedes confirmar en aplay -L)
 y así speaker-test ya debería ir sin pasarle ningún parámetro.
