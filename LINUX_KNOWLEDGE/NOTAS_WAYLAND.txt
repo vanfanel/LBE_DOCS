@@ -713,9 +713,9 @@ editamos ~/.config/nnn/plugins/nuke y añadimos, debajo de la sección "Log file
 
 3) Ahora tenemos que decirle a nnn con qué plugin queremos abrir los archivos. Para ello, creamos un script que setee ciertas
 variables de entorno y luego lance el nnn, que llamaremos /usr/local/bin/n, con el contenido:
-export PATH=$PATH:$HOME/.config/nnn/plugins
-export NNN_OPENER=nuke
-nnn
+
+PATH=$PATH:$HOME/.config/nnn/plugins NNN_OPENER=nuke nnn
+
 (NOTA: NO podemos añadir el seteo de estas variables de entorno a .bash_profile, ni a /etc/profile ni a /etc/environment porque
 todos esos ficheros son leidos por un bash, que nosotros no lanzamos porque lanzamos directamente nnn: por eso las seteamos
 en el script de lanzamiento de nnn, ese tal /usr/local/bin/n).
