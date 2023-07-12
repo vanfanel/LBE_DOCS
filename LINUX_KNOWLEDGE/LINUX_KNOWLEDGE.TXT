@@ -1097,7 +1097,7 @@ Interdoom, un sourceport peculiar en ruso
 
 Bajamos la última estable de:
 
-https://github.com/JNechaevsky/inter-doom.git/releases
+https://github.com/Russian-Doom/russian-doom/releases
 
 Compilamos con CMAKE:
 mkdir b4
@@ -1147,19 +1147,22 @@ Entramos en openbor/engine
 Editamos Makefile y:
 -Quitamos el -Werror para que no trate los warnings como errores.
 -Comentamos la línea de STRIP debajo de "ifdef BUILD_LINUX"
--Quitamos el -g de la segunda línea de CFLAGS que hay al inicio de la sección Compiler Flags, y ahí mismo
- añadimos los CFLAGS de la Pi4 si vamos a ocmpilar para ella: -march=native -mtune=native -O2
+-Quitamos el -g de la segunda línea de CFLAGS que hay al inicio de la sección Compiler Flags
 -Para que cuando compilemos veamos los flags, nos vamos a la sección "Rules to manage Files and Libraries for SDL"
- y debajo del "@echo Compiling" de los .c, metemos: @echo $(CC) $(CFLAGS) -c $<
+ y debajo del "@echo Compiling" de los .c, metemos: "@echo $(CC) $(CFLAGS) -c $<"
 
 Antes de compilarlo, ejecutamos version.sh para que nos cree version.h
 
 Entramos en el directorio "engine" y hacemos:
 
 -En la Raspberry Pi:
+CFLAGS="-O2 -march=native -mtune=native" \
+CXXFLAGS="-O2 -march=native -mtune=native" \
 make BUILD_LINUX_LE_arm=1 GCC_TARGET=64 -j4
 
 -En el PC:
+CFLAGS="-O2 -march=native -mtune=native" \
+CXXFLAGS="-O2 -march=native -mtune=native" \
 make BUILD_LINUX_LE_x86_64=1 GCC_TARGET=64 -j4
 
 Para meter los juegos:
@@ -1666,8 +1669,7 @@ git clone --depth 1 https://github.com/OpenXcom/OpenXcom.git
 
 Es el port original en el que colabora Ken Silverman!
 Clonamos su repo de:
-git clone --depth 1 https://github.com/jonof/jfduke3d.git
-git submodule update --init
+git clone --depth 1 --recurse-submodules https://github.com/jonof/jfduke3d.git
 
 Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 512, comentando el while que hay debajo.
 Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(), en la llamada a SDL_SetHint(), "nearest" por "linear".
@@ -3328,9 +3330,7 @@ y descomentamos esto, que viene comentado por defecto:
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
-if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 SI ESTO NO FUNCIONA, comprueba los permisos de ~/.viminfo. Debe pertenecer al usuario actual, si no es así, probablemente no vuelva a la última
 posición cuando reabrimos un fichero.
@@ -3367,22 +3367,6 @@ cd b3
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" ..
 make -j4
-
-***********RIGEL ENGINE, el engine de Duke Nukem II************************************************************
-
-Nos vamos a mirar los tags de su repositorio, que están en: https://github.com/lethal-guitar/RigelEngine/tags
-Allí, buscamos la última release y nos quedamos con el nombre del tag de esa release.
-Sabiendo eso, clonamos el tag de la release, e inicializamos los submódulos:
-git clone --depth 1 --branch <nombre de la última release> https://github.com/lethal-guitar/RigelEngine.git
-git submodule update --init --recursive
-
-mkdir b4
-cd b4
-
-Compilamos con GLES con:
-cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-march=native -mtune=native" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 
 ***********Compilar RAZE, el engine de Duke Nukem, Blood, Exhumed, etc para Linux****************************************************************
 
@@ -3587,6 +3571,9 @@ SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 justo antes de SDL_CreateWindow(), para el escalado emborronado que te gusta.
 
 Compilamos con:
+
+mkdir b4
+cd b4
 
 cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=native -mtune=native" ..
 (PARA compilar en modo verbose, haz make VERBOSE=1)
@@ -5001,7 +4988,7 @@ Entramos en src, editamos doomdef.h y ponemos SCREENSCALE a 1.
 Si por el contrario dejamos que se renderize en alta resolución, pasamos "-nosplash" al ejecutable para que no salga el splash screen,
 ya que sólo sale en alta resolución.
 
-Editamos el Makefile y ponemos los CFLAGs "-march=native -mtune=native -O2", y quitamos el -g.
+Editamos el Makefile y añadimos en OPTFLAGS: "-march=native -mtune=native", y quitamos el -g.
 Compilar y listo.
 
 En doomretro.cfg, ponemos:
@@ -6488,13 +6475,20 @@ RIGEL ENGINE, Duke Nukem II en Linux
 
 Clonamos su repo:
 
-git clone --depth 1 https://github.com/lethal-guitar/RigelEngine.git
-git submodule update --init --recursive
+git clone --recurse-submodules --depth 1 https://github.com/lethal-guitar/RigelEngine.git
 
 Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
 cd b4
-cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native" ..
+
+cmake -DUSE_GL_ES=ON -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
+
+SI QUEREMOS UNA VERSIÓN ESTABLE: Nos vamos a mirar los tags de su repositorio, que están en: https://github.com/lethal-guitar/RigelEngine/tags
+Allí, buscamos la última release y nos quedamos con el nombre del tag de esa release.
+Sabiendo eso, clonamos el tag de la release, e inicializamos los submódulos:
+git clone --recurse-submodules --depth 1 --branch <nombre de la última release> https://github.com/lethal-guitar/RigelEngine.git
 
 DEVILUTIONX, Diablo en Linux
 ============================

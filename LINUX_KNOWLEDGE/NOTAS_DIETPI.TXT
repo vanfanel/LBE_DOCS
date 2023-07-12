@@ -31,6 +31,16 @@ y borramos el archivo /etc/asound.conf (el que se genera es erróneo).
 Con eso, el "default" de ALSA ya debería ser "default:CARD=vc4hdmi0" (lo puedes confirmar en aplay -L)
 y así speaker-test ya debería ir sin pasarle ningún parámetro.
 
+SERVICIOS QUE SE PUEDEN DESACTIVAR
+==================================
+
+Puedes desactivar algunos en dietpi-services.
+Otros que puedes desactivar manualmente:
+
+systemctl disable rpi-eeprom-update.service
+
+NO TE OLVIDES DE ENTRAR EN dietpi-config->Advanced Options y desactivar el ajuste diario de la hora, etc. 
+
 DESACTIVAR EL SWAP
 ==================
 

@@ -1030,7 +1030,7 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
     	<name>BL-Lithium</name>
     	<cornerRadius>0</cornerRadius>
     	<font> 
-                <name>sans</name>
+                <name>JetBrainsMonoNerdFont</name>
                 <size>14</size>
         </font>
 	</theme>
