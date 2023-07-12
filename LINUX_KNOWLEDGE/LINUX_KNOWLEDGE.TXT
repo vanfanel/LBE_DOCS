@@ -8417,6 +8417,10 @@ Y metemos los IPF de AMIGA en el mismo directorio que el ejecutable SOS_Unpacker
 Metemos los datos de AMIGA en ~/cf/Data/Amiga, y ya nos debería detectar el juego y aparecer como "Cannon Fodder" sin más en el menú al ejecutar
 el OpenFodder.
 
+Los datos del Cannon Fodder 2 irían en ~/cf/Data/Amiga2 y simplemente hay que montar el ADF del juego (tienes instrucciones de cómo montar ADFs
+en este mismo archivo) y sacarlos de ahí. Puede que te el OpenFoder te diga que el MD5 un fichero llamado MAPM1.SPT es incorrecto. En ese caso,
+puedes sacar el MAPM1.SPT correcto del ADF marcado como [a]. 
+
 JAZZ JACKRABBIT 2 en GNU/Linux (jazz2resurrection-native)
 =========================================================
 
