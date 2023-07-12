@@ -7793,9 +7793,22 @@ COMPILAR FROTZ
 Instala las ncursesw, que es una versión más mehó de las ncurses:
 sudo apt-get install libncursesw5-dev libjpeg-dev
 
-Si quieres sonido en modo texto, instala estas dependencias antes, PERO NO HACE FALTA PORQUE SFROTZ TIENE SONIDO
-A TRAVÉS DE LAS SDL, así que simplemente los juegos con audio lánzalos con sfrotz.
-sudo apt-get install libao-dev libsamplerate0-dev libsndfile1-dev --no-install-recommends
+
+	#### BLOQUE OPCIONAL PARA TENER AUDIO EN MODO TEXTO ####
+	
+Si quieres sonido en modo texto, instala estas dependencias antes, (SI USAS SFROTZ NO HACE FALTA, PORQUE SFROTZ TIENE SONIDO
+A TRAVÉS DE LAS SDL. ESTO ES PARA TENER EL SONIDO EN EL FROTZ NORMAL EN MODO TEXTO).
+
++Instamos LIBAO manualmente (si lo instalásemos con apt, instalaría dependencias de PULSEAUDIO, etc):
+--Bajamos la última estable de: https://github.com/xiph/libao/tags
+--Ejecutamos el script "autogen.sh" que viene con los sources.
+--Configuramos con:
+CFLAGS="-march=native -mtune=native" ./configure --enable-alsa --disable-pulse --disable-esd --disable-broken-oss
+
++Instalamos estas dependencias con apt: apt-get install libsamplerate0-dev libsndfile1-dev --no-install-recommends
+
+	#### FIN BLOQUE OPCIONAL PARA TENER AUDIO EN MODO TEXTO ####
+
 
 Baja los surces de la última estable de:
 https://gitlab.com/DavidGriffith/frotz/-/releases
