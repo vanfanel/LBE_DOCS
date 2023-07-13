@@ -1760,7 +1760,9 @@ Para que no nos mande mensajes a la consola, lo podemos ejecutar con:
 ./uqm --logfile=/dev/null
 Se sale del juego con F10 o F12.
 
-Como mejor se ve es en 640x480, sin filtro bilineal y con scanlines.
+Como mejor se ve es en poniendo la resolución del juego en su menú a 640x480, con filtro bilineal y con scanlines,
+y a su vez usando wlr-randr para poner un modo de pantalla de 1280x960 (ya que 960 es justo el doble de 480 y así no se nos forman patrones
+en las scanlines).
 
 *******vkQuake en la Pi***********************************************************
 
