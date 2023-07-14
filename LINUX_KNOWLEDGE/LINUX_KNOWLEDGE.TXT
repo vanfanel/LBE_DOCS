@@ -1671,12 +1671,12 @@ Es el port original en el que colabora Ken Silverman!
 Clonamos su repo de:
 git clone --depth 1 --recurse-submodules https://github.com/jonof/jfduke3d.git
 
-Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 512, comentando el while que hay debajo.
+Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 1024, comentando el while que hay debajo.
 Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(), en la llamada a SDL_SetHint(), "nearest" por "linear".
-Editamos jfaudiolib/Makefile, y eliminamos el "-g" ese que hay ahí perdido y cambia el -O1 que hay por -O2.
+Editamos jfaudiolib/Makefile, y eliminamos el "-g" ese que hay ahí perdido.
 
 Compilamos con:
-CFLAGS="-march=native -mtune=native" \
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GLES2
 
 Mete el duke3d.grp en el mismo directorio que el ejecutable.
