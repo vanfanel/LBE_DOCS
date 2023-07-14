@@ -9065,9 +9065,15 @@ meson -Ddemos=false -Dbuildtype=release ..
 
 VAMOS CON MPV EN SÍ:
 
+-Instalamos dependencias previas:
+apt-get install libass-dev --no-install-recommends
+
 -Clonamos su repo: git clone --depth 1 https://github.com/mpv-player/mpv.git
 
 -Configuramos con:
+
+mkdir b4
+cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
