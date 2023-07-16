@@ -1005,6 +1005,7 @@ Pero lo suyo es meterlo en ~/.config/labwc/autostart así:
 
 --Para teclado en español creamos ~/.config/labwc/environment con el contenido:
 XKB_DEFAULT_LAYOUT=es
+XKB_DEFAULT_VARIANT=nodeadkeys
 
 --Para que se lanze el foot automáticamente, creamos ~/.config/labwc/autostart con el contenido:
 /usr/local/bin/foot >/dev/null 2>&1 &
