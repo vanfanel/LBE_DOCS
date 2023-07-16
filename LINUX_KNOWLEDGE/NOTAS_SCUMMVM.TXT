@@ -1,13 +1,5 @@
-************RECUPERAR PARTIDAS EN EL GABRIEL KNIGHT DE SCUMMVM**********************************************************************************
-
-A los datos del juego les falta el archivo
-VERSION
-Con el contenido
-01.100.000
-
-Sin este archivo, podrás salvar pero luego no te deja recuperar la partida porque dice que es de otra versión. Así que lo creamos a mano y listo.
-
-*********COMPILAR SCUMMVM***************
+COMPILAR SCUMMVM
+================
 
 COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
 Dependencias previas: apt-get install libmpeg2-4-dev libvorbis-dev libjpeg-dev libpng-dev --no-install-recommends
@@ -112,7 +104,8 @@ include $(LIBRETRO_DIR)/build/custom.config
 
 -Compilamos: make -j4
 
-*************Compilar con SDL2 estáticas en lugar de dinámicas*****************************************************************************
+Compilar con SDL2 estáticas en lugar de dinámicas
+=================================================
 
 La cosa es como siempre compilar contra el .a en lugar de compilar contra el .so de las librerías.
 En el script configure, busca dónde se le pasan las libs de SDL2. Es en esta sección:
@@ -139,7 +132,8 @@ Ya sólo es ejecutar el configure como lo hagas normalmente, make, y debería fu
 
 Si le haces un ldd al ejecutable de scummvm resultante, verás que ya no depende de ninguna librería externa de las SDL2.
 
-*********Compilar contra librerías externas (libfluidsynth, libjpeg...)**************
+Compilar contra librerías externas (libfluidsynth, libjpeg...)
+==============================================================
 
 En la versión publicada del scummvm, no he tenido en cuenta esta posibilidad porque, primero, en principio no hacia falta ya que se prefiere el sonido
 original de los juegos, y en segundo lugar, como le pasamos rutas de includes que se necesitan para estas librerías (/usr/include/arm-linux-gnueabihf)
@@ -166,14 +160,14 @@ Luego configuraríamos con algo como:
 (Como puedes ver, no hace falta pasarle nada para activar el soporte de fluidsynth: por defecto, si se detectan las cabeceras y libs de fluidsynth, el soporte se activa solo).
 
 ARREGLANDO EL SCROLL EN SCUMMVM LIBRETRO
-===========================================
+========================================
 
 La función relevante es updateScreen en backends/platform/libretro/os.cpp.
 Además, en esa fn se blitea a screen, que luego se sube a retroarch en libretro.cpp usando video_cb aquí:
 video_cb(screen.pixels, screen.w, screen.h, screen.pitch);
 
 DÓNDE ENCONTRAR LOS JUEGOS DE SCUMMVM
-=======================================
+=====================================
 
 http://the-eye.eu/public/Games/ScummVM/Working/
 
@@ -183,3 +177,13 @@ MYST EN ESPAÑOL
 A la versión de MYST-ME que tienes le quitaste los demás idiomas, así que como sólo tiene inglés y español, el SCUMMVM no detecta los idiomas
 y no te deja elegir el español.
 La solución es tan simple como editar el scummvm.ini y cambiar "en" por "es" en la entrada del myst-me.
+
+RECUPERAR PARTIDAS EN EL GABRIEL KNIGHT DE SCUMMVM
+==================================================
+
+A los datos del juego les falta el archivo
+VERSION
+Con el contenido
+01.100.000
+
+Sin este archivo, podrás salvar pero luego no te deja recuperar la partida porque dice que es de otra versión. Así que lo creamos a mano y listo.
