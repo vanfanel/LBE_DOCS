@@ -49,7 +49,8 @@ CRT Gamma 		230
 Monitor Gamma	275
 Salvamos el preset usando "Save Shader Preset as..." y le ponemos como nombre, por ejemplo, "0000000-custom" que luego se encuentra facilmente.
 Nos salimos a ES, y elegimos como shader nuestro "0000000-custom", que estar está, un poco abajo pero está. 
-
+NOTA: Las portátiles se ven demsasiado borrosas con la combinación de shaders GDAPT+FAKELOTTES "ALIGERADO", así que
+para ellas creamos "000000-portatil" que será el FAKELOTTES ALIGERADO con su parámetro "Shadow Mask" puesto a 3.
 
 PARA TENER LAS CARÁTULAS CUANDO HAGAS EL SCRAPPING:
 -En "SCRAPPING DATABASE" deja "SCREENSCRAPER"
