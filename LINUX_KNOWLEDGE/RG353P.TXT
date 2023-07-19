@@ -4,12 +4,6 @@ CANAL Y PERSONA A PREGUNTAR POR PROBLEMAS DE REFRESCO DE PANTALLA
 Servidor Discord: JELOS
 Canal: Mainline y preguntar a macroalpha, o canal general y preguntar a fewt para temas de compilacion del kernel de JELOS.
 
-SISTEMA OPERATIVO
-=================
-
-JELOS ya no saca binarios. It's dangerous to go alone, take this!!
-https://github.com/RetroGFX/UnofficialOS/releases
-
 CONFIGURACIÓN PARA SCROLL SIN JITTERING/JUDDERING
 =================================================
 
@@ -60,3 +54,8 @@ PARA TENER LAS CARÁTULAS CUANDO HAGAS EL SCRAPPING:
 -En user/pass, vanfanel/Manuel22
 Si has escrapeado sin hacer esto, te bajará screenshots de cada juego: te toca borrar el directorio "images" de cada sistema en /STORAGE/roms
 y volver a scrapear con estas cosas puestas como acabo de indicar.
+
+PARA INSTALAR TEMAS CUSTOM BAJADOS DE GITHUB
+============================================
+
+NO van en /storage, sino que debemos meter el tema que queramos en /etc/emulationstation/themes/
