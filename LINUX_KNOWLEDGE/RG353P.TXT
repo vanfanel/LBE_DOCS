@@ -36,9 +36,9 @@ Cargamos un juego desde ES y entramos en la configuración del shader: ajustamos
 yo pongo como "Shader #0" el "gdapt-pass1.glsl" que lo tienes en los shaders de "Dithering",
 y como "Shader #1" el "fakelottes.glsl" aligerado que deberías tener en /storage/shaders/shaders
 Ahora entramos en los "Shader Parameters" y dejamos los parámetros del fakelottes así (los del shader gdapt no los tocamos):
-shadowmask		4
+shadowmask		1
 maskDark		50
-maskLight		70
+maskLight		120
 CRT Gamma 		230
 Monitor Gamma	275
 Salvamos el preset usando "Save Shader Preset as..." y le ponemos como nombre, por ejemplo, "0000000-custom" que luego se encuentra facilmente.
