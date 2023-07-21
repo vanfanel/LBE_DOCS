@@ -253,3 +253,8 @@ https://github.com/kklis/memeater
 Hazte un BAT así para dejar sólo 16MB de RAM:
 memeater 112000
 aladdin.exe
+
+**********NOTAS SBEMU*************
+
+Se puede cargar SBEMU sin JEMMEX, pero para ello tienes que cargar SBEMU sin soporte para modo real (pasándole /RMo),
+con lo que basta con cargar HIMEM.SYS y no te hace falta JEMMEX PARA NADA. 
