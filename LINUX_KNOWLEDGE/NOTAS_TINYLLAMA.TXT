@@ -1,9 +1,94 @@
---Lo primero, flasheamos la BIOS al SOC, particionamos/f+ormateamos la MicroSD a FAT32, y le instalamos MSDOS 6.22, para todo lo cual seguimos estas instrucciones:
+--Lo primero, flasheamos la BIOS al SOC, particionamos/formateamos la MicroSD a FAT32, y le instalamos MSDOS 6.22, para todo lo cual seguimos estas instrucciones:
 https://github.com/eivindbohler/tinyllama2#programming-the-bios
 https://github.com/eivindbohler/tinyllama2#installing-dos
 
 PARA INSTALAR UN MS-DOS PROPIO, simplemente coge la instalación que tienes guardada en el disco de backup, cópiala tal cual
 a la SD, arranca en el Virtual Floppy ese del core, y escribe "SYS C:", y ya tiene que arrancar.
+
+
+CONCEPTOS PREVIOS
+=================
+
+PARA SUMAR Y RESTAR DIRECCIONES EN HEXADECIMAL "A OJO":
+Un incremento unitario en la última cifra es una unidad en decimal.
+Un incremento unitario en la penútima cifra son 16 unidades en decimal.
+Un incremento unitario en la antepenútima cifra son 16 * 16 = 256 unidades en decimal.
+..Etc. Y Ya con esto, en cuanto veas un área tipo A000-A100 sabes intuitivamente cuánta memoria es.
+
+LAS ÁREAS QUE SE USAN EN LA GESTIÓN DE MEMORIA DE MSDOS, COMO "A000H - A040H" ESTÁN MEDIDAS EN BLOQUES DE 16KB CADA UNO.
+Así que si restamos A000H-A040H = 40H, que 40H es 64 en decimal, con lo que son 64 * 16 = 1024 KB.
+Si en MSD o en CHEKIT vemos un área que es algo así como 9F80 - 9FC0, vemos que es una diferencia de 4 unidades en la penúltima cifra
+(al ser la penúltima cifra, son 16 por cada unidad de incremento)
+con lo que son 16 * 4 = 64 bloques, y cada bloque son 16 K, así que 64 * 16 = 1024 KB.
+
+CONCEPTOS
+=========
+
+UMBs (=UMA): Upper Memory Blocks, o Upper Memory Area. Espacio de memoria entre los 640KBs y 1MB en modo real.
+EMM386 habilita el acceso a los UMBs, y nos permite especificar a qué bloques van a poder acceder los programas y a cuáles no,
+usando los parámetros X=xxx-xxxx y I=...
+El acceso a los UMBs/UMA permite que los TRS se guarden allí (y MSDOS si usamos DOS=HIGH,UMB),
+lo que se llama "LOADHIGH", ahorrando así memoria convencional.
+Además, EMM386 pone la CPU en modo protegido, por lo que todo es más lento y por eso algunos juegos se quejan (Another World...)
+(El "modo Virtual 8086" AKA "V86 mode" es un submodo del modo protegido: sirve para que los programas en modo real funcionen en modo protegido,
+emulando para ello una CPU de 16bits en modo real).
+
+(+)HAY UN PROBLEMA: cosas de la BIOS (roms opcionales) pueden estar usando UMA.
+Para saber qué cosas usan UMA, usa el comando MSD 
+o puedes usar Checkit (https://dosdays.co.uk/media/diagnostics/checkit_3.0.zip), que te dice hasta qué fabricante usa cada bloque de 16K (es el modo más claro de verlo)
+o puedes usar UMASCAN.COM (http://files.mpoli.fi/unpacked/software/programm/asm/dosutil.zip/umascan.com)
+o puedes usar UBMCHK (http://www.uwe-sieber.de/files/umbpci_e.zip) que checkea los blockes de 16k entre C000 y EFFF para saber qué
+parámetro /I=... pasarle a UMBPCI.SYS
+o puedes usar las TSR UTILITIES (https://www.pcorner.com/list/UTILITY/TSRCOM35.ZIP/INFO/)
+(+)UMBPCI.SYS es una alternativa a EMM386.SYS, supuestamente más rápida y compatible, pero sólo compatible con ciertas CPUs.
+CUANDO SEPAS QUÉ ÁREAS DE LA UMA ESTÁN SIENDO USADAS POR ROLLOS DE LA BIOS, PUEDES EXCLUIR ESAS ZONAS CON EL PARÁMETRO X=xxx-xxx DE EMM386.EXE
+NOTAS DEL FORO DE VOGONS SOBRE ESTO:
+++++ A000-AFFF is always used by VGA as Video RAM (not ROM!) for Graphic modes. It's vendor independent (old VGA cards like S3 Trio's also use this area).
+++++ B800-BFFF is always used by VGA as Video RAM for Text modes. It's also vendor independent.
+++++ Only B000-B7FF can be (relatively) safely included as potential UMB on VGA systems since it's the memory area for monochrome Text modes. So it does not make much sense to use 'I=B000-B4FF' since it's not more compatible than 'I=B000-B7FF' and you lose 12K.
+
+
+EXTENDED MEMORY (XMS) (Necesita HIMEM.SYS)
+Memoria por encima del primer 1 MB (ya que originalamente el PC sólo podía direccionar 1MB).
+Los programas en MODO REAL en principio no pueden accelder a esta memoria, eso es precisamente lo que hace HIMEM.SYS
+
+EXPANDED MEMORY (EMS) (Necesita EMM386)
+Una tecnología más antigua que XMS para expandir la memoria de los PCs más allá de los 640KBs usando una tarjeta de expansión con bank-switching.
+Como esta tecnología se hizo muy famosa y muchos juegos usan EMS, lo que se hace es emular EMS usando XMS.
+EMM386 hace dos cosas:
+1 - Emular EMS usando XMS
+2 - Para ello, habilita el acceso a la UMA (=UMBs) para poder emular el bank-switing, ya que para emular el bank-swithcing usa el PAGE FRAME,
+que EMM386 coloca en la UMA (=UMBs). EMM386 Necesita encontrar 64KB seguidos en la UMA o nos dará el error "Unable to Set Page Frame Base Address".
+
+OTROS PARÁMERETROS DE EMM386 (Ver esta página completa: https://hwiegman.home.xs4all.nl/msdos/98768.htm)
+(Y esta otra: http://manmrk.net/tutorials/DOS/msdos7/emm386.htm)
+========================================================================================================
+
+RAM: Le dice a EMM386 que queremos EMS (es el comportamiento por defecto), para lo cual se usa XMS para simular EMS.
+Si no queremos EMS, le pasamos NOEMS.
+
+MEMORY (en KB): Cantidad máxima de memoria EMS que queremos.
+
+NOTR - No inicializar no sé qué mierdas de un adaptador de red.
+
+NOMOVEXBDA - Algunas máquinas usan el último KB de memoria convencional para una área extendida de datos de la BIOS.
+Por defecto, EMM386 mapea esa área en la UMA para dejar libre esa memoria convencional, pero eso puede causar problemas así que
+pasándole este parámetro le decimos que la deje en la memoria convencional.
+
+NOHI - Por defecto, EMM386 carga parte de sí mismo en la UMA, pero puede que la dirección donde se carga esté ocupada con cosas de la BIOS,
+así que con NOHI le decimos que no se cargue en UMA, sino en memoria convencional.  
+
+I=B000-B7FF --> Usar el área UMA de gráficos monocromo (Hércules) que es ese segmento B000-B7FF.
+Si tienes VGA, es seguro usarlo.
+
+X=A000-F7FF --> Excluye todo el área de UMA (es decir desde los 640KB al primer 1MB), y si así se resuelve el problema significa que estamos
+machacando algo de la BIOS que está en el UMA.
+
+
+PARA CONTROLAR LA VELOCIDAD
+===========================
+
+Tienes CPUSPD, SETMUL y THROTTLE (http://www.oldskool.org/pc/throttle/DOS)
 
 *****INSTALAR FREEDOS**************************************************************************
 
