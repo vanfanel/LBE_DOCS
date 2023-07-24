@@ -206,6 +206,10 @@ Los juegos que den el famoso "runtime error 200" se pueden parchear ctbppat.exe,
 que queremos parchear. El CTBPPAT se saca de aquí: https://www.vogons.org/viewtopic.php?f=13&t=93
 Hay otro llamado BPPatch2.exe o algo así, creo.
 
+***ISHAR***
+
+Hay que comentar el EMM386 por completo, y elegir como tarjeta una ADLIB (La soundblaster suena pero muy mal).
+
 ***TURRICAN 2***
 
 En todas las páginas viene una versión que no funciona pero que se puede arreglar fácilmente. 
@@ -241,18 +245,12 @@ Si es así, pásale al JEMMEX el parámetro FRAME=D000
 
 ***ALADDIN***
 Necesita EMS, y no funciona con más de 32MB de RAM.
-Para ello le pasamos al JEMMEX el parámetro X2MAX=32767
+Para ello, o bien usamos HIMEMX (https://github.com/Baron-von-Riedesel/HimemX/releases) en vez del HIMEM.SYS así: HIMEMX.EXE /MAX=16M 
+o bien usamos el memeater (https://github.com/kklis/memeater) con 112000
+o bien le pasamos al JEMMEX el parámetro X2MAX=32767
 
 ***PINBALL DREAMS y PINBALL FANTASIES***
-Tienes que arrancar JEMMEX, y dejar sólo 32MB de RAM, 
-Para ello le pasamos al JEMMS el parámetro X2MAX=32767
-
-NOTA: Si no usamos JEMMEX, para consumir memoria y que vayan los juegos que no van por exceso de RAM podemos usar esto:
-O podríamos usar esto:
-https://github.com/kklis/memeater
-Hazte un BAT así para dejar sólo 16MB de RAM:
-memeater 112000
-aladdin.exe
+Lo mismo que el Aladdin.
 
 **********NOTAS SBEMU*************
 
