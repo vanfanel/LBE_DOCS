@@ -13,8 +13,8 @@ UI Settings-> RetroArch menu driver a RGUI
 Game Settings -> AUTO SAVE/LOAD ON GAME LAUNCH a OFF, y en AI GAME TRANSLATION ponemos ENABLE AI TRANSLATION SERVICE a OFF también.
 Game Settings ->PER SYSTEM ADVANCED CONFIGURATION y vamos eligiendo el emulador para cada sistema.
 
-En menú de RetroArch:
-En vídeo, Max Swapchain Images a 2, y Threaded Video OFF.
+En menú de RETROARCH:
+En vídeo, Max Swapchain Images a 2, Threaded Video OFF, y Switch Refresh Rate Automatically OFF.
 Driver de sonido Alsathread, 45ms de latencia.
 Resampler quality a NORMAL, Output Rate a 44100 (ya que Genesis Plus GX saca 44100Hz).
 Poner sonido a 44100 en las opciones de FBNeo también.
