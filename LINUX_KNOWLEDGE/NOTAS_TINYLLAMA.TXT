@@ -47,6 +47,11 @@ NOTAS DEL FORO DE VOGONS SOBRE ESTO:
 ++++ B800-BFFF is always used by VGA as Video RAM for Text modes. It's also vendor independent.
 ++++ Only B000-B7FF can be (relatively) safely included as potential UMB on VGA systems since it's the memory area for monochrome Text modes. So it does not make much sense to use 'I=B000-B4FF' since it's not more compatible than 'I=B000-B7FF' and you lose 12K.
 
+(+) OTRO PROBLEMA: El DMA (de la tarjeta de sonido por ejemplo) sólo puede acceder a los 16MB de memoria inferiores.
+Ver la respuesta de elianda en este hilo: https://www.vogons.org/viewtopic.php?f=7&t=35747&start=20
+Así que tenemos que dejar el sistema con 16MB y que esos 16MB sean los 16MB inferiores.
+Para ello podemos, o bien usar el HIMEM.SYS de MS-DOS 5.0, o bien usar XMSDSK (http://www.uwe-sieber.de/files/xmsdsk.zip) con el parámetro /t para que ocupe la memoria de arriba a abajo,
+dejando así libres los 16MB inferiores que son los que puede usar el DMA. 
 
 EXTENDED MEMORY (XMS) (Necesita HIMEM.SYS)
 Memoria por encima del primer 1 MB (ya que originalamente el PC sólo podía direccionar 1MB).
