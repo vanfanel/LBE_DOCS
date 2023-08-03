@@ -15,7 +15,7 @@ es decir, SCHED_FIFO, que es lo que usamos con -f), pasar -r 99 es un peligro y 
 
 ******Establecer una variable de entorno globalmente en el arranque*****************************************************
 
-Aunque hasta ahora lo has hecho de las más peregrinas maneras, el modo "correcto" es en /etc/profile
+Aunque hasta ahora lo has hecho de las más peregrinas maneras, el modo "correcto" es en /etc/environment
 Basta con poner "export, el nombre de la variable y el valor. Si no pones "export", aparece con echo pero no funciona.
 export SDL_VIDEO_DOUBLE_BUFFER=1
 Luego puedes comprobarlo con echo $<nombre_variable>, en plan:
@@ -4586,10 +4586,8 @@ MUY IMPORTANTE: podemos localizar en qué paquete está un fichero, de manera qu
 
 *************Cómo hacer que el directorio actual siempre esté en el PATH, para no tener que escribir ./archivo *******************
 
-Edita /etc/profile y deja la línea
-export PATH
-como
-export PATH=$PATH:.
+Edita ~/.bashrc y añade la línea
+PATH=$PATH:.
 
 *************Obtener información sobre los paquetes*******************************************************************************
 
@@ -8567,8 +8565,22 @@ Ahora desde el Chromium también nos vamos a abrir este script: https://gist.git
 Le damos a RAW (es como un github), y nos saldrá un botón de INSTALL. Instalamos el script, es un script para el tampermonkey.
 Ahora nos vamos a emuparadise, le damos a Download Links de lo que queramos bajar, y nos sale una opción nueva que es "download with workaround script". Le damos y empieza a bajar.
 
-HACER QUE LOS MANDOS SEAN DETECTADOS COMO GAMEPAD POR LA API DE SDL2
-=====================================================================
+HACER QUE LOS MANDOS SEAN DETECTADOS COMO GAMEPAD POR LA API DE SDL2 (Método actual)
+====================================================================
+
+Nos bajamos el GamePad Tool de aquí y e instalamos el .deb:
+https://generalarcade.com/gamepadtool/
+
+Lo ejecutamos, y le damos a "Create New Mapping".
+
+Para el adaptador de mandos de Dreamcast nos da:
+030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,
+
+Así que en /etc/environment añadimos:
+SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
+
+HACER QUE LOS MANDOS SEAN DETECTADOS COMO GAMEPAD POR LA API DE SDL2 (Método pedestre)
+====================================================================
 
 Lo primero es conocer el GUID del controller. El GUID es propio de las SDL, no se puede sacar de otro sitio, y es el resultado de fundir el bus, vendor, product and version numbers en un sólo valor.
 
@@ -8617,9 +8629,8 @@ gcc -o sdl2-joystick sdl2-joystick.c `pkg-config --libs --cflags sdl2`
 Si queremos que el mando de DreamCast se detecte como gamepad, tenemos que añadir en src/joystick/SDL_gamecontrollerdb.h, en la parte de #if defined(__LINUX__):
 "030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,",
 
-O bien en /etc/profile
-export SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
-
+O bien en /etc/environment
+SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
 DESCARGAR DE MEGA POR CACHOS CON LAS MEGATOOLS
 ==============================================
