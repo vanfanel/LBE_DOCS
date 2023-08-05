@@ -257,6 +257,11 @@ o bien le pasamos al JEMMEX el parámetro X2MAX=32767
 ***PINBALL DREAMS y PINBALL FANTASIES***
 Lo mismo que el Aladdin.
 
+***REALMS OF THE HAUNTING (ROTH)***
+Si te da un error de que no encuentra un archivo, edita CONFIG.INI y pon "SourcePath" y "DestinationPath" apuntando
+al directorio donde tengas el juego instalado.
+En la versión que tienes guardada en el disco duro de backup, están apuntando a C:\juegos\roth
+
 **********NOTAS SBEMU*************
 
 Se puede cargar SBEMU sin JEMMEX, pero para ello tienes que cargar SBEMU sin soporte para modo real (pasándole /RMo),
