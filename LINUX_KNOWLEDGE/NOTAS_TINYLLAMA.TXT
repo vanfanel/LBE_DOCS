@@ -65,6 +65,9 @@ EMM386 hace dos cosas:
 2 - Para ello, habilita el acceso a la UMA (=UMBs) para poder emular el bank-switing, ya que para emular el bank-swithcing usa el PAGE FRAME,
 que EMM386 coloca en la UMA (=UMBs). EMM386 Necesita encontrar 64KB seguidos en la UMA o nos dará el error "Unable to Set Page Frame Base Address".
 
+MEJOR PÁGINA PARA OPTIMIZACIÓN DE MEMORIA CONVENCIONAL EN DOS:
+https://jeffpar.github.io/kbarchive/kb/077/Q77083/
+
 OTROS PARÁMERETROS DE EMM386 (Ver esta página completa: https://hwiegman.home.xs4all.nl/msdos/98768.htm)
 (Y esta otra: http://manmrk.net/tutorials/DOS/msdos7/emm386.htm)
 ========================================================================================================
