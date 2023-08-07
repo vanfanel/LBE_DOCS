@@ -24,6 +24,20 @@ con lo que son 16 * 4 = 64 bloques, y cada bloque son 16 K, así que 64 * 16 = 1
 CONCEPTOS
 =========
 
+MEMORIA CONVENCIONAL: Los primeros 640KB. Sólo los juegos más antiguos necesitan mucha memoria convencional (con 615 o así funciona cualquier cosa).
+La idea es mandar todo lo que se pueda a la MEMORIA ALTA (el espacio entre los 640KB y el primer 1MB) para así tener libre
+la mayor cantidad posible de convencional.
+Para ello, en MSDOS se carga el HIMEM.SYS (O HIMEMX, o JEMMEX) el CONFIG.SYS, y MSDOS intenta cargar todos los TSR que metamos en AUTOEXEC.BAT
+en la memoria alta.
+A no ser que en la línea DOS=HIGH,UMB añadamos NOAUTO, claro.
+Por tanto NO hace falta por tanto andar poniendo LH ni LOADHIGH en AUTOEXEC.BAT,
+MSDOS lo hace solo si tiene un gestor de memoria alta.
+Puedes comprobar qué cosas están ocupando la memoria convencional y cuáles están en memoria alta con "mem /c/p"
+Si algo está ocupando convencional, normalmente es que no hay espacio en la alta y por eso MSDOS no lo metió ahí.
+Un truco increíble para tener más memoria alta es pasarle al EMM386 o al JEMMEX, que gastan mucha memoria alta con el frame de la EMS,
+el parámetro I=B000-B7FF I=E000-EFFF, con lo que las zonas de memoria alta dedicadas a los gráficos HERCULES y PS/2 pasan a estar disponibles.
+PERO OJO: Con esto, juegos como Lemmings o Ishar fallan porque intentan tocar esa memoria al comprobar los modos gráficos.
+
 UMBs (=UMA): Upper Memory Blocks, o Upper Memory Area. Espacio de memoria entre los 640KBs y 1MB en modo real.
 EMM386 habilita el acceso a los UMBs, y nos permite especificar a qué bloques van a poder acceder los programas y a cuáles no,
 usando los parámetros X=xxx-xxxx y I=...
@@ -32,26 +46,6 @@ lo que se llama "LOADHIGH", ahorrando así memoria convencional.
 Además, EMM386 pone la CPU en modo protegido, por lo que todo es más lento y por eso algunos juegos se quejan (Another World...)
 (El "modo Virtual 8086" AKA "V86 mode" es un submodo del modo protegido: sirve para que los programas en modo real funcionen en modo protegido,
 emulando para ello una CPU de 16bits en modo real).
-
-(+)HAY UN PROBLEMA: cosas de la BIOS (roms opcionales) pueden estar usando UMA.
-Para saber qué cosas usan UMA, usa el comando MSD 
-o puedes usar Checkit (https://dosdays.co.uk/media/diagnostics/checkit_3.0.zip), que te dice hasta qué fabricante usa cada bloque de 16K (es el modo más claro de verlo)
-o puedes usar UMASCAN.COM (http://files.mpoli.fi/unpacked/software/programm/asm/dosutil.zip/umascan.com)
-o puedes usar UBMCHK (http://www.uwe-sieber.de/files/umbpci_e.zip) que checkea los blockes de 16k entre C000 y EFFF para saber qué
-parámetro /I=... pasarle a UMBPCI.SYS
-o puedes usar las TSR UTILITIES (https://www.pcorner.com/list/UTILITY/TSRCOM35.ZIP/INFO/)
-(+)UMBPCI.SYS es una alternativa a EMM386.SYS, supuestamente más rápida y compatible, pero sólo compatible con ciertas CPUs.
-CUANDO SEPAS QUÉ ÁREAS DE LA UMA ESTÁN SIENDO USADAS POR ROLLOS DE LA BIOS, PUEDES EXCLUIR ESAS ZONAS CON EL PARÁMETRO X=xxx-xxx DE EMM386.EXE
-NOTAS DEL FORO DE VOGONS SOBRE ESTO:
-++++ A000-AFFF is always used by VGA as Video RAM (not ROM!) for Graphic modes. It's vendor independent (old VGA cards like S3 Trio's also use this area).
-++++ B800-BFFF is always used by VGA as Video RAM for Text modes. It's also vendor independent.
-++++ Only B000-B7FF can be (relatively) safely included as potential UMB on VGA systems since it's the memory area for monochrome Text modes. So it does not make much sense to use 'I=B000-B4FF' since it's not more compatible than 'I=B000-B7FF' and you lose 12K.
-
-(+) OTRO PROBLEMA: El DMA (de la tarjeta de sonido por ejemplo) sólo puede acceder a los 16MB de memoria inferiores.
-Ver la respuesta de elianda en este hilo: https://www.vogons.org/viewtopic.php?f=7&t=35747&start=20
-Así que tenemos que dejar el sistema con 16MB y que esos 16MB sean los 16MB inferiores.
-Para ello podemos, o bien usar el HIMEM.SYS de MS-DOS 5.0, o bien usar XMSDSK (http://www.uwe-sieber.de/files/xmsdsk.zip) con el parámetro /t para que ocupe la memoria de arriba a abajo,
-dejando así libres los 16MB inferiores que son los que puede usar el DMA. 
 
 EXTENDED MEMORY (XMS) (Necesita HIMEM.SYS)
 Memoria por encima del primer 1 MB (ya que originalamente el PC sólo podía direccionar 1MB).
@@ -64,6 +58,13 @@ EMM386 hace dos cosas:
 1 - Emular EMS usando XMS
 2 - Para ello, habilita el acceso a la UMA (=UMBs) para poder emular el bank-switing, ya que para emular el bank-swithcing usa el PAGE FRAME,
 que EMM386 coloca en la UMA (=UMBs). EMM386 Necesita encontrar 64KB seguidos en la UMA o nos dará el error "Unable to Set Page Frame Base Address".
+
+(+) PROBLEMA: El DMA (de la tarjeta de sonido por ejemplo) sólo puede acceder a los 16MB de memoria inferiores.
+Ver la respuesta de elianda en este hilo: https://www.vogons.org/viewtopic.php?f=7&t=35747&start=20
+Así que tenemos que dejar el sistema con 16MB y que esos 16MB sean los 16MB inferiores.
+Para ello podemos, pasarle a JEMMEX el parámetro X2MAX=32767 MAX=32767, o bien usar el HIMEM.SYS de MS-DOS 5.0 que sólo reconoce 16MB,
+o bien usar XMSDSK (http://www.uwe-sieber.de/files/xmsdsk.zip) con el parámetro /t para que ocupe la memoria de arriba a abajo,
+dejando así libres los 16MB inferiores que son los que puede usar el DMA.
 
 MEJOR PÁGINA PARA OPTIMIZACIÓN DE MEMORIA CONVENCIONAL EN DOS:
 https://jeffpar.github.io/kbarchive/kb/077/Q77083/
@@ -217,6 +218,14 @@ Hay otro llamado BPPatch2.exe o algo así, creo.
 ***ISHAR***
 
 Hay que comentar el EMM386 por completo, y elegir como tarjeta una ADLIB (La soundblaster suena pero muy mal).
+
+***LOTUS 3***
+
+Con hexedit abrimos lotus.dat, buscamos la cadena hexadecimal FB F7 F1, y la dejamos como FB 90 90.
+
+***Old Towers***
+
+Parcheamos TOWERS.EXE con TTPATCH.EXE
 
 ***TURRICAN 2***
 
