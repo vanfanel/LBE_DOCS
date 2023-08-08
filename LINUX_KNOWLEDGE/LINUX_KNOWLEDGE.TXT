@@ -4838,6 +4838,8 @@ TxtScripts=1
 Y ya sólo es cargar el mod desde el dev menu (tienes que tener "devMenu=y" en Settings.ini y darle a ESC para acceder a él),
 reiniciar con el mod cargado y debería ir.
 
+NOTA: SI NO TE VA EL MANDO, mira que no tengas más de un mando en gamecontrollerdb.txt.
+
 INFO POR SI TIENES QUE VOLVER A PREPARAR LOS VÍDEOS Y LA MÚSICA DE LOS VÍDEOS:
 
 Extraer sólo el audio de la versión de PC (el RSDKv5 necesita audio en 44100 pero los vídeos de PC vienen en 48000):
