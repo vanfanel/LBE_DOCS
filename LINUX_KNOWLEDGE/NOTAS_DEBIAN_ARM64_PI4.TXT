@@ -523,7 +523,7 @@ CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
 
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
-./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
+./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-offscreen --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA, PERO EN MODO DEBUG:
 
