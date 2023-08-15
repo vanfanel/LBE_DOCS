@@ -298,6 +298,25 @@ git clone --depth 1 https://github.com/snesrev/glsl-shaders
 Editamos zelda3.ini y ponemos "Fullscreen" a 1, "OutputMethod" a OpenGL, "LinearFiltering" a 1, "DisableFrameDelay" a 1,
 "EnhancedMode7" a 0, y "Shader" a "glsl-shaders/crt/fakelottes.glslp".
 
+******WipeOut nativo en GNU/Linux********************************************************************************************
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/phoboslab/wipeout-rewrite.git
+
+Instalamos GLEW (mira en la sección de cómo instalar GLEW de este mismo documento) y SDL2.
+
+Editamos Makefile y en la sección Linux cambiamos -lGL por -lOpenGL
+
+Compilamos con:
+C_FLAGS="-march=native -mtune=native -fomit-frame-pointer" GL_VERSION=GLES2 make sdl -j4
+
+Necesitamos los datos de:
+https://phoboslab.org/files/wipeout-data-v01.zip
+(LOS TIENES EN EL DISCO DE BACKUP, POR SI DESAPARECE EL LINK)
+
+Creamos el directorio ~/wipeout, y ahí metemos el ejecutable "wipegame" y creamos el subdirectorio "wipeout" donde metemos
+los datos del juego.
+
 ******Cargar juegos de GameMaker (GM) de Android en GNU/Linux****************************************************************
 
 OJO!!! Se tiene que hacer con un Linux de 32bits (armhf).
