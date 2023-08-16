@@ -245,6 +245,8 @@ que hay por ahí en internet.
 Con esto ya te saldrá el menú con todas sus opciones, y el juego funcionará bien.
 Para que vaya el audio, selecciona la SoundBlaster PRO y que detecte los parámetros.
 
+Si pretendes usar SB16, el DMA que debes elegir es el HDMA, no el DMA normal. Así que elije para el DMA el 5 en vez del 1.
+
 ***WIZARDRY VI: BANE OF THE COSMIC FORGE***
 Desactivar la CACHE LEVEL 1
 
