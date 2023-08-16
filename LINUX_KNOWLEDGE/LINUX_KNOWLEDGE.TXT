@@ -8348,6 +8348,14 @@ Con esto ya te saldrá el menú con todas sus opciones, y el juego funcionará b
 Para que vaya el audio, selecciona la SoundBlaster PRO, PUERTO 220, IRQ 7, DMA 1 (y que estén igual en la config del DOSBOX, claro).
 NO TE MOLESTES con el audio GUS, suena peor que con SBPro...
 
+ELDER SCROLLS: ARENA EN DOSBOX
+==============================
+
+Para tener música GUS, no puedes usar la GUS para el sonido y para la música a la vez: tienes que tener una SB16 para el sonido
+y la GUS para la música (si intentas usar la GUS para ambas cosas, el juego se colgará, se corromperán los menús, etc).
+Una vez que las hayas seleccionado así en INSTALL.EXE, edita ARENA.BAT y ajusta los valores de la GUS para que coincidan con los de DOSBOX,
+ya que INSTALL.EXE no detecta correctamente los valores de la GUS.
+
 LA MEJOR PÁGINA PARA BAJAR PELÍCULAS BUENAS Y ALTERNATIVAS
 ==========================================================
 
