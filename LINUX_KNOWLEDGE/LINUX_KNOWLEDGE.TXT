@@ -594,7 +594,7 @@ git clone --depth 1 https://github.com/realnc/dosbox-core.git
 
 SI QUEREMOS QUE NO AJUSTE EL RATIO (lo cual causa pausas de audio...) editamos libretro/src/libretro.cpp
 y comentamos entero el contenido de la función update_gfx_mode()
-Si decidimos hacer esto, luego es posible ajustar el ratio de ciertos juegos como el JAZZ usando los overrides.
+Si decidimos hacer esto, luego es posible ajustar el ratio de ciertos juegos como el JAZZ (16:10) usando los overrides.
 
 Entramos en el directorio "libretro" y compilamos así:
 
