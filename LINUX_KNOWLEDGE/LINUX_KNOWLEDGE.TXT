@@ -305,8 +305,6 @@ git clone --depth 1 https://github.com/phoboslab/wipeout-rewrite.git
 
 Instalamos GLEW (mira en la sección de cómo instalar GLEW de este mismo documento) y SDL2.
 
-Editamos Makefile y en la sección Linux cambiamos -lGL por -lOpenGL
-
 Compilamos con:
 C_FLAGS="-march=native -mtune=native -fomit-frame-pointer" GL_VERSION=GLES2 make sdl -j4
 
@@ -598,7 +596,7 @@ Si decidimos hacer esto, luego es posible ajustar el ratio de ciertos juegos com
 
 Entramos en el directorio "libretro" y compilamos así:
 
-COMMONFLAGS="-march=native -mtune=native" \
+COMMONFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make -j2 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0
 
