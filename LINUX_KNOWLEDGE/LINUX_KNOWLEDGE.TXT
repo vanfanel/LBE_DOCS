@@ -3432,6 +3432,8 @@ sudo make install
 -Vamos a por RAZE en sí.
 Nos bajamos la última estable de: https://github.com/ZDoom/Raze/releases
 
+Editamos libraries/ZVulkan/src/volk/volk.c, y cambiamos VK_USE_PLATFORM_XLIB_KHR por VK_USE_PLATFORM_WAYLAND_KHR
+
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir b4
 cd b4
