@@ -3409,8 +3409,8 @@ make -j4
 
 ***********Compilar RAZE, el engine de Duke Nukem, Blood, Exhumed, etc para Linux****************************************************************
 
-Debe funcionar sobre VULKAN. Olvídate de trucos para OpenGL, ya que engañar con la versión de OpenGL hace que se corrompa la SD.
-No hace falta pasar ningún FLAG para compilar el soporte de Vulkan, se detecta solo.
+Sólo funciona en modo GLES, tiene Vulkan pero en la Pi cuelga el sistema entero al cargar el primer nivel.
+El soporte GLES y Vulkan son activados por defecto.
 
 -Instalamos una dependencia previa:
 sudo apt-get install libvpx-dev
@@ -3437,13 +3437,14 @@ Editamos libraries/ZVulkan/src/volk/volk.c, y cambiamos VK_USE_PLATFORM_XLIB_KHR
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DHAVE_VULKAN=OFF
 make -j4
 
 Ahora, creamos ~/raze y metemos allí el ejecutable resultante ("raze"), raze.pk3, el directorio soundfonts, y el duke3d.rgp
 
-Para ejecutarlo con el renderer VULKAN, lo lanzamos con: +vid_preferbackend 1
-Puedes desactivar TODO el antialiasing, poner FPS a UNLIMITED, etc
+Para ejecutarlo con el renderer GLES2, lo lanzamos con: +vid_preferbackend 2
+Para ejecutarlo con el renderer VULKAN, lo lanzamos con: +vid_preferbackend 1 (OJO!! REVIENTA LA RAM Y EL ORDENADOR SE CUELGA!! USA GLES!!)
+Para que vaya a 60FPS sólidos, puedes desactivar TODO el antialiasing, poner FPS a UNLIMITED, etc
 
 ***********EDUKE32: Duke Nukem 3D en GNU/Linux*********************************************************************************************
 
