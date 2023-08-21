@@ -315,6 +315,22 @@ https://phoboslab.org/files/wipeout-data-v01.zip
 Creamos el directorio ~/wipeout, y ahí metemos el ejecutable "wipegame" y creamos el subdirectorio "wipeout" donde metemos
 los datos del juego.
 
+******Blood y Exhumed nativos en Linux***************************************************************************************
+
+(OJO!!! NO FUNCIONA CON OPENGL, PARECE NECESITAR OPENGL 3 O ALGO ASÍ, NO SOPORTA GLES TAMPOCO).
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/nukeykt/NBlood.git
+
+Compilamos con:
+make blood -j3 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=0 USE_LIBVPX=0 LTO=1 OPTOPT="-march=native -mtune=native -O3"
+
+Podríamos compilar sólo el blood, o sólo el exxhumed, etc.. así:
+make blood
+make pcexhumed
+make rednukem
+
 ******Cargar juegos de GameMaker (GM) de Android en GNU/Linux****************************************************************
 
 OJO!!! Se tiene que hacer con un Linux de 32bits (armhf).
@@ -3414,8 +3430,7 @@ make -j4
 sudo make install
 
 -Vamos a por RAZE en sí.
-Clonamos su repo:
-git clone --depth 1 https://github.com/coelckers/Raze.git
+Nos bajamos la última estable de: https://github.com/ZDoom/Raze/releases
 
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir b4
