@@ -3419,8 +3419,8 @@ sudo apt-get install libvpx-dev
 
 -Segundo, necesita ZMUSIC. Vamos con ZMUSIC pues:
 Instala libmpg123-dev y libvorbis-dev.
-Descarla los últimos sources estables de:
-https://github.com/coelckers/ZMusic/releases
+Clonamos su repo (las versiones que hay en "releases" buscan versiones de FluidSynth viejas así que no irán):
+git clone --depth 1 https://github.com/ZDoom/ZMusic.git
 
 Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
 mkdir b4
