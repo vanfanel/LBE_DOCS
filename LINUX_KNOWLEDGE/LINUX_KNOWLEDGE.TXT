@@ -3409,8 +3409,8 @@ make -j4
 
 ***********Compilar RAZE, el engine de Duke Nukem, Blood, Exhumed, etc para Linux****************************************************************
 
-Sólo funciona en modo GLES, tiene Vulkan pero en la Pi cuelga el sistema entero al cargar el primer nivel.
-El soporte GLES y Vulkan son activados por defecto.
+NOTA: Sólo funciona en modo GLES y SOFTWARE, tiene Vulkan pero en la Pi cuelga el sistema entero al cargar el primer nivel.
+El soporte GLES y Vulkan son activados por defecto, así que vas a ver que desactivamos el soporte Vulkan al ejecutar cmake.
 
 -Instalamos una dependencia previa:
 sudo apt-get install libvpx-dev
@@ -3432,7 +3432,8 @@ sudo make install
 -Vamos a por RAZE en sí.
 Nos bajamos la última estable de: https://github.com/ZDoom/Raze/releases
 
-Editamos libraries/ZVulkan/src/volk/volk.c, y cambiamos VK_USE_PLATFORM_XLIB_KHR por VK_USE_PLATFORM_WAYLAND_KHR
+SÓLO SI VAMOS A USAR VULKAN (QUE NO FUNCIONA Y LO VAMOS A DESHABILITAR POR DEFECTO): Editamos libraries/ZVulkan/src/volk/volk.c,
+y cambiamos VK_USE_PLATFORM_XLIB_KHR por VK_USE_PLATFORM_WAYLAND_KHR
 
 Creamos el directorio de compilación, entramos, configuramos y compilamos:
 mkdir b4
@@ -3450,7 +3451,7 @@ Para que vaya a 60FPS sólidos, puedes desactivar TODO el antialiasing, poner FP
 
 Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
 
-Preferentemente, usa este fork, que inclue soporte para BLOOD y EXHUMED también:
+Preferentemente, usa este fork, que inclue soporte para BLOOD y EXHUMED también (OJO: el soporte de OpenGL no va):
 git clone --depth 1 https://github.com/nukeykt/NBlood.git
 
 Si quieres usar el eduke32 original, clona su repo de aquí:
@@ -6221,6 +6222,18 @@ COMPILAR CUALQUIER CORE DE LIBRETRO
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
+
+COMPILAR EL CORE HATARIB DE LIBRETRO
+====================================
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/bbbradsmith/hatariB.git
+
+Compilamos con:
+
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LIB=/usr/local/lib SDL2_LINK=/usr/local/lib
 
 COMPILAR EL CORE MUPEN64 DE LIBRETRO
 ====================================
