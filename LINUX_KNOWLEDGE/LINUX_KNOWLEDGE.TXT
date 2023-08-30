@@ -6235,6 +6235,9 @@ Compilamos con:
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.a
 
+NOTA: El Dungeon Master tarda muchísimo en cargar después de abrir la puerta. Usa la versión disponible aquí:
+https://atari.8bitchip.info/ASTGA/D/dungmast.php
+
 COMPILAR EL CORE MUPEN64 DE LIBRETRO
 ====================================
 
