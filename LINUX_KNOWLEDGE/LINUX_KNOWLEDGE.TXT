@@ -6233,7 +6233,7 @@ git clone --depth 1 https://github.com/bbbradsmith/hatariB.git
 Compilamos con:
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LIB=/usr/local/lib SDL2_LINK=/usr/local/lib/libSDL2.a
+make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.a
 
 COMPILAR EL CORE MUPEN64 DE LIBRETRO
 ====================================
