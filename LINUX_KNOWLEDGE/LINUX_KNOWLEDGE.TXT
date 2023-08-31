@@ -6233,10 +6233,18 @@ git clone --depth 1 https://github.com/bbbradsmith/hatariB.git
 Compilamos con:
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.a
+make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.a \
+ZLIB_INCLUDE=/usr/include ZLIB_LINK=/usr/lib/aarch64-linux-gnu/libz.a
 
 NOTA: El Dungeon Master tarda muchísimo en cargar después de abrir la puerta. Usa la versión disponible aquí:
 https://atari.8bitchip.info/ASTGA/D/dungmast.php
+
+PARA CREAR UNA IMÁGEN DE DISCO PARA HATARI EN GNU/LINUX:
+
+atari-hd-image 5 amberstar.img AMBERSTAR AMBRSTAR/
+
+..donde 5 es el tamaño en MB (5MB es lo mínimo que permite), AMBERSTAR es el nombre de la partición, y AMBRSTAR/ es el directorio
+cuyos contenidos queremos meter en el disco duro.
 
 COMPILAR EL CORE MUPEN64 DE LIBRETRO
 ====================================
