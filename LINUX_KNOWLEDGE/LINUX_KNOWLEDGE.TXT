@@ -6231,7 +6231,7 @@ Clonamos su repo:
 git clone --depth 1 https://github.com/bbbradsmith/hatariB.git
 
 Compilamos esta línea de compilación (es así de larga porque por defecto intenta usar unas SDL2 y libzip que trae incluidas,
-y queremos que use las instaladas en el sistema):
+y en su lugar queremos que use las instaladas en el sistema):
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.so \
