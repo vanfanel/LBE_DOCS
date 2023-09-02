@@ -6242,10 +6242,17 @@ https://atari.8bitchip.info/ASTGA/D/dungmast.php
 
 PARA CREAR UNA IMÁGEN DE DISCO PARA HATARI EN GNU/LINUX:
 
-atari-hd-image 5 amberstar.img AMBERSTAR AMBRSTAR/
+atari-hd-image 5 amberstar.img AMBERSTAR amberstar/
 
-..donde 5 es el tamaño en MB (5MB es lo mínimo que permite), AMBERSTAR es el nombre de la partición, y AMBRSTAR/ es el directorio
-cuyos contenidos queremos meter en el disco duro.
+..donde 5 es el tamaño en MB (5MB es lo mínimo que permite), AMBERSTAR es el nombre de la partición, y amberstar/ es el directorio
+cuyos contenidos queremos meter en el disco duro. OJO, que el juego estará en amberstar/AMBRSTAR, no tirado dentro de amberstar/ directamente.
+
+Para que el disco duro sea reconocido por el sistema, debes usar la ROM de arranque "EmuTOS 1024" y poner el disco como de tipo IDE.
+AHÓRRATE PROBLEMAS: NO uses una ROM de Atari (TOS) porque en ese caso tendrias que instalar HDD drivers en el disco.
+
+Para que el juego se autoarranque, simplemente en el raíz del disco crea un directorio llamado AUTO y mete ahí el ejecutable del juego.
+O sea, crearíamos amberstar/AUTO, y ahí copiaríamos amberstar/AMBRSTAR/AMBRSTAR.PRG.
+Además, activamos la opción de "Boot hard disk" en las opciones del core.
 
 COMPILAR EL CORE MUPEN64 DE LIBRETRO
 ====================================
