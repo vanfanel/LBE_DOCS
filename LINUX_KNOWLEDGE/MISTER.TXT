@@ -171,17 +171,19 @@ CREAR IMÁGENES DE DISCO DURO DE ATARIST Y LUEGO MONTARLAS EN LINUX
 PREVIO: El sistema y driver de discos original de Atari para los AtariST se llamaba AHDI. Tiene limitaciones del copón como que sólo puede arrancar desde particiones de tipo GEM de tamaño menor o igual a 16MB,
 luego tampoco se pueden hacer particiones GEM de más de 32MB, etc.. es una mierda.
 TOTAL, que nosotros usamos HDDRIVER de: https://www.hddriver.net/en/
-ES DE PAGO, el fichero se llama hddr1016.zip
+ES DE PAGO, el fichero se llama hddr1016.st (así como un hddr1016.zip con los contenidos que no deberías tener que usar a no ser
+que tengas que reconstruir el .st) y lo tienes en el disco duro de backup y en el correo.
+(Si tuvieras que reconstruir el .st, crea un DSK con el HATARI, lo montas usando el mount de Linux sin necesidad de ningún parámetro especial,
+y metes en él los contenidos de hddr1016.zip)
 
 Empezamos creando un fichero para contener la imágen de 200MB:
 dd if=/dev/zero of=hdd200m.vhd count=200 bs=1M
 
-Ahora creamos un DSK con el HATARI, lo montamos usando el mount de Linux (no hace falta ningún parámetro especial),
-y metemos en él los contenidos de hddr1016.zip
-Reiniciamos el HATARI con el DSK del driver, y con la imágen de disco que acabamos de crear.
+Reiniciamos el HATARI con el DSK del driver (hddr1016.st), y con la imágen de disco que acabamos de crear.
 Entramos en el diskette A: desde GEM, y ejecutamos HDDRUTIL.APP
 Una vez que haya cargado, seleccionamos el DEVICE (ventana del medio), y luego nos vamos a las opciones de arriba a MEDIUM->FORMAT. Formateamos. Luego nos vamos a MEDIUM->PARTITION.
-Particionamos, creando una sola partición que ocupe todo el disco. No hace falta que especifiques un tipo de partición, ni que cambies ninguna otra opción.
+Particionamos, creando una sola partición que ocupe todo el disco. No hace falta que especifiques un tipo de partición,
+ni que cambies ninguna otra opción.
 Luego nos pide que reiniciemos. Reiniciamos y volvemos a cargar HDDRUTIL.APP.
 En la ventana de arriba de las tres, seleccionamos el disco C:, y nos vamos a las opciones de arriba a FILE->INSTALL HDD DRIVER. Lo instalamos.
 Ahora nos vamos otra vez a las opciones de arriba con el disco C: seleccionado, a SETTINGS->DEVICES AND PARTITIONS, y desmarcamos todo menos el 0.0, así no nos buscará todo lo demás en el arranque.
