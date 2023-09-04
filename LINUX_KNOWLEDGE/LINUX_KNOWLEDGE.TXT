@@ -6265,17 +6265,18 @@ Para que el juego se autoarranque, simplemente en el raíz del disco crea un dir
 O sea, crearíamos amberstar/AUTO, y ahí copiaríamos amberstar/AMBRSTAR/AMBRSTAR.PRG.
 Además, activamos la opción de "Boot hard disk" en las opciones del core.
 
+ALTERNATIVA: Puedes configurar el disco duro como de tipo GEMDOS, y seleccionar un directorio. Y ya tienes acceso nativo al sistema host!
+Pero ojo: el directorio que selecciones para que haga de disco duro debe estar también en ~/.config/retroarch/system/hatarib/
+Y no esperes ningún ahorro de CPU, consume exactamente lo mismo que leer una imágen de disco.
+
 PARA JUEGOS INSTALADOS CON GAMEX (como el Captain Blood, etc)
 --Los juegos instalados con GAMEX necesitan que se use emulación de disco duro real en HATARI (o sea, configurarlo como ACSI o IDE)
 y además un driver de disco duro instalado en la imágen de disco. Hay 4 drivers de disco duro para AtariST que se usan a día de hoy:
 -El driver AHDI de Atari, que puedes encontrar como "AHDI v6.061 (1993-07-17)(Atari Corp.).st" en muchos sitios.
  Con este los juegos GAMEX parece que NO van.
 -El driver ICD Pro que es gratis pero los juegos GAMEX tampoco van.
--El driver HDDRIVER, que sí que van pero cuesta una pasta.
--El driver PP que lo tienes comprado y es el que instalamos.
-O sea que tras crear la imágen de disco con "dd if=/dev/zero of=5mb.img bs=1M count=5", la montamos en el HATARI (si usas el core HATARIB
-de Libretro tienes que mandar la imágen a ~/.config/retroarch/system/hatarib/ para que se pueda seleccionan el las opciones del core),
-arrancamos el core con la imágen de floppy del driver, y desde ahí formateamos la imágen e instalamos el driver. 
+-El driver PP que lo tienes comprado (busca en gmail)
+-El driver HDDRIVER, que sí que van pero cuesta una pasta: usamos este. Mira en la documentación de la MiSTer cómo se instala este driver.
 
 COMPILAR EL CORE MUPEN64 DE LIBRETRO
 ====================================
