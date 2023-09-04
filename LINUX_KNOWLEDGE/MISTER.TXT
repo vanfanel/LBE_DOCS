@@ -176,7 +176,8 @@ ES DE PAGO, el fichero se llama hddr1016.zip
 Empezamos creando un fichero para contener la imágen de 200MB:
 dd if=/dev/zero of=hdd200m.vhd count=200 bs=1M
 
-Ahora creamos un DSK con el HATARI, lo montamos (se monta sin parámetros), y metemos en él los contenidos de hddr1016.zip
+Ahora creamos un DSK con el HATARI, lo montamos usando el mount de Linux (no hace falta ningún parámetro especial),
+y metemos en él los contenidos de hddr1016.zip
 Reiniciamos el HATARI con el DSK del driver, y con la imágen de disco que acabamos de crear.
 Entramos en el diskette A: desde GEM, y ejecutamos HDDRUTIL.APP
 Una vez que haya cargado, seleccionamos el DEVICE (ventana del medio), y luego nos vamos a las opciones de arriba a MEDIUM->FORMAT. Formateamos. Luego nos vamos a MEDIUM->PARTITION.
