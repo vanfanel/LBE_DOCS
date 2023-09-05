@@ -6251,7 +6251,15 @@ PARA QUE LA MÚSICA DE AMBERSTAR NO SUENE DESACOMPASADA, activa la opción CORE 
 NOTA: El Dungeon Master tarda muchísimo en cargar después de abrir la puerta. Usa la versión disponible aquí:
 https://atari.8bitchip.info/ASTGA/D/dungmast.php
 
-PARA CREAR UNA IMÁGEN DE DISCO PARA HATARI EN GNU/LINUX:
+PARA INSTALAR JUEGOS EN DISCO DURO: Simplemente mete el juego en el directorio que quieras (ese directorio a su vez debes meterlo
+en ~/.config/retroarch/hatarib/system para que el core lo vea), pon el tipo de disco duro como GEMDOS, y ya se puede acceder a él
+tanto desde Atari TOS a partir de la 1.04, como desde EMUTOS, sin hacer nada más ni instalar drivers de disco ni nada.
+
+Para que el juego se autoarranque, simplemente en el raíz del disco crea un directorio llamado AUTO y mete ahí el ejecutable del juego.
+O sea, crearíamos amberstar/AUTO, y ahí copiaríamos amberstar/AMBRSTAR/AMBRSTAR.PRG.
+Además, activamos la opción de "Boot hard disk" en las opciones del core.
+
+ALTERNATIVA INNECESARIA: CREAR UNA IMÁGEN DE DISCO PARA HATARI EN GNU/LINUX:
 
 atari-hd-image 5 amberstar.img AMBERSTAR amberstar/
 
@@ -6259,18 +6267,10 @@ atari-hd-image 5 amberstar.img AMBERSTAR amberstar/
 cuyos contenidos queremos meter en el disco duro. OJO, que el juego estará en amberstar/AMBRSTAR, no tirado dentro de amberstar/ directamente.
 
 Para que el disco duro sea reconocido por el sistema, debes usar la ROM de arranque "EmuTOS 1024" y poner el disco como de tipo IDE.
-AHÓRRATE PROBLEMAS: NO uses una ROM de Atari (TOS) porque en ese caso tendrias que instalar HDD drivers en el disco.
-
-Para que el juego se autoarranque, simplemente en el raíz del disco crea un directorio llamado AUTO y mete ahí el ejecutable del juego.
-O sea, crearíamos amberstar/AUTO, y ahí copiaríamos amberstar/AMBRSTAR/AMBRSTAR.PRG.
-Además, activamos la opción de "Boot hard disk" en las opciones del core.
-
-ALTERNATIVA: Puedes configurar el disco duro como de tipo GEMDOS, y seleccionar un directorio. Y ya tienes acceso nativo al sistema host!
-Pero ojo: el directorio que selecciones para que haga de disco duro debe estar también en ~/.config/retroarch/system/hatarib/
-Y no esperes ningún ahorro de CPU, consume exactamente lo mismo que leer una imágen de disco.
+Si por el contrario usas una ROM de Atari (TOS) porque en ese caso tendrias que instalar HDD drivers en el disco.
 
 PARA JUEGOS INSTALADOS CON GAMEX (como el Captain Blood, etc)
---Los juegos instalados con GAMEX necesitan que se use emulación de disco duro real en HATARI (o sea, configurarlo como ACSI o IDE)
+--ALGUNOS juegos instalados con GAMEX necesitan que se use emulación de disco duro real en HATARI (o sea, configurarlo como ACSI o IDE)
 y además un driver de disco duro instalado en la imágen de disco. Hay 4 drivers de disco duro para AtariST que se usan a día de hoy:
 -El driver AHDI de Atari, que puedes encontrar como "AHDI v6.061 (1993-07-17)(Atari Corp.).st" en muchos sitios.
  Con este los juegos GAMEX parece que NO van.
