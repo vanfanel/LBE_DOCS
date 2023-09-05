@@ -6261,6 +6261,7 @@ Para que el juego se autoarranque, simplemente en el raíz del disco crea un dir
 O sea, crearíamos amberstar/AUTO, y ahí copiaríamos amberstar/AMBRSTAR/AMBRSTAR.PRG.
 Además, activamos la opción de "Boot hard disk" en las opciones del core.
 OJO!!! Si el ejecutable es un .TOS, le cambiaremos el juego a .PRG para que se autoarranque, si se llama .TOS no se autoarrancará!!!
+OJO!!! Ponle unos 4MB de RAM al equipo si no quieres que algunos de los juegos parpadeen durante el juego como el Amiga con el WHDLOAD con poca RAM.
 
 ALTERNATIVA INNECESARIA: CREAR UNA IMÁGEN DE DISCO PARA HATARI EN GNU/LINUX:
 
