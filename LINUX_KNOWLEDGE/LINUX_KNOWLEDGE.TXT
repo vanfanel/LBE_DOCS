@@ -6260,6 +6260,7 @@ tanto desde Atari TOS a partir de la 1.04, como desde EMUTOS, sin hacer nada má
 Para que el juego se autoarranque, simplemente en el raíz del disco crea un directorio llamado AUTO y mete ahí el ejecutable del juego.
 O sea, crearíamos amberstar/AUTO, y ahí copiaríamos amberstar/AMBRSTAR/AMBRSTAR.PRG.
 Además, activamos la opción de "Boot hard disk" en las opciones del core.
+OJO!!! Si el ejecutable es un .TOS, le cambiaremos el juego a .PRG para que se autoarranque, si se llama .TOS no se autoarrancará!!!
 
 ALTERNATIVA INNECESARIA: CREAR UNA IMÁGEN DE DISCO PARA HATARI EN GNU/LINUX:
 
