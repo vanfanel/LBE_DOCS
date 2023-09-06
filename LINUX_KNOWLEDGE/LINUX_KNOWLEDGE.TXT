@@ -315,7 +315,7 @@ git clone --depth 1 https://github.com/phoboslab/wipeout-rewrite.git
 Instalamos GLEW (mira en la sección de cómo instalar GLEW de este mismo documento) y SDL2.
 
 Compilamos con:
-C_FLAGS="-march=native -mtune=native -fomit-frame-pointer" GL_VERSION=GLES2 make sdl -j4
+USER_CFLAGS="-march=native -mtune=native -fomit-frame-pointer" GL_VERSION=GLES2 make sdl -j4
 
 Necesitamos los datos de:
 https://phoboslab.org/files/wipeout-data-v01.zip
