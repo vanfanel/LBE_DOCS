@@ -1138,50 +1138,6 @@ Creamos el directorio donde va a ir el juego, por ejemplo ~/abadia
 Y ahí copiamos los directorios "roms", "fonts" y "res" que vienen con los sources en su directorio "build".
 Copiamos también el ejecutable "abbey", y ya debería ir. No necesitas nada más externo.
 
-Interdoom, un sourceport peculiar en ruso
-=========================================
-
-Bajamos la última estable de:
-
-https://github.com/Russian-Doom/russian-doom/releases
-
-Compilamos con CMAKE:
-mkdir b4
-cd b4
-
-cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -fsigned-char" \
--DCMAKE_BUILD_TYPE=Release -DBUILD_PORTABLE=ON ..
-
-make -j4
-
-Copiamos el directorio "src/base" tal cual (tiene wads dentro para el engine) a ~/heretic
-cp -R src/base ~/heretic/
-
-Copiamos los ejecutables inter-* (que están en src) a ~/heretic
-cp src/inter-* ~/heretic/
-
-Ejecutamos el juego por primera vez para que nos genere russian-heretic.ini.
-Editamos russian-heretic.ini y ponemos:
-english_language	1
-
-Para tener música GUS, tenemos que tener SDL2-mixer compilado con soporte de Timidity, y en inter-heretic.ini
-ponemos la ruta de los patches que vienen en el directorio "base":
-
-gus_patch_path = "/root/heretic/base/gus_patches"
-
-Para tener música digital, usamos estos WADs ya preparados:
-https://zandronum.com/forum/viewtopic.php?t=97
-Se los pasamos con el parámetro "-file", por ejemplo:
-inter-heretic -iwad heretic.wad -file heretic_music.wad
-
-También podríamos meter en un WAD tal cual sin directorios los FLAC o los OGG que queramos,
-PERO MUY IMPORTANTE, SIN EXTENSIÓN, en plan E1M3 sin más.
-Le puedes quitar la extensión OGG a todos los archivos de un directorio con:
-find -type f -name '*.ogg' | while read f; do mv "$f" "${f%.ogg}"; done
-Ahora los metes en un WAD (con SLADE en Linux vale para crear WADs)
-Y le pasamos ese WAD con -file así:
-./russian-heretic -file heretic-music.wad
-
 ******Compilando OpenBOR*********************************************************************
 
 Dependencias previas: sudo apt-get install libvpx-dev
@@ -7209,8 +7165,8 @@ graphics.dat
 Ejecutamos con:
 ./CSBwin --fullscreen
 
-CRISPY DOOM
-============
+CRISPY HERETIC
+==============
 
 Primero instalamos una dependencia suya para que pre-convierta TODOS los efectos de sonido y así el juego no pegue tirones:
 sudo apt-get install --no-install-recommends libsamplerate0-dev
@@ -7218,34 +7174,53 @@ sudo apt-get install --no-install-recommends libsamplerate0-dev
 Nos bajamos la última estable de:
 https://github.com/fabiangreffrath/crispy-doom/releases
 
-Reemplazamos en src/i_video.c  todas las ocurrencias de
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
-por
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-
-Tenemos dos métodos para compilarlo:
-
-USANDO CMAKE (RECOMENDADO):
+Compilamos con CMAKE:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native -fsigned-char"
-make -j4
 
-USANDO MAKE (RECOMENDADO SI FALLA CMAKE):
-Editamos configure.ac, quitamos el -g de los CFLAGS, ejecutamos ./autogen.sh,
-y a continuación configuramos y compilamos:
-CFLAGS="-march=native -mtune=native -O2 -fsigned-char" ./configure
+cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -fsigned-char" \
+-DCMAKE_BUILD_TYPE=Release ..
+
 make -j4
 
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
 
-Para que la música digital vaya, nos bajamos un pack (de OGG, de FLAC o de lo que queramos y SDL_Mixer() tenga soporte para reproducir)
+
+PARA QUE LOS GRÁFICOS DEL HEXEN EN MODO WIDESCREEN NO SE CORTEN POR LOS LADOS:
+Tenemos que cargar un WAD con los gráficos en widescreen. El único que he visto que funciona es wad que hay en "hexwide.zip" de este hilo:
+https://github.com/fabiangreffrath/crispy-doom/issues/859
+O sea que hacemos: ./crispy-hexen -iwad hexen.wad -file hexen_wide.wad hexen_music.wad
+(O metemos hexen_wide.wad y hexen_music.wad en autoload/hexen.wad/, que los carga igual al inicio sin pasar ningún parámetro).
+
+PARA TENER MÚSICA DIGITAL
+
+OPCIÓN 1 (RECOMENDADA):
+Simplemente usamos estos WADs ya preparados:
+https://zandronum.com/forum/viewtopic.php?t=97
+Se los pasamos con el parámetro "-file", por ejemplo:
+./crispy-heretic -iwad heretic.wad -file heretic_music.wad
+
+También podríamos meter en un WAD, tal cual sin directorios, los FLAC o los OGG que queramos,
+PERO MUY IMPORTANTE, SIN EXTENSIÓN, en plan "E1M3" sin más.
+Le puedes quitar la extensión OGG a todos los archivos de un directorio con:
+find -type f -name '*.ogg' | while read f; do mv "$f" "${f%.ogg}"; done
+Ahora los metes en un WAD (con SLADE en Linux vale para crear WADs)
+Y le pasamos ese WAD con -file así:
+./crispy-heretic -file heretic-music.wad
+
+OPCIÓN 2: En ficheros sueltos. Nos bajamos un pack (de OGG, de FLAC o de lo que queramos y SDL_Mixer() tenga soporte para reproducir)
 y lo mandamos, por ejemplo, a ~/heretic/heretic-music, dejando ahí los OGG o los FLAC tirados sin más.
 Ahora editamos ~/.local/share/crispy-doom/crispy-heretic.cfg y en el setting music_pack_path ponemos el path: "/home/pi/heretic/heretic-music"
 (O el que sea, vamos).
 Vengo usando estas músicas, que están en OGG directamente para bajar:
 https://zandronum.com/forum/viewtopic.php?t=97
-FÍJATE BIEN QUE AL PRINCIPIO DIGA: "Pre-caching all sounds..."
+
+PARA TENER MÚSICA GUS (COMO CURIOSIDAD: ES MEJOR MÚSICA DIGITAL), tenemos que tener SDL2-mixer compilado con soporte de Timidity,
+y en crispy-heretic.ini ponemos la ruta de los patches que vienen en el directorio "base":
+
+gus_patch_path = "/root/heretic/base/gus_patches"
+
+AL LANZAR EL JUEGO, FÍJATE BIEN QUE AL PRINCIPIO DIGA: "Pre-caching all sounds..."
 
 MONITORIZAR ACCESO A FICHEROS EN GNU/LINUX
 ===========================================
