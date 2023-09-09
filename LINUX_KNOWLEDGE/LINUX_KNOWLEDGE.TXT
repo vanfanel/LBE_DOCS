@@ -6263,41 +6263,15 @@ Además, activamos la opción de "Boot hard disk" en las opciones del core.
 OJO!!! Si el ejecutable es un .TOS, le cambiaremos el juego a .PRG para que se autoarranque, si se llama .TOS no se autoarrancará!!!
 OJO!!! Ponle unos 4MB de RAM al equipo si no quieres que algunos de los juegos parpadeen durante el juego como el Amiga con el WHDLOAD con poca RAM.
 
-ALTERNATIVA INNECESARIA: CREAR UNA IMÁGEN DE DISCO PARA HATARI EN GNU/LINUX:
-
-atari-hd-image 5 amberstar.img AMBERSTAR amberstar/
-
-..donde 5 es el tamaño en MB (5MB es lo mínimo que permite), AMBERSTAR es el nombre de la partición, y amberstar/ es el directorio
-cuyos contenidos queremos meter en el disco duro. OJO, que el juego estará en amberstar/AMBRSTAR, no tirado dentro de amberstar/ directamente.
-
-Para que el disco duro sea reconocido por el sistema, debes usar la ROM de arranque "EmuTOS 1024" y poner el disco como de tipo IDE.
-Si por el contrario usas una ROM de Atari (TOS) porque en ese caso tendrias que instalar HDD drivers en el disco.
-
 PARA EL CAPTAIN BLOOD DESDE HDD:
--Usa la release de 42-Crew para copiarla al disco duro GEMDOS. Necesita la TOS 1.04 PAL como máximo: más que eso, revienta.
- Puedes usar versiones superiores de la TOS si son NTSC.
+-Usa la release de 42-Crew para copiarla al disco duro GEMDOS en el directorio que quieras.
+Necesita la TOS 1.04 PAL como máximo: más que eso, revienta. Puedes usar versiones superiores de la TOS si son NTSC.
 
 PARA EL DRAGONFLIGHT DESDE HDD:
--OPCIÓN 1: Usando la versión oficial HDD de: http://thalion.exotica.org.uk/games/dragonflight/st/dragonflight.zip
+-Usando la versión oficial HDD de: http://thalion.exotica.org.uk/games/dragonflight/st/dragonflight.zip
 La debes copiar a un directorio que se llame E en el directorio raiz de la unidad GEMDOS.
 O sea, que la puedes meter en ~/.config/retroarch/system/hatarib/dragonflight/E.
-Y debes tener un floppy en la disketera metido. No lo usa, pero debes tenerlo. Puedes crearte uno vacío con el HATARI (versión no Libretro).
--OPCIÓN 2: Usando una unidad GEMDOS.
-Copia la versión instalada del juego que tienes en el disco de backup a ~/.config/retroarch/system/hatarib/dragonflight
-e inserta el disco de savegame que tienes también guardado junto con el juego instalado (si no, no puedes empezar el juego).
-La versión compatible con unidad GEMDOS la sacaste de: http://d-bug.me/
-(Hubo que montar los dos .MSA en el emulador uno por uno, sacar los ficheros al sistema de archivos local, y pasar el .SAV
-a una imágen de floppy... Por suerte lo tienes todo en el disco de backup preparado)
--OPCIÓN 3 (NO FUNCIONA): Usando un disco formateado con el driver de Peta Putkin (PP) y su install del juego de: https://atari.8bitchip.info/SCRSH/dragonfl.html
-
-PARA JUEGOS INSTALADOS CON GAMEX (como el Captain Blood, etc)
---ALGUNOS juegos instalados con GAMEX necesitan que se use emulación de disco duro real en HATARI (o sea, configurarlo como ACSI o IDE)
-y además un driver de disco duro instalado en la imágen de disco. Hay 4 drivers de disco duro para AtariST que se usan a día de hoy:
--El driver AHDI de Atari, que puedes encontrar como "AHDI v6.061 (1993-07-17)(Atari Corp.).st" en muchos sitios.
- Con este los juegos GAMEX parece que NO van.
--El driver ICD Pro que es gratis pero los juegos GAMEX tampoco van.
--El driver PP que lo tienes comprado (busca en gmail)
--El driver HDDRIVER, que sí que van pero cuesta una pasta: usamos este. Mira en la documentación de la MiSTer cómo se instala este driver.
+Y debes tener un floppy cualquiera metido en la disketera. No lo usa, pero debes tenerlo. Puedes crearte uno vacío con el HATARI (versión no Libretro).
 
 COMPILAR EL CORE MUPEN64 DE LIBRETRO
 ====================================
