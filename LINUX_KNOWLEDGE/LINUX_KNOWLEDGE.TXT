@@ -711,8 +711,11 @@ Nos vamos a la versión tagged LTS actual:
 
 git switch 6.5.0
 
-Inicializamos los módulos que vamos a usar (puedes ver los módulos disponibles editando el archivo ".gitmodules"):
-./init-repository --module-subset=qtbase
+Inicializamos los módulos que vamos a usar
+(puedes ver los módulos disponibles editando el archivo ".gitmodules"):
+(qttools es necesario para tener el componente LinguistTools, que es necesario para compilar PCSX2)
+
+./init-repository --module-subset=qtbase,qttools
 
 CONFIGURACIÓN: 
 Puedes deshabilitar features de esos módulos con "-no-feature-loquesea". Y para saber qué cosas le ponemos pasar,
