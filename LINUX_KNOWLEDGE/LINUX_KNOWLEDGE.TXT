@@ -740,7 +740,7 @@ sudo cmake --install .
 ******Compilar PCSX2 standalone**********************************************************************************************
 
 Instalamos dependencias previas:
-apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-dev
+apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-dev libaio-dev
 
 También se necesita tener en el sistema una versión de QT6 que tenga soporte de WIDGETS y NETWORK.
 
