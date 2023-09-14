@@ -700,6 +700,50 @@ NOTAS JUEGOS DOSBOX
 --PsychoPinball tiene que estar en C:\PSYCHO, o sea que tienes que meterlo en ~/dos/psycho/psycho
 y luego montar ~/dos/psycho como C: en DOSBOX. Si no, se queda colgado en el DOS4GW.
 
+******Compilar QT6***********************************************************************************************************
+Las instrucciones básicas las he sacado de: https://wiki.qt.io/Building_Qt_6_from_Git
+
+Clonamos su repo:
+
+git clone https://code.qt.io/qt/qt5.git qt6
+
+Nos vamos a la versión tagged LTS actual:
+
+git switch 6.5.0
+
+Inicializamos los módulos que vamos a usar (puedes ver los módulos disponibles editando el archivo ".gitmodules"):
+./init-repository --module-subset=qtbase
+
+CONFIGURACIÓN: 
+Puedes deshabilitar features de esos módulos con "-no-feature-loquesea". Y para saber qué cosas le ponemos pasar,
+miramos en "CMakeCache.txt". Por ejemplo, entras en "CMakeCache.txt" y buscas "html" y ya ves qué cosas relacionadas con el html puedes
+deshabilitar.
+
+mkdir b4
+cd b4
+
+../configure -release -no-ssl -no-pcre -no-accessibility -no-dbus -nomake tests -no-feature-network -no-feature-printsupport \
+-no-feature-widgets -no-feature-testlib -no-feature-xml -no-feature-sql -no-feature-harfbuzz \
+-no-feature-texthtmlparser -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter -no-feature-cssparser
+
+COMPILACIÓN:
+cmake --build . --parallel 4
+
+******Compilar PCSX2 standalone**********************************************************************************************
+
+Instalamos dependencias previas:
+apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-dev
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/PCSX2/pcsx2.git --recurse
+
+Configuramos y compilamos:
+
+mkdir b4
+cd b4
+-DCMAKE_C_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
+cmake ..
 
 *******Compilar el core libretro Swanstation (Duckstation)***********
 
