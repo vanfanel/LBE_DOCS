@@ -718,16 +718,21 @@ CONFIGURACIÓN:
 Puedes deshabilitar features de esos módulos con "-no-feature-loquesea". Y para saber qué cosas le ponemos pasar,
 miramos en "CMakeCache.txt". Por ejemplo, entras en "CMakeCache.txt" y buscas "html" y ya ves qué cosas relacionadas con el html puedes
 deshabilitar.
+Y no desabilites el "pcre", porque entonces no compila porque no encuentra una cabecera, ni deshabilites el soporte de "widgets" porque
+el pcsx2 lo necesita.
 
 mkdir b4
 cd b4
 
-../configure -release -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-network -no-feature-printsupport \
+../configure -release -prefix /usr/local -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-network -no-feature-printsupport \
 -no-feature-widgets -no-feature-testlib -no-feature-xml -no-feature-sql -no-feature-harfbuzz \
 -no-feature-texthtmlparser -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter -no-feature-cssparser
 
 COMPILACIÓN:
-cmake --build . --parallel 4
+cmake --build . --parallel 3
+
+INSTALACIÓN:
+sudo cmake --install .
 
 ******Compilar PCSX2 standalone**********************************************************************************************
 
@@ -741,9 +746,9 @@ Configuramos y compilamos:
 
 mkdir b4
 cd b4
+cmake .. \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
-cmake ..
 
 *******Compilar el core libretro Swanstation (Duckstation)***********
 
@@ -966,7 +971,7 @@ Configuramos y compilamos con:
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
+cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
