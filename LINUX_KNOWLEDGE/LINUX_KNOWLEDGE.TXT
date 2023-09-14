@@ -722,7 +722,7 @@ deshabilitar.
 mkdir b4
 cd b4
 
-../configure -release -no-ssl -no-pcre -no-accessibility -no-dbus -nomake tests -no-feature-network -no-feature-printsupport \
+../configure -release -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-network -no-feature-printsupport \
 -no-feature-widgets -no-feature-testlib -no-feature-xml -no-feature-sql -no-feature-harfbuzz \
 -no-feature-texthtmlparser -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter -no-feature-cssparser
 
