@@ -753,9 +753,8 @@ mkdir b4
 cd b4
 
 cmake .. \
--DCMAKE_C_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
--DUSE_ACHIEVEMENTS=OFF -DUSE_DISCORD_PRESENCE=OFF
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 *******Compilar el core libretro Swanstation (Duckstation)***********
 
