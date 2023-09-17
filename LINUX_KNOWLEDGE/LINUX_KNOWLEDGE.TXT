@@ -726,7 +726,9 @@ Y NO DESHABILITES nada nuevo, que luego el PCSX2 no compila.
 
 mkdir b4
 cd b4
-../configure -release -prefix /usr/local -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-testlib -no-feature-sql -no-feature-harfbuzz -no-feature-texthtmlparser -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter -no-feature-cssparser
+../configure -release -prefix /usr/local -feature-style-stylesheet -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-printsupport \
+-no-feature-testlib -no-feature-xml -no-feature-sql -no-feature-harfbuzz \
+-no-feature-texthtmlparser -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter -no-feature-cssparser
 
 COMPILACIÓN:
 cmake --build . --parallel 3
