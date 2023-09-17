@@ -701,6 +701,7 @@ NOTAS JUEGOS DOSBOX
 y luego montar ~/dos/psycho como C: en DOSBOX. Si no, se queda colgado en el DOS4GW.
 
 ******Compilar QT6***********************************************************************************************************
+
 Las instrucciones básicas las he sacado de: https://wiki.qt.io/Building_Qt_6_from_Git
 
 Clonamos su repo:
@@ -727,8 +728,8 @@ NI TAMPOCO DESHABILITES el soporte de "widgets" (-no-feature-widgets) o "network
 mkdir b4
 cd b4
 
-../configure -release -prefix /usr/local -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-printsupport \
--no-feature-widgets -no-feature-testlib -no-feature-xml -no-feature-sql -no-feature-harfbuzz \
+../configure -release -prefix /usr/local -feature-style-stylesheet -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-printsupport \
+-no-feature-testlib -no-feature-xml -no-feature-sql -no-feature-harfbuzz \
 -no-feature-texthtmlparser -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter -no-feature-cssparser
 
 COMPILACIÓN:
