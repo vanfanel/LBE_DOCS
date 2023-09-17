@@ -722,15 +722,11 @@ CONFIGURACIÓN:
 Puedes deshabilitar features de esos módulos con "-no-feature-loquesea". Y para saber qué cosas le ponemos pasar,
 miramos en "CMakeCache.txt". Por ejemplo, entras en "CMakeCache.txt" y buscas "html" y ya ves qué cosas relacionadas con el html puedes
 deshabilitar.
-Y NO DESHABILITES el "pcre", porque entonces QT6 no compila porque no encuentra una cabecera,
-NI TAMPOCO DESHABILITES el soporte de "widgets" (-no-feature-widgets) o "network" (-no-feature-network) porque el PCSX2 los necesita.
+Y NO DESHABILITES nada nuevo, que luego el PCSX2 no compila.
 
 mkdir b4
 cd b4
-
-../configure -release -prefix /usr/local -feature-style-stylesheet -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-printsupport \
--no-feature-testlib -no-feature-xml -no-feature-sql -no-feature-harfbuzz \
--no-feature-texthtmlparser -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter -no-feature-cssparser
+../configure -release -prefix /usr/local -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-testlib -no-feature-sql -no-feature-harfbuzz -no-feature-texthtmlparser -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter -no-feature-cssparser
 
 COMPILACIÓN:
 cmake --build . --parallel 3
