@@ -750,7 +750,7 @@ Configuramos y compilamos:
 mkdir b4
 cd b4
 
-cmake .. \
+cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
