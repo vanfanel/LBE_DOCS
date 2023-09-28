@@ -427,11 +427,21 @@ https://dri.freedesktop.org/libdrm/
 mkdir b4
 cd b4
 
-Configuramos libdrm con esto:
+CONFIGURAMOS DRM con esto:
+
+PARA RASPBERRY PI 4:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dudev=true -Dvc4=enabled -Dintel=disabled -Dvmwgfx=disabled -Dradeon=disabled -Damdgpu=disabled -Dnouveau=disabled \
+-Dfreedreno=disabled -Detnaviv=disabled \
+-Dinstall-test-programs=true ..
+
+PARA X86_64 CON GPU INTEL XE:
+
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+meson setup -Dudev=true -Dvc4=disabled -Dintel=enabled -Dvmwgfx=disabled -Dradeon=disabled -Damdgpu=disabled -Dnouveau=disabled \
 -Dfreedreno=disabled -Detnaviv=disabled \
 -Dinstall-test-programs=true ..
 
@@ -442,6 +452,14 @@ sudo ninja install
 En este punto, puedes probar si libdrm te funciona bien haciendo:
 modetest -s 32:1280x720
 (donde 32 es un ID de conector válido: puedes ver los conectores con modetest|grep connected).
+O bien, en X86_64, usa: modetest -s 236:1280x720
+
+OJO!!! Si estás en X86_64, como las librerías se instalan en /usr/local/lib64, y como pkg-config no busca
+en /usr/local/lib64 por defecto (sólo en /usr/local/lib), debemos añadir esto al final de /etc/profile:
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+
+OJO!!! Si estás en X86_64, añade al final de /etc/ld.so.conf.d/libc.conf la línea:
+/usr/local/lib64
 
 DEPENDENCIAS PREVIAS DE MESA:
 
@@ -453,7 +471,7 @@ sudo apt-get install --no-install-recommends \
     zlib1g-dev pkg-config
 
 SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
-sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools --no-install-recommends
+sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools glslang-tools --no-install-recommends
 
 SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, TIENES QUE INSTALAR LIBGLVND:
 Bajamos la última estable de aquí:
@@ -480,9 +498,16 @@ Pero yo ya lo tengo resuelto a continuación...
 
 CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
 
+PARA PI4:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers=broadcom -Dgallium-drivers=v3d,vc4,kmsro \
+-Dglvnd=true ..
+
+PARA X86_64 CON GRÁFICOS INTEL XE:
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers=intel -Dgallium-drivers=iris,kmsro \
 -Dglvnd=true ..
 
 (Si no quieres soporte para Wayland, usa -Dplatforms='')
