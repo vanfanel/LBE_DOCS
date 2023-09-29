@@ -1,0 +1,28 @@
+******Sonido HDMI en Linux************
+
+-Instalamos alsa-utils:
+apt-get install alsa-utils
+
+Ahora vemos qué cards y devices hay con: aplay -l
+Vemos que el HDMI 0, que es el que suena en este cacharro, aparece listado como:
+card 0: PCH [HDA Intel PCH], device 3: HDMI 0 [XG2401 SERIES]
+
+Lo probamos con speaker-test:
+speaker-test -c2 -D hw:0,3
+
+Así que ahora creamos /etc/asound.conf donde especificamos el nombre de la CARD y el número de DEVICE:
+(OJO: NO debemos especificar la CARD por número, porque el número cambia entre reinicios).
+
+defaults.pcm.!card PCH
+defaults.ctl.!card PCH
+defaults.pcm.!device 3
+defaults.ctl.!device 3
+
+...Y ya suena todo lo de ALSA por defecto por el HDMI!
+
+*****COMPROBAR GOVERNOR DE LA CPU*********
+
+cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+cat /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
+...etc

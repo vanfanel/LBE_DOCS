@@ -1090,17 +1090,17 @@ Creamos /usr/local/bin/launch-labwc con el contenido:
 
 #############
 
-#!/bin/bash                                                                                                    
+#!/bin/bash
 rundir="/run/user/0"
 if [[ ! -e $rundir ]]; then
     mkdir -p $rundir
 fi
-export XDG_RUNTIME_DIR=/run/user/0                                                                             
+export XDG_RUNTIME_DIR=/run/user/0
 /usr/local/bin/labwc
 
 #############
 
-Creamos /etc/systemd/system/labwc.service con el contenido:
+Creamos /etc/systemd/system/wayland.service con el contenido:
 
 #############
 
@@ -1144,8 +1144,8 @@ systemctl set-default multi-user.target
 Y NO HARIA FALTA VOLVER A DESACTIVAR EL SERVICIO LABWC, YA QUE NOS QUEDAMOS EN EL TARGET MULTI-USER Y DE ESE MODO
 NO SE CARGA EL SERVICIO LABWC.)
 
-Ahora activamos el servicio LABWC con:
-systemctl enable labwc.service
+Ahora activamos el servicio WAYLAND con:
+systemctl enable wayland.service
 (Recuerda que lo que hace esto es crear el symlink /etc/systemd/system/graphical.target.wants/labwc.service apuntando
 a /etc/systemd/system/labwc.service, que es logico porque el target graphical.target necesita labwc.target tal como hemos
 especificado en la UNIT de labwc). 
