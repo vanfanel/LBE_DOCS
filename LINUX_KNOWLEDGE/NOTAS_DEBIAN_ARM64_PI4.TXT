@@ -454,12 +454,18 @@ modetest -s 32:1280x720
 (donde 32 es un ID de conector válido: puedes ver los conectores con modetest|grep connected).
 O bien, en X86_64, usa: modetest -s 236:1280x720
 
-OJO!!! Si estás en X86_64, como las librerías se instalan en /usr/local/lib64, y como pkg-config no busca
-en /usr/local/lib64 por defecto (sólo en /usr/local/lib), debemos añadir esto al final de /etc/profile:
+¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ATENCIÓN, ATENCIÓN!!!!!!!!!!!!!!!!!!!!!!!!!!!
+SI ESTÁS EN X86_64:
+1) Como las librerías se instalan en /usr/local/lib64, y como pkg-config no busca
+en /usr/local/lib64 por defecto (sólo en /usr/local/lib), creamos el fichero /etc/profile.d/custom.sh con el contenido:
 export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
-
-OJO!!! Si estás en X86_64, añade al final de /etc/ld.so.conf.d/libc.conf la línea:
+2) Añade al final de /etc/ld.so.conf.d/libc.conf la línea:
 /usr/local/lib64
+
+CUIDADO: LA ALTERNATIVA A ESTAS DOS COSAS SERÍA, ANTES DE EMPEZAR A INSTALAR NINGUNA LIBRERÍA COMPILADA POR MI,
+CREAR /usr/local/lib64 COMO UN SYMLINK DE /usr/local/lib, PERO NO ES BUENA IDEA: ES UN HACK QUE PODRÍA DAR PROBLEMAS.
+ASÍ QUE HAZ LAS DOS COSAS QUE ACABO DE DECIRTE.
+¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡
 
 DEPENDENCIAS PREVIAS DE MESA:
 
