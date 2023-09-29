@@ -553,32 +553,32 @@ blink=yes
 -Para configurar los colores etc, podemos:
 ---OPCIÓN 1, COMO LO VENIMOS HACIENDO AHORA: Usar un tema modificado a mi gusto. Para ello, metemos esto en el foot.ini:
 
-[cursor]                                                                                                       
-style=block                                                                                                    
-blink=yes                                                                                                      
-color=126e00 126e00                                                                                            
+[cursor]
+style=block
+blink=yes
+color=126e00 126e00
                                                                                                                
 [colors]                                                                                                       
-alpha=0.90                                                                                                     
-background=101010                                                                                              
-foreground=126e00                                                                                              
-regular0=101010  # black                                                                                       
-regular1=fa5355  # red                                                                                         
-regular2=126e00  # green                                                                                       
-regular3=c2c300  # yellow                                                                                      
-regular4=4581eb  # blue                                                                                        
-regular5=fa54ff  # magenta                                                                                     
-regular6=33c2c1  # cyan                                                                                        
-regular7=adadad  # white                                                                                       
-bright0=545454   # bright black                                                                                
-bright1=fb7172   # bright red                                                                                  
-bright2=67ff4f   # bright green                                                                                
+alpha=0.90
+background=101010
+foreground=126e00
+regular0=101010  # black
+regular1=fa5355  # red
+regular2=126e00  # green
+regular3=c2c300  # yellow
+regular4=4581eb  # blue
+regular5=fa54ff  # magenta
+regular6=33c2c1  # cyan
+regular7=adadad  # white
+bright0=545454   # bright black
+bright1=fb7172   # bright red
+bright2=67ff4f   # bright green
 bright3=ffff00   # bright yellow
-bright4=6d9df1   # bright blue                                                                                 
-bright5=fb82ff   # bright magenta                                                                              
-bright6=60d3d1   # bright cyan                                                                                 
-bright7=eeeeee   # bright white                                                                                
-selection-foreground=202020                                                                                    
+bright4=6d9df1   # bright blue
+bright5=fb82ff   # bright magenta
+bright6=60d3d1   # bright cyan
+bright7=eeeeee   # bright white
+selection-foreground=202020
 election-background=1a3272
 
 ---OPCIÓN 2: Usar un tema, para lo cual añadiríamos esto al final de la sección [main]:
