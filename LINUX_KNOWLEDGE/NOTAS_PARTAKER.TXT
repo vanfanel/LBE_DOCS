@@ -1,5 +1,10 @@
 ******Sonido HDMI en Linux************
 
+OPCIÓN 1, SI ESTÁS USANDO DIET-PI:
+Selecciona en dietpi-config la Sound card: [hw:1,3]
+
+OPCIÓN 2, A MANO:
+
 -Instalamos alsa-utils:
 apt-get install alsa-utils
 
