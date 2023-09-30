@@ -1,4 +1,22 @@
-******AJUTES EN LA BIOS***************
+******ACTUALIZAR EL KERNEL (SI NO LO HACES, LOS E-CORES PROVOCAN MICRO-STUTTERING Y HAY QUE DESACTIVARLOS EN LA BIOS*******
+
+-Instalamos dependencias previas:
+
+apt-get install lsb-release apt-transport-https ca-certificates curl --no-install-recommends
+
+-Bajamos la firma del repo:
+curl -fSsL https://pkgs.zabbly.com/key.asc | gpg --dearmor | sudo tee /usr/share/keyrings/linux-zabbly.gpg > /dev/null
+
+-Creamos /etc/apt/sources.list.d/linux-zabbly.list con el contenido:
+deb [arch=amd64 signed-by=/usr/share/keyrings/linux-zabbly.gpg] https://pkgs.zabbly.com/kernel/stable bookw    orm main
+
+-Actualizamos los metadatos de apt:
+apt-get update
+
+-Instalamos el último kernel de zabbly:
+apt install linux-zabbly
+
+******AJUSTES EN LA BIOS (NECESARIO SÓLO SI TIENES UN KERNEL INFERIOR AL 6.5 POR SUS PROBLEMAS CON LA MEZCLA DE P-CORES Y E-CORES)***************
 
 Desactiva los EFFICIENCY CORES, deja sólo los PERFORMANCE CORES, con HYPER THREADING activado.
 (Los core EFFICIENCY provocan micro-stuttering en DOSBOX).
@@ -29,6 +47,11 @@ defaults.pcm.!device 3
 defaults.ctl.!device 3
 
 ...Y ya suena todo lo de ALSA por defecto por el HDMI!
+
+*****CONFIGURACIÓN DE AUDIO/VIDEO EN RETROARCH******
+
+-Video: VULKAN con SWAPCHAIN a 2
+-Audio: ALSATHREAD con LATENCY a 32 
 
 *****COMPROBAR GOVERNOR DE LA CPU*********
 
