@@ -58,7 +58,7 @@ speaker-test -c2 -D hw:0,0
 *****CONFIGURACIÓN DE AUDIO/VIDEO EN RETROARCH******
 
 -Video: VULKAN con SWAPCHAIN a 2
--Audio: ALSATHREAD con LATENCY a 32 
+-Audio: ALSATHREAD con 44100Hz (es la frecuencia nativa de la mayoría de los cores) y LATENCY a 45 
 
 *****COMPROBAR GOVERNOR DE LA CPU*********
 
