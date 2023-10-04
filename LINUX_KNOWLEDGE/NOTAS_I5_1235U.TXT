@@ -57,6 +57,8 @@ speaker-test -c2 -D hw:0,0
 
 *****CONFIGURACIÓN DE AUDIO/VIDEO EN RETROARCH******
 
+-BIOS del ordenador (ver esto: https://kithara.com/en/faq/real-time-system/what-can-causes-a-jitter-at-real-time-tasks/):
+	Resúmen: Desactiva el Hyper-Threading y todas las opciones de eficiencia que veas.
 -Video: VULKAN con SWAPCHAIN a 2
 -Audio: ALSATHREAD con 44100Hz (es la frecuencia nativa de la mayoría de los cores) y LATENCY a 45 
 
