@@ -40,10 +40,16 @@ speaker-test -c2 -D hw:PCH,3
 Así que ahora creamos /etc/asound.conf donde especificamos el nombre de la CARD y el número de DEVICE:
 (OJO: NO debemos especificar la CARD por número, porque el número cambia entre reinicios).
 
-defaults.pcm.!card PCH
-defaults.ctl.!card PCH
-defaults.pcm.!device 3
-defaults.ctl.!device 3
+pcm.!default {                                                                                                 
+        type hw                                                                                                
+        card PCH                                                                                               
+        device 3                                                                                               
+}                                                                                                              
+                                                                                                               
+ctl.!default {                                                                                                 
+        type hw                                                                                                
+        card PCH                                                                                               
+}
 
 ...Y ya suena todo lo de ALSA por defecto por el HDMI!
 
@@ -52,11 +58,16 @@ POR JACK TRASERO:
 speaker-test -c2 -D hw:HID,0
 
 Con lo que en /etc/asound.conf tendríamos:
-defaults.pcm.!card HID
-defaults.ctl.!card HID
-defaults.pcm.!device 0
-defaults.ctl.!device 0
-
+pcm.!default {                                                                                                 
+        type hw                                                                                                
+        card HID                                                                                               
+        device 0                                                                                               
+}                                                                                                              
+                                                                                                               
+ctl.!default {                                                                                                 
+        type hw                                                                                                
+        card HID                                                                                               
+}
 *****CONFIGURACIÓN DE AUDIO/VIDEO EN RETROARCH******
 
 -BIOS del ordenador (ver esto: https://kithara.com/en/faq/real-time-system/what-can-causes-a-jitter-at-real-time-tasks/):
