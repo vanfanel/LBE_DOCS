@@ -74,7 +74,7 @@ ctl.!default {
 	Resúmen: Desactiva el Hyper-Threading, Intel(R) SpeedStep, Race To Halt, Energy Efficient Turbo,
 	Enhanced C-States (es lo que llaman C1E) y todo lo que hay debajo, y todas las opciones de eficiencia que veas.
 -Video: VULKAN con SWAPCHAIN a 2
--Audio: ALSATHREAD con 44100Hz (es la frecuencia nativa de la mayoría de los cores) y LATENCY a 45 
+-Audio: ALSATHREAD con 48000Hz y LATENCY a 45 
 
 *****COMPROBAR GOVERNOR DE LA CPU*********
 
