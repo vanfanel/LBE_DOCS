@@ -23,13 +23,8 @@ Desactiva los EFFICIENCY CORES, deja sólo los PERFORMANCE CORES, con HYPER THRE
 
 ******Sonido en Linux************
 
-OPCIÓN 1, SI ESTÁS USANDO DIET-PI:
-Si quieres sonido por HDMI:
-Selecciona en dietpi-config la Sound card: [hw:1,3]
-Si quieres sonido por el conector jack trasero:
-Selecciona en dietpi-config la Sound card: [hw:0,0]
-
-OPCIÓN 2, A MANO:
+Tenemos que hacerl a mano (incluso si usas DietPi, la utilidad dietpi-config nos permite seleccionar el hardware de audio pero por número,
+así que no nos vale para nada porque el número cambia entre reinicios, hay que seleccionar por nombre).
 
 -Instalamos alsa-utils:
 apt-get install alsa-utils
@@ -40,7 +35,7 @@ Vemos que el HDMI 0, que es el que suena en este cacharro, aparece listado como:
 card 0: PCH [HDA Intel PCH], device 3: HDMI 0 [XG2401 SERIES]
 
 Lo probamos con speaker-test:
-speaker-test -c2 -D hw:0,3
+speaker-test -c2 -D hw:PCH,3
 
 Así que ahora creamos /etc/asound.conf donde especificamos el nombre de la CARD y el número de DEVICE:
 (OJO: NO debemos especificar la CARD por número, porque el número cambia entre reinicios).
@@ -52,13 +47,21 @@ defaults.ctl.!device 3
 
 ...Y ya suena todo lo de ALSA por defecto por el HDMI!
 
-Para sonido por el jack trasero, funciona hacer:
-speaker-test -c2 -D hw:0,0
+POR JACK TRASERO:
+
+speaker-test -c2 -D hw:HID,0
+
+Con lo que en /etc/asound.conf tendríamos:
+defaults.pcm.!card HID
+defaults.ctl.!card HID
+defaults.pcm.!device 0
+defaults.ctl.!device 0
 
 *****CONFIGURACIÓN DE AUDIO/VIDEO EN RETROARCH******
 
 -BIOS del ordenador (ver esto: https://kithara.com/en/faq/real-time-system/what-can-causes-a-jitter-at-real-time-tasks/):
-	Resúmen: Desactiva el Hyper-Threading y todas las opciones de eficiencia que veas.
+	Resúmen: Desactiva el Hyper-Threading, Intel(R) SpeedStep, Race To Halt, Energy Efficient Turbo,
+	Enhanced C-States (es lo que llaman C1E) y todo lo que hay debajo, y todas las opciones de eficiencia que veas.
 -Video: VULKAN con SWAPCHAIN a 2
 -Audio: ALSATHREAD con 44100Hz (es la frecuencia nativa de la mayoría de los cores) y LATENCY a 45 
 
