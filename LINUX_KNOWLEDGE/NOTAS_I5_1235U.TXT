@@ -73,6 +73,7 @@ ctl.!default {
 -BIOS del ordenador (ver esto: https://kithara.com/en/faq/real-time-system/what-can-causes-a-jitter-at-real-time-tasks/):
 	Resúmen: Desactiva el Hyper-Threading, Intel(R) SpeedStep, Race To Halt, Energy Efficient Turbo,
 	Enhanced C-States (es lo que llaman C1E) y todo lo que hay debajo, y todas las opciones de eficiencia que veas.
+	Desactiva el Legacy USB.
 -Video: VULKAN con SWAPCHAIN a 2
 -Audio: ALSATHREAD con 48000Hz y LATENCY a 45 
 
