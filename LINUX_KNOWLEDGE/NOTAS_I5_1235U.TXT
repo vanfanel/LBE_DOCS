@@ -130,3 +130,15 @@ cat /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
 Estas cosas se pueden desinstalar y aún así wayland funciona como servicio sin problemas:
 apt-get purge dbus
 (Para evitar errores derivados de la falta de dbus.socket, hacemos: systemctl mask sockets.target).
+
+Para no tener errores con el módulo pcspkr ni mensajes infinitos de evbug, y aprovechando para quitar otras cosas que no necesitamos,
+creamos /etc/modprobe.d/custom-blacklist.conf con el contenido:
+blacklist pcspkr
+blacklist evbug
+
+blacklist btrtl                                                                                                
+blacklist btmtk                                                                                                
+blacklist btintel                                                                                              
+blacklist btbcm                                                                                                
+blacklist btusb
+blacklist ip_tables
