@@ -18,14 +18,21 @@ apt install linux-zabbly
 
 ******AJUSTES EN LA BIOS***************
 
+La idea es tener frecuencia fija de la CPU (mientras se ejecutan cosas al menos) y poco jittering:
+
+-En la BIOS:
 Desactiva los Efficiency Cores, el Hyper-Threading, Intel(R) SpeedStep, Race To Halt, Energy Efficient Turbo,
 C-States, (O bien sólo los Enhanced C-States (es lo que llaman C1E) y todo lo que hay debajo),
 y todas las opciones de eficiencia que veas.
 Desactiva el Legacy USB.
 
-Frecuencia fija de la CPU:
 -En la línea de parámetros del kernel pasamos: intel_idle.max_cstate=0 processor.max_cstate=0
 (Eso se hace editando /etc/default/grub y luego haciendo "update-grub").
+NO le pasamos idle=poll o idle=halt porque la idea es que cuando la CPU está idle, pueda bajarse de velocidad usando los P-States,
+pero como los C-States sí que los desactivamos, no puede desactivar cachés y cosas así.
+Puedes observar las frecuencias de la CPU con: watch -n1 "grep \"^[c]pu MHz\" /proc/cpuinfo"
+Y verás que sí que baja mucho cuando no hay nada ejecutándose, pero que una vez que hay cosas ejecutándose no baja de la velocidad
+turbo máxima que le hayas puesto en dietpi-config. 
 
 ******Sonido en Linux************
 
