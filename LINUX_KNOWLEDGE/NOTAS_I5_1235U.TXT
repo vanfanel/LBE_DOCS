@@ -25,6 +25,9 @@ Desactiva los Efficiency Cores, el Hyper-Threading, Intel(R) SpeedStep, Race To 
 C-States, (O bien sólo los Enhanced C-States (es lo que llaman C1E) y todo lo que hay debajo),
 y todas las opciones de eficiencia que veas.
 Desactiva el Legacy USB.
+COSAS QUE DEBES DEJAR ACTIVAS EN LA BIOS:
+-Turbo Mode: Sin esto, Linux no puede pasar de 1.3GHz (La CPU queda limitada a 1.3GHz o "velocidad nominal" hagas lo que hagas).
+-Intel Speed Shift: Sin esto, Linux no puede manejar los P-States (Nunca puede subir de 2.5GHz hagas lo que hagas).
 
 -En la línea de parámetros del kernel pasamos: intel_idle.max_cstate=0 processor.max_cstate=0
 (Eso se hace editando /etc/default/grub y luego haciendo "update-grub").
@@ -33,6 +36,11 @@ pero como los C-States sí que los desactivamos, no puede desactivar cachés y c
 Puedes observar las frecuencias de la CPU con: watch -n1 "grep \"^[c]pu MHz\" /proc/cpuinfo"
 Y verás que sí que baja mucho cuando no hay nada ejecutándose, pero que una vez que hay cosas ejecutándose no baja de la velocidad
 turbo máxima que le hayas puesto en dietpi-config. 
+
+-En dietpi-config, entra en PERFORMANCE OPTIONS y pon:
+Governor a performance, Intel Turbo ON, y CPU Frequency Limits: MAX=80% MIN=80%
+(Esto sería para emular Saturn bien con max_swapchain a 3: si quieres Saturn con max_swapchain a 2, tienes que poner ambos valores a 100%,
+pero eso recalienta la CPU por encima de 72 grados al cabo de un rato). 
 
 ******Sonido en Linux************
 
