@@ -644,6 +644,9 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (SI TE DA ERROR AL LINKAR por funciones de slang, no le pases --disable-builtinglslang)
 
+(Si quieres OpenGL de escritorio, en lugar de "--enable-opengles --enable-opengles3" pásale "--enable-opengl",
+y además edita qb/config.libs.sh y cambia -lGL por -lOpenGL, sólo hay una ocurrencia que cambiar).
+
 PARA COMPILAR CUALQUIER CORE:
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
