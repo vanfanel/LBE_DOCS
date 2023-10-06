@@ -25,6 +25,7 @@ Desactiva los Efficiency Cores, el Hyper-Threading, Intel(R) SpeedStep, Race To 
 C-States, (O bien sólo los Enhanced C-States (es lo que llaman C1E) y todo lo que hay debajo),
 y todas las opciones de eficiencia que veas.
 Desactiva el Legacy USB.
+En "GT - Power Management Control" pon "Maximum GT frequency" a 1200Mhz.
 COSAS QUE DEBES DEJAR ACTIVAS EN LA BIOS:
 -Turbo Mode: Sin esto, Linux no puede pasar de 1.3GHz (La CPU queda limitada a 1.3GHz o "velocidad nominal" hagas lo que hagas).
 -Intel Speed Shift: Sin esto, Linux no puede manejar los P-States (Nunca puede subir de 2.5GHz hagas lo que hagas).
