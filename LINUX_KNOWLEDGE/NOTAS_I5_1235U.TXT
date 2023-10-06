@@ -43,8 +43,8 @@ Governor a performance, Intel Turbo ON, y CPU Frequency Limits: MAX=100% MIN=100
 (Esto es una configuración de altísimo rendimiento que permite incluso emular Saturn bien con max_swapchain a 2.
 Ten en cuenta que se pone a 72 grados en un rato, y en verano puede ser excesivo.
 La solución sería bajar en dietpi-config MAX=80% MIN=80% en verano, incluso así emulas Saturn sin problemas si usas max_swapchain 3).
-(Los cores 3D como Dreamcast necesitan max_swapchain 3 sí o sí, o la GPU no puede correr en paralelo a la CPU,
-que es su forma natural de funcionar. Para Saturn también.).
+(Para cores 3D como Dreamcast es recomendable max_swapchain 3, ya que con 2 la GPU no puede correr en paralelo a la CPU,
+que es su forma natural de funcionar. Para Saturn también. Se puede hacer con 2 pero a base de poner a CPU a 4GHz todo el rato).
 
 ******Sonido en Linux************
 
@@ -98,8 +98,8 @@ ctl.!default {
 -Video: VULKAN con SWAPCHAIN a 2
 -Audio: ALSATHREAD con 44100Hz y LATENCY a 48 
 
-(Los cores 3D como Dreamcast necesitan max_swapchain 3 sí o sí, o la GPU no puede correr en paralelo a la CPU,
-que es su forma natural de funcionar. Para Saturn también.).
+(Para cores 3D como Dreamcast es recomendable max_swapchain 3, ya que con 2 la GPU no puede correr en paralelo a la CPU,
+que es su forma natural de funcionar. Para Saturn también. Se puede hacer con 2 pero a base de poner a CPU a 4GHz todo el rato).
 
 *****COMPROBAR GOVERNOR DE LA CPU*********
 
