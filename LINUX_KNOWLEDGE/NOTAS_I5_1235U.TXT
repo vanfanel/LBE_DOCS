@@ -32,7 +32,7 @@ COSAS QUE DEBES DEJAR ACTIVAS EN LA BIOS:
 
 -En la línea de parámetros del kernel pasamos: intel_idle.max_cstate=0 processor.max_cstate=0
 EN TOTAL, LA LÍNEA DE PARÁMETROS DEL KERNEL QUEDA ASÍ:
-consoleblank=0 console=tty1 mitigations=off audit=0 loglevel=4 quiet fastboot usbhid.jspoll=1 intel_idle.max_cstate=0 processor.max_cstate=0
+consoleblank=0 console=tty1 mitigations=off audit=0 quiet loglevel=0 fastboot usbhid.jspoll=1 intel_idle.max_cstate=0 processor.max_cstate=0
 (Eso se hace editando /etc/default/grub y luego haciendo "update-grub").
 NO le pasamos idle=poll o idle=halt porque la idea es que cuando la CPU está idle, pueda bajarse de velocidad usando los P-States,
 pero como los C-States sí que los desactivamos, no puede desactivar cachés y cosas así.
