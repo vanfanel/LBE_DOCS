@@ -40,14 +40,24 @@ Puedes observar las frecuencias de la CPU con: watch -n1 "grep \"^[c]pu MHz\" /p
 Y verás que sí que baja mucho cuando no hay nada ejecutándose, pero que una vez que hay cosas ejecutándose no baja de la velocidad
 turbo máxima que le hayas puesto en dietpi-config. 
 
--En dietpi-config, entra en PERFORMANCE OPTIONS y pon:
-Governor a performance, Intel Turbo ON, y CPU Frequency Limits: MAX=80% MIN=80%
-(Esto es una configuración que permite emular Saturn pero max_swapchain a 3.
- Sería posible emular Saturn con max_swapchain a 2, pero para ello tendríamos que poner CPU Frequency Limits: MAX=100% MIN=100%
- lo que provoca que se alcancen 80 grados en un rato, y NO es recomendable pasar de 75).
+-Governor y frecuencias.
+MANERA 1: RECOMENDADA, A MANO (info sacada de cómo se hace en el script /boot/dietpi/func/dietpi-set_cpu)
+-Elimina los archivos /etc/systemd/system/dietpi-preboot.service y /etc/systemd/system/dietpi-postboot.service
+-Añade al principio de /etc/profile/profile.d/custom.sh:
+######
+echo "performance" > /sys/devices/system/cpu/cpu[0]/cpufreq/scaling_governor                                   
+echo "performance" > /sys/devices/system/cpu/cpu[1]/cpufreq/scaling_governor                                   
+echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo                                                         
+echo 80 > /sys/devices/system/cpu/intel_pstate/max_perf_pct                                                    
+echo 80 > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+######
+Esto es una configuración que permite emular Saturn pero max_swapchain a 3.
+Sería posible emular Saturn con max_swapchain a 2, pero para ello tendríamos que poner max_perf_pct y min_perf_pct al 100,
+lo que provoca que se alcancen 80 grados en un rato, y NO es recomendable pasar de 75.
 
-(Para cores 3D como Dreamcast es recomendable max_swapchain 3, ya que con 2 la GPU no puede correr en paralelo a la CPU,
-que es su forma natural de funcionar. Para Saturn también. Se puede hacer con 2 pero a base de poner a CPU a 4GHz todo el rato).
+MANERA 2: MEDIANTE DIETPI-CONFIG
+En PERFORMANCE OPTIONS pon:
+Governor a performance, Intel Turbo ON, y CPU Frequency Limits: MAX=80% MIN=80%
 
 ******Sonido en Linux************
 
