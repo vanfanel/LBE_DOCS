@@ -39,10 +39,11 @@ Y verás que sí que baja mucho cuando no hay nada ejecutándose, pero que una v
 turbo máxima que le hayas puesto en dietpi-config. 
 
 -En dietpi-config, entra en PERFORMANCE OPTIONS y pon:
-Governor a performance, Intel Turbo ON, y CPU Frequency Limits: MAX=100% MIN=100%
-(Esto es una configuración de altísimo rendimiento que permite incluso emular Saturn bien con max_swapchain a 2.
-Ten en cuenta que se pone a 72 grados en un rato, y en verano puede ser excesivo.
-La solución sería bajar en dietpi-config MAX=80% MIN=80% en verano, incluso así emulas Saturn sin problemas si usas max_swapchain 3).
+Governor a performance, Intel Turbo ON, y CPU Frequency Limits: MAX=80% MIN=80%
+(Esto es una configuración que permite emular Saturn pero max_swapchain a 3.
+ Sería posible emular Saturn con max_swapchain a 2, pero para ello tendríamos que poner CPU Frequency Limits: MAX=100% MIN=100%
+ lo que provoca que se alcancen 80 grados en un rato, y NO es recomendable pasar de 75).
+
 (Para cores 3D como Dreamcast es recomendable max_swapchain 3, ya que con 2 la GPU no puede correr en paralelo a la CPU,
 que es su forma natural de funcionar. Para Saturn también. Se puede hacer con 2 pero a base de poner a CPU a 4GHz todo el rato).
 
