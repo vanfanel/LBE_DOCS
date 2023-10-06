@@ -110,3 +110,4 @@ cat /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
 
 Estas cosas se pueden desinstalar y aún así wayland funciona como servicio sin problemas:
 apt-get purge dbus
+(Para evitar errores derivados de la falta de dbus.socket, hacemos: systemctl mask sockets.target).
