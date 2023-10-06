@@ -8,7 +8,7 @@ apt-get install lsb-release apt-transport-https ca-certificates curl --no-instal
 curl -fSsL https://pkgs.zabbly.com/key.asc | gpg --dearmor | sudo tee /usr/share/keyrings/linux-zabbly.gpg > /dev/null
 
 -Creamos /etc/apt/sources.list.d/linux-zabbly.list con el contenido:
-deb [arch=amd64 signed-by=/usr/share/keyrings/linux-zabbly.gpg] https://pkgs.zabbly.com/kernel/stable bookw    orm main
+deb [arch=amd64 signed-by=/usr/share/keyrings/linux-zabbly.gpg] https://pkgs.zabbly.com/kernel/stable bookworm main
 
 -Actualizamos los metadatos de apt:
 apt-get update
@@ -16,13 +16,16 @@ apt-get update
 -Instalamos el último kernel de zabbly:
 apt install linux-zabbly
 
-******AJUSTES EN LA BIOS (NECESARIO SÓLO SI TIENES UN KERNEL INFERIOR AL 6.5 POR SUS PROBLEMAS CON LA MEZCLA DE P-CORES Y E-CORES)***************
+******AJUSTES EN LA BIOS***************
 
-Desactiva los EFFICIENCY CORES, deja sólo los PERFORMANCE CORES, con HYPER THREADING activado.
-(Los core EFFICIENCY provocan micro-stuttering en DOSBOX).
+Desactiva los Efficiency Cores, el Hyper-Threading, Intel(R) SpeedStep, Race To Halt, Energy Efficient Turbo,
+C-States, (O bien sólo los Enhanced C-States (es lo que llaman C1E) y todo lo que hay debajo),
+y todas las opciones de eficiencia que veas.
+Desactiva el Legacy USB.
 
 Frecuencia fija de la CPU:
 -En la línea de parámetros del kernel pasamos: intel_idle.max_cstate=0 processor.max_cstate=0
+(Eso se hace editando /etc/default/grub y luego haciendo "update-grub").
 
 ******Sonido en Linux************
 
@@ -74,14 +77,16 @@ ctl.!default {
 *****CONFIGURACIÓN DE AUDIO/VIDEO EN RETROARCH******
 
 -BIOS del ordenador (ver esto: https://kithara.com/en/faq/real-time-system/what-can-causes-a-jitter-at-real-time-tasks/):
-	Resúmen: Desactiva los Efficiency Cores, el Hyper-Threading, Intel(R) SpeedStep, Race To Halt, Energy Efficient Turbo,
-	Enhanced C-States (es lo que llaman C1E) y todo lo que hay debajo, y todas las opciones de eficiencia que veas.
-	Desactiva el Legacy USB.
+	
 -Video: VULKAN con SWAPCHAIN a 2
 -Audio: ALSATHREAD con 44100Hz y LATENCY a 48 
 
 *****COMPROBAR GOVERNOR DE LA CPU*********
 
+Lo más fácil:
+watch -n1 "grep \"^[c]pu MHz\" /proc/cpuinfo"
+
+O BIEN:
 cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
 cat /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
