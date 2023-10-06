@@ -90,8 +90,6 @@ ctl.!default {
         card HID                                                                                               
 }
 *****CONFIGURACIÓN DE AUDIO/VIDEO EN RETROARCH******
-
--BIOS del ordenador (ver esto: https://kithara.com/en/faq/real-time-system/what-can-causes-a-jitter-at-real-time-tasks/):
 	
 -Video: VULKAN con SWAPCHAIN a 2
 -Audio: ALSATHREAD con 44100Hz y LATENCY a 48 
@@ -106,3 +104,8 @@ cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
 cat /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
 ...etc
+
+*****LIMPIEZA DE SISTEMA******
+
+Estas cosas se pueden desinstalar y aún así wayland funciona como servicio sin problemas:
+apt-get purge dbus
