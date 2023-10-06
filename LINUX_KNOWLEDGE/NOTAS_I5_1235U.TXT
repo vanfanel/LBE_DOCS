@@ -21,6 +21,9 @@ apt install linux-zabbly
 Desactiva los EFFICIENCY CORES, deja sólo los PERFORMANCE CORES, con HYPER THREADING activado.
 (Los core EFFICIENCY provocan micro-stuttering en DOSBOX).
 
+Frecuencia fija de la CPU:
+-En la línea de parámetros del kernel pasamos: intel_idle.max_cstate=0 processor.max_cstate=0
+
 ******Sonido en Linux************
 
 Tenemos que hacerl a mano (incluso si usas DietPi, la utilidad dietpi-config nos permite seleccionar el hardware de audio pero por número,
@@ -75,7 +78,7 @@ ctl.!default {
 	Enhanced C-States (es lo que llaman C1E) y todo lo que hay debajo, y todas las opciones de eficiencia que veas.
 	Desactiva el Legacy USB.
 -Video: VULKAN con SWAPCHAIN a 2
--Audio: ALSATHREAD con 48000Hz y LATENCY a 45 
+-Audio: ALSATHREAD con 44100Hz y LATENCY a 48 
 
 *****COMPROBAR GOVERNOR DE LA CPU*********
 
