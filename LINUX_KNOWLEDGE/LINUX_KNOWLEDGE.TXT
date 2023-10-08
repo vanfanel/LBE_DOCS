@@ -3418,7 +3418,7 @@ sudo updatedb
 
 Y ya se supone que podemos usarlo.
 
-***********TIC-80, una consola imaginaria para Pi****************************************************************************************************
+***********TIC-80, una consola imaginaria para Pi************************************************************************************************
 
 Clonamos su repo y actualizamos los submódulos para poder compilar:
 git clone --depth 1 https://github.com/nesbox/TIC-80.git
@@ -7687,8 +7687,8 @@ make install
 Para desinstalar, es a mano porque no hay uninstall, y se haría con:
 rm /usr/local/sbin/wpa_*
 
-GLEW EN GNU/LINUX
-=================
+INSTALAR GLEW EN GNU/LINUX
+==========================
 
 GLEW es usado por los Sonic-1-2-2013 y SonicCD decompilation projects, por Scummvm para el render OpenGL de los juegos 3D
 (NO para el modo OpenGL de los juegos 2D, y a parte para el render de los juegos 3D también se puede usar GLES2, así que
