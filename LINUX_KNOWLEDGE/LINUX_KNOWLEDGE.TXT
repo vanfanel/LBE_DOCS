@@ -551,6 +551,18 @@ Configuramos y compilamos:
 mkdir b4
 cd b4
 
+Para compilar una versión LIBRETRO:
+
+mkdir b4
+cd b4
+cmake .. -DLIBRETRO=ON -DUSE_VULKAN_DISPLAY_KHR=ON -DUSE_WAYLAND_WSI=OFF -DUSING_X11_VULKAN=OFF \
+-DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
+
+¡¡¡OJO!!! Tenemos que copiar el contenido del directorio "assets" que viene con los sources a ~/.config/retroarch/system/PPSSPP/
+o si no, el Ridge Racers se nos quedará en una pantalla en gris después del menú principal."
+
 PARA WAYLAND:
 cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSE_VULKAN_DISPLAY_KHR=OFF -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
 -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
@@ -571,15 +583,6 @@ popd
 (Ese error ocurre porque, por defecto, intenta usar un FFMPEG que trae PRE-compilado contra otras libc.. normal que de error!)
 
 Ahora copiamos el directorio "assets" al mismo directorio del ejecutable PPSSPP
-
-Para compilar una versión LIBRETRO:
-
-mkdir b4
-cd b4
-cmake .. -DLIBRETRO=ON -DUSE_VULKAN_DISPLAY_KHR=ON -DUSE_WAYLAND_WSI=OFF -DUSING_X11_VULKAN=OFF \
--DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
--DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
--DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
 *******Compilar el core libretro Yabause***********
 
