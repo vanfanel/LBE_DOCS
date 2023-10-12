@@ -6659,8 +6659,12 @@ nos interesa que las SDL2 cambien el modo de vídeo a 720p y no que usen el modo
 Hay que tener baserom.us.z64 en el directorio raiz.
 
 Se compila para la Pi con:
-
 make TARGET_RPI=1 HIGH_FPS_PC=1 RUMBLE_FEEDBACK=0 BETTERCAMERA=0 -j4
+
+Si vamos a compilar para PC:
+1-Editamos Makefile, cambiamos -lGL por -lOpenGL, y en la línea "OPT_FLAGS := -O2" añadimos "-march=native -mtune=native"
+2-Compilamos con:
+make HIGH_FPS_PC=1 RUMBLE_FEEDBACK=0 BETTERCAMERA=0 -j4
 
 El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
 
