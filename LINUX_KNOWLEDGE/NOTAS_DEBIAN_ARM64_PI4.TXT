@@ -681,7 +681,8 @@ En RGUI, para que se ponga el tema que elijas con CUSTOM THEME PRESET, tienes qu
 En XMB, puedes desactivas el lazo de fondo en SETTINGS->USER INTERFACE->APPEARANCE si quieres.
 Para XMB, un buen tema es el Systematic ("SETTINGS->USER INTERFACE->APPEARANCE->MENU ICON THEME")
 
-Si quieres que te salgan iconos en el menú XMB en lugar de cuadrados negros, necesitas los assets de aquí: https://github.com/libretro/retroarch-assets
+Si quieres que te salgan iconos en el menú XMB en lugar de cuadrados negros,
+necesitas los assets de aquí: https://github.com/libretro/retroarch-assets
 De ese repo, necesitas solamente el directorio ozone en el directorio de assets. El directorio de assets se cambia en el menú o en el cfg. Yo los tengo en ~/retro/assets,
 de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/xmb
 Con assets/xmb y assets/rgui te vale, borra los demás.
