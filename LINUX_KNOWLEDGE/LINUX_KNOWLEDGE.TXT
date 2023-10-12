@@ -1740,6 +1740,12 @@ Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(
 Editamos jfaudiolib/Makefile, y eliminamos el "-g" ese que hay ahí perdido.
 
 Compilamos con:
+
+PARA PC:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GL3
+
+PARA RASPBERRY PI:
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GLES2
 
@@ -4737,7 +4743,9 @@ mkdir b4
 cd b4
 
 Configuramos y compilamos con:
+
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
+
 make -j4
 
 Creamos el directorio ~/cconquer, y metemos ahí los datos del juego.
@@ -7006,10 +7014,9 @@ El fichero de configuración es ~/.config/fheroes2/fheroes2.cfg
 Se genera cuando ejecutas el engine por primera vez.
 Ahí puedes ponerlo a pantalla completa, activar el vsync, hacer que no salga la cutre-intro con "show game intro = off", etc.
 
-LIBOPENAL en GNU/Linux
-======================
+INSTALAR OPENAL en GNU/Linux
+============================
 
-Por si alguna vez lo necesitas para algo.
 Bajamos la última release de: https://github.com/kcat/openal-soft/tags
 Configuramos así:
 cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_REQUIRE_PIPEWIRE=OFF \
@@ -7937,7 +7944,7 @@ A TRAVÉS DE LAS SDL. ESTO ES PARA TENER EL SONIDO EN EL FROTZ NORMAL EN MODO TE
 --Bajamos la última estable de: https://github.com/xiph/libao/tags
 --Ejecutamos el script "autogen.sh" que viene con los sources.
 --Configuramos con:
-CFLAGS="-march=native -mtune=native" ./configure --enable-alsa --disable-pulse --disable-esd --disable-broken-oss
+CFLAGS="-march=native -mtune=native" ./configure --enable-alsa --disable-pulse --disable-esd
 
 +Instalamos estas dependencias con apt: apt-get install libsamplerate0-dev libsndfile1-dev --no-install-recommends
 
@@ -7959,7 +7966,7 @@ Ahora edita el Makefile y:
 -Pon sound a NONE si no quieres sonido en modo texto (sin SDL). En sfrotz el sonido va por las SDL,
  así que usa SFROTZ para los juegos que tienen sonido, y ya.
 -Comenta la línea de los CFLAGS del -g, y deja así la línea de los CFLAGS:
-CFLAGS+= -march=native -mtune=native -fsigned-char
+CFLAGS += -march=native -mtune=native -fsigned-char
 (Los valores de align y tal no tienen sentido porque los valores son incorrectos, -O2 ya activa los valores correctos).
 
 Ahora compila con "make frotz" (hay "make sfrotz" para SDL, etc...)
