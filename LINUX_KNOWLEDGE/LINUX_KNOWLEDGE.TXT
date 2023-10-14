@@ -946,11 +946,11 @@ cmake .. -DMOJOZORK_MULTIZORK=OFF \
 git clone --depth 1 https://github.com/libretro/mame.git
 
 Ahora, editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
-SOURCES = src/mame/drivers/dlair.cpp,src/mame/drivers/dlair2.cpp
+SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp
 
 Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
-CFLAGS="-O2 -march=native -mtune=native -O2" \
-CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 REGENIE=1 make -f Makefile.libretro -j4
 
 ******Compilar DOLPHIN standalone en GNU/Linux****************
