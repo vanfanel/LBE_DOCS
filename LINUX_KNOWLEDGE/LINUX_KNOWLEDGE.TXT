@@ -563,13 +563,15 @@ cmake .. -DLIBRETRO=ON -DUSE_VULKAN_DISPLAY_KHR=ON -DUSE_WAYLAND_WSI=OFF -DUSING
 ¡¡¡OJO!!! Tenemos que copiar el contenido del directorio "assets" que viene con los sources a ~/.config/retroarch/system/PPSSPP/
 o si no, el Ridge Racers se nos quedará en una pantalla en gris después del menú principal."
 
+Es un core con sonido 44100Hz, así que configura los settings de audio así y guarda los core overrides.
+
 PARA WAYLAND:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSE_VULKAN_DISPLAY_KHR=OFF -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSE_VULKAN_DISPLAY_KHR=OFF -DUSING_X11_VULKAN=OFF -DUSING_GLES2=OFF -DUSE_DISCORD=OFF \
 -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
 PARA KMSDRM:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=OFF -DUSE_VULKAN_DISPLAY_KHR=ON -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=OFF -DUSE_VULKAN_DISPLAY_KHR=ON -DUSING_X11_VULKAN=OFF -DUSING_GLES2=OFF -DUSE_DISCORD=OFF \
 -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
@@ -946,12 +948,15 @@ cmake .. -DMOJOZORK_MULTIZORK=OFF \
 git clone --depth 1 https://github.com/libretro/mame.git
 
 Ahora, editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
-SOURCES = src/mame/sega/model1.cpp,src/mame/namcos22.cpp
+SOURCES = src/mame/sega/model1.cpp,src/mame/namcos11.cpp,src/mame/namcos21.cpp
 
 Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 REGENIE=1 make -f Makefile.libretro -j4
+
+MAME es un core con sonido de 48000Hz, así que configura el audio en Settings->Audio->Output para esta frecuencia,
+y guárdalo para este core en Quick Menu->Overrides->Save Core Overrides
 
 ******Compilar DOLPHIN standalone en GNU/Linux****************
 
@@ -8363,6 +8368,20 @@ mame -createconfig
 Lo editamos a nuestro gusto, y le pasamos a MAME la ruta del .ini para cargarlo:
 mame -inipath /home/manuel/mame ridgerac
 Uno de los sitios donde busca por defecto los .zip de las ROMs es en $HOME/mame/roms, pero pedemos espeficar otras rutas en el .ini
+
+INSTALAR CHDMAN A MANO
+======================
+
+Para evitar dependencias absurdas de X11 y demás.
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/CharlesThobe/chdman.git
+
+Compilamos:
+mkdir b4
+cd b4
+cmake -B build -G Ninja ..
+cmake --build build
 
 COMPRIMR CUE/BIN A CHD
 ======================
