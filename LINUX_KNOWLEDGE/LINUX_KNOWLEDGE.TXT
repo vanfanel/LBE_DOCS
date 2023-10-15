@@ -946,7 +946,7 @@ cmake .. -DMOJOZORK_MULTIZORK=OFF \
 git clone --depth 1 https://github.com/libretro/mame.git
 
 Ahora, editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
-SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp
+SOURCES = src/mame/sega/model1.cpp,src/mame/namcos22.cpp
 
 Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
