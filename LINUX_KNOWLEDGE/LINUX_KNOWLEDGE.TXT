@@ -948,7 +948,7 @@ cmake .. -DMOJOZORK_MULTIZORK=OFF \
 git clone --depth 1 https://github.com/libretro/mame.git
 
 Ahora, editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
-SOURCES = src/mame/sega/model1.cpp,src/mame/namcos11.cpp,src/mame/namcos21.cpp
+SOURCES = src/mame/sega/model1.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp
 
 Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
@@ -957,6 +957,14 @@ REGENIE=1 make -f Makefile.libretro -j4
 
 MAME es un core con sonido de 48000Hz, así que configura el audio en Settings->Audio->Output para esta frecuencia,
 y guárdalo para este core en Quick Menu->Overrides->Save Core Overrides
+
+******KILLER INSTINCT en core MAME LIBRETRO*******************
+
+En el mismo directorio donde tengas el kinst.zip, crea un directorio kinst donde meterás el .chd, quedando así:
+/kinst.zip
+/kinst/kinst.chd
+Ahora lánzalo pasándole el directorio donde está el CHD:
+retroarch -L .config/retroarch/cores/mame_libretro.so emulation/MAME/kinst
 
 ******Compilar DOLPHIN standalone en GNU/Linux****************
 
