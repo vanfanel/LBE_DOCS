@@ -6263,6 +6263,11 @@ COMPILAR CUALQUIER CORE DE LIBRETRO
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
 
+DESCARGAR CORES PRECOMPILADOS DE LIBRETRO
+=========================================
+
+http://buildbot.libretro.com/stable
+
 COMPILAR EL CORE HATARIB DE LIBRETRO
 ====================================
 
