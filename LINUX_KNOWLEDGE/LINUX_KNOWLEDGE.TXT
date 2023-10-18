@@ -7553,6 +7553,31 @@ make -j4
 
 Creamos el directorio ~/hurrican, y allí copiamos el ejecutable, junto con los directorios data y lang, que vienen con los sources.
 
+EMULADOR MODEL 3 (SUPERMODEL) EN GNU/LINUX
+==========================================
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/trzy/Supermodel.git 
+
+Editamos Makefiles/Rules.inc y quitamos glew.cpp, y todos los ficheros de Legacy3D.
+Editamos Makefiles/Makefile.UNIX y cambiamos -lGL por -lOpenGL, y añadimos -lGLEW 
+
+Editamos , y buscamos las líneas que empiezan con "Render3D =", hay dos, las dejamos así las dos:
+Render3D = ((IRender3D *) new New3D::CNew3D(s_runtime_config, Model3->GetGame().name));
+
+Compilamos con:
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+make -f Makefiles/Makefile.UNIX -j4
+
+Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
+Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
+supermodel daytona2.zip
+
+NOTA: Cuando al iniciar un juego nos de el error "Network board not present", le damos al 6 para entrar en modo Test,
+navegamos usando el 5 hasta "Game Assignments", usamos el 6 para seleccionarlo, y cambiamos la opción "Link ID" de "Master" a "Single".
+
 AUDIO POR I2C: EL PI TOP SPEAKER
 ================================
 
