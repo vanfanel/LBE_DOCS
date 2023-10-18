@@ -7575,6 +7575,9 @@ Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Ass
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
 supermodel daytona2.zip -res=1920,1080 -fullscreen -channels=2 -quad-rendering
 
+PARA CONFIGURAR LOS CONTROLES: Ejecuta simplemente "supermodel -config-inputs", y puedes usar las flechas ARRIBA Y ABAJO del teclado
+para saltarte los controles que no te intererese configurar. Para configurar una tecla, dale a INTRO, y ya al botón o eje que sea.
+
 NOTA: Si no le pasas "-quad-rendering", las pistas se ven todas blancas.
 
 NOTA: Si no le pasas "-channels=2", no se oirá porque por defecto Supermodel intenta abrir un sistema de audio de 4 canales,
