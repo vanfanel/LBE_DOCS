@@ -7573,7 +7573,10 @@ make -f Makefiles/Makefile.UNIX -j4
 
 Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
-supermodel daytona2.zip -fullscreen
+supermodel daytona2.zip -res=1920,1080 -fullscreen -channels=2
+
+NOTA: Si no le pasas "-channels=2", no se oirá porque por defecto Supermodel intenta abrir un sistema de audio de 4 canales,
+que no tenemos.
 
 NOTA: Cuando al iniciar un juego nos de el error "Network board not present", le damos al 6 para entrar en modo Test,
 navegamos usando el 5 hasta "Game Assignments", usamos el 6 para seleccionarlo, y cambiamos la opción "Link ID" de "Master" a "Single".
