@@ -916,6 +916,8 @@ Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
+Este es un core con audio de 44100Hz, así que configura RetroArch con esta frecuencia y sálvalo en Overrides->Save Core Overrides 
+
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
 
 git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
