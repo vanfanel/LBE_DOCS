@@ -682,11 +682,8 @@ En XMB, puedes desactivas el lazo de fondo en SETTINGS->USER INTERFACE->APPEARAN
 Para XMB, un buen tema es el Systematic ("SETTINGS->USER INTERFACE->APPEARANCE->MENU ICON THEME")
 
 Si quieres que te salgan iconos en el menú XMB en lugar de cuadrados negros,
-necesitas los assets de aquí: https://github.com/libretro/retroarch-assets
-De ese repo, necesitas solamente el directorio ozone en el directorio de assets. El directorio de assets se cambia en el menú o en el cfg. Yo los tengo en ~/retro/assets,
-de tal manera que ahí quedaría el directorio xmb del repo, tal que ~/retro/assets/xmb
-Con assets/xmb y assets/rgui te vale, borra los demás.
-Con el RGUI es igual.
+necesitas los assets de aquí: git clone --depth 1 https://github.com/libretro/retroarch-assets.git
+Copia el directorio "assets/ozone" a ~/.config/retroarch/assets/. 
 
 PARA CUALQUIER PROBLEMA de librerías no encontradas pero que sí están instaladas, RECUERDA REGENERAR LA CACHE DE LDD:
 sudo rm /etc/ld.so.cache
