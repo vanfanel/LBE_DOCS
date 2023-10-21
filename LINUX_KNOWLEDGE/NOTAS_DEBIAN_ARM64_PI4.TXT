@@ -681,6 +681,23 @@ cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
 IMPORTANTE!!! NO TE OLVIDES DE ELIMINAR EL ARCHIVO ~/.config/retroarch/cores/core_info.cache. PARA QUE LO RECREE CON LOS NUEVOS .INFO
 Ahora en RetroArch, en Settings->File Browser, desactiva todo y activa "Filter Unknows Extensions" 
 
+Para añadir juegos a una PLAYLIST, lo vamos a ver con los juegos arcade de FBNeo como ejemplo.
+Vamos a IMPORT CONTENT->MANUAL SCAN y ahí:
+-En CONTENT DIRECTORY, seleccionamos el directorio que queremos escanear
+-En SYSTEM NAME elegimos "FBNeo - Arcade Games"
+-En DEFAULT CORE elegimos "Arcace (Final Burn Neo)"
+-En ARCADE DAT FILE elegimos la última versión del fichero "Final Burn Neo (ClrMame Pro XML, Arcade only)" que nos podemos bajar de:
+https://github.com/libretro/FBNeo/tree/master/dats
+(Yo suelo meter el DAT en /storage/roms/Downloads)
+...Y una vez que lo tenemos todo le damos a START SCAN abajo del todo y esperamos.
+Esto tenemos que hacerlo contra ROMs descargadas de https://www.retroroms.info, yéndonos a "FBNeo" y luego a "currentroms",
+ya que son las más actuales y se supone que son contra las que se ha creado el DAT.
+
+Para tener carátulas (thumbnails) debes hacer que RetroArch añada los juegos a una PLAYLIST (lo acabo de explicar), luego tenemos dos opciones:
+La más sencilla es conectar el sistema a Internet, e ir a Main Menu->Online Updater->Playlist Thumbnail Updater para que se descarguen solas
+las carátulas de la playlist que queramos.
+La otra, más LENTA y complicada, es meter a mano los THUMBNAILS de los sistemas que quieras en /storage/thumbnails, y ya se verán en las playlist.
+
 Si quieres configurar un tema del XMB o del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE.
 En RGUI, para que se ponga el tema que elijas con CUSTOM THEME PRESET, tienes que poner MENU COLOR THEME en CUSTOM.
 En XMB, puedes desactivas el lazo de fondo en SETTINGS->USER INTERFACE->APPEARANCE si quieres.
