@@ -637,7 +637,7 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 ./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg \
 --disable-netplaydiscovery --enable-udev --disable-sdl --disable-pulse --disable-oss \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
---disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra \
+--disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra --disable-discord \
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
 --enable-egl --enable-opengles --enable-opengles3 --enable-vulkan --disable-builtinglslang
 

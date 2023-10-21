@@ -9191,6 +9191,20 @@ NOTA: Si usamos el antiguo configure && make, configuramos con:
 ./configure --without-x --disable-xcb --enable-wayland --disable-qt --disable-ncurses --enable-v4l2 --disable-mmal \
 --enable-gles2 --disable-lua --disable-a52 --disable-freerdp --disable-vnc
 
+ARREGLAR ROMS CON ROMVAULT
+==========================
+
+-Nos bajamos el exe del RomVault de: https://www.romvault.com/
+Se ejecuta con Mono: mono ROMVault36.exe
+
+-Nos vamos bajando los .DAT de los sistemas que queramos arreglar de:
+https://datomatic.no-intro.org
+...Y los metemos en el directorio DatRoot del RomVault
+
+-Metemos los juegos de los sistemas que queramos reparar en el directorio ToSort del RomVault
+
+-En RomVault, le damos a "Update Dats", luego a "Find Fixes" y luego a "ROM Fixes"
+
 REPRODUCCIÓN DE VÍDEO EN LA PI4 CON MPV + FFMPEG
 ================================================
 
