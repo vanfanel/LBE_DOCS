@@ -684,11 +684,23 @@ cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
 IMPORTANTE!!! NO TE OLVIDES DE ELIMINAR EL ARCHIVO ~/.config/retroarch/cores/core_info.cache. PARA QUE LO RECREE CON LOS NUEVOS .INFO
 Ahora en RetroArch, en Settings->File Browser, desactiva todo y activa "Filter Unknows Extensions" 
 
-Para añadir juegos a una PLAYLIST, lo vamos a ver con los juegos arcade de FBNeo como ejemplo.
+Para añadir juegos de CONSOLA a una PLAYLIST:
+-Las ROMs deben estar en un directorio cuyo nombre coincida con el nombre del sistema en no-intro.
+-Los nombres de las ROMs deben coincidir con los nombres de las ROMs de no-intro, o no se identificarán correctamente al construir la playlist,
+y luego no se encontrarán los thumbnails para ellas desde el Online Updater.
+-Clonamos este repo: git clone --depth 1 https://github.com/libretro/libretro-database
+y metemos el contenido del directorio "rdb" en ~/.config/retroarch/databases/rdb/
+-Vamos a IMPORT CONTENT->MANUAL SCAN y ahí:
+ -En CONTENT DIRECTORY, seleccionamos el directorio que queremos escanear
+ -En SYSTEM NAME elegimos "Content Directory"
+ -En DEFAULT CORE elegimos el core que queramos usar para esa playlist.
+ ...Y una vez que lo tenemos todo le damos a START SCAN abajo del todo y esperamos.
+
+Para añadir juegos ARCADE a una PLAYLIST, lo vamos a ver con los juegos arcade de FBNeo como ejemplo.
 Vamos a IMPORT CONTENT->MANUAL SCAN y ahí:
 -En CONTENT DIRECTORY, seleccionamos el directorio que queremos escanear
 -En SYSTEM NAME elegimos "FBNeo - Arcade Games"
--En DEFAULT CORE elegimos "Arcace (Final Burn Neo)"
+-En DEFAULT CORE elegimos "Arcade (Final Burn Neo)"
 -En ARCADE DAT FILE elegimos la última versión del fichero "Final Burn Neo (ClrMame Pro XML, Arcade only)" que nos podemos bajar de:
 https://github.com/libretro/FBNeo/tree/master/dats
 (Yo suelo meter el DAT en /storage/roms/Downloads)
@@ -696,12 +708,11 @@ https://github.com/libretro/FBNeo/tree/master/dats
 Esto tenemos que hacerlo contra ROMs descargadas de https://www.retroroms.info, yéndonos a "FBNeo" y luego a "currentroms",
 ya que son las más actuales y se supone que son contra las que se ha creado el DAT.
 
-Para tener carátulas (thumbnails) debes hacer que RetroArch añada los juegos a una PLAYLIST (lo acabo de explicar), luego tenemos dos opciones:
-La más sencilla es clonar este repo: git clone --depth 1 https://github.com/libretro/libretro-database
-meter las databases que queramos del directorio "rdb" en ~/.config/retroarch/databases/rdb/,
-y desde dentro de RetroArch, ir a Main Menu->Online Updater->Playlist Thumbnail Updater para que se descarguen solas las carátulas
-de la playlist que queramos.
-La otra, más LENTA y complicada, es meter a mano los THUMBNAILS de los sistemas que quieras en /storage/thumbnails, y ya se verán en las playlist.
+Para tener carátulas (thumbnails) debes hacer que RetroArch añada los juegos a una PLAYLIST (lo acabo de explicar),
+y luego desde dentro de RetroArch, vamos a Main Menu->Online Updater->Playlist Thumbnail Updater para que se descarguen solas
+las carátulas de la playlist que queramos.
+(Hacer esto depende de que tengamos las funcionalidades de "networking" y "libretrodb" compiladas en RetroArch:
+Libretrodb para que se hagan correctamente las playlists identificándose los juegos, y networking para tener el Online Updater).
 
 Si quieres configurar un tema del XMB o del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE.
 En RGUI, para que se ponga el tema que elijas con CUSTOM THEME PRESET, tienes que poner MENU COLOR THEME en CUSTOM.
