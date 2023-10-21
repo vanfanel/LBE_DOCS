@@ -670,7 +670,7 @@ Si quieres que aparezcan las opciones de SAVE/LOAD STATE, tienes dos opciones:
 	--Copiamos los .info a ~/.config/retroarch/cores, junto con los cores (suponiendo que tengamos ese directorio puesto
 	  como path para los core info, es la ruta por defecto).
 
-Si quieres que te salgan iconos en el menú XMB en lugar de cuadrados negros,
+Si quieres que te salgan iconos en el menú OZONE o XMB, en lugar de cuadrados negros,
 necesitas los assets de aquí: git clone --depth 1 https://github.com/libretro/retroarch-assets.git
 Copia los directorios "ozone", "fonts" y "xmb" (aunque no vayas a usar el XMB, cópialo o te faltarán cosas) a ~/.config/retroarch/assets/ 
 
