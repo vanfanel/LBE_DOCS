@@ -9201,9 +9201,13 @@ Se ejecuta con Mono: mono ROMVault36.exe
 https://datomatic.no-intro.org
 ...Y los metemos en el directorio DatRoot del RomVault
 
--Metemos los juegos de los sistemas que queramos reparar en el directorio ToSort del RomVault
+-Metemos los juegos de los sistemas que queramos reparar en el directorio RomRoot del RomVault
 
 -En RomVault, le damos a "Update Dats", luego a "Find Fixes" y luego a "ROM Fixes"
+Te dejará las ROMs (que pueda identificar) con los nombes correctos puestos en RomRoot/<NOMBRE_SISTEMA>,
+y las que no pueda identificar en ToSort/<NOMBRE_SISTEMA>
+...Le puedes poner nombes de no-intro a las ROMs parcheadas, que son las que suelen acabar en ToSort,
+y así RetroArch te las reconoce y les pone thumbnails.
 
 REPRODUCCIÓN DE VÍDEO EN LA PI4 CON MPV + FFMPEG
 ================================================
