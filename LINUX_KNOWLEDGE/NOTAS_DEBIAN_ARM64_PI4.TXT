@@ -637,7 +637,7 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 ./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg \
 --disable-networking --disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
---disable-qt --disable-materialui --disable-xmb --enable-rgui --disable-ozone --disable-gfx_widgets --disable-langextra \
+--disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra \
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
 --enable-egl --enable-opengles --enable-opengles3 --enable-vulkan --disable-builtinglslang
 
@@ -670,20 +670,21 @@ Si quieres que aparezcan las opciones de SAVE/LOAD STATE, tienes dos opciones:
 	--Copiamos los .info a ~/.config/retroarch/cores, junto con los cores (suponiendo que tengamos ese directorio puesto
 	  como path para los core info, es la ruta por defecto).
 
+Si quieres que te salgan iconos en el menú XMB en lugar de cuadrados negros,
+necesitas los assets de aquí: git clone --depth 1 https://github.com/libretro/retroarch-assets.git
+Copia los directorios "ozone", "fonts" y "xmb" (aunque no vayas a usar el XMB, cópialo o te faltarán cosas) a ~/.config/retroarch/assets/ 
+
 Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
 git clone --depth 1 https://github.com/libretro/libretro-super.git
 Y mandar el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/cores. Sí, junto con los cores. Así:
 cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
+IMPORTANTE!!! NO TE OLVIDES DE ELIMINAR EL ARCHIVO ~/.config/retroarch/cores/core_info.cache. PARA QUE LO RECREE CON LOS NUEVOS .INFO
 Ahora en RetroArch, en Settings->File Browser, desactiva todo y activa "Filter Unknows Extensions" 
 
 Si quieres configurar un tema del XMB o del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE.
 En RGUI, para que se ponga el tema que elijas con CUSTOM THEME PRESET, tienes que poner MENU COLOR THEME en CUSTOM.
 En XMB, puedes desactivas el lazo de fondo en SETTINGS->USER INTERFACE->APPEARANCE si quieres.
 Para XMB, un buen tema es el Systematic ("SETTINGS->USER INTERFACE->APPEARANCE->MENU ICON THEME")
-
-Si quieres que te salgan iconos en el menú XMB en lugar de cuadrados negros,
-necesitas los assets de aquí: git clone --depth 1 https://github.com/libretro/retroarch-assets.git
-Copia el directorio "assets/ozone" a ~/.config/retroarch/assets/. 
 
 PARA CUALQUIER PROBLEMA de librerías no encontradas pero que sí están instaladas, RECUERDA REGENERAR LA CACHE DE LDD:
 sudo rm /etc/ld.so.cache
