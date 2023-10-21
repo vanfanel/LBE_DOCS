@@ -686,6 +686,7 @@ Ahora en RetroArch, en Settings->File Browser, desactiva todo y activa "Filter U
 
 Para añadir juegos de CONSOLA a una PLAYLIST:
 -Las ROMs deben estar en un directorio cuyo nombre coincida con el nombre del sistema en no-intro.
+ Puedes sacar los nombres correctos de los directorios de https://github.com/libretro/libretro-database
 -Los nombres de las ROMs deben coincidir con los nombres de las ROMs de no-intro, o no se identificarán correctamente al construir la playlist,
 y luego no se encontrarán los thumbnails para ellas desde el Online Updater.
 -Clonamos este repo: git clone --depth 1 https://github.com/libretro/libretro-database
