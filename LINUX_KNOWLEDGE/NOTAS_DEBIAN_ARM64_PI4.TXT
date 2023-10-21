@@ -635,7 +635,7 @@ Ahora, para configurar RetroArch con soporte de GLES y VULKAN, como lo venimos h
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 ./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg \
---disable-netplaydiscovery --disable-libretrodb --enable-udev --disable-sdl --disable-pulse --disable-oss \
+--disable-netplaydiscovery --enable-udev --disable-sdl --disable-pulse --disable-oss \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
 --disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra \
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
@@ -647,8 +647,8 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 (Si quieres OpenGL de escritorio, en lugar de "--enable-opengles --enable-opengles3" pásale "--enable-opengl",
 y además edita qb/config.libs.sh y cambia -lGL por -lOpenGL, sólo hay una ocurrencia que cambiar).
 
-(NO le pasamos "--disable-networking" porque si lo hacemos no tendremos el "Online Updater" que nos permite que se descarguen automáticamente
-los thumbnails para las playlist, que hacerlo a mano es horroroso).
+(NO le pasamos "--disable-networking" ni "--disable-libretrodb" porque si lo hacemos no tendremos el "Online Updater"
+que es lo que nos permite que se descarguen automáticamente los thumbnails para las playlist. Hacerlo a mano es horroroso.)
 
 PARA COMPILAR CUALQUIER CORE:
 
@@ -697,8 +697,10 @@ Esto tenemos que hacerlo contra ROMs descargadas de https://www.retroroms.info, 
 ya que son las más actuales y se supone que son contra las que se ha creado el DAT.
 
 Para tener carátulas (thumbnails) debes hacer que RetroArch añada los juegos a una PLAYLIST (lo acabo de explicar), luego tenemos dos opciones:
-La más sencilla es conectar el sistema a Internet, e ir a Main Menu->Online Updater->Playlist Thumbnail Updater para que se descarguen solas
-las carátulas de la playlist que queramos.
+La más sencilla es clonar este repo: git clone --depth 1 https://github.com/libretro/libretro-database
+meter las databases que queramos del directorio "rdb" en ~/.config/retroarch/databases/rdb/,
+y desde dentro de RetroArch, ir a Main Menu->Online Updater->Playlist Thumbnail Updater para que se descarguen solas las carátulas
+de la playlist que queramos.
 La otra, más LENTA y complicada, es meter a mano los THUMBNAILS de los sistemas que quieras en /storage/thumbnails, y ya se verán en las playlist.
 
 Si quieres configurar un tema del XMB o del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE.
