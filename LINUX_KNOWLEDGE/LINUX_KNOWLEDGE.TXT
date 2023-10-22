@@ -927,7 +927,7 @@ Configuramos y compilamos con:
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
