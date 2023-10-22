@@ -934,8 +934,16 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
-Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
-Y ya podemos lanzar juegos en GDI, CDI o CHD.
+Ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
+
+Para que no nos de error si sólo hemos compilado con soporte Vulkan (ya que por defecto se inicia en modo OpenGL
+y no tiene manera de pasar de OpenGL a Vulkan!!) Creamos el archivo ~/.config/flycast/emu.cfg con el contenido:
+[config]
+pvr.rend = 4
+
+Ahora lanza un juego (basta con pasarle un .CHD al flycast) y salte del emulador (para poder salir, tienes que configurar la tecla de EXIT en
+settings->controls->keyboard->map), con lo que se nos creará un ~/.config/flycast/emu.cfg completo,
+que puedes configurar a tu gusto: como mínimo, pon el modo del vídeo a 1920x1080.
 
 ******Compilar core MOJOZORK libretro***************************************************
 
