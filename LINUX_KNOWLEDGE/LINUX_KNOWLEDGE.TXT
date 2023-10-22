@@ -888,7 +888,35 @@ Y entramos en el directorio "libretro" y compilamos con:
 
 make platform=rpi4_64 -j4
 
-******Compilar el core FLYCAST (UPSTREAM) en GNU/Linux********
+******Compilar FLYCAST STANDALONE en GNU/Linux*******
+
+Instalamos una dependencia previa rara:
+apt-get install libcurl4-openssl-dev
+
+git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
+
+Configuramos y compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+Ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
+
+Para que no nos de error si sólo hemos compilado con soporte Vulkan (ya que por defecto se inicia en modo OpenGL
+y no tiene manera de pasar de OpenGL a Vulkan!!) Creamos el archivo ~/.config/flycast/emu.cfg con el contenido:
+[config]
+pvr.rend = 4
+
+Ahora lanza un juego (basta con pasarle un .CHD al flycast) y salte del emulador (para poder salir, tienes que configurar la tecla de EXIT en
+settings->controls->keyboard->map), con lo que se nos creará un ~/.config/flycast/emu.cfg completo,
+que puedes configurar a tu gusto: como mínimo, pon el modo del vídeo a 1920x1080, y pon "aica.DSPEnabled" a "yes" (si no activas el DSP,
+el motor del coche en Crazy Taxi no se oye).
+
+******Compilar el core FLYCAST LIBRETRO en GNU/Linux********
 
 Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
@@ -917,33 +945,6 @@ Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de 
 Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
 Este es un core con audio de 44100Hz, así que configura RetroArch con esta frecuencia y sálvalo en Overrides->Save Core Overrides 
-
-******Compilar FLYCAST STANDALONE en GNU/Linux*******
-
-Instalamos una dependencia previa rara:
-apt-get install libcurl4-openssl-dev
-
-git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
-
-Configuramos y compilamos con:
-
-mkdir b4
-cd b4
-
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_C_FLAGS="-march=native -mtune=native"
-
-Ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
-
-Para que no nos de error si sólo hemos compilado con soporte Vulkan (ya que por defecto se inicia en modo OpenGL
-y no tiene manera de pasar de OpenGL a Vulkan!!) Creamos el archivo ~/.config/flycast/emu.cfg con el contenido:
-[config]
-pvr.rend = 4
-
-Ahora lanza un juego (basta con pasarle un .CHD al flycast) y salte del emulador (para poder salir, tienes que configurar la tecla de EXIT en
-settings->controls->keyboard->map), con lo que se nos creará un ~/.config/flycast/emu.cfg completo,
-que puedes configurar a tu gusto: como mínimo, pon el modo del vídeo a 1920x1080.
 
 ******Compilar core MOJOZORK libretro***************************************************
 
