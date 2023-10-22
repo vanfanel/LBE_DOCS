@@ -920,6 +920,9 @@ Este es un core con audio de 44100Hz, así que configura RetroArch con esta frec
 
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
 
+Instalamos una dependencia previa rara:
+apt-get install libcurl4-openssl-dev
+
 git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
 
 Configuramos y compilamos con:
