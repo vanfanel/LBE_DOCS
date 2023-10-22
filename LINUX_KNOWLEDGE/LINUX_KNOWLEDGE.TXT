@@ -911,10 +911,12 @@ y no tiene manera de pasar de OpenGL a Vulkan!!) Creamos el archivo ~/.config/fl
 [config]
 pvr.rend = 4
 
-Ahora lanza un juego (basta con pasarle un .CHD al flycast) y salte del emulador (para poder salir, tienes que configurar la tecla de EXIT en
-settings->controls->keyboard->map), con lo que se nos creará un ~/.config/flycast/emu.cfg completo,
+Ahora lanza un juego (basta con pasarle un .CHD al flycast) y salte del emulador (para poder salir, entra en el menú usando TAB o Select+Start,
+y verás que hay un ENORME botón en el que pone EXIT) con lo que se nos creará un ~/.config/flycast/emu.cfg completo,
 que puedes configurar a tu gusto: como mínimo, pon el modo del vídeo a 1920x1080, y pon "aica.DSPEnabled" a "yes" (si no activas el DSP,
 el motor del coche en Crazy Taxi no se oye).
+
+Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
 ******Compilar el core FLYCAST LIBRETRO en GNU/Linux********
 
