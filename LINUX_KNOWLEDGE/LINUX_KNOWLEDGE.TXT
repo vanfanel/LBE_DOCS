@@ -920,7 +920,8 @@ y verás que hay un ENORME botón en el que pone EXIT) con lo que se nos creará
 que puedes configurar a tu gusto: como mínimo, pon el modo del vídeo a 1920x1080, y pon "aica.DSPEnabled" a "yes" (si no activas el DSP,
 el motor del coche en Crazy Taxi no se oye).
 
-En Settings->Video->Transparent Sorting, pon "Per Pixel", o si no tendrás errores en el Daytona y en el REZ.
+Entra en Settings->Video, y pon "Transparent Sorting" a "Per Pixel" y activa "Native Depth Interpolation", o si no tendrás
+errores en el Daytona y en el REZ.
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
