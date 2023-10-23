@@ -895,6 +895,15 @@ apt-get install libcurl4-openssl-dev
 
 git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
 
+Editamos core/deps/SDL/src/video/kmsdrm/SDL_kmsdrmvulkan.c y en la función KMSDRM_Vulkan_CreateSurface() comentamos el bloque de:
+"for (i = 0; i < mode_count; i++) {"
+y de:
+"if (mode_found &&" y de ""
+y de esa manera obligamos a que cree un modo de vídeo que nosotros queramos, y para que ese modo sea a 59.94Hz, cambiamos la línea:
+new_mode_parameters.refreshRate = window->fullscreen_mode.refresh_rate * 1000;
+por
+new_mode_parameters.refreshRate = 59940;
+
 Configuramos y compilamos con:
 
 mkdir b4
