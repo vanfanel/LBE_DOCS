@@ -903,6 +903,7 @@ y de esa manera obligamos a que cree un modo de vídeo que nosotros queramos, y 
 new_mode_parameters.refreshRate = window->fullscreen_mode.refresh_rate * 1000;
 por
 new_mode_parameters.refreshRate = 59940;
+(Para los juegos de NAOMI, sería 61703, pero Vulkan peta si intento poner un modo de 61Hz...)
 
 Configuramos y compilamos con:
 
