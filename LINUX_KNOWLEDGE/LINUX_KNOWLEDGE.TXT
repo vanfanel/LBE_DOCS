@@ -7595,7 +7595,7 @@ Compilamos con:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-make -f Makefiles/Makefile.UNIX -j4
+make -f Makefiles/Makefile.UNIX -j8
 
 Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
