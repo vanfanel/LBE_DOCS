@@ -21,6 +21,18 @@ export SDL_VIDEO_DOUBLE_BUFFER=1
 Luego puedes comprobarlo con echo $<nombre_variable>, en plan:
 echo $SDL_VIDEO_DOUBLE_BUFFER
 
+*******Teclado en español y con la tilde (~) en la Ñ sin tener que darle dos veces***************************************
+
+Editamos /etc/default/keyboard, y lo dejamos así:
+
+XKBMODEL="pc105"                                                                                               
+XKBLAYOUT="es"                                                                                                 
+XKBVARIANT="nodeadkeys"                                                                                        
+XKBOPTIONS=""                                                                                                  
+BACKSPACE="guess"
+
+Sin lo de "nodeadkeys", tenemos que darle a la Ñ dos veces para sacar la tilde, y es una mierda eso.
+
 *******Visualizar los scancodes de las teclas desde la consola TTY*******************************************************
 
 Con el comando showkeys

@@ -125,6 +125,18 @@ cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
 cat /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
 ...etc
 
+*******Teclado en español y con la tilde (~) en la Ñ sin tener que darle dos veces********
+
+Editamos /etc/default/keyboard, y lo dejamos así:
+
+XKBMODEL="pc105"                                                                                               
+XKBLAYOUT="es"                                                                                                 
+XKBVARIANT="nodeadkeys"                                                                                        
+XKBOPTIONS=""                                                                                                  
+BACKSPACE="guess"
+
+Sin lo de "nodeadkeys", tenemos que darle a la Ñ dos veces para sacar la tilde, y es una mierda eso.
+
 *****LIMPIEZA DE SISTEMA******
 
 Estas cosas se pueden desinstalar y aún así wayland funciona como servicio sin problemas:

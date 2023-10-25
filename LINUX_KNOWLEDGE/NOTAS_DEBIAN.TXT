@@ -317,6 +317,19 @@ Las redes conocidas quedan guardadas en /etc/NetworkManager/system-connections, 
 sudo chmod 4755 /bin/ping
 Y ya te irá perfectamente.
 
+Teclado en español y con la tilde (~) en la Ñ sin tener que darle dos veces
+===========================================================================
+
+Editamos /etc/default/keyboard, y lo dejamos así:
+
+XKBMODEL="pc105"                                                                                               
+XKBLAYOUT="es"                                                                                                 
+XKBVARIANT="nodeadkeys"                                                                                        
+XKBOPTIONS=""                                                                                                  
+BACKSPACE="guess"
+
+Sin lo de "nodeadkeys", tenemos que darle a la Ñ dos veces para sacar la tilde, y es una mierda eso.
+
 KERNEL REALTIME PRECOMPILADO
 ============================
 
