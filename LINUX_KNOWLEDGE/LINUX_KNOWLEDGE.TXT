@@ -937,10 +937,11 @@ Entra en Settings->General, y pon "Cable" a "VGA", de esa manera tendrás scanli
 
 Entra en Settings->Video, y pon "Transparent Sorting" a "Per Pixel" y activa "Native Depth Interpolation", o si no tendrás
 errores en el Daytona y en el REZ.
+Lo de "Native Depth Interpolation" es necesario para gráficos Intel y AMD, y no consume más recursos ni nada según el autor del emulador.
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
-******Compilar el core FLYCAST LIBRETRO en GNU/Linux********
+******Compilar el core FLYCAST LIBRETRO en GNU/Linux (EL AUDIO VA MAL Y NO HAY SOLUCIÓN: USA EL EMULADOR STANDALONE)********
 
 Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
@@ -969,6 +970,12 @@ Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de 
 Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
 Este es un core con audio de 44100Hz, así que configura RetroArch con esta frecuencia y sálvalo en Overrides->Save Core Overrides 
+
+(NO FUNCIONA) ARREGLAR LOS CORTES DE AUDIO DEL CORE ENTRE ESCENAS (COMO CUANDO PULSAS START EN EL SOUL CALIBUR):
+https://github.com/flyinghead/flycast/issues/1211
+Lee el hilo completo para entenderlo, pero dice esto el autor:
+There's no easy way to fix this but there are at least 2 workarounds: disable "Performance > Threaded Rendering"
+or enable "Video > Full Framebuffer Emulation." In both cases it adds a new synchronization source.
 
 ******Compilar core MOJOZORK libretro***************************************************
 
