@@ -59,6 +59,10 @@ MANERA 2: MEDIANTE DIETPI-CONFIG
 En PERFORMANCE OPTIONS pon:
 Governor a performance, Intel Turbo ON, y CPU Frequency Limits: MAX=80% MIN=80%
 
+******PARA QUE NO SE AUTO-ENCIENDA EL ORDENADOR AL CONECTARLO A LA CORRIENTE*********
+
+A parte de quitarle el PIN de PRWON1 en la placa, en la BIOS ve a CHIPSET->PCH IO y pon POWER FAILURE a ALWAYS OFF.
+
 ******Sonido en Linux************
 
 Tenemos que hacerl a mano (incluso si usas DietPi, la utilidad dietpi-config nos permite seleccionar el hardware de audio pero por número,
