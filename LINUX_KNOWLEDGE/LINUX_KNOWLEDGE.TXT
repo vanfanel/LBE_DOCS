@@ -797,6 +797,9 @@ cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake" -DQt6Svg_DIR=/usr/local/lib/cmake/Qt6Svg
 
+Para seleccionar el platform plugin al lanzar el emu:
+QT_QPA_PLATFORM=eglfs Binaries/dolphin-emu
+
 *******Compilar el core libretro Swanstation (Duckstation)***********
 
 (OJO: en el repo oficial de ducktstation tienes cores ya compilados, pero NO funcionan cuando Retrorch funciona sobre KMSDRM.
