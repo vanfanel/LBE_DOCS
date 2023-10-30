@@ -1010,7 +1010,7 @@ REGISTER_MODULE(m_mod_man, LIGHTGUN_X11)
 REGISTER_MODULE(m_mod_man, JOYSTICKINPUT_XINPUT);
 
 Ahora, editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
-SOURCES = src/mame/sega/model1.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp
+SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp,src/mame/namco/namcos22.cpp
 
 Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
 
@@ -1050,7 +1050,7 @@ Uno de los sitios donde busca por defecto los .zip de las ROMs es en $HOME/mame/
 git clone --depth 1 https://github.com/libretro/mame.git
 
 Ahora, editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
-SOURCES = src/mame/sega/model1.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp
+SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp,src/mame/namco/namcos22.cpp
 
 Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
@@ -9295,6 +9295,12 @@ Te dejará las ROMs (que pueda identificar) con los nombes correctos puestos en 
 y las que no pueda identificar en ToSort/<NOMBRE_SISTEMA>
 ...Le puedes poner nombes de no-intro a las ROMs parcheadas, que son las que suelen acabar en ToSort,
 y así RetroArch te las reconoce y les pone thumbnails.
+
+DRICONF
+=======
+
+Es la manera de configurar cosas de los drivers MESA.
+El fichero de configuración va en ~/.drirc
 
 REPRODUCCIÓN DE VÍDEO EN LA PI4 CON MPV + FFMPEG
 ================================================
