@@ -747,8 +747,6 @@ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DQT_FEATURE_eglfs_egldevice=ON -DQT
 -DQT_BUILD_TOOLS_WHEN_CROSSCOMPILING=ON  -DQT_BUILD_EXAMPLES=OFF -DQT_BUILD_TESTS=OFF
 
 ALTERNATIVA:
-mkdir b4
-cd b4
 ../configure -release -prefix /usr/local -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-testlib \
 -no-feature-sql -no-feature-harfbuzz -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter
 
@@ -756,7 +754,17 @@ COMPILACIÓN:
 cmake --build . --parallel 12
 
 INSTALACIÓN:
-sudo cmake --install .
+cmake --install .
+
+PARTE 2: MÓDULOS DE QT6 NECESARIOS PARA LOS EMULADORES
+---SVG (Necesario para Dolphin)---
+wget https://download.qt.io/official_releases/qt/6.6/6.6.0/submodules/qtsvg-everywhere-src-6.6.0.tar.xz
+
+mkdir b4
+cd b4
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release
+cmake --build . --parallel 12
+cmake --install .
 
 ******Compilar PCSX2 standalone**********************************************************************************************
 
@@ -768,14 +776,26 @@ También se necesita tener en el sistema una versión de QT6 que tenga soporte d
 Clonamos su repo:
 git clone --depth 1 https://github.com/PCSX2/pcsx2.git --recurse
 
-Configuramos y compilamos:
+Configuramos y compilamos (asegúrate de que la ruta de instalación de QT6 que le pasas en "-DCMAKE_PREFIX_PATH=..." es la correcta):
 
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DX11_API=OFF \
+-DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+
+*******Compilar DOLPHIN standalone***********************************
+
+git clone --depth 1 https://github.com/dolphin-emu/dolphin.git dolphin-emu
+cd ./dolphin-emu
+git submodule update --init --recursive
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake" -DQt6Svg_DIR=/usr/local/lib/cmake/Qt6Svg
 
 *******Compilar el core libretro Swanstation (Duckstation)***********
 
