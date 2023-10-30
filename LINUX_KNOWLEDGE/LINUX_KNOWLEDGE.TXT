@@ -7622,7 +7622,7 @@ make -f Makefiles/Makefile.UNIX -j8
 
 Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
-supermodel daytona2.zip -res=1920,1080 -fullscreen -channels=2 -quad-rendering
+supermodel daytona2.zip -res=992,768 -fullscreen -channels=2 -quad-rendering
 
 PARA CONFIGURAR LOS CONTROLES: Ejecuta simplemente "supermodel -config-inputs", y puedes usar las flechas ARRIBA Y ABAJO del teclado
 para saltarte los controles que no te intererese configurar. Para configurar una tecla, dale a INTRO, y ya al botón o eje que sea.
@@ -7634,6 +7634,10 @@ que no tenemos.
 
 NOTA: Cuando al iniciar un juego nos de el error "Network board not present", le damos al 6 para entrar en modo Test,
 navegamos usando el 5 hasta "Game Assignments", usamos el 6 para seleccionarlo, y cambiamos la opción "Link ID" de "Master" a "Single".
+
+NOTA: Para poner el Daytona 2 en inglés, presiona TestA para entrar en el menú,
+ahora presiona a la vez ServiceA + ServiceB, y con ellos dos presionados presiona TestB, y ya estás en el menú de elegir el país.
+Y prefiero usar "Export", porque en USA sale un aviso que no nos interesa.
 
 AUDIO POR I2C: EL PI TOP SPEAKER
 ================================
