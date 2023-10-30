@@ -721,18 +721,17 @@ y luego montar ~/dos/psycho como C: en DOSBOX. Si no, se queda colgado en el DOS
 
 Las instrucciones básicas las he sacado de: https://wiki.qt.io/Building_Qt_6_from_Git
 
+VERSION ESTABLE (RECOMENDADO):
+wget https://download.qt.io/official_releases/qt/6.6/6.6.0/submodules/qtbase-everywhere-src-6.6.0.tar.xz
+
+ALTERNATIVA BAJANDO LA VERSIÓN ESTABLE Y LOS SUBMÓDULOS DE GITHUB (NO RECOMENDADO):
 Clonamos su repo:
-
 git clone https://code.qt.io/qt/qt5.git qt6
-
 Nos vamos a la versión tagged LTS actual:
-
-git switch 6.5.0
-
+git switch 6.6.0
 Inicializamos los módulos que vamos a usar
 (puedes ver los módulos disponibles editando el archivo ".gitmodules"):
 (qttools es necesario para tener el componente LinguistTools, que es necesario para compilar PCSX2)
-
 ./init-repository --module-subset=qtbase,qttools
 
 CONFIGURACIÓN: 
@@ -741,13 +740,20 @@ miramos en "CMakeCache.txt". Por ejemplo, entras en "CMakeCache.txt" y buscas "h
 deshabilitar.
 Y NO DESHABILITES nada nuevo, que luego el PCSX2 no compila.
 
+PARA KMSDRM:
+mkdir b4
+cd b4
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DQT_FEATURE_eglfs_egldevice=ON -DQT_FEATURE_eglfs_gbm=ON \
+-DQT_BUILD_TOOLS_WHEN_CROSSCOMPILING=ON  -DQT_BUILD_EXAMPLES=OFF -DQT_BUILD_TESTS=OFF
+
+ALTERNATIVA:
 mkdir b4
 cd b4
 ../configure -release -prefix /usr/local -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-testlib \
 -no-feature-sql -no-feature-harfbuzz -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter
 
 COMPILACIÓN:
-cmake --build . --parallel 3
+cmake --build . --parallel 12
 
 INSTALACIÓN:
 sudo cmake --install .
@@ -9301,6 +9307,9 @@ DRICONF
 
 Es la manera de configurar cosas de los drivers MESA.
 El fichero de configuración va en ~/.drirc
+
+La manera correcta de generarlo es usando "adriconf" (necesita GTK):
+git clone --depth 1 https://gitlab.freedesktop.org/mesa/adriconf
 
 REPRODUCCIÓN DE VÍDEO EN LA PI4 CON MPV + FFMPEG
 ================================================
