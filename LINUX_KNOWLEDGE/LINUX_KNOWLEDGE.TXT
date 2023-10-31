@@ -787,6 +787,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DX11_API=OFF \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 *******Compilar DOLPHIN standalone***********************************
+OJO!! LA VERSIÓN NOGUI NO SOPORTA MÁS QUE X11 Y FBDEV, Y LA VERSIÓN NORMAL AUNQUE FUNCIONA SOBRE QT6 NO SOPORTA WAYLAND,
+ASÍ QUE DALE UN AÑO O DOS PARA MEJORAR, NO PIERDAS EL TIEMPO.
 
 git clone --depth 1 https://github.com/dolphin-emu/dolphin.git dolphin-emu
 cd ./dolphin-emu
