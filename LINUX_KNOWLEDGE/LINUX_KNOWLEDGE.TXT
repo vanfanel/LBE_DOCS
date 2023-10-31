@@ -744,11 +744,7 @@ PARA KMSDRM:
 mkdir b4
 cd b4
 cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DQT_FEATURE_eglfs_egldevice=ON -DQT_FEATURE_eglfs_gbm=ON \
--DQT_BUILD_TOOLS_WHEN_CROSSCOMPILING=ON  -DQT_BUILD_EXAMPLES=OFF -DQT_BUILD_TESTS=OFF
-
-ALTERNATIVA:
-../configure -release -prefix /usr/local -nomake tests -no-ssl -no-accessibility -no-dbus -no-feature-testlib \
--no-feature-sql -no-feature-harfbuzz -no-feature-textmarkdownreader -no-feature-textmarkdownwriter -no-feature-textodfwriter
+-DQT_BUILD_TOOLS_WHEN_CROSSCOMPILING=ON -DQT_BUILD_EXAMPLES=OFF -DQT_BUILD_TESTS=OFF
 
 COMPILACIÓN:
 cmake --build . --parallel 12
