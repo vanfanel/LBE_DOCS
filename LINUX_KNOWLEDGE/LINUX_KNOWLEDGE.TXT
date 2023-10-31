@@ -811,7 +811,15 @@ Creamos un directorio ~/ps2, y copiamos allí el ejecutable "pcsx2-qt" que está
 y los directorios "resources" y "translations"
 
 
-NOTAS: Usa el emulador por software y en el número de threads a CPUs -2
+NOTAS:
+-En EMULATION, activa "Optimal Frame Pacing" y "Scale to Host Refresh Rate"
+-En GRAPHICS
+--En la pestaña principal, pon "Renderer" a "Software"
+--En la pestaña "RENDERING" pon "Software Rendering Threads" al número de CPUs que tengas -2
+--En la pestaña "RECORDING" desactiva "Capture Video" y "Capture Audio"
+--En la pestaña "OSD" desactiva "Show OSD Messages" y pon el "OSD Scale" al 200%, por si activas "Show Speed Percentages"
+--En la pestaña "Post Processing" pon el "TV Shader" a "Scanline Filter"
+
 
 *******Compilar DOLPHIN standalone***********************************
 OJO!! LA VERSIÓN NOGUI NO SOPORTA MÁS QUE X11 Y FBDEV, Y LA VERSIÓN NORMAL AUNQUE FUNCIONA SOBRE QT6 NO SOPORTA WAYLAND,
