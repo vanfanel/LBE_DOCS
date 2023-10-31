@@ -784,6 +784,8 @@ También se necesita tener en el sistema una versión de QT6 que tenga soporte d
 Clonamos su repo:
 git clone --depth 1 https://github.com/PCSX2/pcsx2.git --recurse
 
+Editamos common/CMakeLists.txt y borramos "X11:X11" y "X11::Xrandr". 
+
 Configuramos y compilamos (asegúrate de que la ruta de instalación de QT6 que le pasas en "-DCMAKE_PREFIX_PATH=..." es la correcta):
 
 mkdir b4
