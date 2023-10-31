@@ -754,6 +754,16 @@ cmake --install .
 
 PARTE 2: MÓDULOS DE QT6 NECESARIOS PARA LOS EMULADORES
 
+---WAYLAND (Necesario para PCSX2)---
+
+wget https://download.qt.io/official_releases/qt/6.6/6.6.0/submodules/qtwayland-everywhere-src-6.6.0.tar.xz
+
+mkdir b4
+cd b4
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake"
+cmake --build . --parallel 12
+cmake --install .
+
 ---TOOLS (Necesario para PCSX2)---
 
 wget https://download.qt.io/official_releases/qt/6.6/6.6.0/submodules/qttools-everywhere-src-6.6.0.tar.xz
@@ -796,6 +806,12 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DX11_API=OFF \
 -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+
+Creamos un directorio ~/ps2, y copiamos allí el ejecutable "pcsx2-qt" que está en el directorio "bin", 
+y los directorios "resources" y "translations"
+
+
+NOTAS: Usa el emulador por software y en el número de threads a CPUs -2
 
 *******Compilar DOLPHIN standalone***********************************
 OJO!! LA VERSIÓN NOGUI NO SOPORTA MÁS QUE X11 Y FBDEV, Y LA VERSIÓN NORMAL AUNQUE FUNCIONA SOBRE QT6 NO SOPORTA WAYLAND,
