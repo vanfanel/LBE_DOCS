@@ -812,10 +812,11 @@ y los directorios "resources" y "translations"
 
 
 NOTAS:
--En EMULATION, activa "Optimal Frame Pacing" y "Scale to Host Refresh Rate"
+-En EMULATION, activa "Optimal Frame Pacing" y "Scale to Host Refresh Rate", y pon "Affinity Control" a "GS > EE > VU"
 -En GRAPHICS
---En la pestaña principal, pon "Renderer" a "Software"
---En la pestaña "RENDERING" pon "Software Rendering Threads" al número de CPUs que tengas -2
+--En la pestaña principal, pon "Renderer" a "Software", o bien a "Vulkan" pero en ese caso activa "Spin CPU during readbacks"
+--En la pestaña "DISPLAY" desactiva "Anti-Blur"
+--En la pestaña "RENDERING" pon "Software Rendering Threads" al número de CPUs que tengas -2, sin pasarte de 6.
 --En la pestaña "RECORDING" desactiva "Capture Video" y "Capture Audio"
 --En la pestaña "OSD" desactiva "Show OSD Messages" y pon el "OSD Scale" al 200%, por si activas "Show Speed Percentages"
 --En la pestaña "Post Processing" pon el "TV Shader" a "Scanline Filter"
