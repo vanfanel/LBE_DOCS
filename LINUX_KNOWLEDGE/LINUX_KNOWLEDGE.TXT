@@ -810,8 +810,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DX11_API=OFF \
 Creamos un directorio ~/ps2, y copiamos allí el ejecutable "pcsx2-qt" que está en el directorio "bin", 
 y los directorios "resources" y "translations"
 
-
-NOTAS:
+NOTAS DE CONFIGURACIÓN:
 -En EMULATION, activa "Optimal Frame Pacing" y "Scale to Host Refresh Rate", y pon "Affinity Control" a "EE > GS > VU"
 -En GRAPHICS
 --En la pestaña principal, pon "Renderer" a "Software", o bien a "Vulkan" pero en ese caso activa "Spin CPU during readbacks"
@@ -820,7 +819,6 @@ NOTAS:
 --En la pestaña "RECORDING" desactiva "Capture Video" y "Capture Audio"
 --En la pestaña "OSD" desactiva "Show OSD Messages" y pon el "OSD Scale" al 200%, por si activas "Show Speed Percentages"
 --En la pestaña "Post Processing" pon el "TV Shader" a "Scanline Filter"
-
 
 *******Compilar DOLPHIN standalone***********************************
 OJO!! LA VERSIÓN NOGUI NO SOPORTA MÁS QUE X11 Y FBDEV, Y LA VERSIÓN NORMAL AUNQUE FUNCIONA SOBRE QT6 NO SOPORTA WAYLAND,
@@ -833,10 +831,11 @@ git submodule update --init --recursive
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_MGBA=OFF -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake" -DQt6Svg_DIR=/usr/local/lib/cmake/Qt6Svg
-
 Para compilar sólo la versión NOGUI:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_QT=OFF -DENABLE_NOGUI=ON -DUSE_MGBA=OFF
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_QT=OFF -DENABLE_X11=OFF -DENABLE_NOGUI=ON -DUSE_MGBA=OFF
+
+Para compilar contra QT6 (PUAJ!!!)
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_X11=OFF -DUSE_MGBA=OFF -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake" -DQt6Svg_DIR=/usr/local/lib/cmake/Qt6Svg
 
 Para seleccionar el platform plugin al lanzar el emu:
 QT_QPA_PLATFORM=eglfs Binaries/dolphin-emu
