@@ -832,10 +832,12 @@ mkdir b4
 cd b4
 
 Para compilar sólo la versión NOGUI:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_QT=OFF -DENABLE_X11=OFF -DENABLE_NOGUI=ON -DUSE_MGBA=OFF
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_QT=OFF -DENABLE_X11=OFF -DENABLE_NOGUI=ON -DUSE_MGBA=OFF -DUSE_DISCORD_PRESENCE=OFF \
+-DENABLE_SDL2_VIDEO=ON
 
 Para compilar contra QT6 (PUAJ!!!)
-cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_X11=OFF -DUSE_MGBA=OFF -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake" -DQt6Svg_DIR=/usr/local/lib/cmake/Qt6Svg
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_X11=OFF -DUSE_MGBA=OFF -DUSE_DISCORD_PRESENCE=OFF \
+-DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake" -DQt6Svg_DIR=/usr/local/lib/cmake/Qt6Svg
 
 Para seleccionar el platform plugin al lanzar el emu:
 QT_QPA_PLATFORM=eglfs Binaries/dolphin-emu
