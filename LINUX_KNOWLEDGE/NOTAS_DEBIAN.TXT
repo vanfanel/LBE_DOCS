@@ -9,6 +9,22 @@ Una vez que hemos arrancado nativamente, tenemos mucho que hacer.
 		#AcceptEnv LANG LC_*
 	...lo que nos ahorra errores de LOCALES cuando usamos APT-GET por SSH.
 	
+-SI AÚN ASÍ SIGUES TENIENDO PROBLEMAS CON LOS LOCALES POR SSH:
+--Usa "dpkg-reconfigure locales" para generar el locale "en_US.UTF-8" y sólo ese.
+--Edita /etc/default/locale y déjalo así:
+LANG=en_US.UTF-8                                                                                               
+LC_ALL=en_US.UTF-8                                                                                             
+LC_TIME=en_US.UTF-8                                                                                            
+LC_MONETARY=en_US.UTF-8                                                                                        
+LC_ADDRESS=en_US.UTF-8                                                                                         
+LC_TELEPHONE=en_US.UTF-8                                                                                       
+LC_NAME=en_US.UTF-8                                                                                            
+LC_MEASUREMENT=en_US.UTF-8                                                                                     
+LC_IDENTIFICATION=en_US.UTF-8                                                                                  
+LC_NUMERIC=en_US.UTF-8                                                                                         
+LC_PAPER=en_US.UTF-8                                                                                           
+LANG="C"	
+	
 -Crear el usuario pi:
 sudo adduser pi
 sudo adduser pi sudo
