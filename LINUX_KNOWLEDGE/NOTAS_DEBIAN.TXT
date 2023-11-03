@@ -24,7 +24,11 @@ LC_IDENTIFICATION=en_US.UTF-8
 LC_NUMERIC=en_US.UTF-8                                                                                         
 LC_PAPER=en_US.UTF-8                                                                                           
 LANG="C"	
-	
+
+-Ponemos el governor a PERFORMANCE. Lo más sencillo para eso es editar /etc/init.d/raspi-config
+y en la línea de CPU_DEFAULT_GOVERNOR cambiar "ondemand" por "performance".
+Luego obviamente NO deshabilites el servicio "raspi-config.service" porque es el que aplica el governor.
+
 -Crear el usuario pi:
 sudo adduser pi
 sudo adduser pi sudo
@@ -43,7 +47,6 @@ systemctl mask e2scrub_all.timer
 systemctl mask e2scrub_reap.service
 systemctl mask man-db.service
 systemctl mask man-db.timer
-systemctl mask raspi-config.service
 systemctl mask rc-local.service
 systemctl mask rpcbind.service
 systemctl mask rpcbind.socket
@@ -59,6 +62,7 @@ systemctl mask systemd-rfkill.socket
 	-systemd-journald, que lo usaremos para ver los mensajes de inicio del kernel y los servicios con el comando "journalctl"
 	-systemd-logind, que lo usaremos para que libseat sepa que estamos logueados sin tener que usar el servicio seatd
 	 (seatd lo usaremos en sistemas embedidos sin systemd). Esto sirve para poder levantar Wayland compositors.
+	-El servicio raspi-config.service, porque aplica los settings del governor de la CPU que configuramos en /etc/init.d/raspi-config
 	-Los servicios que preparan o limpian las tmpfiles, aunque mandes todo eso a RAM
 	-El servicio system-getty.slice, que sirve para gestionar los recursos de GETTY en las TTYs,
 	aunque nos spawnee una getty por cada TTY del 1 al 6.
