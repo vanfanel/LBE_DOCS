@@ -566,9 +566,6 @@ Ambos sistemos deben tener instalado rsync, y se puede usar por red como scp.
 INSTALAR SDL2
 =============
 
-Lo primero borra esto:
-sudo rm -R /opt/vc
-
 Instalamos dependencias previas:
 
 sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg123-dev libmodplug-dev \
