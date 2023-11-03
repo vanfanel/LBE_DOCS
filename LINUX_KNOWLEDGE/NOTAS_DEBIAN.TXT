@@ -512,7 +512,7 @@ SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, TIENES QUE INSTALAR LIBGLVND:
 Bajamos la última estable de aquí:
 https://gitlab.freedesktop.org/glvnd/libglvnd/-/tags
 Y configuramos con:
-CFLAGS="-march=native -mtune=native -O2" \
+CFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dx11=disabled ..
 
 SI ADEMÁS QUIERES QUE MESA FUNCIONE SOBRE WAYLAND, VE E INSTALA WAYLAND AHORA (Mira en el fichero de notas de Wayland).
