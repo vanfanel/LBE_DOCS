@@ -577,7 +577,7 @@ o si no, el Ridge Racers se nos quedará en una pantalla en gris después del me
 
 Es un core con sonido 44100Hz, así que configura los settings de audio así y guarda los core overrides.
 
-Para evitar el micro-stuttering, ve a Core Options->Video, y allí activa "Duplicate Frames in 30Hz games" y pon "Buffered Frames" a 1.
+Para evitar el micro-stuttering, ve a Core Options->Video, y allí activa "Duplicate Frames in 30Hz games".
 
 PARA WAYLAND:
 cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSE_VULKAN_DISPLAY_KHR=OFF -DUSING_X11_VULKAN=OFF -DUSING_GLES2=OFF -DUSE_DISCORD=OFF \
