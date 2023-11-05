@@ -1004,7 +1004,7 @@ Lo de "Native Depth Interpolation" es necesario para gráficos Intel y AMD, y no
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
-ARREGLO PARA EL FRAMERATE, SÓLO WAYLAND:
+ARREGLO PARA EL FRAMERATE, SÓLO WAYLAND (RECUERDA QUE EN WAYLAND+VULKAN EL VSYNC DEBE ESTAR DESACTIVADO!!!):
 Creamos este script en /usr/local/bin/dreamcast para lanzar el emulador:
 
 wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.94                                                      
