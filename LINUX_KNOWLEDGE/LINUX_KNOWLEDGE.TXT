@@ -980,16 +980,6 @@ apt-get install libcurl4-openssl-dev
 
 git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
 
-Editamos core/deps/SDL/src/video/kmsdrm/SDL_kmsdrmvulkan.c y en la función KMSDRM_Vulkan_CreateSurface() comentamos el bloque de:
-"for (i = 0; i < mode_count; i++) {"
-y de:
-"if (mode_found &&" y de ""
-y de esa manera obligamos a que cree un modo de vídeo que nosotros queramos, y para que ese modo sea a 59.94Hz, cambiamos la línea:
-new_mode_parameters.refreshRate = window->fullscreen_mode.refresh_rate * 1000;
-por
-new_mode_parameters.refreshRate = 59940;
-(Para los juegos de NAOMI, sería 61703, pero Vulkan peta si intento poner un modo de 61Hz...)
-
 Configuramos y compilamos con:
 
 mkdir b4
@@ -1008,11 +998,29 @@ el motor del coche en Crazy Taxi no se oye).
 
 Entra en Settings->General, y pon "Cable" a "VGA", de esa manera tendrás scanlines en los juegos de baja resolución.
 
-Entra en Settings->Video, y pon "Transparent Sorting" a "Per Pixel" y activa "Native Depth Interpolation", o si no tendrás
-errores en el Daytona y en el REZ.
+Entra en Settings->Video, desactiva el VSYNC si estás en Wayland+Vulkan, pon "Transparent Sorting" a "Per Pixel"
+y activa "Native Depth Interpolation", o si no tendrás errores en el Daytona y en el REZ.
 Lo de "Native Depth Interpolation" es necesario para gráficos Intel y AMD, y no consume más recursos ni nada según el autor del emulador.
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
+
+ARREGLO PARA EL FRAMERATE, SÓLO WAYLAND:
+Creamos este script en /usr/local/bin/dreamcast para lanzar el emulador:
+
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.94                                                      
+/usr/local/bin/flycast "$1"                                                                                    
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
+
+ARREGLO PARA EL FRAMERATE, SÓLO PARA KMS/DRM:
+Editamos core/deps/SDL/src/video/kmsdrm/SDL_kmsdrmvulkan.c y en la función KMSDRM_Vulkan_CreateSurface() comentamos el bloque de:
+"for (i = 0; i < mode_count; i++) {"
+y de:
+"if (mode_found &&" y de ""
+y de esa manera obligamos a que cree un modo de vídeo que nosotros queramos, y para que ese modo sea a 59.94Hz, cambiamos la línea:
+new_mode_parameters.refreshRate = window->fullscreen_mode.refresh_rate * 1000;
+por
+new_mode_parameters.refreshRate = 59940;
+(Para los juegos de NAOMI, sería 61703, pero Vulkan peta si intento poner un modo de 61Hz...)
 
 ******Compilar el core FLYCAST LIBRETRO en GNU/Linux (EL AUDIO VA MAL Y NO HAY SOLUCIÓN: USA EL EMULADOR STANDALONE)********
 
