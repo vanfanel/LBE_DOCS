@@ -7743,7 +7743,10 @@ git clone --depth 1 https://github.com/trzy/Supermodel.git
 Editamos Makefiles/Rules.inc y quitamos glew.cpp, y todos los ficheros de Legacy3D.
 Editamos Makefiles/Makefile.UNIX y cambiamos -lGL por -lOpenGL, y añadimos -lGLEW 
 
-Editamos , y buscamos las líneas que empiezan con "Render3D =", hay dos, las dejamos así las dos:
+Editamos Src/OSD/SDL/Main.cpp, y buscamos las líneas que empiezan con "Render3D =", hay dos.
+Dejamos así la primera:
+IRender3D *Render3D = ((IRender3D *) new New3D::CNew3D(s_runtime_config, Model3->GetGame().name));
+Y así la segunda:
 Render3D = ((IRender3D *) new New3D::CNew3D(s_runtime_config, Model3->GetGame().name));
 
 Compilamos con:
@@ -7754,12 +7757,18 @@ make -f Makefiles/Makefile.UNIX -j8
 
 Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
-supermodel daytona2.zip -res=992,768 -fullscreen -channels=2 -quad-rendering
+
+wlr-randr --output HDMI-A-1 --custom-mode 992x768@60                                                           
+./supermodel -fullscreen -res=992,768 -channels=2 daytona2.zip                                                 
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
+
+En ese ejemplo estamos corriendo los juegos al doble de su resolución original.
+Si en lugar de eso le pasas tu resolución nativa (-res=1920,1080) no hace falta que pongas la resolución con wlr-randr.
+(Es necesario cambiar la resolución con wlr-randr si usas resoluciones "no standard" porque OpenGL no puede renderizar
+a una resolución y escalar a otra).  
 
 PARA CONFIGURAR LOS CONTROLES: Ejecuta simplemente "supermodel -config-inputs", y puedes usar las flechas ARRIBA Y ABAJO del teclado
 para saltarte los controles que no te intererese configurar. Para configurar una tecla, dale a INTRO, y ya al botón o eje que sea.
-
-NOTA: Si no le pasas "-quad-rendering", las pistas se ven todas blancas.
 
 NOTA: Si no le pasas "-channels=2", no se oirá porque por defecto Supermodel intenta abrir un sistema de audio de 4 canales,
 que no tenemos.
