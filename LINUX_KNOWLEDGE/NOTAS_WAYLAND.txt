@@ -507,8 +507,8 @@ cage <nombre_ejecutable>
 Y si es con parámetros, usamos -- entre cage y el nombre del ejecutable, así:
 cage -- <nombre_ejecutable> <parámetros>
 
-FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
-==========================================
+INSTALAR FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
+===================================================
 
 Instalamos dependencias previas:
 apt-get install libfontconfig-dev libncurses-dev libtllist-dev libfcft-dev --no-install-recommends
@@ -528,7 +528,7 @@ meson setup -Dbuildtype=release -Ddocs=disabled -Dgrapheme-clustering=disabled -
 ninja -j4
 ninja install
 
-Creamos ~/config/foot/foot.ini con este contenido:
+Creamos ~/.config/foot/foot.ini con este contenido:
 (OJO: Puedes tener foot/foot.ini donde quieras si exportas un valor de $XDG_CONFIG_HOME).
 
 [main]
@@ -579,7 +579,7 @@ bright5=fb82ff   # bright magenta
 bright6=60d3d1   # bright cyan
 bright7=eeeeee   # bright white
 selection-foreground=202020
-election-background=1a3272
+selection-background=1a3272
 
 ---OPCIÓN 2: Usar un tema, para lo cual añadiríamos esto al final de la sección [main]:
 include=/usr/local/share/foot/themes/NOMBRE_TEMA
