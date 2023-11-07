@@ -1,0 +1,55 @@
+CONFIGURAR FUENTES EN KONSOLE
+=============================
+
+Settings->Manage Profiles, creamos un perfil nuevo, lo editamos, y en Appearance nos deja ajustar la fuente.
+
+AÑADIR AL USUARIO AL GRUPO SUDO Y PODER EMPEZAR A HACER COSAS
+=============================================================
+
+su -
+(OJO!!!! Tiene que llevar el guión ese al final!!!!)
+
+usermod -aG sudo manuel
+
+AÑADIR LOS REPOSITORIOS A SOURCES.LIST
+======================================
+
+sudo vim /etc/apt/sources.list
+
+Y lo dejamos así (Para Debian 12):
+
+deb http://deb.debian.org/debian bookworm main non-free-firmware
+deb-src http://deb.debian.org/debian bookworm main non-free-firmware
+
+deb http://deb.debian.org/debian-security/ bookworm-security main non-free-firmware
+deb-src http://deb.debian.org/debian-security/ bookworm-security main non-free-firmware
+
+deb http://deb.debian.org/debian bookworm-updates main non-free-firmware
+deb-src http://deb.debian.org/debian bookworm-updates main non-free-firmware
+
+QUITAR EL DISCOVER Y SUS AVISOS DE MIERDA
+=========================================
+
+sudo apt-get purge plasma-discover
+
+FUENTES DEL ESCRITORIO
+======================
+
+Nos vamos a Settings->System Settings->Appearance->Fonts, y ahí podemos ajustarlas.
+
+QUITAR FB, Youtube Y DEMÁS BASURA DE LA BARRA DE DIRECCIONES DE FIREFOX
+=======================================================================
+
+Nos vamos a Settings->Privacy & Security, y en la parte de Address Bar podemos quitar toda esa puta mierda.
+
+DESACTIVAR EL BLOQUEO DE PANTALLA DESPUÉS DE VOLVER DE HIBERNACIÓN
+==================================================================
+
+Settings->System Settings->Workspace Behavior->Screen Locking, y ahí desactiva todo.
+
+DESACTIVAR AYUDAS Y MIERDAS CUANDO NOS COLOCAMOS ENCIMA DE LOS ICONOS
+=====================================================================
+
+Settings->System Settings->Workspace Behavior->General Behavior, y en la parte de Visual Behavior desactiva las dos opciones.
+
+
