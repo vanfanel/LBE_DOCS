@@ -67,3 +67,9 @@ QUITAR EL MINIMAPA DE KATE Y EL AUTOCOMPLETION Y EL SPELLCHECK
 
 Settings->Configure Kate->Appearance y desactiva "Show Minimap"
 Settings->Configure Kate->Editing, y ahí tienes las pestañas "Spellcheck" y "Autocompletion" donde puedes desactivar todo lo que quieras.
+
+USAR UN TASK-SWICHER MENOS INTRUSIVO (ALT-TAB)
+==============================================
+
+Settings->System Settings->Window Management->Task Switcher, y ahí le das a "Get New Task Switchers" y te bajas MediumDefault,
+y lo seleccionas y ya.
