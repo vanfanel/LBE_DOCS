@@ -3,6 +3,11 @@ CONFIGURAR FUENTES EN KONSOLE
 
 Settings->Manage Profiles, creamos un perfil nuevo, lo editamos, y en Appearance nos deja ajustar la fuente.
 
+QUE NO SALGA EL DIRECTORIO ACTUAL EN KONSOLE
+============================================
+
+Settings->Edit Current Profile->Tabs, y en "Tab Tittle Format" quita todo lo que pone ahí y escribe sólo "Konsole"
+
 AÑADIR AL USUARIO AL GRUPO SUDO Y PODER EMPEZAR A HACER COSAS
 =============================================================
 
@@ -52,4 +57,13 @@ DESACTIVAR AYUDAS Y MIERDAS CUANDO NOS COLOCAMOS ENCIMA DE LOS ICONOS
 
 Settings->System Settings->Workspace Behavior->General Behavior, y en la parte de Visual Behavior desactiva las dos opciones.
 
+ABRIR FICHEROS CON DOBLE CLICK EN VEZ DE CON UN SOLO CLICK
+==========================================================
 
+Settings->System Settings->Workspace Behavior->General Behavior, y en "Clicking files or folders" lo cambias.
+
+QUITAR EL MINIMAPA DE KATE Y EL AUTOCOMPLETION Y EL SPELLCHECK
+==============================================================
+
+Settings->Configure Kate->Appearance y desactiva "Show Minimap"
+Settings->Configure Kate->Editing, y ahí tienes las pestañas "Spellcheck" y "Autocompletion" donde puedes desactivar todo lo que quieras.
