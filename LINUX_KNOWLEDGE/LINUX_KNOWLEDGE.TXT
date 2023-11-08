@@ -5551,14 +5551,10 @@ set nobackup       "no backup files
 set nowritebackup  "only in case you don't want a backup file while editing
 set noswapfile     "no swap files
 
-===========================================================
-
-Y ahora, para que VIM recuerde la última posición en que estábamos cuando abrimos un fichero dado por última vez, editamos /etc/vim/vimrc
-y descomentamos esto, que viene comentado por defecto:
-
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
+" Para que VIM recuerde la última posición
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+===========================================================
 
 Y cambiamos el ownership de ~/.viminfo al usuario, ya que viene como propiedad del root y así no funciona lo que pongas en vimrc.
 Y si aún así no funciona, comenta todo lo que has puesto en ~/.vimrc, debería funcionar. Entonces ve descomentando líneas y comprobando qué setting de .vimrc es el que
