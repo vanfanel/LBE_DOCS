@@ -530,9 +530,17 @@ SATISFECHAS SUS DEPENDENCIAS, PASAMOS A LA COMPILACIÓN DE MESA COMO TAL:
 Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
 
-NOTA TEMPORAL: PARA RASPBERRY Pi5, NOS BAJAMOS LA VERSIÓN 23.2.1 Y LE APLICAMOS ESTE PARCHE:
-http://archive.raspberrypi.com/debian/pool/main/m/mesa/mesa_23.2.1-0+rpt2.diff.gz
+//////////////////////NOTA TEMPORAL RASPBERRY Pi5/////////////////////////////////////
+NOS BAJAMOS LA VERSIÓN 23.2.1 Y LE APLICAMOS UN PARCHE.
+SE HACE ASÍ:
+wget https://archive.mesa3d.org//mesa-23.2.1.tar.xz
+wget http://archive.raspberrypi.com/debian/pool/main/m/mesa/mesa_23.2.1-0+rpt2.diff.gz
+tar xvzpf mesa-23.2.1.tar.xz
+cd mesa-23.2.1
+zcat ../mesa_23.2.1-0+rpt2.diff.gz | patch -p1
+for f in $(cat debian/patches/series); do patch -p1 < debian/patches/$f; done
 (ESTO YA NO HARÁ FALTA CUANDO SE MERGEEN LOS CAMBIOS EN MESA UPSTREAM)
+//////////////////////FIN NOTA TEMPORAL///////////////////////////////////////////////
 
 Editamos src/broadcom/vulkan/v3dv_device.c y buscamos "destroy dumb object" y comentamos el fprintf() que lo contiene.
 
