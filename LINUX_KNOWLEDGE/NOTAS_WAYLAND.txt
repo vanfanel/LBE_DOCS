@@ -477,13 +477,13 @@ Lo tienes en las instrucciones de compilación de WLROOTS.
 
 Para quitar el borde rojo cuando la ventana está activa, edita config.h y en "focuscolor" quita la componente roja.
 
-TINYWL+, UN COMPOSITOR BASADO EN TINYWL PERO CON MÁS FUNCIONES
-==============================================================
+INSTALAR TINYWL+, UN COMPOSITOR BASADO EN TINYWL PERO CON MÁS FUNCIONES
+=======================================================================
 
 https://cppdig.com/c/a-simple-stacking-wayland-compositor-based-on-tinywl
 
-CAGE, UN COMPOSITOR PARA APLICACIONES EMBEDIDAS
-===============================================
+INSTALAR CAGE, UN COMPOSITOR PARA APLICACIONES EMBEDIDAS
+========================================================
 
 Bajamos los últimos sources estables de:
 https://github.com/Hjdskes/cage/releases
@@ -494,7 +494,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson .. --buildtype=release
+meson setup .. --buildtype=release
 
 ninja -j4
 sudo ninja install
