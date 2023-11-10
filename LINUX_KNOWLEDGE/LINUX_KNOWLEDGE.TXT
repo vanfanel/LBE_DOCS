@@ -6849,7 +6849,7 @@ SM64EX, port del Mario64 para GNU/Linux
 ========================================
 
 Clonamos los surces:
-git clone --depth 1 https://github.com/AloXado320/sm64ex-alo.git
+git clone --depth 1 https://github.com/AloUltraExt/sm64ex-alo.git
 
 Editamos src/pc/gfx/gfx_sdl2.c y: 
 -Añadimos SDL_WINDOW_FULLSCREEN_DESKTOP a los flags de SDL_CreateWindow()
