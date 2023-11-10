@@ -6855,24 +6855,16 @@ Editamos src/pc/gfx/gfx_sdl2.c y:
 -Añadimos SDL_WINDOW_FULLSCREEN_DESKTOP a los flags de SDL_CreateWindow()
 -Añadimos "SDL_ShowCursor(SDL_DISABLE);" justo debajo de la llamada a SDL_CreateWindow()
 -Comentamos la llamada a gfx_sdl_set_fullscreen() que hay justo debajo.
--Buscamos la única llamada que hay a SDL_CreateWindow, y cambiamos SDL_WINDOW_FULLSCREEN_DESKTOP por SDL_WINDOW_FULLSCREEN
-(ya que la Pi no puede con este engine a 1080p que es el modo en que solemos tener el sistema normalmente, así que
-nos interesa que las SDL2 cambien el modo de vídeo a 720p y no que usen el modo establecido).
+
+Editamos Makefile, y en la linea "OPT_FLAGS := -O2", añadimos "-march=native -mtune=native"
+(Si compilas con TARGET_RPI=1 esto se hace solo, pero para el resto de sistemas tienes que añadirlo).
 
 Hay que tener baserom.us.z64 en el directorio raiz.
 
-Se compila para la Pi con:
-make TARGET_RPI=1 HIGH_FPS_PC=1 RUMBLE_FEEDBACK=0 BETTERCAMERA=0 -j4
-
-Si vamos a compilar para PC:
-1-Editamos Makefile, cambiamos -lGL por -lOpenGL, y en la línea "OPT_FLAGS := -O2" añadimos "-march=native -mtune=native"
-2-Compilamos con:
-make HIGH_FPS_PC=1 RUMBLE_FEEDBACK=0 BETTERCAMERA=0 -j4
+Se compila asi:
+make USE_GLES=1 HIGH_FPS_PC=1 RUMBLE_FEEDBACK=0 BETTERCAMERA=0 -j4
 
 El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
-
-Tenemos que editar ~/.local/share/sm64ex/sm64config.txt y poner "window_w" a 1280 y "window_h" a 720, ya que la Pi no puede con este engine a 
-1080p que es el modo en que solemos tener el sistema normalmente.
 
 Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo. Pero vamos, viene en 512, si lo tocas será para subirlo a 1024.
 
