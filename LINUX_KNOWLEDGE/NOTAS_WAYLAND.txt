@@ -485,8 +485,8 @@ https://cppdig.com/c/a-simple-stacking-wayland-compositor-based-on-tinywl
 INSTALAR CAGE, UN COMPOSITOR PARA APLICACIONES EMBEDIDAS
 ========================================================
 
-Bajamos los últimos sources estables de:
-https://github.com/Hjdskes/cage/releases
+Clonamos ultimos los sources con:
+git clone --depth 1 https://github.com/cage-kiosk/cage.git
 
 Compilamos con:
 mkdir b4
