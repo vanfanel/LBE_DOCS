@@ -1301,7 +1301,7 @@ Si quieres debugear las SDL, añade antes de ./configure: CFLAGS="-O0 -ggdb"
 
 ******SDLPop : el clon open source y libre de Prince of Persia para GNU/Linux*********
 
-Bajamos la última release estable ede aquí:
+Bajamos la última release estable de aquí:
 https://github.com/NagyD/SDLPoP/tags
 
 Entramos en el directorio "src", y compilamos con:
@@ -8176,23 +8176,9 @@ COMPILAR FROTZ
 
 Instala las ncursesw, que es una versión más mehó de las ncurses:
 sudo apt-get install libncursesw5-dev libjpeg-dev
-
-
-	#### BLOQUE OPCIONAL PARA TENER AUDIO EN MODO TEXTO ####
 	
-Si quieres sonido en modo texto, instala estas dependencias antes, (SI USAS SFROTZ NO HACE FALTA, PORQUE SFROTZ TIENE SONIDO
-A TRAVÉS DE LAS SDL. ESTO ES PARA TENER EL SONIDO EN EL FROTZ NORMAL EN MODO TEXTO).
-
-+Instamos LIBAO manualmente (si lo instalásemos con apt, instalaría dependencias de PULSEAUDIO, etc):
---Bajamos la última estable de: https://github.com/xiph/libao/tags
---Ejecutamos el script "autogen.sh" que viene con los sources.
---Configuramos con:
-CFLAGS="-march=native -mtune=native" ./configure --enable-alsa --disable-pulse --disable-esd
-
-+Instalamos estas dependencias con apt: apt-get install libsamplerate0-dev libsndfile1-dev --no-install-recommends
-
-	#### FIN BLOQUE OPCIONAL PARA TENER AUDIO EN MODO TEXTO ####
-
+Si quieres sonido en modo texto (en sfrotz no hace falta ya que el sonido va por SDL2), instalamos estas dependencias previas:
+apt-get install libsamplerate0-dev libsndfile1-dev libao-dev --no-install-recommends
 
 Baja los surces de la última estable de:
 https://gitlab.com/DavidGriffith/frotz/-/releases
