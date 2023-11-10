@@ -721,10 +721,13 @@ Copia los directorios "ozone", "fonts" y "xmb" (aunque no vayas a usar el XMB, c
 
 Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
 git clone --depth 1 https://github.com/libretro/libretro-super.git
-Y mandar el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/cores. Sí, junto con los cores. Así:
-cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
-IMPORTANTE!!! NO TE OLVIDES DE ELIMINAR EL ARCHIVO ~/.config/retroarch/cores/core_info.cache. PARA QUE LO RECREE CON LOS NUEVOS .INFO
-Ahora en RetroArch, en Settings->File Browser, desactiva todo y activa "Filter Unknows Extensions" 
+Creamos el directorio ~/.config/retroarch/info
+Copiamos el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/info
+cp -R libretro-super/dist/info/* ~/.config/retroarch/info/
+Editamos ~/.config/retroarch/retroarch.cfg, y ponemos la variable "libretro_info_path" asi:
+libretro_info_path = "~/.config/retroarch/info"
+Por ultimo: Eliminamos el archivo "core_info.cache" (busca en todo .config/retroach) para que se recree el nuevo, o no funciona.
+Ahora en RetroArch, en Settings->User Interface->File Browser, desactiva todo y activa "Filter Unknows Extensions"
 
 Para añadir juegos de CONSOLA a una PLAYLIST:
 -Las ROMs deben estar en un directorio cuyo nombre coincida con el nombre del sistema en no-intro.
