@@ -139,7 +139,7 @@ meson setup -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Ds
 -Dxwayland=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
 -Dcolor-management-lcms=false -Dcolor-management-lcms=false -Dtools=terminal -Dwcap-decode=false \
 -Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false \
--Dwcap-decode=false ..
+-Dwcap-decode=false -Dbackend-pipewire=false ..
 
 ninja -j4
 sudo ninja install
