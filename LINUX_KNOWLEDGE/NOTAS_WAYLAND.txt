@@ -122,7 +122,7 @@ meson -Dbuildtype=release -Dzlib=disabled -Dtests=disabled -Ddwrite=disabled ..
 
 -Instalar WESTON en sí:
 Bajamos los últimos sources estables de:
-https://gitlab.freedesktop.org/wayland/weston/-/releases
+https://gitlab.freedesktop.org/wayland/weston/-/tags
 
 Editamos desktop-shell/shell.c, vamos a la función set_fullscreen() y ahí...
 (Queda pendiente hacer como que se clicka en la surface para que el pointer constraint en aplicaciones fullscreen se aplique inmediatamente,
@@ -134,7 +134,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dremoting=false -Dpipewire=false \
+meson setup -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dremoting=false -Dpipewire=false \
 -Dbackend-drm-screencast-vaapi=false -Dbackend-vnc=false -Dbackend-x11=false \
 -Dxwayland=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
 -Dcolor-management-lcms=false -Dcolor-management-lcms=false -Dtools=terminal -Dwcap-decode=false \
