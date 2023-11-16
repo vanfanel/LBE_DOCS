@@ -5051,7 +5051,7 @@ NOTAS ADICIONALES SOBRE EL ENGINE:
 -Cogemos el fichero "SonicCDu.rsdk" del Sonic Origins y lo copiamos en ~/soniccd con el nombre "Data.rsdk" 
 
 -Clonamos este repo: git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-2011-Script-Decompilation.git
- Y metemos el directorio "Scripts" en ~/soniccd
+ Y copiamos el directorio "Scripts" a ~/soniccd/
 
 -En Settings.ini ponemos "gameType=1", porque estamos usando los datos de la versión ORIGINS.
 
