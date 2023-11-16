@@ -3767,7 +3767,9 @@ CFLAGS="-O2 -march=native -mtune=native" ./configure --without-x --without-flac
 
 En la Raspberry Pi, ejecutamos con:
 AUDIODEV="sysdefault" ./schismtracker
-(En otros sistemas, lo suyo es pasar AUDIODEV="hw" y asi se consiguen tamaños de buffer menores, pero en la Raspberry Pi
+El el Partaker i5-1235U, ejecutamos con:
+AUDIODEV="hw:PCH,3" ./schismtracker
+(En otros sistemas, lo suyo es pasar también AUDIODEV="hw:lo_que_sea" y asi se consiguen tamaños de buffer menores, pero en la Raspberry Pi
 si usas la CARD vc4hdmi0, no se puede usar directamente el DEVICE llamado "hw" porque no soporta mas que un formato de audio raro,
 y por eso falla con un "unsopported audio format" si lo intentas).
 (Ya sabes que puedes ver los dispositivos con "aplay -L" y probarlos con "speaker-test -D<dispositivo>").
@@ -5449,12 +5451,12 @@ Es de Windows, usa WINE.
 
 **************CONEXIÓN PERMANENTE AL IRC******************************************************************************************
 
-Entramos por https://riot.im/app/#/room/#_oftc_#apertium:matrix.org
+Para OFTC: https://riot.im/app/#/room/#_oftc_#apertium:matrix.org
+Para LIBERA: https://riot.im/app/#/room/#libera-matrix:libera.chat
+
 Nos conectamos (tienes cuenta allí).
 
-Hay un bridge a irc.oftc.net
-
-Para cambiar de nick es con !nick, para entrar en un canal es !join #cana, etc...
+Para cambiar de nick es con !nick, para entrar en un canal es !join #canal, etc...
 No sé cómo ver quién está en el canal, para eso hay que entrar en paralelo desde el IRSSI.
 
 **************VIM autocompletion**************************************************************************************************

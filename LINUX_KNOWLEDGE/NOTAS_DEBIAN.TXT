@@ -684,7 +684,7 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 --enable-egl --enable-opengles --enable-opengles3 --enable-vulkan
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
-(SI TE DA ERROR AL LINKAR por funciones de slang, no le pases --disable-builtinglslang)
+(NO le pases --disable-builtinglslang, porque entonces fallará la compilación de shaders al cargar un segundo juego sin salir de RetroArch)
 
 (Si quieres OpenGL de escritorio, en lugar de "--enable-opengles --enable-opengles3" pásale "--enable-opengl",
 y además edita qb/config.libs.sh y cambia -lGL por -lOpenGL, sólo hay una ocurrencia que cambiar).
