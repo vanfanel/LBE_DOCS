@@ -5053,7 +5053,7 @@ NOTAS ADICIONALES SOBRE EL ENGINE:
 -Clonamos este repo: git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-2011-Script-Decompilation.git
  Y metemos el directorio "Scripts" en ~/soniccd
 
--En Settings.ini ponemos "gameType=1"
+-En Settings.ini ponemos "gameType=1", porque estamos usando los datos de la versión ORIGINS.
 
 -Metemos los mods que queramos en ~/soniccd/mods, y los cargamos desde el "dev menu" (tienes que tener "devMenu=y"
 en Settings.ini y darle a ESC para acceder a él)
