@@ -6910,7 +6910,7 @@ ZELDA OOT EN GNU/LINUX
 ======================
 
 Clonamos el repo de Zaxus:
-git clone --depth 1 -b less-dependencies-pr https://github.com/Zaxus125/Shipwright.git
+git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Shipwright.git
 
 ---PARTE 1: EXTRACCIÓN DE LOS DATOS---
 
@@ -6924,7 +6924,7 @@ Ahora el raiz de los sources hacemos:
 cmake -H. -Bbuild-cmake -GNinja \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DNO_GLEW=ON -DNO_PULSE=ON -DUSE_OPENGLES=ON -DUSE_X11=OFF -DBUILD_OTR_GUI=OFF -DCMAKE_BUILD_TYPE=Release
+-DCMAKE_BUILD_TYPE=Release
 
 Se nos habrá creado el directorio "build-cmake". Ahora seguimos con los siguientes pasos pasándole ese directorio a cmake:
 cmake --build build-cmake --target ExtractAssets -j4
