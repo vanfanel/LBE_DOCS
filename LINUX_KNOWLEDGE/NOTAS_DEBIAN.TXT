@@ -38,11 +38,11 @@ sudo adduser pi video
 pero aplay -L no listaba los dispositivos...¡porque no estabas en el grupo audio!)
 
 -DESINSTALAMOS loggers y cosas raras, que se llevan por delante servicios que no usamos:
-apt-get clean triggerhappy rsyslog cron dphys-swapfile bluetooth avahi-* fake-hwclock
+apt-get purge triggerhappy rsyslog cron dphys-swapfile bluetooth avahi-* fake-hwclock
 (NOTA: fake-hwclock no se usa porque en su lugar uso systemd-timesyncd que sincroniza la hora al conectarase a la red
  y guarda la hora en disco al reiniciar, con lo que fake-hwclock es redundante.)
 
--Deshabilitamos estos servicios:
+-EN RASPBIAN: Deshabilitamos estos servicios:
 systemctl mask e2scrub_all.timer
 systemctl mask e2scrub_reap.service
 systemctl mask man-db.service
@@ -57,6 +57,33 @@ systemctl mask sys-kernel-debug.mount
 systemctl mask sys-kernel-tracing.mount
 systemctl mask systemd-rfkill.service
 systemctl mask systemd-rfkill.socket
+
+-EN DEBIAN: Deshabilitamos estos servicios:
+systemctl mask apparmor.service
+systemctl mask e2scrub_reap.service      
+systemctl mask fstrim.timer
+systemctl mask apt-daily.service
+systemctl mask apt-daily.timer                         
+systemctl mask apt-daily-upgrade.service                     
+systemctl mask apt-daily-upgrade.timer                             
+systemctl mask bluetooth.target                                      
+systemctl mask dpkg-db-backup.service                               
+systemctl mask e2scrub_all.timer                       
+systemctl mask sys-fs-fuse-connections.mount
+systemctl mask logrotate.service
+systemctl mask logrotate.timer
+systemctl mask man-db.service
+systemctl mask man-db.timer
+systemctl mask sys-kernel-debug.mount
+systemctl mask sys-kernel-tracing.mount
+systemctl mask systemd-rfkill.service
+systemctl mask systemd-rfkill.socket
+systemctl mask systemd-update-utmp-runlevel.service
+systemctl mask rc-local.service
+systemctl mask remote-fs.target
+systemctl mask swap.target
+systemctl mask dev-sda3.swap                           
+
 (OJO: Servicios que NO DEBES DESHABILITAR:
 	-NetworkManager, que se usa para conectarse a la Wifi usando raspi-config y que deja las redes conocidas en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
 	-systemd-journald, que lo usaremos para ver los mensajes de inicio del kernel y los servicios con el comando "journalctl"
@@ -71,23 +98,6 @@ systemctl mask systemd-rfkill.socket
 	dependiendo si quieres autologin en una TTY o en dos, o vamos, en las que vayas a usar concretamente.
 	De ese modo nos funciona el autologin en las TTYs que queramos, y ademas funciona el respawn al escribir "exit".
 )
-
--Deshabilita los timers de actualización diaria de APT:
-sudo systemctl disable apt-daily-upgrade.timer
-sudo systemctl disable apt-daily.timer
-y crea el fichero:
-/etc/apt/apt.conf.d/99periodic-disable
-con el contenido:
-APT::Periodic::Enable "0";
-
--Deshabilita el target de swap:
-sudo systemctl mask swap.target
-
--Deshabilita el timer de rotación diaria de logs:
-sudo systemctl disable logrotate.timer
-Otros timers activos los puedes buscar con:
-sudo systemclt | grep timer
-Y miras a ver cuáles están active loaded. Unos se quitan con mask, otros con disable.
 
 -Para eliminar el error de "automount point not supported", simplemente haz:
 sudo depmod -a
@@ -204,10 +214,6 @@ Algunos ejemplos:
 systemctl mask systemd-journald.socket
 systemctl mask systemd-journald-dev-log.socket
 systemctl mask systemd-rfkill.socket
-
--Para quitar el error: "brcmfmac: brcmf_sdio_htclk: HT Avail timeout (1000000): clkctl 0x50"
-Puedes instalar el firmware de la wifi, o simplemente deshabilitarla poniendo en config.txt:
-dtoverlay=pi3-disable-wifi
 
 -Para ocultar los mensajes de systemd en el inicio, pon en cmdline.txt:
 systemd.show_status=false
@@ -436,22 +442,11 @@ sudo usermod -a -G render pi
 
 Empezamos con libDRM:
 
-Lo primero es instalar la última versión de MESON, porque la que trae DEBIAN siempre son viejos y las versiones
-actuales de WLROOTS necesitan versiones actuales de MESON para compilar (DEBIAN nunca coge a WLROOTS con la versión
-de MESON necesaria). Así que ahorra tiempo ahora si vas a usar WAYLAND, y deja ya instalado el último MESON:
-
-sudo apt-get purge meson
-sudo apt install python3-pip --no-install-recommends
-sudo python3 -m pip install ninja
-sudo python3 -m pip install meson
-PATH="/usr/local/bin:$PATH"
-
-...Ahora ya vamos con libDRM en sí...
 Elimimanos el libDRM del sistema, que es viejo siempre:
 apt-get purge libdrm*
 Instalamos estas dependencias previas:
 
-sudo apt-get install xsltproc libpciaccess-dev xutils-dev libtool make cmake automake pkg-config \
+sudo apt-get install meson xsltproc libpciaccess-dev xutils-dev libtool make cmake automake pkg-config \
 gcc g++ python3-setuptools xz-utils --no-install-recommends
 
 (libgbm NO TENEMOS QUE INSTALARLO ni nada, se compila e instala con MESA automáticamente)
@@ -530,22 +525,7 @@ SATISFECHAS SUS DEPENDENCIAS, PASAMOS A LA COMPILACIÓN DE MESA COMO TAL:
 Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
 
-//////////////////////NOTA TEMPORAL RASPBERRY Pi5/////////////////////////////////////
-NOS BAJAMOS LA VERSIÓN 23.2.1 Y LE APLICAMOS UN PARCHE.
-SE HACE ASÍ:
-wget https://archive.mesa3d.org//mesa-23.2.1.tar.xz
-wget http://archive.raspberrypi.com/debian/pool/main/m/mesa/mesa_23.2.1-0+rpt2.diff.gz
-tar xvzpf mesa-23.2.1.tar.xz
-cd mesa-23.2.1
-zcat ../mesa_23.2.1-0+rpt2.diff.gz | patch -p1
-for f in $(cat debian/patches/series); do patch -p1 < debian/patches/$f; done
-(ESTO YA NO HARÁ FALTA CUANDO SE MERGEEN LOS CAMBIOS EN MESA UPSTREAM)
-//////////////////////FIN NOTA TEMPORAL///////////////////////////////////////////////
-
 Editamos src/broadcom/vulkan/v3dv_device.c y buscamos "destroy dumb object" y comentamos el fprintf() que lo contiene.
-
-Las instrucciones para compilar con MESON se pueden ver en: https://www.mesa3d.org/meson.html
-Pero yo ya lo tengo resuelto a continuación...
 
 CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
 
@@ -584,7 +564,7 @@ INSTALAR SDL2
 
 Instalamos dependencias previas:
 
-sudo apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg123-dev libmodplug-dev \
+apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg123-dev libmodplug-dev \
 libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 
 Bajamos la última versión estable de:
@@ -664,12 +644,9 @@ INSTALAR RETROARCH
 ===================
 
 Instalamos dependencias previas:
-apt-get install libasound-dev
+apt-get install libasound-dev glslang-dev glslang-tools spirv-tools
 
-Si vas a compilarlo con soporte para Vulkan, lo primero es instalar el compilador de shaders:
-sudo apt-get install glslang-dev glslang-tools spirv-tools
-
-LO PRIMERO, HAZ ESTO O EL CONFIGURE FALLARÁ:
+SI ESTÁS EN RASPBERRY PI, LO PRIMERO HAZ ESTO O EL CONFIGURE FALLARÁ:
 apt-get purge libraspberrypi*
 
 Ahora, para configurar RetroArch con soporte de GLES y VULKAN, como lo venimos haciendo:

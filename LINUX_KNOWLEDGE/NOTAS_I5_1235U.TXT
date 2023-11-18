@@ -2,7 +2,7 @@
 
 -Instalamos dependencias previas:
 
-apt-get install lsb-release apt-transport-https ca-certificates curl --no-install-recommends
+apt-get install lsb-release apt-transport-https ca-certificates curl gpg --no-install-recommends
 
 -Bajamos la firma del repo:
 curl -fSsL https://pkgs.zabbly.com/key.asc | gpg --dearmor | sudo tee /usr/share/keyrings/linux-zabbly.gpg > /dev/null
@@ -15,49 +15,6 @@ apt-get update
 
 -Instalamos el último kernel de zabbly:
 apt install linux-zabbly
-
-******AJUSTES EN LA BIOS***************
-
-La idea es tener frecuencia fija de la CPU (mientras se ejecutan cosas al menos) y poco jittering:
-
--En la BIOS:
-Desactiva los Efficiency Cores, el Hyper-Threading, Intel(R) SpeedStep, Race To Halt, Energy Efficient Turbo,
-C-States, (O bien sólo los Enhanced C-States (es lo que llaman C1E) y todo lo que hay debajo),
-y todas las opciones de eficiencia que veas.
-Desactiva el Legacy USB.
-En "GT - Power Management Control" pon "Maximum GT frequency" a 1200Mhz.
-COSAS QUE DEBES DEJAR ACTIVAS EN LA BIOS:
--Turbo Mode: Sin esto, Linux no puede pasar de 1.3GHz (La CPU queda limitada a 1.3GHz o "velocidad nominal" hagas lo que hagas).
--Intel Speed Shift: Sin esto, Linux no puede manejar los P-States (Nunca puede subir de 2.5GHz hagas lo que hagas).
-
--En la línea de parámetros del kernel pasamos: intel_idle.max_cstate=0 processor.max_cstate=0
-EN TOTAL, LA LÍNEA DE PARÁMETROS DEL KERNEL QUEDA ASÍ:
-consoleblank=0 console=tty1 mitigations=off audit=0 quiet loglevel=0 fastboot usbhid.jspoll=1 intel_idle.max_cstate=0 processor.max_cstate=0
-(Eso se hace editando /etc/default/grub y luego haciendo "update-grub").
-NO le pasamos idle=poll o idle=halt porque la idea es que cuando la CPU está idle, pueda bajarse de velocidad usando los P-States,
-pero como los C-States sí que los desactivamos, no puede desactivar cachés y cosas así.
-Puedes observar las frecuencias de la CPU con: watch -n1 "grep \"^[c]pu MHz\" /proc/cpuinfo"
-Y verás que sí que baja mucho cuando no hay nada ejecutándose, pero que una vez que hay cosas ejecutándose no baja de la velocidad
-turbo máxima que le hayas puesto en dietpi-config. 
-
--Governor y frecuencias.
-MANERA 1: RECOMENDADA, A MANO (info sacada de cómo se hace en el script /boot/dietpi/func/dietpi-set_cpu)
--Elimina los archivos /etc/systemd/system/dietpi-preboot.service y /etc/systemd/system/dietpi-postboot.service
--Añade al principio de /etc/profile/profile.d/custom.sh:
-######
-echo "performance" > /sys/devices/system/cpu/cpu0]/cpufreq/scaling_governor                                   
-echo "performance" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor                                   
-echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo                                                         
-echo 80 > /sys/devices/system/cpu/intel_pstate/max_perf_pct                                                    
-echo 80 > /sys/devices/system/cpu/intel_pstate/min_perf_pct
-######
-Esto es una configuración que permite emular Saturn pero con max_swapchain a 3.
-Sería posible emular Saturn con max_swapchain a 2, pero para ello tendríamos que poner max_perf_pct y min_perf_pct al 100,
-lo que provoca que se alcancen 80 grados en un rato, y NO es recomendable pasar de 75.
-
-MANERA 2: MEDIANTE DIETPI-CONFIG
-En PERFORMANCE OPTIONS pon:
-Governor a performance, Intel Turbo ON, y CPU Frequency Limits: MAX=80% MIN=80%
 
 ******PARA QUE NO SE AUTO-ENCIENDA EL ORDENADOR AL CONECTARLO A LA CORRIENTE*********
 
@@ -142,10 +99,6 @@ BACKSPACE="guess"
 Sin lo de "nodeadkeys", tenemos que darle a la Ñ dos veces para sacar la tilde, y es una mierda eso.
 
 *****LIMPIEZA DE SISTEMA******
-
-Estas cosas se pueden desinstalar y aún así wayland funciona como servicio sin problemas:
-apt-get purge dbus
-(Para evitar errores derivados de la falta de dbus.socket, hacemos: systemctl mask sockets.target).
 
 Para no tener errores con el módulo pcspkr ni mensajes infinitos de evbug, y aprovechando para quitar otras cosas que no necesitamos,
 creamos /etc/modprobe.d/custom-blacklist.conf con el contenido:

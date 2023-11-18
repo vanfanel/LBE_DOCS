@@ -1007,8 +1007,8 @@ Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->c
 ARREGLO PARA EL FRAMERATE, SÓLO WAYLAND (RECUERDA QUE EN WAYLAND+VULKAN EL VSYNC DEBE ESTAR DESACTIVADO!!!):
 Creamos este script en /usr/local/bin/dreamcast para lanzar el emulador:
 
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.94                                                      
-/usr/local/bin/flycast "$1"                                                                                    
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.94
+/usr/local/bin/flycast "$1"
 wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
 
 ARREGLO PARA EL FRAMERATE, SÓLO PARA KMS/DRM:
@@ -5058,6 +5058,8 @@ NOTAS ADICIONALES SOBRE EL ENGINE:
 -Metemos los mods que queramos en ~/soniccd/mods, y los cargamos desde el "dev menu" (tienes que tener "devMenu=y"
 en Settings.ini y darle a ESC para acceder a él)
 Tienes el mod de audio y vídeo del Sonic CD para RSDKv5U en el disco duro de backup, ya preparado.
+Con el mod de shaders cargado, para elegir el shader simplemente enta en el DEV MENU, selecciona el shader que quieras y dale al ESC,
+y así se queda salvado.
 
 		***SOLO NECESARIO PARA VOLVER A CREAR EL MOD DE AUDIO Y VIDEO: SECCIÓN PARA RECREAR EL MOD DE AUDIO Y VÍDEO DEL SONIC CD EN RSDKv5U***
 
@@ -7771,6 +7773,8 @@ navegamos usando el 5 hasta "Game Assignments", usamos el 6 para seleccionarlo, 
 NOTA: Para poner el Daytona 2 en inglés, presiona TestA para entrar en el menú,
 ahora presiona a la vez ServiceA + ServiceB, y con ellos dos presionados presiona TestB, y ya estás en el menú de elegir el país.
 Y prefiero usar "Export", porque en USA sale un aviso que no nos interesa.
+
+NOTA: Para que el Magical Truck no se ralentize, pásale -ppc-frequency=100
 
 AUDIO POR I2C: EL PI TOP SPEAKER
 ================================
