@@ -457,7 +457,7 @@ cd b4
 
 CONFIGURAMOS DRM con esto:
 
-PARA RASPBERRY PI 4:
+PARA RASPBERRY PI 4/5:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
@@ -529,7 +529,7 @@ Editamos src/broadcom/vulkan/v3dv_device.c y buscamos "destroy dumb object" y co
 
 CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
 
-PARA PI4:
+PARA PI4/5:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled -Dvulkan-drivers=broadcom -Dgallium-drivers=v3d,vc4,kmsro \
