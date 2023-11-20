@@ -13,6 +13,18 @@ Con la otra política de tiempo real (SCHED_RR, que se usa pasando -r en lugar d
 rodajas de tiempo de manera continua y nos conviene más que los threads pillen la CPU y no la suelten hasta que acaben,
 es decir, SCHED_FIFO, que es lo que usamos con -f), pasar -r 99 es un peligro y hay cuelgues.
 
+PARA CONSEGUIR LO MISMO EN UN SISTEMA EN EJECUCIÓN:
+-Instalamos este paquete: apt-get install cpuset
+-Creamos un shield para proteger las CPUs 0 y 1:
+cset shield --cpu=0-1 --kthread=on
+NOTA: Al hacer esto, te saldrá que algunas tareas no se pueden sacar de esas CPUs (se supone que son tareas del kernel).
+En teroría, eso es porque hay que aislar esas CPUs antes de arrancar, mira esto: https://www.codeblueprint.co.uk/2020/05/03/reducing-jitter-on-linux-with-task-isolation.html
+-Mandamos ahí a correr el programa que queramos:
+cset shield --exec -- <programa con sus argumentos>
+-Podemos ver qué hay corriendo en nuestro shield con:
+cset shield -s -v
+-Para saber más: man cset-shield
+
 ******Establecer una variable de entorno globalmente en el arranque*****************************************************
 
 Aunque hasta ahora lo has hecho de las más peregrinas maneras, el modo "correcto" es en /etc/environment
