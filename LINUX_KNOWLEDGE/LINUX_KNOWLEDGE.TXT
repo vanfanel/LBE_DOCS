@@ -623,6 +623,11 @@ CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" make
 
 La BIOS tiene que ir en ~/.config/retroarch/system/mpr-17933.bin
 
+Si estás en un sistema con PERFORMANCE CPUs y EFFICIENCY CPUs, debes asignarle un par de PERFORMANCE CPUs al RetroArch así:
+taskset -c 0-1 retroarch -L ~/.config/retroarch/cores/mednafen_saturn_libretro.so roms/Sega\ -\ Saturn/Virtua\ Fighter\ Remix\ \(USA\).chd
+Esto es así porque el core oscila muy rápido en el uso de la CPU: cuando usa poca es asignado a una CPU de tipo EFFICIENCY y luego
+cuando de repente usa mucha se ralentiza porque el scheduler no llega a tiempo de pasarlo a una CPU de tipo PERFORMANCE.
+
 *******Compilar el core DOSBOX-CORE**********************************
 
 Este sí sincroniza el vídeo bien (al fin).
