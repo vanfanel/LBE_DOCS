@@ -25,9 +25,14 @@ LC_NUMERIC=en_US.UTF-8
 LC_PAPER=en_US.UTF-8                                                                                           
 LANG="C"	
 
--Ponemos el governor a PERFORMANCE. Lo más sencillo para eso es editar /etc/init.d/raspi-config
-y en la línea de CPU_DEFAULT_GOVERNOR cambiar "ondemand" por "performance".
-Luego obviamente NO deshabilites el servicio "raspi-config.service" porque es el que aplica el governor.
+-Ponemos el governor a PERFORMANCE.
+
+OPCIÓN 1 (RECOMENDADO): Lo más sencillo es añadir a la línea de comandos del kernel: cpufreq.default_governor=performance
+Y si estás en la raspberry Pi (en Debian normal de X86 no hace falta), deshabilita el servicio raspi-config,
+por si establece otro valor contradictorio.
+OPCIÓN 2 (EN LA RASPBERRY PI Y NO RECOMENDADO): Edita /etc/init.d/raspi-config y en la línea de CPU_DEFAULT_GOVERNOR cambiar "ondemand" por "performance". Luego obviamente NO deshabilites el servicio "raspi-config.service" porque es el que aplica el governor.
+EN AMBOS CASOS, PUEDES COMPROBARLO CON:
+cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
 -Crear el usuario pi:
 sudo adduser pi
