@@ -25,6 +25,9 @@ cset shield --exec -- <programa con sus argumentos>
 cset shield -s -v
 -Para saber más: man cset-shield
 
+PARA VER QUÉ PARÁMETROS DEL SCHEDULER PODEMOS AJUSTAR:
+sysctl -A |grep sched
+
 ******Establecer una variable de entorno globalmente en el arranque*****************************************************
 
 Aunque hasta ahora lo has hecho de las más peregrinas maneras, el modo "correcto" es en /etc/environment
