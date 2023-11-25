@@ -16,6 +16,12 @@ apt-get update
 -Instalamos el último kernel de zabbly:
 apt install linux-zabbly
 
+******AJUSTES EN LA BIOS*************************************************************
+
+-Los C-STATES vienen desactivados. Déjalo así.
+-En Advanced->CPU Configuration, deshabilita el Hyperthreading y el "Intel (VMX) Virtualization".
+-En Advanced->Power & Performance, entra en View/Configure Turbo Options y deshabilita todo. 
+
 ******PARA QUE NO SE AUTO-ENCIENDA EL ORDENADOR AL CONECTARLO A LA CORRIENTE*********
 
 A parte de quitarle el PIN de PRWON1 en la placa, en la BIOS ve a CHIPSET->PCH IO y pon POWER FAILURE a ALWAYS OFF.
