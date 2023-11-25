@@ -3,6 +3,7 @@ LANZAR programas en sus propias CPUs (realtime, nada más puede ejecutarse ahí:
 de housekeeping simultáneo)
 ============================================================================================================================================
 MÁS SOBRE MEJORAR LA LATENCIA: https://rigtorp.se/low-latency-guide/
+https://github.com/redno2/Application-latency-optimization-Linux
 
 HABIENDO AISLADO LAS CPUs DEL 1 al 3 CON "isolcpus=1-3 nohz_full=1-3" EN CMDLINE.TXT: 
 -Para lanzar algo no multithread:
