@@ -403,6 +403,10 @@ mister:
 cd kickstarts
 copy ALL to devs:kickstarts
 
+********HACER QUE TINYLAUNCHER LANCE LOS JUEGOS MEDIANTE SUS SCRIPTS EN LUGAR DE LANZAR LOS SLAVES DE WHDLOAD***********
+
+Simplemente, llama al script de lanzamiento del juego "runme.tl" en el directorio del juego.
+
 ********ACTUALIZAR LA DISTRO AMIGA AGS+**************************************************
 
 -Pones el LHA de la actualización en fat/games/amiga/shared
