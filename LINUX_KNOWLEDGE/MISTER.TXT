@@ -403,9 +403,16 @@ mister:
 cd kickstarts
 copy ALL to devs:kickstarts
 
-********HACER QUE TINYLAUNCHER LANCE LOS JUEGOS MEDIANTE SUS SCRIPTS EN LUGAR DE LANZAR LOS SLAVES DE WHDLOAD***********
+********Añadir juegos al AGS (Arcade Game Selector)**************************************
 
-Simplemente, llama al script de lanzamiento del juego "runme.tl" en el directorio del juego.
+El AGS escanea todos los directorios que acaben en .ags, así que puedes crear el directorio "Juegos.ags" y dentro de él
+los directorios "A.ags", "B.ags", "C.ags", etc...
+Y en cada directorio de cada letra, cada juego tendrá su "Nombre del juego.run"
+(OJO: con permiso de ejecución que le damos con "PROTECT fichero +SE"),
+su icono en "Nombre del juego.iff" y su texto de información "Nombre del juego.txt"
+
+Puedes bajarte los thumbnails de todos los juegos en formato compatible con OCS de:
+https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package.git
 
 ********ACTUALIZAR LA DISTRO AMIGA AGS+**************************************************
 
