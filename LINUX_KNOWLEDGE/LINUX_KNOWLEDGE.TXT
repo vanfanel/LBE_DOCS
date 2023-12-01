@@ -9284,6 +9284,9 @@ Lo instalamos con dpkg desde la consola de comandos. Este paquete instala:
 Ahora nos vamos en Firefox a Settings->Privacy & Security->Certificates, y en la pestaña de Authorities,
 importamos el certificado /usr/lib/Autofirma/AutoFirma_ROOT.cer
 
+CON EL CERTIFICADO DIGITAL, ADEMÁS, PODEMOS ACCEDER A LA CARPETA CIUDADANA EN: https://carpetaciudadana.gob.es/carpeta/clave.htm
+(NO TIENES QUE ANDAR CON CL@AVE: DONDE PUEDAS ACCEDER CON CL@VE PUEDES ACCEDER CON EL CERTIFICADO DIGITAL).
+
 AUTOMONTAJE DE DISPOSITIVOS DE ALMACENAMIENTO USB EN GNU/LINUX
 ==============================================================
 
