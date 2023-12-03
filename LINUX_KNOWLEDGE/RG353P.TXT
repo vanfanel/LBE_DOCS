@@ -14,7 +14,7 @@ Game Settings -> AUTO SAVE/LOAD ON GAME LAUNCH a OFF, y en AI GAME TRANSLATION p
 Game Settings ->PER SYSTEM ADVANCED CONFIGURATION y vamos eligiendo el emulador para cada sistema.
 
 En menú de RETROARCH:
-En vídeo, Max Swapchain Images a 2, Threaded Video OFF, y Switch Refresh Rate Automatically OFF.
+En vídeo, Synchronization->"Max Swapchain Images" 2, Output->"Threaded Video" OFF, y Output->"Automatic Refresh Rate Switch" OFF.
 Driver de sonido Alsathread, 45ms de latencia.
 Resampler quality a NORMAL, Output Rate a 44100 (ya que Genesis Plus GX saca 44100Hz).
 Poner sonido a 44100 en las opciones de FBNeo también.
