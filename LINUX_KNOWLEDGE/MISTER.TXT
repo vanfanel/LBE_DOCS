@@ -595,6 +595,12 @@ Los discos de Unix sólo funcionan en los modelos 11/45. Para BSD2.x, es con una
 Una vez que estás en el @, escribe unix y dale al intro. Puedes logearte como root, sin password.
 Más instrucciones de uso aquí: https://pdp2011.sytse.net/wordpress/howto/running/
 
+*********NOTAS CORE ENTERPRISE***********************************************************
+
+Según arrancas, empieza en BASIC.
+Puedes poner :HELP para ver los comandos.
+Para entrar en el sistema operativo de disco, pon :EPDOS
+
 *********HACER QUE EL UPDATE_ALL NO ACTUALIZE LOS CHEATS*********************************
 
 Editamos /media/fat/downloader.ini y añadimos:
