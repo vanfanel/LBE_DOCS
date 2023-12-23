@@ -452,22 +452,30 @@ tienes que hacerlo con el UndertaleModTool: tienes notas sobre esto más abajo.
 
 Para Metroid am2r, tenemos que bajarnos la versión 1.1 y parchearla a la última versión que haya en ese momento:
 
--Clonamos el repo de la última versión del auto-parcheador: git clone --depth 1 https://github.com/AM2R-Community-Developers/AM2R-Autopatcher-Linux
+-Instalamos el parcheador xdelta: sudo apt install python xdelta3
 
 -Descargamos el AM2R versión original 1.1 de aquí: https://archive.org/details/am2r1.1
 y lo guardamos dentro del directorio AM2R-Autopatcher-Linux como AM2R-Autopatcher-Linux/AM2R_11.zip
 (OJO: Bájalo por Torrent, ya sabes que todo lo de Archive se corta si te bajas el .zip directamente)
 
--Instalamos el parcheador xdelta: sudo apt install python xdelta3
+-Clonamos el repo de la última versión del auto-parcheador: git clone --depth 1 https://github.com/AM2R-Community-Developers/AM2R-Autopatcher-Linux
 
--Bajamos la última versión del parche de DISCORD:
-wget -O AM2R-Autopatcher-Linux/data/droid.xdelta https://cdn.discordapp.com/attachments/829714741471215667/874800076017504326/droid.xdelta
-wget -O AM2R-Autopatcher-Linux/data/android/AM2RWrapper.apk https://cdn.discordapp.com/attachments/829714741471215667/874800183181967400/AM2RWrapper.apk
+-Bajamos la última versión del parche de GITHUB:
+https://github.com/AM2R-Community-Developers/ProfessorG64/releases
+De ahí copiamos el archivo "droid.xdelta" a "AM2R-Autopatcher-Linux/data/droid.xdelta"
+y "AM2RWrapper.apk" a "AM2R-Autopatcher-Linux/data/android/AM2RWrapper.apk".
 
--Parcheamos!!
-cd AM2R-Autopatcher-Linux && python patcher.py
+-Parcheamos así:
+
+cd AM2R-Autopatcher-Linux
+python patcher.py
+
 (Te preguntará por el tipo de parche: responde Android. Y no hace falta que instales el pack de sonido de alta calidad porque
 ocupa MUCHO más.)
+
+NOTA: Si hemos instalado el juego en JELOS usando PORTMASTER y no nos va el audio, editamos AM2R.sh y añadimos estas dos líneas al principio:
+export SPA_PLUGIN_DIR="/usr/lib32/spa-0.2"
+export PIPEWIRE_MODULE_DIR="/usr/lib32/pipewire-0.3/" 
 
 ******EDITAR Y CAMBIAR COSAS EN JUEGOS GML COMO EL MALDITA CASTILLA**********************************************************
 
