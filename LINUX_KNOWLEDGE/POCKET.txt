@@ -1,6 +1,19 @@
 LISTA DE CORES OPENFPGA DE LA COMUNIDAD: https://openfpga-cores-inventory.github.io/analogue-pocket/
 LISTA DE CORES OPENFPGA DEL FABRICANTE: https://github.com/spiritualized1997?tab=repositories
 
+ACTUALIZAR LOS CORES E INSTALAR LAS ROMS ARCADE, AUTOMÁTICAMENTE
+================================================================
+
+Metemos la tarjeta de la pocket en el ordenador, la DESMONTAMOS, Y LA MONTAMOS A MANO en /mnt
+(Si la usas tal como queda montada por defecto, al copiar los archivos ejecutables de Linux
+a una partición FAT32 pierden los permisos de ejecución).
+
+Nos bajamos la última versión estable del updater de:
+https://github.com/mattpannella/pocket-updater-utility/releases
+La descomprimimos y copiamos el ejecutable pocket_update a la raíz de la tarjeta SD.
+
+Ejecutamos el updater.
+
 INSTALAR CORES OPENFPGA A MANO
 ==============================
 
