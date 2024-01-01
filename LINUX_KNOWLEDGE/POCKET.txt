@@ -4,15 +4,10 @@ LISTA DE CORES OPENFPGA DEL FABRICANTE: https://github.com/spiritualized1997?tab
 ACTUALIZAR LOS CORES E INSTALAR LAS ROMS ARCADE, AUTOMÁTICAMENTE
 ================================================================
 
-Metemos la tarjeta de la pocket en el ordenador, la DESMONTAMOS, Y LA MONTAMOS A MANO en /mnt
-(Si la usas tal como queda montada por defecto, al copiar los archivos ejecutables de Linux
-a una partición FAT32 pierden los permisos de ejecución).
-
 Nos bajamos la última versión estable del updater de:
 https://github.com/mattpannella/pocket-updater-utility/releases
-La descomprimimos y copiamos el ejecutable pocket_update a la raíz de la tarjeta SD.
-
-Ejecutamos el updater.
+La descomprimimos a un directorio del ordenador (NO a la tarjeta SD!!!) y ejecutamos el updater apuntando a la tarjeta, así:
+./pocket_updater -p /media/manuel/POCKET
 
 INSTALAR CORES OPENFPGA A MANO
 ==============================
