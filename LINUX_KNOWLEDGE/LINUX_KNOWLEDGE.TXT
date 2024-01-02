@@ -70,6 +70,27 @@ Se hace simplemente con:
 
 PERO OJO: Si te da un error de "missing separator" métele un tabulador delante.
 
+******Actualizar el firmware de un dispositivo 8bitdo (y de dispositivos en general) en GNU/Linux**********************
+
+Se toma como ejemplo el 8BitDo Arcade Stick.
+Información procedente de: https://ladis.cloud/blog/posts/firmware-update-8bitdo.html
+
+Lo primero es instalar FWUPD: sudo apt-get install fwupd
+Ahora conectamos el mando, y lo encendemos con START+SELECT presionados para entrar en modo UPDATE.
+Ahora localizamos su DEVICE ID con: sudo fwupdmgr get-devices
+
+Ahora localizamos el firmware que necesitamos. Para ello:
+-Miramos en la tabla que está en: https://ladis.cloud/blog/posts/firmware-update-8bitdo.html
+ Ahí averiguamos que el TYPE del 8BitDo Arcade Stick es el 34.
+-Localizamos la ruta del fichero de firmware que tenemos que descargar. Para ello, hacemos:
+curl -X POST -H 'Type: 34' -H 'Beta: 1' http://dl.8bitdo.com:8080/firmware/select
+Ahí nos va a dar un chorro de texto en formato JSON, del que nos interesa lo que pone a continuación de "filePathName".
+En "filePathName" pone "/firmwareFile/upload/1a70f919-b88e-4a07-b56b-a65524233caf.dat", así que lo unimos al dominio
+de las descargas de 8BitDo, y nos queda que para descargar el firmware hacemos:
+curl -X GET -O http://dl.8bitdo.com:8080/firmwareFile/upload/1a70f919-b88e-4a07-b56b-a65524233caf.dat
+-Por último, flasheamos el firmware usando el "DEVICE ID" y el fichero de firmware que hemos descargado:
+sudo fwupdtool install-blob 1a70f919-b88e-4a07-b56b-a65524233caf.dat 301046452a49d84af6356d23e43a684b8f10660f
+
 ******Hacer que se lean los diagnostics del bootloader de la Raspberry Pi 4 incluso cuando arranca correctamente*******
 
 Editamos los parámetros de configuración del bootloader con:
