@@ -9,6 +9,9 @@ https://github.com/mattpannella/pocket-updater-utility/releases
 La descomprimimos a un directorio del ordenador (NO a la tarjeta SD!!!) y ejecutamos el updater apuntando a la tarjeta, así:
 ./pocket_updater -p /media/manuel/POCKET
 
+Lo primero, entra en la opción SELECT CORES (3) para ir seleccionando los cores que quieres con ENTER, y luego ya vuelves al menú principal
+y le das a UPDATE ALL.
+
 INSTALAR CORES OPENFPGA A MANO
 ==============================
 
