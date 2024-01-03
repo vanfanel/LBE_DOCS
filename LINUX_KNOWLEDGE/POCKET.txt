@@ -20,3 +20,9 @@ tienes que copiar a los directorios con los mismos nombres que hay en la raiz de
 
 Cualquier ROM que puedas necesitar está en:
 https://archive.org/download/openFPGA-Files
+
+AÑADIR DISPLAY MODES
+====================
+
+A parte de que el pocket_updater lo hace automáticamente desde una opción del menú, podemos hacerlo nosotros a mano editando el "video.json"
+del core que queramos, y añadiendo los modos de la tabla que viene aquí: https://www.analogue.co/developer/docs/core-definition-files/video-json
