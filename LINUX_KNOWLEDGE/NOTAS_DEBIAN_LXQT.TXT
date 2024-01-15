@@ -1,0 +1,38 @@
+CONECTAR A REDES WIFI
+=====================
+
+No trae un Network Manager activado por defecto, pero sí trae uno instalado.
+Nos vamos a Internet->Connman UI Setup, y ahí añadimos nuestras redes WiFi.
+NO hace falta que se lance al iniciar el sistema, si quieres cambiar de redes vuelve a cargarlo desde ahí, haces lo que quieras y lo cierras.
+
+AUTOLOGIN CON LXQT
+==================
+
+-Averiguamos que Display Manager tenemos con: systemctl status display-manager
+ Nos saldrá seguramente que es "SDDM".
+-Creamos el archivo /etc/sddm.conf.d/autologin con el contenido:
+[Autologin]
+User=user
+Session=lxqt.desktop
+Relogin=true
+
+AÑADIR ATAJO DE TECLADO PARA ABRIR LA TERMINAL CON CTRL+ALT+T
+=============================================================
+
+Se hace en Preferences->LXQT Settings->Shortcut Keys
+
+AJUSTAR TAMAÑO DE LAS FUENTES
+=============================
+
+Para las fuentes generales, ve a Preferences->LXQT Settings->Appearance, y ahí entra en Font, donde puedes poner el tamaño que quieras.
+Para el texto y tamaño de los iconos del escritorio, dale con el botón derecho al fondo de escritorio, Desktop Preferences.
+
+EL CONTROL DE VOLÚMEN NO FUNCIONA
+=================================
+
+Dale con el botón derecho al control de volúmen, luego a "Configure Volume Control", y en "Device to Control" eligie "PulseAudio" o "ALSA".
+
+ELIMINAR LAS SUGERENCIAS COMERCIALES DE LA BARRA DE DIRECCIONES DE FIREFOX
+==========================================================================
+
+Nos vamos a Settings->Privacy & Security->Address Bar, y desmarcamos todo.

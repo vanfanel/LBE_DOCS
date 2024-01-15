@@ -183,7 +183,7 @@ cp i915/* /media/manuel/DEBIAN_ROOTFS/lib/firmware/i915/
 -Para quitar los mensajes de alsactl en el inicio, editamos lib/systemd/system/alsa-state.service y quitamos el -s de las dos líneas donde aparece, para que así no se mande la salida del comando a dmesg...
 
 INSTALAR MESA Y SDL2
-==================
+====================
 
 El CFLAG para x86 64 genérico es -march=x86-64
 
