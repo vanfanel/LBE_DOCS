@@ -82,10 +82,21 @@ PARTE 3: INSTALAR WLROOTS (NO NECESARIO PARA WESTON!!)
 -Instalamos dependencias previas: sudo apt-get install libseat-dev libpixman-1-dev libxkbcommon-dev hwdata \
 libinput-dev glslang-dev glslang-tools --no-install-recommends
 
+-Instalamos otra dependencia previa (no disponible en Debian 12), libdisplay-info.
+--Bajamos la última versión estable de: https://gitlab.freedesktop.org/emersion/libdisplay-info/-/releases
+--Configuramos, compilamos e instalamos con:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release
+
+ninja -j4
+sudo ninja install
+
 -Instalar WLROOTS en sí. Para ello:
-
 --Bajamos los últimos sources de WLROOTS estables de aquí: https://gitlab.freedesktop.org/wlroots/wlroots/-/releases
-
 --Configuramos, compilamos e instalamos:
 
 mkdir b4
