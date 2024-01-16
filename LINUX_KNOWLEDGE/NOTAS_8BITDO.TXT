@@ -1,3 +1,15 @@
+ACTUALIZAR EL "SN30 PRO USB"
+============================
+
+Bajamos el firmware de: https://support.8bitdo.com/
+Mantenemos presionados L1+R1 y enchufamos el mando al USB: Linux nos lo detectará como un disco!
+Copiamos el archivo del firmware al disco y re-conectamos el mando.
+
+PONER EL "SN30 PRO USB" EN MODO XINPUT PARA PODER USARLO
+========================================================
+
+Mantenemos la X apretada y conectamos el mando, y ya está en modo XInput. Podemos verlo detectado con "lsusb".
+
 USAR EL RECEPTOR EN LA MISTER CON EL MANDO SN30, Y QUE AL ASIGNAR TODOS LOS BOTONES EN EL CORE DE SNES AÚN PODAMOS ENTRAR EN EL MENÚ OSD
 ========================================================================================================================================
 
@@ -5,7 +17,6 @@ Pon EL RECEPTOR EN MODO PSC: para ello, asocia el mando, y pulsa SELECT+DOWN dur
 Asigna los botones del menú principal de la MISTER, pero no llegues a asignar el botón de OSD ni ratón ni nada de eso, cuando acabes de asignar las direcciones
 y los cuatro botones A B X Y, para la asignación de botones pulsando ENTER.
 Ahora, entra en el core de SNES y asigna todos los botones normal. Ya deberías poder entrar en el menú con SELECT+DOWN o con L+R+START.
-
 
 EL RECEPTOR USB NO FUNCIONA EN LA MISTER Y PARPADEA DOS O TRES VECES EL RECEPTOR
 ================================================================================
