@@ -9,6 +9,9 @@ PONER EL "SN30 PRO USB" EN MODO XINPUT PARA PODER USARLO
 ========================================================
 
 Mantenemos la X apretada y conectamos el mando, y ya está en modo XInput. Podemos verlo detectado con "lsusb".
+Si te lo detecta como un mando de Switch, crea el fichero /etc/modprobe.d/blacklist-custom.conf, con el contenido:
+blacklist nintendo-hid
+...Y así te lo detectará siempre como un mando de XBOX360 (Es decir, modo XInput).
 
 USAR EL RECEPTOR EN LA MISTER CON EL MANDO SN30, Y QUE AL ASIGNAR TODOS LOS BOTONES EN EL CORE DE SNES AÚN PODAMOS ENTRAR EN EL MENÚ OSD
 ========================================================================================================================================
