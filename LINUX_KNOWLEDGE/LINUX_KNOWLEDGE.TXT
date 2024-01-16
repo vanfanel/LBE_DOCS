@@ -5053,10 +5053,9 @@ cp libGame.so ~/sonicmania/Game.so
 
 Metemos Data.rsdk también en ~/sonicmania
 
-Como el juego sólo soporta gamepads y no joysticks en general, para que reconozca el mando Khensu y el adaptador de MegaDrive de UltimateMister:
+Como el juego sólo soporta gamepads y no joysticks en general, para que reconozca el mando Khensu y el adaptador de SNES:
 creamos en ~/sonicmania el fichero "gamecontrollerdb.txt" con el contenido:
-03000000412300003680000001010000,LLC Arduino Leonardo,platform:Linux,crc:d6c8,a:b0,b:b1,x:b3,y:b4,back:b7,start:b6,leftshoulder:b5,rightshoulder:b2,misc1:b8,leftx:a0,lefty:a1,
-030000005e0400008e02000073060000,Khensu,a:b0,b:b1,x:b2,y:b3,back:b6,guide:b8,start:b7,leftstick:b9,rightstick:b10,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.0,dpleft:h0.8,dpright:h0.2,leftx:a0,lefty:a1,rightx:a3,righty:a4,lefttrigger:a2,righttrigger:a5,
+03000000412300003680000001010000,LLC Arduino Leonardo,a:b0,b:b1,x:b2,y:b3,back:b6,start:b7,leftshoulder:b4,rightshoulder:b5,dpup:-a1,dpdown:+a1,dpleft:-a0,dpright:+a0,platform:Linux,
 
 -Para tener shaders(las instrucciones originales son de https://github.com/Rubberduckycooly/RSDKv5-Decompilation/blob/master/dependencies/ogl/README.md#shaders):
 	---Creamos el directorio mods/GLShaders/Data
@@ -9044,8 +9043,11 @@ SDL_GAMECONTROLLERCONFIG="03000000412300003680000001010000,LLC Arduino Leonardo,
 
 ---Cadenas de diferentes mandos---
 
+Adaptador DaemonBite de UltimateMister para SNES:
+03000000412300003680000001010000,LLC Arduino Leonardo,a:b0,b:b1,x:b2,y:b3,back:b6,start:b7,leftshoulder:b4,rightshoulder:b5,dpup:-a1,dpdown:+a1,dpleft:-a0,dpright:+a0,platform:Linux,
+
 Adaptador DaemonBite de UltimateMister para MegaDrive:
-03000000412300003680000001010000,LLC Arduino Leonardo,platform:Linux,crc:d6c8,a:b0,b:b1,x:b3,y:b4,back:b7,start:b6,leftshoulder:b5,rightshoulder:b2,misc1:b8,leftx:a0,lefty:a1,
+03000000412300003680000001010000,LLC Arduino Leonardo,a:b0,b:b1,x:b3,y:b4,back:b7,start:b6,leftshoulder:b5,rightshoulder:b2,misc1:b8,leftx:a0,lefty:a1,platform:Linux,
 
 Mando Kersu 2.4G:
 030000005e0400008e02000073060000,Khensu,a:b0,b:b1,x:b2,y:b3,back:b6,guide:b8,start:b7,leftstick:b9,rightstick:b10,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.0,dpleft:h0.8,dpright:h0.2,leftx:a0,lefty:a1,rightx:a3,righty:a4,lefttrigger:a2,righttrigger:a5,
