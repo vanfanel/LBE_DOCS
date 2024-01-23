@@ -974,6 +974,28 @@ NOTAS ADICIONALES para el core:
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
+******Crosscompilar el 64doom de N64-****************************************************************************************
+
+--Nos bajamos el último .deb de la toolchain de N64 para x86_64 (compilador, librerías, etc) de aquí: https://github.com/DragonMinded/libdragon/releases/tag/toolchain-continuous-prerelease
+Lo instalamos con: sudo dpkg -i gcc-toolchain-mips64-x86_64.deb
+Quedará todo en /opt/libdragon.
+
+--Exportamos esta varable de entorno:
+export N64_INST=/opt/libdragon
+
+--Nos bajamos la última versión del código del branch UNSTABLE de las libdragon:
+git clone --depth 1 -b unstable https://github.com/DragonMinded/libdragon.git 
+Las compilamos e instalamos simplemente entrando en su directorio principal y ejecutando build.sh,
+con lo cual acabarán también instaladas en /opt/libdragon.
+
+--Nos bajamos la última versión del 64doom:
+git clone --depth 1 https://github.com/jnmartin84/64doom.git
+
+--Compilamos con:
+IWAD_DIRECTORY="~/doom" IWAD_PREFIX="DOOM" make -j8
+Donde IWAD_DIRECTORY es el directorio donde guardamos nuestros .WAD (que deben tener nombres todo en mayúsculas)
+e IWAD_PREFIX es el identificador de juego: DOOM, DOOM2, DOOMU, etc.
+
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
 Clonamos duckstation:
