@@ -7014,9 +7014,12 @@ cmake --build build-cmake --target ExtractAssets -j4
 
 ---PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ---
 
+Editamos libultraship/src/CMakeLists.txt, y cambiamos GLESv3 por GLESv2
+(GLES3 es una extensión de GLES2...)
+
 Desde el raiz de los sources hacemos:
 
-cmake --build build-cmake -j4
+cmake --build build-cmake -j4 -DUSE_OPENGLES=ON
 (Recuerda que tienes que tener un disco externo de swap o la compilación fallará).
 
 ---PARTE 3: EJECUTANDO EL JUEGO---
