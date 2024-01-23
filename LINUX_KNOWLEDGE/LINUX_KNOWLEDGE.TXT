@@ -9488,13 +9488,13 @@ El fichero de configuración va en ~/.drirc
 La manera correcta de generarlo es usando "adriconf" (necesita GTK):
 git clone --depth 1 https://gitlab.freedesktop.org/mesa/adriconf
 
-REPRODUCCIÓN DE VÍDEO EN LA PI4 CON MPV + FFMPEG
-================================================
+REPRODUCCIÓN DE VÍDEO EN LA PI4/5 CON MPV + FFMPEG
+==================================================
 
 Un hilo interesante sobre el asunto: https://www.raspberrypi.org/forums/viewtopic.php?t=316381
 
 Instalamos dependencias previas:
-sudo apt-get install libv4l-dev --no-install-recommends
+apt-get install libv4l-dev --no-install-recommends
 
 PARTE 1: ffmpeg
 
@@ -9535,10 +9535,10 @@ PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
 
 PARTE 2: MPV
 
--Instalamos dependencias previas: sudo apt-get install libass-dev --no-install-recommends
+-Instalamos dependencias previas: apt-get install libass-dev --no-install-recommends
 
-(SÓLO SI VAMOS A COMPILAR CON SOPORTE PARA VULKAN, QUE NO ES NECESARIO POR AHORA)
--Instalamos la dependencia adicional libplacebo
+-Instalamos otra dependencia previa, libplacebo, que está en Debian 12 pero arrastra toda la mierda de X11
+así que la compilamos nosotros.
 --Clonamos su repo:
 git clone --depth 1 https://code.videolan.org/videolan/libplacebo.git
 cd libplacebo
@@ -9564,8 +9564,6 @@ cd b4
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release ..
-
-(Si quisiéramos soporte Vulkan, que NO es necesario, añadiríamos "-Dvulkan=enabled" entre "meson" y los dos puntos).
 
 -Creamos ~/.config/mpv/mpv.conf con el contenido:
 fs=yes
