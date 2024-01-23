@@ -6988,13 +6988,16 @@ Busca e instala, en Aurora Store, el "FWD PORT FORWARDER".
 ZELDA OOT EN GNU/LINUX
 ======================
 
-Clonamos el repo de Zaxus:
+Clonamos el repo:
 git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Shipwright.git
 
 ---PARTE 1: EXTRACCIÓN DE LOS DATOS---
 
 Dependencias previas:
 sudo apt-get install libbz2-dev
+
+Editamos libultraship/extern/CMakeLists.txt, buscamos "OPENGL_glx_LIBRARY" y lo borramos.
+Editamos CMakeLists.txt, buscamos "ImageMagick", y borramos toda esa sección entera.
 
 Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
 y la copiamos a "OTRExporter/baserom.z64".
