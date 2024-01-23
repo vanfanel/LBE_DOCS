@@ -9588,7 +9588,8 @@ pero eso produce que el audio vaya desincronizado del vídeo...)
 usando un script para lanzar mpv, ya que si no, como display-resample pinta cada frame varias veces, no hay ancho de banda de la
 RAM y hay muchos frame drops).  
 
----Añadimos en ~/.config/mpv/mpv.conf:
+---(SÓLO EN PI4: EN PI5 NO HAY ENCODING/DECODING DE H264 POR HARDWARE EN EL SOC! Ver respuesta de 6by9 en https://forums.raspberrypi.com/viewtopic.php?t=357999)
+Añadimos en ~/.config/mpv/mpv.conf:
 hwdec=v4l2m2m-copy
 (El hwdec por defecto, v4l2m2m, parece usar menos CPU que v4l2m2m-copy, pero es incompatible con "video-sync=display-resample"
 porque al usan ambas cosas empiezan a aparecer frames dropped).
