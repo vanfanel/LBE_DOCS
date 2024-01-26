@@ -987,6 +987,8 @@ export N64_INST=/opt/libdragon
 git clone --depth 1 -b unstable https://github.com/DragonMinded/libdragon.git 
 Las compilamos e instalamos simplemente entrando en su directorio principal y ejecutando build.sh,
 con lo cual acabarán también instaladas en /opt/libdragon.
+Ahora nos bajamos la versión del código de branch TRUNK de las libdragon, y la compilamos e instalamos sin desinstalar la UNSTABLE:
+git clone --depth 1 -b trunk https://github.com/DragonMinded/libdragon.git 
 
 --Nos bajamos la última versión del 64doom:
 git clone --depth 1 https://github.com/jnmartin84/64doom.git
@@ -7017,9 +7019,15 @@ cmake --build build-cmake --target ExtractAssets -j4
 Editamos libultraship/src/CMakeLists.txt, y cambiamos las dos ocurrencias de GLESv3 por GLESv2
 (GLES3 es una extensión de GLES2...)
 
-Desde el raiz de los sources hacemos:
+Configuramos con:
+mkdir b4
+cd b4
 
-cmake --build build-cmake -j4 -DUSE_OPENGLES=ON
+cmake .. -GNinja -DUSE_OPENGLES=ON \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_BUILD_TYPE=Release
+
 (Recuerda que tienes que tener un disco externo de swap o la compilación fallará).
 
 ---PARTE 3: EJECUTANDO EL JUEGO---
