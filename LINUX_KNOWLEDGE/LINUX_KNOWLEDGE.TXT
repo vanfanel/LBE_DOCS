@@ -7353,8 +7353,8 @@ en la función openDLL(). Así que si no arranca, fíjate que tu libSDL2.so (que
 a una librería que realmente exista en el sistema (a veces hay lio con esto porque en Lubuntu desinstalas malamente
 las SDL2 que vienen e instalas las tuyas para desarrollo, etc).
 
-GZDOOM (LZDOOM) en la Raspberry Pi
-==================================
+GZDOOM en la Raspberry Pi 5
+===========================
 
 -Primero, necesita OpenAL. Tienes las instrucciones de instalación en este documento.
 
@@ -7370,22 +7370,10 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=nati
 make -j4
 sudo make install
 
-Vamos a por LZDoom en sí (GZDoom usa OpenGL incluso en modo hardware, así que no va en la Pi. Usa el branch LZDOOM (Legacy ZDoom), que usa GLES2)
-
+Vamos a por GZDoom en sí.
 Instalamos dependencias previas: apt-get install libvpx-dev libwebp-dev --no-install-recommends
 
-git clone --depth 1 https://github.com/drfrag666/gzdoom.git
-
-https://forum.zdoom.org/viewtopic.php?f=1&t=66675&start=30
-
-Puedes añadir 
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-SDL_ShowCursor(SDL_DISABLE);
-en
-src/common/platform/posix/sdl/sdlglvideo.cpp
-justo antes de SDL_CreateWindow(), como siempre.
-
-También debes poner a SDL_FALSE las llamadas de SDL_ShowCursor() en vim src/common/platform/posix/sdl/i_gui.cpp
+git clone --depth 1 https://github.com/ZDoom/gzdoom.git
 
 Configuramos con:
 
@@ -7394,27 +7382,12 @@ cmake -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_BUILD_TYPE=Release -DVULKAN_USE_XLIB=OFF -DVULKAN_USE_WAYLAND=ON ..
 
 Tenemos que copiar, al directorio de ~/doom:
-lzdoom
+gzdoom
 *.pk3
 soundfonts
 
-OJO! SI INTENTAS HACERLO FUNCIONAR EN VULKAN, mira los valores win_h y win_w en ~/.config/lzdoom/lzdoom.ini,
-que se tienen que corresponder con un modo de vídeo soportado o KMSDRM_Vulkan_CreateSurface fallará.
-(Viene puesto por defecto para crear una ventana de 1024x576... ¿Estamos locos o qué?)
-Por ejemplo, si el modo nativo de tu monitor es 720p (1280x720), dejarías los valores win_w y win_h así:
-win_w=1280
-win_h=720
-Y luego ya, dentro del juego, lo pones a 320x200.
-
-Podemos elegir renderer pasándoselo al ejecutable así.
-Para usar el renderer software, que SÍ funciona en la Pi:
-./lzdoom +vid_preferbackend 2
-Para usar el renderer Vulkan, tienes que establecer un tamaño de pantalla que corresponda a un modo de video soportado por el monitor. Lo puedes establecer en ~/.config/lzdoom/lzdoom.ini usando las variables win_h y win_w.
-Y le pasarías este parámetro a lzdoom para que use el renderer Vulkan:
-./lzdoom +vid_preferbackend 1
-Queda pendiente investigar el setting de lzdoom.ini: gl_es
-
-Para pasarle un wad externo, con música tracker por ejemplo, zdoom -file nesmus.wad
+Yo lanzo doom así:
+./gzdoom -iwad doom.wad -file doom1music.wad smoothed.wad blackops.wad
 
 NETHACK EN GNU/LINUX
 ====================
