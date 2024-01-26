@@ -6991,7 +6991,7 @@ ZELDA OOT EN GNU/LINUX
 ======================
 
 Clonamos el repo:
-git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Shipwright.git
+git clone --depth 1 --recurse-submodules https://github.com/sheepytina/Shipwright.git -b develop-macready-GLES
 
 ---PARTE 1: EXTRACCIÓN DE LOS DATOS---
 
@@ -7370,8 +7370,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=nati
 make -j4
 sudo make install
 
-Vamos a por LZDoom en sí.
-GZDoom usa OpenGL incluso en modo hardware, así que no va en la Pi. Usa el branch LZDOOM (Legacy ZDoom), que usa GLES2:
+Vamos a por LZDoom en sí (GZDoom usa OpenGL incluso en modo hardware, así que no va en la Pi. Usa el branch LZDOOM (Legacy ZDoom), que usa GLES2)
+
+Instalamos dependencias previas: apt-get install libvpx-dev libwebp-dev --no-install-recommends
 
 git clone --depth 1 https://github.com/drfrag666/gzdoom.git
 
@@ -7386,11 +7387,11 @@ justo antes de SDL_CreateWindow(), como siempre.
 
 También debes poner a SDL_FALSE las llamadas de SDL_ShowCursor() en vim src/common/platform/posix/sdl/i_gui.cpp
 
+Configuramos con:
+
 cmake -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_BUILD_TYPE=Release ..
-
-Y compilamos con make -j4
+-DCMAKE_BUILD_TYPE=Release -DVULKAN_USE_XLIB=OFF -DVULKAN_USE_WAYLAND=ON ..
 
 Tenemos que copiar, al directorio de ~/doom:
 lzdoom
