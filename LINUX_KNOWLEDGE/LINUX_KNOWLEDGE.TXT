@@ -7389,6 +7389,19 @@ soundfonts
 Yo lanzo doom así:
 ./gzdoom -iwad doom.wad -file doom1music.wad smoothed.wad blackops.wad
 
+Si quieres un shader CRT, puedes usar este:
+https://github.com/jorisvddonk/GZDoom_CRTShader
+Se baja como ZIP (desde el propio github, dándole a CODE->DOWNLOAD ZIP)
+y se carga el .zip directamente con "-file" como cualquier otro PWAD.
+
+También podrías usar este, que tiene un link con la última versión en .PK3 y se carga igual:
+https://github.com/dron12261games/MOD-VHS-CRT-Shader-by-DRON12261
+
+LOS SHADERS NO VAN EN LA PI5 PORQUE LE FALTA UNA EXTENSIÓN DE VULKAN Y SÓLO VA EN MODO GLES,
+Y LOS SHADERS SÓLO VAN EN MODO OPENGL Y EN MODO VULKAN.
+Le falta la extensión "multiDrawIndirect" que es comprobada en la función "VulkanDeviceBuilder::FindDevices", aquí:
+https://github.com/ZDoom/gzdoom/blob/f369cd7f6d8c4e6dc339e51d645f410c8fc897e2/libraries/ZVulkan/src/vulkanbuilders.cpp#L1833
+
 NETHACK EN GNU/LINUX
 ====================
 
