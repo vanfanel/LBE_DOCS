@@ -6532,6 +6532,19 @@ DESCARGAR CORES PRECOMPILADOS DE LIBRETRO
 http://buildbot.libretro.com/stable
 http://buildbot.libretro.com/nightly
 
+COMPILAR EL CORE MELONDS DE LIBRETRO
+====================================
+
+Clonamos su repo:
+
+Configuramos con:
+
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DENABLE_OPENGL=OFF
+
 COMPILAR EL CORE HATARIB DE LIBRETRO
 ====================================
 
@@ -6991,7 +7004,7 @@ ZELDA OOT EN GNU/LINUX
 ======================
 
 Clonamos el repo:
-git clone --depth 1 --recurse-submodules https://github.com/sheepytina/Shipwright.git -b develop-macready-GLES
+git clone --depth 1 --recurse-submodules https://github.com/sheepytina/Shipwright.git
 
 ---PARTE 1: EXTRACCIÓN DE LOS DATOS---
 
@@ -7032,7 +7045,7 @@ cmake .. -GNinja -DUSE_OPENGLES=ON \
 
 ---PARTE 3: EJECUTANDO EL JUEGO---
 
-Puedes correr el ejecutable resultante, llamado "sah.elf".
+Puedes correr el ejecutable resultante, llamado "soh.elf".
 Para establecer la resolución, que empiece a pantalla completa, etc... edita el fichero "shipofharkinian.json"
 y haz ahí los cambios necesarios.
 
