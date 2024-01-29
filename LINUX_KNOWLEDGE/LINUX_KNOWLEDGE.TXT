@@ -7004,7 +7004,7 @@ ZELDA OOT EN GNU/LINUX
 ======================
 
 Clonamos el repo:
-git clone --depth 1 --recurse-submodules https://github.com/sheepytina/Shipwright.git
+git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Shipwright.git
 
 ---PARTE 1: EXTRACCIÓN DE LOS DATOS---
 
@@ -7029,8 +7029,11 @@ cmake --build build-cmake --target ExtractAssets -j4
 
 ---PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ---
 
-Editamos libultraship/src/CMakeLists.txt, y cambiamos las dos ocurrencias de GLESv3 por GLESv2
-(GLES3 es una extensión de GLES2...)
+Editamos libultraship/src/CMakeLists.txt, y:
+--Ponemos "option(USE_OPENGLES "Enable GLES3" OFF)" a "ON"
+--Cambiamos las dos ocurrencias de GLESv3 por GLESv2 (GLES3 es una extensión de GLES2...)
+
+Editamos libultraship/extern/ImGui/backends/imgui_impl_opengl3.h y descomentamos "#define IMGUI_IMPL_OPENGL_ES3"
 
 Configuramos y compilamos con:
 mkdir b4
@@ -7046,7 +7049,8 @@ cmake .. -GNinja \
 (Recuerda que tienes que tener un disco externo de swap o la compilación fallará).
 (Recuerda NO pasarle más de -j2, porque en la Pi5 fallará aunque le metas gigas y gigas de swap).
 (No tiene sentido pasarle aún -DUSE_OPENGLES=ON porque el soporte de GLES no está aún preparado: pregunta en el canal de Discord
- de LUS development si quieres saber cómo va).
+ de LUS development si quieres saber cómo va.
+ Hasta que no haya soporte para GLES, no funcionará en la Pi5 porque el OpenGL 2.1 de la Pi5 es demasiado antiguo).
 
 ---PARTE 3: EJECUTANDO EL JUEGO---
 
