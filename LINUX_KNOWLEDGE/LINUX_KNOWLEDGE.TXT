@@ -7032,16 +7032,21 @@ cmake --build build-cmake --target ExtractAssets -j4
 Editamos libultraship/src/CMakeLists.txt, y cambiamos las dos ocurrencias de GLESv3 por GLESv2
 (GLES3 es una extensión de GLES2...)
 
-Configuramos con:
+Configuramos y compilamos con:
 mkdir b4
 cd b4
 
-cmake .. -GNinja -DUSE_OPENGLES=ON \
+cmake .. -GNinja \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_BUILD_TYPE=Release
 
+-j2
+
 (Recuerda que tienes que tener un disco externo de swap o la compilación fallará).
+(Recuerda NO pasarle más de -j2, porque en la Pi5 fallará aunque le metas gigas y gigas de swap).
+(No tiene sentido pasarle aún -DUSE_OPENGLES=ON porque el soporte de GLES no está aún preparado: pregunta en el canal de Discord
+ de LUS development si quieres saber cómo va).
 
 ---PARTE 3: EJECUTANDO EL JUEGO---
 
