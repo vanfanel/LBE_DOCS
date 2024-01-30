@@ -9498,8 +9498,65 @@ SHADERS PARA TODOS LOS PROGRAMAS DE OPENGL Y VULKAN EN GNU/LINUX
 ================================================================
 
 La idea es usar vkbasalt: https://github.com/DadSchoorse/vkBasalt
-Los programas que usen OpenGL se pueden hacer correr sobre Vulkan con Zink
-(Hay que compilar MESA con soporte para Zink, que simplemente es pasarle "zink" a la lista de "-Dgallium-drivers=...").
+Los programas que usen OpenGL, que son la mayoría, se pueden hacer correr sobre Vulkan con Zink
+(Hay que compilar MESA con soporte para Zink, que ya lo tienes así en las instrucciones de compilación de MESA).
+
+Vamos con VKBasalt:
+
+--Instalamos dependencias previas:
+apt-get install spirv-headers
+
+--Clonamos su repo: git clone --depth 1 https://github.com/DadSchoorse/vkBasalt.git
+(OJO!! Nos va a tocar eliminar cosas de X11 del meson.build y de otros ficheros, es fácil, lo que te vaya dando problemas lo quitas
+y compila y funciona igualmente).
+
+--Configuramos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release --prefix=/usr
+
+(OJO!!! HAY QUE PASARLE el "--prefix=/usr", ya que si instala la librería en /usr/local/lib, no funcionará).
+
+ninja -j4
+ninja install
+
+CONFIGURACIÓN DE VKBASALT:
+
+--Clonamos este repo, que es básico tenerlo usemos los shaders que usemos, en nuestro directorio de usuario,
+de manera que quede en ~/reshade-shaders:
+git clone --depth 1 https://github.com/crosire/reshade-shaders.git
+
+--Clonamos este repo que tiene los shaders de RetroArch portados a ReShade
+git clone --depth 1 https://github.com/Matsilagi/RSRetroArch.git
+--Copiamos los directorios "Shaders" y "Textures" a ~/reshader-shaders, de manera que queden mezclados con
+los del primer repo que hemos clonado. 
+
+--Ahora creamos el fichero de configuración en ~/.config/vkBasalt/vkBasalt.conf,
+de manera que quede en ~/.config/vkBasalt/vkBasalt.conf, con este contenido:
+
+enableOnLaunch = True  
+toggleKey = Home                                                                                                                          
+effects = crt                                                                                                                                                                                                                                                                                    
+crt = /root/reshade-shaders/Shaders/CRTFakeLottes.fx                                                                                             
+reshadeTexturePath = /root/reshade-shaders/Textures                                                                                              
+reshadeIncludePath = /root/reshade-shaders/Shaders 
+
+(Alternativamente, si un juego necesita una configuración especial,
+podríamos crear un archivo llamado "vkBasalt.conf" en el directorio del juego)
+
+LANZAMIENTO DE JUEGOS
+(OJO!!! PODEMOS SABER SI UN JUEGO ESTÁ SIENDO LANZADO CON VKBASALT PORQUE NOS TIENEN QUE SALIR MENSAJES DE VKBASALT AL LANZARLO!!!)
+
+Así lanzamos los juegos de SDL2, haciendo que corran sobre Vulkan a través de ZINK, y activando el vkBasalt:
+
+ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./doomretro -nosplash -iwad doomu.wad -pwad doom1music.wad -pwad smoothed.wad -pwad blackops.wad
+
+(NOTA: Si fuesen juegos de Vulkan directamente, no tendríamos que pasarle MESA_LOADER_DRIVER_OVERRIDE=zink, como es obvio).
+
+OTRAS NOTAS:
 
 Para que se use ZINK en lugar de OpenGL al correr un programa de OpenGL:
 export MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460 MESA_LOADER_DRIVER_OVERRIDE=zink GALLIUM_DRIVER=zink
