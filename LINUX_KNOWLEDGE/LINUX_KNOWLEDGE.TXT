@@ -6700,7 +6700,7 @@ También podrías usar jmtpfs para montarlos a mano desde la línea de comandos.
 jmtpfs ~/mnt
 
 Instalar la versión que queramos de IOS desde Linux en Ipad/Ipod/la basura para retrasados que sea
-=====================================================================================
+==================================================================================================
 
 Se usa un opensource que se llama idevicerestore. Tiene dependencias y mierdas varias, pero cuando lo instales puedes hacer estas cosas tan... estúpidas.
 
@@ -7011,7 +7011,6 @@ git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Shipw
 Dependencias previas:
 sudo apt-get install libbz2-dev
 
-Editamos libultraship/extern/CMakeLists.txt, buscamos "OPENGL_glx_LIBRARY" y lo borramos.
 Editamos CMakeLists.txt, buscamos "ImageMagick", y borramos toda esa sección entera.
 
 Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
@@ -7029,34 +7028,22 @@ cmake --build build-cmake --target ExtractAssets -j4
 
 ---PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ---
 
-Editamos libultraship/src/CMakeLists.txt, y:
---Ponemos "option(USE_OPENGLES "Enable GLES3" OFF)" a "ON"
---Cambiamos las dos ocurrencias de GLESv3 por GLESv2 (GLES3 es una extensión de GLES2...)
-
-Editamos libultraship/extern/ImGui/backends/imgui_impl_opengl3.h y descomentamos "#define IMGUI_IMPL_OPENGL_ES3"
-
 Configuramos y compilamos con:
 mkdir b4
 cd b4
 
-cmake .. -GNinja \
+cmake .. -GNinja -DUSE_OPENGLES=1 \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_BUILD_TYPE=Release
 
 -j2
 
-(Recuerda que tienes que tener un disco externo de swap o la compilación fallará).
+(Con -j2 no hace falta disco de swap).
 (Recuerda NO pasarle más de -j2, porque en la Pi5 fallará aunque le metas gigas y gigas de swap).
-(No tiene sentido pasarle aún -DUSE_OPENGLES=ON porque el soporte de GLES no está aún preparado: pregunta en el canal de Discord
- de LUS development si quieres saber cómo va.
- Hasta que no haya soporte para GLES, no funcionará en la Pi5 porque el OpenGL 2.1 de la Pi5 es demasiado antiguo).
+(Si queremos compilar una versión OpenGL en vez de GLES, además de no pasarle a CMake el "-DUSE_OPENGLES=1"
+tenemos que editar libultraship/extern/CMakeLists.txt, buscar "OPENGL_glx_LIBRARY" y borrarlo).
 
----PARTE 3: EJECUTANDO EL JUEGO---
-
-Puedes correr el ejecutable resultante, llamado "soh.elf".
-Para establecer la resolución, que empiece a pantalla completa, etc... edita el fichero "shipofharkinian.json"
-y haz ahí los cambios necesarios.
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
@@ -9501,6 +9488,12 @@ Te dejará las ROMs (que pueda identificar) con los nombes correctos puestos en 
 y las que no pueda identificar en ToSort/<NOMBRE_SISTEMA>
 ...Le puedes poner nombes de no-intro a las ROMs parcheadas, que son las que suelen acabar en ToSort,
 y así RetroArch te las reconoce y les pone thumbnails.
+
+SHADERS PARA TODOS LOS PROGRAMAS DE OPENGL Y VULKAN EN GNU/LINUX
+================================================================
+
+La idea es usar vkbasalt: https://github.com/DadSchoorse/vkBasalt
+Los programas que usen OpenGL se pueden hacer correr sobre Vulkan con Zink (hay que compilar MESA con soporte para Zink).
 
 DRICONF
 =======
