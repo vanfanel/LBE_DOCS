@@ -9493,7 +9493,8 @@ SHADERS PARA TODOS LOS PROGRAMAS DE OPENGL Y VULKAN EN GNU/LINUX
 ================================================================
 
 La idea es usar vkbasalt: https://github.com/DadSchoorse/vkBasalt
-Los programas que usen OpenGL se pueden hacer correr sobre Vulkan con Zink (hay que compilar MESA con soporte para Zink).
+Los programas que usen OpenGL se pueden hacer correr sobre Vulkan con Zink
+(Hay que compilar MESA con soporte para Zink, que simplemente es pasarle "zink" a la lista de "-Dgallium-drivers=...").
 
 Para que se use ZINK en lugar de OpenGL al correr un programa de OpenGL:
 export MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460 MESA_LOADER_DRIVER_OVERRIDE=zink GALLIUM_DRIVER=zink
