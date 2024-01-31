@@ -9549,6 +9549,9 @@ reshadeIncludePath = /root/reshade-shaders/Shaders
 (Alternativamente, si un juego necesita una configuración especial,
 podríamos crear un archivo llamado "vkBasalt.conf" en el directorio del juego)
 
+OJO: PARA USAR EL SHADER MattiasCRT, tememos que editar ~/reshade-shaders/Shaders/MattiasCRT.fx, buscar "void PS_CRTMattias1",
+y en esa línea cambiar "TEXCOORD0" por "TexCoord".
+
 LANZAMIENTO DE JUEGOS
 (OJO!!! PODEMOS SABER SI UN JUEGO ESTÁ SIENDO LANZADO CON VKBASALT PORQUE NOS TIENEN QUE SALIR MENSAJES DE VKBASALT AL LANZARLO!!!)
 
