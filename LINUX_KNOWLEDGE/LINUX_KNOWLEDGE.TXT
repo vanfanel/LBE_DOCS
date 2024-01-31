@@ -1524,6 +1524,8 @@ Y ya puedes hacer "./OpenBOR Paks/bor.pak" y te lanzará el juego desempaquetado
 
 ******Another World GNU/Linux******************************************************
 
+Clonamos su repo: git clone --depth 1 https://github.com/cyxx/rawgl.git
+
 -En el Makefile:
 	-Cambiamos -lGL por -lOpenGL en la línea de SDL_LIBS, 
 	-Añadimos los CXXFLAGS que son: -O2 -march=native -mtune=native
