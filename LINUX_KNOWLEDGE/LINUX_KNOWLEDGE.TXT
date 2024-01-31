@@ -9540,7 +9540,7 @@ de manera que quede en ~/.config/vkBasalt/vkBasalt.conf, con este contenido:
 enableOnLaunch = True  
 toggleKey = Home                                                                                                                          
 effects = crt                                                                                                                                                                                                                                                                                    
-crt = /root/reshade-shaders/Shaders/CRTFakeLottes.fx                                                                                             
+crt = /root/reshade-shaders/Shaders/MattiasCRT.fx                                                                                             
 reshadeTexturePath = /root/reshade-shaders/Textures                                                                                              
 reshadeIncludePath = /root/reshade-shaders/Shaders 
 
