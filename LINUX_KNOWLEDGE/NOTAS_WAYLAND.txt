@@ -595,9 +595,54 @@ selection-background=1a3272
 include=/usr/local/share/foot/themes/NOMBRE_TEMA
 ...Donde NOMBRE_TEMA es el nombre de un tema de los que tienes en /usr/local/shared/foot/themes
 
+INSTALAR ALACRITTY, UN EMULATOR DE TERMINAL PARA WAYLAND ESCRITO EN RUST
+========================================================================
 
-KITTY, UN EMULADOR DE TERMINAL PARA WAYLAND
--------------------------------------------
+--Primero instalamos el buildsystem que necesita.
+Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+--Instalamos dependencias previas:
+apt-get install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 --no-install-recommends
+
+--Bajamos la última versión estable de: https://github.com/alacritty/alacritty/releases
+
+--Compilamos con:
+RUSTFLAGS="-C target-cpu=native" \
+cargo build --release --no-default-features --features=wayland
+
+(NO te asustes con lo de la actualización de CRATES, es como se llaman las librerías en RUST)
+
+--Instalamos simplemente haciendo:
+cp target/release/alacritty /usr/local/bin/
+
+--Creamos ~/.config/alacritty/alacritty.toml con este contenido:
+(Tenemos todas las posibles opciones de configuración aquí: https://alacritty.org/config-alacritty.html)
+
+[window]                                                                                                                                         
+                                                                                                                                                 
+#startup_mode = "Windowed"                                                                                                                       
+#startup_mode = "Maximized"                                                                                                                      
+startup_mode = "Fullscreen"                                                                                                                      
+opacity = 0.8                                                                                                                                    
+                                                                                                                                                 
+[font]                                                                                                                                           
+                                                                                                                                                 
+size = 18                                                                                                                                        
+                                                                                                                                                 
+[colors]                                                                                                                                         
+                                                                                                                                                 
+[colors.primary]                                                                                                                                 
+background="#101010"                                                                                                                             
+foreground="#126e00"                                                                                                                             
+                                                                                                                                                 
+[cursor]                                                                                                                                         
+                                                                                                                                                 
+style = { blinking = "on" }                                                                                                                      
+blink_timeout = 0 
+
+INSTALAR KITTY, UN EMULADOR DE TERMINAL PARA WAYLAND
+====================================================
 
 --Requisito previo: GLFW, que es lo que usa Kitty para dibujar en pantalla.
 Nos bajamos la última estable de GLFW de:
