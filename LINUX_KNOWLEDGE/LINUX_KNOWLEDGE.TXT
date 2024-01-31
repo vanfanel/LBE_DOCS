@@ -6375,16 +6375,6 @@ Repetimos para  SETTINGS->INPUT->PORT 2 CONTROLS y su DEVICE INDEX.
 Puedes quitar y poner los mandos como quieras, etc... y la configuración se conserva siempre. Si inicias RetroArch con uno solo de los dos mandos
 conectado, tampoco hay problema y sigue en su puerto correcto.
 
-*********Configurar RETROARCH para que cuando usas el driver de video VULKAN no cambie la resolución********
-
-En retroarch.cfg, pon el modo de vídeo que usa el sistema en los parámetros:
-
-video_fullscreen = "true"
-video_fullscreen_x = "1280"
-video_fullscreen_y = "720"
-
-Y así ya no cambiará el modo de vídeo.
-
 **********RETROARCH no salva las partidas de SRAM a veces**************************
 
 Hay que tener en cuenta que RETROARCH no salva la SRAM automáticamente, sino que vuelca la SRAM al salir del core que sea.
