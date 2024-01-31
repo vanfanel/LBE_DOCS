@@ -9560,6 +9560,9 @@ ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./doomretro -nosplash -iwad d
 
 OTRAS NOTAS:
 
+La otra alternativa para conseguir lo mismo sería usar el compositor GAMESCOPE (https://github.com/ValveSoftware/gamescope)
+que directamente soporta shaders de ReShade para todo, pero que mete latencia al hacerlo tal como dice en su propio README.
+
 Para que se use ZINK en lugar de OpenGL al correr un programa de OpenGL:
 export MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460 MESA_LOADER_DRIVER_OVERRIDE=zink GALLIUM_DRIVER=zink
 
