@@ -7038,6 +7038,10 @@ cmake --build build-cmake --target ExtractAssets -j4
 
 ---PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ---
 
+Editamos extern/CMakeLists.txt, y borramos la línea:
+find_package(GLEW REQUIRED)
+Y también borramos las ocurrencias de "GLEW::GLEW" que hay en las líneas debajo de esa.
+
 Configuramos y compilamos con:
 mkdir b4
 cd b4
