@@ -65,15 +65,16 @@ systemctl mask systemd-rfkill.socket
 
 -EN DEBIAN: Deshabilitamos estos servicios:
 systemctl mask apparmor.service
-systemctl mask e2scrub_reap.service      
+systemctl mask e2scrub_all.service
+systemctl mask e2scrub_all.timer
 systemctl mask fstrim.timer
 systemctl mask apt-daily.service
-systemctl mask apt-daily.timer                         
-systemctl mask apt-daily-upgrade.service                     
-systemctl mask apt-daily-upgrade.timer                             
-systemctl mask bluetooth.target                                      
-systemctl mask dpkg-db-backup.service                               
-systemctl mask e2scrub_all.timer                       
+systemctl mask apt-daily.timer
+systemctl mask apt-daily-upgrade.service
+systemctl mask apt-daily-upgrade.timer
+systemctl mask bluetooth.target
+systemctl mask dpkg-db-backup.service
+systemctl mask dpkg-db-backup.timer
 systemctl mask sys-fs-fuse-connections.mount
 systemctl mask logrotate.service
 systemctl mask logrotate.timer
@@ -87,7 +88,7 @@ systemctl mask systemd-update-utmp-runlevel.service
 systemctl mask rc-local.service
 systemctl mask remote-fs.target
 systemctl mask swap.target
-systemctl mask dev-sda3.swap                           
+systemctl mask dev-sda3.swap  
 
 (OJO: Servicios que NO DEBES DESHABILITAR:
 	-NetworkManager, que se usa para conectarse a la Wifi usando raspi-config y que deja las redes conocidas en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
