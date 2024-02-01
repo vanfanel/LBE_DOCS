@@ -3,6 +3,9 @@ FINETUNING THE SYSTEM
 
 Una vez que hemos arrancado nativamente, tenemos mucho que hacer.
 
+-Para configurar la WIFI una vez arrancado el sistema sin escritorio, en Debian es editando /etc/network/interfaces,
+y en Raspbian es usando el raspi-config.
+
 -RECUERDA que para poder logearte por SSH como ROOT tienes que editar /etc/ssh/sshd_config y: 
 	-Poner "PermitRootLogin" a "yes"
 	-Ya que estás, deja comentada la línea:
