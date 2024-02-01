@@ -93,7 +93,8 @@ systemctl mask swap.target
 systemctl mask dev-sda3.swap  
 
 (OJO: Servicios que NO DEBES DESHABILITAR:
-	-NetworkManager, que se usa para conectarse a la Wifi usando raspi-config y que deja las redes conocidas en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
+	-NetworkManager, que se usa para conectarse a la Wifi usando raspi-config y que deja las redes conocidas
+	 en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
 	-systemd-journald, que lo usaremos para ver los mensajes de inicio del kernel y los servicios con el comando "journalctl"
 	-systemd-logind, que lo usaremos para que libseat sepa que estamos logueados sin tener que usar el servicio seatd
 	 (seatd lo usaremos en sistemas embedidos sin systemd). Esto sirve para poder levantar Wayland compositors.
@@ -115,7 +116,7 @@ Y reinicia. Ya no debería salir más.
 	-Creamos los ficheros: 
 	/etc/systemd/system/getty@tty1.service.d/autologin.conf
 	/etc/systemd/system/getty@tty2.service.d/autologin.conf
-	-Metemos ambos ficheros esto:
+	-Metemos en ambos ficheros esto:
 		[Service]
 		ExecStart=
 		ExecStart=-/sbin/agetty --autologin root --noclear --skip-login --nonewline %I $TERM
@@ -488,7 +489,7 @@ sudo ninja install
 En este punto, puedes probar si libdrm te funciona bien haciendo:
 modetest -s 32:1280x720
 (donde 32 es un ID de conector válido: puedes ver los conectores con modetest|grep connected).
-O bien, en X86_64, usa: modetest -s 236:1280x720
+O bien, en X86_64, usa: modetest -s 185:1280x720
 
 ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ATENCIÓN, ATENCIÓN!!!!!!!!!!!!!!!!!!!!!!!!!!!
 SI ESTÁS EN X86_64:
@@ -522,7 +523,7 @@ Y configuramos con:
 CFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dx11=disabled ..
 
-SI ADEMÁS QUIERES QUE MESA FUNCIONE SOBRE WAYLAND, VE E INSTALA WAYLAND AHORA (Mira en el fichero de notas de Wayland).
+SI QUIERES QUE MESA FUNCIONE SOBRE WAYLAND, VE E INSTALA WAYLAND AHORA (Mira en el fichero de notas de Wayland).
 
 NO TE OLVIDES DE AÑADIR AL USUARIO AL GRUPO RENDER:
 sudo adduser pi render

@@ -79,7 +79,8 @@ PARTE 3: INSTALAR WLROOTS (NO NECESARIO PARA WESTON!!)
 ------------------------------------------------------
 -Previamente necesitamos KMS/DRM funcionando. Así que deberías ser capaz de ejecutar los tests de SDL2 sobre KMSDRM.
 
--Instalamos dependencias previas: sudo apt-get install libseat-dev libpixman-1-dev libxkbcommon-dev hwdata \
+-Instalamos dependencias previas:
+sudo apt-get install libseat-dev libpixman-1-dev libxkbcommon-dev hwdata \
 libinput-dev glslang-dev glslang-tools --no-install-recommends
 
 -Instalamos otra dependencia previa (no disponible en Debian 12), libdisplay-info.
