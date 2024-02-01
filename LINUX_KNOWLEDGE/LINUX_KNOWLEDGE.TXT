@@ -695,7 +695,6 @@ COMMONFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make -j6 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0
 
-(No uses -j4 en la Pi4 con 2GB porque se agota la RAM y no compila).
 (Desactivo FLUIDSYNTH porque compila un montón de mierdas como libsndfile y demás que consumen CPU,
  con la emulación de GRAVIS vas que chutas en DOS).
 (También desactivo la emulación de tarjetas Voodoo, el PINHACK que es para ver completas las mesas de pinball sin scroll, etc).
