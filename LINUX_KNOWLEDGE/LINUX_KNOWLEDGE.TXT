@@ -3146,6 +3146,10 @@ Pero ahí sigue si haces un TOP.
 Pues puedes hacer dos cosas: o desinstalas el paquete al que pertenece el servicio, o desactivas el servicio que a su vez lo está lanzando.
 Y esto lo puedes hacer con un grep a todo lo de /etc/init.d, con el nombre del servicio.
 
+***********CONEXIÓN SSH LENTA*************************************************************************************************************
+
+Edita /etc/ssh/sshd_config y descomenta la línea "UseDNS no"
+
 ***********OTRAS NOTAS DE CONFIGURACION DE RASPEBBRY PI OS 11 (BULLSEYE)******************************************************************
 
 -Ponemos la fuente de la consola: dpkg-reconfigure console-setup

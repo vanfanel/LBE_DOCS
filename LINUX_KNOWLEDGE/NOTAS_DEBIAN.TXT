@@ -25,6 +25,8 @@ LC_NUMERIC=en_US.UTF-8
 LC_PAPER=en_US.UTF-8                                                                                           
 LANG="C"	
 
+-Conexión LENTA por SSH. Edita /etc/ssh/sshd_config y descomenta la línea "UseDNS no"
+
 -Ponemos el governor a PERFORMANCE.
 
 OPCIÓN 1 (RECOMENDADO): Lo más sencillo es añadir a la línea de comandos del kernel: cpufreq.default_governor=performance
