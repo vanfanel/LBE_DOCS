@@ -5936,6 +5936,21 @@ cd b4
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release -Dflavors=drm-glesv2,gbm-glesv2,wayland-glesv2 ..
 
+***************INSTALAR VKMARK*******************************************************************************
+
+Instalamos dependencias previas:
+apt-get install libglm-dev libassimp-dev --no-install-recommends
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/vkmark/vkmark.git
+
+Configuramos con:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release
+
 ***********Recuperar un archivo corrupto de Abiword u otro procesador de textos que se niega a abrir*********
 
 Nos instalamos ipython 
