@@ -109,7 +109,7 @@ Sin lo de "nodeadkeys", tenemos que darle a la Ñ dos veces para sacar la tilde,
 Para no tener errores con el módulo pcspkr ni mensajes infinitos de evbug, y aprovechando para quitar otras cosas que no necesitamos,
 creamos /etc/modprobe.d/custom-blacklist.conf con el contenido:
 blacklist pcspkr
-blacklist evbug
+blacklist iTCO_wdt
 
 blacklist btrtl                                                                                                
 blacklist btmtk                                                                                                
@@ -117,3 +117,6 @@ blacklist btintel
 blacklist btbcm                                                                                                
 blacklist btusb
 blacklist ip_tables
+
+Y sólo en el I5_1235U (en el N100 no está cargado):
+blacklist evbug
