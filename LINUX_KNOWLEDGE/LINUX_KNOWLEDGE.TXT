@@ -7033,9 +7033,6 @@ cmake .. -GNinja -DUSE_OPENGLES=1 \
 
 (Con -j2 no hace falta disco de swap).
 (Recuerda NO pasarle más de -j2, porque en la Pi5 fallará aunque le metas gigas y gigas de swap).
-(Si queremos compilar una versión OpenGL en vez de GLES, además de no pasarle a CMake el "-DUSE_OPENGLES=1"
-tenemos que editar libultraship/extern/CMakeLists.txt, buscar "OPENGL_glx_LIBRARY" y borrarlo).
-
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
