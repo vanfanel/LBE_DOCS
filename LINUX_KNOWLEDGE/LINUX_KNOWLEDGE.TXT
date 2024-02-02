@@ -9664,6 +9664,7 @@ Una vez instalado, podemos ejecutar "vainfo" para ver qué métodos de aceleraci
 	PARTE 4: FFMPEG
 	
 Hay que compilar FFMPEG con "--enable-vaapi"
+Para ello, bajamos la última estable de: https://github.com/FFmpeg/FFmpeg/tags
 
 REPRODUCCIÓN DE VÍDEO EN LA PI4/5 CON MPV + FFMPEG
 ==================================================
