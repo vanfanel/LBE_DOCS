@@ -9561,8 +9561,38 @@ reshadeIncludePath = /root/reshade-shaders/Shaders
 podríamos crear un archivo llamado "vkBasalt.conf" en el directorio del juego)
 
 OJO:
-PARA USAR los shaders MattiasCRT o CRT-Pixie, tememos que editar el shader que vayamos a usar (están todos en ~/reshade-shaders/Shaders),
+PARA USAR el shader Matthias-CRT, lo editamos (está en ~/reshade-shaders/Shaders/Matthias-CRT.fx) y
+cambiar todas las ocurrencias de "TEXCOORD0" por "TexCoord".
+Otras mejoras que podemos hacerle:
+--Para quitarle la distorsion de geometría (las "arrugas") nos vamos a las líneas de sample que están en la función
+"void PS_CRTMattias1()", son esas que empiezan por "col.r", "col.g", "col.b", y quitamos las "x+" que esán justo
+a continuación de cada "float2("
+También debes comentar la declaración de "float x" que hay justo encima, para ahorrar recursos.
+--Para quitarle los halos, comentamos las tres líneas que empiezan por "col.r +", "col.g +" y "col.g +"
+--Para quitarle el scanroll, dejamos la línea:
+float scans = clamp( 0.35+0.35*sin(3.5*iGlobalTime*0.001+uv.y*ReShade::ScreenSize.y*1.5), 0.0, 1.0);
+así:
+float scans = clamp( 0.35+0.35*sin(uv.y*ReShade::ScreenSize.y*1.5), 0.0, 1.0);
+--Para quitarle los parpadeos, comentamos la sección que empieza con:
+col *= 1.0+0.01*sin(110.0*iGlobalTime*0.001);
+--Para quitarle la curvatura, nos vamos a "float2 curve(float2 uv)" y comentamos todo dejando sólo el "return uv;"
+--Para ahorrar recursos, comemtamos esta línea que no se usa para nada:
+float comp = smoothstep( 0.1, 0.9, sin(iGlobalTime*0.001) );
+
+OJO:
+PARA USAR el shader CRT-NewPixie (el Matthias es la versión más antigua y lenta del mismo shader),
+tememos que editar el shader, que está en ~/reshade-shaders/Shaders/CRT-NewPixie.fx,
 y cambiar todas las ocurrencias de "TEXCOORD0" por "TexCoord".
+MODIFICACIONES AL SHADER CRT-NewPixie:
+--Para que no se vea la zona "deformada" de los alrededores de la imágen, ponemos "uniform bool use_frame" a "true".
+--Para quitarle la distorsión de geometría (=Las "arrugas"), nos vamos a "technique CRTNewPixie" y comentamos el pass PS_CRTNewPixie_Accum.
+--Para quitarle los halos de las cosas claras, nos vamos a "technique CRTNewPixie" y comentamos pass PS_CRTNewPixie_Blur.
+--Para quitarle el scanroll (hace feo en los juegos que sólo refrescan la pantalla a veces) ve a "uniform bool scanroll"
+ y pon el bool que hay debajo a "false".
+--Para quitarle la curvatura, ponemos "uniform float curvature" a 0.0001,
+ y nos vamos a la función "float2 curve( float2 uv )", y comentamos todo lo que hay dentro,
+ dejando sólo el "return uv;" del final.
+
 
 LANZAMIENTO DE JUEGOS
 (OJO!!! PODEMOS SABER SI UN JUEGO ESTÁ SIENDO LANZADO CON VKBASALT PORQUE NOS TIENEN QUE SALIR MENSAJES DE VKBASALT AL LANZARLO!!!)
