@@ -9687,6 +9687,7 @@ Para esta configuración, dejamos el fichero .config/mpv/mpv.conf así:
 
 fs=yes
 hwdec=vaapi
+gpu-api=vulkan
 video-sync=display-resample
 
 REPRODUCCIÓN DE VÍDEO EN LA PI4/5 CON MPV + FFMPEG
