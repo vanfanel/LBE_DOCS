@@ -9596,14 +9596,28 @@ git clone --depth 1 https://gitlab.freedesktop.org/mesa/adriconf
 
 REPRODUCCIÓN DE VÍDEO EN X86_64 N100/I5 CON MPV + FFMPEG
 ========================================================
+Página aclaratoria sobre el asunto: https://wiki.debian.org/HardwareVideoAcceleration
 
 Se hace con VAAPI.
 
-	PARTE 1: INTEL MEDIA VA DRIVER
+	PARTE 1: INTEL MEDIA DRIVER
 (Es para Gen8 y posteriores, para otros chips más antiguos hacen falta otros drivers específicos).
 
-Instalamos dependendias previas:
+--Instalamos dependendias previas:
 apt-get install libigdgmm-dev --no-install-recommends
+--Instalamos otra dependencia previa, libigdgmm, que la versión que viene con DEBIAN 12 es demasiado antigua
+  y si no instalamos una actual, la compilación del driver fallará.
+  Bajamos la última estable de aquí: https://github.com/intel/gmmlib/tags
+  Configuramos con:
+
+  mkdir b4
+  cd b4
+
+  cmake .. -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+  -DCMAKE_C_FLAGS="-march=native -mtune=native"   
+
+Vamos con el Intel Media Driver en sí:
 
 Bajamos la última estable de:
 https://github.com/intel/media-driver/releases
