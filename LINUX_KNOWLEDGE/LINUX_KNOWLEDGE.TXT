@@ -9576,6 +9576,7 @@ float scans = clamp( 0.35+0.35*sin(uv.y*ReShade::ScreenSize.y*1.5), 0.0, 1.0);
 --Para quitarle los parpadeos, comentamos la sección que empieza con:
 col *= 1.0+0.01*sin(110.0*iGlobalTime*0.001);
 --Para quitarle la curvatura, nos vamos a "float2 curve(float2 uv)" y comentamos todo dejando sólo el "return uv;"
+--Para quitarle el "efecto viñeta" (=bordes oscurecidos) comentamos las líneas donde se usa "vig" 
 --Para ahorrar recursos, comemtamos esta línea que no se usa para nada:
 float comp = smoothstep( 0.1, 0.9, sin(iGlobalTime*0.001) );
 
