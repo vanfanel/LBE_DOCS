@@ -9690,6 +9690,8 @@ hwdec=vaapi
 gpu-api=vulkan
 video-sync=display-resample
 
+(En realidad, no poner "hwdec" es suficiente, no haría falta poner "hwdec=vaapi".
+
 REPRODUCCIÓN DE VÍDEO EN LA PI4/5 CON MPV + FFMPEG
 ==================================================
 
