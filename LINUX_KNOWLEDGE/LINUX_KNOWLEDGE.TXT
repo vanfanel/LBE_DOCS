@@ -9661,6 +9661,10 @@ meson setup .. -Dbuildtype=release
 
 Una vez instalado, podemos ejecutar "vainfo" para ver qué métodos de aceleración soporta nuestro chip.
 
+	PARTE 4: FFMPEG
+	
+Hay que compilar FFMPEG con "--enable-vaapi"
+
 REPRODUCCIÓN DE VÍDEO EN LA PI4/5 CON MPV + FFMPEG
 ==================================================
 
