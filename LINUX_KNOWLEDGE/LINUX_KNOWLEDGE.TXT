@@ -9679,6 +9679,10 @@ CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./co
 --disable-thumb --disable-mmal \
 --enable-vaapi --enable-libdrm
 
+	PARTE 5: MPV
+	
+Las instrucciones son las mismas que para la Pi4/5, las tienes más abajo.
+
 REPRODUCCIÓN DE VÍDEO EN LA PI4/5 CON MPV + FFMPEG
 ==================================================
 
@@ -9738,14 +9742,14 @@ git submodule update --init --recursive
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Ddemos=false -Dbuildtype=release ..
+meson setup -Ddemos=false -Dbuildtype=release ..
 
 VAMOS CON MPV EN SÍ:
 
 -Instalamos dependencias previas:
 apt-get install libass-dev --no-install-recommends
 
--Clonamos su repo: git clone --depth 1 https://github.com/mpv-player/mpv.git
+-Bajamos la última estable de: https://github.com/mpv-player/mpv/releases
 
 -Configuramos con:
 
@@ -9754,7 +9758,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release ..
+meson setup -Dbuildtype=release ..
 
 -Creamos ~/.config/mpv/mpv.conf con el contenido:
 fs=yes
