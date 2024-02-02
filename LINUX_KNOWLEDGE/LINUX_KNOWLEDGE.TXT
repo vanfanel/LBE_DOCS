@@ -9617,7 +9617,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
-	PARTE 1: LIBVA
+	PARTE 2: LIBVA
 
 Bajamos la última estable de:
 https://github.com/intel/libva/releases
@@ -9630,7 +9630,7 @@ cd b4
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
 meson setup .. -Dbuildtype=release
 
-	PARTE 2: VAINFO
+	PARTE 3: VAINFO
 
 Necesitamos VAINFO para ver qué aceleración soporta nuestra CPU:
 
@@ -9644,6 +9644,8 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
 meson setup .. -Dbuildtype=release
+
+Una vez instalado, podemos ejecutar "vainfo" para ver qué métodos de aceleración soporta nuestro chip.
 
 REPRODUCCIÓN DE VÍDEO EN LA PI4/5 CON MPV + FFMPEG
 ==================================================
