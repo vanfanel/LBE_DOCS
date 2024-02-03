@@ -9628,11 +9628,16 @@ La manera correcta de generarlo es usando "adriconf" (necesita GTK):
 git clone --depth 1 https://gitlab.freedesktop.org/mesa/adriconf
 
 
-REPRODUCCIÓN DE VÍDEO EN X86_64 N100/I5 CON MPV + FFMPEG
-========================================================
+REPRODUCCIÓN DE VÍDEO EN AMD64 Y RASPBERRY PI CON MPV + FFMPEG
+==============================================================
 Página aclaratoria sobre el asunto: https://wiki.debian.org/HardwareVideoAcceleration
 
-Se hace con VAAPI.
+-En AMD64, se hace con la decodificación por hardware con VAAPI, por eso hay un bloque exclusivo de AMD64.
+-En Raspberry Pi 5 NO HAY decodificación de H264 por hardware ya, la han quitado, va por software.
+Y en la Raspberry Pi 4, aunque había decodificación de H264 por hardware, era más lenta que por software,
+y requería usar un fork especial de ffmpeg, así que pasando.
+
+###########BLOQUE EXCLUSIVO DE AMD64################
 
 	PARTE 1: INTEL MEDIA DRIVER
 (Es para Gen8 y posteriores, para otros chips más antiguos hacen falta otros drivers específicos).
@@ -9695,74 +9700,37 @@ meson setup .. -Dbuildtype=release
 
 Una vez instalado, podemos ejecutar "vainfo" para ver qué métodos de aceleración soporta nuestro chip.
 
+###########FIN BLOQUE EXCLUSIVO DE AMD64################
+
 	PARTE 4: FFMPEG
 	
-La idea es compilar FFMPEG con "--enable-vaapi"
+SÓLO AMD64: Instalamos dependenci previa: apt-get install nasm
 
-Instalamos dependencias previas: apt-get install nasm
+VAMOS CON FFMPEG EN SÍ:
 
 Bajamos la última estable de: https://github.com/FFmpeg/FFmpeg/tags
 
 -Configuramos con:
 
+PARA X64_64:
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --disable-network --disable-debug \
 --disable-muxers --disable-encoders --disable-indevs \
 --disable-outdev=fbdev,oss \
 --disable-doc --disable-bsfs \
 --disable-sdl2 --disable-stripping \
 --disable-thumb --disable-mmal \
---enable-vaapi --enable-libdrm
+--enable-libdrm --enable-vaapi
 
-	PARTE 5: MPV
-	
-Las instrucciones son las mismas que para la Pi4/5, las tienes más abajo.
-
-Para esta configuración, dejamos el fichero .config/mpv/mpv.conf así:
-
-fs=yes
-hwdec=vaapi
-gpu-api=vulkan
-video-sync=display-resample
-
-(En realidad, no poner "hwdec" es suficiente, no haría falta poner "hwdec=vaapi".
-
-REPRODUCCIÓN DE VÍDEO EN LA PI4/5 CON MPV + FFMPEG
-==================================================
-
-Un hilo interesante sobre el asunto: https://www.raspberrypi.org/forums/viewtopic.php?t=316381
-
-Instalamos dependencias previas:
-apt-get install libv4l-dev --no-install-recommends
-
-	PARTE 1: ffmpeg
-
--Clonamos este repo que es un fork con soporte específico para la Pi. Usamos un branch con las cosas específicas de la Pi,
- porque el principal no se actualiza, se actualizan los branches:
- git clone --depth 1 https://github.com/jc-kynesim/rpi-ffmpeg.git -b release/5.1/main
-
--Configuramos con:
-
+PARA RASPBERRY PI5 (es lo mismo pero en vez de "--enable-vaapi" le pasamos "--enable-neon"):
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --disable-network --disable-debug \
 --disable-muxers --disable-encoders --disable-indevs \
 --disable-outdev=fbdev,oss \
 --disable-doc --disable-bsfs \
 --disable-sdl2 --disable-stripping \
 --disable-thumb --disable-mmal \
---enable-sand --enable-v4l2-request \
---enable-libdrm --enable-epoxy \
---enable-libudev --enable-vout-drm
+--enable-libdrm --enable-neon
 
-(La configuración la sacamos de https://github.com/jc-kynesim/rpi-ffmpeg/blob/test/4.3.5/rpi_main/pi-util/conf_arm64_native.sh)
-(Para hacer pruebas, quita "--disable-muxers --disable-encoders")
-
-LLEGADOS A ESTE PUNTO, podemos probar que la reproducción por hardware funciona:
-ffmpeg -no_cvt_hw -c:v h264_v4l2m2m -i video.mkv -f vout_drm /dev/null
-(VER ESTE HILO para encontrar ejemplos: https://github.com/jc-kynesim/rpi-ffmpeg/issues/45)
-
-SI QUEREMOS REPRODUCIR vídeos en HEVC, tenemos que añadir a config.txt:
-dtoverlay=rpivid-v4l2
-
-(NOTA: para tener ffplay, activa el soporte SDL2 quitando --disable-sdl2 : ffplay, está hecho precisamente como un player simple
+(NOTA: para tener ffplay, activa el soporte SDL2 quitando --disable-sdl2 : ffplay está pensado precisamente como un player simple
 sobre SDL2 y es el único backend que tiene).
 
 (NOTA: SI HUBIÉSEMOS ACTIVADO EL SOPORTE DE SDL2, podríamos reproducir vídeos con ffplay, para ello:
@@ -9770,8 +9738,8 @@ Lo primero, vermos qué codecs puede hacer por hardware la Pi: ffmpeg -codecs | 
 Y ahora elegimos un codec y reproducimos el vídeo usándolo: ffplay -codec:v h264_v4l2m2m -fs <fichero_vídeo>
 PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
 
-	PARTE 2: MPV
-
+	PARTE 5: MPV
+	
 -Instalamos dependencias previas: apt-get install libass-dev --no-install-recommends
 
 -Instalamos otra dependencia previa, libplacebo, que está en Debian 12 pero arrastra toda la mierda de X11
@@ -9815,23 +9783,19 @@ También podríamos ver las APIs de la GPU disponibles con:
 mpv --gpu-api=help
 ...con el resto de cosas de las que quieras ver qué hay disponible, igual.
 
-PARTE 3: VÍDEO SUAVE CON MPV
+En princioio, dejamos el fichero .config/mpv/mpv.conf así:
 
---Añadimos en ~/.config/mpv/mpv.conf:
+fs=yes
+
+En AMD64 puedes añadir:
+hwdec=vaapi
+gpu-api=vulkan
 video-sync=display-resample
-(Se podría usar "display-desync" en lugar de "display-resample" para intentar evitar el frame drop que se produce cada 15 min o así,
-pero eso produce que el audio vaya desincronizado del vídeo...)
-(NO uses esto sin poner el refresco de pantalla al framerate del vídeo que vas a reproducir, cosa que hacemos en el último paso
-usando un script para lanzar mpv, ya que si no, como display-resample pinta cada frame varias veces, no hay ancho de banda de la
-RAM y hay muchos frame drops).  
 
----(SÓLO EN PI4: EN PI5 NO HAY ENCODING/DECODING DE H264 POR HARDWARE EN EL SOC! Ver respuesta de 6by9 en https://forums.raspberrypi.com/viewtopic.php?t=357999)
-Añadimos en ~/.config/mpv/mpv.conf:
-hwdec=v4l2m2m-copy
-(El hwdec por defecto, v4l2m2m, parece usar menos CPU que v4l2m2m-copy, pero es incompatible con "video-sync=display-resample"
-porque al usan ambas cosas empiezan a aparecer frames dropped).
+(NO le pases "video-sync=display-resample" a la Pi, porque no va bien de ninguna manera).
+(En realidad, no poner "hwdec" es suficiente, no haría falta poner "hwdec=vaapi".
 
---Ponemos el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir,
+--OPCIONAL: Ponemos el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir,
 usando para ello este script para lanzar el mpv:
 
 ####SCRIPT PARA PONER EL REFRESCO DE PANTALLA DEL VÍDEO A REPRODUCIR, LANZAR MPV Y RESTAURAR REFRESCO ORIGINAL AL ACABAR####
