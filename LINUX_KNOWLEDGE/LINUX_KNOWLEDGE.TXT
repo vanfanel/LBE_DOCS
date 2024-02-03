@@ -9588,7 +9588,15 @@ PARA USAR el shader CRT-NewPixie (el Matthias es la versión más antigua y lent
 tememos que editar el shader, que está en ~/reshade-shaders/Shaders/CRT-NewPixie.fx,
 y cambiar todas las ocurrencias de "TEXCOORD0" por "TexCoord".
 MODIFICACIONES AL SHADER CRT-NewPixie:
---Para que no se vea la zona "deformada" de los alrededores de la imágen, ponemos "uniform bool use_frame" a "true".
+--Para que no se vean los píxels deformados de los bordes (ya que deberían quedar ocultos por el efecto "vignette", que no funciona),
+dejamos la sección /* Clamp */ descomentada y así:
+
+    /* Clamp */                                                                                                                                  
+    if (curved_uv.x < 0.06 || curved_uv.x > 0.94)                                                                                                
+        col *= 0.0;                                                                                                                              
+    if (curved_uv.y < 0.008 || curved_uv.y > 0.992)                                                                                              
+        col *= 0.0;
+
 --Para quitarle la distorsión de geometría (=Las "arrugas"), nos vamos a "technique CRTNewPixie" y comentamos el pass PS_CRTNewPixie_Accum.
 --Para quitarle los halos de las cosas claras, nos vamos a "technique CRTNewPixie" y comentamos pass PS_CRTNewPixie_Blur.
 --Para quitarle el scanroll (hace feo en los juegos que sólo refrescan la pantalla a veces) ve a "uniform bool scanroll"
@@ -9596,7 +9604,8 @@ MODIFICACIONES AL SHADER CRT-NewPixie:
 --Para quitarle la curvatura, ponemos "uniform float curvature" a 0.0001,
  y nos vamos a la función "float2 curve( float2 uv )", y comentamos todo lo que hay dentro,
  dejando sólo el "return uv;" del final.
-
+--Comenta el código de la sección /* Vignette */ ya que de todos modos no funciona.
+--Y recuerda: todo lo que use "time" son cosas que son distorsiones aleatorias y al elimitar "time" como factor multiplicador, deja de ocurrir.
 
 LANZAMIENTO DE JUEGOS
 (OJO!!! PODEMOS SABER SI UN JUEGO ESTÁ SIENDO LANZADO CON VKBASALT PORQUE NOS TIENEN QUE SALIR MENSAJES DE VKBASALT AL LANZARLO!!!)
