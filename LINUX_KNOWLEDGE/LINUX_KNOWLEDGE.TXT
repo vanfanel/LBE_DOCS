@@ -8064,7 +8064,10 @@ Clonamos su repo (NO USES LA ÚLTIMA ESTABLE PORQUE NO SOPORTA GLVND Y DARÁ ERR
 
 git clone --depth 1 https://github.com/nigels-com/glew.git
 
-Entramos en el raiz de los sources y hacemos:
+Editamos config/Makefile.linux, buscamos la línea "LIBDIR = $(GLEW_DEST)/lib64" y quitamos el 64.
+(Nos interesa que todas las librerías que compilemos e instalemos al margen del gestor de paquetes vayan a /usr/local/lib)
+
+En el raiz de los sources hacemos:
 
 make extensions
 

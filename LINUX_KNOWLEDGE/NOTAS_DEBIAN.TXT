@@ -136,6 +136,9 @@ Y reinicia. Ya no debería salir más.
 sudo systemctl enable getty@tty2.service
 Y ya podrás cambiar de TTY1 a TTY2!!!
 
+-PARA ACTIVAR EL AUTOCOMPLETION COMO ROOT:
+Editamos /etc/bash.bashrc y descomentamos la sección correspondiente (busca "completion" y lo ves enseguida).
+
 ***BLOQUE ALSA****
 -PARA INSTALAR ALSA:
 Instalamos alsa-utils, pero NO desde el entorno chrooted sino nativamente.
