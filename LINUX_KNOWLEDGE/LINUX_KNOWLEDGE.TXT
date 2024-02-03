@@ -9773,6 +9773,14 @@ meson setup -Dbuildtype=release ..
 -Creamos ~/.config/mpv/mpv.conf con el contenido:
 fs=yes
 
+En AMD64 puedes añadir:
+hwdec=vaapi
+gpu-api=vulkan
+video-sync=display-resample
+
+(NO le pases "video-sync=display-resample" a la Pi, porque no va bien de ninguna manera).
+(En realidad, no poner "hwdec" es suficiente, no haría falta poner "hwdec=vaapi".
+
 LAS INSTRUCCIONES CON TODAS LAS OPCIONES DE MPV ESTÁN EN: https://mpv.io/manual/stable/
 
 RECUERDA: Para ver los códecs de vídeo acelerados disponibles para el decoding:
@@ -9782,18 +9790,6 @@ mpv --vo=help
 También podríamos ver las APIs de la GPU disponibles con:
 mpv --gpu-api=help
 ...con el resto de cosas de las que quieras ver qué hay disponible, igual.
-
-En princioio, dejamos el fichero .config/mpv/mpv.conf así:
-
-fs=yes
-
-En AMD64 puedes añadir:
-hwdec=vaapi
-gpu-api=vulkan
-video-sync=display-resample
-
-(NO le pases "video-sync=display-resample" a la Pi, porque no va bien de ninguna manera).
-(En realidad, no poner "hwdec" es suficiente, no haría falta poner "hwdec=vaapi".
 
 --OPCIONAL: Ponemos el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir,
 usando para ello este script para lanzar el mpv:
