@@ -9775,7 +9775,6 @@ fs=yes
 
 En AMD64 puedes añadir:
 hwdec=vaapi
-gpu-api=vulkan
 video-sync=display-resample
 
 (NO le pases "video-sync=display-resample" a la Pi, porque no va bien de ninguna manera).
