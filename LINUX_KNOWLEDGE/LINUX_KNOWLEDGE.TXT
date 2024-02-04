@@ -9612,7 +9612,7 @@ añadimos esta sección /* Clamp */ justo antes de la línea "fragColor = float4
     if (uv.y < 0.0 || uv.y > 1.0)
         col *= 0.0;
 --Para quitarle la shadowmask comentamos la línea:
-col*=1.0-0.65*float3(clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragC    oord.x, 2.0)-1.0)*2.0,0.0,1.0));
+col*=1.0-0.65*float3(clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0));
 --Para quitarle la distorsion de geometría (las "arrugas") nos vamos a las líneas de sample que están en la función
 "void PS_CRTMattias1()", son esas que empiezan por "col.r", "col.g", "col.b", y quitamos las "x+" que esán justo
 a continuación de cada "float2("
