@@ -9565,6 +9565,9 @@ podríamos crear un archivo llamado "vkBasalt.conf" en el directorio del juego)
 
 ########SECCIÓN DE EDICIÓN DE SHADERS###########
 
+TIENES COPIAS YA ARREGLADAS Y OPTIMIZADAS DE LOS SHADERS NEWPIXIE Y MATTIAS SUBIDOS A LBE_DOCS.
+ESTO SON NOTAS POR SI LO TIENES QUE VOLVER A HACER.
+
 OJO:
 PARA USAR el shader CRT-NewPixie (el Mattias es la versión más antigua y lenta del mismo shader),
 tememos que editar el shader, que está en ~/reshade-shaders/Shaders/CRT-NewPixie.fx,
