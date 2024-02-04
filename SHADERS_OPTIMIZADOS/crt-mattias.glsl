@@ -176,13 +176,21 @@ void main()
     vec2 uv = q;
     uv = mix( uv, curve( uv ), CURVATURE ) * InputSize.xy / TextureSize.xy;
     vec3 col;
-	float x =  sin(uv.y*21.0)*sin(uv.y*29.0)*sin(uv.y*31.0)*0.0017;
+	float x =  sin(uv.y)*sin(uv.y)*sin(uv.y)*0.0017;
 	float o =2.0*mod(fragCoord.y,2.0)/iResolution.x;
 	x+=o;
    uv = uv * TextureSize / InputSize;
     col.r = 1.0*blur(iChannel0,vec2(uv.x+0.0009,uv.y+0.0009),1.2).x+0.005;
     col.g = 1.0*blur(iChannel0,vec2(uv.x+0.000,uv.y-0.0015),1.2).y+0.005;
     col.b = 1.0*blur(iChannel0,vec2(uv.x-0.0015,uv.y+0.000),1.2).z+0.005;
+
+    // EMPIEZA SECCIÓN VIGNETTE
+    // NOTA: Podríamos comentar también esta sección de la vignette si fuese necesario.
+    col = clamp(col*0.4+0.6*col*col*1.0,0.0,1.0);
+    float vig = (0.0 + 1.0*16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y));
+	vig = pow(vig,0.3);
+	col *= vec3(vig);
+    // ACABA SECCIÓN VIGNETTE
 
     col *= vec3(0.95,1.05,0.95);
 	col = mix( col, col * col, 0.3) * 3.8;
@@ -192,9 +200,10 @@ void main()
 	float s = pow(scans,0.9);
 	col = col*vec3( s) ;
 
-    col *= 1.0+0.0015*sin(300.0);
+    col *= 1.0+0.0015;
 	
 	col*=1.0-0.15*vec3(clamp((mod(fragCoord.x+o, 2.0)-1.0)*2.0,0.0,1.0));
+	col *= vec3( 1.0 ) - 0.25*vec3( rand( uv),  rand( uv),  rand( uv)  );
 	col = pow(col, vec3(0.45));
 
 	if (uv.x < 0.0 || uv.x > 1.0)
