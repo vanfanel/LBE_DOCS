@@ -9566,7 +9566,7 @@ podríamos crear un archivo llamado "vkBasalt.conf" en el directorio del juego)
 ########SECCIÓN DE EDICIÓN DE SHADERS###########
 
 OJO:
-PARA USAR el shader CRT-NewPixie (el Matthias es la versión más antigua y lenta del mismo shader),
+PARA USAR el shader CRT-NewPixie (el Mattias es la versión más antigua y lenta del mismo shader),
 tememos que editar el shader, que está en ~/reshade-shaders/Shaders/CRT-NewPixie.fx,
 y cambiar todas las ocurrencias de "TEXCOORD0" por "TexCoord".
 MODIFICACIONES AL SHADER CRT-NewPixie:
@@ -9597,7 +9597,7 @@ dejamos la sección /* Clamp */ descomentada y así:
   de la variable "time" sin problemas.
 
 OJO:
-PARA USAR el shader Matthias-CRT, lo editamos (está en ~/reshade-shaders/Shaders/Matthias-CRT.fx) y
+PARA USAR el shader Mattias-CRT, lo editamos (está en ~/reshade-shaders/Shaders/Mattias-CRT.fx) y
 cambiar todas las ocurrencias de "TEXCOORD0" por "TexCoord".
 Otras mejoras que podemos hacerle:
 --Para que no se vean los píxels deformados de los bordes cuando no uses el efecto "vignette",
