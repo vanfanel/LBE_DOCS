@@ -45,7 +45,7 @@ void PS_CRTMattias1(in float4 pos : SV_POSITION, in float2 txcoord : TexCoord, o
 	col*=1.0-0.65*float3(clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0));
 
     /* Clamp */
-    if (uv.x < 0.01 || uv.x > 0.99)
+    if (uv.x < 0.0 || uv.x > 1.0)
         col *= 0.0;
     if (uv.y < 0.0 || uv.y > 1.0)
         col *= 0.0;

@@ -9607,7 +9607,7 @@ Otras mejoras que podemos hacerle:
 añadimos esta sección /* Clamp */ justo antes de la línea "fragColor = float4(col,1.0);" 
 
     /* Clamp */
-    if (uv.x < 0.01 || uv.x > 0.99)
+    if (uv.x < 0.0 || uv.x > 1.0)
         col *= 0.0;
     if (uv.y < 0.0 || uv.y > 1.0)
         col *= 0.0;
