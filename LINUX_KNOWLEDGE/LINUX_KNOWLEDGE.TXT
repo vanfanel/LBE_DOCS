@@ -9563,10 +9563,53 @@ reshadeIncludePath = /root/reshade-shaders/Shaders
 (Alternativamente, si un juego necesita una configuración especial,
 podríamos crear un archivo llamado "vkBasalt.conf" en el directorio del juego)
 
+########SECCIÓN DE EDICIÓN DE SHADERS###########
+
+OJO:
+PARA USAR el shader CRT-NewPixie (el Matthias es la versión más antigua y lenta del mismo shader),
+tememos que editar el shader, que está en ~/reshade-shaders/Shaders/CRT-NewPixie.fx,
+y cambiar todas las ocurrencias de "TEXCOORD0" por "TexCoord".
+MODIFICACIONES AL SHADER CRT-NewPixie:
+--Para que no se vean los píxels deformados de los bordes (ya que deberían quedar ocultos por el efecto "vignette", que no funciona),
+dejamos la sección /* Clamp */ descomentada y así:
+
+    /* Clamp */
+    if (curved_uv.x < 0.06 || curved_uv.x > 0.94)
+        col *= 0.0;
+    if (curved_uv.y < 0.008 || curved_uv.y > 0.992)
+        col *= 0.0;
+
+--Para que se vea la shadowmask:
+	--Añadimos "#define gl_FragCoord (uv_tx.xy * resolution)" al final de la única sección de #defines que hay.
+	--Susituimos "uv_tx" por "glFragCoord" en la línea: "col*=1.0-0.23*(clamp((mod(uv_tx.xy.x, 3.0))/2.0,0.0,1.0));"
+      y en la línea "float o =sin(uv_tx.y*1.5)/resolution.x;"
+
+--Para quitarle la distorsión de geometría (=Las "arrugas"), nos vamos a "technique CRTNewPixie" y comentamos el pass PS_CRTNewPixie_Accum.
+--Para quitarle los halos de las cosas claras, nos vamos a "technique CRTNewPixie" y comentamos pass PS_CRTNewPixie_Blur.
+--Para quitarle el scanroll (hace feo en los juegos que sólo refrescan la pantalla a veces) ve a "uniform bool scanroll"
+ y pon el bool que hay debajo a "false".
+--Para quitarle la curvatura, ponemos "uniform float curvature" a 0.0001,
+ y nos vamos a la función "float2 curve( float2 uv )", y comentamos todo lo que hay dentro,
+ dejando sólo el "return uv;" del final.
+--Comenta el código de la sección /* Vignette */ ya que de todos modos no funciona.
+--Y recuerda: todo lo que use "time" son cosas que son distorsiones aleatorias y al elimitar "time" como factor multiplicador, deja de ocurrir
+  de además ahorramos recursos. Una vez que ya no se use para nada, podemos eliminar también la declaración e inicialización
+  de la variable "time" sin problemas.
+
 OJO:
 PARA USAR el shader Matthias-CRT, lo editamos (está en ~/reshade-shaders/Shaders/Matthias-CRT.fx) y
 cambiar todas las ocurrencias de "TEXCOORD0" por "TexCoord".
 Otras mejoras que podemos hacerle:
+--Para que no se vean los píxels deformados de los bordes cuando no uses el efecto "vignette",
+añadimos esta sección /* Clamp */ justo antes de la línea "fragColor = float4(col,1.0);" 
+
+    /* Clamp */
+    if (uv.x < 0.01 || uv.x > 0.99)
+        col *= 0.0;
+    if (uv.y < 0.0 || uv.y > 1.0)
+        col *= 0.0;
+--Para quitarle la shadowmask comentamos la línea:
+col*=1.0-0.65*float3(clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragC    oord.x, 2.0)-1.0)*2.0,0.0,1.0));
 --Para quitarle la distorsion de geometría (las "arrugas") nos vamos a las líneas de sample que están en la función
 "void PS_CRTMattias1()", son esas que empiezan por "col.r", "col.g", "col.b", y quitamos las "x+" que esán justo
 a continuación de cada "float2("
@@ -9583,29 +9626,7 @@ col *= 1.0+0.01*sin(110.0*iGlobalTime*0.001);
 --Para ahorrar recursos, comemtamos esta línea que no se usa para nada:
 float comp = smoothstep( 0.1, 0.9, sin(iGlobalTime*0.001) );
 
-OJO:
-PARA USAR el shader CRT-NewPixie (el Matthias es la versión más antigua y lenta del mismo shader),
-tememos que editar el shader, que está en ~/reshade-shaders/Shaders/CRT-NewPixie.fx,
-y cambiar todas las ocurrencias de "TEXCOORD0" por "TexCoord".
-MODIFICACIONES AL SHADER CRT-NewPixie:
---Para que no se vean los píxels deformados de los bordes (ya que deberían quedar ocultos por el efecto "vignette", que no funciona),
-dejamos la sección /* Clamp */ descomentada y así:
-
-    /* Clamp */                                                                                                                                  
-    if (curved_uv.x < 0.06 || curved_uv.x > 0.94)                                                                                                
-        col *= 0.0;                                                                                                                              
-    if (curved_uv.y < 0.008 || curved_uv.y > 0.992)                                                                                              
-        col *= 0.0;
-
---Para quitarle la distorsión de geometría (=Las "arrugas"), nos vamos a "technique CRTNewPixie" y comentamos el pass PS_CRTNewPixie_Accum.
---Para quitarle los halos de las cosas claras, nos vamos a "technique CRTNewPixie" y comentamos pass PS_CRTNewPixie_Blur.
---Para quitarle el scanroll (hace feo en los juegos que sólo refrescan la pantalla a veces) ve a "uniform bool scanroll"
- y pon el bool que hay debajo a "false".
---Para quitarle la curvatura, ponemos "uniform float curvature" a 0.0001,
- y nos vamos a la función "float2 curve( float2 uv )", y comentamos todo lo que hay dentro,
- dejando sólo el "return uv;" del final.
---Comenta el código de la sección /* Vignette */ ya que de todos modos no funciona.
---Y recuerda: todo lo que use "time" son cosas que son distorsiones aleatorias y al elimitar "time" como factor multiplicador, deja de ocurrir.
+########FIN SECCIÓN DE EDICIÓN DE SHADERS###########
 
 LANZAMIENTO DE JUEGOS
 (OJO!!! PODEMOS SABER SI UN JUEGO ESTÁ SIENDO LANZADO CON VKBASALT PORQUE NOS TIENEN QUE SALIR MENSAJES DE VKBASALT AL LANZARLO!!!)
