@@ -184,11 +184,6 @@ void main()
     col.g = 1.0*blur(iChannel0,vec2(uv.x+0.000,uv.y-0.0015),1.2).y+0.005;
     col.b = 1.0*blur(iChannel0,vec2(uv.x-0.0015,uv.y+0.000),1.2).z+0.005;
 
-    col = clamp(col*0.4+0.6*col*col*1.0,0.0,1.0);
-    float vig = (0.0 + 1.0*16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y));
-	vig = pow(vig,0.3);
-	col *= vec3(vig);
-
     col *= vec3(0.95,1.05,0.95);
 	col = mix( col, col * col, 0.3) * 3.8;
 
