@@ -117,9 +117,11 @@ float4 PS_NewPixie_Final(float4 pos: SV_Position, float2 uv_tx : TexCoord) : SV_
     col = clamp(col*1.3 + 0.75*col*col + 1.25*col*col*col*col*col,float3(0.0,0.0,0.0),float3(10.0,10.0,10.0));
 
     /* Vignette */
-    float vig = (0.1 + 1.0*16.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
-    vig = 1.3*pow(vig,0.5);
-    col *= vig;
+    // float vig = (0.1 + 1.0*16.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
+    // vig = 1.3*pow(vig,0.5);
+    // col *= vig;
+    /* Compensate the lack of vignette. */
+    col *= 1.1;
 
     /* Scanlines */
     float scans = clamp( 0.35+0.18*sin(curved_uv.y*resolution.y*1.5), 0.0, 1.0);
