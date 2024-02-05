@@ -50,23 +50,14 @@ layout(push_constant) uniform Push
 {
 	vec4 SourceSize;
 	vec4 OutputSize;
-	uint FrameCount;
-	float use_frame;
 	float curvature;
-	float wiggle_toggle;
-   float scanroll;
+	float vignette;
 } params;
 
-#pragma parameter use_frame "Use Frame Image" 0.0 0.0 1.0 1.0
-#define use_frame params.use_frame
 #pragma parameter curvature "Curvature" 2.0 0.0001 4.0 0.25
-#pragma parameter wiggle_toggle "Interference" 0.0 0.0 1.0 1.0
-#pragma parameter scanroll "Rolling Scanlines" 1.0 0.0 1.0 1.0
+#pragma parameter vignette "Vignette" 1.0 0.0 1.0 0.05
 
 #define gl_FragCoord (vTexCoord.xy * params.OutputSize.xy)
-#define backbuffer accum1
-#define blurbuffer blur2
-#define frametexture frametexture
 
 layout(std140, set = 0, binding = 0) uniform UBO
 {
@@ -88,10 +79,7 @@ void main()
 #pragma stage fragment
 layout(location = 0) in vec2 vTexCoord;
 layout(location = 0) out vec4 FragColor;
-layout(set = 0, binding = 2) uniform sampler2D Source;
-layout(set = 0, binding = 3) uniform sampler2D accum1;
-layout(set = 0, binding = 4) uniform sampler2D blur2;
-layout(set = 0, binding = 5) uniform sampler2D frametexture;
+layout(set = 0, binding = 3) uniform sampler2D Source;
 
 vec3 tsample( sampler2D samp, vec2 tc, float offs, vec2 resolution )
     {
@@ -144,9 +132,10 @@ void main()
     float o =sin(gl_FragCoord.y*1.5)/resolution.x;
     x+=o*0.25;
 
-    col.r = tsample(backbuffer,vec2(x+scuv.x+0.0009,scuv.y+0.0009),resolution.y/800.0, resolution ).x+0.02;
-    col.g = tsample(backbuffer,vec2(x+scuv.x+0.0000,scuv.y-0.0011),resolution.y/800.0, resolution ).y+0.02;
-    col.b = tsample(backbuffer,vec2(x+scuv.x-0.0015,scuv.y+0.0000),resolution.y/800.0, resolution ).z+0.02;
+    col.r = tsample(Source,vec2(x+scuv.x+0.0009,scuv.y+0.0009),resolution.y/800.0, resolution ).x+0.02;
+    col.g = tsample(Source,vec2(x+scuv.x+0.0000,scuv.y-0.0011),resolution.y/800.0, resolution ).y+0.02;
+    col.b = tsample(Source,vec2(x+scuv.x-0.0015,scuv.y+0.0000),resolution.y/800.0, resolution ).z+0.02;
+
     float i = clamp(col.r*0.299 + col.g*0.587 + col.b*0.114, 0.0, 1.0 );
     i = pow( 1.0 - pow(i,2.0), 1.0 );
     i = (1.0-i) * 0.85 + 0.15; 
@@ -155,9 +144,11 @@ void main()
     col *= vec3(0.95,1.05,0.95);
     col = clamp(col*1.3 + 0.75*col*col + 1.25*col*col*col*col*col,vec3(0.0),vec3(10.0));
 
-    /* Compensamos la falta de vignette, para que no haya esa zona clara alrededor de la imágen curvada.  */
-    col *= 0.8;
-		
+    /* Vignette */
+    float vig = ((1.0-0.99*params.vignette) + 1.0*16.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
+    vig = 1.3*pow(vig,0.5);
+    col *= vig;
+
     /* Scanlines */
     float scans = clamp( 0.35+0.18*sin(curved_uv.y*resolution.y*1.5), 0.0, 1.0);
     float s = pow(scans,0.9);
