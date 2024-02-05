@@ -6936,7 +6936,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -DDEBUG=OFF \
 
 Compilamos y metemos en el directorio ~/diablo:
 -El ejecutable "devilutionx"
--El diectorio "assets" que se nos crea en el directorio de compilacion.
+-El diectorio "assets", que se nos crea en el directorio de compilación.
  En su lugar, podríamos usar "devilutionx.mpq" que se nos generaría en el directorio de compilación si hubiésemos instalado smpq
  en las dependencias previas, cosa que no podemos hacer en Debian 11 porque su smpq usa la versión de libstorm 9.22, que está rota
  en aarch64.
