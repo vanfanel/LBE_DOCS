@@ -9112,6 +9112,17 @@ DESCARGAR DE MEGA POR CACHOS CON LAS MEGATOOLS
 ==============================================
 
 Se usa megadl.
+Podemos descargar la última estable precompilada de:
+https://megatools.megous.com/builds/builds/
+Es simplemente copiar el archivo ejecutable "megatools" a /usr/local/bin
+
+Y ya podemos descargar con:
+megatools dl <LINK DE MEGA>
+
+O bien (si hemos compilado desde los sources)
+megadl <LINK DE MEGA>
+
+######BLOQUE OPCIONAL: COMPILAR DESDE LOS SOURCES######
 
 Instalamos dependencias previas:
 sudo apt-get install libglib2.0-dev libcurl4-gnutls-dev libssl-dev meson
@@ -9128,10 +9139,7 @@ Compilamos
 ninja -j4
 sudo ninja install
 
-Y ya podemos descargar con:
-megatools dl <LINK DE MEGA>
-O bien
-megadl <LINK DE MEGA>
+######FIN BLOQUE OPCIONAL: COMPILAR DESDE LOS SOURCES######
 
 WARCRAFT II NATIVO EN LINUX
 ===========================
