@@ -154,6 +154,9 @@ void main()
     /* Level adjustment (curves) */
     col *= vec3(0.95,1.05,0.95);
     col = clamp(col*1.3 + 0.75*col*col + 1.25*col*col*col*col*col,vec3(0.0),vec3(10.0));
+
+    /* Compensamos la falta de vignette, para que no haya esa zona clara alrededor de la imágen curvada.  */
+    col *= 0.8;
 		
     /* Scanlines */
     float scans = clamp( 0.35+0.18*sin(curved_uv.y*resolution.y*1.5), 0.0, 1.0);
