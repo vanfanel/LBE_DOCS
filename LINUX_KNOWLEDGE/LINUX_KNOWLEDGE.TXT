@@ -9122,6 +9122,8 @@ megatools dl <LINK DE MEGA>
 O bien (si hemos compilado desde los sources)
 megadl <LINK DE MEGA>
 
+Se hace resume por defecto, así que no tienes que pasarle ningún parámetro para reanudar la descarga de archivos incompletos.
+
 ######BLOQUE OPCIONAL: COMPILAR DESDE LOS SOURCES######
 
 Instalamos dependencias previas:
