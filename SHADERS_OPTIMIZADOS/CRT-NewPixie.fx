@@ -116,13 +116,13 @@ float4 PS_NewPixie_Final(float4 pos: SV_Position, float2 uv_tx : TexCoord) : SV_
     col *= float3(0.95,1.05,0.95);
     col = clamp(col*1.3 + 0.75*col*col + 1.25*col*col*col*col*col,float3(0.0,0.0,0.0),float3(10.0,10.0,10.0));
 
-    /* Vignette: you can regulate the brightness with that parameter that originally had a 16.0 value (I lowered it to 10.0) */
+    /* Vignette. Modify the 16.0 value to control the burnout effect in the center area. */
     //float vig = (0.1 + 1.0*16.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
     float vig = (0.1 + 1.0*10.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
     vig = 1.3*pow(vig,0.5);
     col *= vig;
-    /* If you decide to comment out the vignette code, compensate brightness with this. */
-    //col *= 1.1;
+    /* Compensate the lack of vignette in case you decide to comment it out for performance reasons */
+    //col *= 1.3;
 
     /* Scanlines */
     float scans = clamp( 0.35+0.18*sin(curved_uv.y*resolution.y*1.5), 0.0, 1.0);
