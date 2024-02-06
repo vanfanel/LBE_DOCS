@@ -144,12 +144,12 @@ void main()
     col *= vec3(0.95,1.05,0.95);
     col = clamp(col*1.3 + 0.75*col*col + 1.25*col*col*col*col*col,vec3(0.0),vec3(10.0));
 
-    /* Vignette */
-    //float vig = ((1.0-0.99*params.vignette) + 1.0*16.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
-    //vig = 1.3*pow(vig,0.5);
-    //col *= vig;
-    /* Compensate the lack of vignette. */
-    col *= 0.8;
+    /* Vignette. Increase the 6.0 factor for greater burnout effect in the center of the screen. */
+    float vig = ((1.0-0.99*params.vignette) + 1.0*6.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
+    vig = 1.3*pow(vig,0.5);
+    col *= vig;
+    /* Compensate the lack of vignette, in case we decide to comment it out for performance reasons */
+    //col *= 0.6;
 
     /* Scanlines */
     float scans = clamp( 0.35+0.18*sin(curved_uv.y*resolution.y*1.5), 0.0, 1.0);
