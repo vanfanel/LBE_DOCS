@@ -1,0 +1,147 @@
+SHADERS PARA TODOS LOS PROGRAMAS DE OPENGL Y VULKAN EN GNU/LINUX
+================================================================
+
+La idea es usar vkbasalt: https://github.com/DadSchoorse/vkBasalt
+Los programas que usen OpenGL, que son la mayoría, se pueden hacer correr sobre Vulkan con Zink
+(Hay que compilar MESA con soporte para Zink, que ya lo tienes así en las instrucciones de compilación de MESA).
+
+Vamos con VKBasalt:
+
+--Instalamos dependencias previas:
+apt-get install spirv-headers
+
+--Clonamos su repo: git clone --depth 1 https://github.com/DadSchoorse/vkBasalt.git
+(OJO!! Nos va a tocar eliminar cosas de X11 del meson.build y de otros ficheros, es fácil, lo que te vaya dando problemas lo quitas
+y compila y funciona igualmente).
+
+--Configuramos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release --prefix=/usr
+
+(OJO!!! HAY QUE PASARLE el "--prefix=/usr", ya que si instala la librería en /usr/local/lib, no funcionará).
+
+ninja -j4
+ninja install
+
+CONFIGURACIÓN DE VKBASALT:
+
+--Clonamos este repo, que es básico tenerlo usemos los shaders que usemos, en nuestro directorio de usuario,
+de manera que quede en ~/reshade-shaders:
+git clone --depth 1 https://github.com/crosire/reshade-shaders.git
+
+--Clonamos este repo que tiene los shaders de RetroArch portados a ReShade
+git clone --depth 1 https://github.com/Matsilagi/RSRetroArch.git
+--Copiamos los directorios "Shaders" y "Textures" a ~/reshader-shaders, de manera que queden mezclados con
+los del primer repo que hemos clonado. 
+
+--Ahora creamos el fichero de configuración en ~/.config/vkBasalt/vkBasalt.conf,
+de manera que quede en ~/.config/vkBasalt/vkBasalt.conf, con este contenido:
+
+enableOnLaunch = True  
+toggleKey = Home                                                                                                                          
+effects = crt                                                                                                                                                                                                                                                                                    
+crt = /root/reshade-shaders/Shaders/MattiasCRT.fx                                                                                             
+reshadeTexturePath = /root/reshade-shaders/Textures                                                                                              
+reshadeIncludePath = /root/reshade-shaders/Shaders 
+
+(Alternativamente, si un juego necesita una configuración especial,
+podríamos crear un archivo llamado "vkBasalt.conf" en el directorio del juego)
+
+########SECCIÓN DE EDICIÓN DE SHADERS###########
+
+TIENES COPIAS YA ARREGLADAS Y OPTIMIZADAS DE LOS SHADERS NEWPIXIE Y MATTIAS SUBIDOS A LBE_DOCS.
+ESTO SON NOTAS POR SI LO TIENES QUE VOLVER A HACER.
+
+OJO:
+PARA USAR el shader CRT-NewPixie (el Mattias es la versión más antigua y lenta del mismo shader),
+tememos que editar el shader, que está en ~/reshade-shaders/Shaders/CRT-NewPixie.fx,
+y cambiar todas las ocurrencias de "TEXCOORD0" por "TexCoord".
+MODIFICACIONES AL SHADER CRT-NewPixie:
+--Para que no se vean los píxels deformados de los bordes (ya que deberían quedar ocultos por el efecto "vignette", que no funciona),
+dejamos la sección /* Clamp */ descomentada y así:
+
+    /* Clamp */
+    if (curved_uv.x < 0.06 || curved_uv.x > 0.94)
+        col *= 0.0;
+    if (curved_uv.y < 0.008 || curved_uv.y > 0.992)
+        col *= 0.0;
+
+--Para que se vea la shadowmask:
+	--Añadimos "#define gl_FragCoord (uv_tx.xy * resolution)" al final de la única sección de #defines que hay.
+	--Susituimos "uv_tx" por "glFragCoord" en la línea: "col*=1.0-0.23*(clamp((mod(uv_tx.xy.x, 3.0))/2.0,0.0,1.0));"
+      y en la línea "float o =sin(uv_tx.y*1.5)/resolution.x;"
+
+--Para quitarle la distorsión de geometría (=Las "arrugas"), nos vamos a "technique CRTNewPixie" y comentamos el pass PS_CRTNewPixie_Accum.
+--Para quitarle los halos de las cosas claras, nos vamos a "technique CRTNewPixie" y comentamos pass PS_CRTNewPixie_Blur.
+--Para quitarle el scanroll (hace feo en los juegos que sólo refrescan la pantalla a veces) ve a "uniform bool scanroll"
+ y pon el bool que hay debajo a "false".
+--Para quitarle la curvatura, ponemos "uniform float curvature" a 0.0001,
+ y nos vamos a la función "float2 curve( float2 uv )", y comentamos todo lo que hay dentro,
+ dejando sólo el "return uv;" del final.
+--Comenta el código de la sección /* Vignette */ ya que de todos modos no funciona.
+--Y recuerda: todo lo que use "time" son cosas que son distorsiones aleatorias y al elimitar "time" como factor multiplicador, deja de ocurrir
+  de además ahorramos recursos. Una vez que ya no se use para nada, podemos eliminar también la declaración e inicialización
+  de la variable "time" sin problemas.
+
+OJO:
+PARA USAR el shader Mattias-CRT (NO recomendado, porque cuando acabes de quitarle el blur va quedar como el Fakelottes),
+lo editamos (está en ~/reshade-shaders/Shaders/Mattias-CRT.fx) y
+cambiamos todas las ocurrencias de "TEXCOORD0" por "TexCoord".
+Otras mejoras que podemos hacerle:
+--Para que no se vean los píxels deformados de los bordes cuando no uses el efecto "vignette",
+añadimos esta sección /* Clamp */ justo antes de la línea "fragColor = float4(col,1.0);" 
+
+    /* Clamp */
+    if (uv.x < 0.0 || uv.x > 1.0)
+        col *= 0.0;
+    if (uv.y < 0.0 || uv.y > 1.0)
+        col *= 0.0;
+
+--Para quitarle la shadowmask comentamos la línea:
+col*=1.0-0.65*float3(clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0));
+--Para quitarle la distorsion de geometría (las "arrugas") nos vamos a las líneas de sample que están en la función
+"void PS_CRTMattias1()", son esas que empiezan por "col.r", "col.g", "col.b", y quitamos las "x+" que esán justo
+a continuación de cada "float2("
+También debes comentar la declaración de "float x" que hay justo encima, para ahorrar recursos.
+--Para quitarle los halos, comentamos las tres líneas que empiezan por "col.r +", "col.g +" y "col.g +"
+--Para quitarle el scanroll, dejamos la línea:
+float scans = clamp( 0.35+0.35*sin(3.5*iGlobalTime*0.001+uv.y*ReShade::ScreenSize.y*1.5), 0.0, 1.0);
+así:
+float scans = clamp( 0.35+0.35*sin(uv.y*ReShade::ScreenSize.y*1.5), 0.0, 1.0);
+--Para quitarle los parpadeos, comentamos la sección que empieza con:
+col *= 1.0+0.01*sin(110.0*iGlobalTime*0.001);
+--Para quitarle la curvatura, nos vamos a "float2 curve(float2 uv)" y comentamos todo dejando sólo el "return uv;"
+--Para quitarle el "efecto viñeta" (=bordes oscurecidos) comentamos las líneas donde se usa "vig" 
+--Para ahorrar recursos, comentamos esta línea que no se usa para nada:
+float comp = smoothstep( 0.1, 0.9, sin(iGlobalTime*0.001) );
+--En general, en todas las líneas donde aparece iGlobalTime podemos eliminar el propio iGlobalTime y todo lo que esté multiplicando iGlobalTime,
+porque al quitarlo es como si valiese 1.0. Si en esa línea se declara una variable que luego usa iGlobalTime para obtener su valor,
+con declarar la variable e inicializarla a 1.0 es suficiente.
+También puedes probar a eliminar la línea completa, si usa iGlobalTime o rand() o algo así, es que es para efectos de ruido o deformación
+y es susceptible de eliminarse.  
+
+########FIN SECCIÓN DE EDICIÓN DE SHADERS###########
+
+LANZAMIENTO DE JUEGOS
+(OJO!!! PODEMOS SABER SI UN JUEGO ESTÁ SIENDO LANZADO CON VKBASALT PORQUE NOS TIENEN QUE SALIR MENSAJES DE VKBASALT AL LANZARLO!!!)
+
+Así lanzamos los juegos de SDL2, haciendo que corran sobre Vulkan a través de ZINK, y activando el vkBasalt:
+
+ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./doomretro -nosplash -iwad doomu.wad -pwad doom1music.wad -pwad smoothed.wad -pwad blackops.wad
+
+(NOTA: Si fuesen juegos de Vulkan directamente, no tendríamos que pasarle MESA_LOADER_DRIVER_OVERRIDE=zink, como es obvio).
+
+OTRAS NOTAS:
+
+La otra alternativa para conseguir lo mismo sería usar el compositor GAMESCOPE (https://github.com/ValveSoftware/gamescope)
+que directamente soporta shaders de ReShade para todo, pero que mete latencia al hacerlo tal como dice en su propio README.
+
+Para que se use ZINK en lugar de OpenGL al correr un programa de OpenGL:
+export MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460 MESA_LOADER_DRIVER_OVERRIDE=zink GALLIUM_DRIVER=zink
+
+Si sólo quisiésemos OpenGL 3.3, no hace falta ZINK ni nada:
+export MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330
