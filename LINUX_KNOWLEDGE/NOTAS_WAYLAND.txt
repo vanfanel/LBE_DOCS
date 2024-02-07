@@ -1069,6 +1069,9 @@ Pero lo suyo es meterlo en ~/.config/labwc/autostart así:
 --Para teclado en español creamos ~/.config/labwc/environment con el contenido:
 XKB_DEFAULT_LAYOUT=es
 XKB_DEFAULT_VARIANT=nodeadkeys
+Para teclado en inglés sin deadkeys de manera que la "~" salga correctamente sería:
+XKB_DEFAULT_LAYOUT=us
+XKB_DEFAULT_VARIANT=altgr-intl
 
 --Para que se lanze el foot automáticamente, creamos ~/.config/labwc/autostart con el contenido:
 /usr/local/bin/foot >/dev/null 2>&1 &
