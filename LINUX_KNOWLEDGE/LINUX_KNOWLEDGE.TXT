@@ -4258,7 +4258,7 @@ sudo chvt 3
 sudo chvt 1
 sudo fbset -xres 1360 -yres 768
 
-*************INSTALAR FluidSynth libs desde sources (sin depender de x11-common)********************************************
+*************INSTALAR FluidSynth desde sources (sin depender de x11-common)********************************************
 
 Instalamos unas dependencias que tiene. Necesita glib porque el threading multiplataforma se hace gracias a glib. Es inevitable.
 
