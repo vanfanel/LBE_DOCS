@@ -28,7 +28,8 @@ LC_NUMERIC=en_US.UTF-8
 LC_PAPER=en_US.UTF-8                                                                                           
 LANG="C"	
 
--Conexión LENTA por SSH. Edita /etc/ssh/sshd_config y descomenta la línea "UseDNS no"
+-Conexión por SSH con mucho lag: Edita /etc/network/interfaces y añade al final:
+wireless-power off
 
 -Ponemos el governor a PERFORMANCE.
 

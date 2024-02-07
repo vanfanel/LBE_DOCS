@@ -83,6 +83,12 @@ ctl.!default {
         type hw                                                                                                
         card HID                                                                                               
 }
+
+*****CONEXIÓN POR SSH CON MUCHO LAG*****************
+
+Edita /etc/network/interfaces y añade al final:
+wireless-power off
+
 *****CONFIGURACIÓN DE AUDIO/VIDEO EN RETROARCH******
 	
 -Video: VULKAN con SWAPCHAIN a 2
