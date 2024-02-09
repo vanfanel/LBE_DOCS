@@ -3839,23 +3839,30 @@ Para usar por ejemplo una banda sonora custom, le puedes pasar /x <ruta al archi
 
 ************Schismtracker en GNU/Linux*******************************************************************
 
-Dependencias previas:
-sudo apt-get install autoconf
 
 Bajamos la última estable de:
 https://github.com/schismtracker/schismtracker/releases
+¡¡¡¡¡¡¡¡¡¡¡¡¡CUIDADO, ES DE LOS QUE NOS DEJAN TODO TIRADO EN EL MISMO DIRECTORIO DEL .TAR.GZ!!!!!!!!!!!!!
+¡¡¡¡¡¡¡¡¡¡¡¡¡MÉTELO ANTES DE UN DIRECTORIO PROPIO Y LO DESCOMPRIMES ALLÍ!!!!!!!!!!!!!!!
+
+
+##### BLOQUE EN PRINCIPIO YA INNECESARIO#####
+Instalamos dependencias previas:
+sudo apt-get install autoconf
 
 Ejecutamos:
 autoreconf -vif
+##### FIN BLOQUE EN PRINCIPIO YA INNECESARIO#####
 
-Ahora ya configuramos con:
+Configuramos con:
 
 CFLAGS="-O2 -march=native -mtune=native" ./configure --without-x --without-flac
 
 En la Raspberry Pi, ejecutamos con:
 AUDIODEV="sysdefault" ./schismtracker
-El el Partaker i5-1235U, ejecutamos con:
-AUDIODEV="hw:PCH,3" ./schismtracker
+El el PC AMD64, ejecutamos con:
+AUDIODEV="default" ./schismtracker
+(Puedes probar con "sysdefault" si "default" no funciona).
 (En otros sistemas, lo suyo es pasar también AUDIODEV="hw:lo_que_sea" y asi se consiguen tamaños de buffer menores, pero en la Raspberry Pi
 si usas la CARD vc4hdmi0, no se puede usar directamente el DEVICE llamado "hw" porque no soporta mas que un formato de audio raro,
 y por eso falla con un "unsopported audio format" si lo intentas).
