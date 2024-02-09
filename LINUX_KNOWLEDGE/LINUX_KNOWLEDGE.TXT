@@ -7331,7 +7331,7 @@ Ahí puedes ponerlo a pantalla completa, activar el vsync, hacer que no salga la
 INSTALAR OPENAL en GNU/Linux
 ============================
 
-Bajamos la última release de: https://github.com/kcat/openal-soft/tags
+Bajamos la última release de: https://github.com/kcat/openal-soft/releases
 Configuramos así:
 cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_REQUIRE_PIPEWIRE=OFF \
 -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_BACKEND_PORTAUDIO=OFF -DALSOFT_EXAMPLES=OFF \
