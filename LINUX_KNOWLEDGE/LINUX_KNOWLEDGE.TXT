@@ -8952,7 +8952,7 @@ Clonamos el repo:
 git clone --depth 1 https://github.com/OpenFodder/openfodder.git
 
 --Editamos Source/Amiga/Sound_Amiga.cpp y ponemos "desired->samples" a 0x400
---Editamos Source/Amiga/Graphics_Amiga.cpp, buscamos "Middle", y ponemos los incrementos de "Front", "Middle" y "Back" a 4, 2 y 1 respectivamente.
+--Editamos Source/Amiga/Graphics_Amiga.cpp, buscamos "Middle", y ponemos los incrementos de "Front", "Middle" y "Back" a 5, 4 y 2 respectivamente.
   (Este fix ya está en un PR mio, y cuando sea mergeado no hará falta hacer esto).
 --Entramos en los sources y editamos el Makefile, cambiando el clang++ por g++, y quitamos el -ferror-limit=100 que eso es específico del CLANG ese.
 --Compilamos con:
