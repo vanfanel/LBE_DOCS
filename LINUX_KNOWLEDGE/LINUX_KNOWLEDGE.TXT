@@ -5016,11 +5016,10 @@ git clone --depth 1 https://github.com/TheAssemblyArmada/Vanilla-Conquer.git
 
 Editamos common/video_sdl2.cpp y en SDL_CreateRenderer() añadimos el flag SDL_RENDERER_PRESENTVSYNC.
 
-Creamos un directorio de compilación y entramos:
+Configuramos y compilamos con:
+
 mkdir b4
 cd b4
-
-Configuramos y compilamos con:
 
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 
