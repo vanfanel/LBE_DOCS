@@ -7859,12 +7859,16 @@ Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/HurricanGame/Hurrican.git
 cd Hurrican/Hurrican
 Configuramos y compilamos:
+
 mkdir b4
 cd b4
+
 cmake -DCMAKE_BUILD_TYPE=Release -DRENDERER=GLES2 \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
+
 (Hay otros renderers disponibles, mira en el README)
+
 make -j4 
 
 Creamos el directorio ~/hurrican, y allí copiamos el ejecutable, junto con los directorios data y lang, que vienen con los sources.

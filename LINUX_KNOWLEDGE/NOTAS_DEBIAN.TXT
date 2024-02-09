@@ -627,7 +627,7 @@ Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sa
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
 Para SDL2_Mixer:
--Instalar antes estas dependencias: apt-get install libmpg123-dev libogg-dev libflac-dev libmodplug-dev
+-Instalar antes estas dependencias: apt-get install libmpg123-dev libogg-dev libflac-dev libmodplug-dev libxmp-dev
 -Instalar antes fluidsynth (tienes instrucciones en LINUX_KNOWLEDGE para instalarlas manualmente sin depender de X11)
 -Nos bajamos la última versión estable de: https://github.com/libsdl-org/SDL_mixer/releases 
 -Configuramos con:
