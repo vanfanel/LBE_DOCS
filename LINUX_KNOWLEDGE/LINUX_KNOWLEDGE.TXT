@@ -7369,6 +7369,9 @@ LIB += -lOpenGL
 Compilamos con:
 FLAGS="-march=native -mtune=native -O2" make -j4 LINUX=1 SDL=2 DEBUG=0
 
+Creamos el directorio ~/stunt, y allí metemos el ejecutable "stuntcarracer", el archivo "DejaVuSans-Bold.ttf",
+y los directorios "Bitmap", "Tracks", y "Sounds" que vienen con los sources.
+
 ELDRITCH en GNU/LINUX
 =====================
 
