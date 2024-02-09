@@ -7361,8 +7361,13 @@ git clone --depth 1 https://github.com/ptitSeb/stuntcarremake.git
 Editamos StuntCarRacer.cpp, y debajo de la llamada a "SDL_SetWindowTitle", añadimos:
 SDL_GL_SetSwapInterval(1);
 
+Editamos Makefile, y dejamos la línea:
+LIB += -lGL -lGLU
+como:
+LIB += -lOpenGL
+
 Compilamos con:
-make -j4 LINUX=1 SDL=2 DEBUG=0
+FLAGS="-march=native -mtune=native -O2" make -j4 LINUX=1 SDL=2 DEBUG=0
 
 ELDRITCH en GNU/LINUX
 =====================
