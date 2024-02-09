@@ -7358,7 +7358,7 @@ sudo apt-get install libglm-dev
 Clonamos el repo de 
 git clone --depth 1 https://github.com/ptitSeb/stuntcarremake.git
 
-Añadimos en StuntCarRacer.cpp, debajo de la llamada a SDL_SetWindowTitle:
+Editamos StuntCarRacer.cpp, y debajo de la llamada a "SDL_SetWindowTitle", añadimos:
 SDL_GL_SetSwapInterval(1);
 
 Compilamos con:
