@@ -5213,6 +5213,16 @@ Editamos src/sdl2/graphics.c y:
 -En la llamada a SDL_CreateRenderer(), añadimos SDL_RENDERER_PRESENTVSYNC
 -Antes de eso, añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 -En PHL_EndDrawing(), quitamos la sección de "implement some crude frameskipping...", y el while con el SDL_Delay() al final.
+-Para controlarlo mejor con teclado usando Z y X, editamos src/sdl2/input.c, y dejamos las líneas:
+case SDLK_x:        bFaceDown = w; break;
+case SDLK_s:        bFaceLeft = w; break;
+Así:
+case SDLK_z:        bFaceDown = w; break;
+case SDLK_x:        bFaceLeft = w; break;
+O si quisiéramos usar controles más estilo MSX, con SPACE y CTRL, podríamos hacer:
+case SDLK_LCTRL:        bFaceDown = w; break;
+case SDLK_SPACE:        bFaceLeft = w; break;
+(OJO! Hay que borrar otra línea con SDLK_SPACE que hay debajo, que es redundante porque podemos entrar en el menú usando ESC).
 
 Editamos src/sdl2/audio.c y:
 -Cambiamos el 4096 en Mix_OpenAudio() por 1024.
