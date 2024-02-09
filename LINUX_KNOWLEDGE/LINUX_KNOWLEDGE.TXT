@@ -5017,6 +5017,7 @@ git clone --depth 1 https://github.com/TheAssemblyArmada/Vanilla-Conquer.git
 Editamos common/video_sdl2.cpp y:
 -En SDL_CreateRenderer() añadimos el flag SDL_RENDERER_PRESENTVSYNC.
 -Añadimos "win_flags |= SDL_WINDOW_OPENGL;" antes de la llamada a SDL_CreateWindow()
+ (Esto se debe a un error de SDL2, por lo que cuando lo arreglen nos podemos ahorrar esto).
 
 Configuramos y compilamos con:
 
