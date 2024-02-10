@@ -1339,3 +1339,24 @@ Por ejemplo para que RA nos ponga un modo de 50Hz al lanzar el core de Virtual B
 en retroach.cfg, y en los overrides del core (en este caso .config/retroarch/config/Beetle VB/Beetle VB.cfg) ponemos
 video_refresh_rate = "50.005001". Esa frecuencia se ha detectado poniendo el modo de vídeo a 50Hz con wlr-ranrd y entrando en RA.
 Y al cargar una ROM de ese core, debería cambiarnos el modo de vídeo a 50Hz. (OJO: En Wayland de momento no funciona, sólo en KMS/DRM).
+
+
+CÓMO SABER SI UN PROGRAMA ESTÁ CORRIENDO EN MODO DIRECT SCANOUT ON WAYLAND
+==========================================================================
+
+Lanza el compositor en modo verbose, por SSH, y enseguida lo ves.
+Para poder lanzar un compositor por SSH antes debes hacer:
+
+rundir="/run/user/0"
+export XDG_RUNTIME_DIR=$rundir
+
+Ahora, lanzamos labwc así:
+labwc -d
+
+Ejecutamos RetroArch, o algún juego de SDL2, y enseguida vemos:
+
+00:00:15.025 [types/scene/wlr_scene.c:1709] Direct scan-out enabled
+
+Y al salir el programa en cuestión:
+
+00:00:15.025 [types/scene/wlr_scene.c:1709] Direct scan-out enabled
