@@ -505,7 +505,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson setup .. --buildtype=release
+meson setup .. --buildtype=release -Dxwayland=disabled
 
 ninja -j4
 sudo ninja install
