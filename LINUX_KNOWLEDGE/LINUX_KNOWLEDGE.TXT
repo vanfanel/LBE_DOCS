@@ -4791,6 +4791,10 @@ Y ya estaríamos en el nuevo branch con los cambios del PR.
 NOTA: En lugar de <NOMBRE_NUEVO_BRANCH> podemos poner el nombre del branch principal (MAIN, MASTER, lo que sea)
 y de ese modo no se nos crea un nuevo branch y no hace falta que hagamos el checkout.
 
+************DESCARGAR DE CDROMANCE**************************************************************************************************************
+
+Nos vamos a la ficha del juego en cdromance.com, buscamos su CDR_TICKET, nos vamos a cdromance.org, y lo pegamos allí. ¡Listo!
+
 ************RECUPERAR PARTIDAS EN EL GABRIEL KNIGHT DE SCUMMVM**********************************************************************************
 
 A los datos del juego les falta el archivo
@@ -5609,7 +5613,7 @@ syntax on
 let g:skip_defaults_vim = 1 
 
 " Para que NO nos transforme 8 espacios en un TAB
-set expandtab
+set noexpandtab
 
 set number
 set ls=2
