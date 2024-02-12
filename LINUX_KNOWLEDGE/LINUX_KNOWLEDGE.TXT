@@ -4758,6 +4758,16 @@ git push -f origin main
 
 Y luego ya haríamos el pull request.
 
+SQUASHEAR TODOS LOS COMMITS DE UN PULL REQUEST EN UN SOLO COMMIT
+================================================================
+
+Suponiendo que estamos en el branch donde hemos hecho los commits, que en este ejemplo se llama "cursor_constraint", hacemos:
+
+git reset --soft master
+git add .
+git commit -m  "Add pointer constraint functionality."
+git push -f origin cursor_constraint
+
 MODIFICAR UN COMMIT DEL PASADO (QUE YA HEMOS PUSHEADO Y TODO)
 =============================================================
 
