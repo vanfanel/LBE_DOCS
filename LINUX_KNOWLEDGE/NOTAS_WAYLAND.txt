@@ -963,7 +963,7 @@ Copiamos el fichero "config" que viene con los sources a ~/.config/sway/config, 
 set $mod Mod1
 
 -Para que se use el modo de vídeo actual:
-output HDMI-A-1 resolution 1280x720@60 position 0,0
+output HDMI-A-1 resolution 1920x1080@60 position 0,0
 
 -Para tener el teclado en castellano:
 input type:keyboard {
