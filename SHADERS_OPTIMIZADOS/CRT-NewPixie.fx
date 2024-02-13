@@ -64,7 +64,7 @@ float3 tsample( sampler samp, float2 tc, float offs, float2 resolution )
 		
 float3 filmic( float3 LinearColor )
 {
-	float3 x = max( float3(0.0,0.0,0.0), LinearColor-float3(0.004,0.004,0.004));
+    float3 x = max( float3(0.0,0.0,0.0), LinearColor-float3(0.004,0.004,0.004));
     return (x*(6.2*x+0.5))/(x*(6.2*x+1.7)+0.06);
 }
 		
@@ -90,7 +90,7 @@ float rand(float2 co){ return frac(sin(dot(co.xy ,float2(12.9898,78.233))) * 437
 float4 PS_NewPixie_Final(float4 pos: SV_Position, float2 uv_tx : TexCoord) : SV_Target
 {
     float2 uv = uv_tx.xy;
-	uv.y = 1.0 - uv_tx.y;
+    uv.y = 1.0 - uv_tx.y;
     /* Curve */
     float2 curved_uv = lerp( curve( uv ), uv, 0.4 );
     float scale = -0.101;
@@ -104,21 +104,16 @@ float4 PS_NewPixie_Final(float4 pos: SV_Position, float2 uv_tx : TexCoord) : SV_
     float x = 0;
     float o =sin(gl_FragCoord.y*1.5)/resolution.x;
     x+=o*0.25;
-   // make time do something again
+
     col.r = tsample(ReShade::BackBuffer,float2(x+scuv.x+0.0009,scuv.y+0.0009),resolution.y/800.0, resolution ).x+0.02;
     col.g = tsample(ReShade::BackBuffer,float2(x+scuv.x+0.0000,scuv.y-0.0011),resolution.y/800.0, resolution ).y+0.02;
     col.b = tsample(ReShade::BackBuffer,float2(x+scuv.x-0.0015,scuv.y+0.0000),resolution.y/800.0, resolution ).z+0.02;
-    float i = clamp(col.r*0.299 + col.g*0.587 + col.b*0.114, 0.0, 1.0 );
-    i = pow( 1.0 - pow(i,2.0), 1.0 );
-    i = (1.0-i) * 0.85 + 0.15; 
     
     /* Level adjustment (curves) */
-    col *= float3(0.95,1.05,0.95);
-    col = clamp(col*1.3 + 0.75*col*col + 1.25*col*col*col*col*col,float3(0.0,0.0,0.0),float3(10.0,10.0,10.0));
+    col = clamp(col + col*col + col*col*col*col*col,float3(0.0, 0.0, 0.0),float3(10.0, 10.0, 10.0));
 
     /* Vignette. Modify the 16.0 value to control the burnout effect in the center area. */
-    //float vig = (0.1 + 1.0*16.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
-    float vig = (0.1 + 1.0*10.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
+    float vig = ((0.1*0.80) + 1.0*10.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
     vig = 1.3*pow(vig,0.5);
     col *= vig;
     /* Compensate the lack of vignette in case you decide to comment it out for performance reasons */
