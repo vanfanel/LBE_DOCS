@@ -2172,7 +2172,7 @@ bgmvolume "0.500000"
 volume "0.200000"
 bind F1 ""
 
-También, en el shader fakelottes, pon CRT Gamma a 2.10 y Monitor Gamma a 2.50, así el Quake se verá con la oscuridad adecuada
+También, en el shader fakelottes, pon CRT Gamma a 2.50 y Monitor Gamma a 2.10, así el Quake se verá con la oscuridad adecuada
 y los juegos de FBNeo se verán bien también (sin zonas claras alrededor de las letras del spang o 3wonders, etc)
 
 Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake
