@@ -4801,6 +4801,48 @@ Y ya estaríamos en el nuevo branch con los cambios del PR.
 NOTA: En lugar de <NOMBRE_NUEVO_BRANCH> podemos poner el nombre del branch principal (MAIN, MASTER, lo que sea)
 y de ese modo no se nos crea un nuevo branch y no hace falta que hagamos el checkout.
 
+HACER PULL REQUESTS EN EL LUS QUE SE VEAN DESDE EL SOH
+======================================================
+
+Se supone que hemos hecho unos cambios en el LUS, y queremos que se vean desde el SOH para probar que compilar y que funcionan bien.
+
+PARTE LUS
+---------
+
+En github, forkeamos el proyecto original, y en nuestro fork, creamos un nuevo branch, que vamos a llamar "remove_glew_windows"
+
+Ahora ya empezamos con git en nuestra máquina local.
+--Clonamos nuestro fork:
+git clone https://<PAT>@github.com/vanfanel/libultraship.git
+--Nos colocamos en el nuevo branch:
+git checkout remove_glew_windows
+--Hacemos los cambios que queramos, y los subimos al branch:
+git add .
+git commit -m "Remove remains of GLEW on Windows."
+git push origin remove_glew_windows
+--Nos vamos a github y creamos el Pull Request, verificando tras hacerlo que compila para todas las plataformas.
+
+PARTE SOH
+---------
+
+En github, forkeamos el proyecto original, y en nuestro fork, creamos un nuevo branch, que vamos a llamar "remove_glew_windows"
+Ahora ya empezamos con git en nuestra máquina local.
+--Clonamos nuestro fork, incluyendo sus submódulos ya que LUS es un submódulo de SOH:
+git clone --recurse-submodules https://<PAT>@github.com/vanfanel/shipwright.git
+--Nos colocamos en el nuevo branch de SOH:
+git checkout remove_glew_windows
+--Nos vamos al directorio libultraship, y añadimos nuestro fork de LUS como remote (llamamos al remote "vanfanel" pero lo podríamos llamar pepito)
+  y lo descargamos:
+cd libultraship
+git remote add vanfanel https://github.com/vanfanel/libultraship.git
+git fetch vanfanel
+--Nos colocamos en el nuevo branch de LUS:
+git checkout remove_glew_windows
+--Nos salimos a SOH, y subimos los cambios al nuevo branch de SOH:
+git add .
+git commit -m "Remove remains of GLEW on Windows."
+git push origin remove_glew_windows
+
 ************DESCARGAR DE CDROMANCE**************************************************************************************************************
 
 Nos vamos a la ficha del juego en cdromance.com, buscamos su CDR_TICKET, nos vamos a cdromance.org, y lo pegamos allí. ¡Listo!
