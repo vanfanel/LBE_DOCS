@@ -108,16 +108,16 @@ float4 PS_NewPixie_Final(float4 pos: SV_Position, float2 uv_tx : TexCoord) : SV_
     col.r = tsample(ReShade::BackBuffer,float2(x+scuv.x+0.0009,scuv.y+0.0009),resolution.y/800.0, resolution ).x+0.02;
     col.g = tsample(ReShade::BackBuffer,float2(x+scuv.x+0.0000,scuv.y-0.0011),resolution.y/800.0, resolution ).y+0.02;
     col.b = tsample(ReShade::BackBuffer,float2(x+scuv.x-0.0015,scuv.y+0.0000),resolution.y/800.0, resolution ).z+0.02;
-    
+   
     /* Level adjustment (curves) */
     col = clamp(col + col*col + col*col*col*col*col,float3(0.0, 0.0, 0.0),float3(10.0, 10.0, 10.0));
 
     /* Vignette. Modify the 16.0 value to control the burnout effect in the center area. */
-    float vig = ((0.1*0.8) + 1.0*16.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
+    float vig = ((1.0-0.99*0.8) + 1.0*16.0*curved_uv.x*curved_uv.y*(1.0-curved_uv.x)*(1.0-curved_uv.y));
     vig = 1.3*pow(vig,0.5);
     col *= vig;
     /* Compensate the lack of vignette in case you decide to comment it out for performance reasons */
-    //col *= 1.3;
+    // col *= 1.3;
 
     /* Scanlines */
     float scans = clamp( 0.35+0.18*sin(curved_uv.y*resolution.y*1.5), 0.0, 1.0);
