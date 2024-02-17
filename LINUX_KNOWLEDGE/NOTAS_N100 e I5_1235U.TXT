@@ -32,6 +32,14 @@ Para activar ciertas cosas, en algunas BIOS es necesario pulsar CTRL+F1 para acc
 -En Advanced->CPU Configuration, deshabilita el Hyperthreading y el "Intel (VMX) Virtualization".
 -En Advanced->Power & Performance, entra en View/Configure Turbo Options y deshabilita todo. 
 
+******LÍNEA DE COMANDOS DEL KERNEL***************************************************
+
+En /etc/default/grub tendremos:
+
+GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 mitigations=off i915.mitigations=off audit=0 cpufreq.default_governor=performance usbhid.jspoll=    1 xpad.cpoll=1"
+
+Y no te olvides de ejecutar "update-grub" al salir.
+
 ******PARA QUE NO SE AUTO-ENCIENDA EL ORDENADOR AL CONECTARLO A LA CORRIENTE*********
 
 A parte de quitarle el PIN de PRWON1 en la placa, en la BIOS ve a CHIPSET->PCH IO y pon POWER FAILURE a ALWAYS OFF.
