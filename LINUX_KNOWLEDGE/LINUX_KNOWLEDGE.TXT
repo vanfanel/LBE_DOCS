@@ -2842,7 +2842,7 @@ sudo update-initramfs -u
 
 Habría que pasarle una línea de este estilo al kernel:
 
-video="HDMI-A-1:1360x768@60"
+video=HDMI-A-1:1360x768@60
 
 En la Raspberry Pi, eso se añadiría a cmdline.txt (antes se hacía con parámetros hdmi_* en config.txt, pero esos parámetros
 son ignorados en modo KMS).
