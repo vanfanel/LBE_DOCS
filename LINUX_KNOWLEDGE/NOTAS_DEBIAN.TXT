@@ -764,3 +764,20 @@ sudo ldconfig
 
 Si quieres filtros por software, entra en gfx/video_filters y haz make, y copias los .so y los .filt a ~/.config/retroarch/filters/video/
 y luego los seleccionas en retroarch.
+
+KERNEL REALTIME EN DEBIAN
+=========================
+
+Lo primero que debes saber es que ya no hace falta un kernel RT especial: la funcionalidad de RT está en el kernel vanilla 6.x.
+
+--Comprobamos que el kernel que tenemos está preparado. Para ello, hacemos: cat /boot/config-$(uname -r) |grep PREEMPT
+Nos interesa tener "CONFIG_PREEMPT_DYNAMIC=y"
+--Añadimos a la línea de comandos del kernel: "threadirqs preempt=full nohz_full=1-3"
+--Reiniciamos, hacemos "dmesg | grep Preempt" y comprobamos que vemos: "Dynamic Preempt: full"
+--Añadimos nuestro usuario al grupo "audio": usermod -a -G audio <nombre_usuario>
+--Podemos comprobar qué CPUs tenemos en modo tickless con: cat /sys/devices/system/cpu/nohz_full
+
+--Ahora vamos con la prueba definitiva del desempeño realtime de nuestro equipo, usando "rtcqs". Para instalar "rtcqs":
+	--Nos vamos a https://codeberg.org/rtcqs/rtcqs/releases y nos bajamos el último binario release estable.
+	--Le damos permisos con "chmod +x" y lo ejecutamos.
+	  Debería salirnos todo en verde, falta investigar por qué falla lo de "tickless" (se supone que nohz_full=1-3 se encarga de eso).
