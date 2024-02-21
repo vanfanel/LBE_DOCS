@@ -6467,6 +6467,10 @@ PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE
 
 PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
 
+SI USAS EL CORE BSNES, ten en cuenta que tienes que desactivar el Runahead de RetroArch
+y activar el Runahead interno de BSNES, o se quedará en una pantalla en negro. A parte, tiene problemas de buffering
+y no va bien con latencias de sonido bajas, hagas lo que hagas.
+
 SI USAS INTEGER SCALING Y QUIERES UN BORDE PARA LA PANTALLA:
 -Clona el repo https://github.com/libretro/common-overlays.git, y mete los overlays que quieras en ~/.config/retroarch/overlay
 -Ve a QUICK MENU->ON-SCREEN OVERLAY, activa DISPLAY OVERLAY, y selecciona un overlay preset de los que has copiado.
