@@ -6611,6 +6611,18 @@ COMPILAR CUALQUIER CORE DE LIBRETRO
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
 
+BAJA LATENCIA EN LIBRETRO SIN VRR (CON VRR SE PUEDE QUITAR EL VSYNC Y ES TODO MÁS FÁCIL)
+========================================================================================
+
+-El truco es poner Max Swapchains a 3, y luego compensar poniéndole 1 frame de Runahead (se puede meter 2 o 3, pero
+el Tetris de arcade por ejemplo no admite más de 1).
+Se puede combinar con Alsathread lo que nos permite bajar la latencia en la mayoría de los cores a 16 segundos, pero
+mejor déjalo en 36 para estar más seguro (sigue siendo una latencia ínfima e inapreciable).
+Para mejorar el comportamiento de Alsathread, añadimos estas cosas a la línea de comandos del kernel (tienes más info en la
+sección "KERNEL REALTIME EN DEBIAN" de NOTAS_DEBIAN.TXT):
+"threadirqs preempt=full nohz_full=1-3 cpufreq.default_governor=performance"
+
+
 DESCARGAR CORES PRECOMPILADOS DE LIBRETRO
 =========================================
 
