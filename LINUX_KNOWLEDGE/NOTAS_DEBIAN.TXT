@@ -772,7 +772,8 @@ Lo primero que debes saber es que ya no hace falta un kernel RT especial: la fun
 
 --Comprobamos que el kernel que tenemos está preparado. Para ello, hacemos: cat /boot/config-$(uname -r) |grep PREEMPT
 Nos interesa tener "CONFIG_PREEMPT_DYNAMIC=y"
---Añadimos a la línea de comandos del kernel: "threadirqs preempt=full nohz_full=1-3 cpufreq.default_governor=performance"
+--Añadimos a la línea de comandos del kernel:
+  "threadirqs preempt=full nohz_full=1-3 cpufreq.default_governor=performance mitigations=off audit=0"
 --Reiniciamos, hacemos "dmesg | grep Preempt" y comprobamos que vemos: "Dynamic Preempt: full"
 --Añadimos nuestro usuario al grupo "audio": usermod -a -G audio <nombre_usuario>
 --Podemos comprobar qué CPUs tenemos en modo tickless con: cat /sys/devices/system/cpu/nohz_full
