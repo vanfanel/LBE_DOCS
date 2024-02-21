@@ -6614,8 +6614,11 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 BAJA LATENCIA EN LIBRETRO SIN VRR (CON VRR SE PUEDE QUITAR EL VSYNC Y ES TODO MÁS FÁCIL)
 ========================================================================================
 
--El truco es poner Max Swapchains a 3, y luego compensar poniéndole 1 frame de Runahead (se puede meter 2 o 3, pero
-el Tetris de arcade por ejemplo no admite más de 1).
+-El truco es poner Max Swapchains a 3, y luego compensar poniéndole 2 frame de Runahead (se puede inluso 3, pero
+el Tetris de arcade con más de 1 ya hace cosas raras... piensa que estamos acatando el lag interno de los juegos que algunos llevan de serie,
+no el lag externo del sistema emulador, así que tiene esa contrapartida).
+La idea es que al pasar el Max Swapchains a 3, liberamos la GPU para los shaders (no tiene que esperar al vsync) y a la vez
+"compensamos" trucando la latencia interna de los juegos mediante el Runahead (que tiene sus consecuencias como lo del Tetris arcade).
 -Combínalo con Alsathread bien configurado. Atiende:
 Para mejorar el comportamiento de Alsathread, añadimos estas cosas a la línea de comandos del kernel (tienes más info en la
 sección "KERNEL REALTIME EN DEBIAN" de NOTAS_DEBIAN.TXT):
