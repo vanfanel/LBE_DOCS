@@ -2172,9 +2172,6 @@ bgmvolume "0.500000"
 volume "0.200000"
 bind F1 ""
 
-También, en el shader fakelottes, pon CRT Gamma a 2.50 y Monitor Gamma a 2.10, así el Quake se verá con la oscuridad adecuada
-y los juegos de FBNeo se verán bien también (sin zonas claras alrededor de las letras del spang o 3wonders, etc)
-
 Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake
 te mande al menú de RA.
 
@@ -6418,18 +6415,49 @@ y para volver, obviamente, start.
 
 **********Configuración óptima de RetroArch (En Wayland)************
 
-VIDEO: driver VULKAN, VSYNC ON, MAX_SWAPCHAIN 2
-AUDIO: driver ALSA, 48000 Hz, 36ms, resampler quality normal
-(Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
+Configuración base de la que partiremos, es decir, lo primero que ponemos:
+VIDEO: driver VULKAN, VSYNC ON (suponiendo que no tengamos VRR), MAX_SWAPCHAIN 2
+AUDIO: driver ALSATHREAD (hay que pasar unos parámetros al kernel, mira más abajo en el bloque de baja latencia),
+       44100 Hz, 36ms, resampler quality normal
+(Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo: por lo demás,
+la frecuencia nativa en la mayoría de los cores es 44100Hz por lo que usándola nos ahorramos una conversión).
 
-SHADER: usamos FAKELOTTES, que tiene una mask increíble, con:
-CRT GAMMA a 2.10
-Monitor Gamma 2.50
+####### BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
 
-Si queremos pixelblending (MegaDrive...), ponemos SHADER PASSES a 2, y como shaders:
--Como primer pass, el shader "gdapt-pass1.slang" que está entre los shaders de dithering
--Como segudo pass, el shader el Fakelottes con los parámetros "CRT Gamma" a 2.10 y "Monitor Gamma" a 2.50,
- y con "Settings->Video->Bilinear Filtering" activado (o bien "Shader Filter" para Fakelottes puesto a "Linear", es lo mismo).
+-El truco es poner Max Swapchains a 3, y luego compensar poniéndole 2 frame de Runahead (se puede inluso 3, pero
+el Tetris de arcade con más de 1 ya hace cosas raras... piensa que estamos acatando el lag interno de los juegos que algunos llevan de serie,
+no el lag externo del sistema emulador, así que tiene esa contrapartida). NO hace falta activar el "Use Second Instance", porque
+a nosotros el Runahead no nos provoca problemas de audio. El otro método, llamado "Run Preemptive Frames", sí causa pitch wobbling. 
+La idea es que al pasar el Max Swapchains a 3, liberamos la GPU para los shaders (no tiene que esperar al vsync) y a la vez
+"compensamos" trucando la latencia interna de los juegos mediante el Runahead (que tiene sus consecuencias como lo del Tetris arcade).
+-Combínalo con Alsathread bien configurado. Atiende:
+Para mejorar el comportamiento de Alsathread, añadimos estas cosas a la línea de comandos del kernel (tienes más info en la
+sección "KERNEL REALTIME EN DEBIAN" de NOTAS_DEBIAN.TXT):
+"threadirqs preempt=full nohz_full=1-3 cpufreq.default_governor=performance mitigations=off audit=0"
+Esto nos permite bajar la latencia en la mayoría de los cores a 16ms,
+excepto en las transiciones de modo de vídeo del DOSBOX que petardea un poco, pero si lo dejas a 36 las transiciones de DOSBOX ya no petardean.
+(sigue siendo una latencia ínfima e inapreciable)
+ 
+-La otra posibilidad es poner Max Swapchain a 2, usar Alsathread con los parámetros del kernel antes mencionados para mejorar su desempeño,
+poner la latencia de audio a 36ms, meter 1 frame de Runahead, o no usar Runahead en absoluto. PERO en este caso estamos limitando la GPU
+por lo del Max Swapchain a 2, por lo que con shaders tendremos petardeo en las transiciones de DOSBOX.
+
+####### FIN BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
+
+SHADERS: Para la mayoría de las máquinas, el shader Fakelottes con el "Monitor Gamma" bajado a 1.95 es más que suficiente.
+Para el core de SEGA, debido al tema del dithering y tal, usa el shader CYCLONE con estos parámetros puestos así:
+ Curvature Horizontal = "0.05"                                                                                                                               
+ Curvature Vertical = "0.05"                                                                                                                                                                                                                                                              
+ Scan/Mask Brightness Dependence = "0.33"                                                                                                                              
+ Saturation = "1.30"                                                                                                                          
+ Bightness, Sega Fix = "1.06"                                                                                                                         
+ Convergence Overal Strength = "0.50"                                                                                                                               
+ Convergence Red X-axis = "1.00"
+ Convergence Green X-axis = "1.00"
+ Convergence Blue X-axis = "1.00"
+ Potato Boost = "1.00"
+ 
+OTROS APUNTES SOBRE CORES ESPECÍFICOS:
 
 PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
@@ -6610,27 +6638,6 @@ COMPILAR CUALQUIER CORE DE LIBRETRO
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
-
-BAJA LATENCIA EN LIBRETRO SIN VRR (CON VRR SE PUEDE QUITAR EL VSYNC Y ES TODO MÁS FÁCIL)
-========================================================================================
-
--El truco es poner Max Swapchains a 3, y luego compensar poniéndole 2 frame de Runahead (se puede inluso 3, pero
-el Tetris de arcade con más de 1 ya hace cosas raras... piensa que estamos acatando el lag interno de los juegos que algunos llevan de serie,
-no el lag externo del sistema emulador, así que tiene esa contrapartida). NO hace falta activar el "Use Second Instance", porque
-a nosotros el Runahead no nos provoca problemas de audio. El otro método, llamado "Run Preemptive Frames", sí causa pitch wobbling. 
-La idea es que al pasar el Max Swapchains a 3, liberamos la GPU para los shaders (no tiene que esperar al vsync) y a la vez
-"compensamos" trucando la latencia interna de los juegos mediante el Runahead (que tiene sus consecuencias como lo del Tetris arcade).
--Combínalo con Alsathread bien configurado. Atiende:
-Para mejorar el comportamiento de Alsathread, añadimos estas cosas a la línea de comandos del kernel (tienes más info en la
-sección "KERNEL REALTIME EN DEBIAN" de NOTAS_DEBIAN.TXT):
-"threadirqs preempt=full nohz_full=1-3 cpufreq.default_governor=performance mitigations=off audit=0"
-Esto nos permite bajar la latencia en la mayoría de los cores a 16ms,
-excepto en las transiciones de modo de vídeo del DOSBOX que petardea un poco, pero si lo dejas a 36 las transiciones de DOSBOX ya no petardean.
-(sigue siendo una latencia ínfima e inapreciable)
-
--La otra posibilidad es poner Max Swapchain a 2, usar Alsathread con los parámetros del kernel antes mencionados para mejorar su desempeño,
-poner la latencia de audio a 36ms, meter 1 frame de Runahead, o no usar Runahead en absoluto. PERO en este caso estamos limitando la GPU
-por lo del Max Swapchain a 2, por lo que con shaders tendremos petardeo en las transiciones de DOSBOX.
 
 DESCARGAR CORES PRECOMPILADOS DE LIBRETRO
 =========================================
@@ -6822,7 +6829,7 @@ Y para saber por qué coño se nos instaló SYSTEMD al actualizar, miramos las d
 apt-cache rdepends systemd --installed
 
 GUÍA RÁPIDA PARA COMPILAR UN KERNEL REALTIME (TIEMPO REAL) EN LA RASPBERRY PI  (INSTRUCCIONES DE NOVIEMBRE DE 2017)
-==================================================================================================================
+===================================================================================================================
 
 NOTA: NO TIENE SENTIDO compilarte un kernel realtime si puedes aislar CPUs y ejecutar tareas en ellas (aunque sí sería interesante que esas CPUs
 fueran además tickless: de ese modo tienes un desempeño similar a baremetal). Es mejor esa alternativa para asegurarte de que nada va a interrumpir
