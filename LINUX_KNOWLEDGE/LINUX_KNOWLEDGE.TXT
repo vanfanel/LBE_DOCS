@@ -9200,9 +9200,10 @@ HACER QUE LOS MANDOS SEAN DETECTADOS COMO GAMEPAD POR LA API DE SDL2 (Método ac
 Compila los tests que vienen con los sources. Entre ellos, se creará un ejecutable llamado "controllermap".
 Lo ejecutamos y tras seguir las instrucciones nos da una cadena de mapeo para que SDL2 reconozca el mando como un gamepad.
 
-Podemos añadir en /etc/environment la cadena del pad que queramos usar. Por ejemplo, para el adaptador DaemonBite de UltimateMister
-para MegaDrive:
-SDL_GAMECONTROLLERCONFIG="03000000412300003680000001010000,LLC Arduino Leonardo,platform:Linux,crc:d6c8,a:b0,b:b1,x:b5,y:b2,back:b7,guide:b8,start:b6,leftx:a0,lefty:a1,"
+Si algún juego no nos reconoce el mando como gamepad, podemos setear una variable de entorno antes de lanzar el juego:
+export SDL_GAMECONTROLLERCONFIG="03000000412300003680000001010000,LLC Arduino Leonardo,a:b0,b:b1,x:b2,y:b3,back:b6,start:b7,leftshoulder:b4,rightshoulder:b5,dpup:-a1,dpdown:+a1,dpleft:-a0,dpright:+a0,platform:Linux,"
+
+...O bien podríamos añadir esa misma variable de entorno en en /etc/environment, y queda exportada para todos, es lo mismo.
 
 ---Cadenas de diferentes mandos---
 
