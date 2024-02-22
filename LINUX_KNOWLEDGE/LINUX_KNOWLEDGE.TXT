@@ -6467,6 +6467,9 @@ PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE
 
 PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
 
+PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead, pero sí que funciona bien con max_swapchain a 2
+y el shader Fakelottes con la curvatura comentada.
+
 SI USAS EL CORE BSNES, ten en cuenta que tienes que desactivar el Runahead de RetroArch
 y activar el Runahead interno de BSNES, o se quedará en una pantalla en negro. A parte, tiene problemas de buffering
 y no va bien con latencias de sonido bajas, hagas lo que hagas.
