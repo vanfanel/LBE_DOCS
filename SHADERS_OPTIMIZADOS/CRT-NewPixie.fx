@@ -119,8 +119,9 @@ float4 PS_NewPixie_Final(float4 pos: SV_Position, float2 uv_tx : TexCoord) : SV_
     /* Compensate the lack of vignette in case you decide to comment it out for performance reasons */
     // col *= 1.3;
 
-    /* Scanlines */
-    float scans = clamp( 0.35+0.18*sin(curved_uv.y*resolution.y*1.5), 0.0, 1.0);
+    /* Scanlines (Using uv instead of curved_uv makes dithered patterns look homogeneous) */
+    //float scans = clamp( 0.35+0.18*sin(curved_uv.y*resolution.y*1.5), 0.0, 1.0);
+    float scans = clamp( 0.35+0.18*sin(uv.y*resolution.y*1.5), 0.0, 1.0);
     float s = pow(scans,0.9);
     col = col * float3(s,s,s);
 		
