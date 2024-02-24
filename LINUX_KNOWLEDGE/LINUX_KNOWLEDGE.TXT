@@ -3780,54 +3780,17 @@ git clone --depth 1 https://github.com/nukeykt/NBlood.git
 Si quieres usar el eduke32 original, clona su repo de aquí:
 git clone --depth 1 https://voidpoint.io/terminx/eduke32.git
 
-Editamos source/build/src/sdlayer.cpp y hacemos todos los cambios que se detallan a continuación:
-
--Añadimos 
-SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-antes de SDL_CreateWindow()
-
--Cambia todas las ocurrencias de SDL_WINDOW_FULLSCREEN por SDL_WINDOW_FULLSCREEN_DESKTOP
-
 Compilamos con:
-(Como ves, tenemos que desactivar tristemente las LTO, linking time optimization... si las queremos hay que cross-compilar de verdad, nada de distcc!!)
-Funciona con aceleración GLES, por cierto, usando POLYMOST, y bastante bien además.
 
-make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=0 USE_LIBVPX=0 HAVE_FLAC=0 LTO=0 \
+make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=1 USE_LIBVPX=0 HAVE_FLAC=0 \
 OPTOPT="-march=native -mtune=native -O2"
 
-Para linkar sin LTO con el fin de hacer pruebas, pásale también LTO=0, ya que tarda AÑOS en compilar con LTO en la Rasp.
-
-Si te da problemas porque, a pesar de que estamos deshabilitando libflac, la busca en tiempo de linkado, borra la referencia de libflac de la plataforma LINUX
-en el Makefile, y fuera.
-
-Si quieres música, bájate un pack de música de http://hrp.duke4.net/download.php, y lo descomprimes en donde tengas el duke3d.grp, es decir, los .ogg o lo que sea ahí tirados con el duke3d.grp. Te recomiendo este: http://www.duke4.org/files/nightfright/music/duke3d_music-sc55.zip
-Si el pack está en FLAC o en OGG necesitas que el eduke32 se haya linkado contra la librería correspondiente.
-
-							=========================================
-
-Para CROSS COMPILAR EDUKE32: (para poder tener LTO, Linking Time Optimizations):
-
-export PATH=$PATH:/home/manuel/tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/bin
-
-En Makefile.common, la idea es que en vez de llamar a sdl2-config (que incluso si consiguiésemos que llamase a /opt/rpi_root/usr/bin/sdl2-config estaría dando --cflags y --libs 
-con rutas incorrectas) le pasemos nosotros lo que daría sdl2-config pero alterado para el entorno de cross-compilación (o sea que llamar a sdl2-config, o SDLCONFIG como lo llama
-internamente el script queda prohibido). Para ello hacemos varias cosas:
-
--Comenta ciertas lineas:
-SDLROOT:=$(strip $(shell $(SDLCONFIG) --prefix))
-LIBS+= -pthread
-
--Deja las líneas de SDLCONFIG_COMMONFLAGS y SDLCONFIG_LIBS, que es donde se llamaba originalmente a SDLCONFIG (sdl2-config) tal que así
-(esto está basado en mis notas de errores de crosscompilación en "programacion.txt"):
-
-SDLCONFIG_COMMONFLAGS:=$(subst -Dmain=SDL_main,,-I/opt/rpi_root/usr/include/SDL2 -I/opt/rpi_root/opt/vc/include -I/opt/rpi_root/opt/vc/include/interface/vcos/pthreads -I/opt/rpi_root/opt/vc/include/interface/vmcs_host/linux -D_REENTRANT)
-SDLCONFIG_LIBS:=--sysroot=/opt/rpi_root -B/opt/rpi_root/usr/lib/arm-linux-gnueabihf -Xlinker -rpath-link=/opt/rpi_root/usr/lib/arm-linux-gnueabihf -Xlinker -rpath-link=/opt/rpi_root/lib/arm-linux-gnueabihf -L/opt/rpi_root/usr/lib/arm-linux-gnueabihf -L/opt/rpi_root/usr/lib -Wl,-rpath,/opt/rpi_root/usr/lib -L/opt/rpi_root/usr/lib/arm-linux-gnueabihf -L/opt/rpi_root/lib/arm-linux-gnueabihf -L/opt/rpi_root/usr/lib -L/opt/rpi_root/opt/vc/lib -lbcm_host -lvcos -lvchiq_arm
-
-Y ahora ya compila, con nivel de opimización -O2 y flags para la Pi1 quedaría:
-
-make -j8 USE_LIBVPX=0 USE_LIBPNG=0 WITHOUT_GTK=1 USE_OPENGL=0 CROSS=bcm2708hardfp- OPTLEVEL=3 OPTOPT="-marm -mfpu=vfp -mfloat-abi=hard"
-
-Para usar por ejemplo una banda sonora custom, le puedes pasar /x <ruta al archivo .def>
+Mete el duke3d.grp en el mismo directorio que el ejecutable.
+Para tener música con .ogg: Mete un zip con la música en el mismo directorio donde tengas el duke3d.grp.
+Y lanzaríamos el juego con:
+./duke3d -g<nombre_archivo_zip_música>
+RECUERDA: entre el -g y el nombre de archivo NO hay ningún espacio. Va todo seguido. 
+Por ahora, usamos este: https://sc55.duke4.net/
 
 ************Schismtracker en GNU/Linux*******************************************************************
 
