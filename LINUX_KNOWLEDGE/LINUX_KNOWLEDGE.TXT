@@ -2128,8 +2128,6 @@ CFLAGS="-march=native -mtune=native -O2" make -j4
 
 *******Quakespasm en la Pi*******************************************************
 
-Ahora que SDL2 soporta OpenGL de escritorio sobre KMSDRM sin depender de las X11, es hora de volver a Quakespasm.
-
 Clonamos su repo:
 git clone --depth 1 https://github.com/sezero/quakespasm.git
 
@@ -2137,14 +2135,11 @@ Entramos en el directorio Quake, editamos Makefile para cambiar -lGL por -lOpenG
 
 CFLAGS="-march=native -mtune=native -O2" make -j4 USE_SDL2=1 USE_CODEC_MP3=0 USE_CODEC_WAVE=0
 
-OJO: Guarda su configuración en el subdirectorio id1 de donde tengas el ejecutable!
-Para tener 60FPS constantes, puedes editar id1/config.cfg y poner:
-r_oldwater "1"
-gl_texturemode "GL_LINEAR"
-Y poner como resolución 720x400, que mantiene el ratio original, ocupando así la pantalla completa a 16/9 sin deformarse. 
-
+En engine guarda su configuración en el subdirectorio id1 de donde tengas el ejecutable!
 Los pak0.pak y pak1.pak van en ./id1
 La música en OGG y con nombres de archivo como track01.ogg.. track11.ogg, va en ./id1/music
+
+Si quieres agua transpatente, es con "r_novis 1" y "wateralpha 0.6"
 
 *******Core TYRQUAKE en RetroArch************
 
