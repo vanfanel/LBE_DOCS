@@ -949,7 +949,7 @@ Ahora vamos a por SWAY en sí:
 -Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dswaybar=false -Dswaynag=false -Dgdk-pixbuf=disabled \
+meson setup -Dbuildtype=release -Dswaybar=false -Dswaynag=false -Dgdk-pixbuf=disabled \
 -Dfish-completions=false -Dzsh-completions=false -Ddefault-wallpaper=false -Dman-pages=disabled ..
 
 Copiamos el fichero "config" que viene con los sources a ~/.config/sway/config, y hacemos ahí los cambios que queramos, como por ejemplo:
