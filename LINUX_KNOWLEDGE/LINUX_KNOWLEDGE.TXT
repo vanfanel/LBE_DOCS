@@ -8429,7 +8429,7 @@ mételas en /usr/local/share/fonts y listo).
 El ~/.sfrotzrc quedaría así:
 
 [Window]
-AcWidth = 1440
+AcWidth = 1280
 AcHeight = 800 
 
 [Fonts]
@@ -8448,7 +8448,7 @@ OTRA ALTERNATIVA es usar esta fuente: https://archive.org/details/LessPerfectDOS
 La renombramos a dosvga.ttf, y el ~/.sfrotzrc quedaría así:
 
 [Window]
-AcWidth =  1440
+AcWidth =  1280
 AcHeight = 800 
 
 [Fonts]

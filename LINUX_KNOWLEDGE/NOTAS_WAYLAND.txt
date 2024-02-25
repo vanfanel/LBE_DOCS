@@ -1016,8 +1016,25 @@ bindsym $mod+Shift+Tab focus right
 
 -PARA MAS OPCIONES: https://manpages.ubuntu.com/manpages/focal/man5/sway.5.html
 
-INSTALAR LABWC, COMPOSITOR WINDOW-STACKING
-==========================================
+INSTALAR WAYFIRE, COMPOSITOR WINDOW-STACKING (NECESITA WLROOTS)
+===============================================================
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/WayfireWM/wayfire.git
+
+Configuramos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release -Dxwayland=disabled -Dprint_trace=false ..
+
+
+INSTALAR LABWC, COMPOSITOR WINDOW-STACKING (NECESITA WLROOTS)
+=============================================================
 
 Instalamos dependencias previas:
 apt-get install libxml2-dev libglib2.0-dev --no-install-recommends
