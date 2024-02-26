@@ -87,7 +87,7 @@ float4 PS_NewPixie_Final(float4 pos: SV_Position, float2 uv_tx : TexCoord) : SV_
     //vig = 1.3*pow(vig,0.5);
     //col *= vig;
     /* Compensate the lack of vignette in case you decide to comment it out for performance reasons */
-    col *= 0.003;
+    col *= 1.3;
 
     /* Scanlines */
     float scans = clamp( 0.35+0.18*sin(uv.y*resolution.y*1.5), 0.0, 1.0);
