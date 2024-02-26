@@ -83,11 +83,11 @@ float4 PS_NewPixie_Final(float4 pos: SV_Position, float2 uv_tx : TexCoord) : SV_
     col = clamp(col + col*col + col*col*col*col*col,float3(0.0, 0.0, 0.0),float3(10.0, 10.0, 10.0));
 
     /* Vignette. Modify the 16.0 value to control the burnout effect in the center area. */
-    float vig = ((1.0-0.99*0.8) + 1.0*16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y));
-    vig = 1.3*pow(vig,0.5);
-    col *= vig;
+    //float vig = ((1.0-0.99*0.8) + 1.0*16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y));
+    //vig = 1.3*pow(vig,0.5);
+    //col *= vig;
     /* Compensate the lack of vignette in case you decide to comment it out for performance reasons */
-    // col *= 1.3;
+    col *= 0.003;
 
     /* Scanlines */
     float scans = clamp( 0.35+0.18*sin(uv.y*resolution.y*1.5), 0.0, 1.0);
