@@ -2214,10 +2214,11 @@ make bin/tyr-quake USE_SDL=Y OPTIMIZED_CFLAGS=Y DEBUG=N -j4
 make bin/tyr-glquake USE_SDL=Y OPTIMIZED_CFLAGS=Y DEBUG=N -j4
 
 *******EN RASPBIAN NO PUEDO DEBUGEAR PROGRAMAS EN C++ QUE HAN SIDO COMPILADOS CON DISTCC*********************************************************
+
 Da todo el rato "no symbol <loquesea> in current context".
 Hay que actualizar gdb...
 
-Desisntalamos nuestro viejo gdb, el que viene con Raspbian. No tiene dependencias graves, sólo debería sel ese paquete y ya:
+Desisntalamos nuestro viejo gdb, el que viene con Raspbian. No tiene dependencias graves, sólo debería ser ese paquete y ya:
 
 sudo apt-get purge gdb
 
@@ -9605,6 +9606,22 @@ El fichero de configuración va en ~/.drirc
 La manera correcta de generarlo es usando "adriconf" (necesita GTK):
 git clone --depth 1 https://gitlab.freedesktop.org/mesa/adriconf
 
+COMPILAR WINE EN DEBIAN AMD64
+=============================
+
+NOTA: POR AHORA, SI NO INSTALAS LAS LIBERRÍAS DE 32BITS, SÓLO VALE PARA EJECUTAR PROGRAMAS X86_64, NO LOS JUEGOS DE 32BITS QUE QUIERES.
+CUANDO HAYA UNA VERSIÓN PÚBLICA DE **BOX32** (de ptitSeb) LO PODRÁS USAR CON WINE PARA LANZAR JUEGOS DE 32 BITS.
+
+INSTALAMOS DEPENDENCIAS PREVIAS:
+apt-get install libxkbregistry-dev
+
+VAMOS CON WINE EN SÍ:
+--Bajamos los sources de la última estable de:
+https://gitlab.winehq.org/wine/wine/-/releases
+--Configuramos con:
+./configure --enable-win64 --without-x \
+--without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
+--without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi
 
 REPRODUCCIÓN DE VÍDEO EN AMD64 Y RASPBERRY PI CON MPV + FFMPEG
 ==============================================================
