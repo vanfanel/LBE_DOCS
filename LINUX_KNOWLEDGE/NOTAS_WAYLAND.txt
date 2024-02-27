@@ -933,7 +933,7 @@ INSTALAR SWAY, COMPOSITOR TILING
 ================================
 
 Instalamos dependencias previas:
-apt-get install libjson-c-dev libinput-dev --no-install-recommends
+apt-get install libjson-c-dev --no-install-recommends
 
 Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
 -Instalamos dependencias previas: apt-get install libglib2.0-dev libfontconfig-dev
