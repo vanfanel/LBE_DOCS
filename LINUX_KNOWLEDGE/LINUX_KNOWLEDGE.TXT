@@ -6396,7 +6396,7 @@ excepto en las transiciones de modo de vídeo del DOSBOX que petardea un poco, p
 (sigue siendo una latencia ínfima e inapreciable)
  
 -La posibilidad inicial de la que partimos, es poner Max Swapchain a 2, usar Alsathread con los parámetros del kernel antes mencionados
-para mejorar su desempeño, poner la latencia de audio a 36ms, meter 1 frame de Runahead, o no usar Runahead en absoluto.
+para mejorar su desempeño, poner la latencia de audio a 32/36ms, y meter 1 frame de Runahead, o no usar Runahead en absoluto.
 En este caso estamos "cargando" la GPU por lo del Max Swapchain a 2, por lo que algunos shaders un poco avanzados como Cyclone
 o el Newpixe normal petardean.
 
@@ -6423,11 +6423,15 @@ Para el core de SEGA, debido al tema del dithering y tal, usa el shader CYCLONE 
  Convergence Blue X-axis = "1.00"
  Potato Boost = "1.00"
  
-OTROS APUNTES SOBRE CORES ESPECÍFICOS:
+APUNTES SOBRE CORES ESPECÍFICOS:
 
-PARA EL SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
+PARA EL CORE SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
 Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
+Y RECUERDA QUE ESTE CORE TIENE PROBLEMAS DE AUDIO (pequeñas distorsiones) SI PONES 1 FRAME DE RUNAHEAD: PARA SOLUCIONARLO,
+PUEDES ACTIVAR LA OPCIÓN DE "USE SECOND INSTANCE" Y SUBIR EL TAMAÑO DEL BUFFER DE AUDIO A 36ms, O QUITAR EL RUNAHEAD
+PARA ESTE CORE EN CONCRETO (USANDO OVERRIDES).
+(De todos modos, si tienes max_swapchain a 2, ya tienes la misma latencia que la consola original, ya que es una consola con framebuffer).
 
 PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE SHADERS SE VERÁ MUY RARA.
 
