@@ -557,6 +557,10 @@ initial-window-size-chars=98x24
 style=underline
 blink=yes
 
+-Para que no nos ponga el nombre en una barra arriba (es decir, para quitar las decorations):
+[csd]
+preferred=none
+
 -Para configurar los colores etc, podemos:
 ---OPCIÓN 1, COMO LO VENIMOS HACIENDO AHORA: Usar un tema modificado a mi gusto. Para ello, metemos esto en el foot.ini:
 
