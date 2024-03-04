@@ -135,10 +135,6 @@ meson -Dbuildtype=release -Dzlib=disabled -Dtests=disabled -Ddwrite=disabled ..
 Bajamos los últimos sources estables de:
 https://gitlab.freedesktop.org/wayland/weston/-/tags
 
-Editamos desktop-shell/shell.c, vamos a la función set_fullscreen() y ahí...
-(Queda pendiente hacer como que se clicka en la surface para que el pointer constraint en aplicaciones fullscreen se aplique inmediatamente,
-ver issue: https://gitlab.freedesktop.org/wayland/weston/-/issues/667)
-
 Configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
