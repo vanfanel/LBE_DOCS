@@ -7916,9 +7916,13 @@ sudo ninja install
 AHORA VAMOS CON EL HURRICAN EN SÍ:
 Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/HurricanGame/Hurrican.git
-cd Hurrican/Hurrican
+
+Editamos Hurrican/src/Main.cpp y comentamos la línea:
+#  define SHOW_CRACKTRO
+
 Configuramos y compilamos:
 
+cd Hurrican/Hurrican
 mkdir b4
 cd b4
 
@@ -9011,9 +9015,7 @@ Clonamos el repo:
 git clone --depth 1 https://github.com/OpenFodder/openfodder.git
 
 --Editamos Source/Amiga/Sound_Amiga.cpp y ponemos "desired->samples" a 0x400
---Editamos Source/Amiga/Graphics_Amiga.cpp, buscamos "Middle", y ponemos los incrementos de "Front", "Middle" y "Back" a 5, 4 y 2 respectivamente.
-  (Este fix ya está en un PR mio, y cuando sea mergeado no hará falta hacer esto).
---Entramos en los sources y editamos el Makefile, cambiando el clang++ por g++, y quitamos el -ferror-limit=100 que eso es específico del CLANG ese.
+--Editamos el Makefile, cambiando el clang++ por g++, y quitamos el -ferror-limit=100 que eso es específico del CLANG ese.
 --Compilamos con:
 CXXFLAGS="-march=native -mtune=native -O2" make -j4
 
