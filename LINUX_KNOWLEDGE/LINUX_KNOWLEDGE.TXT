@@ -715,12 +715,13 @@ mount c: ~/root/dos/superfrog
 sf.exe
 exit
 
-PARA EL TECLADO COMPLETO: En SETTINGS->INPUT->HOTKEYS, en HOTEY ENABLE pon la tecla WINDOWS/PI (se llama "lsuper", lo verás al darle)
-y déjalo así para todos los cores.
-
-PARA EVITAR PUSACIONES FANTASMA REPETIDAS AL PULSAR NOSOTROS UNA TECLA O PROBLEMAS CON EL PAD: NO DEBES TENER los botones o el pad mapeados
-a teclas del teclado en los settings principales de RetroArch. Ve borrándolas todas con SUPR, y mapeas SÓLO A BOTONES DEL MANDO.
-Y TRANQUILO, QUE TE SIGUIES PUDIENDO MOVER CON EL TECLADO, ESO NO TIENE NADA QUE VER.
+PARA QUE FUNCIONE EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
+NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE", ya que son dos funcionalidades que se solapan
+y si tuvieses ambas la "HOTKEY ENABLE" no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
+Así que hacemos esto:
+-En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
+-En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
+-En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
 
 PARA QUE EL PAD NO SE QUEDE ATASCADO EN UNA DIRECCIÓN AL SALTAR EN LOS JUEGOS:
 -En "QUICK MENU->CONTROLS->PORT 1 CONTROLS", usa "Joystick" como "DEVICE TYPE", y pon así los controles direccionales:
@@ -1447,17 +1448,20 @@ retroarch -L ~/.config/retroarch/cores/fbneo_libretro.so --subsystem=msx msx/pen
 O bien en el RetroArch, nos vamos a "load core", cargamos el core FBNeo, y luego vamos a "load content" y nos aparecerá
 "subsystem", allí elegimos MSX, y luego volvemos a "subsystem" y le damos a "start content" y elegimos otra vez MSX.
 
-RECUERDA QUE TIENES QUE TENER EN SETTINGS->INPUT->MAXIMUM USERS MÍNIMO 3, YA QUE EL TECLADO VA EN EL PLAYER 3.
-
-RECUERDA LO PRIMERO DESMAPEAR LAS TECLAS DE TECLADO A BOTONES DE JOYSTICK EN LOS SETTINGS PRINCIPALES DE RETROARCH!
-De lo contrario, cualdo pulsas una tecla de cursor, por ejemplo, estás enviando tanto la pulsación de teclado como la de joystick...
-Esto también pasa en el core dosbox-core, así que quítalas. No pierdes nada, te vas a poder seguir moviendo por el menú de RA igual,
-con las teclas de siempre, no hace falta tenerlas mapeadas a botones de joystick.
-
 RECUERDA que para poder salvar (o cargar!) los mapeos de teclado que se aplican sólo a lo que tengas en el directorio de
 los juegos de MSX (SAVE CONTENT DIRECTORY REMAP FILE), tienes que pasar la ruta de la ROM o bien completa o bien con ./ al menos, en plan:
 msx1 ./msx/penguin.zip
 Si haces: msx1 msx/penguin.zip, se salvará un .RMP con nombre de archivo corrupto.
+
+RECUERDA QUE TIENES QUE TENER EN SETTINGS->INPUT->MAXIMUM USERS MÍNIMO 3, YA QUE EL TECLADO VA EN EL PLAYER 3.
+
+PARA QUE FUNCIONE EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
+NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE", ya que son dos funcionalidades que se solapan
+y si tuvieses ambas la "HOTKEY ENABLE" no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
+Así que hacemos esto:
+-En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
+-En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
+-En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
 
 ******LA ABADÍA DEL CRIMEN, nativo en LINUX**********************************************************************
 
@@ -6425,6 +6429,14 @@ Para el core de SEGA, debido al tema del dithering y tal, usa el shader CYCLONE 
  
 APUNTES SOBRE CORES ESPECÍFICOS:
 
+PARA CORES DE ORDENADOR QUE NECESITAN TODO EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
+NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE", ya que son dos funcionalidades que se solapan
+y si tuvieses ambas la "HOTKEY ENABLE" no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
+Así que hacemos esto:
+-En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
+-En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
+-En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
+
 PARA EL CORE SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
 Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
@@ -6440,9 +6452,9 @@ PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
 PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead, pero sí que funciona bien con max_swapchain a 2
 y el shader Fakelottes con la curvatura comentada.
 
-SI USAS EL CORE BSNES, ten en cuenta que tienes que desactivar el Runahead de RetroArch
-y activar el Runahead interno de BSNES, o se quedará en una pantalla en negro. A parte, tiene problemas de buffering
-y no va bien con latencias de sonido bajas, hagas lo que hagas.
+NO USES EL CORE BSNES: tendrías que desactivar el Runahead de RetroArch y activar el Runahead interno de BSNES,
+o se quedará en una pantalla en negro.
+A parte, tiene problemas de buffering y no va bien con latencias de sonido bajas, hagas lo que hagas.
 
 SI USAS INTEGER SCALING Y QUIERES UN BORDE PARA LA PANTALLA:
 -Clona el repo https://github.com/libretro/common-overlays.git, y mete los overlays que quieras en ~/.config/retroarch/overlay
@@ -6450,6 +6462,14 @@ SI USAS INTEGER SCALING Y QUIERES UN BORDE PARA LA PANTALLA:
 (Se podría activar y ajustar también en SETTINGS->ON-SCREEN DISPLAY->ON-SCREEN OVERLAY, estableciendo así un solo overlay
 para todos los cores, pero como cada core aparece de un tamaño en pantalla al usar INTEGER SCALING, nos conviene gestonarlo
 aquí en QUICK MENU para que quede configurado core a core).
+
+PARA CORES DE ORDENADOR QUE NECESITAN TODO EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
+NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE", ya que son dos funcionalidades que se solapan
+y si tuvieses ambas la "HOTKEY ENABLE" no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
+Así que hacemos esto:
+-En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
+-En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
+-En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
 
 *********No funcionan los input en RetroArch**********
 
