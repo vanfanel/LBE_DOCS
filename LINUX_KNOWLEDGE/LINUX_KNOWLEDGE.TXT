@@ -8544,17 +8544,19 @@ Una vez conectado, debemos poder configurar el wiimote con las utilidades del pa
 
 VEAMOS ĆOMO SE HACE:
 
-Instalamos las cosas que necesitamos: apt-get install bluez xwiimote
+Instalamos las cosas que necesitamos: apt-get install bluez bluez-tools xwiimote
 
 Cargamos el módulo: modprobe hid-wiimote
 
 Entramos en "bluetoothctl", y hacemos:
-scan on
+scan on  <--- (Esto es necesario para poder usar el TAB en los siguientes pasos)
 connect <DIRECCIÓN MAC DEL WIIMOTE, USA TAB PARA ELEGIR UNA>
 trust <DIRECCIÓN MAC DEL WIIMOTE, USA TAB PARA ELEGIR UNA>
 
 ¡¡¡¡CUIDADO!!!! NUNCA intentes hacer "pair", que se supone que se hace antes de "connect", anque lo ponga en algunas instrucciones chungas,
 porque pide un PIN inexistente.
+
+Ahora, deberíamos poder ver el wiimote con: xwiishow list
 
 CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN GNU/LINUX
 =========================================================================
