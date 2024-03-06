@@ -8529,6 +8529,21 @@ Y la línea de LDFLAGS quedará así:
 jpeg/libjpeg.a -lSDL2 -lSDL2_mixer -lz -lfreetype -lpng
 (Como ves, no le pasamos -ljpeg, sino que directamente le pasamos la librería estática al linker y listo).
 
+CONECTAR WIIMOTE EN LINUX
+=========================
+
+Instalamos: apt-get install bluez
+
+Cargamos el módulo: modprobe hid-wiimote
+
+Entramos en "bluetoothctl", y hacemos:
+scan on
+connect <DIRECCIÓN MAC DEL WIIMOTE, USA TAB PARA ELEGIR UNA>
+trust <DIRECCIÓN MAC DEL WIIMOTE, USA TAB PARA ELEGIR UNA>
+
+OJO: NUNCA intentes hacer "pair", que se supone que se hace antes de "connect", anque lo ponga en algunas instrucciones chungas,
+porque pide un PIN inexistente.
+
 CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN GNU/LINUX
 =========================================================================
 
