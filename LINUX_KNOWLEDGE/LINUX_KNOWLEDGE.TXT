@@ -8532,7 +8532,19 @@ jpeg/libjpeg.a -lSDL2 -lSDL2_mixer -lz -lfreetype -lpng
 CONECTAR WIIMOTE EN LINUX
 =========================
 
-Instalamos: apt-get install bluez
+MÁS INFO:
+https://wiki.archlinux.org/title/Wiimote
+https://wiki.archlinux.org/title/XWiimote
+https://wiki.archlinux.org/title/XWiimote#Cannot_connect_Wiimote
+
+IDEAS INICIALES QUE HAY QUE ENTENDER:
+El módulo del kernel es "hid-wiimote" y hay que tenerlo cargado antes de intentarnos conectar.
+Nos conectamos usando "bluetoothctl" del paquete "bluez".
+Una vez conectado, debemos poder configurar el wiimote con las utilidades del paquete "xwiimote"
+
+VEAMOS ĆOMO SE HACE:
+
+Instalamos las cosas que necesitamos: apt-get install bluez xwiimote
 
 Cargamos el módulo: modprobe hid-wiimote
 
@@ -8541,7 +8553,7 @@ scan on
 connect <DIRECCIÓN MAC DEL WIIMOTE, USA TAB PARA ELEGIR UNA>
 trust <DIRECCIÓN MAC DEL WIIMOTE, USA TAB PARA ELEGIR UNA>
 
-OJO: NUNCA intentes hacer "pair", que se supone que se hace antes de "connect", anque lo ponga en algunas instrucciones chungas,
+¡¡¡¡CUIDADO!!!! NUNCA intentes hacer "pair", que se supone que se hace antes de "connect", anque lo ponga en algunas instrucciones chungas,
 porque pide un PIN inexistente.
 
 CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN GNU/LINUX
