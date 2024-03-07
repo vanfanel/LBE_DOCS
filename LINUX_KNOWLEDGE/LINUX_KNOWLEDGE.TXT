@@ -8523,8 +8523,11 @@ https://wiki.archlinux.org/title/XWiimote#Cannot_connect_Wiimote
 
 IDEAS INICIALES QUE HAY QUE ENTENDER:
 El módulo del kernel es "hid-wiimote" y hay que tenerlo cargado antes de intentarnos conectar.
-Nos conectamos usando "bluetoothctl" del paquete "bluez".
-Una vez conectado, debemos poder configurar el wiimote con las utilidades del paquete "xwiimote"
+Nos conectamos usando "bluetoothctl" del paquete "bluez". OJO: El bluez tiene que tener el módulo wiimote, que es opcional.
+Para saber si nuestro bluez tiene el módulo wiimote, hacemos: grep wiimote /usr/lib/bluetooth/bluetoothd
+Nos tiene que devolver: "grep: /usr/lib/bluetooth/bluetoothd: binary file matches"
+Si no nos devuelve eso, tendríamos que compilar "bluez" con el argumento "--enable-wiimote".
+Una vez conectados con bluetoothctl, debemos poder configurar el wiimote con las utilidades del paquete "xwiimote"
 
 VEAMOS ĆOMO SE HACE:
 
@@ -8541,6 +8544,18 @@ trust <DIRECCIÓN MAC DEL WIIMOTE, USA TAB PARA ELEGIR UNA>
 Si al hacer el "connect" te pide un PIN, es que tu versión de BLUEZ no tiene el plugin de Wiimote.
 
 Ahora, deberíamos poder ver el wiimote con: xwiishow list
+
+	USARLO COMO UN RATÓN EN X11
+
+sudo apt-get install -f xserver-xorg-input-xwiimote
+Ahora ya tendremos:
+/usr/share/X11/xorg.conf.d/60-xorg-xwiimote.conf
+Editamos /usr/share/X11/xorg.conf.d/60-xorg-xwiimote.conf, y en bloque de:
+Identifier "Nintendo Wii Remote"
+añadimos:
+"Option "MotionSource" "ir"
+
+Para saber qué otras opciones tenemos en /usr/share/X11/xorg.conf.d/60-xorg-xwiimote.conf, podemos ver: man xf86-input-xwiimote
 
 CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN GNU/LINUX
 =========================================================================
