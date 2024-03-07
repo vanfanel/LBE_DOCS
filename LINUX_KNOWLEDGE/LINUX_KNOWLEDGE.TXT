@@ -8557,18 +8557,18 @@ Para saber qué otras opciones tenemos en /usr/share/X11/xorg.conf.d/60-xorg-xwi
 
 	USARLO COMO RATÓN EN WAYLAND
 	
-Necesitamos tener instalado el comando "libinput", que NO viene al instalar libinput, sino que habría que instalar a parte
-el paquete "libinput-tools", que NO podemos instalar porque tira de las mierdas de X11.
-Así que nos bajamos los sources de libinput y lo compilamos nosotros. Para ello:
---Bajamos los sources: git clone --depth 1 https://gitlab.freedesktop.org/libinput/libinput.git
---Compilamos con:
-mkdir b4
-cd b4
-meson .. -Ddebug-gui=false -Dlibwacom=false -Dtests=false
-ninja -j4
---Ahora, sin instalar nada, directamente en el directorio de compilación podemos ejecutar el comando "libinput". Hacemos esto:
-./libinput list-devices
-(VEMOS QUE NO SALE EL WIIMOTE: LIBINPUT NO SOPORTA EL WIIMOTE).
+No nos sirve libinput ni MoltenGamepad.
+-Lo primero, confirmamos que vemos eventos del wiimote con "evtest", que nos permitirá elegir por un lado el pad y por otro el IRC.
+(Vamos moviendo el mando y vemos los eventos que se generan).
+Nos quedamos con el nombre del dispositivo en /dev, deberíamos ver algo como:
+/dev/input/event5:      Nintendo Wii Remote IR
+/dev/input/event6:      Nintendo Wii Remote
+
+-Para mapear los eventos del Wiimote a movimientos de ratón, usamos "evsieve".
+--Clonamos su repo: git clone --depth 1 https://github.com/KarsMulder/evsieve.git
+--Compilamos: cargo build --release
+--Instalamos: install -m 755 -t /usr/local/bin target/release/evsieve
+--Podemos ver los eventos del IR del Wiimote con: evsieve --input /dev/input/event5 --print
 
 	USARLO COMO PISTOLA EN HYPSEUS-SINGE
 	
