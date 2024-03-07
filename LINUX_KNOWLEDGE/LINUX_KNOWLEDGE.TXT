@@ -8532,7 +8532,7 @@ Una vez conectados con bluetoothctl, debemos poder configurar el wiimote con las
 
 VEAMOS ĆOMO SE HACE:
 
-Instalamos las cosas que necesitamos: apt-get install bluez bluez-tools xwiimote
+Instalamos las cosas que necesitamos: apt-get install bluez xwiimote
 
 Cargamos el módulo: modprobe hid-wiimote
 
