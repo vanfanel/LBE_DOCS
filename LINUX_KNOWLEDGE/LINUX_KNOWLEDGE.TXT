@@ -8569,6 +8569,7 @@ Nos quedamos con el nombre del dispositivo en /dev, deberíamos ver algo como:
 --Compilamos: cargo build --release
 --Instalamos: install -m 755 -t /usr/local/bin target/release/evsieve
 --Podemos ver los eventos del IR del Wiimote con: evsieve --input /dev/input/event5 --print
+--Para hacer el mapeo de los eventos de Wiimote a ratón, miramos los ejemplos en: https://github.com/KarsMulder/evsieve
 
 	USARLO COMO PISTOLA EN HYPSEUS-SINGE
 	
