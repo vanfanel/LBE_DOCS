@@ -8555,6 +8555,10 @@ añadimos:
 
 Para saber qué otras opciones tenemos en /usr/share/X11/xorg.conf.d/60-xorg-xwiimote.conf, podemos mirar: man xf86-input-xwiimote
 
+	USARLO COMO PISTOLA EN HYPSEUS-SINGE
+	
+A parte de tenerlo funcionando como ratón, tenemos que pasarle al Hypseus los parámetros: "-nojoymouse -sinden 1 x"
+
 CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN GNU/LINUX
 =========================================================================
 
