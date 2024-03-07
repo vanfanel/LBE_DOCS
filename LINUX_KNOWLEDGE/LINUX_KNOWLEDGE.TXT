@@ -8251,7 +8251,7 @@ cmake ../src -DCMAKE_BUILD_TYPE=Release \
 
 make -j4
 
-Copia, al mismo directorio donde metas el ejecutable hypseus, los directorios sound, fonts y pics.
+Copia al mismo directorio donde metas el ejecutable hypseus los directorios "sound", "fonts" y "pics".
 
 Para poner un buffer de audio más pequeño, puedes pasar el parámetro -sound_buffer 1024
 (Por defecto viene puesto 2048 que es mucho).
