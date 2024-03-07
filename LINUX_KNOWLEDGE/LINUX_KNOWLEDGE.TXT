@@ -8237,6 +8237,11 @@ COMPILAR LA VERSIÓN MODERNA DEL EMULADOR DE LASERDISC HYPSEUS (HYPSEUS-SINGE)
 
 Clonamos el repo (usando el branch RetroPie, esto es importante para que se use el libmpeg2 del sistema!):
 
+PARA COMPILAR PARA PC (libmpeg2 propio):
+apt-get install autoconf libtool-bin
+git clone --depth 1 https://github.com/DirtBagXon/hypseus-singe.git
+
+PARA COMPILAR PARA RASPBERRY PI (libmpeg2 del sistema):
 git clone --depth 1 -b RetroPie https://github.com/DirtBagXon/hypseus-singe.git
 
 Ahora, configuramos pasándole a CMAKE el directorio src desde nuestro directorio de compilación (OJO que esto es
