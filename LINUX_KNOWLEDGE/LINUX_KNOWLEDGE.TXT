@@ -8525,6 +8525,7 @@ IDEAS INICIALES QUE HAY QUE ENTENDER:
 El módulo del kernel es "hid-wiimote" y hay que tenerlo cargado antes de intentarnos conectar.
 Nos conectamos usando "bluetoothctl" del paquete "bluez". OJO: El bluez tiene que tener el módulo wiimote, que es opcional.
 Para saber si nuestro bluez tiene el módulo wiimote, hacemos: grep wiimote /usr/lib/bluetooth/bluetoothd
+(En Debian, sería "grep wiimote /usr/libexec/bluetooth/bluetoothd")
 Nos tiene que devolver: "grep: /usr/lib/bluetooth/bluetoothd: binary file matches"
 Si no nos devuelve eso, tendríamos que compilar "bluez" con el argumento "--enable-wiimote".
 Una vez conectados con bluetoothctl, debemos poder configurar el wiimote con las utilidades del paquete "xwiimote"
