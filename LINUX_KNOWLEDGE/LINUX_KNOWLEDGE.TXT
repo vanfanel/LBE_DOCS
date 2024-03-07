@@ -8095,27 +8095,6 @@ Más información: https://trac.ffmpeg.org/wiki/Encode/MPEG-4
 Más ejemplos en: https://github.com/DirtBagXon/hypseus_singe_data
 Más juegos: https://archive.org/details/@dirtbagxon
 
-SINGE, el sistema de LASERDISC libre y abierto
-==============================================
-
-Su página oficial es:
-https://kangaroopunch.com/?page=Software%2F3000-2006-singe.xjs&fbclid=IwAR2eZxtVnzNR7bZWKozmVLAb6NDcVN3bpKAIDicZbavUl72N35nGW9i_00I
-
-El código fuente está en:
-https://skunkworks.kangaroopunch.com/skunkworks/singe
-
-Aquí hay más juegos a parte de los de la página oficial:
-http://www.emuline.org/topic/2134-singe-2-new-laserdisc-engine-games-031220-final-update/
-
-EMPEZEMOS!
-
-Lo primero sería compilar ffmpeg con soporte de mmal. Podemos probar que funciona con:
-
-ffplay -vcodec h264_mmal -i test.mkv
-
-Clonamos su repo:
-git clone --depth 1 https://skunkworks.kangaroopunch.com/skunkworks/singe.git
-
 COMPILAR NUESTRA PROPIA VERSIÓN DE WPA_SUPPLICANT
 =================================================
 
