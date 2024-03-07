@@ -8558,6 +8558,7 @@ Para saber qué otras opciones tenemos en /usr/share/X11/xorg.conf.d/60-xorg-xwi
 	USARLO COMO PISTOLA EN HYPSEUS-SINGE
 	
 A parte de tenerlo funcionando como ratón, tenemos que pasarle al Hypseus los parámetros: "-nojoymouse -sinden 1 x"
+Y para recargar dándole al botón A, en hypinput.ini tenemos que tener: "KEY_BUTTON1 = SDLK_LCTRL 0 1"
 
 CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN GNU/LINUX
 =========================================================================
