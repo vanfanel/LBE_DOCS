@@ -8548,14 +8548,12 @@ Ahora, deberíamos poder ver el wiimote con: xwiishow list
 	USARLO COMO UN RATÓN EN X11
 
 sudo apt-get install -f xserver-xorg-input-xwiimote
-Ahora ya tendremos:
-/usr/share/X11/xorg.conf.d/60-xorg-xwiimote.conf
 Editamos /usr/share/X11/xorg.conf.d/60-xorg-xwiimote.conf, y en bloque de:
 Identifier "Nintendo Wii Remote"
 añadimos:
 "Option "MotionSource" "ir"
 
-Para saber qué otras opciones tenemos en /usr/share/X11/xorg.conf.d/60-xorg-xwiimote.conf, podemos ver: man xf86-input-xwiimote
+Para saber qué otras opciones tenemos en /usr/share/X11/xorg.conf.d/60-xorg-xwiimote.conf, podemos mirar: man xf86-input-xwiimote
 
 CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN GNU/LINUX
 =========================================================================
