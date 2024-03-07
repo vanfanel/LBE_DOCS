@@ -8534,8 +8534,6 @@ VEAMOS ĆOMO SE HACE:
 
 Instalamos las cosas que necesitamos: apt-get install bluez xwiimote
 
-Cargamos el módulo: modprobe hid-wiimote
-
 Entramos en "bluetoothctl", y hacemos:
 scan on  <--- (Esto es necesario para poder usar el TAB en los siguientes pasos)
 pair <DIRECCIÓN MAC DEL WIIMOTE, USA TAB PARA ELEGIR UNA>
@@ -8543,6 +8541,7 @@ connect <DIRECCIÓN MAC DEL WIIMOTE, USA TAB PARA ELEGIR UNA>
 trust <DIRECCIÓN MAC DEL WIIMOTE, USA TAB PARA ELEGIR UNA>
 
 Si al hacer el "connect" te pide un PIN, es que tu versión de BLUEZ no tiene el plugin de Wiimote.
+Si falla algo, verifica que el módulo hid-wiimote está cargado: lsmod |grep wii
 
 Ahora, deberíamos poder ver el wiimote con: xwiishow list
 
@@ -8555,6 +8554,21 @@ añadimos:
 "Option "MotionSource" "ir"
 
 Para saber qué otras opciones tenemos en /usr/share/X11/xorg.conf.d/60-xorg-xwiimote.conf, podemos mirar: man xf86-input-xwiimote
+
+	USARLO COMO RATÓN EN WAYLAND
+	
+Necesitamos tener instalado el comando "libinput", que NO viene al instalar libinput, sino que habría que instalar a parte
+el paquete "libinput-tools", que NO podemos instalar porque tira de las mierdas de X11.
+Así que nos bajamos los sources de libinput y lo compilamos nosotros. Para ello:
+--Bajamos los sources: git clone --depth 1 https://gitlab.freedesktop.org/libinput/libinput.git
+--Compilamos con:
+mkdir b4
+cd b4
+meson .. -Ddebug-gui=false -Dlibwacom=false -Dtests=false
+ninja -j4
+--Ahora, sin instalar nada, directamente en el directorio de compilación podemos ejecutar el comando "libinput". Hacemos esto:
+./libinput list-devices
+(VEMOS QUE NO SALE EL WIIMOTE: LIBINPUT NO SOPORTA EL WIIMOTE).
 
 	USARLO COMO PISTOLA EN HYPSEUS-SINGE
 	
