@@ -8557,19 +8557,47 @@ Para saber qué otras opciones tenemos en /usr/share/X11/xorg.conf.d/60-xorg-xwi
 
 	USARLO COMO RATÓN EN WAYLAND
 	
-No nos sirve libinput ni MoltenGamepad.
--Lo primero, confirmamos que vemos eventos del wiimote con "evtest", que nos permitirá elegir por un lado el pad y por otro el IRC.
+No nos sirve libinput porque no soporta el Wiimote.
+-Lo primero, confirmamos que vemos eventos del wiimote con "evtest", que nos permitirá elegir por un lado el pad y por otro el IR.
 (Vamos moviendo el mando y vemos los eventos que se generan).
 Nos quedamos con el nombre del dispositivo en /dev, deberíamos ver algo como:
 /dev/input/event5:      Nintendo Wii Remote IR
 /dev/input/event6:      Nintendo Wii Remote
 
 -Para mapear los eventos del Wiimote a movimientos de ratón, usamos "evsieve".
+--Primero instalamos el buildsystem que necesita.
+Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 --Clonamos su repo: git clone --depth 1 https://github.com/KarsMulder/evsieve.git
 --Compilamos: cargo build --release
 --Instalamos: install -m 755 -t /usr/local/bin target/release/evsieve
 --Podemos ver los eventos del IR del Wiimote con: evsieve --input /dev/input/event5 --print
 --Para hacer el mapeo de los eventos de Wiimote a ratón, miramos los ejemplos en: https://github.com/KarsMulder/evsieve
+
+-USANDO MOLTENGAMEPAD (Al usarlo como ratón se mueve solo, etc)
+--Clonamos su repo: git clone --depth 1 https://github.com/jgeumlek/MoltenGamepad.git
+--Editamos source/core/uinput.h, y al final de los includes del principio añadimos "#include <memory>"
+--Compilamos con: make -j4
+--Instalamos el binario resultante con: cp moltengamepad /usr/local/bin/
+--Entramos en installation/systemuser, y ejecutamos ./install.sh
+--Creamos el archivo /etc/xdg/moltengamepad/moltengamepad.cfg con el contenido:
+load profiles from /home/manuel/.config/moltengamepad/profiles/mywiimote
+--Creamos el archivo .config/moltengamepad/profiles/mywiimote con el contenido:
+[wiimote]                                                                                                                                        
+wiimote.?wm_ir_active = true
+wiimote.wm_a = key(key_a)
+wiimote.wm_b = key(key_b)
+wiimote.wm_1 = key(key_1)
+wiimote.wm_2 = key(key_2)
+wiimote.wm_up = key(key_up)
+wiimote.wm_down = key(key_down)
+wiimote.wm_left = key(key_left)
+wiimote.wm_right = key(key_right)
+wiimote.wm_plus = key(key_4)
+wiimote.wm_minus = key(key_3)
+wiimote.wm_ir_x = mouse(rel_x)
+wiimote.wm_ir_y = mouse(rel_y)
+(...Y ya debería ir como ratón, pero mal).
 
 	USARLO COMO PISTOLA EN HYPSEUS-SINGE
 	
