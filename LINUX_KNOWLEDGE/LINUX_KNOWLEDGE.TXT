@@ -7699,12 +7699,18 @@ make -j4
 
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
 
-
 PARA QUE LOS GRÁFICOS DEL HEXEN EN MODO WIDESCREEN NO SE CORTEN POR LOS LADOS:
+
 Tenemos que cargar un WAD con los gráficos en widescreen. El único que he visto que funciona es wad que hay en "hexwide.zip" de este hilo:
 https://github.com/fabiangreffrath/crispy-doom/issues/859
 O sea que hacemos: ./crispy-hexen -iwad hexen.wad -file hexen_wide.wad hexen_music.wad
 (O metemos hexen_wide.wad y hexen_music.wad en autoload/hexen.wad/, que los carga igual al inicio sin pasar ningún parámetro).
+
+PARA TENER PANTALLAS DEL TÍTULO QUE OCUPEN TODA LA PANTALLA EN MODO WIDESCREEN:
+
+Tenemos que cargar un WAD con esos gráficos en widescreen, lo que se llama "widescreen assets".
+En Hexen NO es necesario porque lo hemos arreglado con lo de la sección anterior.
+Para Doom, Doom2, Sigil, Heretic, etc... usamos los que vienen en el zip del primer post de este hilo: https://www.doomworld.com/forum/topic/121385-widescreen-assets-pack-and-appreciation-thread/
 
 PARA TENER MÚSICA DIGITAL
 
