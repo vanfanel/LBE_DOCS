@@ -665,7 +665,12 @@ apt-get install libasound-dev glslang-dev glslang-tools spirv-tools
 SI ESTÁS EN RASPBERRY PI, LO PRIMERO HAZ ESTO O EL CONFIGURE FALLARÁ:
 apt-get purge libraspberrypi*
 
-Ahora, para configurar RetroArch con soporte de GLES y VULKAN, como lo venimos haciendo:
+Editamos qb/config.libs.sh, y cambiamos "-lGL" por "-lOpenGL"
+(Esto es para que podamos usar OpenGL en lugar de GLES, ya que si te fijas en Makefile.common y en gfx/drivers/gl2.c,
+ resulta que HAVE_GL_SYNC sólo se activa si NO usamos GLES, así que si queremos que la opción del backen OPENGL llamada "Hard GPU Sync"
+ haga lo que se supone que hace, tenemos que usar OpenGL y no GLES).
+
+Ahora, para configurar RetroArch con soporte de OPENGL y VULKAN, como lo venimos haciendo:
 
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
@@ -674,7 +679,7 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
 --disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra --disable-discord \
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
---enable-egl --enable-opengles --enable-opengles3 --enable-vulkan
+--enable-egl --enable-opengl --enable-vulkan
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (NO le pases --disable-builtinglslang, porque entonces fallará la compilación de shaders al cargar un segundo juego sin salir de RetroArch)
