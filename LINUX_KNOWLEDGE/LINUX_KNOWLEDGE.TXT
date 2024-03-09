@@ -6449,6 +6449,11 @@ PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE
 
 PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
 
+PARA EL CORE DE SATURN, USA LOS SIGUIENTES OVERRIDES:
+	--Desactiva el Runahead por completo!
+	--Backend de video: opengl
+	--Hard GPU Sync: ON, con Hard GPU Sync Frames a 0
+
 PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead, pero sí que funciona bien con max_swapchain a 2
 y el shader Fakelottes con la curvatura comentada.
 
