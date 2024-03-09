@@ -6756,6 +6756,29 @@ y luego ya el
 make platform=rpi3 -j4
 y listo. 
 
+COMPILAR MEDNAFEN STANDALONE CON EMULACIÓN DE SATURN SOLAMENTE
+==============================================================
+
+-Bajamos los últimos sources estables de:
+https://mednafen.github.io/releases/
+
+-Configuramos con:
+
+CFLAGS="-O2 -march=native -mtune=native" CXXFLAGS="-O2 -march=native -mtune=native" ./configure --disable-debugger \
+--disable-apple2 --disable-gb --disable-gba --disable-lynx --disable-md --disable-nes --disable-ngp \
+--disable-pce --disable-pce-fast --disable-pcfx --disable-psx --disable-sasplay --disable-sms --disable-snes --disable-snes-faust \
+--disable-ssfplay --disable-vb --disable-wswan
+
+--Ejecutamos por primera vez el emulador, y se nos creará ~/.mednafen/mednafen.cfg, lo editamos y ponemos
+estos valores así (los vamos buscando y ajustando):
+
+sound.device sexyal-literal-default
+sound.buffer_time 32
+video.fs 1
+video.driver opengl
+video.frameskip 0
+ss.stretch aspect
+
 CONFIGURAR BASH PARA TENER UN SALUDO Y LA IP AL INICIO
 =======================================================
 
