@@ -44,12 +44,15 @@ de manera que quede en ~/.config/vkBasalt/vkBasalt.conf, con este contenido:
 enableOnLaunch = True  
 toggleKey = Home                                                                                                                          
 effects = crt                                                                                                                                                                                                                                                                                    
-crt = /root/reshade-shaders/Shaders/MattiasCRT.fx                                                                                             
+crt = /root/reshade-shaders/Shaders/CRTFakeLottes.fx                                                                                             
 reshadeTexturePath = /root/reshade-shaders/Textures                                                                                              
 reshadeIncludePath = /root/reshade-shaders/Shaders 
 
 (Alternativamente, si un juego necesita una configuración especial,
-podríamos crear un archivo llamado "vkBasalt.conf" en el directorio del juego)
+podríamos crear un archivo llamado "vkBasalt.conf" en el directorio del juego.
+Por ejemplo, para los juegos en 320x200 como el Prince o el Another, nos creamos un shader que llamaremos "CRTFakeLottes_320x200.fx"
+donde le pasamos como tamaño de textura ese 320x200. Alternativamente, le podemos pasar el tamaño total de la pantalla y se verá
+también muy bien, sólo que las scanlines no se verán, pero la shadowmask queda como en un monitor CRT de alta definición).
 
 ########SECCIÓN DE EDICIÓN DE SHADERS###########
 

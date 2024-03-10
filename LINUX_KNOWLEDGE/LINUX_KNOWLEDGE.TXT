@@ -8435,7 +8435,17 @@ el blb, tal que así:
 sfrotz SHERLOCK.Z5 SHERLOCK.BLB
 OJO que para que Sherlock suene necesitas el .DAT o .Z5 (son lo mismo) de la versión de Amiga, NO la de PC.
 
-PARA CAMBIAR LA FUENTE DE LETRA POR UNA TRUETYPE ESCALADA CON ANTIALIAS (o sea, un lujazo!)
+PARA USAR SFROTZ CON vkBasalt, NO HACE FALTA CAMBIAR LA FUENTE DE LETRA NI NADA, LA QUE TRAE POR DEFECTO SE VE ESTUPENDA.
+Simplemente creamos el fichero ~/.sfrotzrc con este contenido y ya:
+
+[Window]
+AcWidth = 640
+AcHeight = 400 
+
+[Fonts]
+antialias=1
+
+PARA USAR SFROTZ SIN VKBASALT, HAY QUE CAMBIAR LA FUENTE DE LETRA POR UNA TRUETYPE ESCALADA CON ANTIALIAS. PARA ELLO:
 
 -Instalamos una fuente truetype adecuada. Para ello bajamos el zip de una fuente parcheada nerdfont de aquí:
 https://www.nerdfonts.com/font-downloads
