@@ -1115,9 +1115,6 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_VULKAN=ON -DUSE_OPENGL=O
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
-make -j2
-(OJO!! -j4 agota hasta la RAM de las Pi4 con 2GB!!)
-
 NOTA INNECESARIA: Si quisiéramos compilarlo con soporte de OpenGL, a parte de pasarle -DUSE_OPENGL=ON en vez de -DUSE_OPENGL=OFF,
 tenemos que editar CMakeLists.txt y cambiar la línea:
 set(OpenGL_GL_PREFERENCE LEGACY)
