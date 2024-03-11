@@ -6384,20 +6384,12 @@ y para volver, obviamente, start.
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 VIDEO: driver VULKAN, VSYNC ON (suponiendo que no tengamos VRR), MAX_SWAPCHAIN 2
-AUDIO: driver ALSATHREAD (hay que pasar unos parámetros al kernel, mira más abajo en el bloque de baja latencia),
+AUDIO: driver ALSATHREAD (no hace falta pasar ningunos parámetros al kernel para usar 36ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
        44100 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo: por lo demás,
 la frecuencia nativa en la mayoría de los cores es 44100Hz por lo que usándola nos ahorramos una conversión).
 
 ####### BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
-
--Para hacer que Alsathread funcione como debe, tenemos que configurarlo bien:
-Para mejorar el comportamiento de Alsathread, añadimos estas cosas a la línea de comandos del kernel (tienes más info en la
-sección "KERNEL REALTIME EN DEBIAN" de NOTAS_DEBIAN.TXT):
-"threadirqs preempt=full nohz_full=1-3 cpufreq.default_governor=performance mitigations=off audit=0"
-Esto nos permite bajar la latencia en la mayoría de los cores a 16ms,
-excepto en las transiciones de modo de vídeo del DOSBOX que petardea un poco, pero si lo dejas a 36 las transiciones de DOSBOX ya no petardean.
-(sigue siendo una latencia ínfima e inapreciable)
  
 -La posibilidad inicial de la que partimos, es poner Max Swapchain a 2, usar Alsathread con los parámetros del kernel antes mencionados
 para mejorar su desempeño, poner la latencia de audio a 32/36ms, y meter 1 frame de Runahead, o no usar Runahead en absoluto.
