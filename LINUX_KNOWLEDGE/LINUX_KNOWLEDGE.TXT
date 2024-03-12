@@ -9147,9 +9147,8 @@ git clone --depth 1 https://github.com/OpenFodder/openfodder.git
 --Compilamos con:
 mkdir b4
 cd b4
--DCMAKE_BUILD_TYPE=Release \
--DCMAKE_C_FLAGS="-DNDEBUG -march=native -mtune=native" \
--DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native" ..
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native"
 
 Ahora, nos creamos ~/cf, y ahí:
 -Copiamos el ejecutable "openfodder"
