@@ -9143,7 +9143,6 @@ Clonamos el repo:
 git clone --depth 1 https://github.com/OpenFodder/openfodder.git
 
 --Editamos Source/Amiga/Sound_Amiga.cpp y ponemos "desired->samples" a 0x400
---Editamos el Makefile, cambiando el clang++ por g++, y quitamos el -ferror-limit=100 que eso es específico del CLANG ese.
 --Compilamos con:
 mkdir b4
 cd b4
