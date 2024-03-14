@@ -3486,6 +3486,10 @@ for f in *.wav; do ffmpeg -i "$f" -c:a libmp3lame -q:a 2 "${f/%wav/mp3}" -c:a li
 -O sólo a OGG:
 for f in *.wav; do ffmpeg -i "$f" -c:a libvorbis -q:a 4 "${f/%wav/ogg}"; done
 
+***********CONVERTIR TODOS LOS FICHEROS DE UN DIRECTORIO DE PNG A JPG CON LA MÁXIMA CALIDAD********************************************
+
+for i in *.png ; do ffmpeg -i "$i" -q:v 1 "${i%.*}.jpg" ; done
+
 ***********CONVERTIR TODOS LOS FICHEROS DE UN DIRECTORIO DE WAV A FLAC*****************************************************************
 
 Instalamos el paquete SOX:
