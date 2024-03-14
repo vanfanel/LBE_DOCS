@@ -7133,43 +7133,33 @@ ZELDA OOT EN GNU/LINUX
 Clonamos el repo:
 git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Shipwright.git
 
----PARTE 1: EXTRACCIÓN DE LOS DATOS---
-
-Dependencias previas:
-sudo apt-get install libbz2-dev
-
-Editamos CMakeLists.txt, buscamos "ImageMagick", y borramos toda esa sección entera.
-
-Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
-y la copiamos a "OTRExporter/baserom.z64".
-Ahora el raiz de los sources hacemos:
-
-cmake -H. -Bbuild-cmake -GNinja \
--DCMAKE_C_FLAGS="-march=native -mtune=native" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_BUILD_TYPE=Release
-
-Se nos habrá creado el directorio "build-cmake". Ahora seguimos con los siguientes pasos pasándole ese directorio a cmake:
-cmake --build build-cmake --target ExtractAssets -j4
-(Recuerda que tienes que tener un disco externo de swap o la compilación fallará).
-
----PARTE 2: COMPILACIÓN DEL ENGINE EN SÍ---
-
-Instalamos dependencias: apt-get install lsb-release libzip-dev zipcmp zipmerge ziptool
+Instalamos dependencias: apt-get install libbz2-dev lsb-release libzip-dev zipcmp zipmerge ziptool
 
 Configuramos y compilamos con:
+
 mkdir b4
 cd b4
 
-cmake .. -GNinja -DUSE_OPENGLES=1 \
+cmake .. -GNinja \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_BUILD_TYPE=Release
 
--j2
+make -j4
 
-(Con -j2 no hace falta disco de swap).
-(Recuerda NO pasarle más de -j2, porque en la Pi5 fallará aunque le metas gigas y gigas de swap).
+(Si quisiésemos una build que use GLES en vez de OpenGL, le pasaríamos también "-DUSE_OPENGLES=1",
+pero el renderer principal es OpenGL y es donde se hace el desarrollo).
+
+NOTA: Para Pi5, usa -j2
+(No hace falta disco de swap. Y recuerda NO pasarle más de -j2, porque en la Pi5 fallará aunque le metas gigas y gigas de swap).
+
+PARA EXTRAER LOS DATOS DE NUEVO (Ya los tienes incluso en el disco de backup, esto sería por si los pierdes):
+--Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
+y la copiamos a "OTRExporter/baserom.z64"
+--Hacemos en el directorio de compilación:
+cmake --build . --target ExtractAssets -j4
+--Copiamos los archivos "soh.otr" y "oot.otr" al mismo directorio donde metemos el ejecutable "soh.elf":
+cp soh/*.otr ~/zelda64/
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
