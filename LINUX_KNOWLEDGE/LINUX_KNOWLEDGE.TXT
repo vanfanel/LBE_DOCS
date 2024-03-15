@@ -7239,9 +7239,11 @@ Y añadimos SDL_Quit() al final de la función Play(), antes del return(0).
 
 ---CONFIGURACIÓN DEL CÓDIGO
 
-Ejecutamos el autogen.sh
+Instalamos dependencias: apt-get install automake autoconf autoconf-archive libtool
 
 Configuramos con:
+
+autoreconf -v -i
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
