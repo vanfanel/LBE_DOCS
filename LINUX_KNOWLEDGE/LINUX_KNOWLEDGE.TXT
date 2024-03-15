@@ -8263,6 +8263,7 @@ apt-get install autoconf libtool-bin
 git clone --depth 1 https://github.com/DirtBagXon/hypseus-singe.git
 
 PARA COMPILAR PARA RASPBERRY PI (libmpeg2 del sistema):
+apt-get install libmpeg2-4-dev
 git clone --depth 1 -b RetroPie https://github.com/DirtBagXon/hypseus-singe.git
 
 Ahora, configuramos pasándole a CMAKE el directorio src desde nuestro directorio de compilación (OJO que esto es
