@@ -6438,8 +6438,11 @@ PUEDES ACTIVAR LA OPCIÓN DE "USE SECOND INSTANCE" Y SUBIR EL TAMAÑO DEL BUFFER
 PARA ESTE CORE EN CONCRETO (USANDO OVERRIDES).
 (De todos modos, si tienes max_swapchain a 2, ya tienes la misma latencia que la consola original, ya que es una consola con framebuffer).
 
-PARA EL CORE DE FLYCAST, ACUÉRDATE DE QUITAR EL RUNAHEAD, O DARÁ ERRORES DE INSTRUCCIONES NO VÁLIDAS, PANTALLAZOS A NEGRO, ETC...
-Para ello, simplemente crea el archivo .config/retroarch/config/Flycast/Flycast.cfg con el contenido: run_ahead_enabled = "false"
+PARA EL CORE DE PPSSPP Y PARA EL CORE FLYCAST, ACUÉRDATE DE QUITAR EL RUNAHEAD, O DARÁN ERRORES DE INSTRUCCIONES NO VÁLIDAS,
+PANTALLAZOS A NEGRO, ETC...
+Para ello, simplemente crea el archivo .config/retroarch/config/PPSSPP/PPSSPP.cfg
+o el archivo .config/retroarch/config/Flycast/Flycast.cfg
+con el contenido: run_ahead_enabled = "false"
 
 PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE SHADERS SE VERÁ MUY RARA.
 
