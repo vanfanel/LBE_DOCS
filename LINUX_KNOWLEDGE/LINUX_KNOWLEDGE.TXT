@@ -4897,9 +4897,15 @@ done
 
 *************MiniVMAC en GNU/Linux******************************************************************************************
 
-Para compilar la versión más o menos ideal que usa mi backend de Dispmanx, he usado las siguientes opciones:
+NOTAS PREVIAS:
 
--t larm -api sdl -var-fullscreen 0 -fullscreen 1 -speed 1
+Info sacada de: https://forum.princed.org/viewtopic.php?t=3009
+Y de:
+http://adb.arcadeitalia.net/lista_mame.php buscando por el fabricante Apple y des-marcando la casilla "MameCab only".
+
+El primer Mac (Macintosh 128), y el primer Mac en color (Macintosh II) usan un modo de vídeo de 512x342@60.14742 Hz.
+
+EL EMULADOR EN SÍ:
 
 Para SDL2:
 
