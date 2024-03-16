@@ -2786,14 +2786,27 @@ Un vídeo muy bueno sobre el tema (aunque emula un Mac POWERPC, el mac99) es est
 
 -Creamos la imágen de disco (con preallocation, porque si no, nos crea un archivo de esos enanos que van creciendo según lo usamos,
 además un Quadra 800 venía con 256M):
-qemu-img create -f raw macos71.img -o preallocation=full 256M
+qemu-img create -f raw system71.img -o preallocation=full 256M
 
 -Creamos una imágen donde guardar los parámetros de la BIOS del Mac:
 qemu-img create -f raw pram-macos.img 256b
 
--Iniciamos la emulación del modelo de Mac Quadra 800 ("-M q800"), con 32MB de RAM ("-m 32"), usando la BIOS ("q800.rom"):
+-Nos bajamos el disco de instalación de Mac OS 7.1 con el particionador de disco incluido que hay en la sección
+"Starting qemu-system-m68k to install Mac OS 7.1" de https://www.emaculation.com/doku.php/m68k-qemu-on-osx#running_qemu-system-m68k_with_mac_os_71-81_guests
+
+-Iniciamos la emulación del modelo de Mac Quadra 800 ("-M q800"), con 32MB de RAM ("-m 32"), usando la BIOS ("q800.rom"),
+pasándole la imágen de instalación de Mac OS 7.1 que nos acabamos de bajar como primer disco,
+y la imágen de disco donde lo vamos a instalar como segundo disco:
 qemu-system-m68k -M q800 -m 32 -bios q800.rom \
--display sdl -audio driver=alsa -full-screen
+-display sdl -audio driver=alsa \
+-device scsi-hd,scsi-id=0,drive=hd0 \
+-drive file=macos71_Install.img,media=disk,format=raw,if=none,id=hd0 \
+-device scsi-hd,scsi-id=1,drive=hd1 \
+-drive file=system71.img,media=disk,format=raw,if=none,id=hd1
+
+-Una vez arrancado el sistema, ejecutamos "Apple HD SC v3.0 (A/UX)", le damos al botón "Drive" para cambiar a la unidad 1,
+
+NOTA: Se puede usar ctrl-alt-f para salir del modo fullscreen.
 
 ******************Actualizar a de DEBIAN WHEEZY a DEBIAN JESSIE****************************************************************************
 
