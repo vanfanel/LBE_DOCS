@@ -545,17 +545,17 @@ Editamos src/broadcom/vulkan/v3dv_device.c y buscamos "destroy dumb object" y co
 
 CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
 
+PARA X86_64 CON GRÁFICOS INTEL IRIS (=UHD,XE, etc):
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled \
+-Dvulkan-drivers=intel -Dgallium-drivers=iris,kmsro,zink -Dglvnd=true ..
+
 PARA PI4/5:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled \
 -Dvulkan-drivers=broadcom -Dgallium-drivers=v3d,vc4,kmsro,zink -Dglvnd=true ..
-
-PARA X86_64 CON GRÁFICOS INTEL XE:
-CFLAGS="-march=native -mtune=native -O2" \
-CXXFLAGS="-march=native -mtune=native -O2" \
-meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled \
--Dvulkan-drivers=intel -Dgallium-drivers=iris,kmsro,zink -Dglvnd=true ..
 
 (Si no quieres soporte para Wayland, usa -Dplatforms='')
 
