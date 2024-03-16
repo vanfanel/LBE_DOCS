@@ -1217,6 +1217,13 @@ make REGENIE=1 -f Makefile.libretro -j4
 MAME es un core con sonido de 48000Hz, así que configura el audio en Settings->Audio->Output para esta frecuencia,
 y guárdalo para este core en Quick Menu->Overrides->Save Core Overrides
 
+******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
+
+Lo más fácil es mirar en su fichero de código si tiene algún flag como MACHINE_IMPERFECT_SOUND, MACHINE_IMPERFECT_GRAPHICS, etc.
+Los flags posibles los puedes ver aquí: https://wiki.mamedev.org/index.php/Game_Drivers
+Por ejemplo, para saber qué imperfecciones hay en los drivers del fabricante APPLE, puedes hacer esto:
+grep MACHINE_IMPERFECT_ src/mame/apple/* -R
+
 ******KILLER INSTINCT en core MAME LIBRETRO*******************
 
 En el mismo directorio donde tengas el kinst.zip, crea un directorio kinst donde meterás el .chd, quedando así:
@@ -4906,6 +4913,9 @@ http://adb.arcadeitalia.net/lista_mame.php buscando por el fabricante Apple y de
 El primer Mac (Macintosh 128), y el primer Mac en color (Macintosh II) usan un modo de vídeo de 512x342@60.14742 Hz.
 
 EL EMULADOR EN SÍ:
+
+Clonamos los sources de:
+git clone --depth 1 https://github.com/minivmac/minivmac.git
 
 Para SDL2:
 
