@@ -2759,7 +2759,7 @@ NOTAS PREVIAS:
 
 git clone --depth 1 https://gitlab.com/qemu-project/qemu.git
 
--Para compilar sólo la emulación basada en Motorola 68000, configuramos con:
+-Para compilar con sólo la emulación de plataformas basadas en Motorola 68000, configuramos con:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
@@ -2792,7 +2792,8 @@ qemu-img create -f raw macos71.img -o preallocation=full 256M
 qemu-img create -f raw pram-macos.img 256b
 
 -Iniciamos la emulación del modelo de Mac Quadra 800 ("-M q800"), con 32MB de RAM ("-m 32"), usando la BIOS ("q800.rom"):
-qemu-system-m68k -M q800 -m 32 -bios q800.rom
+qemu-system-m68k -M q800 -m 32 -bios q800.rom \
+-display sdl -audio driver=alsa -full-screen
 
 ******************Actualizar a de DEBIAN WHEEZY a DEBIAN JESSIE****************************************************************************
 
