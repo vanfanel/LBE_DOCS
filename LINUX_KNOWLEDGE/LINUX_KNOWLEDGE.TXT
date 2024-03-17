@@ -2805,6 +2805,20 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -drive file=system71.img,media=disk,format=raw,if=none,id=hd1
 
 -Una vez arrancado el sistema, ejecutamos "Apple HD SC v3.0 (A/UX)", le damos al botón "Drive" para cambiar a la unidad 1,
+y seguimos estas instrucciones para particionar el disco e instalar el sistema operativo:
+-Start the Apple HD SC v3.0 (A/UX) tool and initialise your disk. Verification can take a long time. When finished give the disk a name.
+-Next, click Partition and then Custom. You'll notice a partition of 20Mb was created with the name you entered.
+-Click the name and click Remove, OK.
+-Click in the gray area to create a new partition. Click Macintosh Volume and then manually enter the desired partition size, not exceeding the maximum size indicated. Click OK.
+The partition will be created. Click Done, then Quit to have the disk available on the desk top.
+-Open the InstallMeFirst folder and start the installer.
+If you want CD Rom support, open the corresponding folder and install it. This will also install Quicktime 1.5.
+
+-Una vez instalado el sistema, ya arrancamos con el disco duro preparado solamente:
+qemu-system-m68k -M q800 -m 32 -bios q800.rom \
+-display sdl -audio driver=alsa \
+-device scsi-hd,scsi-id=0,drive=hd0 \
+-drive file=system71.img,media=disk,format=raw,if=none,id=hd0
 
 NOTA: Se puede usar ctrl-alt-f para salir del modo fullscreen.
 
