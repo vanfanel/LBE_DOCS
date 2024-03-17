@@ -2754,23 +2754,41 @@ NOTAS PREVIAS:
 --Instalamos la última versión de MESON:
 	sudo apt-get purge meson
 	pip3 install --user meson
+--Si queremos que compile con soporte para OpenGL (el soporte de OpenGL está activado por defecto) tenemos que instalar libepoxy:
+Bajamos la última versión estable de libepoxy desde:
+https://github.com/anholt/libepoxy/releases
+
+Configuramos, compilamos e instalamos:
+
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+meson setup -Dx11=false ..
+
+ninja -j4
+sudo ninja install
+
+VAMOS CON QEMU EN SÍ:
 
 -Clonamos su repo:
 
 git clone --depth 1 https://gitlab.com/qemu-project/qemu.git
+
+-Editamos ui/sdl2.c, buscamos la llamada a SDL_CreateRenderer(), le añadimos los flags SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC,
+ y añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear") justo encima (si lo añadieses en el bloque de llamadas a SDL_SetHint()
+ que hay más arriba, sólo tendría efecto en modo OpenGL: si es lo que te interesa porque tienes activo el soporte OpenGL, pues ponlo ahí). 
 
 -Para compilar con sólo la emulación de plataformas basadas en Motorola 68000, configuramos con:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 ./configure --disable-gtk --disable-tpm --disable-pa --disable-oss --disable-sndio --disable-vnc --disable-png --enable-sdl --disable-sdl-image \
---disable-selinux --disable-opengl --disable-iconv --disable-qom-cast-debug --disable-dbus-display --disable-keyring --target-list=m68k-softmmu
+--disable-selinux --disable-iconv --disable-qom-cast-debug --disable-dbus-display --disable-keyring --target-list=m68k-softmmu
 
 ¡¡¡¡¡¡¡¡¡¡¡¡¡NOTA!!!!!!!!!!!!! En el futuro se podrá usar MESON así, de momento no funciona:
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
 meson setup .. -Dbuildtype=release \
 -Dgtk=disabled -Dsdl=enabled -Daudio_drv_list=alsa -Dvnc=disabled -Dpng=disabled -Dsdl_image=disabled -Dselinux=disabled \
--Ddocs=disabled -Dopengl=disabled -Dqom_cast_debug=false -Ddbus_display=disabled
+-Ddocs=disabled -Dqom_cast_debug=false -Ddbus_display=disabled
 
 -Ahora compilamos simplemente con: make
 Y los ejecutables qemu-* quedan en el directorio "build". Los copiamos a /usr/local/bin:
@@ -2778,18 +2796,22 @@ sudo cp build/qemu-img build/qemu-system-m68k /usr/local/bin/
 
 		CÓMO USAR QEMU PARA EMULAR UN MAC QUADRA 800
 
+		INSTALAR UN SISTEMA OPERATIVO
+
 La información principal procede de: https://www.emaculation.com/doku.php/m68k-qemu-on-osx
 Un vídeo muy bueno sobre el tema (aunque emula un Mac POWERPC, el mac99) es este: https://www.youtube.com/watch?v=fzTyl5Ss8nA
 
 -Bajamos la BIOS del Quadra 800 de: https://www.macintoshrepository.org/17137-macintosh-rom-archive
  La llamamos q800.rom, y la metemos en ~/mac
 
+-Creamos una imágen donde guardar los parámetros de la BIOS del Mac:
+qemu-img create -f raw pram-macos.img 256b
+
+		ALTERNATIVA 1: INSTALAR SYSTEM 7.1
+
 -Creamos la imágen de disco (con preallocation, porque si no, nos crea un archivo de esos enanos que van creciendo según lo usamos,
 además un Quadra 800 venía con 256M):
 qemu-img create -f raw system71.img -o preallocation=full 256M
-
--Creamos una imágen donde guardar los parámetros de la BIOS del Mac:
-qemu-img create -f raw pram-macos.img 256b
 
 -Nos bajamos el disco de instalación de Mac OS 7.1 con el particionador de disco incluido que hay en la sección
 "Starting qemu-system-m68k to install Mac OS 7.1" de https://www.emaculation.com/doku.php/m68k-qemu-on-osx#running_qemu-system-m68k_with_mac_os_71-81_guests
@@ -2819,6 +2841,34 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -display sdl -audio driver=alsa \
 -device scsi-hd,scsi-id=0,drive=hd0 \
 -drive file=system71.img,media=disk,format=raw,if=none,id=hd0
+
+	ALTERNATIVA 2: INSTALAR SYSTEM 8.1
+
+-Para instalar Mac OS 8.1 (ISO descargada desde https://winworldpc.com/product/mac-os-8/81):
+qemu-system-m68k -M q800 -m 32 -bios q800.rom \
+-display sdl -audio driver=alsa \
+-device scsi-cd,scsi-id=3,drive=cd1  \
+-drive file=MacOS8_1.iso,media=cdrom,if=none,id=cd1 \
+-device scsi-hd,scsi-id=0,drive=hd0 \
+-drive file=system81.img,media=disk,format=raw,if=none,id=hd0
+
+-Una vez arrancado el sistema desde el CDROM de System 8.1, entramos en la carpeta "Utilities" y usamos la herramienta
+"Drive setup" para inicializar el disco duro, tras lo cual pinchamos en el icono en el escritorio y le ponemos el nombre que queramos,
+y luego ya instalamos el sistema dándole a "Install Mac OS 8.1".  
+
+-Para arrancar el sistema instalado:
+-Para instalar Mac OS 8.1 (ISO descargada desde https://winworldpc.com/product/mac-os-8/81):
+qemu-system-m68k -M q800 -m 32 -bios q800.rom \
+-display sdl -audio driver=alsa \
+-device scsi-hd,scsi-id=0,drive=hd0 \
+-drive file=system81.img,media=disk,format=raw,if=none,id=hd0
+
+	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS
+	
+-Con el parted (no olvides poner "unit b") miramos dónde empieza la partición HFS.
+-Montamos la partición HFS con:
+sudo mount system71.img -o rw,offset=49152 mnt/
+...donde el offset es el punto de inicio de la partición HFS, que hemos sacado del parted.
 
 NOTA: Se puede usar ctrl-alt-f para salir del modo fullscreen.
 
