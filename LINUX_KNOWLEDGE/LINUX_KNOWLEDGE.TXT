@@ -2857,24 +2857,26 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 y luego ya instalamos el sistema dándole a "Install Mac OS 8.1".  
 
 -Para arrancar el sistema instalado:
--Para instalar Mac OS 8.1 (ISO descargada desde https://winworldpc.com/product/mac-os-8/81):
 qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -display sdl -audio driver=alsa \
 -device scsi-hd,scsi-id=0,drive=hd0 \
 -drive file=system81.img,media=disk,format=raw,if=none,id=hd0
 
-	ARRANCAR CON UN FLOPPY METIDO
-	
-Añadimos a la línea de comandos de QEMU algo como:
--device scsi-hd,scsi-id=4,drive=fd0 \
--drive file=PoP1_speedfix.dsk,media=disk,format=raw,if=none,id=fd0 \
-
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS
-	
--Con el parted (no olvides poner "unit b") miramos dónde empieza la partición HFS.
--Montamos la partición HFS con:
-sudo mount system71.img -o rw,offset=49152 mnt/
-...donde el offset es el punto de inicio de la partición HFS, que hemos sacado del parted.
+
+-Instalamos: apt-get install hfsutils
+Ahora, montamos la imágen de disco de orígen con:
+hmount juego.dsk
+Nos dirá qué nombre de volúmen tiene. Quédate con él.
+Ahora creamos un directorio temporal donde vamos a meter los datos del juego, y hacemos:
+hcopy -m nombre_volúmen_origen:* directorio_temporal_juego/
+(El "-m" es FUNDAMENTAL para que no se pierda el resource fork del juego al copiarlo al filesystem de Linux!!!) 
+Ahora, desmontamos la imágen de orígen:
+humount juego.dsk
+Ahora montamos la imágen de destino:
+hmount system81.img
+Y copiamos los datos del juego al disco de destino:
+hcopy -m directorio_temporal_juego/* nombre_volumen_destino: 
 
 NOTA: Se puede usar ctrl-alt-f para salir del modo fullscreen.
 
