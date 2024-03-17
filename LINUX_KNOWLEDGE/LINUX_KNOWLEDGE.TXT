@@ -2863,6 +2863,12 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -device scsi-hd,scsi-id=0,drive=hd0 \
 -drive file=system81.img,media=disk,format=raw,if=none,id=hd0
 
+	ARRANCAR CON UN FLOPPY METIDO
+	
+Añadimos a la línea de comandos de QEMU algo como:
+-device scsi-hd,scsi-id=4,drive=fd0 \
+-drive file=PoP1_speedfix.dsk,media=disk,format=raw,if=none,id=fd0 \
+
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS
 	
 -Con el parted (no olvides poner "unit b") miramos dónde empieza la partición HFS.
