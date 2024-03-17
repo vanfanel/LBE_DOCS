@@ -2863,6 +2863,8 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -drive file=system81.img,media=disk,format=raw,if=none,id=hd0
 
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS
+NOTA: NO permite copiar directorios, sólo archivos sueltos, pudiendo copiar todos los archivos con *,
+por lo que el método tiene sus limitaciones.
 
 -Instalamos: apt-get install hfsutils
 Ahora, montamos la imágen de disco de orígen con:
