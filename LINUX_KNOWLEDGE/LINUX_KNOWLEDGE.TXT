@@ -2742,12 +2742,21 @@ find ./ -name gl*
 
 Lo de iname es para ignorar las mayúsculas o minúsculas.
 
-******************NOTAS QEMU***************************************************************************************************
+******************USAR QEMU PARA EMULAR UN MAC QUADRA 800**********************************************************************
 
 NOTAS PREVIAS:
 -QEMU sólo puede usar las tecnologías de virtualización (KMV) si emulamos una máquina con la misma arquitectura que la máquina host.
  O sea, que olvídate de KVM para cosas como emular un Mac 68K en X86.
  
+-La info sobre los modos de vídeo de los modelos de Mac fue sacada de:
+http://adb.arcadeitalia.net/lista_mame.php buscando por el fabricante Apple y des-marcando la casilla "MameCab only".
+
+El primer Mac (Macintosh 128), usa un modo de vídeo de 512x342@60.14742 Hz.
+El primer Mac en color (Macintosh II) usa 640x480@66.662467
+
+El Lemmings sólo suena bien si la frecuencia de refresco es la correcta, y como salió para Mac II, necesita un modo de vídeo
+de 66.662467 Hz si tienes el vsync activado (es decir, si le pasas PRESENTVSYNC a SDL_CreateRenderer).
+
 		CÓMO COMPILAR Y USAR QEMU
 
 -Dependencias previas
@@ -5033,11 +5042,18 @@ done
 
 NOTAS PREVIAS:
 
-Info sacada de: https://forum.princed.org/viewtopic.php?t=3009
-Y de:
+-La info sobre los modos de vídeo de los modelos de Mac fue sacada de:
 http://adb.arcadeitalia.net/lista_mame.php buscando por el fabricante Apple y des-marcando la casilla "MameCab only".
 
-El primer Mac (Macintosh 128), y el primer Mac en color (Macintosh II) usan un modo de vídeo de 512x342@60.14742 Hz.
+El primer Mac (Macintosh 128), usa un modo de vídeo de 512x342@60.14742 Hz.
+El primer Mac en color (Macintosh II) usa 640x480@66.662467
+
+El Lemmings sólo suena bien si la frecuencia de refresco es la correcta, y como salió para Mac II, necesita un modo de vídeo
+de 66.662467 Hz si tienes el vsync activado (es decir, si le pasas PRESENTVSYNC a SDL_CreateRenderer).
+
+El Prince sólo va bien en modo de 60Hz la versión con la velocidad arreglada que hay en este hilo:
+https://forum.princed.org/viewtopic.php?t=3009
+(Está al final de la tercera página del hilo, lo tienes en el disco de backup también)
 
 EL EMULADOR EN SÍ:
 
