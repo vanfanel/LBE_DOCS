@@ -2760,6 +2760,8 @@ de 66.662467 Hz si tienes el vsync activado (es decir, si le pasas PRESENTVSYNC 
 		CÓMO COMPILAR Y USAR QEMU
 
 -Dependencias previas
+--Instalamos pip (es NECESARIO o el script de configuración falla!!)
+apt-get install python3-pip --no-install-recommends
 --Instalamos la última versión de MESON:
 	sudo apt-get purge meson
 	pip3 install --user meson
