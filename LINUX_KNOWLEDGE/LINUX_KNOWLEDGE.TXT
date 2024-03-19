@@ -2745,6 +2745,9 @@ Lo de iname es para ignorar las mayúsculas o minúsculas.
 ******************USAR QEMU PARA EMULAR UN MAC QUADRA 800**********************************************************************
 
 NOTAS PREVIAS:
+-Si emulas un sistema basado en 68K con QEMU, el proceso QEMU va a pillar el 100% de al menos un core: Esto es normal, y se debe
+ a que el 68000 no tiene instrucción "idle" para "no hacer nada cuando no hay nada que hacer", va a full todo el rato.
+ Es así, no se puede hacer absolutamente nada para evitarlo.
 -QEMU sólo puede usar las tecnologías de virtualización (KMV) si emulamos una máquina con la misma arquitectura que la máquina host.
  O sea, que olvídate de KVM para cosas como emular un Mac 68K en X86.
  
