@@ -2765,7 +2765,7 @@ apt-get install python3-pip --no-install-recommends
 --Instalamos la última versión de MESON:
 	sudo apt-get purge meson
 	pip3 install --user meson
---Si queremos que compile con soporte para OpenGL (el soporte de OpenGL está activado por defecto) tenemos que instalar libepoxy:
+--Instalamos libepoxy (necesario para el soporte OpenGL):
 Bajamos la última versión estable de libepoxy desde:
 https://github.com/anholt/libepoxy/releases
 
@@ -2785,12 +2785,17 @@ VAMOS CON QEMU EN SÍ:
 git clone --depth 1 https://gitlab.com/qemu-project/qemu.git
 
 -Editamos ui/sdl2.c y hacemos estos cambios:
---Buscamos la llamada a SDL_CreateRenderer(), le añadimos los flags SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC,
+--(NO NECESARIO PARA MODO OPENGL, QUE ES LO QUE USAMOS) Buscamos la llamada a SDL_CreateRenderer(), le añadimos el flag SDL_RENDERER_ACCELERATED,
  y añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear") justo encima (si lo añadieses en el bloque de llamadas a SDL_SetHint()
- que hay más arriba, sólo tendría efecto en modo OpenGL: si es lo que te interesa porque tienes activo el soporte OpenGL, pues ponlo ahí). 
+ que hay más arriba, sólo tendría efecto en modo OpenGL, que no hace falta porque ya salen suavizados los gráficos). 
 --Nos vamos a la función sdl_grab_start() y comentamos el primer *if*, que dice: 
 if (!(SDL_GetWindowFlags(scon->real_window) & SDL_WINDOW_INPUT_FOCUS))
 ...de lo contrario, el mouse grab automático en modo fullscreen no funcionará.
+
+-Editamos ui/console-gl.c, nos vamos a surface_gl_render_texture(), y cambiamos:
+glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+por:
+glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 -Para compilar con sólo la emulación de plataformas basadas en Motorola 68000, configuramos con:
 
@@ -2855,7 +2860,8 @@ If you want CD Rom support, open the corresponding folder and install it. This w
 qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -display sdl -audio driver=alsa \
 -device scsi-hd,scsi-id=0,drive=hd0 \
--drive file=system71.img,media=disk,format=raw,if=none,id=hd0
+-drive file=system71.img,media=disk,format=raw,if=none,id=hd0 \
+-display sdl,gl=on -full-screen
 
 	ALTERNATIVA 2: INSTALAR SYSTEM 8.1
 
@@ -2875,7 +2881,8 @@ y luego ya instalamos el sistema dándole a "Install Mac OS 8.1".
 qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -display sdl -audio driver=alsa \
 -device scsi-hd,scsi-id=0,drive=hd0 \
--drive file=system81.img,media=disk,format=raw,if=none,id=hd0
+-drive file=system81.img,media=disk,format=raw,if=none,id=hd0 \
+-display sdl,gl=on -full-screen
 
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS
 NOTA: NO permite copiar directorios, sólo archivos sueltos, pudiendo copiar todos los archivos con *,
