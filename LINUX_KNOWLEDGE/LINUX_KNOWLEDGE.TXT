@@ -2754,8 +2754,8 @@ http://adb.arcadeitalia.net/lista_mame.php buscando por el fabricante Apple y de
 El primer Mac (Macintosh 128), usa un modo de vídeo de 512x342@60.14742 Hz.
 El primer Mac en color (Macintosh II) usa 640x480@66.662467
 
-El Lemmings sólo suena bien si la frecuencia de refresco es la correcta, y como salió para Mac II, necesita un modo de vídeo
-de 66.662467 Hz si tienes el vsync activado (es decir, si le pasas PRESENTVSYNC a SDL_CreateRenderer).
+El Lemmings no suena bien con vsync activado (es decir, si le pasas PRESENTVSYNC a SDL_CreateRenderer),
+incluso si la frecuencia de refresco es la correcta del host es la correcta (66.662467 Hz, ya que salió para Mac II).
 
 		CÓMO COMPILAR Y USAR QEMU
 
@@ -2788,6 +2788,7 @@ git clone --depth 1 https://gitlab.com/qemu-project/qemu.git
 --(NO NECESARIO PARA MODO OPENGL, QUE ES LO QUE USAMOS) Buscamos la llamada a SDL_CreateRenderer(), le añadimos el flag SDL_RENDERER_ACCELERATED,
  y añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear") justo encima (si lo añadieses en el bloque de llamadas a SDL_SetHint()
  que hay más arriba, sólo tendría efecto en modo OpenGL, que no hace falta porque ya salen suavizados los gráficos). 
+ NO le pasamos el flag SDL_RENDERER_PRESENTVSYNC porque entonces el Lemmings suena mal, entrecortado.
 --Nos vamos a la función sdl_grab_start() y comentamos el primer *if*, que dice: 
 if (!(SDL_GetWindowFlags(scon->real_window) & SDL_WINDOW_INPUT_FOCUS))
 ...de lo contrario, el mouse grab automático en modo fullscreen no funcionará.
@@ -2803,12 +2804,6 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 ./configure --disable-gtk --disable-tpm --disable-pa --disable-oss --disable-sndio --disable-vnc --disable-png --enable-sdl --disable-sdl-image \
 --disable-selinux --disable-iconv --disable-qom-cast-debug --disable-dbus-display --disable-keyring --target-list=m68k-softmmu
-
-¡¡¡¡¡¡¡¡¡¡¡¡¡NOTA!!!!!!!!!!!!! En el futuro se podrá usar MESON así, de momento no funciona:
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
-meson setup .. -Dbuildtype=release \
--Dgtk=disabled -Dsdl=enabled -Daudio_drv_list=alsa -Dvnc=disabled -Dpng=disabled -Dsdl_image=disabled -Dselinux=disabled \
--Ddocs=disabled -Dqom_cast_debug=false -Ddbus_display=disabled
 
 -Ahora compilamos simplemente con: make
 Y los ejecutables qemu-* quedan en el directorio "build". Los copiamos a /usr/local/bin:
@@ -5061,8 +5056,8 @@ http://adb.arcadeitalia.net/lista_mame.php buscando por el fabricante Apple y de
 El primer Mac (Macintosh 128), usa un modo de vídeo de 512x342@60.14742 Hz.
 El primer Mac en color (Macintosh II) usa 640x480@66.662467
 
-El Lemmings sólo suena bien si la frecuencia de refresco es la correcta, y como salió para Mac II, necesita un modo de vídeo
-de 66.662467 Hz si tienes el vsync activado (es decir, si le pasas PRESENTVSYNC a SDL_CreateRenderer).
+El Lemmings no suena bien con vsync activado (es decir, si le pasas PRESENTVSYNC a SDL_CreateRenderer),
+incluso si la frecuencia de refresco es la correcta del host es la correcta (66.662467 Hz, ya que salió para Mac II).
 
 El Prince sólo va bien en modo de 60Hz la versión con la velocidad arreglada que hay en este hilo:
 https://forum.princed.org/viewtopic.php?t=3009
