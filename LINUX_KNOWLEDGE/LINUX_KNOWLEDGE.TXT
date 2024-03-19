@@ -2784,9 +2784,13 @@ VAMOS CON QEMU EN SÍ:
 
 git clone --depth 1 https://gitlab.com/qemu-project/qemu.git
 
--Editamos ui/sdl2.c, buscamos la llamada a SDL_CreateRenderer(), le añadimos los flags SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC,
+-Editamos ui/sdl2.c y hacemos estos cambios:
+--Buscamos la llamada a SDL_CreateRenderer(), le añadimos los flags SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC,
  y añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear") justo encima (si lo añadieses en el bloque de llamadas a SDL_SetHint()
  que hay más arriba, sólo tendría efecto en modo OpenGL: si es lo que te interesa porque tienes activo el soporte OpenGL, pues ponlo ahí). 
+--Nos vamos a la función sdl_grab_start() y comentamos el primer *if*, que dice: 
+if (!(SDL_GetWindowFlags(scon->real_window) & SDL_WINDOW_INPUT_FOCUS))
+...de lo contrario, el mouse grab automático en modo fullscreen no funcionará.
 
 -Para compilar con sólo la emulación de plataformas basadas en Motorola 68000, configuramos con:
 
