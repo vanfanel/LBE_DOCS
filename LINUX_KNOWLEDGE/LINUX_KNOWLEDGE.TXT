@@ -1147,8 +1147,11 @@ cmake .. -DMOJOZORK_MULTIZORK=OFF \
 
 *************Compilar MAME standalone con drivers selectos**********************************************************************
 
+Instalamos dependencias previas:
+apt-get install libfontconfig-dev
+
 Clonamos su repo:
-git clone -b mame0260 --depth 1 https://github.com/mamedev/mame.git mame0260
+git clone -b mame0263 --depth 1 https://github.com/mamedev/mame.git mame0263
 
 Editamos 3rdparty/bgfx/3rdparty/khronos/EGL/eglplatform.h, buscamos la línea:
 
@@ -1173,7 +1176,13 @@ Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configu
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make REGENIE=1 NO_X11=1 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j12
+make REGENIE=1 NO_X11=1 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
+
+Para Wayland:
+
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make REGENIE=1 USE_WAYLAND=1 NO_X11=1 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
 
 MAME tiene un sonido nativo de 48000Hz.
 
@@ -1216,6 +1225,51 @@ make REGENIE=1 -f Makefile.libretro -j4
 
 MAME es un core con sonido de 48000Hz, así que configura el audio en Settings->Audio->Output para esta frecuencia,
 y guárdalo para este core en Quick Menu->Overrides->Save Core Overrides
+
+******USAR MAME PARA EMULAR MACINTOSH 128 Y MACINTOSH II**************************
+
+-Info sacada de este hilo:
+https://forums.bannister.org/ubbthreads.php?ubb=showflat&Number=119182#Post119182
+
+-En makefile, la línea de SOURCES la dejamos así:
+SOURCES = apple/maciici.cpp
+
+-Compilamos con:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make REGENIE=1 USE_WAYLAND=1 NO_X11=1 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
+
+-Nos bajamos el archivo maciici.zip de retroroms.info (Downloads->MAME->Current ROMs) y lo ponemos en ~/mame/roms
+ Así ya deberíamos poder hacer: mame maciici
+ ..Y deberíamos ver el arranque sin disco duro (se escuchará el "ting!" y nos saldrá el disquette con la interrogación).
+
+-Nos creamos una imágen de disco de 256M:
+dd if=/dev/zero of=myhdd.hdv bs=1000000 count=256
+
+-Arrancamos con el Apple Legacy Recovery Oct 1999, que lo tienes en el disco de backup y también está en archive.org:
+ mame maciici -ramsize 8M -hard1 myhdd.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
+ Ahí nos vamos a "Legacy Recovery" y a "Disk Utilities" y a "Formatting Software" y a "Driver Setup 1.5", seleccionamos
+ el disco y le damos a inicializar.
+ Cuando acabe cerramos todo eso y nos vamos a la carpeta "Mac OS" y elegimos el 7.1.1 (el 7.5 ya usa mucha RAM...)
+ Ahí elegimos System 7 Pro 7.1.1, y luego "Net Install.scr" que nos montará los discos. Instalamos con los valores por defecto.
+
+-Arrancamos sin el CD-ROM:
+mame maciici -ramsize 8M -hard1 myhdd.hdv
+
+-Ahora, para meter juegos en la imágen HDV, usamos HFSUTILS. Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
+al sistema de archivos de Linux, extracción que hacemos en formato macbinary (para eso es el "-m") para que no se pierda el "resource fork",
+y luego copiamos esos archivos al disco HFV:
+
+hmount prince.dsk
+hdir "Prince of Persia"
+mkdir prin
+hcopy -m "Prince of Persia":* prin/
+humount prince.dsk
+
+hmount myhdd.hdv
+hmkdir "System7":"Prince of Persia"
+hcopy -m prin/* "System7":"Prince of Persia":
+humount hyhdd.hdv
 
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
