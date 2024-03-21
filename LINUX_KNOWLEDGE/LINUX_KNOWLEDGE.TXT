@@ -1256,11 +1256,10 @@ dd if=/dev/zero of=system6.hdv bs=1000000 count=128
  Ahí nos vamos a "Legacy Recovery" y a "Disk Utilities" y a "Formatting Software" y a "Driver Setup 1.5", seleccionamos
  el disco y le damos a inicializar.
  Cuando acabe cerramos todo eso y nos vamos a la carpeta "Mac OS" y elegimos la versión del sistema que queramos instalar.
- MUY IMPORTANTE: Asegúrate de elegir "System Software for all Macs" o "System Software for any Mac", para que la instalación
- que hacemos en el Mac II funcione en otros modelos como el Mac 128/Plus.
+ MUY IMPORTANTE: Durante la instalación, dale a "Customize" y elige "System Software for all Macs" o "System Software for any Mac",
+ para que la instalación que hacemos en el Mac II funcione en otros modelos como el Mac 128/Plus.
  Para Mac128/Classic instalamos el System 6.0.8, y para Mac II el 7.1.1 (el 7.5 ya usa mucha RAM...) y en ambos casos usamos el
  "Net Install.scr" que nos montará los discos.
- Instalamos con los valores por defecto.
 
 -Arrancamos sin el CD-ROM:
 mame maciici -ramsize 8M -hard1 myhdd.hdv
