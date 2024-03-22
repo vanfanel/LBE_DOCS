@@ -1246,6 +1246,11 @@ https://forums.bannister.org/ubbthreads.php?ubb=showflat&Number=119182#Post11918
 -Clonamos su repo:
 git clone -b mame0263 --depth 1 https://github.com/mamedev/mame.git mame0263
 
+-Editamos scripts/src/osd/modules.lua, nos vamos a la función osdmodulestargetconf(), y donde pone
+links { 
+	"GL",
+lo cambiamos por "OpenGL".
+
 -En makefile, la línea de SOURCES la dejamos así para Mac 128 (emulamos Mac Classic, el Mac Plus tiene problemas con discos de > 20MB):
 SOURCES = apple/mac128.cpp,apple/maciici.cpp
 
