@@ -1226,7 +1226,10 @@ make REGENIE=1 -f Makefile.libretro -j4
 MAME es un core con sonido de 48000Hz, así que configura el audio en Settings->Audio->Output para esta frecuencia,
 y guárdalo para este core en Quick Menu->Overrides->Save Core Overrides
 
-******USAR MAME PARA EMULAR MACINTOSH 128 Y MACINTOSH II**************************
+******USAR MAME PARA EMULAR MACINTOSH 128/CLASSIC Y MACINTOSH II**************************
+
+El Mac 128 no soporta disco duro, si queremos un Mac en blaco y negro emulamos el Mac Classic (el Mac Plus no arranca con discos
+de más de 20MB).
 
 PREVIO: Los modos de vídeo de los Mac, procedente de:
 http://adb.arcadeitalia.net/lista_mame.php
