@@ -1248,21 +1248,24 @@ make REGENIE=1 USE_WAYLAND=1 NO_X11=1 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
  ..Y deberíamos ver el arranque sin disco duro (se escuchará el "ting!" y nos saldrá el disquette con la interrogación).
 
 -Nos creamos una imágen de disco de 128M:
-dd if=/dev/zero of=system6.hdv bs=1000000 count=128
+dd if=/dev/zero of=system608.hdv bs=1000000 count=128
 
--Arrancamos (en modo Mac II tanto si vamos a emular un Mac 128/Classic como si vamos a emular un Mac II)
+-Arrancamos (en modo Mac II tanto si vamos a emular un Mac 128/Classic como si vamos a emular un Mac II, ya que si no, no tenemos CDROM)
  con el Apple Legacy Recovery Oct 1999, que lo tienes en el disco de backup y también está en archive.org:
- mame maciici -ramsize 8M -hard1 system6.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
- Ahí nos vamos a "Legacy Recovery" y a "Disk Utilities" y a "Formatting Software" y a "Driver Setup 1.5", seleccionamos
- el disco y le damos a inicializar.
- Cuando acabe cerramos todo eso y nos vamos a la carpeta "Mac OS" y elegimos la versión del sistema que queramos instalar.
- MUY IMPORTANTE: Durante la instalación, dale a "Customize" y elige "System Software for all Macs" o "System Software for any Mac",
- para que la instalación que hacemos en el Mac II funcione en otros modelos como el Mac 128/Plus.
- Para Mac128/Classic instalamos el System 6.0.8, y para Mac II el 7.1.1 (el 7.5 ya usa mucha RAM...) y en ambos casos usamos el
- "Net Install.scr" que nos montará los discos.
-
+ mame maciici -ramsize 8M -hard1 system608.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
+ 
+ Para instalar System 7.1.1 para un Mac II: nos vamos a "Legacy Recovery" y a "Disk Utilities" y a "Formatting Software" y a "Driver Setup 1.5",
+ seleccionamos el disco y le damos a inicializar.
+ Luego instalamos el System 7.1.1 usando el "Net Install.scr" (las versiones superiores a 7.1.1 ya usan MUCHA RAM y son muy lentas).
+ 
+ Para instalar System 6.0.8 para un Mac Plus, nos vamos a "System Software by CPU", elegimos el modelo Classic, usamos el "HD SC Setup"
+ para inicializar el disco, nos vamos de nuevo a "System Software by CPU", seleccionamos esta vez el Plus, e instalamos el System 6.0.8
+ usando el "Net Install.scr". Una vez allí, le damos a "Customize", elegimos "System Software for all Macs" y le damos a INSTALL.
+ 
 -Arrancamos sin el CD-ROM:
-mame maciici -ramsize 8M -hard1 myhdd.hdv
+
+Si es un Mac 128/Plus: mame macplus -ramsize 4M -hard1 system608.hdv
+Si es un Mac II:       mame maciici -ramsize 8M -hard1 myhdd.hdv
 
 -Ahora, para meter juegos en la imágen HDV, usamos HFSUTILS. Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
 al sistema de archivos de Linux, extracción que hacemos en formato macbinary (para eso es el "-m") para que no se pierda el "resource fork",
