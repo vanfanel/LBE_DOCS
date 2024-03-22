@@ -2323,6 +2323,12 @@ sudo make install -j8
 
 Y listo. Con el nuevo gdb ya podemos debugear cosas compiladas con el distcc, ya que encuentra los debug simbols sin problemas y podemos ir línea a línea y todo eso.
 
+*******Saltarse temporalmente los límites de tethering******
+
+iptables -t mangle -A POSTROUTING -j TTL --ttl-set 255
+
+(Vale para una descarga, luego los hijos de puta de Yoigo lo detectan).
+
 *******Profiling de programas usando OPROFILE*********
 
 Puede que necesitemos activado el soporte de Oprofile en el kernel: PARA PROGRAMAS NORMALES NO PARECE HACER FALTA ESTO.
