@@ -1228,21 +1228,30 @@ y guárdalo para este core en Quick Menu->Overrides->Save Core Overrides
 
 ******USAR MAME PARA EMULAR MACINTOSH 128 Y MACINTOSH II**************************
 
+PREVIO: Los modos de vídeo de los Mac, procedente de:
+http://adb.arcadeitalia.net/lista_mame.php
+(Buscar usando "Additional Search Filter", poniendo "Apple" en el manufacturer, y desmarcando "MameCab only").
+
+MAC 128/Plus/Classic (Los Mac en blanco y negro): 512x342@60.14742
+Mac II: 640x480@66.662467
+Mac IIci (ya lo consideramos una máquina VGA y como tal es su modo de vídeo): 640x480@59.940476 
+
 -Info sacada de:
 https://wiki.mamedev.org/index.php/Driver:Mac_68K
 https://forums.bannister.org/ubbthreads.php?ubb=showflat&Number=119182#Post119182
 
--En makefile, la línea de SOURCES la dejamos así para Mac 128 (emulamos Mac Plus porque trae ya 1MB):
-SOURCES = apple/macplus.cpp
-O así para Mac II:
-SOURCES = apple/maciici.cpp
+-Clonamos su repo:
+git clone -b mame0263 --depth 1 https://github.com/mamedev/mame.git mame0263
+
+-En makefile, la línea de SOURCES la dejamos así para Mac 128 (emulamos Mac Classic, el Mac Plus tiene problemas con discos de > 20MB):
+SOURCES = apple/macclasc.cpp,apple/maciici.cpp
 
 -Compilamos con:
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make REGENIE=1 USE_WAYLAND=1 NO_X11=1 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
 
--Nos bajamos de retroroms.info (Downloads->MAME->Current ROMs) los archivos: maciici.zip, macplus.zip y mackbd_m0110a.zip 
+-Nos bajamos de retroroms.info (Downloads->MAME->Current ROMs) los archivos: adbmodem.zip, macclasc.zip, maciici.zip 
  y los ponemos en ~/mame/roms.
  Así ya deberíamos poder hacer: mame macplus, mame maciici, etc
  ..Y deberíamos ver el arranque sin disco duro (se escuchará el "ting!" y nos saldrá el disquette con la interrogación).
@@ -1254,18 +1263,16 @@ dd if=/dev/zero of=system608.hdv bs=1000000 count=128
  con el Apple Legacy Recovery Oct 1999, que lo tienes en el disco de backup y también está en archive.org:
  mame maciici -ramsize 8M -hard1 system608.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
  
- Para instalar System 7.1.1 para un Mac II: nos vamos a "Legacy Recovery" y a "Disk Utilities" y a "Formatting Software" y a "Driver Setup 1.5",
+ Nos vamos a "Legacy Recovery" y a "Disk Utilities" y a "Formatting Software" y a "Driver Setup 1.5",
  seleccionamos el disco y le damos a inicializar.
- Luego instalamos el System 7.1.1 usando el "Net Install.scr" (las versiones superiores a 7.1.1 ya usan MUCHA RAM y son muy lentas).
- 
- Para instalar System 6.0.8 para un Mac Plus, nos vamos a "System Software by CPU", elegimos el modelo Classic, usamos el "HD SC Setup"
- para inicializar el disco, nos vamos de nuevo a "System Software by CPU", seleccionamos esta vez el Plus, e instalamos el System 6.0.8
- usando el "Net Install.scr". Una vez allí, le damos a "Customize", elegimos "System Software for all Macs" y le damos a INSTALL.
+ Para Mac 128/Classic instaremos el System 6.0.8, y para Mac II el System 7.1.1 (más que eso, usa ya MUCHA RAM).
+ Para ello, nos vamos a "System Software by CPU" e instalamos la versión del System que corresponda según hemos dicho,
+ usando el "Net Install.scr". Le damos a "Customize", elegimos "System Software for all Macs" y le damos a INSTALL.
  
 -Arrancamos sin el CD-ROM:
 
-Si es un Mac 128/Plus: mame macplus -ramsize 4M -hard1 system608.hdv
-Si es un Mac II:       mame maciici -ramsize 8M -hard1 myhdd.hdv
+Si es un Mac en blanco y negro (128, Classic, Plus...): mame macclasc -ramsize 4M -hard1 system608.hdv
+Si es un Mac II:       	  								mame maciici -ramsize 8M -hard1 myhdd.hdv
 
 -Ahora, para meter juegos en la imágen HDV, usamos HFSUTILS. Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
 al sistema de archivos de Linux, extracción que hacemos en formato macbinary (para eso es el "-m") para que no se pierda el "resource fork",
@@ -2825,7 +2832,8 @@ NOTAS PREVIAS:
 http://adb.arcadeitalia.net/lista_mame.php buscando por el fabricante Apple y des-marcando la casilla "MameCab only".
 
 El primer Mac (Macintosh 128), usa un modo de vídeo de 512x342@60.14742 Hz.
-El primer Mac en color (Macintosh II) usa 640x480@66.662467
+El primer Mac en color (Macintosh II) usa 640x480@66.662467 Hz.
+LO IMPORTANTE: Los Mac posteriores al Macintosh II, como el Mac II Ci o este Quadra 800, son ya VGA, por lo que: 640x480@59.940476 Hz.
 
 El Lemmings no suena bien con vsync activado (es decir, si le pasas PRESENTVSYNC a SDL_CreateRenderer),
 incluso si la frecuencia de refresco es la correcta del host es la correcta (66.662467 Hz, ya que salió para Mac II).
