@@ -10013,7 +10013,7 @@ NOTA: POR AHORA, SI NO INSTALAS LAS LIBERRÍAS DE 32BITS, SÓLO VALE PARA EJECUT
 CUANDO HAYA UNA VERSIÓN PÚBLICA DE **BOX32** (de ptitSeb) LO PODRÁS USAR CON WINE PARA LANZAR JUEGOS DE 32 BITS.
 
 INSTALAMOS DEPENDENCIAS PREVIAS:
-apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev
+apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
 (Si usas el gstreamer del sistema, hay que instalar libgstreamer-plugins-base1.0-dev).
 
 VAMOS CON WINE EN SÍ:
@@ -10023,7 +10023,7 @@ https://gitlab.winehq.org/wine/wine/-/releases
 ./configure --enable-win64 --without-x \
 --without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
 --without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
---without-gettext --without-gnutls
+--without-gettext --without-gnutls --enable-archs=x86_64,i386
 
 (Si compilas para un sistema con escritorio X11, NO le pases "--without-x").
 
