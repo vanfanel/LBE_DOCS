@@ -10023,7 +10023,7 @@ https://gitlab.winehq.org/wine/wine/-/releases
 ./configure --enable-win64 --without-x \
 --without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
 --without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
---without-gettext --without-gnutls --enable-wow64
+--without-gettext --without-gnutls
 
 REPRODUCCIÓN DE VÍDEO EN AMD64 Y RASPBERRY PI CON MPV + FFMPEG
 ==============================================================
