@@ -10013,7 +10013,8 @@ NOTA: POR AHORA, SI NO INSTALAS LAS LIBERRÍAS DE 32BITS, SÓLO VALE PARA EJECUT
 CUANDO HAYA UNA VERSIÓN PÚBLICA DE **BOX32** (de ptitSeb) LO PODRÁS USAR CON WINE PARA LANZAR JUEGOS DE 32 BITS.
 
 INSTALAMOS DEPENDENCIAS PREVIAS:
-apt-get install libxkbregistry-dev
+apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev
+(Si usas el gstreamer del sistema, hay que instalar libgstreamer-plugins-base1.0-dev).
 
 VAMOS CON WINE EN SÍ:
 --Bajamos los sources de la última estable de:
@@ -10021,7 +10022,8 @@ https://gitlab.winehq.org/wine/wine/-/releases
 --Configuramos con:
 ./configure --enable-win64 --without-x \
 --without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
---without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi
+--without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
+--without-gettext --without-gnutls --enable-wow64
 
 REPRODUCCIÓN DE VÍDEO EN AMD64 Y RASPBERRY PI CON MPV + FFMPEG
 ==============================================================
