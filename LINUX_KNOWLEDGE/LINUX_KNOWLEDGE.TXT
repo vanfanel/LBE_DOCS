@@ -10025,6 +10025,8 @@ https://gitlab.winehq.org/wine/wine/-/releases
 --without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
 --without-gettext --without-gnutls
 
+(Si compilas para un sistema con escritorio X11, NO le pases "--without-x").
+
 REPRODUCCIÓN DE VÍDEO EN AMD64 Y RASPBERRY PI CON MPV + FFMPEG
 ==============================================================
 Página aclaratoria sobre el asunto: https://wiki.debian.org/HardwareVideoAcceleration
