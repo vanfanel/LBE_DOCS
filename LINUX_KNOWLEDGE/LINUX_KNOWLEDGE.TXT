@@ -1201,17 +1201,7 @@ Quote:
     "make SOURCES=src/mame/drivers/pacman.cpp REGENIE=1"
     including the necessary REGENIE for rebuilding the settings
 
-USAR MAME (a palo seco)
-=======================
-
-Va contra las SDL2 y usa el renderer que usen las SDL2.
-Primero creamos un .ini en el directorio actual:
-mame -createconfig
-Lo editamos a nuestro gusto, y le pasamos a MAME la ruta del .ini para cargarlo:
-mame -inipath /home/manuel/mame ridgerac
-Uno de los sitios donde busca por defecto los .zip de las ROMs es en $HOME/mame/roms, pero pedemos espeficar otras rutas en el .ini
-
-******Compilar MAME libretro con soporte sólo para unos ciertos drivers************
+******Compilar MAME LIBRETRO con soporte sólo para unos ciertos drivers************
 
 git clone --depth 1 https://github.com/libretro/mame.git
 
@@ -1226,7 +1216,39 @@ make REGENIE=1 -f Makefile.libretro -j4
 MAME es un core con sonido de 48000Hz, así que configura el audio en Settings->Audio->Output para esta frecuencia,
 y guárdalo para este core en Quick Menu->Overrides->Save Core Overrides
 
-******USAR MAME PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
+******USAR MAME LIBRETRO PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
+
+El Mac 128 no soporta disco duro, si queremos un Mac en blaco y negro emulamos el Mac SE (el Mac Plus no arranca con discos
+de más de 20MBm y el Mac Classic es incompatible con el Arkanoid).
+
+-Bajamos la última versión estable de: https://github.com/libretro/mame/tags
+
+-En makefile, la línea de SOURCES la dejamos así para Mac 128 (emulamos Mac SE que es el más compatible como se ha explicado arriba)
+y Mac II Ci:
+SOURCES = apple/mac128.cpp,apple/maciici.cpp
+
+Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make REGENIE=1 -f Makefile.libretro -j4
+
+-Creamos el directorio ~/mac128, y ahí metemos el core (llamado "mame_libretro.so").
+Dentro de ~/mac128, creamos el directorio "macse", y dentro de ~/mac128/macse, metemos las roms necesarias
+(adbmodem.zip, macse.zip) y la imágen de disco que queramos usar (la mía se llama system608.hdv),
+de manera que la cosa queda así:
+~/mac128/mame_libretro.so
+~/mac127/macse/macse.zip
+~/mac127/macse/adbmodem.zip
+~/mac127/macse/system608.hdv
+
+-Creamos un archivo llamado "macse.cmd" (lo podemos llamar como queramos, PERO ES FUNDAMENTAL que tenga extensión ".cmd")
+con el contenido:
+macse -rompath macse -hard macse/system608.hdv
+
+-Lo cargamos con:
+retroarch -L mame_libretro.so macse.cmd
+
+******USAR MAME STANDALONE PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
 
 El Mac 128 no soporta disco duro, si queremos un Mac en blaco y negro emulamos el Mac SE (el Mac Plus no arranca con discos
 de más de 20MBm y el Mac Classic es incompatible con el Arkanoid).
