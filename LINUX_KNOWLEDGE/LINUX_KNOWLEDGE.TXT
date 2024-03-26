@@ -1243,12 +1243,12 @@ Dentro de ~/mac128, creamos el directorio "macse", y dentro de ~/mac128/macse, m
 (adbmodem.zip, macse.zip, maciici.zip) y la imágen de disco que queramos usar (la mía se llama system608.hdv),
 de manera que la cosa queda así:
 ~/mac128/mame_libretro.so
-~/mac127/macse/macse.zip
-~/mac127/macse/maciici.zip
-~/mac127/macse/adbmodem.zip
-~/mac127/macse/system608.hdv
+~/mac128/macse/macse.zip
+~/mac128/macse/maciici.zip
+~/mac128/macse/adbmodem.zip
+~/mac128/macse/system608.hdv
 
--Creamos un archivo llamado "macse.cmd" (lo podemos llamar como queramos, PERO ES FUNDAMENTAL que tenga extensión ".cmd")
+-Creamos en ~/mac128 un archivo llamado "macse.cmd" (lo podemos llamar como queramos, PERO ES FUNDAMENTAL que tenga extensión ".cmd")
 con el contenido:
 macse -rompath macse -hard macse/system608.hdv
 
