@@ -1176,13 +1176,13 @@ Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configu
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make REGENIE=1 NO_X11=1 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
+make REGENIE=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
 
 Para Wayland:
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make REGENIE=1 USE_WAYLAND=1 NO_X11=1 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
+make REGENIE=1 USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
 
 MAME tiene un sonido nativo de 48000Hz.
 
