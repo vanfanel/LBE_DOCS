@@ -1330,7 +1330,7 @@ SOURCES = apple/mac128.cpp,apple/maciici.cpp
 -Compilamos con:
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make REGENIE=1 USE_WAYLAND=1 NO_X11=1 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
+make REGENIE=1 USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
 
 -Nos bajamos de retroroms.info (Downloads->MAME->Current ROMs) los archivos: adbmodem.zip, macclasc.zip, maciici.zip 
  y los ponemos en ~/mame/roms.
