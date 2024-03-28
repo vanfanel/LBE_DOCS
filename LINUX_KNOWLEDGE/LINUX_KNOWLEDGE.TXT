@@ -1295,7 +1295,12 @@ hmount myhdd.hdv
 hmkdir "System7":"Prince of Persia"
 hcopy -m prin/* "System7":"Prince of Persia":
 humount hyhdd.hdv
-		
+
+PARA EVITAR PROBLEMAS AL PULSAR SHIFT, ve a Menú Manzana->Control Panels, crea una carpeta llamada DISABLED, y mete ahí el panel "Easy Access".
+De lo contrario, pulsando shift varias veces (como en el Prince cuando luchas) se interrumpe todo el sistema para activar "sticky keys".
+PARA DESACTIVAR EXTENSIONES, ve a SYSTEM FOLDER, EXTENSIONS, y ahí creas una carpeta llamada DISABLED y metes las extensiones
+que quieras deshabilitar.
+
 		FIN BLOQUE PARA CREAR LA IMÁGEN DE DISCO DURO
 
 ******USAR MAME STANDALONE PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
@@ -3025,6 +3030,11 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -device scsi-hd,scsi-id=0,drive=hd0 \
 -drive file=system71.img,media=disk,format=raw,if=none,id=hd0 \
 -display sdl,gl=on -full-screen
+
+PARA EVITAR PROBLEMAS AL PULSAR SHIFT, ve a Menú Manzana->Control Panels, crea una carpeta llamada DISABLED, y mete ahí el panel "Easy Access".
+De lo contrario, pulsando shift varias veces (como en el Prince cuando luchas) se interrumpe todo el sistema para activar "sticky keys".
+PARA DESACTIVAR EXTENSIONES, ve a SYSTEM FOLDER, EXTENSIONS, y ahí creas una carpeta llamada DISABLED y metes las extensiones
+que quieras deshabilitar.
 
 	ALTERNATIVA 2: INSTALAR SYSTEM 8.1
 
