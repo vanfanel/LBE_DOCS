@@ -5950,6 +5950,13 @@ darkwar.rtl
 darkwar.rtc
 remote1.rts
 
+-Nos bajamos la fuente FluidR3_GM.sf2, y la metemos en /usr/local/share/soundfonts
+
+-Lanzamos el juego así para tener música (RECUERDA que hay que compilar el SDL2_Mixer con soporte para fluidsynth,
+ para lo cual hay que tener fluidsynth instalado antes de compilar SDL2_Mixer):
+
+SDL_SOUNDFONTS=/usr/local/share/soundfonts/FluidR3_GM.sf2 ./taradino
+
 **************Tyrian en GNU/Linux con OpenTyrian********************************************************************************
 
 Clonamos el repo de:
