@@ -5935,6 +5935,7 @@ flite -voice slt -t "hello pal"
 
 Usamos el sourceport "taradino".
 -Clonamos su repo: git clone --depth 1 https://github.com/fabiangreffrath/taradino.git
+-Editamos rott/modexlib.c, buscamos la llamada a SDL_SetHint(), y cambiamos "nearest" por "linear".
 -Compilamos con:
 
 mkdir b4
