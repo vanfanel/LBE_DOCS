@@ -3159,14 +3159,16 @@ En este ejemplo, vamos a tratar de ejecutar un .EFI desde GRUB2, para lo cual a�
 -Editamos /etc/default/grub, y nos aseguramos de que "GRUB_TIMEOUT" esté puesto a algo que no sea 0,
 porque si es 0, no veremos el menú de arranque.
 -Editamos /etc/grub.d/40_custom y añadimos al final del archivo la entrada custom que queramos.
- (En este caso, queremos ejecutar el archivo Shell.efi, que está en /boot/efi/Shell.efi, y como la partición EFI está montada en /boot/efi,
- simplemente le pasamos la ruta del archivo a partir de /boot/efi. 
+ (En este caso, queremos ejecutar el archivo Shell.efi, que hemos metido en /boot/efi/EFI/debian/Shell.efi,
+ y como la partición EFI está montada en /boot/efi, pasamos la ruta del archivo a partir de /boot/efi. 
  Podemos averiguar la UUID de la partición EFI con: blkid /dev/nvme0n1p1).
  
- menuentry "Chainload EFI Shell" {                                                                                                                  
+menuentry "Chainload EFI shell" {                                                                                                                
+  insmod part_gpt                                                                                                                                
   insmod fat                                                                                                                                     
-  insmod chain search --no-floppy --set=root --uuid 0CE3-98FA chainloader Shell.efi                                                              
- }
+  search --no-floppy --fs-uuid --set=root 0CE3-98FA                                                                                              
+  chainloader /EFI/debian/Shell.efi                                                                                                              
+}
  
 ALTERNATIVA: ARRANCAR UN .EFI DESDE UN PENDRIVE USB
 
