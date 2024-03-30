@@ -3177,6 +3177,33 @@ OPCIÓN 2: ARRANCAR UN .EFI DESDE UN PENDRIVE USB
 Formateamos un pincho USB en FAT32. Creamos en él un directorio /efi/boot/, y metemos allí el .efi que queramos, renombrándolo a BOOTX64.efi
 Reiniciamos y entramos en la BIOS, y establecemos ese disco como disco de arranque. Y ya debería ir.
 
+NAVEGAR POR EL EFI SHELL Y EJECUTAR COSAS
+
+Miramos las unidades disponibles con "map".
+Cambiamos a la unidad desde la que hemos arrancado con "FS0:", y allí podemos ir navegando por el sistema de archivos con "cd" y "dir",
+estilo DOS. Podemos ejecutar el .efi que queramos simplemente escribiendo su nombre.
+
+*********Actualizar la BIOS de un N100 desde GNU/Linux***************************************************************************************
+
+Normalmente se usa una utilidad de Intel llamada "Intel FPT", con versión para Windows, Linux y EFI. Pero no he encontrado una versión
+lo suficientemente reciente como para que soporte el N100, así que usamos el programa de GNU/Linux "flashrom".
+
+-Nos bajamos la última BIOS, que vendrá con un .bin que es lo que nos interesa.
+ En el caso de este N100, la última BIOS estaba en: https://theminixforum.com/index.php?threads/neo-z100-0db-beta-version-of-bios-ad0j0181.6860/
+ 
+-Instalamos flashrom: sudo apt-get install flashrom
+
+-Averiguamos qué chip de flash BIOS tenemos con: flashrom --programmer internal
+ Ahí vemos que nuestro chip de flash se llama "Opaque flash chip"  
+
+-Sacamos una copia de seguridad de la BIOS por si falla algo:
+ flashrom --programmer internal -c "Opaque flash chip" -r bios_flash_backup.bin 
+
+-Flasheamos la nueva BIOS con:
+flashrom --programmer internal -c "Opaque flash chip" -w AD0J0181.bin
+
+Y cuando acabe, podemos reiniciar. En el primer arranque tarda un poco: no te asustes.
+
 *********Túnel SSH***************************************************************************************************************************
 
 ssh manuel@108.15.38.135 -L 5900:127.0.0.1:5900 -N
