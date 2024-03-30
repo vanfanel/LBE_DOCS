@@ -3151,17 +3151,19 @@ StartupNotify=false
 
 El usuario/contraseña del servidor es biblioteca/giner, y se puede entrar por ssh.
 
-*********Añadir una entrada custom a GRUB2***************************************************************************************************
+*********ARRANCAR A LA SHELL DE EFI***************************************************************************************************
 
-En este ejemplo, vamos a tratar de ejecutar un .EFI desde GRUB2, para lo cual añadimos una entrada custom en el menú de arranque de GRUB2.
-(Podemos bajar la EFI shell desde: https://github.com/tianocore/edk2/tree/UDK2018/ShellBinPkg/UefiShell/X64).
+OPCIÓN 1: LANZAR UN .EFI DESDE GRUB2
 
+Consiste básicamente en añadir un menuentry en GRUB2 que nos lance el .efi que queramos.
+
+-Bajamos la EFI shell desde: https://github.com/tianocore/edk2/tree/UDK2018/ShellBinPkg/UefiShell/X64).
+ Desde Linux, suponiendo que Debian monta la partición EFI en /boot/efi, la metemos en /boot/efi/EFI/debian/Shell.efi
 -Editamos /etc/default/grub, y nos aseguramos de que "GRUB_TIMEOUT" esté puesto a algo que no sea 0,
 porque si es 0, no veremos el menú de arranque.
 -Editamos /etc/grub.d/40_custom y añadimos al final del archivo la entrada custom que queramos.
- (En este caso, queremos ejecutar el archivo Shell.efi, que hemos metido en /boot/efi/EFI/debian/Shell.efi,
- y como la partición EFI está montada en /boot/efi, pasamos la ruta del archivo a partir de /boot/efi. 
- Podemos averiguar la UUID de la partición EFI con: blkid /dev/nvme0n1p1).
+ (Como la partición EFI está montada en /boot/efi, pasamos la ruta del archivo a partir de /boot/efi. 
+  Podemos averiguar la UUID de la partición EFI con: blkid /dev/nvme0n1p1).
  
 menuentry "Chainload EFI shell" {                                                                                                                
   insmod part_gpt                                                                                                                                
@@ -3170,7 +3172,7 @@ menuentry "Chainload EFI shell" {
   chainloader /EFI/debian/Shell.efi                                                                                                              
 }
  
-ALTERNATIVA: ARRANCAR UN .EFI DESDE UN PENDRIVE USB
+OPCIÓN 2: ARRANCAR UN .EFI DESDE UN PENDRIVE USB
 
 Formateamos un pincho USB en FAT32. Creamos en él un directorio /efi/boot/, y metemos allí el .efi que queramos, renombrándolo a BOOTX64.efi
 Reiniciamos y entramos en la BIOS, y establecemos ese disco como disco de arranque. Y ya debería ir.
