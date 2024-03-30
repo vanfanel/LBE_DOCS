@@ -3154,6 +3154,7 @@ El usuario/contraseña del servidor es biblioteca/giner, y se puede entrar por s
 *********Añadir una entrada custom a GRUB2***************************************************************************************************
 
 En este ejemplo, vamos a tratar de ejecutar un .EFI desde GRUB2, para lo cual añadimos una entrada custom en el menú de arranque de GRUB2.
+(Podemos bajar la EFI shell desde: https://github.com/tianocore/edk2/tree/UDK2018/ShellBinPkg/UefiShell/X64).
 
 -Editamos /etc/default/grub, y nos aseguramos de que "GRUB_TIMEOUT" esté puesto a algo que no sea 0,
 porque si es 0, no veremos el menú de arranque.
