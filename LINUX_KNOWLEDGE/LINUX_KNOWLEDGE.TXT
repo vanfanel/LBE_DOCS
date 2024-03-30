@@ -3151,6 +3151,27 @@ StartupNotify=false
 
 El usuario/contraseña del servidor es biblioteca/giner, y se puede entrar por ssh.
 
+*********Añadir una entrada custom a GRUB2***************************************************************************************************
+
+En este ejemplo, vamos a tratar de ejecutar un .EFI desde GRUB2, para lo cual añadimos una entrada custom en el menú de arranque de GRUB2.
+
+-Editamos /etc/default/grub, y nos aseguramos de que "GRUB_TIMEOUT" esté puesto a algo que no sea 0,
+porque si es 0, no veremos el menú de arranque.
+-Editamos /etc/grub.d/40_custom y añadimos al final del archivo la entrada custom que queramos.
+ (En este caso, queremos ejecutar el archivo Shell.efi, que está en /boot/efi/Shell.efi, y como la partición EFI está montada en /boot/efi,
+ simplemente le pasamos la ruta del archivo a partir de /boot/efi. 
+ Podemos averiguar la UUID de la partición EFI con: blkid /dev/nvme0n1p1).
+ 
+ menuentry "Chainload EFI Shell" {                                                                                                                  
+  insmod fat                                                                                                                                     
+  insmod chain search --no-floppy --set=root --uuid 0CE3-98FA chainloader Shell.efi                                                              
+ }
+ 
+ALTERNATIVA: ARRANCAR UN .EFI DESDE UN PENDRIVE USB
+
+Formateamos un pincho USB en FAT32. Creamos en él un directorio /efi/boot/, y metemos allí el .efi que queramos, renombrándolo a BOOTX64.efi
+Reiniciamos y entramos en la BIOS, y establecemos ese disco como disco de arranque. Y ya debería ir.
+
 *********Túnel SSH***************************************************************************************************************************
 
 ssh manuel@108.15.38.135 -L 5900:127.0.0.1:5900 -N
