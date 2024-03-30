@@ -5931,6 +5931,25 @@ apt-get install flite --no-install-recommends
 flite -voice slt -t "hello pal"
 (Para ver la lista de voices es con -vl)
 
+**************Rise of the Triad en GNU/Linux************************************************************************************
+
+Usamos el sourceport "taradino".
+-Clonamos su repo: git clone --depth 1 https://github.com/fabiangreffrath/taradino.git
+-Compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+-Creamos el directorio ~/rott y ahí metemos el ejecutable y los datos del juego.
+Los archivos de datos que necesitas son:
+darkwar.wad
+darkwar.rtl
+darkwar.rtc
+remote1.rts
+
 **************Tyrian en GNU/Linux con OpenTyrian********************************************************************************
 
 Clonamos el repo de:
