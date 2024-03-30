@@ -703,10 +703,14 @@ WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WIT
 
 Para que todo vaya suave, en OPTIONS del core:
 En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
-Para evitar que el sonido vaya ralentizaaaaaado en los juegos de 70Hz, ponemos "TIMING->OVERRIDE EMULATED VIDEO REFRESH RATE" a 60.
-(Para evitar micro-dropouts de audio en juegos que cambian de modo de vídeo "al vuelo", ponlo a 59 o 58).
+Para evitar que el sonido vaya ralentizaaaaaado en los juegos de 70Hz, ponemos "TIMING->OVERRIDE EMULATED VIDEO REFRESH RATE" a 59.
+(Debería ser 60, pero para evitar micro-dropouts de audio en juegos que cambian de modo de vídeo "al vuelo", lo ponemos a 59 o 58.
+ Esto cuando tengas VRR ya no debería ser necesario).
 Y para que los juegos a 70HZ también vayan suaves, "SETTINGS->AUDIO->SYNCHRONIZATION->MAXIUM TIMING SKEW" a 20% o más,
 para que resamplee de los 70HZ a los ~60HZ de nuestro monitor.
+En los juegos de 70Hz (Lemmings, Lotus 3... juegos que tienen música lenta a 60 hagas lo que hagas),
+establece un modo de 70Hz antes de lanzarlos, guarda como un override el vsync rate de 70Hz detectado por RetroArch,
+y pon "TIMING->OVERRIDE EMULATED VIDEO REFRESH RATE" a "OFF". De ese modo van perfectos también.
 
 La configuración general (ciclos, emulación de la CPU usada, tarjetas de vídeo y audio, etc) se hace desde las OPTIONS del core.
 Y luego, para que en el inicio monte un directorio y se meta en él, debes pasarle un .conf que sólo haga eso, así:
