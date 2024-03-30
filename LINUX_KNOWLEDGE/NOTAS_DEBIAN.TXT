@@ -633,7 +633,7 @@ Para SDL2_Mixer:
 -Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-./configure --disable-music-midi-timidity
+./configure --disable-music-midi-timidity --enable-music-midi-fluidsynth
 
 Para SDL2_Image:
 -Nos bajamos la última versión estable de: https://github.com/libsdl-org/SDL_image/releases 
