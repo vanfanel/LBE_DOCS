@@ -30,7 +30,9 @@ Para activar ciertas cosas, en algunas BIOS es necesario pulsar CTRL+F1 para acc
  También activamos el "Power Limit 2 Override", y lo ponemos a 30000.
 
 -En Advanced->CPU Configuration, deshabilita el Hyperthreading y el "Intel (VMX) Virtualization".
--En Advanced->Power & Performance, entra en View/Configure Turbo Options y deshabilita todo. 
+-En Advanced->Power & Performance, entra en View/Configure Turbo Options y deshabilita todo.
+
+-En PCH-FW deshabilita el ME.
 
 ******LÍNEA DE COMANDOS DEL KERNEL***************************************************
 
