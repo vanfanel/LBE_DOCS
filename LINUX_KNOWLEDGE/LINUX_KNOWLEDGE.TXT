@@ -6235,7 +6235,6 @@ Y para ejecutar
 
 LD_LIBRARY_PATH=/home/manuel/sidplay/lib ./sidplayfp <tema>.sid
  
-
 ***************Rogue en Linux**************************************************************************
 
 Descarga los últimos sources de
@@ -6255,6 +6254,22 @@ Ayuda de teclas con shift+?
 
 Puedes pasarle un nombre de jugador, un archivo de salvado, etc.. usando la variable de entorno ROGUEOPTS. Como por ejemplo así:
 ROGUEOPTS="name=Manuel,file=manuel.save" ./rogue.bin -r
+
+***************ClassicRogue en GNU/Linux*****************************************************************
+
+Nos bajamos los últimos sources del correo electrónico (busca "rogue") o del disco duro de backup.
+El fichero se llama "Source_SDL_JS_Rogue Linux with Makefile.zip"
+
+Lo descomprimimos (puedes descomprimir el .zip sin miedo, queda todo en un directorio).
+
+Editamos shared/shared.cpp y:
+-En la llamada a SDL_CreateWindow(), añadimos el flag: SDL_WINDOW_FULLSCREEN_DESKTOP
+y justo antes añadimos: SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+-En la función InitInterface() comentamos la línea:
+atexit(ShutdownInterface)
+-Vamos a la función os_get_input() y justo antes añadimos el prototipo:
+void ShutdownInterface(void);
+Y justo antes de "exit(0);" ponemos la llamada: void ShutdownInterface(void);
 
 ***************Borrar un archivo con nombre que contiene caracteres extraños*****************************
 
