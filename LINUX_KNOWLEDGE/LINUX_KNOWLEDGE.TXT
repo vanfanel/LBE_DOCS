@@ -6239,7 +6239,7 @@ LD_LIBRARY_PATH=/home/manuel/sidplay/lib ./sidplayfp <tema>.sid
 ***************Rogue en Linux**************************************************************************
 
 Descarga los últimos sources de
-git clone --depth 1https://github.com/gillesdami/rogue.git
+git clone --depth 1 https://github.com/gillesdami/rogue.git
 
 Antes de nada, instala las libncurses5-dev, antes de hacer el configure.
 sudo apt-get install libncurses5-dev --no-install-recommends
