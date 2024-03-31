@@ -748,6 +748,8 @@ PARA CARGAR EL Might & Magic 2, antes tienes que ejecutar LOADFIX (es un comando
 
 PARA EVITAR el error de que no encuentra /dev/snd/seq, pues cargar el módulo "snd_seq", o ignorar el error.
 
+PARA PONER EL ISHAR 1 EN INGLÉS SIN TENER TECLADO NUMÉRICO, dale a la tecla END. 
+
 PARA CONTROLAR EL BCRACERS BIEN CON EL MANDO, NO intentes usar el joystick desde el SETUP del juego ni desde las opciones del menú del juego.
 El control de joystick de este juego está totalmente roto. Deja el control de teclado y ahora le hacemos el truco.
 Usamos la funcionalidad del dosbox-core "Gamepad/Joystick 1 keyboard mappings", y ponemos:
