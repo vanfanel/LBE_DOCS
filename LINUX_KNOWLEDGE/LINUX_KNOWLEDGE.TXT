@@ -3221,6 +3221,16 @@ flashrom --programmer internal -c "Opaque flash chip" -w AD0J0181.bin
 
 Y cuando acabe, podemos reiniciar. En el primer arranque tarda un poco: no te asustes.
 
+ALTERNATIVA: ARRANCANDO UN PROGRAMA FLASHEADOR DESDE LA EFI
+
+Tienes un archivo llamado "MINIX NEO Z100-0dB AD0J0181 20240308.zip" en el disco duro de backup y en el correo.
+-Formateamos un pen en FAT32 y copiamos todos los archivos allí.
+-Encendemos el ordenador y le damos a F11
+-Elegimos la opción "UEFI" y le damos a INTRO. Ya deberíamos estar en el EFI shell (si no, tienes apuntes a parte para arrancar al EFI shell
+ en este mismo documento).
+-Introducimos FS3:, luego ls, y empezamos a flashear con: AfuEfix64.efi AD0J0181.bin /p /b /n /x
+ Al acabar, reiniciamos el ordenador y ya está.
+
 *********Túnel SSH***************************************************************************************************************************
 
 ssh manuel@108.15.38.135 -L 5900:127.0.0.1:5900 -N
