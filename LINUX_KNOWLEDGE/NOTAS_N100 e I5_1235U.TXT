@@ -22,17 +22,20 @@ Para activar ciertas cosas, en algunas BIOS es necesario pulsar CTRL+F1 para acc
 
 -Los C-STATES en N100 es mejor activarlos.
 
--En el N100, vamos a Advanced->GT - Power Management Control, y ahí deshabilitamos el Render Standby,
- y si queremos ponemos el Maximum GT frequency a 750 (pero no se nota).
- 
--OPCIONAL/OVERCLOCKIG: En el N100, vamos a Advanced->CPU Power Management Control->View/Configure Turbo Options
- y ahí activamos "Power Limit 1 Override", lo ponemos a 30000, y el Time Window a 28.
- También activamos el "Power Limit 2 Override", y lo ponemos a 30000.
-
 -En Advanced->CPU Configuration, deshabilita el Hyperthreading y el "Intel (VMX) Virtualization".
 -En Advanced->Power & Performance, entra en View/Configure Turbo Options y deshabilita todo.
 
 -En PCH-FW deshabilita el ME.
+
+-En el N100, En Advanced->Power Settings, desactiva "USB Wakeup" y activa "Deep S5(Eup)", para que deje de mandar tensión a los USB
+cuando el ordenador está apagado.
+
+-En el N100, vamos a Advanced->GT - Power Management Control, y ahí deshabilitamos el Render Standby,
+ y si queremos ponemos el Maximum GT frequency a 750 (pero no se nota).
+
+-OPCIONAL/OVERCLOCKIG: En el N100, vamos a Advanced->CPU Power Management Control->View/Configure Turbo Options
+ y ahí activamos "Power Limit 1 Override", lo ponemos a 30000, y el Time Window a 28.
+ También activamos el "Power Limit 2 Override", y lo ponemos a 30000.
 
 ******LÍNEA DE COMANDOS DEL KERNEL***************************************************
 
