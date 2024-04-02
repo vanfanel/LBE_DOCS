@@ -7159,9 +7159,19 @@ Además, activamos la opción de "Boot hard disk" en las opciones del core.
 OJO!!! Si el ejecutable es un .TOS, le cambiaremos el juego a .PRG para que se autoarranque, si se llama .TOS no se autoarrancará!!!
 OJO!!! Ponle unos 4MB de RAM al equipo si no quieres que algunos de los juegos parpadeen durante el juego como el Amiga con el WHDLOAD con poca RAM.
 
+PARA ARRANCAR DESDE DISCO DURO (Para luego lanzar cada juego "a mano" desde el sistema Atari)
+Lo más fácil (y compatible con los juegos que te interesan, como Captain Blood, Viking Child, Ishar...)
+es, en CORE OPTIONS->SYSTEM:
+TOS ROM -> EmuTOS 192us
+Machine Type -> ST
+ST Memory Size -> 4 MB
+Hard Disk -> /hdd (Se refiere a ~/.config/retroarch/system/hatarib/hdd, si ahí tienes AUTO/COMMAND.PRG, puedes arrancar a una línea de comandos.)
+Hard Disk Type -> GemDOS
+Hard Disk Boot -> ON
+
 PARA EL CAPTAIN BLOOD DESDE HDD:
 -Usa la release de 42-Crew para copiarla al disco duro GEMDOS en el directorio que quieras.
-Necesita la TOS 1.04 PAL como máximo: más que eso, revienta. Puedes usar versiones superiores de la TOS si son NTSC.
+Necesita la TOS 1.04 PAL como máximo: más que eso, revienta. Puedes usar versiones superiores de la TOS, o incluso EmuTOS, si son NTSC.
 
 PARA EL DRAGONFLIGHT DESDE HDD:
 -Usando la versión oficial HDD de: http://thalion.exotica.org.uk/games/dragonflight/st/dragonflight.zip
