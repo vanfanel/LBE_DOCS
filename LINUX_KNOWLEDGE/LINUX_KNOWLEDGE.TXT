@@ -7127,8 +7127,16 @@ Clonamos su repo:
 
 git clone --depth 1 https://github.com/bbbradsmith/hatariB.git
 
-Compilamos esta línea de compilación (es así de larga porque por defecto intenta usar unas SDL2 y libzip que trae incluidas,
+Compilamos con esta línea de compilación (es así de larga porque por defecto intenta usar unas SDL2 y libzip que trae incluidas,
 y en su lugar queremos que use las instaladas en el sistema):
+
+Para X86_64:
+
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.so \
+ZLIB_INCLUDE=/usr/include ZLIB_LINK=/usr/lib/x86_64-linux-gnu/libz.so
+
+Para Raspberry Pi:
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.so \
