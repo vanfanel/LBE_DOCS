@@ -7160,27 +7160,34 @@ OJO!!! Si el ejecutable es un .TOS, le cambiaremos el juego a .PRG para que se a
 OJO!!! Ponle unos 4MB de RAM al equipo si no quieres que algunos de los juegos parpadeen durante el juego como el Amiga con el WHDLOAD con poca RAM.
 
 PARA USAR UN DIRECTORIO A MODO DE DISCO DURO: Para esto, tenemos que configurar el tipo del disco como GEMDOS, elegir una ROM adecuada
-como la EmuTOS, y crear un archivo dummy de extensión .gem junto al directorio.
-(Y recuerda que los directorios que uses como disco, así como las imágenes de disco, etc., deben estar en system/hatarib).
+como la EmuTOS 192us, y crear un archivo dummy de extensión .gem junto al directorio.
 O sea que si tenemos:
-~/.config/retroarch/system/hatarib/gods
+~/roms/atarist/gods
 ...entonces creamos:
-~/.config/retroarch/system/hatarib/gods.gem
+~/roms/atarist/gods.gem
 Y ya ponemos hacer:
-retroarch -L ~/.config/retroarch/cores/hatarib.so ~/.config/retroarch/system/hatarib/gods.gem
-Y RECUERDA que para el juego se autoarranque, tendrías que crear ~/.config/retroarch/system/hatarib/gods/AUTO y meter ahí
-el RUNME.TOS renombrado a RUNME.PRG (o al nombre que quieras, pero .PRG).
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atarist/gods.gem
+Y RECUERDA que para el juego se autoarranque, tendrías que crear ~/roms/atarist/gods/AUTO y meter ahí el RUNME.TOS,
+renombrado a RUNME.PRG (o al nombre que quieras, pero .PRG).
 
-
-PARA ARRANCAR DESDE DISCO DURO (Para luego lanzar cada juego "a mano" desde el sistema Atari)
+PARA ARRANCAR DESDE DISCO DURO "COMPLETO" (Para luego lanzar cada juego "a mano" desde el sistema Atari)
 Lo más fácil (y compatible con los juegos que te interesan, como Captain Blood, Viking Child, Ishar...)
 es, en CORE OPTIONS->SYSTEM:
 TOS ROM -> EmuTOS 192us
 Machine Type -> ST
 ST Memory Size -> 4 MB
-Hard Disk -> /hdd (Se refiere a ~/.config/retroarch/system/hatarib/hdd, si ahí tienes AUTO/COMMAND.PRG, puedes arrancar a una línea de comandos.)
 Hard Disk Type -> GemDOS
 Hard Disk Boot -> ON
+Es recomendable que el directorio que contiene el disco duro "completo" se llame "C", porque así el HatariB lo montará en el Atari emulado
+como disco "C".
+Tenemos que crear, junto al directorio del disco duro, un archivo dummy que se llame igual que el directorio donde está el disco duro "completo".
+O sea que si tenemos:
+~/roms/atarist/C
+...entonces creamos:
+~/roms/atarist/C.gem
+Y ya ponemos hacer:
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atarist/C.gem
+Si queremos que se autolanze el command.prg para arrancar a consola de comandos en vez de arrancar al GEM, lo metemos en el directorio AUTO y ya.
 
 PARA EL CAPTAIN BLOOD DESDE HDD:
 -Usa la release de 42-Crew para copiarla al disco duro GEMDOS en el directorio que quieras.
