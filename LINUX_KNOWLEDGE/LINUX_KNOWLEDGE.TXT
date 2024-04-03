@@ -7159,6 +7159,16 @@ Además, activamos la opción de "Boot hard disk" en las opciones del core.
 OJO!!! Si el ejecutable es un .TOS, le cambiaremos el juego a .PRG para que se autoarranque, si se llama .TOS no se autoarrancará!!!
 OJO!!! Ponle unos 4MB de RAM al equipo si no quieres que algunos de los juegos parpadeen durante el juego como el Amiga con el WHDLOAD con poca RAM.
 
+PARA USAR UN DIRECTORIO A MODO DE DISCO DURO: Para esto, tenemos que configurar el tipo del disco como GEMDOS,
+y crear un archivo dummy de extensión .gem junto al directorio.
+(Y recuerda que los directorios que uses como disco, así como las imágenes de disco, etc., deben estar en system/hatarib).
+O sea que si tenemos:
+~/.config/retroarch/system/hatarib/gods
+...entonces creamos:
+~/.config/retroarch/system/hatarib/gods.gem
+Y ya ponemos hacer:
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/.config/retroarch/system/hatarib/gods.gem
+
 PARA ARRANCAR DESDE DISCO DURO (Para luego lanzar cada juego "a mano" desde el sistema Atari)
 Lo más fácil (y compatible con los juegos que te interesan, como Captain Blood, Viking Child, Ishar...)
 es, en CORE OPTIONS->SYSTEM:
