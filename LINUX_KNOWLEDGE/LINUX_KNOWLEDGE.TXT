@@ -7136,7 +7136,7 @@ CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=nativ
 make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.so \
 ZLIB_INCLUDE=/usr/include ZLIB_LINK=/usr/lib/x86_64-linux-gnu/libz.so
 
-Para Raspberry Pi:
+Para Raspberry Pi (respecto a X86_64 sólo cambia el directorio donde está libz del sistema):
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.so \
@@ -7159,8 +7159,8 @@ Además, activamos la opción de "Boot hard disk" en las opciones del core.
 OJO!!! Si el ejecutable es un .TOS, le cambiaremos el juego a .PRG para que se autoarranque, si se llama .TOS no se autoarrancará!!!
 OJO!!! Ponle unos 4MB de RAM al equipo si no quieres que algunos de los juegos parpadeen durante el juego como el Amiga con el WHDLOAD con poca RAM.
 
-PARA USAR UN DIRECTORIO A MODO DE DISCO DURO: Para esto, tenemos que configurar el tipo del disco como GEMDOS,
-y crear un archivo dummy de extensión .gem junto al directorio.
+PARA USAR UN DIRECTORIO A MODO DE DISCO DURO: Para esto, tenemos que configurar el tipo del disco como GEMDOS, elegir una ROM adecuada
+como la EmuTOS, y crear un archivo dummy de extensión .gem junto al directorio.
 (Y recuerda que los directorios que uses como disco, así como las imágenes de disco, etc., deben estar en system/hatarib).
 O sea que si tenemos:
 ~/.config/retroarch/system/hatarib/gods
@@ -7168,6 +7168,9 @@ O sea que si tenemos:
 ~/.config/retroarch/system/hatarib/gods.gem
 Y ya ponemos hacer:
 retroarch -L ~/.config/retroarch/cores/hatarib.so ~/.config/retroarch/system/hatarib/gods.gem
+Y RECUERDA que para el juego se autoarranque, tendrías que crear ~/.config/retroarch/system/hatarib/gods/AUTO y meter ahí
+el RUNME.TOS renombrado a RUNME.PRG (o al nombre que quieras, pero .PRG).
+
 
 PARA ARRANCAR DESDE DISCO DURO (Para luego lanzar cada juego "a mano" desde el sistema Atari)
 Lo más fácil (y compatible con los juegos que te interesan, como Captain Blood, Viking Child, Ishar...)
