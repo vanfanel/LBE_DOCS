@@ -7197,6 +7197,10 @@ PARA EL AMBERSTAR DESDE HDD
 Simplemente debes tener el juego metido en C:AMBRSTAR, es decir, que lo puedes meter en ~/roms/atari/ambrstar/AMBRSTAR/,
 y crearíamos ~/roms/atari/ambrstar.gem
 
+PARA QUE EL ISHAR VAYA MÁS DEPRISA
+Puedes poner la CPU a 16Mhz, y cargar con EmuTOS, o bien con la TOS de Atari pero configurando el sistema como un STE y usando la TOS de STE.
+(Con la CPU a 16Mhz + sistema ST sencillo + TOS de Atari, la imágen HAM del cargador se ve mal).
+
 PARA EL DRAGONFLIGHT DESDE HDD, tienes dos opciones:
 
 --OPCIÓN 1: Usar la versión de https://atari.8bitchip.info/ASTGA/D/dragonfl.php
