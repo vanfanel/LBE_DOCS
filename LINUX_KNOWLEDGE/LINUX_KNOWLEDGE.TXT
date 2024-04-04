@@ -7162,12 +7162,12 @@ OJO!!! Ponle unos 4MB de RAM al equipo si no quieres que algunos de los juegos p
 PARA USAR UN DIRECTORIO A MODO DE DISCO DURO: Para esto, tenemos que configurar el tipo del disco como GEMDOS, elegir una ROM adecuada
 como la EmuTOS 192us, y crear un archivo dummy de extensión .gem junto al directorio.
 O sea que si tenemos:
-~/roms/atarist/gods
+~/roms/atari/gods
 ...entonces creamos:
-~/roms/atarist/gods.gem
+~/roms/atari/gods.gem
 Y ya ponemos hacer:
-retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atarist/gods.gem
-Y RECUERDA que para el juego se autoarranque, tendrías que crear ~/roms/atarist/gods/AUTO y meter ahí el RUNME.TOS,
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/gods.gem
+Y RECUERDA que para el juego se autoarranque, tendrías que crear ~/roms/atari/gods/AUTO y meter ahí el RUNME.TOS,
 renombrado a RUNME.PRG (o al nombre que quieras, pero .PRG).
 
 PARA ARRANCAR DESDE DISCO DURO "COMPLETO" (Para luego lanzar cada juego "a mano" desde el sistema Atari)
@@ -7182,11 +7182,11 @@ Es recomendable que el directorio que contiene el disco duro "completo" se llame
 como disco "C".
 Tenemos que crear, junto al directorio del disco duro, un archivo dummy que se llame igual que el directorio donde está el disco duro "completo".
 O sea que si tenemos:
-~/roms/atarist/C
+~/roms/atari/C
 ...entonces creamos:
-~/roms/atarist/C.gem
+~/roms/atari/C.gem
 Y ya ponemos hacer:
-retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atarist/C.gem
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/C.gem
 Si queremos que se autolanze el command.prg para arrancar a consola de comandos en vez de arrancar al GEM, lo metemos en el directorio AUTO y ya.
 
 PARA EL CAPTAIN BLOOD DESDE HDD:
@@ -7203,8 +7203,11 @@ PARA EL DRAGONFLIGHT DESDE HDD, tienes dos opciones:
 La ventaja de esta versión es que funciona desde cualquier unidad, NO hace falta que esté en la "E:" como la original de Thalion Shrine.
 Pero sí que debes tener un floppy metido en la disketera. No lo usa, pero debes tenerlo o se queda en una pantalla en negro.
 Puedes crearte uno vacío con el HATARI (versión no Libretro).
-Para insertar un floppy a mano una vez que has arrancado el core habiéndole pasado el disco duro GEM,
-en el menú de RetroArch debes ir a "Disk Control->Load New Disc", y después más arriba darle a "Insert Disk".
+Para cargar el disco GEM y el floppy a la vez, nos creamos el archivo ~/roms/atari/dragonfl.m3u, con el contenido:
+dragonfl.gem
+dragonfl.st
+Y lo podemos cargar con:
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/dragonfl.m3u
 
 --OPCIÓN 2: Usar la versión oficial HDD de Thalion Shrine: http://thalion.exotica.org.uk/games/dragonflight/st/dragonflight.zip
 La debes copiar a un disco GEM que tenga como letra de unidad la "E:"
@@ -7212,8 +7215,14 @@ Para ello, el directorio del juego debe tener un solo directorio llamado "E", do
 O sea, que habría que meter el juego en ~/roms/atari/dragonfl/E/
 Y debes tener un floppy cualquiera metido en la disketera. No lo usa, pero debes tenerlo.
 Puedes crearte uno vacío con el HATARI (versión no Libretro).
-Para insertar un floppy a mano una vez que has arrancado el core habiéndole pasado el disco duro GEM,
-en el menú de RetroArch debes ir a "Disk Control->Load New Disc", y después más arriba darle a "Insert Disk".
+Para cargar el disco GEM y el floppy a la vez, nos creamos el archivo ~/roms/atari/dragonfl.m3u, con el contenido:
+dragonfl.gem
+dragonfl.st
+Y lo podemos cargar con:
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/dragonfl.m3u
+
+(POR SI LO NECESITAS, AUNQUE ES POCO PROBABLE: Para insertar un floppy a mano una vez que has arrancado el core habiéndole pasado el disco duro GEM,
+en el menú de RetroArch debes ir a "Disk Control->Load New Disc", y después más arriba darle a "Insert Disk").
 
 COMPILAR EL CORE MUPEN64 DE LIBRETRO
 ====================================
