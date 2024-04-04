@@ -7198,9 +7198,8 @@ Simplemente debes tener el juego metido en C:AMBRSTAR, es decir, que lo puedes m
 y crearíamos ~/roms/atari/ambrstar.gem
 
 PARA QUE EL ISHAR VAYA MÁS DEPRISA
-Puedes poner la CPU a 16Mhz, y cargar con EmuTOS,
-o bien configurando el sistema como un STE o Mega STE y usando la TOS de STE (TOS 1.62) o de MegaSTE (2.05).
-(Con la CPU a 16Mhz + sistema ST sencillo + TOS de ST, la imágen HAM del cargador se ve mal).
+Configura el sistema como un Mega STE y usa la TOS del MegaSTE (2.05). El MegaSTE ya va de por sí a 16MHz.
+(Con la CPU a 16Mhz + sistema ST sencillo + TOS de ST, la imágen HAM del cargador se ve mal. Y con EmuTOS, no se ve esa imágen HAM).
 
 PARA EL DRAGONFLIGHT DESDE HDD, tienes dos opciones:
 
