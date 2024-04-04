@@ -7189,6 +7189,9 @@ Y ya ponemos hacer:
 retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/C.gem
 Si queremos que se autolanze el command.prg para arrancar a consola de comandos en vez de arrancar al GEM, lo metemos en el directorio AUTO y ya.
 
+Tienes MUCHOS juegos instalados en disco duro aquí: https://atari.8bitchip.info/ASTGA/astgam.php
+(Busca por nombre del juego, y si tiene una "D" azul en esa fila, pincha en ella para ir a la ficha y descargarlo).
+
 PARA EL CAPTAIN BLOOD DESDE HDD:
 -Usa la release de 42-Crew para copiarla al disco duro GEMDOS en el directorio que quieras.
 Necesita la TOS 1.04 PAL como máximo: más que eso, revienta. Puedes usar versiones superiores de la TOS, o incluso EmuTOS, si son NTSC.
