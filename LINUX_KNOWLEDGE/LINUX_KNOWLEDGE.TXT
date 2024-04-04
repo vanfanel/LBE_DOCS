@@ -7195,8 +7195,9 @@ Necesita la TOS 1.04 PAL como máximo: más que eso, revienta. Puedes usar versi
 
 PARA EL DRAGONFLIGHT DESDE HDD:
 -Usando la versión oficial HDD de: http://thalion.exotica.org.uk/games/dragonflight/st/dragonflight.zip
-La debes copiar a un directorio que se llame E en el directorio raiz de la unidad GEMDOS.
-O sea, que la puedes meter en ~/roms/atari/dragon/E.
+La debes copiar a un disco GEM que tenga como letra de unidad la "E:"
+Para ello, el directorio del juego debe tener un solo directorio llamado "E", donde metemos el juego.
+O sea, que habría que meter el juego en ~/roms/atari/dragonfl/E/
 Y debes tener un floppy cualquiera metido en la disketera. No lo usa, pero debes tenerlo. Puedes crearte uno vacío con el HATARI (versión no Libretro).
 
 COMPILAR EL CORE MUPEN64 DE LIBRETRO
