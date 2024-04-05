@@ -6876,10 +6876,14 @@ La idea es que al pasar el Max Swapchains a 3, liberamos la GPU para los shaders
 ####### FIN BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
 
 SHADERS: Para la mayoría de las máquinas, el shader Fakelottes con el "Monitor Gamma" bajado a 1.95 es más que suficiente.
-Para el core de SEGA, debido al tema del dithering y tal, usa una combinación de GDAPT (está entre los shaders "Dithering")
-y FAKELOTTES. Para ello, primero carga el preset "gdapt.slangp", luego pones "Shader Passes" a "3",
+Para el core de SEGA, debido al tema del dithering y tal, yenemos dos opciones:
+
+1) El shader crt-Cyclon con los parámetros de convergencia al máximo.
+2) Una combinación de GDAPT (está entre los shaders "Dithering") y FAKELOTTES.
+Para ello, primero carga el preset "gdapt.slangp", luego pones "Shader Passes" a "3",
 y en el Shader #2 eliges el "fakelottes.slag" (es decir, para el gdapt elegimos el preset, y para el fakelottes elegimos el shader suelto).
 No hace falta ajustar ningún parámetro, según viene queda muy bien.
+Lo malo de esto es que las sombras en el Comix Zone se ven tramadas sobre algunos colores, y el texto tampoco se ve bien del todo.
  
 APUNTES SOBRE CORES ESPECÍFICOS:
 
