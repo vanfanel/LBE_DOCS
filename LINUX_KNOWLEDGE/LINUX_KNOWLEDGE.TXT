@@ -1926,6 +1926,10 @@ Regenera las LOCALES con:
 sudo dpkg-reconfigure locales
 Y ahí activa solo en_US.UTF8 y es_ES.UTF8, dejando por defecto en_US.UTF8, y arreglado.
 
+*******Evitar que en Lubuntu se nos cierren las ventanas minimizadas al clickar sobre ellas en la barra de tareas**********
+
+Hacemos click con el botón derecho en la barra de tareas > Configure “Task Manager” > General > Close on middle-click
+
 *******Escritorio Lubuntu sin tearing**************************************************************************************
 
 Sacado de https://wiki.archlinux.org/index.php/Intel_graphics#Tear-free_video
