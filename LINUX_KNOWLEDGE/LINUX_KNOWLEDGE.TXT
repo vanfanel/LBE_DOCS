@@ -2065,8 +2065,11 @@ Ejecutamos el juego que queramos con:
 java -jar freej2me-sdl.jar DoomRPG.jar 240 320 -i linear
 Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altura mayor, de 320.
 
-CORE PUAE LIBRETRO, EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
-==============================================================================
+CORE "LIBRETRO UAE", EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
+===============================================================================
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/libretro/libretro-uae.git
 
 Se compila como los demás cores.
 
