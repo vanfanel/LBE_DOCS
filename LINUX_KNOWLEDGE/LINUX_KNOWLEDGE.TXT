@@ -2073,6 +2073,9 @@ git clone --depth 1 https://github.com/libretro/libretro-uae.git
 
 Se compila como los demás cores.
 
+Tienes TODAS las kickstarts posibles que puede necesitar el core, para TODOS los modelos de Amiga que soporta, en el disco de backup,
+con sus nombres ya correctos y las MD5SUM comprobadas.
+
 No hace falta andar con HDFs, carga los .info de las carpetas que contengan juegos de WHDInstall,
 o los .slave de los juegos WHDLinstall, o directamente los .lha que contengan juegos de WHDInstall.
 
