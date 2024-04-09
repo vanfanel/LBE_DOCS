@@ -2099,9 +2099,11 @@ Si usas la configuración por defecto, estarás emulando un Amiga AGA que consum
 o a "Normal", si lo tienes a "Cycle Exact (DMA/Memory)" te salen errores en los árboles, etc. 
 -El Shadow of the Beast WHDLoad tiene un fallo muy gordo, que es que si usas CUSTOM1=1 para saltarte la intro, y lo corres en modo OCS,
 está todo glitcheado.
+-El Hybris necesita CUSTOM4=1 para ir en PAL (es como se recomienda porque en NTSC es demasiado complicado, es un juego alemán originalmente)
+y CUSTOM3=1 para quitarle los blitterwaits.
 
-FS-UAE (FSUAE), EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
-==========================================================================
+FS-UAE (FSUAE), EMULADOR STANDALONE DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
+=====================================================================================
 
 INSTRUCCIONES ESPECÍFICAS PARA PI4 QUE NO DEBES PERDER DE VISTA:
 https://github.com/FrodeSolheim/fs-uae/blob/master/docs/raspberry-pi-4.md
