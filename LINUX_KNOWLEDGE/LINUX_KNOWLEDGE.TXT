@@ -2172,6 +2172,12 @@ mientras tanto, si lo necesitas.
 Puedes ver otras opciones de vídeo que le puedes pasar como parámetro al ejecutable en:
 https://fs-uae.net/video-options
 
+MONTAR DISCOS ADF DE AMIGA EN LINUX
+===================================
+
+modprobe affs
+sudo mount disco.adf /mnt
+
 JUEGOS Y DEMOS DE AMIGA
 =======================
 
