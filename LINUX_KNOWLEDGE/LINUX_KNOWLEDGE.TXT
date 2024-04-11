@@ -2091,8 +2091,10 @@ suavemente también el otro).
 y "CUSTOM1=1" para saltar la intro).
 
 Para emular juegos OCS instalados con WHDLoad, usa la configuración de Amiga 600, que tiene 2MB de Chip y 8MB de FAST.
-Pon también "CPU Compatibility" a "Normal" o a "More compatible": en el setting por defecto, que es "Cycle Exact (DMA/Memory)",
+Pon también "CPU Compatibility" a "More compatible" o a "Normal": en el setting por defecto, que es "Cycle Exact (DMA/Memory)",
 dan probemas los juegos si estás emulando un Amiga OCS/ECS como el Amiga 600.
+Pon "CPU Speed" a +200%, al estar emulando un 68000 "plano" no se nota en el consumo de CPU (sobre el 17% en la planicie del SOTB)
+y los juegos cargan mucho más rápido con el WHDLoad y van mejor.
 Si usas la configuración por defecto, estarás emulando un Amiga AGA que consume EL DOBLE de CPU.
 
 Para jugar a juegos NO instalados con WHDLoad, simplemente en el directorio del juego crea un directorio s y dentro un fichero startup-sequence,
