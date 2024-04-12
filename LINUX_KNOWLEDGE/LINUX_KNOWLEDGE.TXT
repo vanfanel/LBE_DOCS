@@ -2074,8 +2074,8 @@ git clone --depth 1 https://github.com/libretro/libretro-uae.git
 
 Se compila como los demás cores.
 
-La configuración de audio, si no tienes VRR, es usando ALSA (no Alsathread), 44100Hz (el core es 44100Hz internamente), con 44ms de latencia.
-Son 44ms si estás en PAL, ya que cada frame son 20ms en PAL y necesitas dos frames de audio + 2ms más por frame.
+La configuración de audio, si no tienes VRR, es usando ALSA (no Alsathread), 44100Hz (el core es 44100Hz internamente), con 45ms de latencia.
+Son 45ms si estás en PAL, ya que cada frame son 20ms en PAL y necesitas dos frames de audio + ~2ms más por frame.
 Si pones el Amiga en NTSC con un modo de vídeo NTSC, puedes por supuesto bajar a 36ms como con el resto de cores.
 --Para emular A1200: Pon "CPU Compatibility" a "Cycle Exact (DMA/Memory)". Es lo más compatible en modo 1200, y de todos modos
 la emulación del 1200 nunca va a ser totalmente cycle exact por limitación del WinUAE ni tiene mucho sentido un Amiga 1200 "Cycle Exact"
