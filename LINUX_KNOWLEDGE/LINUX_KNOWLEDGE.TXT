@@ -2078,6 +2078,8 @@ Son 42ms si estás en PAL, ya que cada frame son 20ms en PAL y necesitas dos fra
 puedes por supuesto bajar a 36ms como con el resto de cores.
 Como setting general, deja "CPU Compatibility" puesto a "Cycle Exact (DMA/Memory)". Es lo más compatible en modo 1200, y de todos modos
 la emulación del 1200 nunca va a ser totalmente cycle exact por limitación del WinUAE.
+NO se puede usar RUNAHEAD con este core, acuérdate de desactivarlos: según el propio autor del core, la carga de savestates
+es muy lenta lo que lo hace imposible. 
 Teniendo en cuenta todo esto, puedes emular un 1200 en un N100.
 (Para comprobar el estado de los buffers, activa los stats en On-Screen Display Notifications. Los valores de "Deviation" y "Underrun" no deberían
 llegar nunca al 100%, que es cuando se producen dropouts con ALSA y distorsiones con ALSATHREAD).
