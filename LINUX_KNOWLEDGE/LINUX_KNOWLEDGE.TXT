@@ -1282,6 +1282,7 @@ y habrá un sonido popping de fondo muy desagradable.
 PARA SALIR de "The Manhole", mantén presionado COMMAND (en PC es ALTGr) junto con SPACE, y sale la barra de arriba y puedes salir.
 
 	BLOQUE PARA CREAR LA IMÁGEN DE DISCO DURO (NO NECESARIO, TIENES LA IMÁGEN .HDV EN EL DISCO DE BACKUP, ES POR SI LA PIERDES)
+	(Info destilada de: https://wiki.mamedev.org/index.php/Driver:Mac_68K)
 	
 -Nos creamos una imágen de disco de 128M:
 dd if=/dev/zero of=system608.hdv bs=1000000 count=128
@@ -7294,6 +7295,21 @@ retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/dragonfl.m3u
 
 (POR SI LO NECESITAS, AUNQUE ES POCO PROBABLE: Para insertar un floppy a mano una vez que has arrancado el core habiéndole pasado el disco duro GEM,
 en el menú de RetroArch debes ir a "Disk Control->Load New Disc", y después más arriba darle a "Insert Disk").
+
+EMULANDO MACINTOSH EN ATARI ST
+==============================
+
+Usamos para ello el Spectre 3.0, que está en forma de ficheros sueltos con las ROMs de Macintosh preparadas en:
+https://obsolescenceguaranteed.blogspot.com/2013/04/atari-st-ultrasatan-spectre-mac.html
+
+Metemos esos ficheros en un directorio que llamaremos como queramos, por ejemplo "spectre", y montamos ese directorio como un disco GEM en HATARI.
+(Si usas el core HatariB en RetroArch, ya sabes que necesitas crear un fichero dummy llamado "spectre.gem" para poder montar el directorio "spectre"
+como un disco GEM).
+Para el disco de Macintosh: montamos en HATARI como disco duro ACSI un disco "full hard disk image", es decir, una imágen de disco de Macintosh
+de las que usa MAME. Tenemos que renombrar la imágen a .acsi para que HATARI nos permita elegirla como imágen ACSI.
+
+Tenemos que configurar el modelo de Atari ST/STE/MegaSTE que queramos en HATARI, pero eso sí, con 2MB de RAM, o se quedará colgado el Spectre
+al iniciar el System 6 en el banner de "Welcome to Macintosh". Nada de 4MB ni de más ni de menos: 2MB.
 
 COMPILAR EL CORE MUPEN64 DE LIBRETRO
 ====================================
