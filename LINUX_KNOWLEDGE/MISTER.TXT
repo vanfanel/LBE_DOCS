@@ -194,12 +194,17 @@ sudo mount -t vfat -o loop,offset=1024 hdd200m.vhd hdd
 
 Ahí ya metemos lo que queramos.
 Tienes juegos instalados en disco a saco aquí:
-https://atari.8bitchip.info/fromhd2.php#DL
+https://atari.8bitchip.info/fromhd3.php
 Cuando un juego no vaya bien, búscalo aquí:
 http://d-bug.mooo.com/klaz/
 
+-¡¡¡NO TE OLVIDES DE QUE PARA QUE FUNCIONEN LOS JUEGOS INSTALADOS TIENES QUE CONFIGURAR EL SISTEMA COMO UN ***MEGASTE DE 4MB Y TOS 2.06***!!!
+ SI NO LO HACES, TE DARÁN ERRORES RAROS, COMO SALIRSE SIN MÁS AL CARGAR, O DECIRTE QUE TIENES QUE TENER UN DRIVER DE DISCO DURO INSTALADO
+ QUE YA TIENES INSTALADO, ETC.
+
 -Para descomprimir archivos .ARC en Linux, usa nomarch, que se puede instalar con apt-get.
--Para que un ejecutable se autoejecute en el inicio, simplemente mételo en AUTOBOOT. Tiene que tener extensión .PRG, los .TOS sólo hay que renombrarlos y ya.
+-Para que un ejecutable se autoejecute en el inicio, simplemente mételo en AUTO. Tiene que tener extensión .PRG,
+los .TOS sólo hay que renombrarlos y ya.
 
 -Si tienes que reinstalar el AMBERSTAR, sólo se instala desde una TOS 1.x. Desde una 2.x, al pedirnos el disco B no lo reconoce y no permite seguir la instalación.
 
