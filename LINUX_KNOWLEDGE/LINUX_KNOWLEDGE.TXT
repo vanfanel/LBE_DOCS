@@ -2132,6 +2132,8 @@ assign LemMisc1: dh0:LemMisc1
 assign LemMisc2: dh0:LemMisc2                                                                                                                    
 Lemmings
 #####FIN STARTUP-SEQUENCE#####
+Para el "It Came from the Desert", tenemos que hacer Assign de los volúmenes desert1, desert2, desert3, des4 y dsave
+al directorio donde están los datos del juego. El ejecutable se llama "dshell".
 
 	NOTAS SOBRE JUEGOS CONCRETOS
 
