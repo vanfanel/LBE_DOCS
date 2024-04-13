@@ -7272,6 +7272,21 @@ Si queremos que se autolanze el command.prg para arrancar a consola de comandos 
 Tienes MUCHOS juegos instalados en disco duro aquí: https://atari.8bitchip.info/ASTGA/astgam.php
 (Busca por nombre del juego, y si tiene una "D" azul en esa fila, pincha en ella para ir a la ficha y descargarlo).
 
+PARA CARGAR JUEGOS PAL (de momento sólo el GODS y el Viking Child suenan demasiado rápido o desacompasado en NTSC.. el ST es NTSC en general)
+puedes hacerte un script que cambie el modo de vídeo si el juego lleva la cadena "PAL" en el nombre, tal que así:
+########################################################
+if [[ "$1" == *"PAL"* ]]; then                                                                                                                   
+  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@50                                                                                         
+  sleep 1                                                                                                                                        
+  retroarch -L ~/.config/retroarch/cores/hatarib.so "$1"                                                                                         
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@60                                                                                                
+else                                                                                                                                             
+  retroarch -L ~/.config/retroarch/cores/hatarib.so "$1"                                                                                         
+fi
+#########################################################
+Obviamente también necesitas crear un fichero de opciones del core por cada uno de estos juegos, para que el juego cargue con TOS europeas
+de manera que el ST emulado sea PAL, y un override con: video_refresh_rate = "50.000000"
+
 PARA EL CAPTAIN BLOOD DESDE HDD:
 -Usa la release de 42-Crew para copiarla al disco duro GEMDOS en el directorio que quieras.
 Necesita la TOS 1.04 PAL como máximo: más que eso, revienta. Puedes usar versiones superiores de la TOS, o incluso EmuTOS, si son NTSC.
