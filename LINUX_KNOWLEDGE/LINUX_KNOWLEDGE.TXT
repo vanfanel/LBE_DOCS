@@ -2134,6 +2134,10 @@ Lemmings
 Para el "It Came from the Desert", tenemos que hacer Assign de los volúmenes desert1, desert2, desert3, des4 y dsave
 al directorio donde están los datos del juego. El ejecutable se llama "dshell".
 
+PUEDES AHORRAR RAM Y TIEMPO DE ARRANQUE si, en los juegos instalados sin WHDLoad, vas a "Core Options->Media" y pones
+"WHDLoad Support" a "OFF". Además, debes copiar el comando "Assign" al directorio raíz del juego, porque casi todos lo usan.
+(NO hace falta que esté en C/, con que esté en el raíz del juego ahí tirado vale).
+
 PARA CARGAR JUEGOS PAL A 50Hz:
 -Añade "PAL" al nombre del juego. Por ejemplo, "ShadowOfTheBeast" pasaría a ser "ShadowOfTheBeastPAL", lo mismo con su .info
 -Crea un script /usr/local/bin/amiga como este, que en caso de ser PAL el juego, ponga el monitor a 50Hz si el juego es PAL y además cargue
