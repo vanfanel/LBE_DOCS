@@ -2091,7 +2091,8 @@ NO actives pongas "Crop" a "Automatic", ve ajustándolo por cada juego. Lo de Au
 NO se puede usar RUNAHEAD con este core, acuérdate de desactivarlos: según el propio autor del core, la carga de savestates
 es muy lenta lo que lo hace imposible. 
 
-Teniendo en cuenta todo esto, puedes emular en modo A1200 SIN FastRAM en un N100.
+Teniendo en cuenta todo esto, puedes emular en modo A1200 SIN FastRAM en un N100. FastRAM (o SlowRAM) + SHADERS es demasiado
+para el ancho de banda de un N100.
 Por lo tanto, la idea en un N100 sería emular en general un A500/600 con expansión de RAM para ejecutar juegos instalados "a mano"
 o juegos instalados con WHDLoad que no den problemas en A500/600,
 y por otro lado emular un A1200 SIN FastRAM para los pocos juegos AGA que me interesan, como los Ishar, instalados "a mano". 
