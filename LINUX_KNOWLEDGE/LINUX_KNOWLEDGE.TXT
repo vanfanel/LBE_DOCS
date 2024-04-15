@@ -2168,6 +2168,29 @@ A "Cycle Exact (FULL)" por supuesto es perfecto pero traga mucha CPU.
 está todo glitcheado.
 -El Hybris necesita CUSTOM4=1 para ir en PAL (es como se recomienda porque en NTSC es demasiado complicado, es un juego alemán originalmente)
 y CUSTOM3=1 para quitarle los blitterwaits.
+-El Rocket Ranger se puede instalar a mano en una máquina A500/600 sin ampliación de memoria, sin WHDLoad.
+Para ello, como la versión de CD32 que hay en el FTP de EAB usa el "diskimage.device", y como el "diskimage.device" no funciona
+más que en 68020 y superiores, usamos el XFS:
+---Nos bajamos el XFS de Aminet
+---Copiamos, del paquete del XFS al sistema donde vamos a correr el RR: xfsd a L, devio a C, y fd.device mountlist.xfs y a Devs: 
+---En startup-sequence lo dejamos así para que nos monte los discos, lanze el juego en un fork nuevo, e imprima las claves
+para verlas con AMIGA+M (y de nuevo AMIGA+M para volver al juego):
+#################STARTUP-SEQUENCE PARA ROCKET RANGER########################
+Assign ENV: RAM: 
+Assign T: Ram:
+setenv env:file.device,0 DISK1.ADF
+mount file0: from devs:mountlist.xfs >nil:
+devio --reset file.device,0 >nil:
+                                                                                                            
+setenv env:file.device,1 DISK2.ADF
+mount file1: from devs:mountlist.xfs >nil:
+devio --reset file.device,1 >nil:
+
+file0:
+
+RUN >NIL: RR
+ED sys:Codes
+#################FIN STARTUP-SEQUENCE PARA ROCKET RANGER#####################
 
 FS-UAE (FSUAE), EMULADOR STANDALONE DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
 =====================================================================================
@@ -7359,8 +7382,9 @@ en el menú de RetroArch debes ir a "Disk Control->Load New Disc", y después m�
 EMULANDO MACINTOSH EN ATARI ST
 ==============================
 
-Usamos para ello el Spectre 3.0, que está en forma de ficheros sueltos con las ROMs de Macintosh preparadas en:
-https://obsolescenceguaranteed.blogspot.com/2013/04/atari-st-ultrasatan-spectre-mac.html
+Usamos para ello el Spectre 3.0, que está en forma de ficheros sueltos con las ROMs de Macintosh preparadas en el disco duro de backup, y en
+el segundo post de:
+http://www.retrowiki.es/viewtopic.php?t=200028688
 
 Metemos esos ficheros en un directorio que llamaremos como queramos, por ejemplo "spectre", y montamos ese directorio como un disco GEM en HATARI.
 (Si usas el core HatariB en RetroArch, ya sabes que necesitas crear un fichero dummy llamado "spectre.gem" para poder montar el directorio "spectre"
