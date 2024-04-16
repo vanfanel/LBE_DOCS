@@ -6973,7 +6973,9 @@ y para volver, obviamente, start.
 **********Configuración óptima de RetroArch (En Wayland)************
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
-VIDEO: driver GL, VSYNC ON (suponiendo que no tengamos VRR), HARD SYNC ON, HARD SYNC FRAMES 0
+VIDEO: driver GL (o GL_CORE, que usa OpenGL 3.2, por si quieres experimentar), VSYNC ON (suponiendo que no tengamos VRR),
+HARD SYNC ON, y HARD SYNC FRAMES 0.
+Algunas notas IMPORTANTES:
 		-Para que HARD SYNC ON funcione, tenemos que haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
 		 ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
 		-Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
