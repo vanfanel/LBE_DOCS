@@ -666,9 +666,9 @@ SI ESTÁS EN RASPBERRY PI, LO PRIMERO HAZ ESTO O EL CONFIGURE FALLARÁ:
 apt-get purge libraspberrypi*
 
 Editamos qb/config.libs.sh, y cambiamos "-lGL" por "-lOpenGL"
-(Esto es para que podamos usar OpenGL en lugar de GLES, ya que si te fijas en Makefile.common y en gfx/drivers/gl2.c,
- resulta que HAVE_GL_SYNC sólo se activa si NO usamos GLES, así que si queremos que la opción del backen OPENGL llamada "Hard GPU Sync"
- haga lo que se supone que hace, tenemos que usar OpenGL y no GLES.
+(Esto es para que podamos usar OpenGL en lugar de GLES, cosa que es necesaria para que HARD SYNC funcione,
+ ya que si te fijas en Makefile.common y en gfx/drivers/gl2.c, resulta que HAVE_GL_SYNC sólo se activa si NO usamos GLES,
+ así que si queremos que la opción del backen OPENGL llamada "Hard GPU Sync" haga lo que se supone que hace, tenemos que usar OpenGL y no GLES.
  "Hard GPU Sync" equivale a max_swapchain puesto a 2: recuerda que no puedes configurar el max_swapchain si usas el backend OpenGL en Wayland,
  en Wayland sólo puedes configurar max_swapchain si usas el backend Vulkan).
 
@@ -699,7 +699,7 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 		Configuración óptima de RetroArch (En Wayland)
 
-VIDEO: driver VULKAN, VSYNC ON, MAX_SWAPCHAIN 2
+VIDEO: driver GL, VSYNC ON, HARD SYNC ON, HARD SYNC FRAMES 0
 AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 

@@ -6973,7 +6973,12 @@ y para volver, obviamente, start.
 **********Configuración óptima de RetroArch (En Wayland)************
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
-VIDEO: driver VULKAN, VSYNC ON (suponiendo que no tengamos VRR), MAX_SWAPCHAIN 2
+VIDEO: driver GL, VSYNC ON (suponiendo que no tengamos VRR), HARD SYNC ON, HARD SYNC FRAMES 0
+		-Para que HARD SYNC ON funcione, tenemos que haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
+		 ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
+		-Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
+		 PERO no usamos VULKAN con SWAPCHAIN a 2 (de momento) porque eso no nos deja bajar tanto el buffer de audio,
+		 lo que indica que consume CPU en exceso.
 AUDIO: driver ALSATHREAD (no hace falta pasar ningunos parámetros al kernel para usar 36ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
        44100 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo: por lo demás,
@@ -6981,14 +6986,15 @@ la frecuencia nativa en la mayoría de los cores es 44100Hz por lo que usándola
 
 ####### BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
  
--La posibilidad inicial de la que partimos, es poner Max Swapchain a 2, usar Alsathread con los parámetros del kernel antes mencionados
-para mejorar su desempeño, poner la latencia de audio a 32/36ms, y meter 1 frame de Runahead, o no usar Runahead en absoluto.
+-La posibilidad inicial de la que partimos, es poner Max Swapchain a 2, usar Alsathread, latencia de audio a 32/36ms,
+y meter 1 frame de Runahead, o no usar Runahead en absoluto.
 En este caso estamos "cargando" la GPU por lo del Max Swapchain a 2, por lo que algunos shaders un poco avanzados como Cyclone
 o el Newpixe normal petardean.
 
--Un truco para evitar lo anterior "descargando" la CPU es poner Max Swapchains a 3, y luego compensar poniéndole 2 frames de Runahead
-(se puede inluso 3, pero el Tetris de arcade con más de 1 ya hace cosas raras... piensa que estamos actuando sobre el lag interno
-que algunos juegos llevan de serie, no el lag externo del sistema emulador, así que tiene esa contrapartida).
+-Un truco (NO RECOMENDABLE) para evitar lo anterior "descargando" la CPU sería poner Max Swapchains a 3,
+y luego compensar poniéndole 2 frames de Runahead (se puede inluso 3, pero el Tetris de arcade con más de 1 ya hace cosas raras...
+piensa que estamos actuando sobre el lag interno que algunos juegos llevan de serie, no el lag externo del sistema emulador,
+así que tiene esa contrapartida).
 NO hace falta activar el "Use Second Instance", porque a nosotros el Runahead no nos provoca problemas de audio.
 El otro método parecido a Runahead, llamado "Run Preemptive Frames", sí causa pitch wobbling. 
 La idea es que al pasar el Max Swapchains a 3, liberamos la GPU para los shaders (no tiene que esperar al vsync) y a la vez
