@@ -6988,7 +6988,14 @@ la frecuencia nativa en la mayoría de los cores es 44100Hz por lo que usándola
 
 ####### BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
  
--La posibilidad inicial de la que partimos, es poner Max Swapchain a 2, usar Alsathread, latencia de audio a 32/36ms,
+-COMO LO HACEMOS AHORA, CON EL BACKEND GL: HARD SYNC ON, y HARD SYNC FRAMES 0.
+Para que HARD SYNC ON funcione, tenemos que haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
+		 ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
+		-Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
+		 PERO no usamos VULKAN con SWAPCHAIN a 2 (de momento) porque eso no nos deja bajar tanto el buffer de audio,
+		 lo que indica que consume CPU en exceso.
+ 
+-(PARA CUANDO USES VULKAN) La posibilidad inicial de la que partimos, es poner Max Swapchain a 2, usar Alsathread, latencia de audio a 32/36ms,
 y meter 1 frame de Runahead, o no usar Runahead en absoluto.
 En este caso estamos "cargando" la GPU por lo del Max Swapchain a 2, por lo que algunos shaders un poco avanzados como Cyclone
 o el Newpixe normal petardean.
