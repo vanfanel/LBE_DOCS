@@ -2160,6 +2160,13 @@ config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Amiga que usamos para ejecutarlo,
 las opciones de pixel ratio y de cropping que mejor le sientan, etc.
 
+PARA INSTALAR JUEGOS DESDE ADFs A DISCO DURO USANDO ESTE CORE:
+-Pon "Core Options->Media->Global Boot HD" a "Files". Esto creará el directorio ~/.config/retroarch/saves/BootHD, que es
+el disco duro desde el que se arrancará el sistema ahora.
+-Arranca el core, dejando que arranque desde ese disco duro vacío.
+-Usando "Disk Control->Load New Disk" + "Disk Control->Insert Disk", con cada disco, ya podemos ir cargando los ADF del juego
+e instalándolo (una vez cargado un ADF, nos permite ir a DF0: sin problemas para ejecutar el instalador o copiar los archivos a mano al disco duro).
+
 	NOTAS SOBRE JUEGOS CONCRETOS
 
 -El Shadow of the Beast WHDLoad en modo OCS (es decir, con la configuración "Amiga 600") necesita "CPU Compatibility" puesto a "Normal"
