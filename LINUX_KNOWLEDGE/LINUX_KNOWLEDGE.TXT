@@ -2171,6 +2171,7 @@ e instalándolo (una vez cargado un ADF, nos permite ir a DF0: sin problemas par
 
 -En el IsharAGA, como lo vas a ejecutar sin instalar con WHDLoad sino instalándolo a mano (porque es un juego totalmente compatible
 con el AmigaDOS), para que no se salga con parte del área de juego por la derecha, pon "Core Options->Media->WHDLoad Support" a "OFF".
+Tanto Ishar como Ishar 2 necesitan video PAL, pero con pixel ratio NTSC si quieres círculos redondos.
 -El Hybris necesita CUSTOM4=1 para ir en PAL (es como se recomienda porque en NTSC es demasiado complicado, es un juego alemán originalmente)
 y CUSTOM3=1 para quitarle los blitterwaits.
 -El Rocket Ranger se puede instalar a mano en una máquina A500/600 sin ampliación de memoria, sin WHDLoad.
