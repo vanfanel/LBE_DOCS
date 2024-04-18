@@ -2169,11 +2169,8 @@ e instalándolo (una vez cargado un ADF, nos permite ir a DF0: sin problemas par
 
 	NOTAS SOBRE JUEGOS CONCRETOS
 
--El Shadow of the Beast WHDLoad en modo OCS (es decir, con la configuración "Amiga 600") necesita "CPU Compatibility" puesto a "Normal"
-o a "More compatible", si lo tienes al valor por defecto que es "Cycle Exact (DMA/Memory)" te salen errores en los árboles, etc. 
-A "Cycle Exact (FULL)" por supuesto es perfecto pero traga mucha CPU.
--El Shadow of the Beast WHDLoad tiene un fallo muy gordo, que es que si usas CUSTOM1=1 para saltarte la intro, y lo corres en modo OCS,
-está todo glitcheado.
+-En el IsharAGA, como lo vas a ejecutar sin instalar con WHDLoad sino instalándolo a mano (porque es un juego totalmente compatible
+con el AmigaDOS), para que no se salga con parte del área de juego por la derecha, pon "Core Options->Media->WHDLoad Support" a "OFF".
 -El Hybris necesita CUSTOM4=1 para ir en PAL (es como se recomienda porque en NTSC es demasiado complicado, es un juego alemán originalmente)
 y CUSTOM3=1 para quitarle los blitterwaits.
 -El Rocket Ranger se puede instalar a mano en una máquina A500/600 sin ampliación de memoria, sin WHDLoad.
