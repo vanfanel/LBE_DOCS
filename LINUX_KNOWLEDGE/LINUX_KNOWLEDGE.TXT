@@ -6990,6 +6990,7 @@ AUDIO: driver ALSATHREAD (no hace falta pasar ningunos parámetros al kernel par
        44100 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo: por lo demás,
 la frecuencia nativa en la mayoría de los cores es 44100Hz por lo que usándola nos ahorramos una conversión).
+LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
 ####### BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
  
@@ -6999,6 +7000,8 @@ Para que HARD SYNC ON funcione, tenemos que haber sustituido "-lGL" por "-lOpenG
 		-Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
 		 PERO no usamos VULKAN con SWAPCHAIN a 2 (de momento) porque eso no nos deja bajar tanto el buffer de audio,
 		 lo que indica que consume CPU en exceso.
+
+-En LATENCY, activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
  
 -(PARA CUANDO USES VULKAN) La posibilidad inicial de la que partimos, es poner Max Swapchain a 2, usar Alsathread, latencia de audio a 32/36ms,
 y meter 1 frame de Runahead, o no usar Runahead en absoluto.
