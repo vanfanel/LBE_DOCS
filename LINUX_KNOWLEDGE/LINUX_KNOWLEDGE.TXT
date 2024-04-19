@@ -7069,6 +7069,9 @@ PARA EL CORE DE SATURN, USA LOS SIGUIENTES OVERRIDES:
 PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead, pero sí que funciona bien con max_swapchain a 2
 y el shader Fakelottes con la curvatura comentada.
 
+PARA EL CORE "GENESIS PLUS GX", usa RunAhead PERO no uses "SECOND INSTANCE", o algunos juegos (Comix Zone, por ejemplo)
+irán a tirones laaaargos y se quedará parada la imágen a veces.
+
 PARA EMULAR GAMEGEAR, el mejor shader es "sameboy-lcd" combinado con INTEGER SCALING.
 
 NO USES EL CORE BSNES: tendrías que desactivar el Runahead de RetroArch y activar el Runahead interno de BSNES,
