@@ -772,6 +772,12 @@ sudo ldconfig
 Si quieres filtros por software, entra en gfx/video_filters y haz make, y copias los .so y los .filt a ~/.config/retroarch/filters/video/
 y luego los seleccionas en retroarch.
 
+SCHEDULER LAVD EN DEBIAN
+========================
+
+-Instalamos un kernel que soporte SCX (SCHED-EXT), como CachyOS.
+Usamos este script: https://github.com/CachyOS/linux-cachyos-deb
+
 KERNEL REALTIME EN DEBIAN
 =========================
 
