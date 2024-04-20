@@ -1133,6 +1133,11 @@ https://labwc.github.io/labwc-actions.5.html
 --Para ver ejemplos de atajos de teclado posibles:
 https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
 
+--Para activar el Adaptive Sync / FreeSync / VRR (las tres cosas son lo mismo), añadimos esto en la sección <core>:
+<core>                                                                                                                                   
+    <adaptiveSync>yes</adaptiveSync>                                                                                                 
+</core>
+
 --Para instalar temas:
 ----Metemos los temas que queramos en ~/.local/share/themes. Cada tema debe incluir un directorio llamado "openbox-3".
     Por ejemplo, el tema "BL-Lithium" tendrá que estar en "~/.local/share/themes/BL-Lithium" y dentro tendrá un directorio "openbox-3"
