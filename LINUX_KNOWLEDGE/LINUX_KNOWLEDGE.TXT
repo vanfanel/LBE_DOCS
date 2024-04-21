@@ -8417,6 +8417,13 @@ make -j4
 
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
 
+PARA TENER ANIMACIONES SUAVES DE LAS ARMAS (NO es posible tener animaciones suaves de los enemigos, extra gibbs, etc.. con Vanilla Doom,
+así que confórmate con lo de las armas)
+
+Usamos el Smooth Weapons adaptado a Vanilla, que está aquí:
+https://www.chocolate-doom.org/wiki/index.php/Gameplay_enhancements#Vanilla_Doom_smooth_weapons_patch
+Lo cargaríamos con: ./crispy-doom -iwad doomu.wad -file vsmooth.wad
+
 PARA QUE LOS GRÁFICOS DEL HEXEN EN MODO WIDESCREEN NO SE CORTEN POR LOS LADOS:
 
 Tenemos que cargar un WAD con los gráficos en widescreen. El único que he visto que funciona es wad que hay en "hexwide.zip" de este hilo:
