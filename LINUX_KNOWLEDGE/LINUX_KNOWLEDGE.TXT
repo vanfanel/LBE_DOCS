@@ -7075,6 +7075,9 @@ irán a tirones laaaargos y se quedará parada la imágen a veces.
 
 PARA EMULAR GAMEGEAR, el mejor shader es "sameboy-lcd" combinado con INTEGER SCALING.
 
+PARA EMULAR GAMEBOY COLOR, si usas el GAMBATTE pon "Core Options->Color Correction" a "GBC Only",
+y usa el shader "sameboy-lcd" combinado con INTEGER SCALING. 
+
 NO USES EL CORE BSNES: tendrías que desactivar el Runahead de RetroArch y activar el Runahead interno de BSNES,
 o se quedará en una pantalla en negro.
 A parte, tiene problemas de buffering y no va bien con latencias de sonido bajas, hagas lo que hagas.
