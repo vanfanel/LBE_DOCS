@@ -6109,8 +6109,13 @@ remote1.rts
 
 -Lanzamos el juego así para tener música (RECUERDA que hay que compilar el SDL2_Mixer con soporte para fluidsynth,
  para lo cual hay que tener fluidsynth instalado antes de compilar SDL2_Mixer):
-
 SDL_SOUNDFONTS=/usr/local/share/soundfonts/FluidR3_GM.sf2 ./taradino
+
+-Para que el movimiento sea suave, dado que el juego corre a 35FPS necesitamos ponernos en un modo de 70Hz, así que lanzamos el juego así:
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@70                                                                                           
+sleep 1                                                                                                                                          
+SDL_SOUNDFONTS=/usr/local/share/soundfonts/FluidR3_GM.sf2 ./taradino                          
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
 
 **************Tyrian en GNU/Linux con OpenTyrian********************************************************************************
 
