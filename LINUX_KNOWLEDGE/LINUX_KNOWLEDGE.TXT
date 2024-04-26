@@ -318,15 +318,15 @@ entre ellas la sangre roja o poner el juego en idiomas locos.
 ******APOTRIS (clon de Tetris) en GNU/Linux**********************************************************************************
 (OJO: POR AHORA no tiene soporte de pantalla completa ni de joystick, asi que espera a la version 4.1 de los sources).
 
-Actualizamos MESON a la ultima version. Tienes apuntes sobre ello en este fichero.
+-Actualizamos MESON a la ultima version (necesita MESON 1.1 como minimo). Tienes apuntes sobre ello en este fichero.
 
-Instalamos dependencias previas:
+-Instalamos dependencias previas:
 apt-get install xxd
 
-Clonamos su repo:
+-Clonamos su repo:
 git clone --depth 1 https://gitea.com/akouzoukos/apotris.git
 
-Configuramos y compilamos con:
+-Configuramos y compilamos con:
 
 mkdir b4
 cd b4
@@ -335,7 +335,7 @@ CFLAGS="-O2 -march=native -mtune=native -O2" \
 CXXFLAGS="-O2 -march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release ..
 
-Ahora creamos el directorio ~/apotris, y mandamos alli el ejecutable "Apotris" que acabamos de compilar,
+-Ahora creamos el directorio ~/apotris, y mandamos alli el ejecutable "Apotris" que acabamos de compilar,
 junto con el directorio "assets" que viene con los sources.
 
 ******Legend of Zelda: A Link to the Past (ZELDA3) nativo en GNU/Linux*******************************************************
