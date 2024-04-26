@@ -794,6 +794,17 @@ Y editamos /etc/default/grub para poner el TIMEOUT a un valor distinto de 0, de 
 -Reiniciamos, y en el menú de arranque de GRUB entramos en "Advanced Options" y elegimos el nuevo kernel y arrancamos.
 (La próxima ver que arranquemos, GRUB recordará esta opción y arrancará en el nuevo kernel).
 
+AUTOLOGIN EN DEBIAN CON ESCRITORIO LXQT
+=======================================
+
+Creamos el archivo /etc/sddm.conf.d/autologin.conf (hay que crear el directorio /etc/sddm.conf.d) con el contenido:
+# autologin
+[Autologin]
+User=manuel
+Session=lxqt.desktop
+
+Y ya. Reiniciar y listo.
+
 KERNEL REALTIME EN DEBIAN
 =========================
 
