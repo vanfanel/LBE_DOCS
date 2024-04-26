@@ -315,6 +315,25 @@ En QUICK MENU->OPTIONS, ponemos NEO-GEO MODE a UNIBIOS.
 Ahora, una vez dentro del juego, mantenemos pulsado START y nos sale un menú donde podemos activar varias cosas,
 entre ellas la sangre roja o poner el juego en idiomas locos.
 
+******APOTRIS (clon de Tetris) en GNU/Linux**********************************************************************************
+
+Actualizamos MESON a la ultima version. Tienes apuntes sobre ello en este fichero.
+
+Instalamos dependencias previas:
+apt-get install xxd
+
+Clonamos su repo:
+git clone --depth 1 https://gitea.com/akouzoukos/apotris.git
+
+Configuramos y compilamos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+meson setup -Dbuildtype=release ..
+
 ******Legend of Zelda: A Link to the Past (ZELDA3) nativo en GNU/Linux*******************************************************
 
 Clonamos el repositorio:
@@ -2012,7 +2031,7 @@ cd b4
 Configuramos con:
 CFLAGS="-O2 -march=native -mtune=native -O2" \
 CXXFLAGS="-O2 -march=native -mtune=native -O2" \
-meson .. -Dbuildtype=release -Duse_opengl=false -Duse_sdl2_net=false
+meson setup -Dbuildtype=release -Duse_opengl=false -Duse_sdl2_net=false ..
 
 Compilamos con:
 ninja -j4
@@ -6030,10 +6049,15 @@ NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da 
 **************ACTUALIZAR MESON***************************************************************************************************
 
 sudo apt-get purge meson
+sudo apt-get purge ninja
 sudo apt install python3-pip --no-install-recommends
-sudo python3 -m pip install ninja
-sudo python3 -m pip install meson
+sudo pip install -U ninja
+sudo pip install -U meson
 PATH="/usr/local/bin:$PATH"
+
+Si nos da el error ese de "This environment is externally managed", editamos /etc/pip.conf y añadimos:
+[global]
+break-system-packages = true
 
 **************Regenerar caché LDD************************************************************************************************
 
