@@ -827,6 +827,8 @@ NOTAS JUEGOS DOSBOX
 y luego montar ~/dos/psycho como C: en DOSBOX. Si no, se queda colgado en el DOS4GW.
 --Los juegos de modo real (es decir, todos los que no usen extensores como el DOS4GW, etc) se supone que van perfectos
 a 3000 ciclos constantes, y en teoría los juegos de modo real deberían usar el "CPU CORE" en "NORMAL", NO el Dynamic Recompiler.
+--Dicho lo anterior, el Rusty lo debes poner a 3000 ciclos, no más, y si usas el kernel Cachyos, puedes usar el audio ALSA (no hace falta
+Alsathread) con 32ms de latencia.
 
 ******Compilar QT6***********************************************************************************************************
 
