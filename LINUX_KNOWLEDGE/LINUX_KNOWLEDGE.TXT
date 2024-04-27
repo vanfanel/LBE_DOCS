@@ -2114,9 +2114,10 @@ git clone --depth 1 https://github.com/libretro/libretro-uae.git
 
 Se compila como los demás cores.
 
-La configuración de audio, si no tienes VRR, es usando ALSA (no Alsathread), 44100Hz (el core es 44100Hz internamente), con 42ms de latencia.
-(Son 42ms para NTSC y para PAL, y eso usando el backend de gráficos GL con HARD SYNC activado: con Vulkan + swapchain a 2, son 64ms.
- Así que usa el backend GL por ahora si queres una latencia de audio relativamente baja.)
+Configuración de audio: usando el kernel Cachyos y vídeo backend GL con Hard Sync, es usando ALSA (no Alsathread),
+a 44100Hz (el core es 44100Hz internamente), con 32ms de latencia.
+(Con el backend Vulkan no se pueden conseguir latencias igual de bajas, así que usa el backend GL + Hard Sync por ahora).
+(Con el kernel normal de Debian necesitarías 42 ms de latencia para evitar dropouts).
 --Para emular A1200: Pon "CPU Compatibility" a "Cycle Exact (DMA/Memory)". Es lo más compatible en modo 1200, y de todos modos
 la emulación del 1200 nunca va a ser totalmente cycle exact por limitación del WinUAE ni tiene mucho sentido un Amiga 1200 "Cycle Exact"
 para juegos de Amiga 500.
