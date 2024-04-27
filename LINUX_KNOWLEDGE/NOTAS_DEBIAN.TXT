@@ -777,15 +777,24 @@ y luego los seleccionas en retroarch.
 SCHEDULER LAVD EN DEBIAN
 ========================
 
--Instalamos un kernel que soporte SCX (SCHED-EXT), como CachyOS.
-Usamos este script que nos descarga y nos compila el kernel: https://github.com/CachyOS/linux-cachyos-deb
+PARTE 1: INSTALACIÓN DE UN KERNEL QUE SOPORTE SCX (SCHED-EXT)
+
+-Instalamos el kernel de CachyOS.
+Para ello, usamos este script que nos descarga y nos compila el kernel: https://github.com/CachyOS/linux-cachyos-deb
 (No te olvides de poner el governor a PERFORMANCE en las opciones que nos presenta el script!)
+Alternativamente, después de configurar las opciones del kernel, en vez de darle a BUILD KERNEL, puedes compilarlo "a mano"
+para tener un kernel "delgado", usando esto: https://wiki.archlinux.org/title/Modprobed-db
 
--Instalamos el nuevo kernel:
-dpkg -i linux-6.8.7/custom-kernel-6.8.7-6.8.7-1.deb
-dpkg -i linux-6.8.7/custom-kernel-headers-6.8.7-6.8.7-1.deb
+-Instalamos los módulos del kernel (para desinstalarlos, simplemente borramos el directorio /lib/modules/6.8.7):
+cd linux-6.8.7
+make INSTALL_MOD_STRIP=1 modules_install
 
--Creamos un initramfs para el nuevo kernel:
+-Instalamos el kernel en sí (RECUERDA que hay que instalar los módulos antes, cosa que hemos hecho en el paso anterior,
+ya que esto nos crea el initramfs del kernel que lleva dentro módulos necesarios para el arranque del kernel):
+make install
+
+-(SÓLO SI ES NECESARIO: NORMALMENTE AL INSTALAR EL KERNEL ESTO SE HACE SOLO)
+Creamos un initramfs para el nuevo kernel:
 update-initramfs -c -k 6.8.7
 
 -Actualizamos grub para que tenga localizado el nuevo kernel: update-grub
