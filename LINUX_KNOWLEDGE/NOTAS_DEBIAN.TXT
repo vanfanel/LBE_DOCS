@@ -803,6 +803,7 @@ Y editamos /etc/default/grub para poner el TIMEOUT a un valor distinto de 0, de 
 (La próxima ver que arranquemos, GRUB recordará esta opción y arrancará en el nuevo kernel).
 
 PARTE 2: ADELGAZAMIENTO DEL KERNEL (RECOMPILACIÓN DE UN KERNEL MÁS LIGERO ESPECÍFICO PARA NUESTRA MÁQUINA)
+(La información está adaptada de: https://wiki.archlinux.org/title/Modprobed-db)
 
 -Una vez que tenemos el nuevo kernel corriendo, podemos adelgazarlo con modprobed-db, que es un programa que recoje qué módulos
 se han cargado y nos permite compilar un kernel sólo con esos módulos.
