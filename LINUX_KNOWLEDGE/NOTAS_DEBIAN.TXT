@@ -774,18 +774,19 @@ sudo ldconfig
 Si quieres filtros por software, entra en gfx/video_filters y haz make, y copias los .so y los .filt a ~/.config/retroarch/filters/video/
 y luego los seleccionas en retroarch.
 
-SCHEDULER LAVD EN DEBIAN
-========================
+KERNEL CACHYOS Y SCHEDULER LAVD EN DEBIAN
+=========================================
 
-PARTE 1: INSTALACIÓN DE UN KERNEL QUE SOPORTE SCX (SCHED-EXT)
+PREVIO: Antes de hacer estos experimentos, edita /etc/default/grub, pon un timeout distinto de 0, y ejecuta "update-grub",
+para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel original del sistema y desinstalar el nuevo.
 
--Instalamos el kernel de CachyOS.
-Para ello, usamos este script que nos descarga y nos compila el kernel: https://github.com/CachyOS/linux-cachyos-deb
+PARTE 1: INSTALACIÓN DE UN KERNEL QUE SOPORTE SCX (SCHED-EXT): EL KERNEL CACHYOS
+
+-Usamos un script que nos descarga el kernel y nos permite configurarlo y compilarlo.
+ Clonamos su repo: git clone --depth 1 https://github.com/CachyOS/linux-cachyos-deb
 (No te olvides de poner el governor a PERFORMANCE en las opciones que nos presenta el script!)
-Alternativamente, después de configurar las opciones del kernel, en vez de darle a BUILD KERNEL, puedes compilarlo "a mano"
-para tener un kernel "delgado", usando esto: https://wiki.archlinux.org/title/Modprobed-db
 
--Instalamos los módulos del kernel (para desinstalarlos, simplemente borramos el directorio /lib/modules/6.8.7):
+-Instalamos los módulos del kernel (para desinstalarlos, simplemente borramos el directorio "/lib/modules/6.8.7"):
 cd linux-6.8.7
 make INSTALL_MOD_STRIP=1 modules_install
 
@@ -793,15 +794,36 @@ make INSTALL_MOD_STRIP=1 modules_install
 ya que esto nos crea el initramfs del kernel que lleva dentro módulos necesarios para el arranque del kernel):
 make install
 
--(SÓLO SI ES NECESARIO: NORMALMENTE AL INSTALAR EL KERNEL ESTO SE HACE SOLO)
-Creamos un initramfs para el nuevo kernel:
+-(PASOS NORMALMENTE NO NECESARIOS: NORMALMENTE AL INSTALAR EL KERNEL ESTAS COSAS SE HACEN SOLAS)
+--Creamos un initramfs para el nuevo kernel:
 update-initramfs -c -k 6.8.7
-
--Actualizamos grub para que tenga localizado el nuevo kernel: update-grub
+--Actualizamos grub para que tenga localizado el nuevo kernel: update-grub
 Y editamos /etc/default/grub para poner el TIMEOUT a un valor distinto de 0, de manera que nos presente el menú de arranque.
-
--Reiniciamos, y en el menú de arranque de GRUB entramos en "Advanced Options" y elegimos el nuevo kernel y arrancamos.
+--Reiniciamos, y en el menú de arranque de GRUB entramos en "Advanced Options" y elegimos el nuevo kernel y arrancamos.
 (La próxima ver que arranquemos, GRUB recordará esta opción y arrancará en el nuevo kernel).
+
+PARTE 2: ADELGAZAMIENTO DEL KERNEL (RECOMPILACIÓN DE UN KERNEL MÁS LIGERO ESPECÍFICO PARA NUESTRA MÁQUINA)
+
+-Una vez que tenemos el nuevo kernel corriendo, podemos adelgazarlo con modprobed-db, que es un programa que recoje qué módulos
+se han cargado y nos permite compilar un kernel sólo con esos módulos.
+--Clonamos su repo: git clone --depth 1 https://github.com/graysky2/modprobed-db.git
+--Entramos en el directorio de los sources y simplemente hacemos "make install" y ya se instala.
+(Para desinstalarlo simplemente se usa "make uninstall" y ya).
+--Ejecutamos "modprobed-db" y se nos creará el archivo "~/.config/modprobed-db.conf"
+Este archivo nos permite añadir módulos que NO queremos que se tengan en cuenta aunque estén cargados, para lo cual
+añadiríamos en él una línea estilo "IGNORE=(nvidia vboxdrv..."
+--Ejecutamos "modprobed-db store" y se nos creará el archivo "~/.config/modprobed.db", que es donde quedan reflejados los módulos
+que tenemos cargados. Podemos consultar qué módulos tenemos cargados con "modprobed-db list".
+--Nos vamos al directorio de los sources del kernel (que ya tenemos configurados de antes) y hacemos:
+make LSMOD=~/.config/modprobed.db localmodconfig
+--Compilamos el kernel y los módulos (haz antes un "make clean" porque probablemente lo tienes todo compilado de la "PARTE 1"):
+make -j6
+--Instalamos los módulos (borra antes el directorio "/lib/modules/6.8.7" ya que probablemente tengas allí instalados los módulos
+de cuando instalaste todo en la "PARTE 1"):
+make INSTALL_MOD_STRIP=1 modules_install
+--Instalamos el kernel:
+make install
+--Reiniciamos y ya deberíamos estar en el nuevo kernel "adelgazado".
 
 AUTOLOGIN EN DEBIAN CON ESCRITORIO LXQT
 =======================================
