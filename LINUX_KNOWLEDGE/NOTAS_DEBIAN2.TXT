@@ -290,7 +290,7 @@ Copia el grub.cfg en /mnt/boot/grub, y ajusta el PARTUUID allí.
 Lo demás es igual: crear una partición EXT4 y poner el rootfs allí, y ajustar el PARTUUID en /etc/fstab.
 
 Arreglar el VIM
-============
+===============
 
 Sigue las instrucciones normales, pero no te preocupes si el volvel a la última línea no funciona en modo CHROOT.
 Y si, tras seguir las instrucciones, no te puedes librarte de que entre en modo VISUAL cuando seleccionas texto con el ratón, edita /usr/share/vim/vim81/defaults.vim y comenta lo del mouse.
