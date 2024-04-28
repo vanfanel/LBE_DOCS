@@ -2144,6 +2144,14 @@ llegar nunca al 100%, que es cuando se producen dropouts con ALSA y distorsiones
 Tienes TODAS las kickstarts posibles que puede necesitar el core, para TODOS los modelos de Amiga que soporta, en el disco de backup,
 con sus nombres ya correctos y las MD5SUM comprobadas.
 
+PARA QUE FUNCIONE EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
+NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE", ya que son dos funcionalidades que se solapan
+y si tuvieses ambas la "HOTKEY ENABLE" no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
+Así que hacemos esto:
+-En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
+-En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
+-En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
+
 No hace falta andar con HDFs, carga los .info de las carpetas que contengan juegos de WHDInstall,
 o los .slave de los juegos WHDLinstall, o directamente los .lha que contengan juegos de WHDInstall.
 
