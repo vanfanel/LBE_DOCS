@@ -782,9 +782,14 @@ para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel origina
 
 PARTE 1: INSTALACIÓN DE UN KERNEL QUE SOPORTE SCX (SCHED-EXT): EL KERNEL CACHYOS
 
--Usamos un script que nos descarga el kernel y nos permite configurarlo y compilarlo.
+-Usamos un script que nos descarga el kernel y nos permite pre-configurarlo (hay que activar SCHED_CLASS_EXT a mano antes de compilar):
  Clonamos su repo: git clone --depth 1 https://github.com/CachyOS/linux-cachyos-deb
 (No te olvides de poner el governor a PERFORMANCE en las opciones que nos presenta el script!)
+(NO COMPILAMOS EL KERNEL AÚN, lo vamos a hacer después a mano con "make", ya que tenemos que activar SCHED_CLASS_EXT).
+
+-Hacemos "make menuconfig" y en "General Setup" activamos "Extensible Scheduling Class".
+
+-Ahora ya sí: Compilamos el kernel y los módulos con "make -j6".
 
 -Instalamos los módulos del kernel (para desinstalarlos, simplemente borramos el directorio "/lib/modules/6.8.7"):
 cd linux-6.8.7
@@ -802,7 +807,7 @@ Y editamos /etc/default/grub para poner el TIMEOUT a un valor distinto de 0, de 
 --Reiniciamos, y en el menú de arranque de GRUB entramos en "Advanced Options" y elegimos el nuevo kernel y arrancamos.
 (La próxima ver que arranquemos, GRUB recordará esta opción y arrancará en el nuevo kernel).
 
-PARTE 2: ADELGAZAMIENTO DEL KERNEL (RECOMPILACIÓN DE UN KERNEL MÁS LIGERO ESPECÍFICO PARA NUESTRA MÁQUINA)
+PARTE 2 (OPCIONAL): ADELGAZAMIENTO DEL KERNEL (RECOMPILACIÓN DE UN KERNEL MÁS LIGERO ESPECÍFICO PARA NUESTRA MÁQUINA)
 (La información está adaptada de: https://wiki.archlinux.org/title/Modprobed-db)
 
 -Una vez que tenemos el nuevo kernel corriendo, podemos adelgazarlo con modprobed-db, que es un programa que recoje qué módulos
@@ -818,7 +823,7 @@ que tenemos cargados. Podemos consultar qué módulos tenemos cargados con "modp
 --Nos vamos al directorio de los sources del kernel (que ya tenemos configurados de antes) y hacemos:
 make LSMOD=~/.config/modprobed.db localmodconfig
 (Te preguntará cosas: dile a todo que NO, no nos interesa, gracias).
---En este punto, puedes hacer "make menuconfig" y aprovechar para aligerar funcionalidades internas del kernel,
+--Podemos aprovechar para volver a hacer "make menuconfig" y aligerar funcionalidades internas del kernel,
 como desactivar "Mitigations for speculative execution vulnerabilities",
 quitar todo lo que puedas de "Security Options" y de "Kernel Hacking", etc.
 --Compilamos el kernel y los módulos (haz antes un "make clean" porque probablemente lo tienes todo compilado de la "PARTE 1"):
