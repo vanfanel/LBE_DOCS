@@ -786,6 +786,12 @@ PARA EVITAR el error de que no encuentra /dev/snd/seq, pues cargar el módulo "s
 
 PARA PONER EL ISHAR 1 EN INGLÉS SIN TENER TECLADO NUMÉRICO, dale a la tecla END. 
 
+PARA LOS JUEGOS QUE SE VEN MAL EN "ALTA" DEBIDO A LAS SCANLINES:
+-Los hay que se soluciona activando el INTEGER SCALING, ya que incluso con escalado a enteros se ven casi casi casi a pantalla completa,
+tal es el caso de Pinball Fantasies / Pinball Dreams.
+-Los hay que al activar el INTEGER SCALING se ven muy pequeños, como Lemmings y Rusty. Para estos, nos creamos un nuevo shader preset
+que llamaremos fakelottes_noscanlines.glslp, que cargará un shader fakelottes modificado con lo de "#define SCANLINES" comentado.  
+
 PARA CONTROLAR EL BCRACERS BIEN CON EL MANDO, NO intentes usar el joystick desde el SETUP del juego ni desde las opciones del menú del juego.
 El control de joystick de este juego está totalmente roto. Deja el control de teclado y ahora le hacemos el truco.
 Usamos la funcionalidad del dosbox-core "Gamepad/Joystick 1 keyboard mappings", y ponemos:
