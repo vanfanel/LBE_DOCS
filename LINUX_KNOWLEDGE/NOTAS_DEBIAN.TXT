@@ -835,7 +835,12 @@ make INSTALL_MOD_STRIP=1 modules_install
 make install
 --Reiniciamos y ya deberíamos estar en el nuevo kernel "adelgazado".
 
+	###PARTE 3: INSTALAR LOS SCHEDULERS EXTERNOS###
 
+--Previo: Instalamos el buildsystem que necesita.
+Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+--Compilamos el repo: git clone --depth 1 https://github.com/sched-ext/scx.git
 
 AUTOLOGIN EN DEBIAN CON ESCRITORIO LXQT
 =======================================
