@@ -1971,6 +1971,12 @@ Y ahí activa solo en_US.UTF8 y es_ES.UTF8, dejando por defecto en_US.UTF8, y ar
 
 Hacemos click con el botón derecho en la barra de tareas > Configure “Task Manager” > General > Close on middle-click
 
+*******Tamaño de fuente de letra en la barra de direcciones de Firefox en Debian/Lubuntu***********************************
+
+Nos vamos a "Preferences -> LXQT Settings -> Appearance", que es donde ajustamos las fuentes del sistema en general,
+y además nos vamos a la pestaña "GTK Themes" y marcamos "Set GTK Themes", para que todas las opciones de apariencia
+se apliquen también a los programas hechos con GTK.
+
 *******Escritorio Lubuntu sin tearing**************************************************************************************
 
 Sacado de https://wiki.archlinux.org/index.php/Intel_graphics#Tear-free_video
