@@ -2222,6 +2222,13 @@ el disco duro desde el que se arrancará el sistema ahora.
 -Usando "Disk Control->Load New Disk" + "Disk Control->Insert Disk", con cada disco, ya podemos ir cargando los ADF del juego
 e instalándolo (una vez cargado un ADF, nos permite ir a DF0: sin problemas para ejecutar el instalador o copiar los archivos a mano al disco duro).
 
+PARA ACCEDER AL DISCO DURO DEL CORE MINIMIG, QUE ESTÁ EN PSF3 POR LO QUE NO SE PUEDE MONTAR DESDE LINUX:
+Lo mismo:
+-Pon "Core Options->Media->Global Boot HD" a "Files". Esto creará el directorio ~/.config/retroarch/saves/PUAE/BootHD, que es
+el disco duro desde el que se arrancará el sistema ahora.
+-Arranca el core pasándole como contenido el HDF que usas en el core de Minimig.
+-Una vez arrancado el core, ya puedes acceder a ambos. Al disco "local" accedes simplemente haciendo "BootHD:"
+
 	NOTAS SOBRE JUEGOS CONCRETOS
 
 -En el IsharAGA, como lo vas a ejecutar sin instalar con WHDLoad sino instalándolo a mano (porque es un juego totalmente compatible
