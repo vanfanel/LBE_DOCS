@@ -818,6 +818,9 @@ que tenemos cargados. Podemos consultar qué módulos tenemos cargados con "modp
 --Nos vamos al directorio de los sources del kernel (que ya tenemos configurados de antes) y hacemos:
 make LSMOD=~/.config/modprobed.db localmodconfig
 (Te preguntará cosas: dile a todo que NO, no nos interesa, gracias).
+--En este punto, puedes hacer "make menuconfig" y aprovechar para aligerar funcionalidades internas del kernel,
+como desactivar "Mitigations for speculative execution vulnerabilities",
+quitar todo lo que puedas de "Security Options" y de "Kernel Hacking", etc.
 --Compilamos el kernel y los módulos (haz antes un "make clean" porque probablemente lo tienes todo compilado de la "PARTE 1"):
 make -j6
 --Instalamos los módulos (borra antes el directorio "/lib/modules/6.8.7" ya que probablemente tengas allí instalados los módulos
