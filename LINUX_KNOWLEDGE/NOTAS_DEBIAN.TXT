@@ -825,7 +825,11 @@ make LSMOD=~/.config/modprobed.db localmodconfig
 (Te preguntará cosas: dile a todo que NO, no nos interesa, gracias).
 --Podemos aprovechar para volver a hacer "make menuconfig" y aligerar funcionalidades internas del kernel,
 como desactivar "Mitigations for speculative execution vulnerabilities",
-quitar todo lo que puedas de "Security Options" y de "Kernel Hacking" (OJO no desactives el DEBUGFS o no compilará el driver gráfico de Intel), etc.
+quitar todo lo que puedas de "Security Options" y de "Kernel Hacking", etc.
+(OJO no desactives el DEBUGFS o no compilará el driver gráfico de Intel)
+(OJO no desactives "Kernel hacking->Compile-time checks and compiler options->Generate BTF typeinfo" o no funcionarán los schedulers externos)
+(RECUERDA que si en un submenú no encuentras una opción que debería estar ahí, puedes darle a Z y te aparecerá para poder darle a "?" sobre ella
+ y así averiguar de qué depende).
 --Compilamos el kernel y los módulos (haz antes un "make clean" porque probablemente lo tienes todo compilado de la "PARTE 1"):
 make -j6
 --Instalamos los módulos (borra antes el directorio "/lib/modules/6.8.7" ya que probablemente tengas allí instalados los módulos
@@ -859,6 +863,9 @@ meson setup -Dbuildtype=release -Dopenrc=disabled ..
 
 ninja -j6
 ninja install
+
+--Activamos el servicio scx, que se nos habrá instalado:
+systemctl enable scx.service
 
 AUTOLOGIN EN DEBIAN CON ESCRITORIO LXQT
 =======================================
