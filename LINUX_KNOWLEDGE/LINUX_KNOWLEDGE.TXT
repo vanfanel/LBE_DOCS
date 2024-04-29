@@ -1637,18 +1637,45 @@ y pasarle un fichero de configuración con ese refresco a RetroArch. Este sería
 
 ##########EMPIEZA EL CARGADOR DE ARCADES############# 
 
-case "$1" in                                                                                                                           
+case "$1" in
   *mk*)
     new_refreshrate=54.70684
     ;;
   *hharry*|*rtype*)
     new_refreshrate=55.017606
     ;;
-  *pang*|*spang*)
+  *pang*|*spang*|*thoop*)
     new_refreshrate=57.420000
     ;;
-  *demonwld*)
+  *demonwld*|*outzone*)
     new_refreshrate=55.161545
+    ;;
+  *cbuster*||*darkseal*)
+    new_refreshrate=58.00000
+    ;;
+  *cninja*)
+    new_refreshrate=58.238857
+    ;;
+  *aligator*)
+    new_refreshrate=59.100000
+    ;;
+  *rodland*)
+    new_refreshrate=56.19135
+    ;;
+  *snowbros*)
+    new_refreshrate=57.500000
+    ;;
+  *nspirit*)
+    new_refreshrate=55.017606
+    ;;
+  *tumblep*)
+    new_refreshrate=57.79965
+    ;;
+  *robocop*|*baddudes*|*drgninja*|*xsleena*)
+    new_refreshrate=57.444853
+    ;;
+  *vigilant*)
+    new_refreshrate=56.338028
     ;;
   *)
     new_refreshrate=0
