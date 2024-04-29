@@ -791,8 +791,8 @@ para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel origina
 
 -Ahora ya sí: Compilamos el kernel y los módulos con "make -j6".
 
--Instalamos los módulos del kernel (para desinstalarlos, simplemente borramos el directorio "/lib/modules/6.8.7"):
-cd linux-6.8.7
+-Instalamos los módulos del kernel (para desinstalarlos, simplemente borramos el directorio "/lib/modules/6.8.8"):
+cd linux-6.8.8
 make INSTALL_MOD_STRIP=1 modules_install
 
 -Instalamos el kernel en sí (RECUERDA que hay que instalar los módulos antes, cosa que hemos hecho en el paso anterior,
@@ -801,7 +801,7 @@ make install
 
 -(PASOS NORMALMENTE NO NECESARIOS: NORMALMENTE AL INSTALAR EL KERNEL ESTAS COSAS SE HACEN SOLAS)
 --Creamos un initramfs para el nuevo kernel:
-update-initramfs -c -k 6.8.7
+update-initramfs -c -k 6.8.8
 --Actualizamos grub para que tenga localizado el nuevo kernel: update-grub
 Y editamos /etc/default/grub para poner el TIMEOUT a un valor distinto de 0, de manera que nos presente el menú de arranque.
 --Reiniciamos, y en el menú de arranque de GRUB entramos en "Advanced Options" y elegimos el nuevo kernel y arrancamos.
@@ -832,7 +832,7 @@ quitar todo lo que puedas de "Security Options" y de "Kernel Hacking", etc.
  y así averiguar de qué depende).
 --Compilamos el kernel y los módulos (haz antes un "make clean" porque probablemente lo tienes todo compilado de la "PARTE 1"):
 make -j6
---Instalamos los módulos (borra antes el directorio "/lib/modules/6.8.7" ya que probablemente tengas allí instalados los módulos
+--Instalamos los módulos (borra antes el directorio "/lib/modules/6.8.8" ya que probablemente tengas allí instalados los módulos
 de cuando instalaste todo en la "PARTE 1"):
 make INSTALL_MOD_STRIP=1 modules_install
 --Instalamos el kernel:
