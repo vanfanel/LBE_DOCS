@@ -1650,7 +1650,7 @@ case "$1" in
   *demonwld*|*outzone*)
     new_refreshrate=55.161545
     ;;
-  *cbuster*||*darkseal*)
+  *cbuster*|*darkseal*)
     new_refreshrate=58.00000
     ;;
   *cninja*)
