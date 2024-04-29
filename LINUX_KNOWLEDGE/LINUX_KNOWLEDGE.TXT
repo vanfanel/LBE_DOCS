@@ -1618,7 +1618,7 @@ https://github.com/NagyD/SDLPoP/tags
 Entramos en el directorio "src", y compilamos con:
 CFLAGS="-march=native -mtune=native" CPPFLAGS="-march=native -mtune=native" make -j4
 
-******Cambiar la región de un juego de MegaDrive y Master System*****************
+******Cambiar la región de un juego de MegaDrive y Master System********************
 
 PARA IR A UNA DIRECCIÓN CONCRETA EN HEXEDIT: PULSA ENTER Y TE PIDE LA DIRECCIÓN, Y ALLÁ VAMOS.
 Editamos el juego con el hexedit. Nos vamos a la dirección $1F0. Pulsamos TAB para ir al texto. Cambiamos la E por una U, o por una J, como queramos.
@@ -1630,7 +1630,56 @@ si es PAL vendrá un 4, pones un 3 donde el 4 SIN CAMBIAR al texto con TAB, sino
 y ya tienes JAP.
 Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHeader#ProductCode7ffc25Bytes
 
-******Emulando la NES con FBNeo*********************************************
+******Emulando arcades con la frecuencia de vídeo correcta en RetroArch sin VRR*****
+
+Usando un shellscript, es posible establecer un refresco de pantalla según el nombre del juego,
+y pasarle un fichero de configuración con ese refresco a RetroArch. Este sería mi cargador de juegos arcade:
+
+##########EMPIEZA EL CARGADOR DE ARCADES############# 
+
+case "$1" in                                                                                                                           
+  *mk*)
+    new_refreshrate=54.70684
+    ;;
+  *hharry*|*rtype*)
+    new_refreshrate=55.017606
+    ;;
+  *pang*|*spang*)
+    new_refreshrate=57.420000
+    ;;
+  *demonwld*)
+    new_refreshrate=55.161545
+    ;;
+  *)
+    new_refreshrate=0
+    ;;
+esac
+
+if [ $new_refreshrate != 0 ]; then
+    echo "This game needs refresh rate adjustment. Adjusting screen refresh rate."
+                                                                                                                             
+    new_videomode="1920x1080@"$new_refreshrate
+
+    echo "video_refresh_rate = "$new_refreshrate >> /tmp/video_adjust.cfg
+    echo "config_save_on_exit = "false"" >> /tmp/video_adjust.cfg
+
+    echo "New videomode is:"$new_videomode
+    wlr-randr --output HDMI-A-1 --custom-mode $new_videomode
+    sleep 1
+
+    sync
+    retroarch -L .config/retroarch/cores/fbneo_libretro.so --appendconfig /tmp/video_adjust.cfg "$1"
+
+    echo 'Restoring default screen refresh rate...'
+    wlr-randr --output HDMI-A-1 --mode 1920x1080@60
+    rm /tmp/video_adjust.cfg
+else
+    retroarch -L .config/retroarch/cores/fbneo_libretro.so "$1"
+fi
+
+##########ACABA EL CARGADOR DE ARCADES############# 
+
+******Emulando la NES con FBNeo*****************************************************
 
 OJO: NO TE COMPLIQUES CON TODO LO DE ABAJO SI PUEDES EVITARLO. LAS ROMS DE FBNEO ESTÁN TODAS EN:
 www.retroroms.info
