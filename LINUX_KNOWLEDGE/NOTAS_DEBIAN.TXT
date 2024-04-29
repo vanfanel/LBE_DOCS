@@ -838,9 +838,27 @@ make install
 	###PARTE 3: INSTALAR LOS SCHEDULERS EXTERNOS###
 
 --Previo: Instalamos el buildsystem que necesita.
+----Instalamos rust desde su repositorio (si usamos el apt-get nos instalará una versión demasiado antigua, como siempre)
 Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+----Instalamos clang desde su repositorio (si usamos el apt-get nos instalará una versión demasiado antigua, como siempre)
+apt install lsb-release wget software-properties-common gnupg
+bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+ln -s /usr/bin/clang-18 /usr/bin/clang
+--Previo: Instalamos dependencias previas:
+apt-get install jq libzstd-dev
+
 --Compilamos el repo: git clone --depth 1 https://github.com/sched-ext/scx.git
+--Configuramos y compilamos con:
+mkdir b4
+cd b4
+
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+meson setup -Dbuildtype=release -Dopenrc=disabled ..
+
+ninja -j6
+ninja install
 
 AUTOLOGIN EN DEBIAN CON ESCRITORIO LXQT
 =======================================
