@@ -7458,6 +7458,11 @@ config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Atari ST que usamos para ejecutarlo
 (Recuerda que si es PAL tendrás que elegir una TOS europea), las opciones de pixel ratio que mejor le sientan, etc.
 
+PARA TODOS LOS JUEGOS EN GENERAL es interesante tener el espacio mapeado al botón START del mando, ya que los installs de HD
+usan SPACE para empezar a jugar. Esto lo puedes guardar como el core remap.
+A parte, para los que usan arriba para el salto (pero no para subir escaleras), puedes mapear la flecha arriba en el botón B
+del mando, y el fire en el botón Y del mando (por ejemplo, el Viking Child). 
+
 PARA EL CAPTAIN BLOOD DESDE HDD:
 -Usa la release de 42-Crew para copiarla al disco duro GEMDOS en el directorio que quieras.
 Necesita la TOS 1.04 PAL como máximo: más que eso, revienta. Puedes usar versiones superiores de la TOS, o incluso EmuTOS, si son NTSC.
