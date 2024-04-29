@@ -2245,6 +2245,7 @@ y CUSTOM3=1 para quitarle los blitterwaits.
 -En los juegos que necesitan integer scaling porque tienen secuencias en alta resolución que se ven mal sin ello si usas shaders
 (Agony, Pinball Dreams, Pinball Fantasies...) pon el CROP a "Minimum" para que se vean más grandes: si lo pones a Maximum se verán,
 de hecho, mucho más pequeños.
+-En el GODS, aunque no lo dice en ningún sitio, el parámetro de WHDLoad para saltar usando un botón en vez de arriba es CUSTOM2=1
 -El Rocket Ranger se puede instalar a mano en una máquina A500/600 sin ampliación de memoria, sin WHDLoad.
 Para ello, como la versión de CD32 que hay en el FTP de EAB usa el "diskimage.device", y como el "diskimage.device" no funciona
 más que en 68020 y superiores, usamos el XFS:
