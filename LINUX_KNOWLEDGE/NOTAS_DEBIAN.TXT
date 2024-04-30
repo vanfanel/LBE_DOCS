@@ -782,6 +782,8 @@ para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel origina
 
 	###PARTE 1: INSTALACIÓN DE UN KERNEL QUE SOPORTE SCX (SCHED-EXT): EL KERNEL CACHYOS###
 
+-Instalamos una dependencia previa que es necesaria para compilar el kernel con la opción "Generate BTF typeinfo" (CONFIG_DEBUG_INFO_BTF)
+ activada: apt-get install pahole
 -Usamos un script que nos descarga el kernel y nos permite pre-configurarlo (hay que activar SCHED_CLASS_EXT a mano antes de compilar):
  Clonamos su repo: git clone --depth 1 https://github.com/CachyOS/linux-cachyos-deb
 (No te olvides de poner el governor a PERFORMANCE en las opciones que nos presenta el script!)
