@@ -799,7 +799,8 @@ para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel origina
 --Clonamos su repo: git clone --depth 1 https://github.com/graysky2/modprobed-db.git
 --Entramos en el directorio de los sources y simplemente hacemos "make install" y ya se instala.
 (Para desinstalarlo simplemente se usa "make uninstall" y ya).
---Ejecutamos "modprobed-db" y se nos creará el archivo "~/.config/modprobed-db.conf"
+--(OJO!! ESTO HAZLO CON UNA UNINDAD DE ALMACENAMIENTO USB CONECTADA O LUEGO NO TENDRÁS LOS MÓDULOS NECESARIOS! Y NO FUNCIONARÁN!!)
+Ejecutamos "modprobed-db" y se nos creará el archivo "~/.config/modprobed-db.conf"
 Este archivo nos permite añadir módulos que NO queremos que se tengan en cuenta aunque estén cargados, para lo cual
 añadiríamos en él una línea estilo "IGNORE=(nvidia vboxdrv..."
 --Ejecutamos "modprobed-db store" y se nos creará el archivo "~/.config/modprobed.db", que es donde quedan reflejados los módulos
@@ -854,7 +855,7 @@ cd b4
 
 CFLAGS="-O2 -march=native -mtune=native -O2" \
 CXXFLAGS="-O2 -march=native -mtune=native -O2" \
-meson setup -Dbuildtype=release -Dopenrc=disabled ..
+meson setup -Dbuildtype=release ..
 
 ninja -j6
 ninja install
