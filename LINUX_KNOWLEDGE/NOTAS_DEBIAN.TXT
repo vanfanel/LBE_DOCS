@@ -808,6 +808,9 @@ que tenemos cargados en nuestro kernel actual. Podemos consultar qué módulos t
 --Nos vamos al directorio de los sources del kernel (que ya tenemos configurados de antes) y hacemos:
 make LSMOD=~/.config/modprobed.db localmodconfig
 (Te preguntará cosas: dile a todo que NO, no nos interesa, gracias).
+--Hacemos "make menuconfig" y nos aseguramos de tener activado "Device Drivers->USB support->USB Mass Storage support"
+  (Esto es por si no teníamos una unidad de almacenamiento USB cuando previamente ejecutamos "modprobed-db store" y por tanto
+   no se detectó el módulo como cargado)
 --Podemos aprovechar para volver a hacer "make menuconfig" y aligerar funcionalidades internas del kernel,
 como desactivar "Mitigations for speculative execution vulnerabilities",
 quitar todo lo que puedas de "Security Options", etc. Cuidado: no andes tocando "kernel hacking" o los schedulers externos no funcionarán.
