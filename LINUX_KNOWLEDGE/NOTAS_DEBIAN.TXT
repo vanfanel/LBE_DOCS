@@ -786,7 +786,11 @@ para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel origina
  Clonamos su repo: git clone --depth 1 https://github.com/CachyOS/linux-cachyos-deb
 (No te olvides de poner el governor a PERFORMANCE en las opciones que nos presenta el script!)
 (NO COMPILAMOS EL KERNEL AÚN, lo vamos a hacer después a mano con "make", ya que tenemos que activar CONFIG_SCHED_CLASS_EXT).
--Hacemos "make menuconfig" y en "General Setup" activamos "Extensible Scheduling Class" (CONFIG_SCHED_CLASS_EXT).
+-Hacemos "make menuconfig" y hacemos estos cambios (RECUERDA que si una opción no aparece, puedes darle a la Z
+ para que aparezca y poder ponerte sobre ella y darle a la "?" para ver qué tienes que tener activado/desactivado para que aparezca): 
+	--Activamos "General Setup->Extensible Scheduling Class" (esto activa lo más importante: CONFIG_SCHED_CLASS_EXT).
+	--Activamos "Kernel hacking->Compile-time checks and compiler options->Generate BTF typeinfo"
+	(Para lo cual tenemos que tener "Debug Information" puesto a "Rely on the toolchain's implicit default DWARF version")
 
 -BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL
 (La información está adaptada de: https://wiki.archlinux.org/title/Modprobed-db)
