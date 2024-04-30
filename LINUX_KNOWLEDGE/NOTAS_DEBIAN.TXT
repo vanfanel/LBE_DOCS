@@ -845,7 +845,7 @@ ln -s /usr/bin/clang-18 /usr/bin/clang
 apt-get install jq libzstd-dev
 
 VAMOS CON SCHED_EX EN SÍ...
---Compilamos el repo: git clone --depth 1 https://github.com/sched-ext/scx.git
+--Bajamos la última release de: https://github.com/sched-ext/scx/releases
 --Configuramos y compilamos con:
 mkdir b4
 cd b4
