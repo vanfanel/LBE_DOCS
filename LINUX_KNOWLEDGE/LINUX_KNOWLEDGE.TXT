@@ -2203,9 +2203,8 @@ git clone --depth 1 https://github.com/libretro/libretro-uae.git
 Se compila como los demás cores.
 
 Configuración de audio: usando el kernel Cachyos y vídeo backend GL con Hard Sync, es usando ALSA (no Alsathread),
-a 44100Hz (el core es 44100Hz internamente), con 42ms de latencia.
+a 44100Hz (el core es 44100Hz internamente), con 36ms de latencia para juegos NTSC y 45ms para juegos PAL.
 (Con el backend Vulkan no se pueden conseguir latencias igual de bajas, así que usa el backend GL + Hard Sync por ahora).
-(Con el kernel normal de Debian necesitarías 42 ms de latencia para evitar dropouts).
 --Para emular A1200: Pon "CPU Compatibility" a "Cycle Exact (DMA/Memory)". Es lo más compatible en modo 1200, y de todos modos
 la emulación del 1200 nunca va a ser totalmente cycle exact por limitación del WinUAE ni tiene mucho sentido un Amiga 1200 "Cycle Exact"
 para juegos de Amiga 500.
@@ -2293,6 +2292,7 @@ fi
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la segunda línea es porque NO queremos que al quitar el juego
 el RetroArch se quede a 50Hz...¡Los 50Hz son sólo una excepcionalidad para juegos PAL!):
 video_refresh_rate = "50.000000"
+audio_latency = "45"
 config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Amiga que usamos para ejecutarlo,
 las opciones de pixel ratio y de cropping que mejor le sientan, etc.
@@ -7145,10 +7145,10 @@ Algunas notas IMPORTANTES:
 		-Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
 		 PERO no usamos VULKAN con SWAPCHAIN a 2 (de momento) porque eso no nos deja bajar tanto el buffer de audio,
 		 lo que indica que consume CPU en exceso.
-AUDIO: driver ALSATHREAD (no hace falta pasar ningunos parámetros al kernel para usar 36ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
-       44100 Hz, 36ms, resampler quality normal
+AUDIO: driver ALSA, 44100 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo: por lo demás,
-la frecuencia nativa en la mayoría de los cores es 44100Hz por lo que usándola nos ahorramos una conversión).
+(La frecuencia nativa en la mayoría de los cores es 44100Hz por lo que usándola nos ahorramos una conversión)
+(No hace falta pasar ningunos parámetros al kernel para usar 36ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
 LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
 ####### BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
@@ -7531,6 +7531,7 @@ fi
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la segunda línea es porque NO queremos que al quitar el juego
 el RetroArch se quede a 50Hz...¡Los 50Hz son sólo una excepcionalidad para juegos PAL!):
 video_refresh_rate = "50.000000"
+audio_latency = "45"
 config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Atari ST que usamos para ejecutarlo
 (Recuerda que si es PAL tendrás que elegir una TOS europea), las opciones de pixel ratio que mejor le sientan, etc.

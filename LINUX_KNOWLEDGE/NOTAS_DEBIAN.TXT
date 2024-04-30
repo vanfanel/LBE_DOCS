@@ -700,7 +700,7 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 		Configuración óptima de RetroArch (En Wayland)
 
 VIDEO: driver GL, VSYNC ON, HARD SYNC ON, HARD SYNC FRAMES 0
-AUDIO: driver ALSATHREAD, 48000 Hz, 36ms, resampler quality normal
+AUDIO: driver ALSA, 44100 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 SHADER: usamos FAKELOTTES, que tiene una mask increíble.
