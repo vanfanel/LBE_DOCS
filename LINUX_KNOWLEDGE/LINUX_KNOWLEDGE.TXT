@@ -7326,6 +7326,12 @@ switchres 1280 720 50 -s -k
 ...O bien compilando RetroArch con soporte para SwitchRes y luego configurando la resolución que queramos en:
 Settings->Video->CRT SwitchRes
 
+****************************CONFIGURACIÓN DEL MONITOR VIEWSONIC XG2401*******
+
+VIEWMODE: Standard
+BLACK STABILIZATION: 5
+ADVANCED DCR: 0
+
 ****************************Milkytracker en Linux****************************
 
 Para evitar undefined symbols en tiempo de linkado, hacemos:
