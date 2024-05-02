@@ -883,6 +883,8 @@ SCX_FLAGS='-s 0'
 --Activamos el servicio scx:
 systemctl enable scx.service
 systemctl start scx.service
+...Comprobamos que está corriendo correctamente con:
+systemctl status scx.service
 
 --Alternativamente, sin habilitar/lanzar ninigún servicio, podemos lanzar a mano el scheduler externo que queramos:
 escribe "scx" y dale al tabulador para ver los que hay disponibles.
