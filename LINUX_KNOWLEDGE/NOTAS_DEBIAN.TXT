@@ -876,8 +876,9 @@ meson setup -Dbuildtype=release ..
 ninja -j6
 ninja install
 
---Editamos la configuración del servicio scx que se nos acaba de instalar, que está en /etc/default/scx,
-y ponemos ahí el scheduler que queremos que se lanze cuando empieze el servicio. Nos interesa poner el scx_lavd.
+--Para lanzar el LAVD y que no nos maree con estadísticas, editamos el fichero /etc/default/scx y lo dejamos así:
+SCX_SCHEDULER=scx_lavd
+SCX_FLAGS='-s 0'
 
 --Activamos el servicio scx:
 systemctl enable scx.service
