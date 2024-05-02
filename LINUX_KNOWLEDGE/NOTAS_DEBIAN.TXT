@@ -813,7 +813,8 @@ make LSMOD=~/.config/modprobed.db localmodconfig
    no se detectó el módulo como cargado)
 --Podemos aprovechar para volver a hacer "make menuconfig" y aligerar funcionalidades internas del kernel,
 como desactivar "Mitigations for speculative execution vulnerabilities",
-quitar todo lo que puedas de "Security Options", etc. Cuidado: no andes tocando "kernel hacking" o los schedulers externos no funcionarán.
+quitar todo lo que puedas de "Security Options", en Device Drivers los "Multiple devices driver support (RAID and LVM)"
+y los "Macintosh Device Drivers", etc. Cuidado: no andes quitando cosas de "Kernel Hacking" o los schedulers externos no funcionarán.
 --(OPCIONAL PARA NO NECESITAR UN INITRAMFS) metemos en el kernel (incluidos en el kernel, o sea con el [*], no como módulos con la [M])
 las cosas necesarias para que el propio kernel pueda montar el rootfs, es decir, los drivers de dispositivo y el filesystem EXT4,
 que en un sistema actual de 2024 con NVME son:
@@ -875,11 +876,16 @@ meson setup -Dbuildtype=release ..
 ninja -j6
 ninja install
 
---Activamos el servicio scx, que se nos habrá instalado:
+--Editamos la configuración del servicio scx que se nos acaba de instalar, que está en /etc/default/scx,
+y ponemos ahí el scheduler que queremos que se lanze cuando empieze el servicio. Nos interesa poner el scx_lavd.
+
+--Activamos el servicio scx:
 systemctl enable scx.service
 systemctl start scx.service
 
---Ya podemos activar el scheduler externo que queramos: escribe "scx" y dale al tabulador para ver los que hay disponibles.
+--Alternativamente, sin habilitar/lanzar ninigún servicio, podemos lanzar a mano el scheduler externo que queramos:
+escribe "scx" y dale al tabulador para ver los que hay disponibles.
+Si no quieres que te esté mareando con información todo el rato, pásale el parámetro "-s0".
 
 AUTOLOGIN EN DEBIAN CON ESCRITORIO LXQT
 =======================================
