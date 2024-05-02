@@ -814,9 +814,17 @@ make LSMOD=~/.config/modprobed.db localmodconfig
 --Podemos aprovechar para volver a hacer "make menuconfig" y aligerar funcionalidades internas del kernel,
 como desactivar "Mitigations for speculative execution vulnerabilities",
 quitar todo lo que puedas de "Security Options", etc. Cuidado: no andes tocando "kernel hacking" o los schedulers externos no funcionarán.
+--(OPCIONAL PARA NO NECESITAR UN INITRAMFS) metemos en el kernel (incluidos en el kernel, o sea con el [*], no como módulos con la [M])
+las cosas necesarias para que el propio kernel pueda montar el rootfs, es decir, los drivers de dispositivo y el filesystem EXT4,
+que en un sistema actual de 2024 con NVME son:
+----"File Systems->The Extended 4 (ext4) filesystem"
+----"Device Drivers->Memory Technology Device (MTD) support"
+----"Device Drivers->NVME Support->NVM Express block device"
+
 (OJO no desactives el DEBUGFS o no compilará el driver gráfico de Intel)
 (RECUERDA que si en un submenú no encuentras una opción que debería estar ahí, puedes darle a Z y te aparecerá para poder darle a "?" sobre ella
  y así averiguar de qué depende).
+ 
 -FIN DEL BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL
 
 -Ahora ya sí: Compilamos el kernel y los módulos con "make -j6".
@@ -828,6 +836,10 @@ make INSTALL_MOD_STRIP=1 modules_install
 -Instalamos el kernel en sí (RECUERDA que hay que instalar los módulos antes, cosa que hemos hecho en el paso anterior,
 ya que esto nos crea el initramfs del kernel que lleva dentro módulos necesarios para el arranque del kernel):
 make install
+update-grub
+(Si no necesitas el initramfs porque tienes las funcionalidades necesarias para montar el rootfs metidas en el kernel [*] en vez de como módulos [M],
+ simplemente borra /boot/initramfs-6.8.8 antes de ejecutar "update-grub".
+ Busca ahí arriba en "OPCIONAL PARA NO NECESITAR UN INITRAMFS" para saber cuáles son en un sistema actual de 2024 con disco duro NVME)
 
 -(PASOS NORMALMENTE NO NECESARIOS: NORMALMENTE AL INSTALAR EL KERNEL ESTAS COSAS SE HACEN SOLAS)
 --Creamos un initramfs para el nuevo kernel:

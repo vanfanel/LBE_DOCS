@@ -606,6 +606,14 @@ Según arrancas, empieza en BASIC.
 Puedes poner :HELP para ver los comandos.
 Para entrar en el sistema operativo de disco, pon :EPDOS
 
+*********Mando analógico en el core de SATURN usando el Retro-Bit Saturn Wireless Pad****
+
+-Ponemos el mando en modo XInput. Para ello mantenemos pulsado START+B hasta que se queden encendidas dos luces en vez de una.
+-En el menú principal de la MiSTer, configuramos el mando. Es MUY IMPORTANTE que cuando te pida los TILT del Joystick 1 y 2
+los presiones correctamente.
+-En el core de SATURN, en las opciones de INPUT ponemos "3D PAD".
+-En el core de PSX, ponemos el mando 1 como DualShock.
+
 *********HACER QUE EL UPDATE_ALL NO ACTUALIZE LOS CHEATS*********************************
 
 Editamos /media/fat/downloader.ini y añadimos:
