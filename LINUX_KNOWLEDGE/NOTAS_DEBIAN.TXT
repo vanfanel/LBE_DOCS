@@ -852,6 +852,16 @@ Y editamos /etc/default/grub para poner el TIMEOUT a un valor distinto de 0, de 
 
 	###PARTE 2: INSTALAR LOS SCHEDULERS EXTERNOS###
 
+--Previo: Para evitar problemas y confusiones luego, asegúrate antes de seguir de que estas opciones
+las tienes todas así en el .config del kernel:
+CONFIG_BPF=y
+CONFIG_SCHED_CLASS_EXT=y
+CONFIG_BPF_SYSCALL=y
+CONFIG_BPF_JIT=y
+CONFIG_BPF_JIT_ALWAYS_ON=y
+CONFIG_BPF_JIT_DEFAULT_ON=y
+CONFIG_DEBUG_INFO_BTF=y
+
 --Previo: Instalamos el buildsystem que necesita.
 ----Instalamos rust desde su repositorio (si usamos el apt-get nos instalará una versión demasiado antigua, como siempre)
 Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
