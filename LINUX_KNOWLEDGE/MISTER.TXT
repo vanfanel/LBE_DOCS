@@ -208,6 +208,14 @@ los .TOS sólo hay que renombrarlos y ya.
 
 -Si tienes que reinstalar el AMBERSTAR, sólo se instala desde una TOS 1.x. Desde una 2.x, al pedirnos el disco B no lo reconoce y no permite seguir la instalación.
 
+CONVERTIR IMÁGENES DE DISCO MSA AL FORMATO .ST QUE NECESITA EL CORE DE ATARI ST
+===============================================================================
+
+-Instalamos el Hatari, que viene con la herramienta hmsa que necesitamos:
+sudo apt-get install hatari
+-Nos vamos al directorio donde tenemos nuestros .msa, y hacemos:
+for FILENAME in *.msa; do hmsa $FILENAME; done
+
 IP ESTÁTICA EN LA MISTER (AL FIN!!!!)
 =====================================
 

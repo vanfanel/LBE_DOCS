@@ -1040,6 +1040,12 @@ NOTAS ADICIONALES para el core:
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
+******Crosscompilar RetroArch para ROCKNIX***********************************************************************************
+(Instrucciones basadas en https://rocknix.org/contribute/build/)
+
+
+
+
 ******Crosscompilar el 64doom de N64-****************************************************************************************
 
 --Nos bajamos el último .deb de la toolchain de N64 para x86_64 (compilador, librerías, etc) de aquí: https://github.com/DragonMinded/libdragon/releases/tag/toolchain-continuous-prerelease
