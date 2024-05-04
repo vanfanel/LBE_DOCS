@@ -8087,7 +8087,15 @@ pero el renderer principal es OpenGL y es donde se hace el desarrollo).
 NOTA: Para Pi5, usa -j2
 (No hace falta disco de swap. Y recuerda NO pasarle más de -j2, porque en la Pi5 fallará aunque le metas gigas y gigas de swap).
 
-PARA EXTRAER LOS DATOS DE NUEVO (Ya los tienes incluso en el disco de backup, esto sería por si los pierdes):
+PARA EXTRAER LOS DATOS DEL JUEGO PARA LA VERSIÓN DE SOH/LUS QUE ACABAMOS DE COMPILAR:
+--Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
+y la copiamos a "OTRExporter/baserom.z64"
+--En el mismo directorio donde acabamos de compilar el juego, hacemos:
+cmake --build . --target ExtractAssets -j4
+--Copiamos los archivos "oot.otr" y "soh.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
+cp soh/*.otr ~/zelda64/
+
+ALTERNATIVA PARA EXTRAER LOS DATOS DEL JUEGO SIN COMPILAR EL JUEGO:
 --Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
 y la copiamos a "OTRExporter/baserom.z64"
 --Hacemos:
@@ -8095,7 +8103,7 @@ mkdir assets (lo podemos llamar como queramos, lo llamo "assets" por llamarlo de
 cd assets
 cmake ..
 cmake --build . --target ExtractAssets -j4
---Copiamos los archivos "soh.otr" y "oot.otr" al mismo directorio donde metemos el ejecutable "soh.elf":
+--Copiamos los archivos "soh.otr" y "oot.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
 cp soh/*.otr ~/zelda64/
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
