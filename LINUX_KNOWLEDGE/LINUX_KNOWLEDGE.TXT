@@ -5812,24 +5812,16 @@ las mierdas de X11. (Nosotros instalamos un CAIRO sin X11 a mano porque el metac
 
 --VAMOS A POR EL JUEGO EN SI:
 
-PARTE 1: EL ENGINE
---Clonamos el repo del engine: git clone --recursive --depth 1 https://github.com/Rubberduckycooly/RSDKv5-Decompilation.git
---Configuramos y compilamos asi:
-mkdir b4
-cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_SDL_AUDIO=1 \
--DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
-
-Copiamos RSDKv5 a ~/sonicmania:
-cp RSDKv5U ~/sonicmania/
-
-PARTE 2: EL JUEGO
---Clonamos el repo del juego: git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-Decompilation.git
+--Clonamos el repo (incluye tanto el juego como el engine):
+git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-Decompilation.git
 --Configuramos y compilamos asi:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+
+Copiamos RSDKv5 a ~/sonicmania:
+cp dependencies/RSDKv5U ~/sonicmania/
 
 Copiamos libGame.so a ~/sonicmania/Game.so:
 cp libGame.so ~/sonicmania/Game.so
