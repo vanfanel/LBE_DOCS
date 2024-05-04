@@ -5757,7 +5757,7 @@ sudo swapon /dev/sda1
 
 ldd <nombre_del_ejecutable>
 
-*************VanillaConquer: Command and Conquer en GNU/Linux**********************************************************************
+*************VanillaConquer: Command and Conquer en GNU/Linux***********************************************************************
 
 Notas previas:
 -El C&C original se llama "tiberian dawn". Así que el ejecutable es vanillatd, mientras que vanillara es para el RED ALERT.
@@ -5786,7 +5786,7 @@ La primera vez que ejecutemos vanillatd o vanillara, se nos creará .config/vani
 (A NO SER que tengamos un conquer.ini entre los datos del juego, en cuyo caso lo primero es borrar ese conquer.ini).
 Editamos ese conquer.ini y ponemos Scaler a "linear", el ratio a 4:3, etc.
 
-*************SonicMania Decomp en la Raspberry Pi*************************************************************************
+**********************SonicMania Decomp en GNU/Linux********************************************************************************
 
 NOTA: Si tienes algún problema en GNU/Linux con este engine, entra en discord y cita a Mephiles, que es un dev y usuario
 de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
@@ -5814,6 +5814,11 @@ las mierdas de X11. (Nosotros instalamos un CAIRO sin X11 a mano porque el metac
 
 --Clonamos el repo (incluye tanto el juego como el engine):
 git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-Decompilation.git
+--Editamos dependencies/RSDKv5/RSDKv5/RSDK/Audio/Audio.hpp y dejamos la línea:
+#define MIX_BUFFER_SIZE (0x800)
+como:
+#define MIX_BUFFER_SIZE (0x200)
+
 --Configuramos y compilamos asi:
 mkdir b4
 cd b4
@@ -5911,7 +5916,7 @@ Se tienen que llamar como los vídeos pero con extensión .ogg
 
 -Ahora vamos a retocar los scripts para que se reproduzcan los vídeos en OGV con audio OGG externo
 (es la única manera de tener los vídeos con su música).
-Para ello, copia estos ficheros de ~/soniccd/Scripts a ~/soniccd/mods/CD_FMVS_RSDKv5/Scripts
+Para ello, copia estos ficheros de ~/soniccd/Scripts a ~/soniccd/mods/CD_FMVS_RSDKv5/Data/Scripts
 (tienes que crear sus directorios, claro):
 Title/Select.txt
 R8/FadeScreen.txt
