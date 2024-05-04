@@ -8090,7 +8090,10 @@ NOTA: Para Pi5, usa -j2
 PARA EXTRAER LOS DATOS DE NUEVO (Ya los tienes incluso en el disco de backup, esto sería por si los pierdes):
 --Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
 y la copiamos a "OTRExporter/baserom.z64"
---Hacemos en el directorio de compilación:
+--Hacemos:
+mkdir assets (lo podemos llamar como queramos, lo llamo "assets" por llamarlo de alguna manera)
+cd assets
+cmake ..
 cmake --build . --target ExtractAssets -j4
 --Copiamos los archivos "soh.otr" y "oot.otr" al mismo directorio donde metemos el ejecutable "soh.elf":
 cp soh/*.otr ~/zelda64/
