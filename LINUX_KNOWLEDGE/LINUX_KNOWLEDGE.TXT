@@ -1040,6 +1040,36 @@ NOTAS ADICIONALES para el core:
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
+******Crosscompilar el sistema brrrrrrrrrr para RG353PS**********************************************************************
+(Instrucciones basadas en https://gitlab.com/iii1111/brrrrrrrrrr)
+
+PARTE 1 - El rootfs usando BUILDROOT
+
+-Instalamos dependencias previas:
+sudo apt-get install libssl-dev rsync
+
+-Clonamos el repo de brrrrrrrrr:
+git clone --depth 1 https://gitlab.com/iii1111/brrrrrrrrrr.git
+
+-Clonamos el de BUILDROOT repo, nos posicionamos en la versión necesaria, y entramos en él:
+git clone https://github.com/buildroot/buildroot.git
+git checkout 2024.02.1
+cd buildroot
+
+-Parcheamos BUILDROOT con lo que necesita brrrrrrrrr:
+for i in ../brrrrrrrrrr/buildroot*.patch; do patch -p1 < $i; done
+
+-Configuramos BUILDROOT para la RG353:
+make O=rg353m BR2_EXTERNAL=../brrrrrrrrrr rg353m_defconfig
+
+-Exportamos al PATH el directorio /sbin, que normalmente sólo está en el PATH para el usuario ROOT, ya que durante el proceso
+vamos a necesitar herramientas de ese directorio (mkdosfs para crear la imágen de la partición de arranque, por ejemplo):
+export PATH="/sbin:$PATH"
+
+-Entramos en el directorio de la rg353m y compilamos:
+cd rg353m
+make -j10
+
 ******Crosscompilar RetroArch para ROCKNIX***********************************************************************************
 (Instrucciones basadas en https://rocknix.org/contribute/build/)
 
