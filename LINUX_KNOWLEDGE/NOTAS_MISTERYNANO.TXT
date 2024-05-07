@@ -1,0 +1,15 @@
+FLASHEAR EL CORE DE ATARI ST Y LAS TOS
+======================================
+
+-Flasheamos el core:
+
+openFPGALoader -f ~/Downloads/atarist.fs
+
+-Flasheamos las TOS (El orden de flasheo de las TOS es: TOS de ST primaria, TOS de STE primaria, TOS de ST secundaria, TOS de STE secundaria)
+
+openFPGALoader --external-flash -o 0x100000 tos104us.img
+openFPGALoader --external-flash -o 0x140000 tos206us.img
+openFPGALoader --external-flash -o 0x180000 tos104es.img
+openFPGALoader --external-flash -o 0x1c0000 tos206es.img
+
+-¡¡¡OJO!!! Las imágenes de disco duro deben tener extensión .HD
