@@ -13,3 +13,14 @@ openFPGALoader --external-flash -o 0x180000 tos104es.img
 openFPGALoader --external-flash -o 0x1c0000 tos206es.img
 
 -¡¡¡OJO!!! Las imágenes de disco duro deben tener extensión .HD
+
+FLASHEAR EL CORE DE C64 Y LAS ROMS
+==================================
+
+openFPGALoader -f tang_nano_20k_c64.fs
+
+openFPGALoader --external-flash -o 0x200000 "c1541 DOS Dolphin 2.rom"
+openFPGALoader --external-flash -o 0x20C000 "c1541 DOS CBM.rom"
+openFPGALoader --external-flash -o 0x214000 "c1541 DOS Speeddos Plus.rom"
+openFPGALoader --external-flash -o 0x21C000 "c1541 DOS Jiffy.rom"
+

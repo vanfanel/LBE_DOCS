@@ -1,23 +1,32 @@
 CANAL Y PERSONA A PREGUNTAR POR PROBLEMAS DE REFRESCO DE PANTALLA
 =================================================================
 
-Servidor Discord: JELOS
+Servidor Discord: ROCKNIX
 Canal: Mainline y preguntar a macroalpha, o canal general y preguntar a fewt para temas de compilacion del kernel de JELOS.
 
 CONFIGURACIÓN PARA SCROLL SIN JITTERING/JUDDERING
 =================================================
 
-En menú de UNOFFICIAL OS:
+En menú de ROCKNIX:
 System Settings -> Default CPU governor -> PERFORMANCE u ONDEMAND (INTERACTIVE causa jittering)
 UI Settings-> RetroArch menu driver a RGUI
 Game Settings -> AUTO SAVE/LOAD ON GAME LAUNCH a OFF, y en AI GAME TRANSLATION ponemos ENABLE AI TRANSLATION SERVICE a OFF también.
 Game Settings ->PER SYSTEM ADVANCED CONFIGURATION y vamos eligiendo el emulador para cada sistema.
 
-En menú de RETROARCH:
-En vídeo, Synchronization->"Max Swapchain Images" 2, Output->"Threaded Video" OFF, y Output->"Automatic Refresh Rate Switch" OFF.
-Driver de sonido Alsathread, 45ms de latencia.
+Configuración de RETROARCH:
+
+En vídeo:
+Output->Video->GLCore
+(GLCore es n ecesario para usar GLES3, que a su vez es necesario para que "Hard GPU Sync" funcione. 
+ "Hard GPU Sync" es el equivalente a "Max Swapchain" a 2 en Vulkan o GL/GLES sobre KMSDRM).
+Output->"Threaded Video" OFF
+Output->"Automatic Refresh Rate Switch" OFF
+Synchronization->"Hard GPU Sync" ON 
+
+En sonido: ALSA, 32ms de latencia.
 Resampler quality a NORMAL, Output Rate a 44100 (ya que Genesis Plus GX saca 44100Hz).
 Poner sonido a 44100 en las opciones de FBNeo también.
+
 Deshabilitar Settings-> AI SERVICE
 Deshabilitar Logging Verbosity en Settings->Logging
 Ir a Settings->Input->Hotkeys, el ir desactivando todo lo relacionado con savestates, cheats, etc... A base de
@@ -26,10 +35,19 @@ Deshabilitar Settings->Input "Auxiliary Sensor Input".
 
 Puedes borrar los SAVESTATES que hayas hecho en /storage/roms/savestates.
 
-COMO SHADER, usa el fakelottes pero "aligerado" (por eso no podemos usar el fakelottes que trae).
-Para ello, copia el directorio "crt" del repo glsl-shaders de RetroArch a storage/shaders (quedaría como storage/shaders/crt),
-edita storage/shaders/crt/shaders/fakelottes.glsl y comenta las SCANLINES, los EXTRA MASK y la CURVATURA.
+PARA USAR LOS SHADERS EXTERNOS QUE NOS DE LA GANA: Copiamos los shaders SLANG que queramos (GLCORE usa SLANG, no GLSL) en /STORAGE/shaders/slang,
+cargamos RetroArch 64bits desde TOOLS, ponemos Settings->Directory->Video Shaders apuntando a /STORAGE/shaders/slang,
+cargamos un juego del sistema que queramos usando LOAD CONTENT, cargamos shader que queramos de los que hemos metido en /STORAGE/shaders/slang,
+lo salvamos como GLOBAL PRESET, en el menú ES ponemos "Shader Set" a "Default" y ya está.
+
+EL MEJOR SHADER PARA LA RG353 ES EL ZFAST, o bien sin escalado a enteros (a toda pantalla!) pero poniendo los parámetros
+de las scanlines a 0, o bien con escalado a enteros.
+
+OTRA ALTERNATIVA (AUNQUE TIENE SHIMMERING POR LA SHADOWMASK QUE USA...) sería usar el fakelottes pero "aligerado".
+Para ello, copia el directorio "crt" del repo slang-shaders de RetroArch a storage/shaders (quedaría como storage/shaders/crt),
+edita storage/shaders/slang/crt/shaders/fakelottes.glsl y comenta las SCANLINES, los EXTRA MASK y la CURVATURA.
 Ese es el shader más óptimo que vas a poder tener en la máquina.
+
 ***PARA PODER AJUSTAR LOS PARÁMETROS DEL SHADER A NUESTRO GUSTO, COMBINAR SHADERS, ETC***
 Desde ES, ponemos como shader el Fakelottes "aligerado".
 Cargamos un juego desde ES y entramos en la configuración del shader: ajustamos los parámetros y las pasadas como queramos, por ejemplo
@@ -59,6 +77,3 @@ PARA INSTALAR TEMAS CUSTOM BAJADOS DE GITHUB
 ============================================
 
 NO van en /storage, sino que debemos meter el tema que queramos en /etc/emulationstation/themes/
-
-Por ejemplo, yo ahora uso este, que tiene los nombres de los juegos centrados, sin sitio para carátulas ni chorradas:
-https://github.com/anthonycaccese/art-book-next-jelos
