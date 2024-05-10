@@ -40,8 +40,10 @@ cargamos RetroArch 64bits desde TOOLS, ponemos Settings->Directory->Video Shader
 cargamos un juego del sistema que queramos usando LOAD CONTENT, cargamos shader que queramos de los que hemos metido en /STORAGE/shaders/slang,
 lo salvamos como GLOBAL PRESET, en el menú ES ponemos "Shader Set" a "Default" y ya está.
 
-EL MEJOR SHADER PARA LA RG353 EN GENERAL ES EL ZFAST, con su parámetro "Blur Amount X-Axis" al máximo.
-Tenemos dos opciones para que se vea sin patrones:
+EL MEJOR SHADER PARA LA RG353 EN GENERAL ES EL ZFAST, con los parámetros:
+-"Blur Amount X-Axis" al máximo.
+-"Mask Effect Amount" al máximo.
+Tenemos dos opciones para que se vea bien (=sin patrones):
 -Quitar el escalado a enteros (a toda pantalla!) pero poniendo los parámetros de las scanlines a 0.
 -Con escalado a enteros conservando las scanlines.
 
@@ -49,28 +51,12 @@ PARA EL CORE DE GAMEBOY/GBC, EL MEJOR SHADER ES EL "LCD1X" (DEL SUBDIRECTORIO "H
 
 PARA EL CORE DE MEGADRIVE, EL MEJOR SHADER ES EL "CRT-CYCLON", con los parámetros de convergencia a tope, sin curvatura,
 "Mask Type" a 0, "Scanline Weight" a 60 (sí, eso desactiva las scanlines), "Mask Type" a 0, "Black Level" a 0.05. 
-PARA GAMEGEAR el mismo shader, con el POTATO BOOST activado.
+PARA MASTER SYSTEM, el mismo shader con la misma configuración + POTATO BOOST activado.
 
 OTRA ALTERNATIVA (AUNQUE TIENE SHIMMERING POR LA SHADOWMASK QUE USA...) sería usar el fakelottes pero "aligerado".
 Para ello, copia el directorio "crt" del repo slang-shaders de RetroArch a storage/shaders (quedaría como storage/shaders/crt),
 edita storage/shaders/slang/crt/shaders/fakelottes.glsl y comenta las SCANLINES, los EXTRA MASK y la CURVATURA.
 Ese es el shader más óptimo que vas a poder tener en la máquina.
-
-***PARA PODER AJUSTAR LOS PARÁMETROS DEL SHADER A NUESTRO GUSTO, COMBINAR SHADERS, ETC***
-Desde ES, ponemos como shader el Fakelottes "aligerado".
-Cargamos un juego desde ES y entramos en la configuración del shader: ajustamos los parámetros y las pasadas como queramos, por ejemplo
-yo pongo como "Shader #0" el "gdapt-pass1.glsl" que lo tienes en los shaders de "Dithering",
-y como "Shader #1" el "fakelottes.glsl" aligerado que deberías tener en /storage/shaders/shaders
-Ahora entramos en los "Shader Parameters" y dejamos los parámetros del fakelottes así (los del shader gdapt no los tocamos):
-shadowmask		1
-maskDark		50
-maskLight		120
-CRT Gamma 		230
-Monitor Gamma	275
-Salvamos el preset usando "Save Shader Preset as..." y le ponemos como nombre, por ejemplo, "0000000-custom" que luego se encuentra facilmente.
-Nos salimos a ES, y elegimos como shader nuestro "0000000-custom", que estar está, un poco abajo pero está. 
-NOTA: Las portátiles se ven demsasiado borrosas con la combinación de shaders GDAPT+FAKELOTTES "ALIGERADO", así que
-para ellas creamos "000000-portatil" que será el FAKELOTTES ALIGERADO con su parámetro "Shadow Mask" puesto a 3.
 
 PARA TENER LAS CARÁTULAS CUANDO HAGAS EL SCRAPPING:
 -En "SCRAPPING DATABASE" deja "SCREENSCRAPER"
