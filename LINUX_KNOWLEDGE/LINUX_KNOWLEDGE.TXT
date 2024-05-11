@@ -4545,9 +4545,6 @@ Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
 Bajamos la última estable de:
 https://github.com/schismtracker/schismtracker/releases
-¡¡¡¡¡¡¡¡¡¡¡¡¡CUIDADO, ES DE LOS QUE NOS DEJAN TODO TIRADO EN EL MISMO DIRECTORIO DEL .TAR.GZ!!!!!!!!!!!!!
-¡¡¡¡¡¡¡¡¡¡¡¡¡MÉTELO ANTES DE UN DIRECTORIO PROPIO Y LO DESCOMPRIMES ALLÍ!!!!!!!!!!!!!!!
-
 
 ##### BLOQUE EN PRINCIPIO YA INNECESARIO#####
 Instalamos dependencias previas:
@@ -4559,7 +4556,7 @@ autoreconf -vif
 
 Configuramos con:
 
-CFLAGS="-O2 -march=native -mtune=native" ./configure --without-x --without-flac
+CFLAGS="-O2 -march=native -mtune=native" ./configure --without-flac
 
 En la Raspberry Pi, ejecutamos con:
 AUDIODEV="sysdefault" ./schismtracker

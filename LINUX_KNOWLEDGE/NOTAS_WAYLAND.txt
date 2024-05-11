@@ -921,7 +921,7 @@ Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de m
 -Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
+meson setup -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
 
 AHORA VAMOS CON MUTTER EN SÍ
 -Clonamos su repo:
