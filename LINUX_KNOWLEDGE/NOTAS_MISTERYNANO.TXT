@@ -1,9 +1,26 @@
 ENCARGAR LAS PLACAS EN JLCPCB
 =============================
 
-Nos vamos a:
-https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/jlcpcb
+Clonamos el repo: git clone --depth 1 https://github.com/harbaum/MiSTeryNano.git
 
+Lo que vamos a necesitar está en: board/misteryshield20k/jlcpcb
+
+Ahora nos vamos a: http://www.jlcpcb.com
+Le damos a ORDER NOW.
+
+Ahí vamos haciendo lo siguiente:
+-Subimos el ZIP con el GERBER
+
+EN PCB SPECIFICATIONS:
+-Ponemos "Surface Finish" a "LeadFree HASL"
+
+EN HIGH SPEED OPTIONS:
+-Activamos "Confirm production file"
+(OPCIONAL)-Si queremos conectores de oro, activamos "Gold Fingers" lo que nos obligará a poner en PCB SPECIFICATIONS el "Surface Finish" a "ENIG" 
+
+EN PCB ASSEMBLY:
+-Ponemos "Assembly Side" a "Both Sides"
+-Activamos "Confirm Parts Placement"
 
 FLASHEAR EL CORE DE ATARI ST Y LAS TOS
 ======================================
