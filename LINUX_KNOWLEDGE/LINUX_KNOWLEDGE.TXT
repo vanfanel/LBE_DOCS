@@ -9732,6 +9732,10 @@ sudo apt-get install python-is-python3
 sudo apt install python3-pip -y
 sudo python3 -m pip install -U yt-dlp
 
+Si nos da el error ese de "This environment is externally managed", editamos /etc/pip.conf y añadimos:
+[global]
+break-system-packages = true
+
 Para seleccionar la calidad:
 1) Vemos las calidades disponibles con: yt-dlp -F <URL>
 2) Seleccionamos la calidad que queramos con: yt-dlp -f<NÚMERO DE CALIDAD> <URL>
