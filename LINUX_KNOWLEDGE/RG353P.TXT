@@ -8,7 +8,8 @@ CONFIGURACIÓN PARA SCROLL SIN JITTERING/JUDDERING
 =================================================
 
 En menú de ROCKNIX:
-System Settings -> Default CPU governor -> PERFORMANCE u ONDEMAND (INTERACTIVE causa jittering)
+System Settings -> GPU Driver -> PANFROST
+(SÓLO SI NOTAS JITTERING EN LOS TESTS DE SCROLL) System Settings -> Default CPU governor -> PERFORMANCE u ONDEMAND (INTERACTIVE causa jittering)
 UI Settings-> RetroArch menu driver a RGUI
 Game Settings -> AUTO SAVE/LOAD ON GAME LAUNCH a OFF, y en AI GAME TRANSLATION ponemos ENABLE AI TRANSLATION SERVICE a OFF también.
 Game Settings ->PER SYSTEM ADVANCED CONFIGURATION y vamos eligiendo el emulador para cada sistema.
