@@ -8152,6 +8152,8 @@ cmake --build . --target ExtractAssets -j4
 --Copiamos los archivos "soh.otr" y "oot.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
 cp soh/*.otr ~/zelda64/
 
+PARA QUE NO DESAPAREZCAN CACHOS DEL ESCENARIO EN MODO 16:9, ponemos "Enhancements->Graphics->Fix Vanishing Paths" a "Consistent Vanish".
+
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
 
