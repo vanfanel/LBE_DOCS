@@ -19,8 +19,8 @@ EN HIGH SPEED OPTIONS:
 (OPCIONAL)-Si queremos conectores de oro, activamos "Gold Fingers" lo que nos obligará a poner en PCB SPECIFICATIONS el "Surface Finish" a "ENIG" 
 
 EN PCB ASSEMBLY:
--Ponemos "PCBA Type" a "Standard"
--Ponemos "Assembly Side" a "Both Sides"
+-Dejamos "PCBA Type" en "Economic" ("Standard" sería si tuvese componentes por los dos lados, que no es el caso).
+-Dejamos "Assembly Side" en "Top Side" (La placa sólo tiene componentes por la parte superior).
 -Activamos "Confirm Parts Placement"
 
 EN ADVANCED OPTIONS:
@@ -28,6 +28,8 @@ EN ADVANCED OPTIONS:
 
 Le damos a CONFIRM, y en el siguiente menú tendremos que subir el BOM (bom.csv) y el CPL (positions.csv)
 Le damos a "Process BOM & CPL"
+
+En "Product Description", lo mejor es poner "Audio Equipment".
 
 FLASHEAR EL CORE DE ATARI ST Y LAS TOS
 ======================================
