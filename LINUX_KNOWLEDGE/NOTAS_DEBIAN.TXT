@@ -518,7 +518,25 @@ sudo apt-get install --no-install-recommends \
     flex bison python3-mako python3-setuptools \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
-    zlib1g-dev pkg-config
+    zlib1g-dev pkg-config \
+
+#####
+DEPENDENCIAS EXCLUSIVAS PARA INTEL GALLIUM IRIS:
+sudo apt-get install --no-install-recommends libclc-18-dev libclang-18-dev libclang-cpp18-dev python3-ply
+INSTALAMOS UNA DEPENDENCIA PREVIA que necesitan los drivers Gallium IRIS de Intel y que no está en ningún paquete,
+el SPIRV-LLVM-TRANSLATOR:
+--Nos bajamos la última versión de aquí:
+https://github.com/KhronosGroup/SPIRV-LLVM-Translator/releases
+--Configuramos y compilamos con:
+mkdir b4
+cd b4
+
+cmake -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-DNDEBUG -march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native" ..
+
+make install
+#####
 
 SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
 sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools glslang-tools --no-install-recommends
@@ -548,7 +566,7 @@ CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO ME
 PARA X86_64 CON GRÁFICOS INTEL IRIS (=UHD,XE, etc):
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled \
+meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland \
 -Dvulkan-drivers=intel -Dgallium-drivers=iris,kmsro,zink -Dglvnd=true ..
 
 PARA PI4/5:
