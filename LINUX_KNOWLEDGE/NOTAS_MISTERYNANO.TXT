@@ -12,15 +12,22 @@ Ahí vamos haciendo lo siguiente:
 -Subimos el ZIP con el GERBER
 
 EN PCB SPECIFICATIONS:
--Ponemos "Surface Finish" a "LeadFree HASL"
+-Ponemos "Surface Finish" a "ENIG", ya que permite que la placa almacenada dure más tiempo.
 
 EN HIGH SPEED OPTIONS:
 -Activamos "Confirm production file"
 (OPCIONAL)-Si queremos conectores de oro, activamos "Gold Fingers" lo que nos obligará a poner en PCB SPECIFICATIONS el "Surface Finish" a "ENIG" 
 
 EN PCB ASSEMBLY:
+-Ponemos "PCBA Type" a "Standard"
 -Ponemos "Assembly Side" a "Both Sides"
 -Activamos "Confirm Parts Placement"
+
+EN ADVANCED OPTIONS:
+-Activamos: "Board Cleaning", "Bake Components" y "Depanel boards"
+
+Le damos a CONFIRM, y en el siguiente menú tendremos que subir el BOM (bom.csv) y el CPL (positions.csv)
+Le damos a "Process BOM & CPL"
 
 FLASHEAR EL CORE DE ATARI ST Y LAS TOS
 ======================================
