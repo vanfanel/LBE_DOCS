@@ -523,6 +523,7 @@ sudo apt-get install --no-install-recommends \
 #####
 DEPENDENCIAS EXCLUSIVAS PARA INTEL GALLIUM IRIS (los números de versión son para Debian 12, pueden cambian en Debian 13 y posteriores):
 apt-get install python3-ply libclang-common-15-dev libllvmspirvlib-15-dev llvm-15-dev libclang-cpp15-dev libclang-15-dev libclc-15 libclc-15-dev
+¡¡¡OJO!!! ES MUY IMPORTANTE QUE COINCIDA EL NÚMERO DE VERSIÓN DE TODO. SI NO, NO COMPILARÁ Y LOS ERRORES SERÁN IMPOSIBLES DE ENTENDER.
 #####
 
 SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
