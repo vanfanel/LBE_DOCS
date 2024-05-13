@@ -8048,7 +8048,7 @@ Hay que tener baserom.us.z64 en el directorio raiz.
 Se compila asi:
 make USE_GLES=1 HIGH_FPS_PC=1 RUMBLE_FEEDBACK=0 BETTERCAMERA=0 -j4
 
-El ejecutable queda en build/us_pc/sm64.us.f3dex2e.arm
+El ejecutable queda en build/us_pc/sm64.us.f3dex2e
 
 Le puedes tocar el tamaño de buffer de audio en src/pc/audio/audio_sdl.c, busca 32000 y a partir de ahí ves todo. Pero vamos, viene en 512, si lo tocas será para subirlo a 1024.
 
