@@ -929,8 +929,8 @@ git clone --depth 1 https://github.com/GNOME/mutter.git
 -Configuramos con:
 meson -Dbuildtype=release ..
 
-INSTALAR SWAY, COMPOSITOR TILING
-================================
+INSTALAR SWAY, COMPOSITOR TILING (Y STACKING CON UN TRUCO)
+==========================================================
 
 Instalamos dependencias previas:
 apt-get install libjson-c-dev --no-install-recommends
@@ -1004,13 +1004,13 @@ focus_follows_mouse no
 -Para que las ventanas no tengan borde ni nombre ni nada:
 default_border none
 
--Para que las ventanas sean "floating windows" en lugar de tiling (NO recomendado):
+-Para que las ventanas sean "floating windows" en lugar de tiling:
 
 for_window [app_id=".*"] floating enable
 for_window [app_id=".*"] border normal
 
 -Para implementar un ALT+TAB que cambia a la ventana de la izquierda, y con ALT+SHIFT+TAB a la ventana de la derecha, 
-añade en la seccion Key Bindings:
+añade en la seccion "Key bindings":
 bindsym $mod+Tab focus left
 bindsym $mod+Shift+Tab focus right
 
