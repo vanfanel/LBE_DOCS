@@ -8155,6 +8155,7 @@ cmake --build . --target ExtractAssets -j4
 cp soh/*.otr ~/zelda64/
 
 PARA QUE NO DESAPAREZCAN CACHOS DEL ESCENARIO EN MODO 16:9, ponemos "Enhancements->Graphics->Fix Vanishing Paths" a "Consistent Vanish".
+PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Disable Draw Distance"
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
