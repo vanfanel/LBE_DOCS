@@ -8089,8 +8089,8 @@ Busca e instala, en Aurora Store, el "FWD PORT FORWARDER".
 ZELDA OOT EN GNU/LINUX
 ======================
 
-Clonamos el repo:
-git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Shipwright.git
+Clonamos la última versión estable del repo. Para ello, si por ejemplo es la 8.0.5, hacemos:
+git clone https://github.com/HarbourMasters/Shipwright.git -b 8.0.5 --depth 1 --recurse-submodules
 
 Instalamos dependencias:
 apt-get install libbz2-dev libpng-dev lsb-release libzip-dev zipcmp zipmerge ziptool
