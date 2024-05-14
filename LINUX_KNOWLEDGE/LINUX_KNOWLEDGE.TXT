@@ -8106,7 +8106,7 @@ cmake .. -GNinja \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGLES=1
 
-make -j4
+ninja -j6
 
 OPCIONAL:
 Si queremos compilar una versión del juego contra OpenGL en vez de contra GLES, editamos _deps/imgui-src/backends/imgui_impl_opengl3_loader.h
