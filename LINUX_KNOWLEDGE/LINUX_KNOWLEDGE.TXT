@@ -7202,12 +7202,10 @@ LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
 ####### BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
  
--COMO LO HACEMOS AHORA, CON EL BACKEND GL: HARD SYNC ON, y HARD SYNC FRAMES 0.
-Para que HARD SYNC ON funcione, tenemos que haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
-		 ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
-		-Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
-		 PERO no usamos VULKAN con SWAPCHAIN a 2 (de momento) porque eso no nos deja bajar tanto el buffer de audio,
-		 lo que indica que consume CPU en exceso.
+-COMO LO HACEMOS AHORA, CON EL BACKEND "GLCORE" (necesario para que funcione HARD SYNC): HARD SYNC ON, y HARD SYNC FRAMES 0.
+-Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
+PERO no usamos VULKAN con SWAPCHAIN a 2 (de momento) porque eso no nos deja bajar tanto el buffer de audio,
+lo que indica que consume CPU en exceso.
 
 -En LATENCY, activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
  

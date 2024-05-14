@@ -671,12 +671,14 @@ apt-get install libasound-dev glslang-dev glslang-tools spirv-tools
 SI ESTÁS EN RASPBERRY PI, LO PRIMERO HAZ ESTO O EL CONFIGURE FALLARÁ:
 apt-get purge libraspberrypi*
 
-Editamos qb/config.libs.sh, y cambiamos "-lGL" por "-lOpenGL"
-(Esto es para que podamos usar OpenGL en lugar de GLES, cosa que es necesaria para que HARD SYNC funcione,
+INNECESARIO (ya que usamos el driver "GLCORE"): Si queremos que el driver "GL" use OpenGL de escritorio en lugar de GLES,
+editamos qb/config.libs.sh, y cambiamos "-lGL" por "-lOpenGL".
+(Esto es para que el driver GL use OpenGL en lugar de GLES2, cosa que es necesaria para que HARD SYNC funcione con el driver GL,
  ya que si te fijas en Makefile.common y en gfx/drivers/gl2.c, resulta que HAVE_GL_SYNC sólo se activa si NO usamos GLES,
  así que si queremos que la opción del backen OPENGL llamada "Hard GPU Sync" haga lo que se supone que hace, tenemos que usar OpenGL y no GLES.
  "Hard GPU Sync" equivale a max_swapchain puesto a 2: recuerda que no puedes configurar el max_swapchain si usas el backend OpenGL en Wayland,
  en Wayland sólo puedes configurar max_swapchain si usas el backend Vulkan).
+TODO ESTO INNECESARIO porque el driver GLCORE va sobre GL3 o GLES3 y ya soporta HARD SYNC directamente.
 
 Ahora, para configurar RetroArch con soporte de OPENGL y VULKAN, como lo venimos haciendo:
 
@@ -687,13 +689,15 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
 --disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra --disable-discord \
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
---enable-egl --enable-opengl --enable-vulkan
+--enable-egl --enable-opengles --enable-opengles3 --enable-vulkan
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (NO le pases --disable-builtinglslang, porque entonces fallará la compilación de shaders al cargar un segundo juego sin salir de RetroArch)
 
-(Si quieres OpenGL de escritorio, en lugar de "--enable-opengles --enable-opengles3" pásale "--enable-opengl",
-y además edita qb/config.libs.sh y cambia -lGL por -lOpenGL, sólo hay una ocurrencia que cambiar).
+(Si quisieras OpenGL de escritorio, en lugar de "--enable-opengles --enable-opengles3" pásale "--enable-opengl",
+y además edita qb/config.libs.sh y cambia -lGL por -lOpenGL, sólo hay una ocurrencia que cambiar,
+pero NO es necesario porque el driver GLCORE (GL3, GLES3) soporta HARD SYNC,
+no necesitas usar el driver GL (GLES2, GL2) que sólo soporta HARD SYNC con OpenGL de escritorio y no con GLES2).
 
 (NO le pasamos "--disable-networking" ni "--disable-libretrodb" porque si lo hacemos no tendremos el "Online Updater"
 que es lo que nos permite que se descarguen automáticamente los thumbnails para las playlist. Hacerlo a mano es horroroso.)
@@ -705,7 +709,7 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 		Configuración óptima de RetroArch (En Wayland)
 
-VIDEO: driver GL, VSYNC ON, HARD SYNC ON, HARD SYNC FRAMES 0
+VIDEO: driver GLCORE (necesario para que funcione HARD SYNC), VSYNC ON, HARD SYNC ON, HARD SYNC FRAMES 0
 AUDIO: driver ALSA, 44100 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
