@@ -803,7 +803,8 @@ para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel origina
 	--Activamos "General Setup->Extensible Scheduling Class" (esto activa lo más importante: CONFIG_SCHED_CLASS_EXT).
 	--Activamos "Kernel hacking->Compile-time checks and compiler options->Generate BTF type information"
 	(Para lo cual tenemos que tener "Debug Information" puesto a "Rely on the toolchain's implicit default DWARF version")
-
+	--Activamos "Device Drivers->Sound card support->Advanced Linux Sound Architecture -> HR-timer backend support"
+	--Activamos "General Setup
 -BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL USANDO MODPROBED-DB
 (La información está adaptada de: https://wiki.archlinux.org/title/Modprobed-db)
 --Clonamos su repo: git clone --depth 1 https://github.com/graysky2/modprobed-db.git
@@ -826,7 +827,7 @@ como desactivar "Mitigations for speculative execution vulnerabilities",
 quitar todo lo que puedas de "Security Options", en Device Drivers los "Multiple devices driver support (RAID and LVM)"
 y los "Macintosh Device Drivers",
 En "Enable the block layer->Partition Types" quitamos todas las particiones que no necesitamos.
-En Device "Drivers->Network device support->Ethernet driver support" y "Drivers->Network device support->Wireless LAN"
+En "Drivers->Network device support->Ethernet driver support" y "Drivers->Network device support->Wireless LAN"
 quitamos todo el hardware que no tengamos (habremos hecho "lscpi" antes para averiguar cuál sí necesitamos,
 POR EJEMPLO en el N100 hay que dejar los Ethernet de REALTEK y los WIFI de INTEL, y ya).
 Cuidado: no andes quitando cosas de "Kernel Hacking" o los schedulers externos no funcionarán.
