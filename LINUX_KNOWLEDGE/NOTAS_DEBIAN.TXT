@@ -804,7 +804,9 @@ para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel origina
 	--Activamos "Kernel hacking->Compile-time checks and compiler options->Generate BTF type information"
 	(Para lo cual tenemos que tener "Debug Information" puesto a "Rely on the toolchain's implicit default DWARF version")
 	--Activamos "Device Drivers->Sound card support->Advanced Linux Sound Architecture -> HR-timer backend support"
-	--Activamos "General Setup
+	--Activamos "General Setup->Some kernel tweaks by CachyOS"
+¡¡RECUERDA que usando "/" puedes localizar la opción que quieras!!
+
 -BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL USANDO MODPROBED-DB
 (La información está adaptada de: https://wiki.archlinux.org/title/Modprobed-db)
 --Clonamos su repo: git clone --depth 1 https://github.com/graysky2/modprobed-db.git
@@ -830,6 +832,9 @@ En "Enable the block layer->Partition Types" quitamos todas las particiones que 
 En "Drivers->Network device support->Ethernet driver support" y "Drivers->Network device support->Wireless LAN"
 quitamos todo el hardware que no tengamos (habremos hecho "lscpi" antes para averiguar cuál sí necesitamos,
 POR EJEMPLO en el N100 hay que dejar los Ethernet de REALTEK y los WIFI de INTEL, y ya).
+Activamos "Device Drivers->Graphics support->Intel Xe Graphics", que no lo detecta modprobed-db.
+Usando "/", buscamos ANDROID, AMAZON, MICROSOFT, GOOGLE... Y nos aseguramos de que todas las opciones están desactivadas,
+¡nos dice cómo llegar a cada opción!.
 Cuidado: no andes quitando cosas de "Kernel Hacking" o los schedulers externos no funcionarán.
 --(OPCIONAL PARA NO NECESITAR UN INITRAMFS) metemos en el kernel (incluidos en el kernel, o sea con el [*], no como módulos con la [M])
 las cosas necesarias para que el propio kernel pueda montar el rootfs, es decir, los drivers de dispositivo y el filesystem EXT4,
@@ -841,6 +846,7 @@ que en un sistema actual de 2024 con NVME son:
 (OJO no desactives el DEBUGFS o no compilará el driver gráfico de Intel)
 (RECUERDA que si en un submenú no encuentras una opción que debería estar ahí, puedes darle a Z y te aparecerá para poder darle a "?" sobre ella
  y así averiguar de qué depende).
+(RECUERDA que puedes usar "/" para buscar la opción que quieras, te dice cómo llegar a cada opción).
  
 -FIN DEL BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL
 
