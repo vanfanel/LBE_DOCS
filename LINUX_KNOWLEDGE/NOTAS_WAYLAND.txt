@@ -307,98 +307,32 @@ QUITAR ERRORES DE WESTON
 AÑADIR ATAJOS DE TECLADO A WESTON
 =================================
 
-TIENES DOS OPCIONES:
+Editamos desktop-shell/shell.c y allí:
+-Nos vamos a shell_add_bindings() y añadimos estos key bindings:
 
-1) RECOMENDADO: Añadir los atajos a mano:
-Para ello, editamos desktop-shell/shell.c y:
+// Close windows with ALT+F4
+weston_compositor_add_key_binding(ec, KEY_F4, mod, force_kill_binding, shell);
+// Launch terminal
+weston_compositor_add_key_binding(ec, KEY_T, MODIFIER_CTRL | MODIFIER_ALT,
+	terminal_binding, ec);
 
--Añadimos #include <fcntl.h> a los includes del principio.
--Añadimos estas funciones (justo encima de la función shell_add_bindings(), si quieres):
-
-/* Process executed via keybind failed. status is the exit value. */
-static void 
-process_cleanup(struct weston_process *process, int status)
+-Nos vamos a force_kill_binding() y debajo de esa función añadimos nuestra función que lanza la terminal:
+static void
+terminal_binding(struct weston_keyboard *keyboard,                                                                                     
+		const struct timespec *time, uint32_t key, void *data)                                                                         
 {
-        free(process);
+	pid_t tmp_pid = -1;
+
+	tmp_pid = fork();
+    if (tmp_pid == -1) {
+		return;
+	} else if (tmp_pid == 0) {
+		//cleanup_for_child_process();
+		execl("/usr/local/bin/foot", "/usr/local/bin/foot", NULL);
+		_exit(1);
+	}
 }
-
-/**
- * Much like system(3) but doesn't wait for exit and outputs to /dev/null.
- */
-static pid_t
-system_nowait(const char *file, char *const argv[])
-{
-	pid_t pid = fork();
-
-	if (pid)
-		return pid;
-
-	int fd = open("/dev/null", O_WRONLY);
-
-	dup2(fd, 1);
-	dup2(fd, 2);
-
-	close(fd);
-
-	execvp(file, argv);
-	exit(1);
-}
-
-static void 
-terminal_binding_callback(struct weston_keyboard *keyboard,
-                         const struct timespec *time, uint32_t key, 
-                         void *data)
-{
-        struct weston_compositor *compositor = data;
-
-        pid_t spawn = system_nowait("weston-terminal",
-                                   (char * const[]) {"weston-terminal", "--shell=/bin/bash", NULL, NULL});
-
-        if (spawn == -1) {
-                weston_log("Failed spawning process %s\n", (char *) data);
-                return;
-        }    
-
-        struct weston_process *wp = malloc(sizeof(*wp));;
-        wp->pid = spawn;
-        wp->cleanup = process_cleanup;
-
-        wet_watch_process(compositor, wp);
-}
-
--En la función shell_add_bindings(), añadimos (debajo de la última llamada a "weston_compositor_add_key_binding()", si quieres):
-
-        /* Add binding for launching terminal with CTRL + ALT + T */
-        weston_compositor_add_key_binding(ec, KEY_T, MODIFIER_CTRL | MODIFIER_ALT,
-                                          terminal_binding_callback, ec);
-                                          
-Y YA ESTÁ. Como ves, podemos añadir todos los atajos que queramos muy fácilmente, añadiéndolos como nuevas llamadas a
-weston_compositor_add_key_binding().
-
-FUENTE: Sacado del código del "weston keybinder", cuyo primer commit está aquí:
-https://github.com/tarvi-verro/weston-binder/commit/40b3112f221ef3a1c42f536d8047b8565ee3f2d8
-(Hay mucho más código del necesario ahí porque tiene que parsear las opciones del .ini, etc.
- Fíjate sólo en binder_add_bindings() y binder_callback_ctrl_alt(). ).
  
-2) Compila e instala el "weston keybinder": 
-
-git clone --depth 1 https://github.com/tarvi-verro/weston-binder.git
-make -j4
-cp binder.so /usr/local/lib/aarch64-linux-gnu/weston/
-
-Y ahora sólo queda añadir a ~/.config/weston.ini la carga del módulo keybinder que acabas de compilar, así como los atajos que quieras. 
-
-Para cargar el módulo:
-
-[core]
-modules=binder.so
-
-Y un atajo de teclado sería por ejemplo:
-
-[keybind]
-key=ctrl+alt+t
-exec=weston-terminal --shell=/bin/bash
-
 CONSTRUIR UN ESCRITORIO COMPLETO BASADO EN WAYLAND
 ==================================================
 
