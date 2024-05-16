@@ -7260,11 +7260,10 @@ Para ello, simplemente crea el archivo .config/retroarch/config/PPSSPP/PPSSPP.cf
 o el archivo .config/retroarch/config/Flycast/Flycast.cfg
 con el contenido: run_ahead_enabled = "false"
 
-PARA EL CORE DE GBA (mGBA), si usas RunAhead activa lo de "Use second instance", o tendrás pequeños droputs o
+PARA EL CORE DE GB (Gambatte) y para el de GBA (mGBA), si usas RunAhead activa lo de "Use second instance", o tendrás pequeños droputs o
 distorsiones de audio.
-
-PARA EL CORE DE GB (Gambatte), desactiva totalmente el RunAhead, , o tendrás pequeños droputs o distorsiones de audio.
-(NOTA: No se nota el RunAhead en este core, la pantalla de GameBoy era muy lenta de todos modos).
+Para el Gambatte, además, sube Audio Latency a 40ms, para evitar los típicos dropouts en en Mario Land al entrer en tuberías.
+(Parece que hay algo raro en el buffering del audio en el core Gambatte...)
 
 PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE SHADERS SE VERÁ MUY RARA.
 
