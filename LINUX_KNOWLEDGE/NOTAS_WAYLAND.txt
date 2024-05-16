@@ -1178,7 +1178,7 @@ meson setup -Dbuildtype=release -Dgdk-pixbuf=disabled -Dman-pages=disabled ..
 
 Y en ~/.config/labwc/autostart:
 
-swaybg -i cccp.png >/dev/null 2>&1 &
+swaybg -i atari.png >/dev/null 2>&1 &
 
 (NOTA: Acepta sólo PNG a no ser que lo compiles con gdk-pixbuf habilitado, así que con PNG nos vale).
 
