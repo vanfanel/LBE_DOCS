@@ -58,8 +58,8 @@ openFPGALoader --external-flash -o 0x1c0000 tos206es.img
 
 -¡¡¡OJO!!! Las imágenes de disco duro deben tener extensión .HD
 
-FLASHEAR EL CORE DE C64 Y LAS ROMS
-==================================
+FLASHEAR EL CORE DE C64 Y LAS ROMS DE SISTEMA
+=============================================
 
 openFPGALoader -f tang_nano_20k_c64.fs
 
@@ -68,3 +68,13 @@ openFPGALoader --external-flash -o 0x20C000 "c1541 DOS CBM.rom"
 openFPGALoader --external-flash -o 0x214000 "c1541 DOS Speeddos Plus.rom"
 openFPGALoader --external-flash -o 0x21C000 "c1541 DOS Jiffy.rom"
 
+FLASHEAR EL BL216 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
+===========================================================================================
+
+RECUERDA que si usas el interno de la TANG NANO 20K, tendrás que volver a meterle su firmware original de fábrica para poder volver a flashearlo.
+
+-Nos bajamos el Bouffalo Lab Dev Cube de aquí: https://dev.bouffalolab.com/download
+-Conectamos el adapador USB/TTL al PC, y los cables a los pines SERIAL de la placa de la MisteryNano, con el TX/RX cruzados pero sin conectar aún
+el cable de 5V. Entonces, manteniendo pulsado el botón BOOT, conectamos el cable de 5V.
+-Manteniendo pulsado el botón BOOT, abrimos el Bouffalo Lab Dev Cube, nos vamos a la pestaña MCU, le damos a OPEN UART,
+seleccionamos el .bin que queramos flashear, y le damos a "CREATE AND DOWNLOAD".
