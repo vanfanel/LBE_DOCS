@@ -1014,6 +1014,22 @@ añade en la seccion "Key bindings":
 bindsym $mod+Tab focus left
 bindsym $mod+Shift+Tab focus right
 
+--Para tener fondo de pantalla:
+Nos bajamos la última estable de aquí: https://github.com/swaywm/swaybg/releases
+Configuramos, compilamos e instalamos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release -Dgdk-pixbuf=disabled -Dman-pages=disabled ..
+
+Y en ~/.config/labwc/autostart:
+
+exec swaymsg "workspace 1; exec swaybg -i atari.png &;"
+
+(NOTA: Acepta sólo PNG a no ser que lo compiles con gdk-pixbuf habilitado, así que con PNG nos vale).
+
 -PARA MAS OPCIONES: https://manpages.ubuntu.com/manpages/focal/man5/sway.5.html
 
 INSTALAR WAYFIRE, COMPOSITOR WINDOW-STACKING (NECESITA WLROOTS)
@@ -1163,6 +1179,8 @@ meson setup -Dbuildtype=release -Dgdk-pixbuf=disabled -Dman-pages=disabled ..
 Y en ~/.config/labwc/autostart:
 
 swaybg -i cccp.png >/dev/null 2>&1 &
+
+(NOTA: Acepta sólo PNG a no ser que lo compiles con gdk-pixbuf habilitado, así que con PNG nos vale).
 
 LANZAR LABWC COMO SERVICIO DE SYSTEMD
 =====================================

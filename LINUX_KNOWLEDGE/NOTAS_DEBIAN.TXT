@@ -555,7 +555,7 @@ PARA X86_64 CON GRÁFICOS INTEL IRIS (=UHD,XE, etc):
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland \
--Dvulkan-drivers=intel -Dgallium-drivers=iris,kmsro,zink -Dglvnd=true ..
+-Dvulkan-drivers=intel -Dgallium-drivers=iris,kmsro,zink -Dglvnd=enabled ..
 
 PARA PI4/5:
 CFLAGS="-march=native -mtune=native -O2" \

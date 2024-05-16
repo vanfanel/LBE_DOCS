@@ -3,9 +3,11 @@ ENCARGAR LAS PLACAS EN JLCPCB
 
 Clonamos el repo: git clone --depth 1 https://github.com/harbaum/MiSTeryNano.git
 
+PARTE 1: PLACA MISTERY SHIELD 20K
+
 Lo que vamos a necesitar está en: board/misteryshield20k/jlcpcb
 
-Ahora nos vamos a: http://www.jlcpcb.com
+Entramos en: http://www.jlcpcb.com
 Le damos a ORDER NOW.
 
 Ahí vamos haciendo lo siguiente:
@@ -33,6 +35,12 @@ En "Product Description", lo mejor es poner "Audio Equipment".
 
 En el método de envío, he usado IOSS, que se supone que ya incluye los impuestos en el momento de hacer el pago con tarjeta,
 y que como son menos de 150 euros no hay que pagar más luego.
+
+PARTE 2: PLACA M0S PMOD
+
+Lo que vamos a necesitar está en: board/m0s_pmod/jlcpcb
+
+
 
 FLASHEAR EL CORE DE ATARI ST Y LAS TOS
 ======================================
