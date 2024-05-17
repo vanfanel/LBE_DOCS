@@ -59,6 +59,8 @@ openFPGALoader --external-flash -o 0x1c0000 tos206es.img
 
 -¡¡¡OJO!!! Las imágenes de disco duro deben tener extensión .HD
 
+-Para más compatibilidad, configúralo como un STE PAL con 4MB de RAM.
+
 FLASHEAR EL CORE DE C64 Y LAS ROMS DE SISTEMA
 =============================================
 
