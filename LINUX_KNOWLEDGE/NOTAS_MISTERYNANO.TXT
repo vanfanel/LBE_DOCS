@@ -11,7 +11,8 @@ Entramos en: http://www.jlcpcb.com
 Le damos a ORDER NOW.
 
 Ahí vamos haciendo lo siguiente:
--Subimos el ZIP con el GERBER
+-Subimos el ZIP "gerber_m0s.zip" que es el que contiene el GERBER. Usamos la variante "gerber_m0s.zip" porque nos interesa usar
+la plaquita M0S PMOD que vamos a encargar a parte.
 
 EN PCB SPECIFICATIONS:
 -Ponemos "Surface Finish" a "ENIG", ya que permite que la placa almacenada dure más tiempo.
@@ -28,7 +29,7 @@ EN PCB ASSEMBLY:
 EN ADVANCED OPTIONS:
 -Activamos: "Board Cleaning", "Bake Components" y "Depanel boards"
 
-Le damos a CONFIRM, y en el siguiente menú tendremos que subir el BOM (bom.csv) y el CPL (positions.csv)
+Le damos a CONFIRM, y en el siguiente menú tendremos que subir el BOM (bom_m0s.csv) y el CPL (positions_m0s.csv)
 Le damos a "Process BOM & CPL"
 
 En "Product Description", lo mejor es poner "Audio Equipment".
@@ -40,7 +41,7 @@ PARTE 2: PLACA M0S PMOD
 
 Lo que vamos a necesitar está en: board/m0s_pmod/jlcpcb
 
-
+Se hace igual y los ficheros se llaman igual pero sin lo de _m0s al final: gerber.zip, bom.csv y positions.csv
 
 FLASHEAR EL CORE DE ATARI ST Y LAS TOS
 ======================================
