@@ -62,6 +62,11 @@ openFPGALoader --external-flash -o 0x1c0000 tos206es.img
 
 -Para más compatibilidad con juegos y demos (el ST es una máquina principalmente europea), configúralo como un STE PAL con 4MB de RAM.
 
+-El MIDI OUT es el conector más interior.
+Los juegos que soportan MIDI simplemente funcionan si tienes un sinte conectado a la salida MIDI.
+Algunos de SIERRA necesitan que ejecutes antes un programa que traen cada uno de ellos, que se llama MUSIC.PRG y permite seleccionar
+el MT32 u otro sinte. Le das a "INSTALL GAME" y así queda guardada la configuración. No lo instala realmente, sólo configura la música. 
+
 FLASHEAR EL CORE DE C64 Y LAS ROMS DE SISTEMA
 =============================================
 
