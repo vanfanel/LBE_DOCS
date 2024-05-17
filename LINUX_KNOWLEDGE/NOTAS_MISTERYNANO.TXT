@@ -12,7 +12,8 @@ Le damos a ORDER NOW.
 
 Ahí vamos haciendo lo siguiente:
 -Subimos el ZIP "gerber_m0s.zip" que es el que contiene el GERBER. Usamos la variante "gerber_m0s.zip" porque nos interesa usar
-la plaquita M0S PMOD que vamos a encargar a parte.
+la plaquita M0S PMOD que vamos a encargar a parte. Nos interesa esta variante de la placa principal que usa la M0S externa
+por comodidad: andar usando el M0S (BL616) interno de la Tang Nano 20k es mucho más incómodo para el tema de los flasheos: M0S externa SIEMPRE.
 
 EN PCB SPECIFICATIONS:
 -Ponemos "Surface Finish" a "ENIG", ya que permite que la placa almacenada dure más tiempo.
