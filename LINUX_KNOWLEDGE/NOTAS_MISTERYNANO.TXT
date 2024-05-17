@@ -70,6 +70,7 @@ openFPGALoader --external-flash -o 0x21C000 "c1541 DOS Jiffy.rom"
 
 AHORA necesitas es el kernal original de C64, que puedes descargar de aquí: http://www.zimmers.net/anonftp/pub/cbm/firmware/computers/c64/
 y se llama kernal.901227-03.bin. Guárdalo en raíz de la SD como "c64kernal.bin".
+Cuando arranques el core, ve a STORAGE->C64 KERNAL, selecciona el "c64kernal.bin" y ve a SETTINGS->SAVE SETTINGS y reinicia.
 (Si no lo haces, arrancará con el DolphinDOS kernal que es menos compatible, de hecho no permite cargar .TAP).
 
 FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
