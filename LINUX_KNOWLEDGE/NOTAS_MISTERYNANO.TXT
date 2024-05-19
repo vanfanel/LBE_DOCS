@@ -101,3 +101,22 @@ ERRORES Y SOLUCIONES AL FLASHEAR EL BL616:
 -Si te da error con el handshake: no has cruzado los cables TX y RX (lo que es TX en un extremo, va al RX del otro).
 -Si te da error leyendo la MAC del BL616 (pero el handshake sí se hizo bien): el adaptador USB/TTL no es compatible o no funciona bien,
 prueba con otro.
+
+CUBASE EN EL CORE DE ATARIST
+============================
+
+Todos los programas de secuenciación de MIDI para ST están en: http://atari.music.free.fr/
+
+CUBASE 2
+========
+Cubase 2 (MCA) funciona en TOS 1.6 pero no en TOS 2.06 (da el error "MROS not found"). Pero la versión 2.01 crackeada por MCA dicen que es estable
+y va sin el dongle. 
+
+CUBASE 3
+========
+
+No hay versión crackeada estable, así que nos bajamos http://atari.music.free.fr/cubase/cubas310.zip (lo deberías tener el el disco duro
+de backup de todos modos) y lo metemos descomprimido en nuestra imágen de disco de ST
+(Recuerda que la imágen de disco de ST se monta con: sudo mount <ruta imágen> <ruta montaje> -o offset=1024)
+
+Ahora en el ST nos vamos a SYSTEM->CARTIDGE y seleccionamos CUBASE 2&3 y listo, ya funcionará CUBASE.
