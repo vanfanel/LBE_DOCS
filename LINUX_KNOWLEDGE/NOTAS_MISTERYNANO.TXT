@@ -115,6 +115,8 @@ y va sin el dongle.
 CUBASE 3
 ========
 
+OJO!! NO le metas más de 4MB al ordenador o te dará el error "MROS not found" pongas el tipo de máquina que pongas!! RECUERDA: Máximo 4MB!!!
+
 No hay versión crackeada estable, así que nos bajamos http://atari.music.free.fr/cubase/cubas310.zip (lo deberías tener el el disco duro
 de backup de todos modos) y lo metemos descomprimido en nuestra imágen de disco de ST
 (Recuerda que la imágen de disco de ST se monta con: sudo mount <ruta imágen> <ruta montaje> -o offset=1024)
