@@ -107,18 +107,19 @@ CUBASE EN EL CORE DE ATARIST
 
 Todos los programas de secuenciación de MIDI para ST están en: http://atari.music.free.fr/
 
-CUBASE 2
-========
-Cubase 2 (MCA) funciona en TOS 1.6 pero no en TOS 2.06 (da el error "MROS not found"). Pero la versión 2.01 crackeada por MCA dicen que es estable
-y va sin el dongle. 
-
-CUBASE 3
+CUBASE 3 (RECOMENDADO)
 ========
 
 OJO!! NO le metas más de 4MB al ordenador o te dará el error "MROS not found" pongas el tipo de máquina que pongas!! RECUERDA: Máximo 4MB!!!
 
-No hay versión crackeada estable, así que nos bajamos http://atari.music.free.fr/cubase/cubas310.zip (lo deberías tener el el disco duro
-de backup de todos modos) y lo metemos descomprimido en nuestra imágen de disco de ST
+No hay versión crackeada estable, así que nos bajamos http://atari.music.free.fr/cubase/cubas310.zip
+y lo metemos descomprimido en nuestra imágen de disco de ST
 (Recuerda que la imágen de disco de ST se monta con: sudo mount <ruta imágen> <ruta montaje> -o offset=1024)
 
 Ahora en el ST nos vamos a SYSTEM->CARTIDGE y seleccionamos CUBASE 2&3 y listo, ya funcionará CUBASE.
+
+CUBASE 2
+========
+Cubase 2 funciona en TOS 1.6 pero no en TOS 2.06 (da el error "MROS not found"). Usa siempre versiones sin crackear porque tanto la MiSTeryNano
+como la MiSTer implementan el dongle del CUBASE 2 y 3, y así te ahorras problemas.
+COMO CURIOSIDAD: la versión 2.01 crackeada por MCA dicen que es estable y va sin el dongle. 
