@@ -51,8 +51,8 @@ Tenemos dos opciones para que se vea bien (=sin patrones):
 PARA EL CORE DE GAMEBOY/GBC, EL MEJOR SHADER ES EL "LCD1X" (DEL SUBDIRECTORIO "HANDHELDS").
 
 PARA EL CORE DE MEGADRIVE, EL MEJOR SHADER ES EL "CRT-CYCLON", con los parámetros de convergencia a tope, sin curvatura,
-"Mask Type" a 0, "Scanline Weight" a 60 (sí, eso desactiva las scanlines), "Mask Type" a 0, "Black Level" a 0.05,
-y "Slot Mask" desactivado. 
+"Scanline Weight" a 50 (es como menos se ven las scanlines, menos que eso ya tienes que activar el escalado a enteros),
+"Mask Type" a 0, "Slot Mask" desactivado", y "Black Level" a 0.05. 
 PARA MASTER SYSTEM, el mismo shader con la misma configuración + POTATO BOOST activado.
 
 OTRA ALTERNATIVA (AUNQUE TIENE SHIMMERING POR LA SHADOWMASK QUE USA...) sería usar el fakelottes pero "aligerado".
