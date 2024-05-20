@@ -10752,8 +10752,8 @@ El fichero de configuración va en ~/.drirc
 La manera correcta de generarlo es usando "adriconf" (necesita GTK):
 git clone --depth 1 https://gitlab.freedesktop.org/mesa/adriconf
 
-COMPILAR WINE EN DEBIAN AMD64
-=============================
+COMPILAR/INSTALAR WINE EN DEBIAN AMD64
+======================================
 
 NOTA: POR AHORA, SI NO INSTALAS LAS LIBERRÍAS DE 32BITS, SÓLO VALE PARA EJECUTAR PROGRAMAS X86_64, NO LOS JUEGOS DE 32BITS QUE QUIERES.
 CUANDO HAYA UNA VERSIÓN PÚBLICA DE **BOX32** (de ptitSeb) LO PODRÁS USAR CON WINE PARA LANZAR JUEGOS DE 32 BITS.
