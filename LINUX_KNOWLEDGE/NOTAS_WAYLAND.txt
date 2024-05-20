@@ -1011,6 +1011,15 @@ Instalar labwc en sí:
 Bajamos la última release estable de aquí:
 https://github.com/labwc/labwc/releases
 
+(PARA SOLUCIONAR LO DE LOS PROGRAMAS DE SDL2 EN MODO DE PANTALLA COMPLETA)
+Editamos src/xdg.c, y al final de la función handle_commit(), bajo el comentario que empieza "wlroots retains the size"...,
+comentamos esto que hay:
+
+struct wlr_xdg_toplevel *toplevel =
+						xdg_toplevel_from_view(view);
+						toplevel->scheduled.width = view->current.width;
+						toplevel->scheduled.height = view->current.height;
+
 Configuramos con:
 
 CFLAGS="-march=native -mtune=native" \
@@ -1096,7 +1105,7 @@ https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
     cd bunsen-themes/themes
     cp -R * ~/.local/share/themes 
 ----Ahora, en rc.xml, ponemos el nombre del tema que queramos usar en la etiqueta <name>nombre_tema</name> de la categoría <theme>
-    Por ejemplo: <name>BL-Lithium</name>
+    Por ejemplo: <name>Dragon</name>
 ----OPCIONAL: Si te gusta un tema y quieres modificar cosas, edita su fichero "themerc", todos tienen uno.
 	Por ejemplo, algunos temas no ponen bordes a las ventanas. Puedes cambiar eso poniendo border.width a 4 o así.
 
