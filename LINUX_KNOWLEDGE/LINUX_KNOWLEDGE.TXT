@@ -10153,7 +10153,7 @@ Clonamos el repo:
 git clone --depth 1 https://github.com/OpenFodder/openfodder.git
 
 --Editamos Source/Amiga/Sound_Amiga.cpp y ponemos "desired->samples" a 0x400
---Compilamos con:
+--Configuramos con:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
@@ -10179,9 +10179,21 @@ puedes sacar el MAPM1.SPT correcto del ADF marcado como [a].
 JAZZ JACKRABBIT 2 en GNU/Linux (jazz2resurrection-native)
 =========================================================
 
-Clonamos su repo:
+Necesita GLEW y GLFW, que tienes en este documento las instrucciones para instalarlas.
 
-git clone --depth 1 https://github.com/deathkiller/jazz2-native.git
+Instalamos otras dependencias previas:
+apt-get install libopenmpt-dev
+
+Bajamos la última versión estable de: https://github.com/deathkiller/jazz2-native/tags
+
+(ARREGLAR DETECCIÓN DE OPENGL)
+Editamos cmake/ncine_imported_targets.cmake
+
+Configuramos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native"
 
 Juegos PICO8 en GNU/Linux usando el core de libretro "fake-08"
 ==============================================================
