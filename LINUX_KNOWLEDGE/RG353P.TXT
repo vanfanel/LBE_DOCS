@@ -72,3 +72,11 @@ PARA INSTALAR TEMAS CUSTOM BAJADOS DE GITHUB
 ============================================
 
 NO van en /storage, sino que debemos meter el tema que queramos en /etc/emulationstation/themes/
+
+PARA INSTALAR EL PORT DEL MARIO 64 (SM64)
+=========================================
+
+-Instala lo primero PortMaster (es porque va a coger la configuración del mando del sistema centralizado que provee PortMaster).
+-Copia el juego ya preparado (lo tienes en el disco duro de backup en GAMES/RG353P(S)) a /STORAGE/games-internal/roms/ports
+-Si necesitases volver a prepararlo, usa esta guía: https://retrogamecorps.com/2020/12/28/guide-super-mario-64-port-on-rg351p
+ (Está actualizada con soporte para las RG353, no te preocupes).
