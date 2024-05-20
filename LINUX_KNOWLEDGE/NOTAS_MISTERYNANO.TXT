@@ -4,6 +4,7 @@ ENCARGAR LAS PLACAS EN JLCPCB
 NOTA: PARA AMBAS PLACAS EXISTE LA POSIBILIDAD DE QUE JLCPCB NOS ENVÍE UN CORREO PREGUNTÁNDONOS SI HACEN UNOS PEQUEÑOS AJUSTES
 PORQUE NO SABEN SI SON GERBER DE PRODUCCIÓN (QUE YA TENDRÍAN ESOS AJUSTES HECHOS) O LOS GERBER TAL COMO SALEN DEL KIKAD (QUE REQUIEREN LOS AJUSTES).
 LOS GERBER PUBLICADOS SON DIRECTOS DE KICAD, ASÍ QUE HAY QUE CONTESTARLES QUE HAGAN LOS AJUSTES QUE ESTIMEN OPORTUNOS PARA MEJORAR LA PRODUCCIÓN.
+PARA EVITAR PREGUNTAS DE JLCPCB, NO ACTIVES "Confirm production file" NI TAMPOCO "Confirm Parts Placement".
 
 Clonamos el repo: git clone --depth 1 https://github.com/harbaum/MiSTeryNano.git
 
@@ -20,16 +21,11 @@ la plaquita M0S PMOD que vamos a encargar a parte. Nos interesa esta variante de
 por comodidad: andar usando el M0S (BL616) interno de la Tang Nano 20k es mucho más incómodo para el tema de los flasheos: M0S externa SIEMPRE.
 
 EN PCB SPECIFICATIONS:
--Ponemos "Surface Finish" a "ENIG", ya que permite que la placa almacenada dure más tiempo.
-
-EN HIGH SPEED OPTIONS:
--Activamos "Confirm production file"
-(OPCIONAL)-Si queremos conectores de oro, activamos "Gold Fingers" lo que nos obligará a poner en PCB SPECIFICATIONS el "Surface Finish" a "ENIG" 
+-(OPCIONAL)Ponemos "Surface Finish" a "ENIG", ya que permite que la placa almacenada dure más tiempo.
 
 EN PCB ASSEMBLY:
 -Dejamos "PCBA Type" en "Economic" ("Standard" sería si tuvese componentes por los dos lados, que no es el caso).
 -Dejamos "Assembly Side" en "Top Side" (La placa sólo tiene componentes por la parte superior).
--Activamos "Confirm Parts Placement"
 
 EN ADVANCED OPTIONS:
 -Activamos: "Board Cleaning", "Bake Components" y "Depanel boards"
