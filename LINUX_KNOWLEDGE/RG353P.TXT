@@ -50,7 +50,7 @@ Tenemos dos opciones para que se vea bien (=sin patrones):
 
 PARA EL CORE DE GAMEBOY/GBC, EL MEJOR SHADER ES EL "LCD1X" (DEL SUBDIRECTORIO "HANDHELDS").
 
-PARA EL CORE DE MEGADRIVE/MASTER SYSTEM, EL MEJOR SHADER ES EL ZFAST-COMPOSITE, con CANVERGENCE X-AXIS al máximo
+PARA EL CORE DE MEGADRIVE/MASTER SYSTEM, EL MEJOR SHADER ES EL ZFAST-COMPOSITE, con CANVERGENCE X-AXIS al máximo, SATURATION a 1.10,
 y los parámetros de scanline y curvature puestos a 0.
 
 ALTERMNATIVA PARA MEGADRIVE: "CRT-CYCLON", con los parámetros de convergencia a tope, sin curvatura,
