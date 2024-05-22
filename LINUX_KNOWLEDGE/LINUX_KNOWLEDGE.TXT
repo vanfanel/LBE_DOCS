@@ -10186,8 +10186,24 @@ apt-get install libopenmpt-dev
 
 Bajamos la última versión estable de: https://github.com/deathkiller/jazz2-native/tags
 
-(ARREGLAR DETECCIÓN DE OPENGL)
-Editamos cmake/ncine_imported_targets.cmake
+###############BLOQUE ARREGLAR DETECCIÓN DE OPENGL (YA HAY UN PR QUE HACE ESTO, PENDIENTE DE MERGEAR POR EL DUEÑO DEL PROYECTO)###############
+--Editamos cmake/ncine_imported_targets.cmake, buscamos "if(NOT NINTENDO_SWITCH)", y dejamos así esa sección:
+	if(NOT NINTENDO_SWITCH)
+		find_package(OpenGL QUIET)
+		if(OpenGL_FOUND)
+			message(STATUS "Using legacy GLX OpenGL implementation")
+		else(OpenGL_FOUND)
+			# If we couldn't find old GLX package, try to use modern libglvnd libOpenGL.so instead.
+			message(STATUS "Using modern GLVND OpenGL implementation")
+			FIND_LIBRARY(OpenGL_LIBRARY OpenGL)
+			SET(EXTRA_LIBS ${OpenGL_LIBRARY})
+		endif(OpenGL_FOUND)
+	endif()
+--Editamos cmake/ncine_compiler_options.cmake, buscamos "# GCC and LLVM" y al final de esa sección metemos:
+if(NOT ANDROID AND NOT APPLE)
+	target_link_libraries(${NCINE_APP} PUBLIC ${OpenGL_LIBRARY})
+endif()
+###############FIN BLOQUE ARREGLAR DETECCIÓN DE OPENGL###############
 
 Configuramos con:
 mkdir b4
