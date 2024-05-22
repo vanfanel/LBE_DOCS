@@ -7228,12 +7228,13 @@ La idea es que al pasar el Max Swapchains a 3, liberamos la GPU para los shaders
 SHADERS: Para la mayoría de las máquinas, el shader Fakelottes con el "Monitor Gamma" bajado a 1.95 es más que suficiente.
 Para el core de SEGA, debido al tema del dithering y tal, yenemos dos opciones:
 
-1) El shader CRT-LOTTES-FAST con el parámetro SHARPNESS puesto al mínimo (que es 1) y CRT GAMMA puesto 1 3.00.
-2) Una combinación de GDAPT (está entre los shaders "Dithering") y FAKELOTTES.
-Para ello, primero carga el preset GDAPT, le das a APPEND PRESET y cargas el FAKELOTTES.
-No hace falta ajustar ningún parámetro, según viene queda medio bien.
-Lo malo de esta opción es que las sombras en el Comix Zone se ven tramadas sobre algunos colores, y el texto tampoco se ve bien del todo.
-3) El shader crt-Cyclon con los parámetros de convergencia al máximo. Lo malo de esta opción es que se ve un poco "granuloso" todo.
+1) El shader ZFAST_CRT_COMPOSITE con los parámetros: CURVATURE a 0, CONVERGENCE X-AXIS al máximo,
+   SCANLINE LOW a 0.10 y SCANLINE HIGH a 0.05, MASK EFFECT AMOUNT a 0.50, SATURATION a 1.10, y FLICKERING a 5.00. 
+2) El shader CRT-LOTTES-FAST con el parámetro SHARPNESS puesto al mínimo (que es 1) y CRT GAMMA puesto 1 3.00.
+3) Una combinación de GDAPT (está entre los shaders "Dithering") y FAKELOTTES.
+   Para ello, primero pon el número de pasadas a 2, en la pasada 1 carga el shader GDAPT PASS 0, y en la pasada 2 carga el FAKELOTTES.
+   Para que las sombras en el Comix Zone no se vean tramadas sobre algunos colores, hay que ajustar algún parámetro.
+4) El shader crt-Cyclon con los parámetros de convergencia al máximo. Lo malo de esta opción es que se ve un poco "granuloso" todo.
  
 APUNTES SOBRE CORES ESPECÍFICOS:
 
