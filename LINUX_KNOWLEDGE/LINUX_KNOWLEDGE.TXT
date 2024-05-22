@@ -8156,6 +8156,7 @@ cp soh/*.otr ~/zelda64/
 
 PARA QUE NO DESAPAREZCAN CACHOS DEL ESCENARIO EN MODO 16:9, ponemos "Enhancements->Graphics->Fix Vanishing Paths" a "Consistent Vanish".
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Disable Draw Distance"
+PARA USAR MODS, creamos el directorio ~/zelda64/mods y los metemos ahí.
 
 ZELDA MAJORA'S MASK en GNU/Linux
 ================================
