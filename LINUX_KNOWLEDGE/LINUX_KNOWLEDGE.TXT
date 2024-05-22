@@ -10179,12 +10179,12 @@ puedes sacar el MAPM1.SPT correcto del ADF marcado como [a].
 JAZZ JACKRABBIT 2 en GNU/Linux (jazz2resurrection-native)
 =========================================================
 
-Necesita GLEW y GLFW, que tienes en este documento las instrucciones para instalarlas.
+--PREVIO: Necesita GLEW y GLFW, que tienes en este documento las instrucciones para instalarlas.
 
-Instalamos otras dependencias previas:
+--Instalamos otras dependencias previas:
 apt-get install libopenmpt-dev
 
-Bajamos la última versión estable de: https://github.com/deathkiller/jazz2-native/tags
+--Bajamos la última versión estable de: https://github.com/deathkiller/jazz2-native/tags
 
 ###############BLOQUE ARREGLAR DETECCIÓN DE OPENGL (YA HAY UN PR QUE HACE ESTO, PENDIENTE DE MERGEAR POR EL DUEÑO DEL PROYECTO)###############
 --Editamos cmake/ncine_imported_targets.cmake, buscamos "if(NOT NINTENDO_SWITCH)", y dejamos así esa sección:
@@ -10205,11 +10205,19 @@ if(NOT ANDROID AND NOT APPLE)
 endif()
 ###############FIN BLOQUE ARREGLAR DETECCIÓN DE OPENGL###############
 
-Configuramos con:
+--Configuramos con:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native"
+
+--Creamos el directorio ~/jazz2, donde metemos los datos del juego instalado en ~/jazz2/Source
+y copiamos el directorio "Content" que viene con los sources, de manera que tendremos:
+~/jazz2/Source  <--Los datos del juego instalado van aquí metidos todos.
+~/jazz2/Content <--Esto viene con los sources.
+
+NOTAS ADICIONALES:
+--Si quieres que no haya shimmering, activa el anti-aliasing en las opciones.
 
 Juegos PICO8 en GNU/Linux usando el core de libretro "fake-08"
 ==============================================================
