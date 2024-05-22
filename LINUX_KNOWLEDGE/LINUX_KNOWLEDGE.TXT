@@ -8154,9 +8154,19 @@ cmake --build . --target ExtractAssets -j4
 --Copiamos los archivos "soh.otr" y "oot.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
 cp soh/*.otr ~/zelda64/
 
+--NOTAS ADICIONALES--
+
 PARA QUE NO DESAPAREZCAN CACHOS DEL ESCENARIO EN MODO 16:9, ponemos "Enhancements->Graphics->Fix Vanishing Paths" a "Consistent Vanish".
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Disable Draw Distance"
+
 PARA USAR MODS, creamos el directorio ~/zelda64/mods y los metemos ahí.
+Si el MOD tiene directorios, da igual, lo metes tal cual con sus directorios.
+Ahora activamos "Enhancements->Graphics->Mods->Use Alternate Assets" y ya se cargan y se utilizan.
+Si usas el Djipi's 3DS Experience debes tener activados:
+Enhancements->Graphics->Mods->Disable Grotto Fixed Rotation
+Enhancements->Graphics->Enable 3D dropped items / projectiles
+Y desactivado:
+Enhancements->Fixes->Out of Bounds Textures
 
 ZELDA MAJORA'S MASK en GNU/Linux
 ================================
