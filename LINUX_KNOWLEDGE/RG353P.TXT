@@ -84,3 +84,18 @@ PARA INSTALAR EL PORT DEL MARIO 64 (SM64)
 -Copia el juego ya preparado (lo tienes en el disco duro de backup en GAMES/RG353P(S)) a /STORAGE/games-internal/roms/ports
 -Si necesitases volver a prepararlo, usa esta guía: https://retrogamecorps.com/2020/12/28/guide-super-mario-64-port-on-rg351p
  (Está actualizada con soporte para las RG353, no te preocupes).
+
+JUEGOS HYPSEUS-DAPHNE
+=====================
+
+Nos vamos a STORAGE/games-internal/roms/daphne y allí:
+-Creamos el directorio "roms" donde metemos los zips de las ROMs de los juegos
+-Creamos un directorio <nombre_juego>.daphne por cada juego, donde metemos el audio/video y el framefile en txt
+-Metemos los directorios fonts, pics y sound que vienen con los sources de hypseus-singe
+Es decir, para el Dragon's Lair por ejemplo tendremos en STORAGE/games-internal/roms/daphne:
+roms/lair.zip
+lair.daphne/*.m2v,*.ogg,*.txt
+fonts
+pics
+sound
+
