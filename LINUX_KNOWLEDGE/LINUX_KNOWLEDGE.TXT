@@ -8609,6 +8609,22 @@ make -j4 TILES=y LUAJIT=y
 Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
 Ahora copiamos el directorio "dat" que viene dentro de "sources" a ~/crawl
 
+ARREGLAR JUEGOS QUE SE COMPILAN CON CMAKE Y NO ENCUENTRAN OPENGL (GLVND)
+========================================================================
+
+Lo que suele fallar es la llamada a:
+find_package(OpenGL REQUIRED)
+
+Así que simplemente hacemos esto y ya funciona:
+set(OPENGL_USE_OPENGL ON)
+find_package(OpenGL REQUIRED)
+
+La causa es este comportamiento "raro" de CMake, que si no hay GLX no detecta OpenGL:
+https://github.com/Kitware/CMake/blob/47ba19f346d03123c59ee5a3fe36d32a43b96359/Modules/FindOpenGL.cmake#L455
+
+Esto debería ser corregido, siendo ese "set(OPENGL_USE_OPENGL ON)" innecesario. Tengo un informe abierto al respecto en:
+https://discourse.cmake.org/t/gnu-linux-debian-12-cmake-fails-to-find-opengl-when-mesa-has-been-built-without-glx-support/10901
+
 BARONY, UN DUNGEON CRAWLER 3D OPENSOURCE PARA LINUX
 ====================================================
 
@@ -10199,26 +10215,6 @@ JAZZ JACKRABBIT 2 en GNU/Linux (jazz2resurrection-native)
 apt-get install libopenmpt-dev
 
 --Bajamos la última versión estable de: https://github.com/deathkiller/jazz2-native/tags
-
-###############BLOQUE ARREGLAR DETECCIÓN DE OPENGL (YA HAY UN PR QUE HACE ESTO, PENDIENTE DE MERGEAR POR EL DUEÑO DEL PROYECTO)###############
---Editamos cmake/ncine_imported_targets.cmake, buscamos "if(NOT NINTENDO_SWITCH)", y dejamos así esa sección:
-	if(NOT NINTENDO_SWITCH)
-		find_package(OpenGL QUIET)
-		if(OpenGL_FOUND)
-			message(STATUS "Using legacy GLX OpenGL implementation")
-		else(OpenGL_FOUND)
-			# If we couldn't find old GLX package, try to use modern libglvnd libOpenGL.so instead.
-			message(STATUS "Using modern GLVND OpenGL implementation")
-			FIND_LIBRARY(OpenGL_LIBRARY OpenGL)
-			SET(EXTRA_LIBS ${OpenGL_LIBRARY})
-		endif(OpenGL_FOUND)
-	endif()
---Editamos cmake/ncine_compiler_options.cmake, buscamos "# GCC and LLVM" y al final de esa sección metemos:
-if(NOT ANDROID AND NOT APPLE)
-	target_link_libraries(${NCINE_APP} PUBLIC ${OpenGL_LIBRARY})
-endif()
-###############FIN BLOQUE ARREGLAR DETECCIÓN DE OPENGL###############
-
 --Configuramos con:
 mkdir b4
 cd b4
