@@ -561,7 +561,7 @@ PARA PI4/5:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled \
--Dvulkan-drivers=broadcom -Dgallium-drivers=v3d,vc4,kmsro,zink -Dglvnd=true ..
+-Dvulkan-drivers=broadcom -Dgallium-drivers=v3d,vc4,kmsro,zink -Dglvnd=enable ..
 
 (Si no quieres soporte para Wayland, usa -Dplatforms='')
 
