@@ -10209,7 +10209,7 @@ puedes sacar el MAPM1.SPT correcto del ADF marcado como [a].
 JAZZ JACKRABBIT 2 en GNU/Linux (jazz2resurrection-native)
 =========================================================
 
---PREVIO: Necesita GLEW y GLFW, que tienes en este documento las instrucciones para instalarlas.
+--PREVIO: Necesita libGLEW, que tienes en este documento las instrucciones para instalarla.
 
 --Instalamos otras dependencias previas:
 apt-get install libopenmpt-dev
@@ -10218,8 +10218,10 @@ apt-get install libopenmpt-dev
 --Configuramos con:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DNCINE_PREFERRED_BACKEND=SDL2 \
 -DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native"
+
+(OJO!! Tenemos que pasar "-DNCINE_PREFERRED_BACKEND=SDL2" porque si no, compila contra glfw, y los gamepads no van!!)
 
 --Creamos el directorio ~/jazz2, donde metemos los datos del juego instalado en ~/jazz2/Source
 y copiamos el directorio "Content" que viene con los sources, de manera que tendremos:
