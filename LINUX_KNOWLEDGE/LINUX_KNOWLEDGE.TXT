@@ -8180,6 +8180,8 @@ GENERAR EL MOD DE TRADUCCIÓN
 ----Nos bajamos el script de extracción de la traducción.
 	Para ello, nos vamos a https://github.com/xoascf/OTRMod?tab=readme-ov-file y buscamos "same script", y ahí está el link a script.
 ----Nos vamos a: https://soh.xoas.eu.org y allí ponemos la ROM traducida y el script de extracción, y nos genera el mod.
+----Podemos editar los textos en la propia página. Para ello, vamos a la sección "Text Editor", cargamos el OTR,
+    modificamos lo que queramos, y generamos otro OTR que ya tendrá las modificaciones que hayamos hecho.
 
 --OPCIÓN ALTERNATIVA (Generar el MOD de traducción localmente)
 -Nos bajamos la última versión de la herramienta de creación de mods (bajamos el que acaba en .EXE):
