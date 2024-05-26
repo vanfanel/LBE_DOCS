@@ -8171,6 +8171,21 @@ Enhancements->Graphics->Enable 3D dropped items / projectiles
 Y desactivado:
 Enhancements->Fixes->Out of Bounds Textures
 
+--TRADUCCIÓN AL CASTELLANO--
+
+GENERAR EL MOD DE TRADUCCIÓN
+
+--OPCIÓN RECOMENDADA:
+----Nos bajamos la ROM traducida al castellano: https://archive.org/download/legend-of-zelda-ocarina-of-time-esp-v-2.22
+----Nos bajamos el script de extracción de la traducción.
+	Para ello, nos vamos a https://github.com/xoascf/OTRMod?tab=readme-ov-file y buscamos "same script", y ahí está el link a script.
+----Nos vamos a: https://soh.xoas.eu.org y allí ponemos la ROM traducida y el script de extracción, y nos genera el mod.
+
+--OPCIÓN ALTERNATIVA (Generar el MOD de traducción localmente)
+-Nos bajamos la última versión de la herramienta de creación de mods (bajamos el que acaba en .EXE):
+https://github.com/xoascf/OTRMod/releases
+-Lo ejecutamos con WINE, y nos pide la ROM traducida y el script de extracción, y ya.
+
 ZELDA MAJORA'S MASK en GNU/Linux
 ================================
 
