@@ -9,11 +9,15 @@ Y ya podemos seleccionar un modo de 1080P a 50Hz en el config/txt con:
 hdmi_ignore_edid=0xa5000080
 hdmi_group=1
 hdmi_mode=31
+disable_overscan=1
 
 Si necesitas más opciones de vídeo, mira en https://www.raspberrypi.com/documentation/computers/legacy_config_txt.html
 (Las opciones que usa RiscOS son las de la época de DispmanX...)
 
-Y en RISCOS un monitor OTHER->GENERIC a 1920x1080 a 16M y 50HZ.
+Y en RISCOS un monitor OTHER->GENERIC a 1920x1080, da igual la frecuencia de refresco que diga que tiene el modo (con 1920x1080 suele poner 30Hz)
+porque en realidad va a ir a la frecuencia del modo establecido en el config.txt.
+(Si eliges un modo de 1280x720, tampoco pasa nada, porque el modo físico sigue siendo 1920x1080, lo único es que se ven las cosas
+más grandes).
 
 Y entra en la consola de comandos con F12 y pon:
 unplug bootfx
