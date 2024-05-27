@@ -10245,6 +10245,7 @@ cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DNCINE_PREFERRED_BACKEND=SDL2 \
 -DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native"
 
+(Si quisiéramos compilar contra GLES en lugar de OpenGL, pasaríamos también "-DNCINE_WITH_OPENGLES=ON")
 (OJO!! Tenemos que pasar "-DNCINE_PREFERRED_BACKEND=SDL2" porque si no, compila contra glfw, y los gamepads no van!!)
 
 --Creamos el directorio ~/jazz2, donde metemos los datos del juego instalado en ~/jazz2/Source
