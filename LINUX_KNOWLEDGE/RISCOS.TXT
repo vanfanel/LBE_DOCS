@@ -5,8 +5,11 @@ Cuando acabamos de instalar un sistema RISC OS nuevo, los juegos de ADFFS y los 
 Necesitamos un cmdline.txt con el contenido:
 disable_mode_changes disable_gamma
 
-Y ya podemos seleccionar un modo de 50Hz en el config/txt, y un monitor GENERIC a 1280x720 a 16M
-y 50HZ en la configuración de pantalla de RISC OS.
+Y ya podemos seleccionar un modo de 1080P a 50Hz en el config/txt con:
+hdmi_group=1
+hdmi_mode=31
+
+Y en RISCOS un monitor OTHER->GENERIC a 1920x1080 a 16M y 50HZ.
 
 Y entra en la consola de comandos con F12 y pon:
 unplug bootfx
