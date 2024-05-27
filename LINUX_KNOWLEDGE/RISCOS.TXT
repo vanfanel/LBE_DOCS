@@ -6,8 +6,12 @@ Necesitamos un cmdline.txt con el contenido:
 disable_mode_changes disable_gamma
 
 Y ya podemos seleccionar un modo de 1080P a 50Hz en el config/txt con:
+hdmi_ignore_edid=0xa5000080
 hdmi_group=1
 hdmi_mode=31
+
+Si necesitas más opciones de vídeo, mira en https://www.raspberrypi.com/documentation/computers/legacy_config_txt.html
+(Las opciones que usa RiscOS son las de la época de DispmanX...)
 
 Y en RISCOS un monitor OTHER->GENERIC a 1920x1080 a 16M y 50HZ.
 
@@ -20,6 +24,15 @@ configure mode 28
 ...para que se vean las letras del inicio a un tamaño legible.
 Puedes ver la lista de modos aquí:
 https://www.riscosopen.org/zipfiles/platform/common/UserGuide.pdf
+
+INSTALAR ADFFS
+==============
+
+Lo primero es conectarnos a internet. Desde WIFI es muy fácil.
+
+En el !PackMan nos vamos a Advanced->Sources y añadimos: http://www.jaspp.org.uk/packages/release
+(OJO!! En las instrucciones de la web de ADFFS pone que usemos HTTPS, pero si lo hacemos no funciona, así que usa HTTP como pongo aquí).
+A continuación le damos a "Update Lists", y ya nos tiene que salir disponible el ADFFS y los paquetes de los juegos para instalar. 
 
 SOLUCIONAR PROBLEMAS POR PROGRAMAS QUE SE EJECUTAN AL INICIO O POR MÓDULOS INSTALADOS
 =====================================================================================
