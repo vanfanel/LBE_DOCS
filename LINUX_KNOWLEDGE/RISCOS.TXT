@@ -180,6 +180,48 @@ TWINWORLD
 Aunque es un juego de 32bits, necesitas tener ADFFS cargado para tener el modo de vídeo que el juego necesita.
 No hace falta usar AnyMode con él.
 
+MANIC MINER
+===========
+
+Hay dos maneras:
+
+USANDO ADFFS (MÁS SENCILLO Y RECOMENDADO porque además permite una salida limpia con CTRL+SHIFT+F12)
+--Metemos dentro del propio !Manic el módulo TimPlayer que puedes bajar de aquí: http://www.riscos-digitalcd.net/digitalcd/player/download.htm
+--En el !Run, añadimos al principio: RMLoad <Obey$Dir>.TimPlayer
+(Lo suyo sería añadir también, al final: RMKill <Obey$Dir>.TimPlayer, pero da un error así que no lo hacemos).
+--Ahora, basta con cargar el ADFFS y luego ya el Manic Miner, y como el ADFFS le da el modo de pantalla que necesita, pues funciona.
+
+SIN USAR ADFFS
+--Metemos dentro del propio !Manic el módulo TimPlayer que puedes bajar de aquí: http://www.riscos-digitalcd.net/digitalcd/player/download.htm
+--Metemos dentro del propio !Manic una copia del fichero de definición del monitor que usamos (Generic),
+  que está en !Boot->Resources->Configure->Monitors->Other->Generic
+--Metemos dentro del propio !Manic un fichero de texto que llamaremos "lowres", con este contenido
+(lo hemos sacado del MDF que viene en RiscOS, de un monitor de Acorn):
+
+############FICHERO MDF##################################
+file_format:1
+monitor_title:Mi Pantalla
+
+# 320 x 256 (50Hz)
+startmode
+mode_name:320 x 256
+x_res:320
+y_res:256
+pixel_rate:8000
+h_timings:38,44,48,320,48,14
+v_timings:3,19,16,256,16,2
+sync_pol:0
+endmode
+############FICHERO MDF##################################
+
+--En el !Run, añadimos al principio:
+LoadModeFile <Obey$Dir>.lowres
+Y añadimos al final:
+LoadModeFile <Obey$Dir>.Generic
+WimpMode X1920 Y1080 C16M
+
+...Pero vamos, que ni así vuelve correctamente al escritorio y nos toca reiniciar, así que hazlo con el ADFFS.
+
 ARRANCAR EL SISTEMA SIN ESCRITORIO
 ==================================
 
