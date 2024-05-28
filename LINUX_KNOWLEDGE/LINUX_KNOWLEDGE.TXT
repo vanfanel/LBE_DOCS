@@ -8193,7 +8193,24 @@ https://github.com/xoascf/OTRMod/releases
 ZELDA MAJORA'S MASK en GNU/Linux
 ================================
 
-https://github.com/HarbourMasters/2ship2harkinian
+git clone --depth 1 https://github.com/HarbourMasters/2ship2harkinian
+git submodule update --init --recursive
+
+mkdir b4
+cd b4
+
+cmake .. -GNinja \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_BUILD_TYPE=Release -DUSE_OPENGLES=1
+
+	----EXTRACCIÓN DE LOS DATOS----
+
+--Bajamos la ROM USA 1.0, la metemos en OTRExporter
+--En el mismo directorio donde acabamos de compilar el juego, hacemos:
+cmake --build . --target ExtractAssets -j4
+--Copiamos los archivos "majora.otr" y "soh.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
+cp soh/*.otr ~/majora/
 
 ZELDA MAJORA'S MASK en GNU/Linux usando la recompilación
 ========================================================
