@@ -8204,13 +8204,16 @@ cmake .. -GNinja \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGLES=1
 
+mkdir ~/majora
+cp mm/2s2h.elf ~/majora/
+
 	----EXTRACCIÓN DE LOS DATOS----
 
---Bajamos la ROM USA 1.0, la metemos en OTRExporter
+--Bajamos la ROM USA 1.0 (Nos vale la ROM americana que hay en CDRomance), y la metemos en OTRExporter.
 --En el mismo directorio donde acabamos de compilar el juego, hacemos:
 cmake --build . --target ExtractAssets -j4
---Copiamos los archivos "majora.otr" y "soh.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
-cp soh/*.otr ~/majora/
+--Copiamos los archivos de datos a su sitio:
+cp mm/mm.o2r mm/2ship.o2r ~/majora/
 
 ZELDA MAJORA'S MASK en GNU/Linux usando la recompilación
 ========================================================
