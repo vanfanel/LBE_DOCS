@@ -6291,6 +6291,7 @@ flite -voice slt -t "hello pal"
 
 Usamos el sourceport "taradino".
 -Clonamos su repo: git clone --depth 1 https://github.com/fabiangreffrath/taradino.git
+-Editamos rott/isr.h y cambiamos el valor de VBLCOUNTER de 35 a 40 (queremos que el juego vaya a 40fps para poner el monitor a 40Hz!)
 -Editamos rott/modexlib.c, buscamos la llamada a SDL_SetHint(), y cambiamos "nearest" por "linear".
 -Compilamos con:
 
@@ -6313,8 +6314,8 @@ remote1.rts
  para lo cual hay que tener fluidsynth instalado antes de compilar SDL2_Mixer):
 SDL_SOUNDFONTS=/usr/local/share/soundfonts/FluidR3_GM.sf2 ./taradino
 
--Para que el movimiento sea suave, dado que el juego corre a 35FPS necesitamos ponernos en un modo de 70Hz, así que lanzamos el juego así:
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@70                                                                                           
+-Para que el movimiento sea suave, dado que el juego corre a 40.0000FPS necesitamos ponernos en un modo de 40.0000Hz, así que lanzamos el juego así:
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@40                                                                                           
 sleep 1                                                                                                                                          
 SDL_SOUNDFONTS=/usr/local/share/soundfonts/FluidR3_GM.sf2 ./taradino                          
 wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
