@@ -222,6 +222,13 @@ WimpMode X1920 Y1080 C16M
 
 ...Pero vamos, que ni así vuelve correctamente al escritorio y nos toca reiniciar, así que hazlo con el ADFFS.
 
+EVITAR PROBLEMAS WIFI
+=====================
+
+Para que la WIFI funcione, NO ACTIVES lo de "Reconnect whenever in range". Le tienes que dar a conectar cada vez que quieras usarla.
+Si tienes activado "Reconnect whenever in range", se conecta a la WIFI pero no navega.
+Además, ADFFS desconecta la WIFI, y tras usarlo tienes que reconectar.
+
 ARRANCAR EL SISTEMA SIN ESCRITORIO
 ==================================
 

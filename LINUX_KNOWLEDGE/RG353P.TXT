@@ -72,6 +72,16 @@ PARA TENER LAS CARÁTULAS CUANDO HAGAS EL SCRAPPING:
 Si has escrapeado sin hacer esto, te bajará screenshots de cada juego: te toca borrar el directorio "images" de cada sistema en /STORAGE/roms
 y volver a scrapear con estas cosas puestas como acabo de indicar.
 
+PARA ARRANCAR ROCKNIX EN MODO KMS/DRM EN VEZ DE MODO WAYLAND
+============================================================
+
+Creamos el fichero .config/profile/799-no-wayland con el contenido:
+
+SDL_VIDEODRIVER=kmsdrm
+UI_SERVICE="emustation.service"
+
+Reiniciamos, y ya está.
+
 PARA INSTALAR TEMAS CUSTOM BAJADOS DE GITHUB
 ============================================
 
