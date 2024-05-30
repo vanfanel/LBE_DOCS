@@ -229,6 +229,8 @@ Para que la WIFI funcione, NO ACTIVES lo de "Reconnect whenever in range". Le ti
 Si tienes activado "Reconnect whenever in range", se conecta a la WIFI pero no navega.
 Además, ADFFS desconecta la WIFI, y tras usarlo tienes que reconectar.
 
+Cada vez que actualizes el driver WiFi, debes borrar Boot->Choices->WifiMGR y volver a buscar las redes y meter la contraseña.
+
 ARRANCAR EL SISTEMA SIN ESCRITORIO
 ==================================
 
