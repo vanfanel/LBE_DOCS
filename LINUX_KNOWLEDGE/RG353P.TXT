@@ -80,6 +80,9 @@ Creamos el fichero .config/profile/799-no-wayland con el contenido:
 SDL_VIDEODRIVER=kmsdrm
 UI_SERVICE="emustation.service"
 
+Editamos .config/emulationstation/es_systems.cfg
+/usr/bin/run /usr/bin/retroarch
+
 Reiniciamos, y ya está.
 
 PARA INSTALAR TEMAS CUSTOM BAJADOS DE GITHUB
