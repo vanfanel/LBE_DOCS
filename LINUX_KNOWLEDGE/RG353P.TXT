@@ -80,10 +80,23 @@ Creamos el fichero .config/profile/799-no-wayland con el contenido:
 SDL_VIDEODRIVER=kmsdrm
 UI_SERVICE="emustation.service"
 
-Editamos .config/emulationstation/es_systems.cfg
-/usr/bin/run /usr/bin/retroarch
+Los servicios disponibles están en /usr/lib/systemd/system
 
-Reiniciamos, y ya está.
+Pasos para poder editar .config/emulationstation/es_systems.cfg (ya que viene como un symlink a un fichero de un filesystem readonly):
+rm .config/emulationstation/es_systems.cfg
+cp /usr/config/emulationstation/es_systems.cfg config/emulationstation/es_systems.cfg 
+vim .config/emulationstation/es_systems.cfg
+Allí hacemos esta sustitución para usar nuestro propio runemu.sh:
+:s%,/usr/bin/runemu.sh,/storage/runemu.sh
+
+Ahora nos creamos nuestro runemu.sh personalizado:
+cp /usr/bin/runemu.sh /storage/runemu.sh
+vim /storage/runemu.sh
+Buscamos la línea que empieza por:
+RUNTHIS='${EMUPERF}
+Y allí quitamos lo del --appendconfig
+Buscamos la sección: ### Configure retroarch
+Y la comentamos o borramos (ojo, sólo esa sección, no la de debajo).
 
 PARA INSTALAR TEMAS CUSTOM BAJADOS DE GITHUB
 ============================================
