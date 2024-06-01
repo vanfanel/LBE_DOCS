@@ -2,7 +2,7 @@ CANAL Y PERSONA A PREGUNTAR POR PROBLEMAS DE REFRESCO DE PANTALLA
 =================================================================
 
 Servidor Discord: ROCKNIX
-Canal: Mainline y preguntar a macroalpha, o canal general y preguntar a fewt para temas de compilacion del kernel de JELOS.
+Canal: rk3566, y preguntar a Stolen.
 
 CONFIGURACIÓN PARA SCROLL SIN JITTERING/JUDDERING
 =================================================
@@ -24,7 +24,7 @@ Output->"Threaded Video" OFF
 Output->"Automatic Refresh Rate Switch" OFF
 Synchronization->"Hard GPU Sync" ON 
 
-En sonido: ALSA, 32ms de latencia.
+En sonido: ALSATHREAD, 32ms de latencia.
 Resampler quality a NORMAL, Output Rate a 44100 (ya que Genesis Plus GX saca 44100Hz).
 Poner sonido a 44100 en las opciones de FBNeo también.
 
