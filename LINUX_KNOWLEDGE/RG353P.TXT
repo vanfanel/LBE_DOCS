@@ -80,7 +80,11 @@ Creamos el fichero .config/profile/799-no-wayland con el contenido:
 SDL_VIDEODRIVER=kmsdrm
 UI_SERVICE="emustation.service"
 
-POR SI ES NECESARIO ARRANCAR CON OTRO SERVICIO: Los servicios disponibles están en /usr/lib/systemd/system
+(Información que puede ser últil:) Los servicios disponibles están en /usr/lib/systemd/system
+
+PARA PODER CONFIGURAR RETROARCH NORMALMENTE DESDE LOS CORES SIN TENER QUE USAR TOOLS->START RETROARCH,
+YA QUE TOOLS->START RETROARCH NO FUNCIONA CON KMS/DRM
+======================================================================================================
 
 Pasos para poder editar .config/emulationstation/es_systems.cfg (ya que viene como un symlink a un fichero de un filesystem readonly):
 rm .config/emulationstation/es_systems.cfg
@@ -89,7 +93,8 @@ vim .config/emulationstation/es_systems.cfg
 Allí hacemos esta sustitución para usar nuestro propio runemu.sh:
 :s%,/usr/bin/runemu.sh,/storage/runemu.sh
 
-Ahora nos creamos nuestro runemu.sh personalizado:
+Ahora nos creamos nuestro runemu.sh personalizado (no podemos tenerlo en /usr/bin como el original porque /usr/bin está en
+un filesystem de sólo lectura):
 cp /usr/bin/runemu.sh /storage/runemu.sh
 vim /storage/runemu.sh
 Buscamos la línea que empieza por:
