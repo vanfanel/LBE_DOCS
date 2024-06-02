@@ -8,12 +8,24 @@ NOTA: Para hacer pruebas rápidas (cuando modificamos config.txt o cmdline.txt),
 mount -o remount,rw /flash
 
 ####BLOQUE Pi 4####
+
 Nos bajamos el fichero: 
 wget https://raw.githubusercontent.com/pimoroni/picade-hat/master/picade.dts
 
 Y compilamos el DTS así:
 dtc -I dts -O dtb -o picade.dtbo picade.dts
 Lo metemos /LAKKA/overlays (o en /flash/overlays/ si lo estamos haciendo desde el propio Lakka por ssh)
+
+Ahora editamos /LAKKA/config.txt y añadimos:
+hdmi_force_hotplug=1
+#Esto es para que los seis botones manden las pulsaciones de las teclas Z,X,C,V,B,N, en lugar de las teclas que envían por defecto,
+#que no nos interesan porque incluyen CTRL, ALT, etc.. ya que provocan caractes raros en la consola. Los valores vienen de showkeys.
+dtoverlay=picade,button1=44,button2=45,button3=46,button4=47,button5=48,button6=49
+dtparam=audio=off
+arm_freq=1800
+..Y ponemos force_turbo a 1, para que siempre vaya la CPU a velocidad máxima.
+OJO!!!! NO PONGAS dtparam=audio=off EN MONTAJES DONDE QUIERAS SACAR EL SONIDO POR HDMI!! ES SÓLO PARA PICADE Y SIMILARES
+QUE LLEVAN SONIDO POR HIFIBERRY!!!
 
 ###FIN BLOQUE PI 4####
 
@@ -41,17 +53,6 @@ cp 10-picade-rules /etc/udev/rules.d/
 Ahora editamos /LAKKA/cmdline.txt y añadimos:
 video="HDMI-A-1:1024x768@60" mitigations=off audit=0 vt.global_cursor_default=0 console=null fsck.mode=skip
 
-Ahora editamos /LAKKA/config.txt y añadimos:
-hdmi_force_hotplug=1
-#Esto es para que los seis botones manden las pulsaciones de las teclas Z,X,C,V,B,N, en lugar de las teclas que envían por defecto,
-#que no nos interesan porque incluyen CTRL, ALT, etc.. ya que provocan caractes raros en la consola. Los valores vienen de showkeys.
-dtoverlay=picade,button1=44,button2=45,button3=46,button4=47,button5=48,button6=49
-dtparam=audio=off
-arm_freq=1800
-..Y ponemos force_turbo a 1, para que siempre vaya la CPU a velocidad máxima.
-OJO!!!! NO PONGAS dtparam=audio=off EN MONTAJES DONDE QUIERAS SACAR EL SONIDO POR HDMI!! ES SÓLO PARA PICADE Y SIMILARES
-QUE LLEVAN SONIDO POR HIFIBERRY!!!
-
 (NOTA NO NECESARIA EN LAKKA: Para que funcione el botón de apagado (poweroff/shutdown) en Raspberry Pi OS necesitamos
 que el servicio systemd-logind esté activo, que a su vez depende de que tengamos instalado el paquete "dbus"
 y que tengamos systemd-journald.service y systemd-journald.socket activos también.
@@ -62,9 +63,6 @@ Si no está activo systemd-logind, el sistema recibe el keycode 116 pero no se a
 EN TEORÍA es posible hacer lo mismo sin systemd, según la documentación original del overlay "gpio-shutdown":
 https://github.com/raspberrypi/firmware/blob/915a7080ccfbf253053e249bde6489a5be908498/boot/overlays/README#L1273
 ).
-
-Ahora, como ya hemos acabado, re-montamos la partición de arranque como sólo lectura:
-mount -o remount,ro /flash
 
 Ahora editamos desde el PC el fichero LAKKA_DISK/.config/retroarch/retroarch.cfg y en audio_device ponemos:
 hw:CARD=sndrpihifiberry
