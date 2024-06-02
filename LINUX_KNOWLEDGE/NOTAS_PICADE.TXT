@@ -1,35 +1,47 @@
 LAKKA ESTABLE EN PICADE
 =======================
 
-Nos bajamos la última versión estable de LAKKA (Pi4 aarch64) de aquí:
-http://www.lakka.tv/get/linux/rpi/
-
 Lo único especial que hay que hacer es hacer funcionar el PIHAT para el tema de los controles, y decirle qué salida de audio queremos usar.
 Veamos cómo hacemos todo ello.
 
-Entramos en Lakka por SSH (tenemos que activar el servicio SSH en LAKKA y conectamos a una WIFI, y podremos ver la IP
-de la máquina en INFORMATION->NETWORK INFORMATION. La contraseña para el usuario root es "root").
-
-Nos descargamos este fichero:
-https://github.com/pimoroni/picade-hat/archive/master.zip
-Lo descomprimimos.
-
-Ahora compilamos el dts (viene instalado todo lo necesario):
-dtc -I dts -O dtb -o picade.dtbo picade.dts
-
-Montamos la partición de arranque como lectura/escritura, porque vamos a hacer varios cambios en ella
-y LAKKA la monta como sólo lectura:
-
+NOTA: Para hacer pruebas rápidas (cuando modificamos config.txt o cmdline.txt), es aconsejable montar la partición de arranque como r/w:
 mount -o remount,rw /flash
 
-Ahora copiamos el dtbo resultante y unas rules de udev cada cosa a su sitio:
-cp picade.dtbo /flash/overlays/
-cp etc/udev/rules.d/10-picade.rules /etc/udev/rules.d/10-picade.rules
+####BLOQUE Pi 4####
+Nos bajamos el fichero: 
+wget https://raw.githubusercontent.com/pimoroni/picade-hat/master/picade.dts
 
-Ahora editamos /flash/cmdline.txt y añadimos:
+Y compilamos el DTS así:
+dtc -I dts -O dtb -o picade.dtbo picade.dts
+Lo metemos /LAKKA/overlays (o en /flash/overlays/ si lo estamos haciendo desde el propio Lakka por ssh)
+
+###FIN BLOQUE PI 4####
+
+####BLOQUE Pi 5 (OJO!! La pantalla no va si conectas la alimentación al hat, la tienes que conectar directamenre a la Pi5!!)####
+
+Nos bajamos el fichero (OJO! es de un branch que se llama feature/pi5, no del main): 
+wget https://raw.githubusercontent.com/pimoroni/picade-hat/feature/pi5/picade.dts
+Y le hacemos:
+dtc -I dts -O dtb -o picade.dtbo picade.dts
+Lo metemos /LAKKA/overlays (o en /flash/overlays/ si lo estamos haciendo desde el propio Lakka por ssh)
+
+Editamos config.txt y añadimos:
+
+dtoverlay=hifiberry-dac
+dtoverlay=picade
+hdmi_force_hotplug=1
+
+###FIN BLOQUE PI 5####
+
+Desde dentro de LAKKA (entramos por SSH):
+Nos bajamos el fichero de rules y lo copiamos a su sitio:
+wget https://raw.githubusercontent.com/pimoroni/picade-hat/master/etc/udev/rules.d/10-picade.rules
+cp 10-picade-rules /etc/udev/rules.d/
+
+Ahora editamos /LAKKA/cmdline.txt y añadimos:
 video="HDMI-A-1:1024x768@60" mitigations=off audit=0 vt.global_cursor_default=0 console=null fsck.mode=skip
 
-Ahora editamos /flash/config.txt y añadimos:
+Ahora editamos /LAKKA/config.txt y añadimos:
 hdmi_force_hotplug=1
 #Esto es para que los seis botones manden las pulsaciones de las teclas Z,X,C,V,B,N, en lugar de las teclas que envían por defecto,
 #que no nos interesan porque incluyen CTRL, ALT, etc.. ya que provocan caractes raros en la consola. Los valores vienen de showkeys.
