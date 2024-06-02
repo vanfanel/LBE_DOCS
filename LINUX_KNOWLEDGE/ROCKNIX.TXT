@@ -82,6 +82,10 @@ UI_SERVICE="emustation.service"
 
 (Información que puede ser últil:) Los servicios disponibles están en /usr/lib/systemd/system
 
+Ahora, si queremos poner max_swapchain a 2 (ya que al usar KMS/DRM podemos hacerlo),
+tenemos que poner "SYSTEM SETTINGS->GPU PERFORMANCE PROFILE" a "BEST PERFORMANCE",
+o si no, con cualquier shader ya ponemos la GPU "de rodillas".
+
 PARA PODER CONFIGURAR RETROARCH NORMALMENTE DESDE LOS CORES SIN TENER QUE USAR TOOLS->START RETROARCH,
 YA QUE TOOLS->START RETROARCH NO FUNCIONA CON KMS/DRM
 ======================================================================================================
