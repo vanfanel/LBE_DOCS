@@ -86,6 +86,8 @@ Y así ya usará en modo de vídeo de 1024x768 a 60Hz y no el de 1152x864 a 75Hz
 pero que NO nos conviene (recuerda que RetroArch, cuando se usa el driver Vulkan, pone el modo de vídeo preferido
 del monitor, que en este caso es a 75Hz y no nos conviene para nada).
 
+PARA TENER SCROLL SUAVE, ponemos Settings->Power Management->CPU Performance and Power->Governing Mode a "Maximum Performance" 
+
 Puedes bajar la latencia de audio a 45ms con el driver ALSA.
 Se podría bajar a 32ms con 44100Hz en vez de 48000Hz.
 
@@ -137,7 +139,6 @@ convert splashscreen.png -resize 1920x1080! splash.png
 También podemos simplemente crear un archivo vacío con ese nombre y no se verá nada, haciendo
 "touch /media/manuel/LAKKA/oemsplash.png" desde el ordenador.
 Esto, junto con "vt.global_cursor_default=0 console=null" que tendremos en cmdline.txt, hará que no se vea nada durante el inicio. 
-
 
 --CONECTAR LOS JOYSTICKS Y BOTONES DE 2 JUGADORES DIRECTAMENTE AL GPIO (PARA MÁQUINAS ARCADE GRANDES)--
 
