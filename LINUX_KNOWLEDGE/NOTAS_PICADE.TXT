@@ -39,9 +39,11 @@ Lo metemos /LAKKA/overlays (o en /flash/overlays/ si lo estamos haciendo desde e
 
 Editamos config.txt y añadimos:
 
-dtoverlay=hifiberry-dac
 dtoverlay=picade
 hdmi_force_hotplug=1
+usb_max_current_enable=1
+
+(OJO!! Lo de "usb_max_current_enable=1" es MUY importante o el monitor no funcionará!!)
 
 ###FIN BLOQUE PI 5####
 
