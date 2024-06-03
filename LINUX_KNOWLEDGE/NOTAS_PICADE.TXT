@@ -86,7 +86,7 @@ Y así ya usará en modo de vídeo de 1024x768 a 60Hz y no el de 1152x864 a 75Hz
 pero que NO nos conviene (recuerda que RetroArch, cuando se usa el driver Vulkan, pone el modo de vídeo preferido
 del monitor, que en este caso es a 75Hz y no nos conviene para nada).
 
-PARA TENER SCROLL SUAVE, ponemos Settings->Power Management->CPU Performance and Power->Governing Mode a "Maximum Performance" 
+Ahora, ponemos Settings->Power Management->CPU Performance and Power->Governing Mode a "Maximum Performance" 
 
 Puedes bajar la latencia de audio a 45ms con el driver ALSA.
 Se podría bajar a 32ms con 44100Hz en vez de 48000Hz.
