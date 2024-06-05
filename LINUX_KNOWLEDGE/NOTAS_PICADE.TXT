@@ -48,6 +48,10 @@ usb_max_current_enable=1
 ###FIN BLOQUE PI 5####
 
 Desde dentro de LAKKA (entramos por SSH):
+
+MUY IMPORTANTE!!!! Deshabilitamos cec-mini-kb, que causa hiccups en el framerate (lo hemos detectado gracias a dmesg):
+systemctl mask cec-mini-kb
+
 Nos bajamos el fichero de rules:
 wget https://raw.githubusercontent.com/pimoroni/picade-hat/master/etc/udev/rules.d/10-picade.rules
 Lo editamos y cambiamos "ID_INPUT_KEYBOARD" por "ID_INPUT_KEY".
