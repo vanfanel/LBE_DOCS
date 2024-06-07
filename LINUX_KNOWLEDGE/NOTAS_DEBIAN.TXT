@@ -784,8 +784,8 @@ sudo ldconfig
 Si quieres filtros por software, entra en gfx/video_filters y haz make, y copias los .so y los .filt a ~/.config/retroarch/filters/video/
 y luego los seleccionas en retroarch.
 
-KERNEL CACHYOS Y SCHEDULER LAVD EN DEBIAN
-=========================================
+KERNEL CACHYOS Y SCHEDULER LAVD EN DEBIAN (NO APORTA NADA, ES PARA TENER MÁS FPS MIENTRAS COMPILAS O ALGO ASÍ EN SEGUNDO PLANO)
+===============================================================================================================================
 
 PREVIO: Antes de hacer estos experimentos, edita /etc/default/grub, pon un timeout distinto de 0, y ejecuta "update-grub",
 para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel original del sistema y desinstalar el nuevo.
