@@ -95,7 +95,7 @@ Ahora, ponemos Settings->Power Management->CPU Performance and Power->Governing 
 Puedes bajar la latencia de audio a 36ms con el driver ALSA a 48000Hz.
 Se podría bajar a 32ms con 44100Hz en vez de 48000Hz (has de poner 44100 también en las opciones de audio del FBNEO).
 
-EL SHADER IDEAL para PiCade con una Pi5 es CRT-LOTTES-FAST con MASK TYPE a 3, MASK INTENSITY a 0.50 y SCANLINE INTENSITY a 0.30.
+EL SHADER IDEAL para PiCade con una Pi5 es CRT-LOTTES-FAST con MASK TYPE a 2, MASK INTENSITY a 0.50 y SCANLINE INTENSITY a 0.30.
 
 OTRA OPCIÓN para que se vea bien con INTEGER puesto a OFF, puedes coger el shader FAKELOTTES, copiarlo a LAKKA_DISK/shaders,
 y comentar la curvatura y las "extra masks" en el código del shader (de ese modo no pierdes mucha velocidad debido al shader).
