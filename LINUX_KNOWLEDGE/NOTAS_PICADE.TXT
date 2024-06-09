@@ -150,6 +150,11 @@ También podemos simplemente crear un archivo vacío con ese nombre y no se ver�
 "touch /media/manuel/LAKKA/oemsplash.png" desde el ordenador.
 Esto, junto con "vt.global_cursor_default=0 console=null" que tendremos en cmdline.txt, hará que no se vea nada durante el inicio. 
 
+--NOTAS SOBRE JUEGOS CONCRETOS EN MAME--
+
+El tbyahho necesita también konamigx.zip
+El Dragon's Lair aparece dos veces cuando escaneas las ROMs: sólo la segunda entrada funciona. Puedes simplemente eliminar la primera.
+
 --CONECTAR LOS JOYSTICKS Y BOTONES DE 2 JUGADORES DIRECTAMENTE AL GPIO (PARA MÁQUINAS ARCADE GRANDES)--
 
 En config.txt se carga el overlay gpio-keyboard, que es de propósito general, se conectar los pines siguiendo este esquema:
