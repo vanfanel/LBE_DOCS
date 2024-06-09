@@ -27,6 +27,11 @@ AJUSTAR TAMAÑO DE LAS FUENTES
 Para las fuentes generales, ve a Preferences->LXQT Settings->Appearance, y ahí entra en Font, donde puedes poner el tamaño que quieras.
 Para el texto y tamaño de los iconos del escritorio, dale con el botón derecho al fondo de escritorio, Desktop Preferences.
 
+AJUSTAR EL TAMAÑO DE LAS FUENTES DE LA TOOLBAR DE FIREFOX
+=========================================================
+
+Nos vamos a about:config, y ponemos layout.css.devPixelsPerPx a 1.5 o así.
+
 EL CONTROL DE VOLÚMEN NO FUNCIONA
 =================================
 
