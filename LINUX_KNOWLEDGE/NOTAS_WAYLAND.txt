@@ -96,7 +96,7 @@ meson setup -Dbuildtype=release
 ninja -j4
 sudo ninja install
 
--Instalar WLROOTS en sí. Para ello:
+VAMOS CON WLROOTS EN SÍ:
 --Bajamos los últimos sources de WLROOTS estables de aquí: https://gitlab.freedesktop.org/wlroots/wlroots/-/releases
 --Configuramos, compilamos e instalamos:
 
