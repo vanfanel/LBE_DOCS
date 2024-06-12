@@ -372,6 +372,20 @@ BACKSPACE="guess"
 
 Sin lo de "nodeadkeys", tenemos que darle a la Ñ dos veces para sacar la tilde, y es una mierda eso.
 
+ACTUALIZAR EL KERNEL SIN COMPLICARNOS NADA
+==========================================
+
+Usamos el kernel XenMod. Las instrucciones proceden de aquí: https://xanmod.org/
+Y son para Debian 12 Bookworm. Para nuevas versiones de Debian, habrá que actualizarlas.
+
+-Instalamos dependencias previas: apt-get install gpg
+-Nos bajamos la clave pública del repo:
+wget -qO - https://dl.xanmod.org/archive.key | sudo gpg --dearmor -vo /usr/share/keyrings/xanmod-archive-keyring.gpg
+-Añadimos el repo a nuestros sources de APT:
+echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-release.list
+-Actualizamos e instalamos el nuevo kernel:
+sudo apt update && sudo apt install linux-xanmod-x64v3
+
 KERNEL REALTIME PRECOMPILADO
 ============================
 
