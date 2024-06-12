@@ -462,7 +462,15 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson setup .. --buildtype=release -Dxwayland=disabled -Dtests=disabled -Dprint_trace=false
 
+PARA EVITAR EL ERROR "Unable to drop root":
 Editamos src/main.cpp, buscamos "LOGE("Unable to drop root" y comentamos esa parte, para que no retorne con "false" si somos el root.
+
+Por defecto, se puede salir con CTRL+ALT+BACKSPACE.
+
+Copiamos el archivo wayfire.ini que viene con los sources a ~/.config/wayfire.ini, lo editamos, y ahí:
+--Buscamos "Start a terminal" y lo dejamos así:
+binding_terminal = <ctrl> <alt> KEY_T                                                                                                  
+command_terminal = foot
 
 INSTALAR FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
 ===================================================
