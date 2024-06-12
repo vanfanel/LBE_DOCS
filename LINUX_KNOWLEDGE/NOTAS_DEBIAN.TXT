@@ -478,19 +478,19 @@ cd b4
 
 CONFIGURAMOS DRM con esto:
 
-PARA RASPBERRY PI 4/5:
-
-CFLAGS="-march=native -mtune=native -O2" \
-CXXFLAGS="-march=native -mtune=native -O2" \
-meson setup -Dudev=true -Dvc4=enabled -Dintel=disabled -Dvmwgfx=disabled -Dradeon=disabled -Damdgpu=disabled -Dnouveau=disabled \
--Dfreedreno=disabled -Detnaviv=disabled \
--Dinstall-test-programs=true ..
-
 PARA X86_64 CON GPU INTEL XE:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dudev=true -Dvc4=disabled -Dintel=enabled -Dvmwgfx=disabled -Dradeon=disabled -Damdgpu=disabled -Dnouveau=disabled \
+-Dfreedreno=disabled -Detnaviv=disabled \
+-Dinstall-test-programs=true ..
+
+PARA RASPBERRY PI 4/5:
+
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+meson setup -Dudev=true -Dvc4=enabled -Dintel=disabled -Dvmwgfx=disabled -Dradeon=disabled -Damdgpu=disabled -Dnouveau=disabled \
 -Dfreedreno=disabled -Detnaviv=disabled \
 -Dinstall-test-programs=true ..
 
