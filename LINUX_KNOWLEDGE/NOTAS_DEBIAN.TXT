@@ -386,15 +386,6 @@ echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.
 -Actualizamos e instalamos el nuevo kernel:
 sudo apt update && sudo apt install linux-xanmod-x64v3
 
-KERNEL REALTIME PRECOMPILADO
-============================
-
-Instala la última versión LOW_LATENCY de aquí:
-https://github.com/kdoren/linux/releases/
-
-Siguiendo estas instrucciones de aquí:
-https://github.com/kdoren/linux/wiki/Installation-of-kernel-from-deb-package-%28Raspberry-Pi-OS%29
-
 ACTUALIZAR RASPBERRY PI OS SIN ACTUALIZAR EL KERNEL
 ===================================================
 
