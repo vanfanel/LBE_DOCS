@@ -448,6 +448,22 @@ cage <nombre_ejecutable>
 Y si es con parámetros, usamos -- entre cage y el nombre del ejecutable, así:
 cage -- <nombre_ejecutable> <parámetros>
 
+INSTALAR WAYFIRE, EL COMPOSITOR DE WAYLAND POR DEFECTO DE RASPBERRY PI OS
+=========================================================================
+
+Nos bajamos la última estable de: https://github.com/WayfireWM/wayfire/releases
+
+Configuramos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup .. --buildtype=release -Dxwayland=disabled -Dtests=disabled -Dprint_trace=false
+
+Editamos src/main.cpp, buscamos "LOGE("Unable to drop root" y comentamos esa parte, para que no retorne con "false" si somos el root.
+
 INSTALAR FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
 ===================================================
 
