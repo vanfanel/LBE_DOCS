@@ -7187,53 +7187,25 @@ y para volver, obviamente, start.
 **********Configuración óptima de RetroArch (En Wayland)************
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
-VIDEO: driver GL_CORE, que usa OpenGL 3.2 (NO uses el driver GL porque HARD SYNC no funciona a no ser que hagamos una cosilla),
-VSYNC ON (suponiendo que no tengamos VRR),
-HARD SYNC ON, y HARD SYNC FRAMES 0.
-Algunas notas IMPORTANTES:
-		-En el driver GLCORE (o GL, si lo arreglas como hemos dicho, pero usa GLCORE),
-		 usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
-		 PERO no usamos VULKAN con SWAPCHAIN a 2 (de momento) porque eso no nos deja bajar tanto el buffer de audio,
-		 lo que indica que consume CPU en exceso.
-		-Si usas el driver VULKAN, has de tener VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL en AUTO, porque si lo tienes a 1
-		 es cuando el vsync rate sale a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz).
-		-Si usas el driver GL (NO RECOMENDADO, USA GLCORE!!), para que HARD SYNC ON funcione tenemos que
-		 haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
-		 ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
-AUDIO: driver ALSA, 44100 Hz, 36ms, resampler quality normal
-(Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo: por lo demás,
-(La frecuencia nativa en la mayoría de los cores es 44100Hz por lo que usándola nos ahorramos una conversión)
-(No hace falta pasar ningunos parámetros al kernel para usar 36ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
-LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
-####### BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
- 
--COMO LO HACEMOS AHORA, CON EL BACKEND "GLCORE" (necesario para que funcione HARD SYNC): HARD SYNC ON, y HARD SYNC FRAMES 0.
+-VIDEO: Driver VULKAN, con VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL en AUTO (si lo tienes a 1
+es cuando el vsync rate sale a la mitad, es decir, te detecta 30Hz en pantallas a 60Hz)
+ALTERNATIVA (NO RECOMENDADO, usa VULKAN mejor...): Driver "GLCORE" que usa GL 3.2
+(Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
+HARD SYNC ON, y HARD SYNC FRAMES 0.
 Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
-PERO no usamos VULKAN con SWAPCHAIN a 2 (de momento) porque eso no nos deja bajar tanto el buffer de audio,
-lo que indica que consume CPU en exceso.
-OJO!!! Si usas el driver VULKAN, has de tener VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL en AUTO, porque si lo tienes a 1
-es cuando el vsync rate sale a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz).
+Si usas el driver GL (NO RECOMENDADO, USA GLCORE!!), para que HARD SYNC ON funcione tenemos que
+haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
+ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
+
+-AUDIO: driver ALSATHREAD, 44100 Hz, 36ms, resampler quality normal
+(Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 -En LATENCY, activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
- 
--(PARA CUANDO USES VULKAN) La posibilidad inicial de la que partimos, es poner Max Swapchain a 2, usar Alsathread, latencia de audio a 32/36ms,
-y meter 1 frame de Runahead, o no usar Runahead en absoluto.
-En este caso estamos "cargando" la GPU por lo del Max Swapchain a 2, por lo que algunos shaders un poco avanzados como Cyclone
-o el Newpixe normal petardean.
-OJO!!! Si usas el driver VULKAN, has de tener VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL en AUTO, porque si lo tienes a 1
-es cuando el vsync rate sale a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz).
+El otro método parecido a Runahead, llamado "Run Preemptive Frames", causa pitch wobbling, así que ni lo antes probando. 
 
--Un truco (NO RECOMENDABLE) para evitar lo anterior "descargando" la CPU sería poner Max Swapchains a 3,
-y luego compensar poniéndole 2 frames de Runahead (se puede inluso 3, pero el Tetris de arcade con más de 1 ya hace cosas raras...
-piensa que estamos actuando sobre el lag interno que algunos juegos llevan de serie, no el lag externo del sistema emulador,
-así que tiene esa contrapartida).
-NO hace falta activar el "Use Second Instance", porque a nosotros el Runahead no nos provoca problemas de audio.
-El otro método parecido a Runahead, llamado "Run Preemptive Frames", sí causa pitch wobbling. 
-La idea es que al pasar el Max Swapchains a 3, liberamos la GPU para los shaders (no tiene que esperar al vsync) y a la vez
-"compensamos" trucando la latencia interna de los juegos mediante el Runahead (que tiene sus consecuencias como lo del Tetris arcade).
-
-####### FIN BLOQUE BAJA LATENCIA EN RETROARCH SIN VRR ########
+(No hace falta pasar ningunos parámetros al kernel para usar 36ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
+LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
 SHADERS: Para la mayoría de las máquinas, el shader Fakelottes con el "Monitor Gamma" bajado a 1.95 es más que suficiente.
 Para el core de SEGA, debido al tema del dithering y tal, yenemos dos opciones:
