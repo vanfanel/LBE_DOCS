@@ -9,7 +9,9 @@ CONFIGURACIÓN PARA SCROLL SIN JITTERING/JUDDERING
 
 En menú de ROCKNIX:
 System Settings -> GPU Driver -> PANFROST
-(SÓLO SI NOTAS JITTERING EN LOS TESTS DE SCROLL) System Settings -> Default CPU governor -> PERFORMANCE u ONDEMAND (INTERACTIVE causa jittering)
+
+System Settings -> Default scaling governor -> PERFORMANCE
+System Settings -> GPU performance profile -> BEST PERFORMANCE (Necesario para que no haya hiccups al usar Max Swapchain a 2)
 UI Settings-> RetroArch menu driver a RGUI
 Game Settings -> AUTO SAVE/LOAD ON GAME LAUNCH a OFF, y en AI GAME TRANSLATION ponemos ENABLE AI TRANSLATION SERVICE a OFF también.
 Game Settings ->PER SYSTEM ADVANCED CONFIGURATION y vamos eligiendo el emulador para cada sistema.
@@ -20,13 +22,14 @@ En vídeo:
 Output->Video->GLCore
 (GLCore es n ecesario para usar GLES3, que a su vez es necesario para que "Hard GPU Sync" funcione. 
  "Hard GPU Sync" es el equivalente a "Max Swapchain" a 2 en Vulkan o GL/GLES sobre KMSDRM).
-Output->"Threaded Video" OFF
-Output->"Automatic Refresh Rate Switch" OFF
-Synchronization->"Hard GPU Sync" ON 
+Output->Synchronization->Max Swapchain Images 2
+Output->Threaded Video OFF
+Output->Automatic Refresh Rate Switch OFF
+(NO necesario si usamos Max Swapchain Images a 2) Synchronization->Hard GPU Sync ON 
 
-En sonido: ALSATHREAD, 32ms de latencia.
-Resampler quality a NORMAL, Output Rate a 44100 (ya que Genesis Plus GX saca 44100Hz).
-Poner sonido a 44100 en las opciones de FBNeo también.
+En sonido: ALSATHREAD, 32ms de latencia, 48000 Hz.
+Resampler quality NORMAL.
+(Si pones 44100, acuérdate de ponerlo también en las opciones de audio del FBNEO)
 
 Deshabilitar Settings-> AI SERVICE
 Deshabilitar Logging Verbosity en Settings->Logging
