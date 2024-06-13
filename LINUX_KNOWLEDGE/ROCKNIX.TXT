@@ -94,7 +94,8 @@ YA QUE TOOLS->START RETROARCH NO FUNCIONA CON KMS/DRM
 ======================================================================================================
 
 (OJO!! INCLUSO CON ESTO, SI UN CORE TIENE SALVADO UN OVERRIDE NO SE SALVARÁN LAS OPCIONES QUE CAMBIES EN "SETTINGS",
- TENDRíAS QUE SALVARLAS CON EL OVERRIDE, O QUITAR EL OVERRIDE Y YA SALVARLAS).
+ Lo mejor es salvar los settings con un core que no tenga overrides: total, para lo único que deberías necesitar overrides
+ es para los cores que no usar integer scaling, que son la excepción).
 
 Pasos para poder editar .config/emulationstation/es_systems.cfg (ya que viene como un symlink a un fichero de un filesystem readonly):
 rm .config/emulationstation/es_systems.cfg
