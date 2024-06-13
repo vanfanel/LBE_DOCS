@@ -92,7 +92,7 @@ YA QUE TOOLS->START RETROARCH NO FUNCIONA CON KMS/DRM
 
 Pasos para poder editar .config/emulationstation/es_systems.cfg (ya que viene como un symlink a un fichero de un filesystem readonly):
 rm .config/emulationstation/es_systems.cfg
-cp /usr/config/emulationstation/es_systems.cfg config/emulationstation/es_systems.cfg 
+cp /usr/config/emulationstation/es_systems.cfg .config/emulationstation/es_systems.cfg 
 vim .config/emulationstation/es_systems.cfg
 Allí hacemos esta sustitución para usar nuestro propio runemu.sh:
 :s%,/usr/bin/runemu.sh,/storage/runemu.sh
