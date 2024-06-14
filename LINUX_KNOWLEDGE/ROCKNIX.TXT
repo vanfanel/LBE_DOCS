@@ -114,6 +114,11 @@ Y allí quitamos lo del --appendconfig
 Buscamos la sección: ### Configure retroarch
 Y la comentamos o borramos (ojo, sólo esa sección, no la de debajo).
 
+QUITAR EL ERROR [Failed] Failed to start batteryledstatus.service
+=================================================================
+
+systemctl mask batteryledstatus.service
+
 PARA INSTALAR TEMAS CUSTOM BAJADOS DE GITHUB
 ============================================
 
