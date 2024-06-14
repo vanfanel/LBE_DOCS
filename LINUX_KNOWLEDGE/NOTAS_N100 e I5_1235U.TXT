@@ -33,7 +33,7 @@ cuando el ordenador está apagado.
 -En el N100, vamos a Advanced->GT - Power Management Control, y ahí deshabilitamos el Render Standby,
  y si queremos ponemos el Maximum GT frequency a 750 (pero no se nota).
 
--OPCIONAL/OVERCLOCKIG: En el N100, vamos a Advanced->CPU Power Management Control->View/Configure Turbo Options
+-OPCIONAL/OVERCLOCKIG: En el N100, vamos a Advanced->Power & Performance->CPU Power Management Control->View/Configure Turbo Options
  y ahí activamos "Power Limit 1 Override", lo ponemos a 30000, y el Time Window a 28.
  También activamos el "Power Limit 2 Override", y lo ponemos a 30000.
 

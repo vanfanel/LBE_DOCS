@@ -102,7 +102,7 @@ rm .config/emulationstation/es_systems.cfg
 cp /usr/config/emulationstation/es_systems.cfg .config/emulationstation/es_systems.cfg 
 vim .config/emulationstation/es_systems.cfg
 Allí hacemos esta sustitución para usar nuestro propio runemu.sh:
-:s%,/usr/bin/runemu.sh,/storage/runemu.sh
+:%s,/usr/bin/runemu.sh,/storage/runemu.sh
 
 Ahora nos creamos nuestro runemu.sh personalizado (no podemos tenerlo en /usr/bin como el original porque /usr/bin está en
 un filesystem de sólo lectura):
