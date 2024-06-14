@@ -146,3 +146,11 @@ fonts
 pics
 sound
 
+Para el dle21 (que es la versión que tiene las escenas en órden, etc), llamaremos al directorio "dle21.daphne"
+y renombraremos el lair.txt a dle21.txt. Los demás archivos (el .m2v, el .ogg y el .dat si ya lo tenemos creado, que se crea solo de todos modos)
+pueden mantener sus nombres originales.
+
+Para ajustar el nombre con el que aparece el juego, ya que aparecerá como "lair" o "dle21", editamos el gamelist.xml,
+le ponemos el nombre que queramos en "name", y le damos a "Update Gamelist" en el menú de ES.
+NO intentes cambiar el nombre del directorio "lair.daphne", ya que "lair" es el nombre que se le pasa al Daphne,
+y si lo cambias no funciona el juego.
