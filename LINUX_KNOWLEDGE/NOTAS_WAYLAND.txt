@@ -111,7 +111,7 @@ meson setup -Dbuildtype=release -Dexamples=false -Dxwayland=disabled \
 ninja -j4
 sudo ninja install
 
-RECUERDA que WLROORS soporta renderizado con Vulkan, por lo que los renderers basados en WLROOTS (como LABWC, DWL, SWAY, WAYBOX...) pueden usarlo.
+RECUERDA que WLROOTS soporta renderizado con Vulkan, por lo que los renderers basados en WLROOTS (como LABWC, DWL, SWAY, WAYBOX...) pueden usarlo.
 Para usarlo, lanzaríamos el compositor que queramos con:
 WLR_RENDERER=vulkan <compositor>
 (OJO!! WESTON NO USA WLROOTS!!)
