@@ -463,7 +463,8 @@ CXXFLAGS="-march=native -mtune=native" \
 meson setup .. --buildtype=release -Dxwayland=disabled -Dtests=disabled -Dprint_trace=false
 
 PARA EVITAR EL ERROR "Unable to drop root":
-Editamos src/main.cpp, buscamos "LOGE("Unable to drop root" y comentamos esa parte, para que no retorne con "false" si somos el root.
+Editamos src/main.cpp, buscamos "LOGE("Unable to drop root" y comentamos esa parte para que no retorne con "false" si somos el root.
+Aparece dos veces, pero con que comentemos la segunda es suficiente.
 
 Por defecto, se puede salir con CTRL+ALT+BACKSPACE.
 
