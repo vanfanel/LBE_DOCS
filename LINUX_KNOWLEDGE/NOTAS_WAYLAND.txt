@@ -472,6 +472,22 @@ Copiamos el archivo wayfire.ini que viene con los sources a ~/.config/wayfire.in
 --Buscamos "Start a terminal" y lo dejamos así:
 binding_terminal = <ctrl> <alt> KEY_T                                                                                                  
 command_terminal = foot
+--En la sección "[core]" podemos ajustar "max_render_time" (MRT de ahora en adelante).
+Yo lo suelo dejar por ahora a 8, que no reduce a la mitad la tasa de fotogramas de RetroArch cuando usamos Vulkan + max_swapchain a 2
+ni tampoco reduce a la mitad la tasa de fotogramas de los efectos del escritorio. 
+MRT es la antelación con la que el compositor debe componer el frame RESPECTO AL SIGUIENTE VBLANK QUE ES CUANDO SE ENVÍA PARA PONER EN PANTALLA.
+CUANTO MÁS TARDE COMPONGAMOS EL FRAME, MÁS RECIENTE SERÁ RESPETO AL INPUT DEL USUARIO: NOS INTERESA COMPONERLO LO MÁS TARDE POSIBLE.
+O sea que si nuestra pantalla va a 60Hz, con un MRT de 6 componemos el frame 6ms antes de mandarlo a presentar,
+Con un MRT de 8, componemos el frame 8ms antes de mandarlo a presentar (es menos reciente),
+Con un MRT de 10, componemos el frame 10ms antes de mandarlo a presentar (es menos reciente aún...), etc etc
+Por tanto, si nos pasamos poniendo un MRT demasiado bajo, no le da tiempo a componer el frame, y ya nos lo muestra en el el siguiente vblank,
+con lo que estaremos de hecho aumentando la latencia y además lo veremos todo a la mitad de fotogramas.
+Pero por otra parte, si es demasiado alto (el valor de MRT por defecto sería 16 en un monitor a 60Hz, es decir, que se componga el frame
+tan pronto como sea posible) puede que al intentar escribir un segundo frame, en un sistema de dos buffers no nos queden buffers porque
+ya estamos renderizando el siguiente desde el principio (y por tanto tenemos "candado" el segundo buffer, el que no tenemos en pantalla),
+de manera que la tasa de fotogramas queda recortada a la mitad.
+Esto explica que si en RetroArch usas max_swapchain=2 en Vulkan y no ajustas el MTR (con lo cual el segundo buffer está ocupado desde
+el primer momento de cada periodo entre vblanks), la tasa de fotogramas sea la mitad, es decir, 30fps en un modo de vídeo de 60Hz. 
 
 INSTALAR FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
 ===================================================
