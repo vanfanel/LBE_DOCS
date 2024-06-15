@@ -124,6 +124,12 @@ PARA INSTALAR TEMAS CUSTOM BAJADOS DE GITHUB
 
 NO van en /storage, sino que debemos meter el tema que queramos en /etc/emulationstation/themes/
 
+EVITAR QUE CRASHEE EL JUEGO AERO BLASTER CON EL CORE DE PCENGINE
+================================================================
+
+Tenemos que poner "Last Scanline" a 238 o menos.
+De todos modos, los valores óptimos son "Initlal Scanline" a 12 y "Last Scanline" a 230.
+
 PARA INSTALAR EL PORT DEL MARIO 64 (SM64)
 =========================================
 
