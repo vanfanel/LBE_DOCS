@@ -493,7 +493,7 @@ plugins = \
 --Para que se nos autolance una terminal al iniciar, buscamos [autostart] y debajo ponemos:
 1 = foot
 
---Eliminamos las secciones [wrot], [fisheye], etc.. que corresponden a plugins que no tenemos habilitados en la lista de plugins.
+--Eliminamos las secciones [wrot], [fisheye], [zoom], etc.. que corresponden a plugins que no tenemos habilitados en la lista de plugins.
 
 --En la sección "[core]" podemos ajustar "max_render_time" (MRT de ahora en adelante).
 Yo lo suelo dejar por ahora a 8, que no reduce a la mitad la tasa de fotogramas de RetroArch cuando usamos Vulkan + max_swapchain a 2
