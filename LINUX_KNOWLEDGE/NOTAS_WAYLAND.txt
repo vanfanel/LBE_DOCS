@@ -469,9 +469,32 @@ Aparece dos veces, pero con que comentemos la segunda es suficiente.
 Por defecto, se puede salir con CTRL+ALT+BACKSPACE.
 
 Copiamos el archivo wayfire.ini que viene con los sources a ~/.config/wayfire.ini, lo editamos, y ahí:
+
 --Buscamos "Start a terminal" y lo dejamos así:
 binding_terminal = <ctrl> <alt> KEY_T                                                                                                  
 command_terminal = foot
+
+--Buscamos [fast-switcher] y la línea de debajo la dejamos así:
+activate = <alt> KEY_TAB
+...Y buscamos "plugins =" y quitamos el llamado "switcher", que es un swicther en 3D que nos sobra.
+Nos vamos a la lista de plugins y dejemos sólo los plugins que necesitamos, que son:
+plugins = \                                                                                                                            
+  alpha \                                                                                                                              
+  animate \                                                                                                                            
+  autostart \                                                                                                                          
+  command \                                                                                                                            
+  decoration \                                                                                                                         
+  fast-switcher \                                                                                                                      
+  move \                                                                                                                               
+  place \                                                                                                                              
+  resize \                                                                                                                             
+  wobbly
+
+--Para que se nos autolance una terminal al iniciar, buscamos [autostart] y debajo ponemos:
+1 = foot
+
+--Eliminamos las secciones [wrot], [fisheye], etc.. que corresponden a plugins que no tenemos habilitados en la lista de plugins.
+
 --En la sección "[core]" podemos ajustar "max_render_time" (MRT de ahora en adelante).
 Yo lo suelo dejar por ahora a 8, que no reduce a la mitad la tasa de fotogramas de RetroArch cuando usamos Vulkan + max_swapchain a 2
 ni tampoco reduce a la mitad la tasa de fotogramas de los efectos del escritorio. 
