@@ -647,6 +647,7 @@ CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-music-midi-timidity --enable-music-midi-fluidsynth
 
 Para SDL2_Image:
+-Dependencias previas: apt-get install libwebp-dev
 -Nos bajamos la última versión estable de: https://github.com/libsdl-org/SDL_image/releases 
 -Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
