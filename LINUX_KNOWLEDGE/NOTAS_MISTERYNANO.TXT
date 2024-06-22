@@ -1,16 +1,17 @@
 MONTARSE LA MISTERY NANO POR CUENTA PROPIA
 ==========================================
 
-Se necesitan 4 placas:
+Se necesitan 3 placas:
 
 Las que se compran directamente Sipeed (en la página oficial de Sipeed en Aliexpress):
 ---Placa Sipeed Tang Nano 20k: esta placa lleva la FPGA donde se implementan las máquinas.
 ---Placa Sipeed M0S Dock Tinyml board: esta placa lleva el microcontrolado BL616 donde corre la pila USB que controla teclado/ratón/MIDI.
 
-Las que hay que encargar a JLCPCB:
+La que hay que encargar a JLCPCB:
 ---Placa MisteryShield20k (https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod)
    Aquí va pinchada la TangNano 20k.
 
+(NO NECESARIA PARA TANG NANO 20K) A parte, para otros modelos de Sipeeed Tang superiores, se usa esta:
 ---Placa M0S PM0D (https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k)
    Esta placa va pinchada a la MisteryShield20k, y hace de interface entre esta y la M0S Dock.
 
