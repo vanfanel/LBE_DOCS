@@ -103,7 +103,7 @@ y se llama kernal.901227-03.bin. Guárdalo en raíz de la SD como "c64kernal.bin
 en el correo, y que estaba originalmente disponible aquí:
 https://www.nightfallcrew.com/27/07/2009/jiffydos-kernal-roms-manual-download-linkjiffydos-kernal-roms-manual-download-link/
 
-Para cargar los D64 rapidito y con supuestamente buena compatibilidad:
+Para cargar los D64 rapidito y con supuestamente buena compatibilidad (OJO!! Los CRT MultiLoad NO cargan con el JiffiDOS Kernal!!):
 -En STORAGE->C64 KERNAL, selecciona el "JiffyDOS_Kernal.bin".
 -En SYSTEM->C1541 ROM, selecciona "Jiffy DOS".
 -En SETTINGS, dale a SAVE SETTINGS y reinicia.
