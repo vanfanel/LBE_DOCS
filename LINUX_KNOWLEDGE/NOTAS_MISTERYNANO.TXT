@@ -27,17 +27,14 @@ LOS GERBER PUBLICADOS SON DIRECTOS DE KICAD, ASÍ QUE HAY QUE CONTESTARLES QUE H
 
 Clonamos el repo: git clone --depth 1 https://github.com/harbaum/MiSTeryNano.git
 
-PARTE 1: PLACA MISTERY SHIELD 20K
-
 Lo que vamos a necesitar está en: board/misteryshield20k/jlcpcb
 
 Entramos en: http://www.jlcpcb.com
 Le damos a ORDER NOW.
 
 Ahí vamos haciendo lo siguiente:
--Subimos el ZIP "gerber_m0s.zip" que es el que contiene el GERBER. Usamos la variante "gerber_m0s.zip" porque nos interesa usar
-la plaquita M0S PMOD que vamos a encargar a parte. Nos interesa esta variante de la placa principal que usa la M0S externa
-por comodidad: andar usando el M0S (BL616) interno de la Tang Nano 20k es mucho más incómodo para el tema de los flasheos: M0S externa SIEMPRE.
+-Subimos el ZIP "gerber_m0s.zip" que es el que contiene el GERBER. Usamos la variante "gerber_m0s.zip".
+-Activamos "PCB Assembly".
 
 EN PCB SPECIFICATIONS:
 -(OPCIONAL)Ponemos "Surface Finish" a "ENIG", ya que permite que la placa almacenada dure más tiempo.
@@ -56,12 +53,6 @@ En "Product Description", lo mejor es poner "Audio Equipment".
 
 En el método de envío, he usado IOSS, que se supone que ya incluye los impuestos en el momento de hacer el pago con tarjeta,
 y que como son menos de 150 euros no hay que pagar más luego.
-
-PARTE 2: PLACA M0S PMOD
-
-Lo que vamos a necesitar está en: board/m0s_pmod/jlcpcb
-
-Se hace igual y los ficheros se llaman igual pero sin lo de _m0s al final: gerber.zip, bom.csv y positions.csv
 
 FLASHEAR EL CORE DE ATARI ST Y LAS TOS
 ======================================
