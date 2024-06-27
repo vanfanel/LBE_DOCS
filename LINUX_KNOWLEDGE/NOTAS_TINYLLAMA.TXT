@@ -149,10 +149,71 @@ boot disk1.img disk2.img -l a
 (Para ir cambiando de un diskette a otro durante la instalación, es con CTRL+FN+F4, 
 y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
 
+*******CONFIG.SYS Y AUTOEXEC.BAT PARA MS-DOS (MÁXIMA COMPATIBILIDAD)*******************
+
+################ CONFIG.SYS #######################
+
+DOS=HIGH,UMB                                                                                                                           
+                                                                                                                                       
+[MENU]                                                                                                                                 
+MENUITEM=TY_SIMPLE, TinyLlama s¢lo con el HIMEM.SYS                                                                                    
+MENUITEM=TY_NOEMS, TinyLlama con XMS solamente                                                                                         
+MENUITEM=TY_EMS, TinyLlama con EMS y XMS                                                                                               
+                                                                                                                                       
+[TY_SIMPLE]                                                                                                                            
+DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF                                                                                                   
+DOS=HIGH,UMB                                                                                                                           
+FILES=30                                                                                                                               
+                                                                                                                                       
+[TY_NOEMS]                                                                                                                             
+DEVICE=C:\DOS\HIMEMX.EXE /MAX=16384                                                                                                    
+DEVICE=C:\DOS\EMM386.EXE NOEMS                                                                                                         
+DOS=HIGH,UMB                                                                                                                           
+FILES=30                                                                                                                               
+                                                                                                                                       
+[TY_EMS]                                                                                                                               
+DEVICE=C:\DOS\HIMEMX.EXE /MAX=16384                                                                                                    
+DEVICE=C:\DOS\EMM386.EXE HIGHSCAN X=EC00-EFFF                                                                                          
+FILES=30          
+
+################ AUTOEXEC.BAT ######################
+
+@ECHO OFF                                                                                                                              
+rem C:\DOS\SMARTDRV.EXE /X                                                                                                             
+PROMPT $p$g                                                                                                                            
+PATH C:\DOS                                                                                                                            
+SET TEMP=C:\DOS                                                                                                                        
+                                                                                                                                       
+KEYB SP,,C:\DOS\KEYBOARD.SYS                                                                                                           
+C:\DOS\DOSKEY.COM                                                                                                                      
+C:\DOS\CTMOUSE.EXE                                                                                                                     
+                                                                                                                                       
+GOTO %CONFIG%                                                                                                                          
+                                                                                                                                       
+:TY_SIMPLE                                                                                                                             
+SET BLASTER=A220 I7 D1 P330 T4                                                                                                         
+C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0                                                                        
+GOTO EXIT                                                                                                                              
+                                                                                                                                       
+:TY_NOEMS                                                                                                                              
+SET BLASTER=A220 I7 D1 P330 T4                                                                                                         
+C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0                                                                        
+GOTO EXIT                                                                                                                              
+                                                                                                                                       
+:TY_EMS                                                                                                                                
+SET BLASTER=A220 I7 D1 P330 T4                                                                                                         
+C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0                                                                        
+GOTO EXIT                                                                                                                              
+                                                                                                                                       
+:EXIT 
+
+###################################################
+
+
 ********FDCONFIG.SYS Y FDAUTO.BAT para FREEDOS*****************
 
 
-**************CONFIG.SYS*********************
+################# FDCONFIG.SYS ######################
 
 BUFFERS=20     
 FILES=40
@@ -161,7 +222,7 @@ DEVICE=C:\FREEDOS\BIN\JEMMEX.EXE X2MAX=32767
 
 SHELLHIGH=C:\FreeDOS\BIN\COMMAND.COM C:\FreeDOS\BIN /E:1024 /P=C:\FDAUTO.BAT
 
-****************AUTOEXEC.BAT******************
+################# FDAUTO.BAT #####################
 
 @ECHO OFF
 PATH=C:\;C:\FREEDOS\BIN
@@ -179,6 +240,8 @@ CTMOUSE
 mkeyb SP
 
 ECHO.
+
+####################################################
 
 ------------------------INSTALACIÓN DEL SONIDO----------------------------------
 
@@ -248,10 +311,10 @@ Para que vaya el audio, selecciona la SoundBlaster PRO y que detecte los paráme
 Si pretendes usar SB16, el DMA que debes elegir es el HDMA, no el DMA normal. Así que elije para el DMA el 5 en vez del 1.
 
 ***WIZARDRY VI: BANE OF THE COSMIC FORGE***
-Desactivar la CACHE LEVEL 1
+Desactivar la CACHE LEVEL 1 (Se puede desactivar una vez arrancado el sistema con "cpuspd cd")
 
 ***PREHISTORIK 2***
-Desactivar la CACHE LEVEL 1
+Desactivar la CACHE LEVEL 1 (Se puede desactivar una vez arrancado el sistema con "cpuspd cd")
 
 ***ELDER SCROLLS: ARENA***
 
@@ -275,6 +338,14 @@ o bien le pasamos al JEMMEX el parámetro X2MAX=32767
 
 ***PINBALL DREAMS y PINBALL FANTASIES***
 Lo mismo que el Aladdin.
+
+***REALMS OF ARKANIA 2: STARTRAIL***
+
+Necesita EMS. Para que no pete en el templo del principio, tenemos que usar MS-DOS, en FreeDOS peta hagamos lo que hagamos.
+En MS-DOS, la configuración de memoria la tengo así para que el juego vaya perfecto:
+DEVICE=C:\DOS\HIMEMX.EXE /MAX=16384                                                                                                    
+DEVICE=C:\DOS\EMM386.EXE HIGHSCAN X=EC00-EFFF                                                                                          
+FILES=30
 
 ***REALMS OF THE HAUNTING (ROTH)***
 Si te da un error de que no encuentra un archivo, edita CONFIG.INI y pon "SourcePath" y "DestinationPath" apuntando
