@@ -346,11 +346,17 @@ Lo mismo que el Aladdin.
 
 ***REALMS OF ARKANIA 2: STARTRAIL***
 
-Necesita EMS. Para que no pete en el templo del principio, tenemos que usar MS-DOS, en FreeDOS peta hagamos lo que hagamos.
-En MS-DOS, la configuración de memoria la tengo así para que el juego vaya perfecto:
+Necesita EMS y no soporta más de 16MB. Para ello podemos usar HIMEMX + EMM386, o bien JEMMEX.
+Además sólo va en MS-DOS: en FreeDOS peta en el templo del principio hagamos lo que hagamos.
+
+En MS-DOS, con HIMEMX (que nos permite limitar la RAM porque con más de 16megas peta) + EMM386,
+la configuración de memoria la tengo así para que el juego vaya perfecto:
 DEVICE=C:\DOS\HIMEMX.EXE /MAX=16384                                                                                                    
 DEVICE=C:\DOS\EMM386.EXE HIGHSCAN X=EC00-EFFF                                                                                          
 FILES=30
+
+En MS-DOS, con JEMMEX:
+DEVICE=C:\DOS\JEMMEX.EXE X2MAX=16384 X= I=B000-B7FF I=TEST X=EC00-EFFF
 
 ***REALMS OF THE HAUNTING (ROTH)***
 Si te da un error de que no encuentra un archivo, edita CONFIG.INI y pon "SourcePath" y "DestinationPath" apuntando
