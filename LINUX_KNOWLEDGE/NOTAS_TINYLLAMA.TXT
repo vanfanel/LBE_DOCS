@@ -333,6 +333,13 @@ y la GUS para la música (si intentas usar la GUS para ambas cosas, el juego se 
 Una vez que las hayas seleccionado así en INSTALL.EXE, edita ARENA.BAT y ajusta los valores de la GUS para que coincidan con los de DOSBOX,
 ya que INSTALL.EXE no detecta correctamente los valores de la GUS.
 
+Para hacer funcionar la versión CD, usando FAKECD, yo tengo así el ARENA.BAT:
+FAKECD C:\JUEGOS\ACD D:
+@SET ARENADATA=C:
+@d:
+@ACD -Ssbpdig.adv -IOS220 -IRQS7 -DMAS1 -Mgenmidi.adv -IOM330 -IRQM2 -DMAM1
+exit
+
 ***ALADDIN***
 Necesita EMS, y no funciona con más de 32MB de RAM.
 Para ello, o bien usamos HIMEMX (https://github.com/Baron-von-Riedesel/HimemX/releases) en vez del HIMEM.SYS así: HIMEMX.EXE /MAX=16M 
