@@ -276,6 +276,11 @@ Los juegos que den el famoso "runtime error 200" se pueden parchear ctbppat.exe,
 que queremos parchear. El CTBPPAT se saca de aquí: https://www.vogons.org/viewtopic.php?f=13&t=93
 Hay otro llamado BPPatch2.exe o algo así, creo.
 
+***LEMMINGS***
+
+No es compatible con HIMEMX.EXE, sólo con HIMEM.SYS.
+Y puedes desactivar la caché antes de lanzarlo, con "CPUSPD CD"
+
 ***ISHAR***
 
 Hay que comentar el EMM386 por completo, y elegir como tarjeta una ADLIB (La soundblaster suena pero muy mal).
@@ -317,6 +322,8 @@ Desactivar la CACHE LEVEL 1 (Se puede desactivar una vez arrancado el sistema co
 ***ELDER SCROLLS: ARENA***
 
 Necesita EMS.
+
+En la Tinyllama sólo funciona con el QEMM, imposible hacerlo funcionar con el EMM386 o con el JEMMEX.
 
 Si aun dándole EMS nos dice que no tiene, mira si al lanzar el JEMMEX tienes el mensaje:
 "Warning: no suitable page frame found, EMS functions limited."
