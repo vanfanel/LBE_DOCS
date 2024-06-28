@@ -152,13 +152,11 @@ y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
 *******CONFIG.SYS Y AUTOEXEC.BAT PARA MS-DOS (MÁXIMA COMPATIBILIDAD)*******************
 
 ################ CONFIG.SYS #######################
-
-DOS=HIGH,UMB                                                                                                                           
                                                                                                                                        
 [MENU]                                                                                                                                 
-MENUITEM=TY_SIMPLE, TinyLlama s¢lo con el HIMEM.SYS                                                                                    
-MENUITEM=TY_NOEMS, TinyLlama con XMS solamente                                                                                         
-MENUITEM=TY_EMS, TinyLlama con EMS y XMS                                                                                               
+MENUITEM=TY_SIMPLE, Solo con HIMEM.SYS                                                                                    
+MENUITEM=TY_NOEMS, Con XMS                                                                                         
+MENUITEM=TY_EMS, Con XMS y EMS                                                                                               
                                                                                                                                        
 [TY_SIMPLE]                                                                                                                            
 DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF                                                                                                   
