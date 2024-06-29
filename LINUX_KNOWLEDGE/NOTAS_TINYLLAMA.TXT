@@ -152,58 +152,95 @@ y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
 *******CONFIG.SYS Y AUTOEXEC.BAT PARA MS-DOS (MÁXIMA COMPATIBILIDAD)*******************
 
 ################ CONFIG.SYS #######################
-                                                                                                                                       
-[MENU]                                                                                                                                 
-MENUITEM=TY_SIMPLE, Solo con HIMEM.SYS                                                                                    
-MENUITEM=TY_NOEMS, Con XMS                                                                                         
-MENUITEM=TY_EMS, Con XMS y EMS                                                                                               
-                                                                                                                                       
-[TY_SIMPLE]                                                                                                                            
-DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF                                                                                                   
-DOS=HIGH,UMB                                                                                                                           
-FILES=30                                                                                                                               
-                                                                                                                                       
-[TY_NOEMS]                                                                                                                             
-DEVICE=C:\DOS\HIMEMX.EXE /MAX=16384                                                                                                    
-DEVICE=C:\DOS\EMM386.EXE NOEMS                                                                                                         
-DOS=HIGH,UMB                                                                                                                           
-FILES=30                                                                                                                               
-                                                                                                                                       
-[TY_EMS]                                                                                                                               
-DEVICE=C:\DOS\HIMEMX.EXE /MAX=16384                                                                                                    
-DEVICE=C:\DOS\EMM386.EXE HIGHSCAN X=EC00-EFFF                                                                                          
-FILES=30          
 
+[MENU]
+MENUITEM=QEMM, QEMM con XMS+EMS (Ultimos juegos para MS-DOS, TES Arena, etc)
+MENUITEM=JEMMEX, JEMMEX con XMS+EMS y RAM limitada a 16MB (Aladdin, Arkania2, etc)
+MENUITEM=NOEMS, QEMM con XMS solamente
+MENUITEM=EMM386, EMM386 con EMS (Lemmings 2)
+MENUITEM=SIMPLE, Solamente HIMEM.SYS (Lemmings, Another World, etc)
+
+[QEMM]
+DEVICE=C:\QEMM\DOSDATA.SYS
+SET LOADHIDATA=C:\QEMM\LOADHI.RF
+DEVICE=C:\QEMM\QEMM386.SYS RAM BE:N RF
+DEVICE=C:\QEMM\DOS-UP.SYS @C:\QEMM\DOS-UP.DAT
+SHELL=C:\QEMM\LOADHI.COM /RF C:\COMMAND.COM /E:2048 /P
+DOS=HIGH,UMB
+FILES=60
+BUFFERS=40
+STACKS=9,256
+
+[JEMMEX]
+DEVICE=C:\DOS\JEMMEX.EXE X2MAX=16384 I=B000-B7FF I=TEST X=EC00-EFFF
+DOS=HIGH,UMB
+FILES=60
+BUFFERS=40
+STACKS=9,256
+
+[NOEMS]
+DEVICE=C:\QEMM\DOSDATA.SYS
+SET LOADHIDATA=C:\QEMM\LOADHI.RF
+DEVICE=C:\QEMM\QEMM386.SYS RAM NOEMS BE:N RF
+DEVICE=C:\QEMM\DOS-UP.SYS @C:\QEMM\DOS-UP.DAT
+SHELL=C:\QEMM\LOADHI.COM /RF C:\COMMAND.COM /E:2048 /P
+DOS=HIGH,UMB
+FILES=60
+BUFFERS=40
+STACKS=9,256
+
+[EMM386]
+DEVICE=C:\DOS\HIMEM.SYS /Q /TESTMEM:OFF
+DEVICE=C:\DOS\EMM386.EXE RAM AUTO NOTR
+DOS=HIGH,UMB
+FILES=60
+BUFFERS=40
+STACKS=9,256
+
+[SIMPLE]
+DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF
+DOS=HIGH,UMB
+FILES=60
+BUFFERS=40
+STACKS=9,256
+                                                                                                                                       
 ################ AUTOEXEC.BAT ######################
 
-@ECHO OFF                                                                                                                              
-rem C:\DOS\SMARTDRV.EXE /X                                                                                                             
-PROMPT $p$g                                                                                                                            
-PATH C:\DOS                                                                                                                            
-SET TEMP=C:\DOS                                                                                                                        
-                                                                                                                                       
-KEYB SP,,C:\DOS\KEYBOARD.SYS                                                                                                           
-C:\DOS\DOSKEY.COM                                                                                                                      
-C:\DOS\CTMOUSE.EXE                                                                                                                     
-                                                                                                                                       
-GOTO %CONFIG%                                                                                                                          
-                                                                                                                                       
-:TY_SIMPLE                                                                                                                             
-SET BLASTER=A220 I7 D1 P330 T4                                                                                                         
-C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0                                                                        
-GOTO EXIT                                                                                                                              
-                                                                                                                                       
-:TY_NOEMS                                                                                                                              
-SET BLASTER=A220 I7 D1 P330 T4                                                                                                         
-C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0                                                                        
-GOTO EXIT                                                                                                                              
-                                                                                                                                       
-:TY_EMS                                                                                                                                
-SET BLASTER=A220 I7 D1 P330 T4                                                                                                         
-C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0                                                                        
-GOTO EXIT                                                                                                                              
-                                                                                                                                       
-:EXIT 
+@ECHO OFF
+PATH=C:\QEMM;C:\;C:\DOS
+SET DIRCMD=/A/OGN/P
+SET BLASTER=A220 I7 D1 P330 T4
+PROMPT $P$G
+
+GOTO %CONFIG%
+
+:QEMM
+:NOEMS
+C:\QEMM\LOADHI /RF C:\DOS\EDOSKEY
+C:\QEMM\LOADHI /RF C:\DOS\CTMOUSE
+C:\QEMM\LOADHI /RF C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0
+C:\QEMM\LOADHI /RF C:\DOS\KEYB SP
+ECHO.
+GOTO EXIT
+
+:EMM386
+C:\DOS\EDOSKEY
+C:\DOS\CTMOUSE
+C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0
+C:\DOS\KEYB.COM SP
+ECHO.
+GOTO EXIT
+
+:SIMPLE
+:JEMMEX
+C:\DOS\EDOSKEY
+C:\DOS\CTMOUSE
+C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0
+C:\DOS\KEYB.COM SP
+ECHO.
+GOTO EXIT
+
+:EXIT
 
 ###################################################
 
@@ -347,6 +384,10 @@ FAKECD C:\JUEGOS\ACD D:
 @ACD -Ssbpdig.adv -IOS220 -IRQS7 -DMAS1 -Mgenmidi.adv -IOM330 -IRQM2 -DMAM1
 exit
 
+***ULTIMA UNDERWORLD***
+
+También necesita EMS y sólo funciona con correctamente con QEMM (con JEMMEX y EMM386 suena la música pero el juego no se ve).
+
 ***ALADDIN***
 Necesita EMS, y no funciona con más de 32MB de RAM.
 Para ello, o bien usamos HIMEMX (https://github.com/Baron-von-Riedesel/HimemX/releases) en vez del HIMEM.SYS así: HIMEMX.EXE /MAX=16M 
@@ -368,7 +409,7 @@ DEVICE=C:\DOS\EMM386.EXE HIGHSCAN X=EC00-EFFF
 FILES=30
 
 En MS-DOS, con JEMMEX:
-DEVICE=C:\DOS\JEMMEX.EXE X2MAX=16384 X= I=B000-B7FF I=TEST X=EC00-EFFF
+DEVICE=C:\DOS\JEMMEX.EXE X2MAX=16384 I=B000-B7FF I=TEST X=EC00-EFFF
 
 ***REALMS OF THE HAUNTING (ROTH)***
 Si te da un error de que no encuentra un archivo, edita CONFIG.INI y pon "SourcePath" y "DestinationPath" apuntando
