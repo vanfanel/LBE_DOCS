@@ -158,7 +158,7 @@ MENUITEM=QEMM, QEMM con XMS+EMS (Ultimos juegos para MS-DOS, TES Arena, etc)
 MENUITEM=JEMMEX, JEMMEX con XMS+EMS y RAM limitada a 16MB (Aladdin, Arkania2, etc)
 MENUITEM=NOEMS, QEMM con XMS solamente
 MENUITEM=EMM386, EMM386 con EMS (Lemmings 2)
-MENUITEM=SIMPLE, Solamente HIMEM.SYS (Lemmings, Another World, etc)
+MENUITEM=SIMPLE, Solamente HIMEM.SYS (Lemmings, Another World, Turrican II, etc)
 
 [QEMM]
 DEVICE=C:\QEMM\DOSDATA.SYS
@@ -200,8 +200,7 @@ STACKS=9,256
 [SIMPLE]
 DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF
 DOS=HIGH,UMB
-FILES=60
-BUFFERS=40
+FILES=30
 STACKS=9,256
                                                                                                                                        
 ################ AUTOEXEC.BAT ######################
