@@ -621,6 +621,14 @@ los presiones correctamente.
 -En el core de SATURN, en las opciones de INPUT ponemos "3D PAD".
 -En el core de PSX, ponemos el mando 1 como DualShock.
 
+**********Jugar al Prince of Persia de Apple II/e****************************************
+
+Para cambiar entre teclado (J, K, L, I, ALT/WIN) y joystick, pulsamos CURSOR ARRIBA (para teclado) y CURSOR ABAJO (JOYSTICK).
+Otros atajos son:
+CRTL+S: activar y desactivar sonido.
+CTRL+A: Reiniciar nivel.
+CTRL+V: Mostrar la versión del juego.
+
 *********HACER QUE EL UPDATE_ALL NO ACTUALIZE LOS CHEATS*********************************
 
 Editamos /media/fat/downloader.ini y añadimos:
