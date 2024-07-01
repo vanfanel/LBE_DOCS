@@ -621,6 +621,15 @@ los presiones correctamente.
 -En el core de SATURN, en las opciones de INPUT ponemos "3D PAD".
 -En el core de PSX, ponemos el mando 1 como DualShock.
 
+**********Notas core Apple II/e**********************************************************
+
+Los juegos deberías bajarlos siempre de aquí, ya que son versiones verificadas:
+https://archive.org/details/apple-ii-play-it-by-year-collection-v-0.1
+
+Algunos juegos puedes encontrarlos en .2MG, que se convierten muy fácilmente a .HFV:
+
+dd if="Ancient Legends - 800k version.2mg" of="Ancient Legends - 800k version.hdv" bs=64 skip=1
+
 **********Jugar al Prince of Persia de Apple II/e****************************************
 
 El manual completo lo tienes en: http://www.abandonia.com/files/extras/26916_Extra%20document_Manual.pdf
