@@ -626,9 +626,14 @@ los presiones correctamente.
 Los juegos deberías bajarlos siempre de aquí, ya que son versiones verificadas:
 https://archive.org/details/apple-ii-play-it-by-year-collection-v-0.1
 
-Algunos juegos puedes encontrarlos en .2MG, que se convierten muy fácilmente a .HFV:
+Puedes borrar todos los .wo, .woz, .po, .wav... ya que son incompatibles con el core (los .po se supone que van pero fallan todos).
+Para borrar una extensión recursivamente:
+find . -type f -name '*.po' -delete
 
+Algunos juegos puedes encontrarlos en .2MG, que se convierten muy fácilmente a .HFV:
 dd if="Ancient Legends - 800k version.2mg" of="Ancient Legends - 800k version.hdv" bs=64 skip=1
+
+Puedes ver el texto a 80 columnas correctamente poniendo AUDIO & VIDEO -> PIXEL CLOCK a DOUBLE.
 
 **********Jugar al Prince of Persia de Apple II/e****************************************
 
