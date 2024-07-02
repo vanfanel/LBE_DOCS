@@ -626,9 +626,10 @@ los presiones correctamente.
 Los juegos deberías bajarlos siempre de aquí, ya que son versiones verificadas:
 https://archive.org/details/apple-ii-play-it-by-year-collection-v-0.1
 
-Puedes borrar todos los .wo, .woz, .po, .wav... ya que son incompatibles con el core (los .po se supone que van pero fallan todos).
+Puedes borrar todos los .wo, .woz, .wav... ya que son incompatibles con el core (los .po se supone que van pero fallan todos).
 Para borrar una extensión recursivamente:
-find . -type f -name '*.po' -delete
+find . -type f -name '*.wav' -delete
+Los juegos en .po los tienes que renombrar a .hdv y funcionan perfectamente.
 
 Algunos juegos puedes encontrarlos en .2MG, que se convierten muy fácilmente a .HFV:
 dd if="Ancient Legends - 800k version.2mg" of="Ancient Legends - 800k version.hdv" bs=64 skip=1
