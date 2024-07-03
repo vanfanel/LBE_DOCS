@@ -623,13 +623,15 @@ los presiones correctamente.
 
 **********Notas core Apple II/e**********************************************************
 
-Los juegos deberías bajarlos siempre de aquí, ya que son versiones verificadas:
-https://archive.org/details/apple-ii-play-it-by-year-collection-v-0.1
+Los juegos deberías bajarlos siempre de https://archive.org/details/apple-ii-play-it-by-year-collection-v-0.1
+(En Myrient están separados por formato, son los mismos).
 
-Puedes borrar todos los .wo, .woz, .wav... ya que son incompatibles con el core.
-Para borrar una extensión recursivamente:
+Los .wo, .woz, .wav... son incompatibles con el core. Para eliminarlos:
 find . -type f -name '*.wav' -delete
-Los juegos en .po los tienes que renombrar a .hdv y funcionan perfectamente.
+find . -type f -name '*.wo' -delete
+find . -type f -name '*.woz' -delete
+
+Los .po funcionan pero a veces fallan. Los .do parecen funcionar bien.
 
 Algunos juegos puedes encontrarlos en .2MG, que se convierten muy fácilmente a .HFV:
 dd if="Ancient Legends - 800k version.2mg" of="Ancient Legends - 800k version.hdv" bs=64 skip=1
