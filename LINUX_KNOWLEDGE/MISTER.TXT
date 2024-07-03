@@ -636,6 +636,9 @@ Los .po funcionan pero a veces fallan. Los .do parecen funcionar bien.
 Algunos juegos puedes encontrarlos en .2MG, que se convierten muy fácilmente a .HFV:
 dd if="Ancient Legends - 800k version.2mg" of="Ancient Legends - 800k version.hdv" bs=64 skip=1
 
+Algunos juegos puedes encontrarlos en .SHK, para ellos se usa:
+https://github.com/fadden/nulib2
+
 Puedes ver el texto a 80 columnas correctamente poniendo AUDIO & VIDEO -> PIXEL CLOCK a DOUBLE.
 El texto a 80 columnas es una característica del modeo Apple II/e, así que deja el PIXEL CLOCK a DOUBLE siempre.
 
