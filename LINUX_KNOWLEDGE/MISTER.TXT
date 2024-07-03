@@ -632,6 +632,7 @@ find . -type f -name '*.wo' -delete
 find . -type f -name '*.woz' -delete
 
 Los .po funcionan pero a veces fallan. Los .do parecen funcionar bien.
+Algunos .po son en realidad .do, y viceversa. Si un disco no te arranca, cambia su extensión y vuelve a probar.
 
 Algunos juegos puedes encontrarlos en .2MG, que se convierten muy fácilmente a .HFV:
 dd if="Ancient Legends - 800k version.2mg" of="Ancient Legends - 800k version.hdv" bs=64 skip=1
