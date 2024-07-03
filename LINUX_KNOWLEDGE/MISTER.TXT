@@ -636,6 +636,13 @@ Los .po funcionan pero a veces fallan. Los .do parecen funcionar bien.
 Algunos juegos puedes encontrarlos en .2MG, que se convierten muy fácilmente a .HFV:
 dd if="Ancient Legends - 800k version.2mg" of="Ancient Legends - 800k version.hdv" bs=64 skip=1
 
+Para convertir .woz a .nib:
+sudo apt-get install libfile-slurp-perl
+sudo apt-get install libdigest-crc-perl
+sudo apt-get install libgetopt-long-descriptive-perl
+git clone --depth 1 https://github.com/leesaudan2/woz2dsk
+woz2dsk juego.woz juego.nib --format nibble
+
 Algunos juegos puedes encontrarlos en .SHK,NO INTENTES CONVERTIRLOS, ES INFERNAL. OLVÍDATE DE ELLOS. 
 
 Puedes ver el texto a 80 columnas correctamente poniendo AUDIO & VIDEO -> PIXEL CLOCK a DOUBLE.
