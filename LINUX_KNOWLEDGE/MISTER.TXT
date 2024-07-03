@@ -640,8 +640,11 @@ Algunos juegos puedes encontrarlos en .SHK, para ello se usa:
 https://github.com/fadden/nulib2
 Para que funcione es necesario tener en /usr/local/bin este script:
 https://github.com/RasppleII/rasppleii-history/blob/master/website_2015-10/a2cloud/setup/shk2image.txt
-Y también necesita:
+https://github.com/RasppleII/rasppleii-history/blob/master/website_2015-10/a2cloud/setup/mkpo.txt
+Y también necesita esto:
 https://applecommander.github.io/install/
+renombramos el "AppleCommander-ac-1.9.0.jar" a "/usr/local/bin/acmd" y en el script "shk2image" cambiamos las ocurrencias de "acmd" por
+"java -jar /usr/local/bin/acmd.jar".
 
 Puedes ver el texto a 80 columnas correctamente poniendo AUDIO & VIDEO -> PIXEL CLOCK a DOUBLE.
 El texto a 80 columnas es una característica del modeo Apple II/e, así que deja el PIXEL CLOCK a DOUBLE siempre.
