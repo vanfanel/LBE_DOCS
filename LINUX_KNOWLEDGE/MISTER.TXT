@@ -636,15 +636,7 @@ Los .po funcionan pero a veces fallan. Los .do parecen funcionar bien.
 Algunos juegos puedes encontrarlos en .2MG, que se convierten muy fácilmente a .HFV:
 dd if="Ancient Legends - 800k version.2mg" of="Ancient Legends - 800k version.hdv" bs=64 skip=1
 
-Algunos juegos puedes encontrarlos en .SHK, para ello se usa:
-https://github.com/fadden/nulib2
-Para que funcione es necesario tener en /usr/local/bin este script:
-https://github.com/RasppleII/rasppleii-history/blob/master/website_2015-10/a2cloud/setup/shk2image.txt
-https://github.com/RasppleII/rasppleii-history/blob/master/website_2015-10/a2cloud/setup/mkpo.txt
-Y también necesita esto:
-https://applecommander.github.io/install/
-renombramos el "AppleCommander-ac-1.9.0.jar" a "/usr/local/bin/acmd" y en el script "shk2image" cambiamos las ocurrencias de "acmd" por
-"java -jar /usr/local/bin/acmd.jar".
+Algunos juegos puedes encontrarlos en .SHK,NO INTENTES CONVERTIRLOS, ES INFERNAL. OLVÍDATE DE ELLOS. 
 
 Puedes ver el texto a 80 columnas correctamente poniendo AUDIO & VIDEO -> PIXEL CLOCK a DOUBLE.
 El texto a 80 columnas es una característica del modeo Apple II/e, así que deja el PIXEL CLOCK a DOUBLE siempre.
