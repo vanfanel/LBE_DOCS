@@ -631,18 +631,15 @@ find . -type f -name '*.wav' -delete
 find . -type f -name '*.wo' -delete
 find . -type f -name '*.woz' -delete
 
-Los .po funcionan pero a veces fallan. Los .do parecen funcionar bien.
+ATENCIÓN: Procura buscar las imágenes de disco duro que vienen en la colección, y usar eso en vez de imágenes de diskette.
+Para buscar todas las imágenes de disco duro que vienen, haz:
+find ./ -name \*PRODOS\*
+Luego, renombra esos ficheros a .HDV y trátalos como imágenes de disco duro.
+
 Algunos .po son en realidad .do, y viceversa. Si un disco no te arranca, cambia su extensión y vuelve a probar.
 
 Algunos juegos puedes encontrarlos en .2MG, que se convierten muy fácilmente a .HFV:
 dd if="Ancient Legends - 800k version.2mg" of="Ancient Legends - 800k version.hdv" bs=64 skip=1
-
-Para convertir .woz a .nib:
-sudo apt-get install libfile-slurp-perl
-sudo apt-get install libdigest-crc-perl
-sudo apt-get install libgetopt-long-descriptive-perl
-git clone --depth 1 https://github.com/leesaudan2/woz2dsk
-woz2dsk juego.woz juego.nib --format nibble
 
 Algunos juegos puedes encontrarlos en .SHK,NO INTENTES CONVERTIRLOS, ES INFERNAL. OLVÍDATE DE ELLOS. 
 
