@@ -7220,6 +7220,8 @@ Para el core de SEGA, debido al tema del dithering y tal, yenemos dos opciones:
    Para que las sombras en el Comix Zone no se vean tramadas sobre algunos colores, hay que ajustar algún parámetro.
 4) El shader crt-Cyclon con los parámetros de convergencia al máximo. Lo malo de esta opción es que se ve un poco "granuloso" todo.
  
+Para el core de PC (DOSBOX-CORE) el mejor es ZFAST-CRT-HDMASK con los valores como viene y escalado a enteros.
+
 APUNTES SOBRE CORES ESPECÍFICOS:
 
 PARA CORES DE ORDENADOR QUE NECESITAN TODO EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
