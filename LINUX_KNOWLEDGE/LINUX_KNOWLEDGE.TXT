@@ -7207,7 +7207,10 @@ El otro método parecido a Runahead, llamado "Run Preemptive Frames", causa pitc
 (No hace falta pasar ningunos parámetros al kernel para usar 36ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
 LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
-SHADERS: Para las consolas, usa el shader ZFAST-CRT-COMPOSITE, y para los ordenadores usa el ZFAST-CRT-HDMASK (
+SHADERS: En general para todos los cores, usa el shader ZFAST-CRT-HDMASK.
+Para consolas podrías usar el ZFAST-CRT-COMPOSITE con la curvatura a 0.0, MASK TYPE a 1.00,
+el FLICKER a 1.00 (NO necesita editar el código para eliminar los cálculos de la curvatura
+ya que si la desactivas no los hace, a diferencia del ZFAST original) PERO activa INTEGER SCALING o forma patrones.
 (Otra alternativa sería Fakelottes con el "Monitor Gamma" bajado a 1.95, PERO se ve mal en el texto del DOS del core DOSBOX-CORE).
 Para el core de SEGA, debido al tema del dithering y tal, yenemos dos opciones:
 
