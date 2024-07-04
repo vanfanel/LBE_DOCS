@@ -7188,8 +7188,8 @@ y para volver, obviamente, start.
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
--VIDEO: Driver VULKAN, con VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL en AUTO (si lo tienes a 1
-es cuando el vsync rate sale a la mitad, es decir, te detecta 30Hz en pantallas a 60Hz)
+-VIDEO: Driver VULKAN, con "VSYNC" desactivado (SÍ, DESACTIVADO!!), y "VSYNC SWAP INTERVAL" en "AUTO"
+(OJO: Si lo tienes a 1 es cuando el vsync rate sale a la mitad, es decir, te detecta 30Hz en pantallas a 60Hz)
 ALTERNATIVA (NO RECOMENDADO, usa VULKAN mejor...): Driver "GLCORE" que usa GL 3.2
 (Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
 HARD SYNC ON, y HARD SYNC FRAMES 0.
@@ -7198,7 +7198,7 @@ Si usas el driver GL (NO RECOMENDADO, USA GLCORE!!), para que HARD SYNC ON funci
 haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
 ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
 
--AUDIO: driver ALSATHREAD, 44100 Hz, 36ms, resampler quality normal
+-AUDIO: driver ALSATHREAD, 48000 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 -En LATENCY, activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
@@ -7207,7 +7207,8 @@ El otro método parecido a Runahead, llamado "Run Preemptive Frames", causa pitc
 (No hace falta pasar ningunos parámetros al kernel para usar 36ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
 LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
-SHADERS: Para la mayoría de las máquinas, el shader Fakelottes con el "Monitor Gamma" bajado a 1.95 es más que suficiente.
+SHADERS: Para la mayoría de las máquinas, el shader ZFAST-CRT-HDMASK (
+(Otra alternativa sería Fakelottes con el "Monitor Gamma" bajado a 1.95, PERO se ve mal en el texto del DOS del core DOSBOX-CORE).
 Para el core de SEGA, debido al tema del dithering y tal, yenemos dos opciones:
 
 1) El shader ZFAST_CRT_COMPOSITE con los parámetros: CURVATURE a 0, CONVERGENCE X-AXIS al máximo,
@@ -7219,8 +7220,6 @@ Para el core de SEGA, debido al tema del dithering y tal, yenemos dos opciones:
    Para ello, primero pon el número de pasadas a 2, en la pasada 1 carga el shader GDAPT PASS 0, y en la pasada 2 carga el FAKELOTTES.
    Para que las sombras en el Comix Zone no se vean tramadas sobre algunos colores, hay que ajustar algún parámetro.
 4) El shader crt-Cyclon con los parámetros de convergencia al máximo. Lo malo de esta opción es que se ve un poco "granuloso" todo.
- 
-Para el core de PC (DOSBOX-CORE) el mejor es ZFAST-CRT-HDMASK con los valores como viene y escalado a enteros.
 
 APUNTES SOBRE CORES ESPECÍFICOS:
 
