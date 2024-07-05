@@ -2335,14 +2335,14 @@ PARA CARGAR JUEGOS PAL A 50Hz:
 -Crea un script /usr/local/bin/amiga como este, que en caso de ser PAL el juego, ponga el monitor a 50Hz si el juego es PAL y además cargue
 las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
-if [[ "$1" == *"PAL"* ]]; then                                                                                                                   
-  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@50                                                                                         
-  sleep 1                                                                                                                                        
-  retroarch -L ~/.config/retroarch/cores/puae_libretro.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"                            
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@60                                                                                                
-else                                                                                                                                             
-  retroarch -L ~/.config/retroarch/cores/puae_libretro.so "$1"                                                                                   
-fi 
+if [[ "$1" == *"PAL"* ]]; then
+  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@50
+  sleep 1
+  retroarch -L ~/.config/retroarch/cores/puae_libretro.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@60
+else
+  retroarch -L ~/.config/retroarch/cores/puae_libretro.so "$1"
+fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la segunda línea es porque NO queremos que al quitar el juego
 el RetroArch se quede a 50Hz...¡Los 50Hz son sólo una excepcionalidad para juegos PAL!):
