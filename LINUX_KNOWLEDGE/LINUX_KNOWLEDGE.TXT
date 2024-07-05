@@ -7188,10 +7188,13 @@ y para volver, obviamente, start.
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
--VIDEO: Driver VULKAN, con "VSYNC" desactivado (SÍ, DESACTIVADO!!), y "VSYNC SWAP INTERVAL" en "AUTO"
-(OJO: Si lo tienes a 1 es cuando el vsync rate sale a la mitad, es decir, te detecta 30Hz en pantallas a 60Hz)
-ALTERNATIVA (NO RECOMENDADO, usa VULKAN mejor...): Driver "GLCORE" que usa GL 3.2
-(Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
+-VIDEO: Driver VULKAN, con "VSYNC" desactivado (SÍ, DESACTIVADO!!), "MAX SWAPCHAIN" a 2.
+OJO!!! PARA EVITAR que al usar "MAX SWAPCHAIN" a 2 el vsync rate salga a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz)
+tienes que hacer estas DOS cosas:
+	-Tener el "VSYNC SWAP INTERVAL" en "AUTO"
+	-En algunos compositores, como Wayfire o Sway, configurar el "max_render_time" del compositor a un valor bajo, sobre 8 o 10.
+
+ALTERNATIVA (NO RECOMENDADO): Driver "GLCORE" que usa GL 3.2 (Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
 HARD SYNC ON, y HARD SYNC FRAMES 0.
 Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
 Si usas el driver GL (NO RECOMENDADO, USA GLCORE!!), para que HARD SYNC ON funcione tenemos que
