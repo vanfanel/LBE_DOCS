@@ -514,6 +514,11 @@ export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 CUIDADO: LA ALTERNATIVA A ESTAS DOS COSAS SERÍA, ANTES DE EMPEZAR A INSTALAR NINGUNA LIBRERÍA COMPILADA POR MI,
 CREAR /usr/local/lib64 COMO UN SYMLINK DE /usr/local/lib, PERO NO ES BUENA IDEA: ES UN HACK QUE PODRÍA DAR PROBLEMAS.
 ASÍ QUE HAZ LAS DOS COSAS QUE ACABO DE DECIRTE.
+
+(NOTA: Todo este lio viene porque MESON instala las cosas en /usr/local/lib64, que se supone que es el sitio correcto,
+ y CMAKE las instala en /usr/local/lib.
+ Queda pendienden entender por qué, o si esto cambia en futuras versiones de Debian, o qué pasa).
+
 ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡
 
 DEPENDENCIAS PREVIAS DE MESA:
