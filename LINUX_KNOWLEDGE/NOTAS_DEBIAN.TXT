@@ -366,11 +366,11 @@ Editamos /etc/default/keyboard, y lo dejamos así:
 
 XKBMODEL="pc105"                                                                                               
 XKBLAYOUT="es"                                                                                                 
-XKBVARIANT="nodeadkeys"                                                                                        
+XKBVARIANT="deadtilde"                                                                                        
 XKBOPTIONS=""                                                                                                  
 BACKSPACE="guess"
 
-Sin lo de "nodeadkeys", tenemos que darle a la Ñ dos veces para sacar la tilde, y es una mierda eso.
+Sin lo de "deadtilde", tenemos que darle a la Ñ dos veces para sacar la tilde, y es una mierda eso.
 
 ACTUALIZAR EL KERNEL SIN COMPLICARNOS NADA
 ==========================================
