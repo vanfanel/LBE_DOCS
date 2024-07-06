@@ -30,7 +30,8 @@ en la que se nos ha instalado "libvkbasalt.so", en mi caso la tengo así:
 "library_path": "/usr/local/lib64/libvkbasalt.so",
 Una posible alternativa es pasarle a meson "--prefix=/usr", de manera que la librería se debería instalar en /usr/local/lib
 y no haría falta editar /usr/local/share/vulkan/implicit_layer.d/vkBasalt.json, pero a veces eso falla.
-(NOTA: Todo este lio viene porque MESON instala las cosas en /usr/local/lib64, y CMAKE las instala en /usr/local/lib.
+(NOTA: Todo este lio viene porque MESON instala las cosas en /usr/local/lib64, que se supone que es el sitio correcto,
+ y CMAKE las instala en /usr/local/lib.
  Queda pendienden entender por qué, o si esto cambia en futuras versiones de Debian, o qué pasa).
 
 CONFIGURACIÓN DE VKBASALT:
