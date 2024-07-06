@@ -5830,7 +5830,7 @@ de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
 	mkdir b4
 	cd b4
 	cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 \
-	-DGLFW_USE_WAYLAND=1 -D_GLFW_X11=0 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
+	-DGLFW_BUILD_WAYLAND=1 -DGLFW_BUILD_X11=0 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
 	-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
 -Instalamos otra dependencia previa: LIBTHEROA, que si la instalamos desde APT nos instala CAIRO, que a su vez depende de
