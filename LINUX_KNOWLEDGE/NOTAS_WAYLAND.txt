@@ -459,12 +459,11 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release -Dzlib=disabled -Dtests=disabled -Ddwrite=disabled ..
 
-
-Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
--Instalamos dependencias previas: apt-get install libglib2.0-dev libfontconfig-dev
--Desinstalamos el pango del sistema: apt-get purge libpango* && apt-get autoremove
--Bajamos los últimos sources estables de: https://github.com/GNOME/pango/tags
--Configuramos con:
+-Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
+--Instalamos dependencias previas: apt-get install libglib2.0-dev libfontconfig-dev
+--Desinstalamos el pango del sistema: apt-get purge libpango* && apt-get autoremove
+--Bajamos los últimos sources estables de: https://github.com/GNOME/pango/tags
+--Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
