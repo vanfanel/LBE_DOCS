@@ -500,8 +500,8 @@ sudo ninja install
 
 En este punto, puedes probar si libdrm te funciona bien haciendo:
 modetest -s 32:1280x720
-(donde 32 es un ID de conector válido: puedes ver los conectores con modetest|grep connected).
-O bien, en X86_64, usa: modetest -s 185:1280x720
+(donde 32 es un ID de conector válido: puedes ver los conectores con "modetest|grep connected").
+O bien, en X86_64, usa: modetest -s 236:1280x720
 
 ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ATENCIÓN, ATENCIÓN!!!!!!!!!!!!!!!!!!!!!!!!!!!
 SI ESTÁS EN X86_64:
