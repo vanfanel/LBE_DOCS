@@ -20,12 +20,16 @@ mkdir b4
 cd b4
 
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
-meson setup -Dbuildtype=release --prefix=/usr
-
-(OJO!!! HAY QUE PASARLE el "--prefix=/usr", ya que si instala la librería en /usr/local/lib, no funcionará).
+meson setup -Dbuildtype=release
 
 ninja -j4
 ninja install
+
+--Ahora editamos /usr/local/share/vulkan/implicit_layer.d/vkBasalt.json y en la línea "library_path" ponemos la ruta completa
+en la que se nos ha instalado "libvkbasalt.so", en mi caso la tengo así:
+"library_path": "/usr/local/lib64/libvkbasalt.so",
+Una posible alternativa es pasarle a meson "--prefix=/usr", de manera que la librería se debería instalar en /usr/local/lib
+y no haría falta editar /usr/local/share/vulkan/implicit_layer.d/vkBasalt.json, pero a veces eso falla.
 
 CONFIGURACIÓN DE VKBASALT:
 
