@@ -492,6 +492,11 @@ Por defecto, se puede salir con CTRL+ALT+BACKSPACE.
 
 Copiamos el archivo wayfire.ini que viene con los sources a ~/.config/wayfire.ini, lo editamos, y ahí:
 
+--Si queremos teclado en español, nos vamos a la sección "[input]" que está comentada, la descomentamos y la dejamos así:
+[input]                                                                                                                                
+xkb_layout = es                                                                                                                        
+xkb_variant = deadtilde
+
 --Buscamos "Start a terminal" y lo dejamos así:
 binding_terminal = <ctrl> <alt> KEY_T                                                                                                  
 command_terminal = foot
