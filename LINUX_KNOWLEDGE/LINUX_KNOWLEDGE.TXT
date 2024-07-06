@@ -2587,9 +2587,12 @@ git clone --depth 1 https://github.com/sezero/mikmod.git
 cd libmikmod
 mkdir b4
 cd b4
+
 cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSE=0 -DENABLE_OSS=0 -DENABLE_DOC=0 \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" ..
-sudo make install
+
+make -j4 
+make install
 
 Y AHORA VAMOS A POR EL UQM EN SÍ:
 
