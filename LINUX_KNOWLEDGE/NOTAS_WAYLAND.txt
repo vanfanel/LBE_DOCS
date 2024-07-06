@@ -469,8 +469,7 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
 
-
-VAMOS CON EL WAYFIRE EN SÍ:
+	VAMOS CON EL WAYFIRE EN SÍ:
 
 Nos bajamos la última estable de: https://github.com/WayfireWM/wayfire/releases
 
