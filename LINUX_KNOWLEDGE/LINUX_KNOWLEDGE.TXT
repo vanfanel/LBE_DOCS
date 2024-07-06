@@ -7477,6 +7477,7 @@ COMPILAR EL CORE MELONDS DE LIBRETRO
 ====================================
 
 Clonamos su repo:
+git clone --depth 1 https://github.com/JesseTG/melonds-ds.git
 
 Configuramos con:
 

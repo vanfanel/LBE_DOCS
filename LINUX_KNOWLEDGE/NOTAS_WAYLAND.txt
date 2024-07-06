@@ -1194,10 +1194,10 @@ swaybg -i atari.png >/dev/null 2>&1 &
 
 (NOTA: Acepta sólo PNG a no ser que lo compiles con gdk-pixbuf habilitado, así que con PNG nos vale).
 
-LANZAR LABWC COMO SERVICIO DE SYSTEMD
-=====================================
+LANZAR WAYLAND COMO SERVICIO DE SYSTEMD
+=======================================
 
-Creamos /usr/local/bin/launch-labwc con el contenido:
+Creamos /usr/local/bin/launch-wayfire (o el compositor que sea) con el contenido:
 
 #############
 
@@ -1207,12 +1207,12 @@ if [[ ! -e $rundir ]]; then
     mkdir -p $rundir
 fi
 export XDG_RUNTIME_DIR=/run/user/0
-/usr/local/bin/labwc
+/usr/local/bin/wayfire
 
 #############
 
-HACEMOS EJECUTABLE /usr/local/bin/launch-labwc:
-chmod +x /usr/local/bin/launch-labwc
+HACEMOS EJECUTABLE /usr/local/bin/launch-wayfire:
+chmod +x /usr/local/bin/launch-wayfire
 
 
 Creamos /etc/systemd/system/wayland.service con el contenido:
@@ -1228,7 +1228,7 @@ Group=root
 PAMName=login
 WorkingDirectory=%h
 ExecStart=
-ExecStart=-/usr/local/bin/launch-labwc
+ExecStart=-/usr/local/bin/launch-wayfire
 Restart=always
 
 [Install]
