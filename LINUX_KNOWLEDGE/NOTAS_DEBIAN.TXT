@@ -523,7 +523,7 @@ sudo apt-get install --no-install-recommends \
     flex bison python3-mako python3-setuptools \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
-    zlib1g-dev pkg-config \
+    zlib1g-dev pkg-config
 
 #####
 DEPENDENCIAS EXCLUSIVAS PARA INTEL GALLIUM IRIS (los números de versión son para Debian 12, pueden cambian en Debian 13 y posteriores):

@@ -6227,7 +6227,7 @@ NOTA: La opción de configuración de los gráficos en chocolate-setup peta. Da 
 **************ACTUALIZAR MESON***************************************************************************************************
 
 sudo apt-get purge meson
-sudo apt-get purge ninja
+sudo apt-get purge ninja-build
 sudo apt install python3-pip --no-install-recommends
 sudo pip install -U ninja
 sudo pip install -U meson
