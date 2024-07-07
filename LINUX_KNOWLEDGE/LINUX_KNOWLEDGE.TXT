@@ -7191,19 +7191,19 @@ y para volver, obviamente, start.
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
--VIDEO: Driver VULKAN, con "VSYNC" desactivado (SÍ, DESACTIVADO!!), "MAX SWAPCHAIN" a 2.
+-VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 2, "VSYNC" desactivado (SÍ, DESACTIVADO: VSYNC sólo tiene sentido con triple buffer)
 OJO!!! PARA EVITAR que al usar "MAX SWAPCHAIN" a 2 el vsync rate salga a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz)
 tienes que hacer estas DOS cosas:
 	-Tener el "VSYNC SWAP INTERVAL" en "AUTO"
 	-En algunos compositores, como Wayfire o Sway, configurar el "max_render_time" del compositor a un valor bajo, sobre 8 o 10.
 
 EXPERIMENTAL (uso correcto de la GPU +baja latencia + no tearing):
-Driver VULKAN, con "VSYNC" desactivado (SÍ, DESACTIVADO!!), "MAX SWAPCHAIN" a 3,
+Driver VULKAN, "MAX SWAPCHAIN" a 3, con "VSYNC" desactivado (aunque tengamos triple buffer: vamos a hacer coincidir una cosa...),
 y poniendo "FRAME DELAY" a 8ms (coincidiendo con lo que tengas en "max_render_time" en la configuración del compositor)
 y "AUTOMATIC FRAME DELAY" a "OFF". PARECE FUNCIONAR PERFECTO: triple buffer (no detenemos la GPU!) y no hay tearing.
 
 OTRA POSIBILIDAD (baja latencia a base de compensar la latencia introducida por VSYNC):
-Driver VULKAN, con "VSYNC" activado, "MAX SWAPCHAIN" a 3,
+Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado,
 y subir el "FRAME DELAY" más aún (acercándolo a 16, que recortaría un FPS entero, cosa que es imposible porque la emulación
 se tendría que ejecutar en un tiempo infinitamente pequeño) para compensar el input lag introducido por el VSYNC sobre el triple buffering. 
 
