@@ -492,6 +492,9 @@ Por defecto, se puede salir con CTRL+ALT+BACKSPACE.
 
 Copiamos el archivo wayfire.ini que viene con los sources a ~/.config/wayfire.ini, lo editamos, y ahí:
 
+--Para activar VRR, nos vamos a la sección "[output]" (viene como "[output:eDP-1]" por defecto, lo tendrás puesto a "HDMI-A-1")
+y añadimos "vrr = true"
+
 --Si queremos teclado en español, nos vamos a la sección "[input]" que está comentada, la descomentamos y la dejamos así:
 [input]                                                                                                                                
 xkb_layout = es                                                                                                                        
