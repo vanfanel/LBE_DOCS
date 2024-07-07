@@ -7197,6 +7197,13 @@ tienes que hacer estas DOS cosas:
 	-Tener el "VSYNC SWAP INTERVAL" en "AUTO"
 	-En algunos compositores, como Wayfire o Sway, configurar el "max_render_time" del compositor a un valor bajo, sobre 8 o 10.
 
+EXPERIMENTAL: Driver VULKAN, con "VSYNC" desactivado (SÍ, DESACTIVADO!!), "MAX SWAPCHAIN" a 3,
+y poniendo "FRAME DELAY" a 8ms (coincidiendo con lo que tengas en "max_render_time" en la configuración del compositor)
+y "AUTOMATIC FRAME DELAY" a "OFF".
+OTRA POSIBILIDAD para baja latencia sería: Driver VULKAN, con "VSYNC" activado, "MAX SWAPCHAIN" a 3,
+y subir el "FRAME DELAY" más aún (acercándolo a 16, que recortaría un FPS entero, cosa que es imposible porque la emulación
+se tendría que ejecutar en un tiempo infinitamente pequeño) para compensar el input lag introducido por el VSYNC sobre el triple buffering. 
+
 ALTERNATIVA (NO RECOMENDADO): Driver "GLCORE" que usa GL 3.2 (Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
 HARD SYNC ON, y HARD SYNC FRAMES 0.
 Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
