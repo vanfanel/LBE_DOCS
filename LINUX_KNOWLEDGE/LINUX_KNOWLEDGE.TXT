@@ -7197,7 +7197,10 @@ tienes que hacer estas DOS cosas:
 	-Tener el "VSYNC SWAP INTERVAL" en "AUTO"
 	-En algunos compositores, como Wayfire o Sway, configurar el "max_render_time" del compositor a un valor bajo, sobre 8 o 10.
 
-EXPERIMENTAL (uso correcto de la GPU +baja latencia + no tearing):
+IDEAL (Necesita VRR, pero obtendremos uso correcto de la GPU + baja latencia + no tearing):
+Driver VULKAN, "MAX SWAPCHAIN" a 3, con "VSYNC" desactivado, y VRR activado.
+
+EXPERIMENTAL (uso correcto de la GPU + baja latencia + no tearing, sin tener VRR):
 Driver VULKAN, "MAX SWAPCHAIN" a 3, con "VSYNC" desactivado (aunque tengamos triple buffer: vamos a hacer coincidir una cosa...),
 y poniendo "FRAME DELAY" a 8ms (coincidiendo con lo que tengas en "max_render_time" en la configuración del compositor)
 y "AUTOMATIC FRAME DELAY" a "OFF". PARECE FUNCIONAR PERFECTO: triple buffer (no detenemos la GPU!) y no hay tearing.
