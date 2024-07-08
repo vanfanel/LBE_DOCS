@@ -7268,6 +7268,8 @@ Para el Gambatte, además, sube Audio Latency a 40ms, para evitar los típicos d
 (Parece que hay algo raro en el buffering del audio en el core Gambatte...)
 
 PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE SHADERS SE VERÁ MUY RARA.
+Si quieres usar el ratón como Zapper, pon "QUICK MENU->CONTROLS->PORT 2 CONTROLS->DEVICE TYPE" a "ZAPPER",
+y "QUICK MENU->CORE OPTIONS->INPUT->ZAPPER DEVICE" a "POINTER".
 
 PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
 
