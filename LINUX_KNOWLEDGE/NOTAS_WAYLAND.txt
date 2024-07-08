@@ -525,7 +525,9 @@ plugins = \
 
 --Eliminamos las secciones [wrot], [fisheye], [zoom], etc.. que corresponden a plugins que no tenemos habilitados en la lista de plugins.
 
---En la sección "[core]" podemos ajustar "max_render_time" (MRT de ahora en adelante).
+--(NO NECESARIO: SÓLO NECESARIO PARA "MAX_SWAPCHAIN=2"/DOBLE BUFFER, COSA QUE NO USAMOS YA PORQUE, EN VULKAN, "MAX_SWAPCHAIN=3"/TRIPLE BUFFER
+   CON EN VSYNC DESACTIVADO NOS DA LA MISMA LATENCIA QUE "MAX_SWAPCHAIN=2"/DOBLE BUFFER)
+En la sección "[core]" podemos ajustar "max_render_time" (MRT de ahora en adelante).
 Yo lo suelo dejar por ahora a 8, que no reduce a la mitad la tasa de fotogramas de RetroArch cuando usamos Vulkan + max_swapchain a 2
 ni tampoco reduce a la mitad la tasa de fotogramas de los efectos del escritorio. 
 MRT es la antelación con la que el compositor debe componer el frame RESPECTO AL SIGUIENTE VBLANK QUE ES CUANDO SE ENVÍA PARA PONER EN PANTALLA.
