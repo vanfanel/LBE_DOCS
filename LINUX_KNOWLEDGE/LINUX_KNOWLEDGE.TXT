@@ -984,6 +984,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER"),
 Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
+Y EL "USE OLD MDEC ROUTINES" a "OFF" (las OLD MDEC ROUTUNES son para sustituir texturas en los juegos, nada más).
 A PARTE, EN "SETTINGS->AUDIO->OUTPUT" PON "ALSA" CON UN "AUDIO LATENCY" DE 32.
 
 ********CROSSCOMPILAR el core libretro Duckstation************
