@@ -7191,25 +7191,20 @@ y para volver, obviamente, start.
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
--VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado (SÍ, DESACTIVADO: ACTIVARLO ES LO QUE METE INPUT LAG CON TRIPLE BUFFER
-Y LA GRACIA DE VULKAN ES PODER TENER "MAX SWAPCHAIN" a 3 SIN VSYNC Y ADEMÁS SIN TEARING!!)
-Si el compositor funciona correctamente, no deberíamos tener tearing a pesar tener el vsync desactivado.
-
-IDEALMENTE necesitaríamos VRR:
-Driver VULKAN, "MAX SWAPCHAIN" a 3, con "VSYNC" desactivado, y VRR activado.
-
-(NOTA ANTIGUA E INNECESARIA YA QUE USAMOS MAX_SWAPCHAIN a 3)
-SI QUISIERAS USAR MAX_SWAPCHAIN a 2, PARA EVITAR que el vsync rate salga a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz)
-tienes que hacer estas DOS cosas:
-	-Tener el "VSYNC SWAP INTERVAL" en "AUTO"
-	-En algunos compositores, como Wayfire o Sway, configurar el "max_render_time" del compositor a un valor bajo, sobre 8 o 10.
-
-ALTERNATIVA (NO RECOMENDADO): Driver "GLCORE" que usa GL 3.2 (Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
+VIDEO: Driver "GLCORE" que usa GL 3.2 (Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
 HARD SYNC ON, y HARD SYNC FRAMES 0.
-Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2,
+	***Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2***
 Si usas el driver GL (NO RECOMENDADO, USA GLCORE!!), para que HARD SYNC ON funcione tenemos que
 haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
 ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
+
+EN EL FUTURO CUANDO TENGAS VRR:
+VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado y VRR ACTIVADO.
+La gracia de VULKAN es esa, tener triple buffer sin VSYNC (el VSYNC es lo que mete el lag realmente), para lo cual necesitamos
+sí o sí VRR. Sin VRR y sin VSYNC, aparentemente no hay tearing pero se producen desincronizaciones al rato.
+SI QUISIERAS USAR MAX_SWAPCHAIN a 2 (no tiene sentido, nos deja el sistema muy limitado), PARA EVITAR que el vsync rate salga a la mitad
+(es decir, te detecta 30Hz en pantallas a 60Hz) tienes que configurar el "max_render_time" del compositor a un valor bajo, sobre 8 o 10.
+Esto es necesario en Wayfire, Sway y otros.
 
 -AUDIO: driver ALSATHREAD, 48000 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
