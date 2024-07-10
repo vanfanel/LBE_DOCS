@@ -7192,14 +7192,15 @@ y para volver, obviamente, start.
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
-VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado, "AUTO FRAME DELAY" activado, "FRAME DELAY" a 0,
-y en la configuración del compositor, "max_render_time" a 8.
-(Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato, no inmediatamente,
-sin embargo el "AUTO FRAME DELAY" parece prevenir esto).
+VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado,
+(Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato).
+COMO EL VSYNC INTRODUCE LATENCIA PORQUE HAY QUE ESPERARLO, puedes poner el modo de vídeo a 120Hz (para que salten el doble de VSYNCS
+y así no tengamos que esperarlo tanto) y el "VSYNC SWAP INTERVAL" a "AUTO",
+y deberías tener la misma latencia que con MAX_SWAPCHAIN a 2.
 
 SI QUISIERAS USAR MAX_SWAPCHAIN a 2 + "VSYNC" desactivado (es lo que menos latencia produce de todo, pero nos limita el sistema mucho),
-PARA EVITAR que el vsync rate salga a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz) tienes que configurar el "max_render_time"
-del compositor a un valor bajo, sobre 8 o 10.
+tienes que configurar el "max_render_time" del compositor a un valor bajo (sobre 8 o así)
+para evitar que el vsync rate salga a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz) 
 Esto es necesario en Wayfire, Sway y otros wayland compositors.
 
 EN EL FUTURO CUANDO TENGAS VRR:
