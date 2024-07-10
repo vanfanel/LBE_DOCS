@@ -7194,9 +7194,8 @@ Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
 VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado,
 (Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato).
-COMO EL VSYNC INTRODUCE LATENCIA PORQUE HAY QUE ESPERARLO, puedes poner el modo de vídeo a 120Hz (para que salten el doble de VSYNCS
-y así no tengamos que esperarlo tanto) y el "VSYNC SWAP INTERVAL" a "AUTO",
-y deberías tener la misma latencia que con MAX_SWAPCHAIN a 2.
+(Lo de poner 120Hz y VSYNC SWAP INTERVAL a 2 nos da el mismo input lag que MAX_SWAPCHAIN a 2, pero también tiene los mismos problemas:
+chasquidos en la intro del Rusty, juegos de Saturn lentos, etc. Así que te puedes ahorrar las pruebas).
 
 SI QUISIERAS USAR MAX_SWAPCHAIN a 2 + "VSYNC" desactivado (es lo que menos latencia produce de todo, pero nos limita el sistema mucho),
 tienes que configurar el "max_render_time" del compositor a un valor bajo (sobre 8 o así)
