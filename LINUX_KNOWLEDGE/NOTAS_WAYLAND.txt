@@ -1123,7 +1123,7 @@ Pero lo suyo es meterlo en ~/.config/labwc/autostart así:
 
 --Para teclado en español creamos ~/.config/labwc/environment con el contenido:
 XKB_DEFAULT_LAYOUT=es
-XKB_DEFAULT_VARIANT=nodeadkeys
+XKB_DEFAULT_VARIANT=deadtilde
 Para teclado en inglés sin deadkeys de manera que la "~" salga correctamente sería:
 XKB_DEFAULT_LAYOUT=us
 XKB_DEFAULT_VARIANT=altgr-intl
@@ -1358,7 +1358,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Denable_openvr_support=false -Dpipewire=disabled -Dxwayland=disabled ..
+meson setup -Dbuildtype=release -Denable_openvr_support=false -Dpipewire=disabled -Dxwayland=disabled ..
 
 ninja -j4
 ninja install
