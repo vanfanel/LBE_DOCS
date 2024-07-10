@@ -7197,13 +7197,15 @@ y en la configuración del compositor, "max_render_time" a 8.
 (Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato, no inmediatamente,
 sin embargo el "AUTO FRAME DELAY" parece prevenir esto).
 
+SI QUISIERAS USAR MAX_SWAPCHAIN a 2 + "VSYNC" desactivado (es lo que menos latencia produce de todo, pero nos limita el sistema mucho),
+PARA EVITAR que el vsync rate salga a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz) tienes que configurar el "max_render_time"
+del compositor a un valor bajo, sobre 8 o 10.
+Esto es necesario en Wayfire, Sway y otros wayland compositors.
+
 EN EL FUTURO CUANDO TENGAS VRR:
 VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado y VRR ACTIVADO, sin necesidad de "AUTO FRAME DELAY".
 La gracia de VULKAN es esa, tener triple buffer sin VSYNC (el VSYNC es lo que mete el lag realmente), para lo cual necesitamos
 sí o sí VRR. 
-SI QUISIERAS USAR MAX_SWAPCHAIN a 2 (no tiene sentido, nos deja el sistema muy limitado), PARA EVITAR que el vsync rate salga a la mitad
-(es decir, te detecta 30Hz en pantallas a 60Hz) tienes que configurar el "max_render_time" del compositor a un valor bajo, sobre 8 o 10.
-Esto es necesario en Wayfire, Sway y otros.
 
 (NO USAR, MUCHO LAG) VIDEO: Driver "GLCORE" que usa GL 3.2 (Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
 HARD SYNC ON, y HARD SYNC FRAMES 0.
