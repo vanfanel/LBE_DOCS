@@ -7,6 +7,24 @@ Veamos cómo hacemos todo ello.
 NOTA: Para hacer pruebas rápidas (cuando modificamos config.txt o cmdline.txt), es aconsejable montar la partición de arranque como r/w:
 mount -o remount,rw /flash
 
+####BLOQUE Pi 5 (OJO!! La pantalla no va si conectas la alimentación al hat, la tienes que conectar directamenre a la Pi5!!)####
+
+Nos bajamos el fichero (OJO! es de un branch que se llama feature/pi5, no del main): 
+wget https://raw.githubusercontent.com/pimoroni/picade-hat/feature/pi5/picade.dts
+Y le hacemos:
+dtc -I dts -O dtb -o picade.dtbo picade.dts
+Lo metemos /LAKKA/overlays (o en /flash/overlays/ si lo estamos haciendo desde el propio Lakka por ssh)
+
+Editamos config.txt y añadimos:
+
+dtoverlay=picade
+hdmi_force_hotplug=1
+usb_max_current_enable=1
+
+(OJO!! Lo de "usb_max_current_enable=1" es MUY importante o el monitor no funcionará!!)
+
+###FIN BLOQUE PI 5####
+
 ####BLOQUE Pi 4####
 
 Nos bajamos el fichero: 
@@ -28,24 +46,6 @@ OJO!!!! NO PONGAS dtparam=audio=off EN MONTAJES DONDE QUIERAS SACAR EL SONIDO PO
 QUE LLEVAN SONIDO POR HIFIBERRY!!!
 
 ###FIN BLOQUE PI 4####
-
-####BLOQUE Pi 5 (OJO!! La pantalla no va si conectas la alimentación al hat, la tienes que conectar directamenre a la Pi5!!)####
-
-Nos bajamos el fichero (OJO! es de un branch que se llama feature/pi5, no del main): 
-wget https://raw.githubusercontent.com/pimoroni/picade-hat/feature/pi5/picade.dts
-Y le hacemos:
-dtc -I dts -O dtb -o picade.dtbo picade.dts
-Lo metemos /LAKKA/overlays (o en /flash/overlays/ si lo estamos haciendo desde el propio Lakka por ssh)
-
-Editamos config.txt y añadimos:
-
-dtoverlay=picade
-hdmi_force_hotplug=1
-usb_max_current_enable=1
-
-(OJO!! Lo de "usb_max_current_enable=1" es MUY importante o el monitor no funcionará!!)
-
-###FIN BLOQUE PI 5####
 
 Desde dentro de LAKKA (entramos por SSH):
 
@@ -78,7 +78,8 @@ hw:CARD=sndrpihifiberry
 Lo normal sería irnos a SETTINGS->AUDIO->OUTPUT y en DEVICE lo elegimos, pero por si no te deja elegirlo desde el mando,
 pues lo mejor es eso, editar el fichero de configración a mano.
 
-Si elegimos el driver de vídeo Vulkan, en ~/.config/retroarch/retroarch.cfg, pon el modo de vídeo que usa el sistema en los parámetros:
+VIDEO: driver Vulkan, "MAX SWAPCHAIN IMAGES" a 2, "VSYNC" OFF. 
+En ~/.config/retroarch/retroarch.cfg, pon el modo de vídeo que usa el sistema en los parámetros:
 (OJO, no te olvides de deshabilitar temporalmente el salvado automático de la configuración al salir de RetroArch, porque si no,
 lo que vas a cambiar en retroarch.cfg se sobreescribirá al reiniciar)
 
