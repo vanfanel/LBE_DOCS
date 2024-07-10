@@ -7192,20 +7192,24 @@ y para volver, obviamente, start.
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
-VIDEO: Driver "GLCORE" que usa GL 3.2 (Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
-HARD SYNC ON, y HARD SYNC FRAMES 0.
-	***Usar HARD SYNC ON + HARD SYNC FRAMES 0 equivale a usar VULKAN con SWAPCHAIN a 2***
-Si usas el driver GL (NO RECOMENDADO, USA GLCORE!!), para que HARD SYNC ON funcione tenemos que
-haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
-ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
+VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado.
+(Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato, no inmediatamente, así que dejalo activado).
 
 EN EL FUTURO CUANDO TENGAS VRR:
 VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado y VRR ACTIVADO.
 La gracia de VULKAN es esa, tener triple buffer sin VSYNC (el VSYNC es lo que mete el lag realmente), para lo cual necesitamos
-sí o sí VRR. Sin VRR y sin VSYNC, aparentemente no hay tearing pero se producen desincronizaciones al rato.
+sí o sí VRR. 
 SI QUISIERAS USAR MAX_SWAPCHAIN a 2 (no tiene sentido, nos deja el sistema muy limitado), PARA EVITAR que el vsync rate salga a la mitad
 (es decir, te detecta 30Hz en pantallas a 60Hz) tienes que configurar el "max_render_time" del compositor a un valor bajo, sobre 8 o 10.
 Esto es necesario en Wayfire, Sway y otros.
+
+(NO USAR, MUCHO LAG) VIDEO: Driver "GLCORE" que usa GL 3.2 (Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
+HARD SYNC ON, y HARD SYNC FRAMES 0.
+	***Usar HARD SYNC ON + HARD SYNC FRAMES 0 NO equivale a usar VULKAN con SWAPCHAIN a 2:
+	   CON HARD SYNC ON + HARD SYNC FRAMES 0 HAY MUCHO MÁS INPUT LAG***
+Si usas el driver GL (NO RECOMENDADO, USA GLCORE!!), para que HARD SYNC ON funcione tenemos que
+haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
+ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
 
 -AUDIO: driver ALSATHREAD, 48000 Hz, 36ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
@@ -7303,6 +7307,16 @@ Así que hacemos esto:
 -En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
 -En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
 -En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
+
+*********INPUT LAG EN RETROARCH: EL TEST DEL DOBLE CURSOR************
+
+Asigna una tecla a "TOGGLE MOUSE GRAB", yo suelo usar la M.
+Ahora, entra en el menú de RetroArch y pulsa M: verás a la vez el cursor de sistema y el cursor de RetroArch.
+Al mover el ratón, se moverán ambos cursores. Dado que el cursor de sistema no tiene lag, deberían ir casi pegados todo el tiempo.
+Si se separan bastante, es que tienes bastante lag. Si se mantienen casi juntos, es que no tienes casi lag.
+
+En lugar del cursor de RetroArch, se puede usar el cursor del crosshair para juegos de disparos de los cores SNES9X o GenesisPlusGX,
+de manera que se tenga en cuenta también el valor de FRAME DELAY (con el cursor de RetroArch, no se tiene en cuenta).
 
 *********No funcionan los input en RetroArch**********
 
