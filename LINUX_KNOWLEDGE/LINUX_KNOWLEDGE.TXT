@@ -7192,11 +7192,13 @@ y para volver, obviamente, start.
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
-VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado.
-(Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato, no inmediatamente, así que dejalo activado).
+VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado, "AUTO FRAME DELAY" activado, "FRAME DELAY" a 0,
+y en la configuración del compositor, "max_render_time" a 8.
+(Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato, no inmediatamente,
+sin embargo el "AUTO FRAME DELAY" parece prevenir esto).
 
 EN EL FUTURO CUANDO TENGAS VRR:
-VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado y VRR ACTIVADO.
+VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado y VRR ACTIVADO, sin necesidad de "AUTO FRAME DELAY".
 La gracia de VULKAN es esa, tener triple buffer sin VSYNC (el VSYNC es lo que mete el lag realmente), para lo cual necesitamos
 sí o sí VRR. 
 SI QUISIERAS USAR MAX_SWAPCHAIN a 2 (no tiene sentido, nos deja el sistema muy limitado), PARA EVITAR que el vsync rate salga a la mitad
