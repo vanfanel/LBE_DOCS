@@ -998,6 +998,7 @@ output HDMI-A-1 resolution 1920x1080@60 position 0,0
 -Para tener el teclado en castellano:
 input type:keyboard {
         xkb_layout es
+		xkb_variant deadtilde
 }
 
 -Para lanzar el terminal con CTRL+ALT+T:
