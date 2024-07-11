@@ -1328,11 +1328,12 @@ ninja install
 Y en ~/.config/labwc/autostart:
 wlclock --border-size 4 --position top-left --size 150 --layer bottom --background-colour "#22373f" --b    order-colour "#152126" >/dev/null 2>&1 &
 
-GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
-======================================
+INSTALAR GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
+===============================================
 
 -Instalamos dependencias previas:
-apt-get install libx11-dev libx11-xcb-dev libxdamage-dev libxcomposite-dev libxrender-dev libxxf86vm-dev libxtst-dev libxres-dev libxmu-dev --no-install-recommends
+apt-get install libx11-dev libx11-xcb-dev libxdamage-dev libxcomposite-dev libxcursor-dev libxxf86vm-dev libxtst-dev libxrender-dev \
+libxtst-dev libxres-dev libxmu-dev --no-install-recommends
 
 -Instalamos dependencia previa, hwdata.
 --Primero desinstalamos la versión de Debian, ya que le faltan los archivos de pkg-config
@@ -1358,7 +1359,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson setup -Dbuildtype=release -Denable_openvr_support=false -Dpipewire=disabled -Dxwayland=disabled ..
+meson setup -Dbuildtype=release -Denable_openvr_support=false -Dpipewire=disabled ..
 
 ninja -j4
 ninja install
