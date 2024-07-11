@@ -1330,10 +1330,29 @@ wlclock --border-size 4 --position top-left --size 150 --layer bottom --backgrou
 
 INSTALAR GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
 ===============================================
+(NO se puede instalar en Debian 12 porque XWayland no compila contra las versiones de Debian 12 de las librerías de X11 necesarias)
 
 -Instalamos dependencias previas:
 apt-get install libx11-dev libx11-xcb-dev libxdamage-dev libxcomposite-dev libxcursor-dev libxxf86vm-dev libxtst-dev libxrender-dev \
 libxtst-dev libxres-dev libxmu-dev --no-install-recommends
+
+					########BLOQUE XWAYLAND########
+
+Instalamos dependencia previa, XWayland
+
+--Instalamos dependencia previa: libepoxy. Busca las instrucciones en LINUX_KNOWLEDGE.TXT
+
+git clone --depth 1 https://gitlab.freedesktop.org/xorg/xserver.git
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release -Dxorg=false -Dxwayland=true -Dxvfb=false \
+-Dxnest=false -Dxquartz=false -Dxwin=false -Ddocs=false -Dglx=false ..
+
+					########FIN BLOQUE XWAYLAND########
 
 -Instalamos dependencia previa, hwdata.
 --Primero desinstalamos la versión de Debian, ya que le faltan los archivos de pkg-config
@@ -1346,6 +1365,8 @@ Descomprimimos y directamente hacemos:
 ./config
 make install
 (NO hay que compilar nada)
+
+VAMOS CON GAMESCOPE EN SÍ:
 
 git clone --depth 1 https://github.com/Plagman/gamescope.git
 cd gamescope
