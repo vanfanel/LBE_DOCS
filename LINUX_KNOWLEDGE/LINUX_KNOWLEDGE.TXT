@@ -7198,7 +7198,7 @@ VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado,
 chasquidos en la intro del Rusty, juegos de Saturn lentos, etc. Así que te puedes ahorrar las pruebas).
 
 SI QUISIERAS USAR MAX_SWAPCHAIN a 2 + "VSYNC" desactivado (es lo que menos latencia produce de todo, pero nos limita el sistema mucho),
-tienes que configurar el "max_render_time" del compositor a un valor bajo (sobre 8 o así)
+tienes que configurar el "max_render_time" del compositor a un valor medio (sobre 12 o así)
 para evitar que el vsync rate salga a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz) 
 Esto es necesario en Wayfire, Sway y otros wayland compositors.
 

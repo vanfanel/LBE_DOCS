@@ -995,9 +995,10 @@ set $mod Mod1
 -Para que se use el modo de vídeo actual:
 output HDMI-A-1 resolution 1920x1080@60 position 0,0
 
--Para controlar el max_render_time (el tiempo que le damos a los clientes, es decir, los programas que usan Wayland, para presentar sus frames
+-(NECESARIO PARA USAR MAX_SWAPCHAIN 2 SIN FRAMERATE HALVING)
+Para controlar el max_render_time (el tiempo que le damos a los clientes, es decir, los programas que usan Wayland, para presentar sus frames
 antes del scanout: a menor max_render_time menos latencia, se supone) añadimos a la línea de output:
-output HDMI-A-1 max_render_time 8
+output HDMI-A-1 max_render_time 12
 
 -Para tener el teclado en castellano:
 input type:keyboard {
