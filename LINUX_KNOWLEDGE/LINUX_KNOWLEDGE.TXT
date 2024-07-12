@@ -836,6 +836,26 @@ a 3000 ciclos constantes, y en teoría los juegos de modo real deberían usar el
 --Dicho lo anterior, el Rusty lo debes poner a 3000 ciclos, no más, y si usas el kernel Cachyos, puedes usar el audio ALSA (no hace falta
 Alsathread) con 32ms de latencia.
 
+******Usar PCSX2 STANDALONE en GNU/Linux*************
+
+Nos bajamos el último AppImage de:
+...Y le damos permisos de ejecución.
+
+Creamos un softlink de nuestra versión al GLX que espera encontrar el emulador:
+ln -s /usr/local/lib64/libOpenGL.so.0 ./libGLX.so.0
+
+Lanzamos el emulador con:
+I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2-v1.7.5976-linux-appimage-x64-Qt.AppImage "$1" >> /dev/null 2>&1
+
+PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
+--En "Settings->Graphics" ponemos el Renderer a "Vulkan".
+--En "Settings->Emulation", en la parte de abajo activamos "Vertical Sync (VSync)", "Sync to Host Refresh Rate" y "Use Host VSync Timing",
+  y ponemos "Maximum Frame Latency" a "1 frames".
+  (PARA CUANDO TENGAS VRR: Activamos "Optimal Frame Pacing" y desactivamos "Vertical Sync (VSync)").
+--En "Settings->Audio", dejamos "Backend" a "Cubeb" y "Driver" a "alsa".
+
+-SI LOS CONTROLES DEL DPAD VAN MAL: En "Settings->Controllers->Controller Port 1->Mapping Settings" activamos "Ignore inversion".
+
 ******Compilar QT6***********************************************************************************************************
 
 Las instrucciones básicas las he sacado de: https://wiki.qt.io/Building_Qt_6_from_Git
@@ -1114,23 +1134,6 @@ git clone --depth 1 https://github.com/LIJI32/SameBoy.git
 Y entramos en el directorio "libretro" y compilamos con:
 
 make platform=rpi4_64 -j4
-
-******Usar PCSX2 STANDALONE en GNU/Linux*************
-
-Nos bajamos el último AppImage de:
-...Y le damos permisos de ejecución.
-
-Creamos un softlink de nuestra versión al GLX que espera encontrar el emulador:
-ln -s /usr/local/lib64/libOpenGL.so.0 ./libGLX.so.0
-
-Lanzamos el emulador con:
-I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2-v1.7.5976-linux-appimage-x64-Qt.AppImage "$1" >> /dev/null 2>&1
-
-PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
-En "Settings->Emulation", en la parte de abajo activamos "Optimal Frame Pacing" y "Sync to Host Refresh Rate".
-En "Settings->Audio", dejamos "Backend" a "Cubeb" y "Driver" a "alsa".
-
--SI LOS CONTROLES DEL DPAD VAN MAL: En "Settings->Controllers->Controller Port 1->Mapping Settings" activamos "Ignore inversion".
 
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
 
