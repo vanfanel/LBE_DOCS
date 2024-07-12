@@ -115,6 +115,15 @@ Y allí quitamos lo del --appendconfig
 Buscamos la sección: ### Configure retroarch
 Y la comentamos o borramos (ojo, sólo esa sección, no la de debajo).
 
+MANTENER LA VELOCIDAD CONSTANTE DE LA CPU
+=========================================
+
+De esta manera, aunque usemos el governor "performance", la consola no se calienta demasiado.
+Lo primero es eso: usar el governor PERFORMANCE (en las opciones del menú Emulation Station).
+Luego, nos creamos .config/autostart/setcpuspeed.sh con el contenido:
+echo 1200000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+(Si queremos 1.5GHz sería 1500000, y así).
+
 QUITAR EL ERROR [Failed] Failed to start batteryledstatus.service
 =================================================================
 

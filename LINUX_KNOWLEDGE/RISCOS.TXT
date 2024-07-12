@@ -3,7 +3,7 @@ SOLUCIONAR PROBLEMAS DE VÍDEO
 
 Cuando acabamos de instalar un sistema RISC OS nuevo, los juegos de ADFFS y los nativos no va a ir ninguno aunque preparemos bien el config.txt.
 Necesitamos un cmdline.txt con el contenido:
-disable_mode_changes disable_gamma
+disable_gamma disable_mode_changes
 
 Y ya podemos seleccionar un modo de 1080P a 50Hz en el config/txt con:
 hdmi_ignore_edid=0xa5000080
@@ -28,6 +28,36 @@ configure mode 28
 ...para que se vean las letras del inicio a un tamaño legible.
 Puedes ver la lista de modos aquí:
 https://www.riscosopen.org/zipfiles/platform/common/UserGuide.pdf
+
+ESCALADO A ENTEROS PARA JUEGOS ADFFS
+====================================
+
+#####NOTA PREVIA#####
+La fórmula para crear nuevos modos de vídeo es:
+
+hdmi_cvt=<width> <height> <framerate> <aspect> <margins> <interlace> <rb>
+width        width in pixels
+height       height in pixels
+framerate    framerate in Hz
+aspect       aspect ratio 1=4:3, 2=14:9, 3=16:9, 4=5:4, 5=16:10, 6=15:9
+margins      0=margins disabled, 1=margins enabled
+interlace    0=progressive, 1=interlaced
+rb           0=normal, 1=reduced blanking
+
+The first three arguments are required. The remaining ones are optional. aspect defaults to 16:9 if not specified.
+
+#####FIN NOTA PREVIA#####
+
+La idea es tener un modo de vídeo que sea múltiplo exacto de 320x256, de manera que podamos desactivar el filtrado bilinear (añadiendo scaling_kernel=8 en config.txt) y no tener shimmering. Por ejemplo, 1280x1024.
+
+Para ello, añadimos en config.txt:
+hdmi_cvt=1280 1024 50 1 0 0 0
+
+Y para usar ese modo, también en config.txt:
+hdmi_group=2
+hdmi_mode=87
+
+Ahora en Risc OS seleccionamos el mismo modo de vídeo, y debería estar.
 
 INSTALAR ADFFS
 ==============
