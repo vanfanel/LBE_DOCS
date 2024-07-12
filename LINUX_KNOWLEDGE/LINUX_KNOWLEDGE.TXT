@@ -987,9 +987,9 @@ Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
 Y EL "USE OLD MDEC ROUTINES" a "OFF" (las OLD MDEC ROUTUNES son para sustituir texturas en los juegos, nada más).
 A PARTE, EN "SETTINGS->AUDIO->OUTPUT" PON "ALSA" CON UN "AUDIO LATENCY" DE 32.
 
-********CROSSCOMPILAR el core libretro Duckstation************
+********CROSSCOMPILAR el core libretro Swanstation(Duckstation)************
 
-Puede ser interesante porque no compila en Pi3 con 1GB ni con swap. Crosscompilamos en local.
+La idea es crosscompilar en X86_64 para aarch64 (arm64).
 
 -Instalamos los paquetes:
 sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
@@ -1040,61 +1040,6 @@ file duckstation_libretro.so
 NOTAS ADICIONALES para el core:
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
-
-******Crosscompilar el sistema brrrrrrrrrr para RG353PS**********************************************************************
-(Instrucciones basadas en https://gitlab.com/iii1111/brrrrrrrrrr)
-
-PARTE 1 - El rootfs usando BUILDROOT
-
--Instalamos dependencias previas:
-sudo apt-get install libssl-dev rsync
-
--Clonamos el repo de brrrrrrrrr:
-git clone --depth 1 https://gitlab.com/iii1111/brrrrrrrrrr.git
-
--Clonamos el de BUILDROOT repo, nos posicionamos en la versión necesaria, y entramos en él:
-git clone https://github.com/buildroot/buildroot.git
-git checkout 2024.02.1
-cd buildroot
-
--Parcheamos BUILDROOT con lo que necesita brrrrrrrrr:
-for i in ../brrrrrrrrrr/buildroot*.patch; do patch -p1 < $i; done
-
--Configuramos BUILDROOT para la RG353:
-make O=rg353m BR2_EXTERNAL=../brrrrrrrrrr rg353m_defconfig
-
--Exportamos al PATH el directorio /sbin, que normalmente sólo está en el PATH para el usuario ROOT, ya que durante el proceso
-vamos a necesitar herramientas de ese directorio (mkdosfs para crear la imágen de la partición de arranque, por ejemplo):
-export PATH="/sbin:$PATH"
-
--Entramos en el directorio de la rg353m y compilamos:
-cd rg353m
-make -j10
-
-******Crosscompilar RetroArch para ROCKNIX***********************************************************************************
-(Instrucciones basadas en https://rocknix.org/contribute/build/)
-
-PARTE 1 - INSTALAR DOCKER
-
-sudo apt-get update
-sudo apt-get install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-(OJO!! En el siguiente paso, donde pone "$VERSION_CODENAME", si estás en Debian Testing, tienes que sustituirlo por el nombre
-de la última versión de Debian Estable: como ahora estoy en Debian Testing y Debian Testing es Trixie,
-entonces donde pone "$VERSION_CODENAME" pondremos "bookworm". Y no te preocupes, sólo es para engañar al repo de paquetes de Docker,
-el sistema Debian en sí sigue igual usando los paquetes de la versión de Debian que tengas instalada).
-
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-(....CONTINUARÁ)
 
 ******Crosscompilar el 64doom de N64-****************************************************************************************
 
@@ -1169,6 +1114,23 @@ git clone --depth 1 https://github.com/LIJI32/SameBoy.git
 Y entramos en el directorio "libretro" y compilamos con:
 
 make platform=rpi4_64 -j4
+
+******Usar PCSX2 STANDALONE en GNU/Linux*************
+
+Nos bajamos el último AppImage de:
+...Y le damos permisos de ejecución.
+
+Creamos un softlink de nuestra versión al GLX que espera encontrar el emulador:
+ln -s /usr/local/lib64/libOpenGL.so.0 ./libGLX.so.0
+
+Lanzamos el emulador con:
+I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2-v1.7.5976-linux-appimage-x64-Qt.AppImage "$1" >> /dev/null 2>&1
+
+PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
+En "Settings->Emulation", en la parte de abajo activamos "Optimal Frame Pacing" y "Sync to Host Refresh Rate".
+En "Settings->Audio", dejamos "Backend" a "Cubeb" y "Driver" a "alsa".
+
+-SI LOS CONTROLES DEL DPAD VAN MAL: En "Settings->Controllers->Controller Port 1->Mapping Settings" activamos "Ignore inversion".
 
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
 
