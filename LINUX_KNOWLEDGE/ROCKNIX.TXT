@@ -121,8 +121,12 @@ MANTENER LA VELOCIDAD CONSTANTE DE LA CPU
 De esta manera, aunque usemos el governor "performance", la consola no se calienta demasiado.
 Lo primero es eso: usar el governor PERFORMANCE (en las opciones del menú Emulation Station).
 Luego, nos creamos .config/autostart/setcpuspeed.sh con el contenido:
-echo 1200000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-(Si queremos 1.5GHz sería 1500000, y así).
+echo 1400000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+echo 1400000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
+echo 1400000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq
+echo 1400000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
+(Si queremos 1.5GHz sería 1500000, y así. 1.4GHz parece ser el "punto dulce" donde el core SNES9X Current va bien,
+aunque olvídate de los juegos con SFX2, esos NO van bien ni a 1.8GHz si usas max_swapchain 2).
 
 QUITAR EL ERROR [Failed] Failed to start batteryledstatus.service
 =================================================================
