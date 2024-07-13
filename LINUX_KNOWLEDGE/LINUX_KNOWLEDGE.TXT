@@ -857,10 +857,11 @@ PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
 -SI LOS CONTROLES DEL DPAD VAN MAL: En "Settings->Controllers->Controller Port 1->Mapping Settings" activamos "Ignore inversion".
 
 -PARA OCULTAR EL CURSOR DEL RATÓN:
---En Wayfire:
-#Ocultar:
+--En Wayfire, lo primero es instalar "plugins-extra" (ver instrucciones en fichero de NOTAS_WAYLAND),
+y luego ya podemos larzar PCSX2 standalone así, ocultando el cursor antes y desocultándolo respués:
 sed -i "s/plugins =/& hide-cursor/g" ~/.config/wayfire.ini
-#Desocultar:
+sync
+I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2-v1.7.5976-linux-appimage-x64-Qt.AppImage "$1" >> /dev/null 2>&1
 sed -i "s/ hide-cursor//g" ~/.config/wayfire.ini
 
 ******Compilar QT6***********************************************************************************************************
