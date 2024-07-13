@@ -539,6 +539,11 @@ ninja -j8
 ninja install
 -Editamos ~/.config/wayfire.ini y en "plugins =" añadimos "hide-cursor"
 -Si queremos ajustar el tiempo que tarda en ocultarse el cursor, podemos editar /usr/local/share/wayfire/metadata/hide-cursor.xml 
+-Para ocultar/desocultar el cursor a nuestro gusto, hacemos:
+#Ocultar:
+sed -i "s/plugins =/& hide-cursor/g" ~/.config/wayfire.ini
+#Desocultar:
+sed -i "s/ hide-cursor//g" ~/.config/wayfire.ini
 
 --(NO NECESARIO: SÓLO NECESARIO PARA "MAX_SWAPCHAIN=2"/DOBLE BUFFER, COSA QUE NO USAMOS YA PORQUE, EN VULKAN, "MAX_SWAPCHAIN=3"/TRIPLE BUFFER
    CON EN VSYNC DESACTIVADO NOS DA LA MISMA LATENCIA QUE "MAX_SWAPCHAIN=2"/DOBLE BUFFER)

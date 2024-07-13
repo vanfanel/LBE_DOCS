@@ -856,6 +856,13 @@ PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
 
 -SI LOS CONTROLES DEL DPAD VAN MAL: En "Settings->Controllers->Controller Port 1->Mapping Settings" activamos "Ignore inversion".
 
+-PARA OCULTAR EL CURSOR DEL RATÓN:
+--En Wayfire:
+#Ocultar:
+sed -i "s/plugins =/& hide-cursor/g" ~/.config/wayfire.ini
+#Desocultar:
+sed -i "s/ hide-cursor//g" ~/.config/wayfire.ini
+
 ******Compilar QT6***********************************************************************************************************
 
 Las instrucciones básicas las he sacado de: https://wiki.qt.io/Building_Qt_6_from_Git
