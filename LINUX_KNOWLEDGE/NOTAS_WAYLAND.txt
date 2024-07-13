@@ -525,6 +525,21 @@ plugins = \
 
 --Eliminamos las secciones [wrot], [fisheye], [zoom], etc.. que corresponden a plugins que no tenemos habilitados en la lista de plugins.
 
+--Para ocultar el cursor cuando no se está moviendo (PCSX2 Standalone...):
+-Clonamos su repo: git clone --depth 1 https://github.com/WayfireWM/wayfire-plugins-extra.git
+-Configuramos, compilamos e instalamos con:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup .. --buildtype=release
+
+ninja -j8
+ninja install
+-Editamos ~/.config/wayfire.ini y en "plugins =" añadimos "hide-cursor"
+-Si queremos ajustar el tiempo que tarda en ocultarse el cursor, podemos editar /usr/local/share/wayfire/metadata/hide-cursor.xml 
+
 --(NO NECESARIO: SÓLO NECESARIO PARA "MAX_SWAPCHAIN=2"/DOBLE BUFFER, COSA QUE NO USAMOS YA PORQUE, EN VULKAN, "MAX_SWAPCHAIN=3"/TRIPLE BUFFER
    CON EN VSYNC DESACTIVADO NOS DA LA MISMA LATENCIA QUE "MAX_SWAPCHAIN=2"/DOBLE BUFFER)
 En la sección "[core]" podemos ajustar "max_render_time" (MRT de ahora en adelante).
