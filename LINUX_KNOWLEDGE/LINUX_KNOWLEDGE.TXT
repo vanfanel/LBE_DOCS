@@ -627,10 +627,6 @@ y las BIOS van en /media/manuel/<nombre_partición_grande>/media/0/RetroArch/sys
 Clonamos su repo:
 git clone --depth 1 --recurse-submodules -j8 https://github.com/hrydgard/ppsspp.git
 
-Configuramos y compilamos:
-mkdir b4
-cd b4
-
 Para compilar una versión LIBRETRO:
 
 mkdir b4
