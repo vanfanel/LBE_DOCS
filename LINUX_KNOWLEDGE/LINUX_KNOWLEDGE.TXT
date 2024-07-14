@@ -428,8 +428,7 @@ TAMBIÉN se necesita OpenAL, que tiene su sección en este documento para compil
 
 Bueno, vamos al lio.
 Clonamos el repo:
-git clone --depth 1 https://github.com/JohnnyonFlame/droidports.git
-git submodule update --init --recursive
+git clone --depth 1 --recurse-submodules -j8 https://github.com/JohnnyonFlame/droidports.git
 
 Editamos "ports/gmloader/sdl2_media.c" y:
 -Añadimos justo antes de la llamada a SDL_CreateWindow() el típico "SDL_ShowCursor(SDL_DISABLE);"
@@ -626,9 +625,7 @@ y las BIOS van en /media/manuel/<nombre_partición_grande>/media/0/RetroArch/sys
 ******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
 
 Clonamos su repo:
-
-git clone --depth 1 https://github.com/hrydgard/ppsspp.git
-git submodule update --init --recursive
+git clone --depth 1 --recurse-submodules -j8 https://github.com/hrydgard/ppsspp.git
 
 Configuramos y compilamos:
 mkdir b4
@@ -971,9 +968,7 @@ NOTAS DE CONFIGURACIÓN:
 OJO!! LA VERSIÓN NOGUI NO SOPORTA MÁS QUE X11 Y FBDEV, Y LA VERSIÓN NORMAL AUNQUE FUNCIONA SOBRE QT6 NO SOPORTA WAYLAND,
 ASÍ QUE DALE UN AÑO O DOS PARA MEJORAR, NO PIERDAS EL TIEMPO.
 
-git clone --depth 1 https://github.com/dolphin-emu/dolphin.git dolphin-emu
-cd dolphin-emu
-git submodule update --init --recursive
+git clone --depth 1 --recurse-submodules -j8 https://github.com/dolphin-emu/dolphin.git dolphin-emu
 
 mkdir b4
 cd b4
@@ -1148,7 +1143,7 @@ make platform=rpi4_64 -j4
 Instalamos una dependencia previa rara:
 apt-get install libcurl4-openssl-dev
 
-git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
+git clone --depth 1 --recurse-submodules -j8 https://github.com/flyinghead/flycast.git
 
 Configuramos y compilamos con:
 
@@ -1494,8 +1489,7 @@ retroarch -L .config/retroarch/cores/mame_libretro.so emulation/MAME/kinst
 Dependencias previas:
 sudo apt-get install libevdev-dev
 
-git clone --depth 1 https://github.com/dolphin-emu/dolphin.git
-git submodule update --init
+git clone --depth 1 --recurse-submodules -j8 https://github.com/dolphin-emu/dolphin.git
 
 cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DENABLE_QT=OFF -DENABLE_PULSEAUDIO=OFF -DENABLE_LLVM=OFF -DENABLE_TESTS=OFF -DUSE_DISCORD_PRESENCE=OFF \
@@ -1508,8 +1502,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 Instalamos dependencia previa:
 sudo apt-get install liblzma-dev
 
-git clone --depth 1 https://github.com/libretro/pcsx2.git
-git submodule update --init
+git clone --depth 1 --recurse-submodules -j8 https://github.com/libretro/pcsx2.git
 
 Editamos CMakeLists.txt y borramos las líneas:
 set(CMAKE_C_COMPILER_LAUNCHER ccache)
@@ -2507,7 +2500,7 @@ git clone --depth 1 https://github.com/OpenXcom/OpenXcom.git
 
 Es el port original en el que colabora Ken Silverman!
 Clonamos su repo de:
-git clone --depth 1 --recurse-submodules https://github.com/jonof/jfduke3d.git
+git clone --depth 1 --recurse-submodules -j8 https://github.com/jonof/jfduke3d.git
 
 Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 1024, comentando el while que hay debajo.
 Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(), en la llamada a SDL_SetHint(), "nearest" por "linear".
@@ -4445,8 +4438,7 @@ Y ya se supone que podemos usarlo.
 ***********TIC-80, una consola imaginaria para Pi************************************************************************************************
 
 Clonamos su repo y actualizamos los submódulos para poder compilar:
-git clone --depth 1 https://github.com/nesbox/TIC-80.git
-git submodule update --init --recursive
+git clone --depth 1 --recurse-submodules -j8 https://github.com/nesbox/TIC-80.git
 
 Creamos el dir de compilación, entramos, configuramos y compilamos:
 mkdir b3
@@ -4672,8 +4664,7 @@ Instalamos una pequeña dependencia que hace falta:
 sudo apt-get install --no-install-recommends libfontconfig1-dev
 
 Clonamos el repo principal:
-git clone https://github.com/FWGS/xash3d-fwgs
-git submodule init && git submodule update --init
+git clone --depth 1 --recurse-submodules -j8 https://github.com/FWGS/xash3d-fwgs
 
 Ahora creamos el directorio de compilación, configuramos con CMAKE, y compilamos:
 mkdir build
@@ -6026,7 +6017,7 @@ Se sale con la tecla DELETE
 
 *************MightyMike en GNU/Linux*********************
 
-git clone --recurse-submodules --depth 1 https://github.com/jorio/MightyMike.git
+git clone --recurse-submodules --depth 1 -j8 https://github.com/jorio/MightyMike.git
 
 Editamos src/Heart/Window.c y allí metemos todo el bloque de
 SDL_UpdateTexture, SDL_RenderClear, SDL_RenderCopy y SDL_RenderPresent dentro de esta condición:
@@ -6068,9 +6059,7 @@ https://gitlab.com/Dringgstein/Commander-Genius/-/releases
 
 O si decidimos clonar el repo, se requieren tres pasos:
 
-git clone --depth 1 https://gitlab.com/Dringgstein/Commander-Genius.git
-git submodule init
-git submodule update
+git clone --depth 1 --recurse-submodules -j8 https://gitlab.com/Dringgstein/Commander-Genius.git
 
 creamos un directorio de compilación y entramos en él:
 mkdir b4
@@ -7965,7 +7954,7 @@ RIGEL ENGINE, Duke Nukem II en Linux
 
 Clonamos su repo:
 
-git clone --recurse-submodules --depth 1 https://github.com/lethal-guitar/RigelEngine.git
+git clone --recurse-submodules --depth 1 -j8 https://github.com/lethal-guitar/RigelEngine.git
 
 Creamos el directorio de compilación, configuramos y compilamos:
 mkdir b4
@@ -8185,8 +8174,7 @@ ZELDA MAJORA'S MASK en GNU/Linux
 Instalamos dependencias previas:
 apt-get install lsb-release
 
-git clone --depth 1 https://github.com/HarbourMasters/2ship2harkinian
-git submodule update --init --recursive
+git clone --depth 1 --recurse-submodules -j8 https://github.com/HarbourMasters/2ship2harkinian
 
 mkdir b4
 cd b4
@@ -8214,8 +8202,7 @@ Instalamos dependencias previas:
 apt-get install libfreetype-dev
 
 Clonamos su repo:
-git clone --depth 1 https://github.com/Mr-Wiseguy/Zelda64Recomp.git
-git submodule update --init --recursive
+git clone --depth 1 --recurse-submodules -j8 https://github.com/Mr-Wiseguy/Zelda64Recomp.git
 
 (NECESITA X11 Y GTK, CONTINUARÁ...)
 
@@ -8226,8 +8213,7 @@ Instalamos dependencias previas:
 sudo apt-get install libboost-system-dev libboost-dev --no-install-recommends
 
 clonamos su repo:
-git clone --depth 1 https://github.com/thobbsinteractive/magic-carpet-2-hd.git
-git submodule update --init
+git clone --depth 1 --recurse-submodules -j8 https://github.com/thobbsinteractive/magic-carpet-2-hd.git
 
 mkdir b4
 cd b4
@@ -8634,8 +8620,7 @@ Instalamos una dependencias previas (se puede compilar contra LUA o contra LUA-J
 sudo apt-get install libluajit-5.1-dev python3-yaml
 
 Clonamos su repo (no se puede compilar desde release por el tema de las dependencias incluidas que lleva como submódulos):
-git clone --depth 1 https://github.com/crawl/crawl.git
-git submodule update --init
+git clone --depth 1 --recurse-submodules -j8 https://github.com/crawl/crawl.git
 
 Descomprimimos y nos vamos al directorio crawl-ref/source, y compilamos con:
 CFLAGS="-march=native -mtune=native -O2" \
@@ -9029,7 +9014,7 @@ sudo ninja install
 
 AHORA VAMOS CON EL HURRICAN EN SÍ:
 Clonamos su repo:
-git clone --depth 1 --recurse-submodules https://github.com/HurricanGame/Hurrican.git
+git clone --depth 1 --recurse-submodules -j8 https://github.com/HurricanGame/Hurrican.git
 
 Editamos Hurrican/src/Main.cpp y comentamos la línea:
 #  define SHOW_CRACKTRO
@@ -10207,8 +10192,7 @@ Juegos PICO8 en GNU/Linux usando el core de libretro "fake-08"
 
 Clonamos el repo:
 
-git clone --depth 1 -b libretro-core https://github.com/jtothebell/fake-08.git
-git submodule update --init
+git clone --depth 1 --recurse-submodules -b libretro-core https://github.com/jtothebell/fake-08.git
 
 cd fake-08/platform/libretr
 make -j4
@@ -10444,9 +10428,7 @@ cd b4
 cmake -DDISABLE_ICU=ON ..
 
 Ahora vamos a por EASYRPG:
-git clone --depth 1 https://github.com/EasyRPG/Player.git
-git submodule init
-git submodule update
+git clone --depth 1 --recurse-submodules -j8 https://github.com/EasyRPG/Player.git
 mkdir b4
 cd b4
 cmake -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON ..
@@ -10559,8 +10541,7 @@ EXTRAER ARCHIVOS DE JUEGOS DE SWITCH EN LINUX
 =============================================
 
 Clonamos el repo de la herramienta que se usa:
-git clone --depth 1 https://github.com/jakcron/nstool.git
-git submodule update --init
+git clone --depth 1 --recurse-submodules -j8 https://github.com/jakcron/nstool.git
 
 compilamos:
 make deps -j4
@@ -10912,9 +10893,7 @@ PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
 -Instalamos otra dependencia previa, libplacebo, que está en Debian 12 pero arrastra toda la mierda de X11
 así que la compilamos nosotros.
 --Clonamos su repo:
-git clone --depth 1 https://code.videolan.org/videolan/libplacebo.git
-cd libplacebo
-git submodule update --init --recursive
+git clone --depth 1 --recurse-submodules -j8 https://code.videolan.org/videolan/libplacebo.git
 --Configuramos con:	
 
 CFLAGS="-march=native -mtune=native" \
