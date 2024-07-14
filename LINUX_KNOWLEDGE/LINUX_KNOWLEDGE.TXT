@@ -624,8 +624,8 @@ y las BIOS van en /media/manuel/<nombre_partición_grande>/media/0/RetroArch/sys
 
 ******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
 
-Clonamos su repo:
-git clone --depth 1 --recurse-submodules -j8 https://github.com/hrydgard/ppsspp.git
+Bajamos la última versión estable:
+git clone --depth 1 --recurse-submodules -b <NOMBRE_TAG> -j8 https://github.com/hrydgard/ppsspp.git
 
 Para compilar una versión LIBRETRO:
 
