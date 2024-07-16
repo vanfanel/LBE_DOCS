@@ -602,6 +602,20 @@ libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
 Bajamos la última versión estable de:
 https://github.com/libsdl-org/SDL/releases
 
+Editamos src/video/wayland/SDL_waylandopengles.c, nos vamos a la función "Wayland_GLES_SwapWindow()",
+y movemos el bloque:
+
+    /* Feed the frame to Wayland. This will set it so the wl_surface_frame callback can fire again. */                                 
+    if (!_this->egl_data->eglSwapBuffers(_this->egl_data->egl_display, data->egl_surface)) {                                           
+        return SDL_EGL_SetError("unable to show color buffer in an OS-native window", "eglSwapBuffers");                               
+    }                                                                                                                                  
+                                                                                                                                       
+    WAYLAND_wl_display_flush(data->waylandData->display);
+    
+poniéndolo debajo del bloque del:
+   /* Control swap interval ourselves. See comments on Wayland_GLES_SetSwapInterval */                                                
+    if (swap_interval != 0) {
+
 Ahora, para configurar:
 
 CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
