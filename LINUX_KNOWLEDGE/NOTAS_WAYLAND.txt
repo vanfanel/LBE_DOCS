@@ -508,17 +508,15 @@ command_terminal = foot
 activate = <alt> KEY_TAB
 ...Y buscamos "plugins =" y quitamos el llamado "switcher", que es un swicther en 3D que nos sobra.
 Nos vamos a la lista de plugins y dejemos sólo los plugins que necesitamos, que son:
-plugins = \                                                                                                                            
-  alpha \                                                                                                                              
-  animate \                                                                                                                            
-  autostart \                                                                                                                          
-  command \                                                                                                                            
-  decoration \                                                                                                                         
-  fast-switcher \                                                                                                                      
-  move \                                                                                                                               
-  place \                                                                                                                              
-  resize \                                                                                                                             
-  wobbly
+plugins = \
+  alpha \
+  autostart \
+  command \
+  decoration \
+  fast-switcher \
+  move \
+  place \
+  resize
 
 --Para que se nos autolance una terminal al iniciar, buscamos [autostart] y debajo ponemos:
 1 = foot
