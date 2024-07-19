@@ -622,12 +622,12 @@ Para meterle juegos a saco, los puedes copiar en:
 /media/manuel/<nombre_partición_grande>/media/0/Roms (tienes que crear "Roms")
 y las BIOS van en /media/manuel/<nombre_partición_grande>/media/0/RetroArch/system
 
-******PPSSPP, el emulador de PSP en Raspberry Pi 4***************************************************************************
+******PPSSPP, el emulador de PSP en GNU/LINUX***************************************************************************
 
 Bajamos la última versión estable:
 git clone --depth 1 --recurse-submodules -b <NOMBRE_TAG> -j8 https://github.com/hrydgard/ppsspp.git
 
-Para compilar una versión LIBRETRO:
+	COMPILAR VERSIÓN LIBRETRO:
 
 mkdir b4
 cd b4
@@ -643,8 +643,10 @@ Es un core con sonido 44100Hz, así que configura los settings de audio así y g
 
 Para evitar el micro-stuttering, ve a Core Options->Video, y allí activa "Duplicate Frames in 30Hz games".
 
-PARA WAYLAND:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSE_VULKAN_DISPLAY_KHR=OFF -DUSING_X11_VULKAN=OFF -DUSING_GLES2=OFF -DUSE_DISCORD=OFF \
+	COMPILAR VERSIÓN STANDALONE:
+
+PARA WAYLAND (OJO: Si no le pasamos "-DUSING_GLES2=ON" intentará compilar contra GLX, de todos modos vamos a usar Vulkan):
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_WAYLAND_WSI=ON -DUSE_VULKAN_DISPLAY_KHR=OFF -DUSING_X11_VULKAN=OFF -DUSING_GLES2=ON -DUSE_DISCORD=OFF \
 -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
