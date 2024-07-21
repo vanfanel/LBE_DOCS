@@ -7703,8 +7703,10 @@ CFLAGS="-O2 -march=native -mtune=native" CXXFLAGS="-O2 -march=native -mtune=nati
 --disable-pce --disable-pce-fast --disable-pcfx --disable-psx --disable-sasplay --disable-sms --disable-snes --disable-snes-faust \
 --disable-ssfplay --disable-vb --disable-wswan
 
---Ejecutamos por primera vez el emulador, y se nos creará ~/.mednafen/mednafen.cfg, lo editamos y ponemos
-estos valores así (los vamos buscando y ajustando):
+--Ejecutamos por primera vez el emulador sin cargar nada (nos sale la ayuda y ya),
+y se nos creará ~/.mednafen/firmware, donde metemos la BIOS "mpr-17933.bin".
+
+--Editamos ~/.mednafen/mednafen.cfg y ponemos estos valores así (los vamos buscando y ajustando):
 
 sound.device sexyal-literal-default
 sound.buffer_time 32
