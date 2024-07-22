@@ -9063,8 +9063,8 @@ make -f Makefiles/Makefile.UNIX -j8
 Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
 
-wlr-randr --output HDMI-A-1 --custom-mode 992x768@60                                                           
-./supermodel -fullscreen -res=992,768 -channels=2 daytona2.zip                                                 
+wlr-randr --output HDMI-A-1 --custom-mode 992x768@60
+./supermodel -fullscreen -res=992,768 -channels=2 daytona2.zip
 wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
 
 En ese ejemplo estamos corriendo los juegos al doble de su resolución original.
