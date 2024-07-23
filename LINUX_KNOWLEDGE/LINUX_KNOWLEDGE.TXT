@@ -7248,8 +7248,8 @@ PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
 
 PARA EL CORE DE SATURN, USA LOS SIGUIENTES OVERRIDES:
 	--Desactiva el Runahead por completo!
-	--Backend de video: opengl
-Además, para evitar hiccups de audio ocasionales, debes lanzarlo con: "chrt -f 80 taskset -c 0-1"
+	--Backend de audio ALSA con 42ms de buffer (cuando tengas VRR, puedes desactivar el VSYNC y pasar a ALSATHREAD con 36ms)
+    --Para que vaya bien, hay que ejecutarlo en los performance cores, así que lo lanzamos con: "chrt -f 80 taskset -c 0,1"
 
 PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead, pero sí que funciona bien con max_swapchain a 2
 y el shader Fakelottes con la curvatura comentada.
