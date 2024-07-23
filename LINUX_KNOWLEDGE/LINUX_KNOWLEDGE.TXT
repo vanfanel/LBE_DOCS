@@ -666,6 +666,15 @@ popd
 
 Ahora copiamos el directorio "assets" al mismo directorio del ejecutable PPSSPP
 
+	NOTAS SOBRE JUEGOS ESPECÍFICOS (OPCIONES DEL CORE)
+
+EN GENERAL, para evitar "tirones" de vídeo y audio en las cargas, pon "System -> I/O Timing Method" a "Host"
+y déjalo así a no ser que algún juego pete, en cuyo caso lo desactivas para ese juego y ya.
+
+-OUTRUN 2006:
+Para que vaya a 60FPS constantes, pon "System -> Locked CPU Speed" a 444.
+Para evitar "tirones" en las cargas entre stages, pon "System -> I/O Timing Method" a "Host".
+
 *******Compilar el core libretro Yabause***********
 
 Clonamos su repo:
