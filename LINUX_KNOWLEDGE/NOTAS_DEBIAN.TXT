@@ -524,7 +524,7 @@ ASÍ QUE HAZ LAS DOS COSAS QUE ACABO DE DECIRTE.
 DEPENDENCIAS PREVIAS DE MESA:
 
 SI QUIERES GLES Y GLES2 NECESITAS ESTAS DEPENDENCIAS:
-sudo apt-get install --no-install-recommends \
+apt-get install --no-install-recommends \
     flex bison python3-mako python3-setuptools \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
@@ -532,12 +532,18 @@ sudo apt-get install --no-install-recommends \
 
 #####
 DEPENDENCIAS EXCLUSIVAS PARA INTEL GALLIUM IRIS (los números de versión son para Debian 12, pueden cambian en Debian 13 y posteriores):
+
+PARA DEBIAN 13:
+apt-get install python3-ply libclang-common-17-dev libllvmspirvlib-17-dev llvm-17-dev libclang-cpp17-dev libclang-17-dev libclc-17 libclc-17-dev
+
+SI AÚN ESTÁS EN DEBIAN 12:
 apt-get install python3-ply libclang-common-15-dev libllvmspirvlib-15-dev llvm-15-dev libclang-cpp15-dev libclang-15-dev libclc-15 libclc-15-dev
+
 ¡¡¡OJO!!! ES MUY IMPORTANTE QUE COINCIDA EL NÚMERO DE VERSIÓN DE TODO. SI NO, NO COMPILARÁ Y LOS ERRORES SERÁN IMPOSIBLES DE ENTENDER.
 #####
 
 SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
-sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools glslang-tools --no-install-recommends
+apt-get install libvulkan-dev libvulkan1 vulkan-tools glslang-tools --no-install-recommends
 
 SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, TIENES QUE INSTALAR LIBGLVND:
 Bajamos la última estable de aquí:
