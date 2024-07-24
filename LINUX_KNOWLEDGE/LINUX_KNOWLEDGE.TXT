@@ -7897,6 +7897,11 @@ export CXX=/usr/local/bin/g++
 NOTA: No hace falta desinstalar el GCC por defecto de la distro, y de hecho, si lo haces, se desinstala libtool
 y si lo intentas reinstalar el GCC por defecto de la distro.
 
+-PARA DESINSTALARLO, como "make uninstall" no funciona, puedes hacer una instalación "temporal" así:
+make install DESTDIR=/tmp/gccinst
+...Y luego ver qué nos ha instalado en /tmp/gccinst e ir eliminando esos archivos de /usr/local, etc.
+(OJO!! Hazlo a mano, no intentes usar ningún script raro que acabas borrando todo el disco duro como la última vez...)
+
 KMSCON, EL EMULADOR DE TERMINAL PARA CONSOLA QUE USA KMS/DRM
 ============================================================
 
