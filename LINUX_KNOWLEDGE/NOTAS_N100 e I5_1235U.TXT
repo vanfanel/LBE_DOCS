@@ -140,10 +140,10 @@ creamos /etc/modprobe.d/custom-blacklist.conf con el contenido:
 blacklist pcspkr
 blacklist iTCO_wdt
 
-blacklist btrtl                                                                                                
-blacklist btmtk                                                                                                
-blacklist btintel                                                                                              
-blacklist btbcm                                                                                                
+blacklist btrtl
+blacklist btmtk
+blacklist btintel
+blacklist btbcm
 blacklist btusb
 blacklist ip_tables
 
