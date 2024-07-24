@@ -7873,6 +7873,20 @@ https://www.raspberrypi.org/documentation/linux/kernel/building.md
 PERO ESO SÍ: RECOMIENDO COPIAR EL NUEVO KERNEL COMO "kernel7_rt.img" Y ARRANCAR OPCIONALMENTE DESDE ÉL PONIENDO
 kernel=kernel-myconfig.img EN CONFIG.TXT, POR SI NO ARRANCA NUESTRO KERNEL RT.
 
+COMPILAR GCC EN GNU/LINUX
+=========================
+
+-Instalamos dependencias previas:
+apt-get install libgmp-dev libmpfr-dev libmpc-dev
+
+-Nos bajamos la última estable de https://ftp.gnu.org/gnu/gcc
+
+-Configuramos y compilamos con:
+
+./configure --disable-multilib --enable-languages=c,c++
+
+make -j10
+
 KMSCON, EL EMULADOR DE TERMINAL PARA CONSOLA QUE USA KMS/DRM
 ============================================================
 
