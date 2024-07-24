@@ -7881,15 +7881,17 @@ apt-get install libgmp-dev libmpfr-dev libmpc-dev
 
 -Nos bajamos la última estable de https://ftp.gnu.org/gnu/gcc
 
--Configuramos y compilamos con:
+-Configuramos, compilamos e instalamos con:
 
 ./configure --disable-multilib --enable-languages=c,c++
 
 make -j10
-
--Instalamos, y sin hacer nada, el gcc por defecto pasa a ser el que acabamos de instalar: 
-
 make install
+
+-Añadimos esto en nuestro /etc/profile.d/custom.sh:
+
+export CC=/usr/local/bin/gcc
+export CXX=/usr/local/bin/g++
 
 KMSCON, EL EMULADOR DE TERMINAL PARA CONSOLA QUE USA KMS/DRM
 ============================================================
