@@ -646,8 +646,9 @@ tienes al usuario pi añadido al grupo "render",
 sudo rm /etc/ld.so.cache
 sudo ldconfig
 
-Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sabrás porque no funciona con el Prince...), saca su cadena de mapping de la SDL2 Gamepad Tool (http://www.generalarcade.com/gamepadtool),
- y la aniades en /etc/profile usando la variable de entorno SDL_GAMECONTROLLERCONFIG, tal que así:
+Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sabrás porque no funciona con el Prince...),
+saca su cadena de mapping de la SDL2 Gamepad Tool (http://www.generalarcade.com/gamepadtool),
+y la añades en /etc/profile usando la variable de entorno SDL_GAMECONTROLLERCONFIG, tal que así:
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
 
 Para SDL2_Mixer:
