@@ -4946,7 +4946,7 @@ sudo fbset -xres 1360 -yres 768
 
 Instalamos unas dependencias que tiene. Necesita glib porque el threading multiplataforma se hace gracias a glib. Es inevitable.
 
-sudo apt-get install libglib2.0-dev --no-install-recommends
+apt-get install libglib2.0-dev --no-install-recommends
 
 Bajamos la última versión estable de fluidsynth de aquí:
 https://github.com/FluidSynth/fluidsynth/releases
@@ -10657,8 +10657,8 @@ importamos el certificado /usr/lib/Autofirma/AutoFirma_ROOT.cer
 CON EL CERTIFICADO DIGITAL, ADEMÁS, PODEMOS ACCEDER A LA CARPETA CIUDADANA EN: https://carpetaciudadana.gob.es/carpeta/clave.htm
 (NO TIENES QUE ANDAR CON CL@AVE: DONDE PUEDAS ACCEDER CON CL@VE PUEDES ACCEDER CON EL CERTIFICADO DIGITAL).
 
-AUTOMONTAJE DE DISPOSITIVOS DE ALMACENAMIENTO USB EN GNU/LINUX
-==============================================================
+AUTOMONTAJE/AUTOMOUNT DE DISPOSITIVOS DE ALMACENAMIENTO USB EN GNU/LINUX
+========================================================================
 
 -Al más bajo nivel, para que cuando udev detecte el disco se active el servicio de montaje,
 creamos /etc/udev/rules.d/99-local.rules con el contenido:
