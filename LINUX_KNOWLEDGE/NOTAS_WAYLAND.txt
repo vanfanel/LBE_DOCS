@@ -1202,11 +1202,11 @@ https://github.com/labwc/labwc/blob/master/docs/rc.xml.all
 
 --Para instalar temas:
 ----Metemos los temas que queramos en ~/.local/share/themes. Cada tema debe incluir un directorio llamado "openbox-3".
-    Por ejemplo, el tema "BL-Lithium" tendrá que estar en "~/.local/share/themes/BL-Lithium" y dentro tendrá un directorio "openbox-3"
+    Por ejemplo, el tema "Dragon" tendrá que estar en "~/.local/share/themes/Dragon" y dentro tendrá un directorio "openbox-3"
     Vamos a instalar un pack de temas muy buenos:
     git clone --depth 1 https://github.com/BunsenLabs/bunsen-themes.git
-    cd bunsen-themes/themes
-    cp -R * ~/.local/share/themes 
+    cd bunsen-themes
+    cp -R themes ~/.local/share/ 
 ----Ahora, en rc.xml, ponemos el nombre del tema que queramos usar en la etiqueta <name>nombre_tema</name> de la categoría <theme>
     Por ejemplo: <name>Dragon</name>
 ----OPCIONAL: Si te gusta un tema y quieres modificar cosas, edita su fichero "themerc", todos tienen uno.
