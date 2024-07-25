@@ -9045,12 +9045,15 @@ https://github.com/anholt/libepoxy/releases
 
 Configuramos, compilamos e instalamos:
 
+mkdir b4
+cd b4
+
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dx11=false ..
 
 ninja -j4
-sudo ninja install
+ninja install
 
 AHORA VAMOS CON EL HURRICAN EN SÍ:
 Clonamos su repo:
