@@ -8676,9 +8676,28 @@ ARREGLAR JUEGOS QUE SE COMPILAN CON CMAKE Y NO ENCUENTRAN OPENGL (GLVND)
 Lo que suele fallar es la llamada a:
 find_package(OpenGL REQUIRED)
 
-Así que simplemente hacemos esto y ya funciona:
-set(OPENGL_USE_OPENGL ON)
-find_package(OpenGL REQUIRED)
+Así que lo que hacemos es usar la función pkg_search_module() de pkg-config, en lugar de usar find_package() de CMAKE directamente,
+ya que el problema es precisamente que la función find_package() de CMAKE tiene problemas encontrando GLVND.
+Para ello:
+
+#Cargamos el módudo PKGCONFIG de CMAKE:
+find_package(PkgConfig REQUIRED)
+pkg_search_module(OPENGL REQUIRED opengl)
+
+# Creamos el IMPORT TARGET. Lo ponemos llamar como queramos, podríamos haberlo llamado OpenGL::GLVND o como nos diese la gana.
+add_library(OpenGL::OpenGL INTERFACE IMPORTED)
+
+# Establecemos las propiedades del IMPORT TARGET, sin ellas está vacío y no vale para nada,
+# es aquí donde le decimos contra qué librerías debe linkar, etc.
+set_target_properties(OpenGL::OpenGL PROPERTIES
+	INTERFACE_INCLUDE_DIRECTORIES "${OPENGL_INCLUDE_DIRS}"
+	INTERFACE_LINK_LIBRARIES "${OPENGL_LIBRARIES}"
+)
+
+# Luego ya le diríamos a CMAKE que linke contra nuestro IMPORT TARGET así:
+target_link_libraries(${NCINE_APP} PRIVATE OpenGL::OpenGL)
+
+ALTERNATIVAMENTE, se podría hacer con la función find_library() de CMAKE, que también encuentra correctamente GLVND.
 
 La causa es este comportamiento "raro" de CMake, que si no hay GLX no detecta OpenGL:
 https://github.com/Kitware/CMake/blob/47ba19f346d03123c59ee5a3fe36d32a43b96359/Modules/FindOpenGL.cmake#L455
