@@ -8699,7 +8699,8 @@ set_target_properties(OpenGL::OpenGL PROPERTIES
 # Luego ya le diríamos a CMAKE que linke contra nuestro IMPORT TARGET así:
 target_link_libraries(${NCINE_APP} PRIVATE OpenGL::OpenGL)
 
-ALTERNATIVAMENTE, se podría hacer con la función find_library() de CMAKE, que también encuentra correctamente GLVND:
+
+	----ALTERNATIVAMENTE, se podría hacer con la función find_library() de CMAKE, que también encuentra correctamente GLVND----
 
 #Buscamos la librería. La podemos llamar OpenGL_LIBRARY como la podemos llamar pepito:
 find_library(OpenGL_LIBRARY NAMES OpenGL)
@@ -8718,7 +8719,7 @@ set_target_properties(OpenGL::OpenGL PROPERTIES
     INTERFACE_LINK_LIBRARIES "${OpenGL_LIBRARY}"
 )
 
-NOTAS QUE SI QUIERES PUEDES PASAR DE ELLAS:
+	----NOTAS QUE SI QUIERES PUEDES PASAR DE ELLAS----
 
 La causa es este comportamiento "raro" de CMake, que si no hay GLX no detecta OpenGL:
 https://github.com/Kitware/CMake/blob/47ba19f346d03123c59ee5a3fe36d32a43b96359/Modules/FindOpenGL.cmake#L455
