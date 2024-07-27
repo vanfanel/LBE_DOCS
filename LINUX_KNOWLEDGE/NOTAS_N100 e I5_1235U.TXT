@@ -41,7 +41,11 @@ cuando el ordenador está apagado.
 
 En /etc/default/grub tendremos:
 
-GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 mitigations=off i915.mitigations=off audit=0 cpufreq.default_governor=performance usbhid.jspoll=    1 xpad.cpoll=1"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 mitigations=off i915.mitigations=off audit=0 usbhid.jspoll=1 xpad.cpoll=1"
+
+Podríamos pasar también "cpufreq.default_governor=performance", pero en estas CPUs no se gana nada en absoluto,
+con el governor por defecto ("powersave") se alcanza la máxima frecuencia si es necesario, comprobado emulando Saturn,
+NO sacamos nada de tener todos los cores a toda hostia todo el rato.
 
 Y no te olvides de ejecutar "update-grub" al salir.
 
