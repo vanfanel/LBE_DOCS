@@ -10142,7 +10142,11 @@ Busca ZOOWOMAN y el nombre de la peli.
 ACTUALIZAR FIRMWARE DEL 8BITDO SN30
 ===================================
 
-Conéctalo y escribe en la consola de comandos:
+Instalamos el programa necesario:
+
+sudo apt-get install fwupd
+
+Conecta el dispositivo, y escribe en la consola de comandos:
 
 fwupdmgr get-devices
 
