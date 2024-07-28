@@ -10257,7 +10257,7 @@ JAZZ JACKRABBIT 2 (jazz2) en GNU/Linux (jazz2resurrection-native)
 --Instalamos otras dependencias previas:
 apt-get install libopenmpt-dev
 
---Bajamos la última versión estable de: https://github.com/deathkiller/jazz2-native/tags
+--Clonamos su repo: git clone --depth 1 https://github.com/deathkiller/jazz2-native.git
 --Configuramos con:
 mkdir b4
 cd b4
