@@ -2258,6 +2258,8 @@ Así que hacemos esto:
 -En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
 -En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
 -En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
+SI AUN ASÍ NO TE FUNCIONA EL TECLADO, ASEGÚRATE DE TENER QUITADO EL RUNAHEAD PARA ESTE CORE!! Aparentemente no tiene nada que ver,
+pero tener activo el RUNAHEAD hace que no funcione el teclado, además de provocar errores raros en los juegos.
 
 No hace falta andar con HDFs, carga los .info de las carpetas que contengan juegos de WHDInstall,
 o los .slave de los juegos WHDLinstall, o directamente los .lha que contengan juegos de WHDInstall.
