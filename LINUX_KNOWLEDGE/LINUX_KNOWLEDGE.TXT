@@ -2239,7 +2239,7 @@ con el nivel de exactitud de ciclo que viene configurado (Memory and DMA). Si us
 a no ser que pongas el nivel de exactitud de ciclo a FULL, con lo que se usa muchísima CPU, así que no tiene sentido.
 Algunos juegos (Hybris, BC Kid, etc...) necesitan la exactitud de ciclo a FULL, o si no dan tironcillos.
 
-Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSA (NO ALSATHREAD), con 42ms de latencia.
+Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSA (NO ALSATHREAD), con 45ms de latencia.
 Mírate el cargador de juegos PAL en este mismo documento para que los juegos PAL carguen con la configuración que necesitan.
 
 En Core Options->Video, desactiva "Automatic Crop Delay", para evitar dropouts de audio en los cambios
@@ -2316,10 +2316,10 @@ else
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
-el RetroArch se quede a 50Hz...¡Los 50Hz, el driver ALSA y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!):
+el RetroArch se quede a 50Hz...¡Los 50Hz, el driver ALSA y los 45ms de latencia son sólo una excepcionalidad para juegos PAL!):
 video_refresh_rate = "50.000000"
 audio_driver = "alsa"
-audio_latency = "42"
+audio_latency = "45"
 config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Amiga que usamos para ejecutarlo
 (en principio deja el modelo por defecto que es un 1200 con 8MB de FAST), las opciones de pixel ratio y de cropping que mejor le sientan, etc.
@@ -7264,10 +7264,10 @@ PARA EL CORE DE AMIGA, deja siempre que puedas el sistema por defecto (Amiga 120
 la exactitud de ciclo del emulador y con un A600+FAST te salen errores en los juegos a no ser que pongas la exactitud de ciclo a FULL,
 y recuerda que los juegos PAL necesitan más buffer de audio por lo que creamos ~/.config/retroarch/config/PAL.cfg
 con este contenido (la última línea es porque NO queremos que al quitar el juego el RetroArch se quede a 50Hz...
-¡Los 50Hz, el driver ALSA y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!) y se lo pasaremos con "--appenconfig":
+¡Los 50Hz, el driver ALSA y los 45ms de latencia son sólo una excepcionalidad para juegos PAL!) y se lo pasaremos con "--appenconfig":
 video_refresh_rate = "50.000000"
 audio_driver = "alsa"
-audio_latency = "42"
+audio_latency = "45"
 config_save_on_exit = "false"
 
 NO USES EL CORE BSNES: tendrías que desactivar el Runahead de RetroArch y activar el Runahead interno de BSNES,
