@@ -7263,7 +7263,9 @@ PARA EMULAR GAMEGEAR, el mejor shader es "handheld/sameboy-lcd" combinado con IN
 PARA EMULAR GAMEBOY Y GAMEBOY COLOR, si usas el GAMBATTE pon "Core Options->Color Correction" a "GBC Only",
 y usa el shader "handheld/sameboy-lcd" combinado con INTEGER SCALING. 
 
-PARA EL CORE DE AMIGA, recuerda que los juegos PAL necesitan más buffer de audio por lo que creamos ~/.config/retroarch/config/PAL.cfg
+PARA EL CORE DE AMIGA, deja siempre que puedas el sistema por defecto (Amiga 1200, 8MB FAST) ya que es para lo que viene configurada
+la exactitud de ciclo del emulador y con un A600+FAST te salen errores en los juegos a no ser que pongas la exactitud de ciclo a FULL,
+y recuerda que los juegos PAL necesitan más buffer de audio por lo que creamos ~/.config/retroarch/config/PAL.cfg
 con este contenido (la última línea es porque NO queremos que al quitar el juego el RetroArch se quede a 50Hz...
 ¡Los 50Hz, el driver ALSA y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!) y se lo pasaremos con "--appenconfig":
 video_refresh_rate = "50.000000"
