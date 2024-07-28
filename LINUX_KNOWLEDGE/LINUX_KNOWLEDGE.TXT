@@ -8678,8 +8678,10 @@ find_package(OpenGL REQUIRED)
 ...Que debería funcionar tanto para GLX como para GLVND, pero CMAKE está mal y no funciona para GLVND.
 
 LO PRIMERO, verifica que has creado el fichero /etc/profile.d/custom.sh con el contenido:
+
 export CMAKE_LIBRARY_PATH=/usr/local/lib64
 export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+
 ESTO ES NECESARIO porque NINJA/CMAKE instala las librerías en /usr/local/lib64, y CMAKE y PKG-CONFIG no buscan
 en /usr/local/lib64 por defecto (sólo en /usr/local/lib).
 
