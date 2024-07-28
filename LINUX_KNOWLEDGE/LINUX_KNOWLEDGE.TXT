@@ -2237,6 +2237,7 @@ Se compila como los demás cores.
 Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST, ya que es justo lo que encaja
 con el nivel de exactitud de ciclo que viene configurado (Memory and DMA). Si usas un Amiga 600, darán fallos gráficos los juegos
 a no ser que pongas el nivel de exactitud de ciclo a FULL, con lo que se usa muchísima CPU, así que no tiene sentido.
+Algunos juegos (Hybris, BC Kid, etc...) necesitan la exactitud de ciclo a FULL, o si no dan tironcillos.
 
 Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSA (NO ALSATHREAD), con 42ms de latencia.
 Mírate el cargador de juegos PAL en este mismo documento para que los juegos PAL carguen con la configuración que necesitan.
