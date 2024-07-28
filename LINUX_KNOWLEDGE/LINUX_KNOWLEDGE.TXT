@@ -8677,55 +8677,16 @@ Lo que suele fallar es la llamada a:
 find_package(OpenGL REQUIRED)
 ...Que debería funcionar tanto para GLX como para GLVND, pero CMAKE está mal y no funciona para GLVND.
 
-Así que lo que hacemos es usar la función pkg_search_module() de pkg-config, en lugar de usar find_package() de CMAKE directamente,
-ya que el problema es precisamente que la función find_package() de CMAKE tiene problemas encontrando GLVND.
-Para ello:
+LO PRIMERO, verifica que has creado el fichero /etc/profile.d/custom.sh con el contenido:
+export CMAKE_LIBRARY_PATH=/usr/local/lib64
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+ESTO ES NECESARIO porque NINJA/CMAKE instala las librerías en /usr/local/lib64, y CMAKE y PKG-CONFIG no buscan
+en /usr/local/lib64 por defecto (sólo en /usr/local/lib).
 
-#Cargamos el módudo PKGCONFIG de CMAKE:
-find_package(PkgConfig REQUIRED)
-pkg_search_module(OPENGL REQUIRED opengl)
-
-# Creamos el IMPORT TARGET. Lo ponemos llamar como queramos, lo hemos llamado OpenGL::OpenGL pero
-lo podíamos haber llamado como nos diese la gana:
-add_library(OpenGL::OpenGL INTERFACE IMPORTED)
-
-# Establecemos las propiedades del IMPORT TARGET, sin ellas el IMPORT TARGET está vacío y no vale para nada,
-# es aquí donde le decimos contra qué librerías debe linkar, etc.
-set_target_properties(OpenGL::OpenGL PROPERTIES
-	INTERFACE_INCLUDE_DIRECTORIES "${OPENGL_INCLUDE_DIRS}"
-	INTERFACE_LINK_LIBRARIES "${OPENGL_LIBRARIES}"
-)
-
-# Luego ya le diríamos a CMAKE que linke contra nuestro IMPORT TARGET así:
-target_link_libraries(${NCINE_APP} PRIVATE OpenGL::OpenGL)
-
-
-	----ALTERNATIVAMENTE, se podría hacer con la función find_library() de CMAKE, que también encuentra correctamente GLVND----
-
-#Buscamos la librería. La podemos llamar OpenGL_LIBRARY como la podemos llamar pepito:
-find_library(OpenGL_LIBRARY NAMES OpenGL)
-
-#Buscamos los directorios de inclusión de la librería:
-find_path(OpenGL_INCLUDE_DIR NAMES GL/gl.h)
-
-# Creamos el IMPORT TARGET. Lo podemos llamar como queramos, lo hemos llamado OpenGL::OpenGL pero
-# lo podíamos haber llamado como nos diese la gana:
-add_library(OpenGL::OpenGL INTERFACE IMPORTED)
-
-# Establecemos las propiedades del IMPORT TARGET, sin ellas el IMPORT TARGET está vacío y no vale para nada,
-# es aquí donde le decimos contra qué librerías debe linkar, etc.
-set_target_properties(OpenGL::OpenGL PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES "${OpenGL_INCLUDE_DIR}"
-    INTERFACE_LINK_LIBRARIES "${OpenGL_LIBRARY}"
-)
-
-	----NOTAS QUE SI QUIERES PUEDES PASAR DE ELLAS----
-
-La causa es este comportamiento "raro" de CMake, que si no hay GLX no detecta OpenGL:
-https://github.com/Kitware/CMake/blob/47ba19f346d03123c59ee5a3fe36d32a43b96359/Modules/FindOpenGL.cmake#L455
-
-Esto debería ser corregido, siendo ese "set(OPENGL_USE_OPENGL ON)" innecesario. Tengo un informe abierto al respecto en:
-https://discourse.cmake.org/t/gnu-linux-debian-12-cmake-fails-to-find-opengl-when-mesa-has-been-built-without-glx-support/10901
+SI AUN ASÍ NO FUNCIONA, haz esto:
+set(OPENGL_USE_OPENGL ON)
+find_package(OpenGL REQUIRED)
+...para que así busque GLVND en primer lugar en vez de GLX.
 
 BARONY, UN DUNGEON CRAWLER 3D OPENSOURCE PARA LINUX
 ====================================================
