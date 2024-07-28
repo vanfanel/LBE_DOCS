@@ -2231,15 +2231,12 @@ git clone --depth 1 https://github.com/libretro/libretro-uae.git
 
 Se compila como los demás cores.
 
-Configuración de audio: usando el kernel Cachyos y vídeo backend GL con Hard Sync, es usando ALSA (no Alsathread),
-a 44100Hz (el core es 44100Hz internamente), con 36ms de latencia para juegos NTSC y 45ms para juegos PAL.
-(Con el backend Vulkan no se pueden conseguir latencias igual de bajas, así que usa el backend GL + Hard Sync por ahora).
---Para emular A1200: Pon "CPU Compatibility" a "Cycle Exact (DMA/Memory)". Es lo más compatible en modo 1200, y de todos modos
-la emulación del 1200 nunca va a ser totalmente cycle exact por limitación del WinUAE ni tiene mucho sentido un Amiga 1200 "Cycle Exact"
-para juegos de Amiga 500.
---Para emular A500/600: Pon "CPU Compatibility" a "Cycle Exact (Full)", si no, falla la intro del DUNE.
-OJO!!! La opción "Cycle Exact (DMA/Memory)" es en realidad sólo para emular Amiga 1200, etc! Si la usas con Amiga500/600, provoca errores
-en el SOTB, Agony, etc).
+Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST, ya que es justo lo que encaja
+con el nivel de exactitud de ciclo que viene configurado (Memory and DMA). Si usas un Amiga 600, darán fallos gráficos los juegos
+a no ser que pongas el nivel de exactitud de ciclo a FULL, con lo que se usa muchísima CPU, así que no tiene sentido.
+
+Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSA (NO ALSATHREAD), con 42ms de latencia.
+Mírate el cargador de juegos PAL en este mismo documento para que los juegos PAL carguen con la configuración que necesitan.
 
 En Core Options->Video, desactiva "Automatic Crop Delay", para evitar dropouts de audio en los cambios
 de geometría de vídeo (como dar muchas veces a la "P" en el Agony). 
@@ -2248,14 +2245,8 @@ NO actives pongas "Crop" a "Automatic", ve ajustándolo por cada juego. Lo de Au
 NO se puede usar RUNAHEAD con este core, acuérdate de desactivarlos: según el propio autor del core, la carga de savestates
 es muy lenta lo que lo hace imposible. 
 
-Teniendo en cuenta todo esto, puedes emular en modo A1200 SIN FastRAM en un N100. FastRAM (o SlowRAM) + SHADERS es demasiado
-para el ancho de banda de un N100.
-Por lo tanto, la idea en un N100 sería emular en general un A500/600 con expansión de RAM para ejecutar juegos instalados "a mano"
-o juegos instalados con WHDLoad que no den problemas en A500/600,
-y por otro lado emular un A1200 SIN FastRAM para los pocos juegos AGA que me interesan, como los Ishar, instalados "a mano". 
-
-(Para comprobar el estado de los buffers, activa los stats en On-Screen Display Notifications. Los valores de "Deviation" y "Underrun" no deberían
-llegar nunca al 100%, que es cuando se producen dropouts con ALSA y distorsiones con ALSATHREAD).
+Para comprobar el estado de los buffers, activa los stats en On-Screen Display Notifications. Los valores de "Deviation" y "Underrun" no deberían
+llegar nunca al 100%, que es cuando se producen dropouts con ALSA y distorsiones con ALSATHREAD.
 
 Tienes TODAS las kickstarts posibles que puede necesitar el core, para TODOS los modelos de Amiga que soporta, en el disco de backup,
 con sus nombres ya correctos y las MD5SUM comprobadas.
