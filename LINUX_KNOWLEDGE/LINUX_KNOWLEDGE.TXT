@@ -8701,8 +8701,7 @@ SI AUN ASÍ NO FUNCIONA, haz esto:
 set(OPENGL_USE_OPENGL ON)
 find_package(OpenGL REQUIRED)
 ...para que así busque GLVND en primer lugar en vez de GLX.
-
-
+W
 NOTAS SOBRE CÓMO USAR CMAKE PARA BUSCAR OPENGL (GLVND)
 ======================================================
 
