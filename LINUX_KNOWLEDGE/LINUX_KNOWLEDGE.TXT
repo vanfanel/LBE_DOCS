@@ -2345,6 +2345,7 @@ con el AmigaDOS), para que no se salga con parte del área de juego por la derec
 	Tanto Ishar como Ishar 2 van mejor sin memoria extra de ningún tipo, sólo con los 2MB de chip un Amiga 1200 básico,
 así que desconecta todo tipo de memoria extra o habrá corrupción del cursor al guardar objetos, etc.
 	Tanto Ishar como Ishar 2 necesitan video PAL, pero con pixel ratio NTSC si quieres círculos redondos.
+	El Ishar 1 puedes acelerarlo sin coste alguno poniendo "Immediate/Waiting Blits" a "Immediate Blitter".
 -El Hybris necesita CUSTOM4=1 para ir en PAL (es como se recomienda porque en NTSC es demasiado complicado, es un juego alemán originalmente)
 y CUSTOM3=1 para quitarle los blitterwaits.
 -En los juegos que necesitan integer scaling porque tienen secuencias en alta resolución que se ven mal sin ello si usas shaders
