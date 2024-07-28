@@ -2271,7 +2271,7 @@ y te aparecerá el README del WHDInstall del juego y a continuación podrás met
 (Para el segundo botón del Toki hay que pasarle "CUSTOM2=1", y para el Shadow of the Beast "CUSTOM4=2" para el segundo botón
 y "CUSTOM1=1" para saltar la intro).
 
-Para jugar a juegos NO instalados con WHDLoad, simplemente en el directorio del juego crea un directorio s y dentro un fichero startup-sequence,
+Para jugar a juegos NO instalados con WHDLoad, simplemente en el directorio del juego crea un directorio "s" y dentro un fichero startup-sequence,
 y además un fichero .info que se llame igual que el directorio del juego. Este .info no necesita tener nada, lo puedes crear con "touch",
 es sólo para pasárselo al core.
 Por ejemplo, para jugar al Lemmings de CDTV, tendríamos:
