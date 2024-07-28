@@ -2226,6 +2226,9 @@ Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altur
 CORE "LIBRETRO UAE", EMULADOR DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
 ===============================================================================
 
+LO PRIMERO QUE DEBES HACER CON ESTE CORE ES DESACTIVAR EL RUNAHEAD Y SALVAR DICHA OPCIÓN CON UN CORE OVERRIDE.
+SI NO LO HACES, EL CORE HACE COSAS RARAS COMO FALLOS CON LOS MANDOS, NO FUNCIONA EL TECLADO, ETC..
+
 Clonamos su repo:
 git clone --depth 1 https://github.com/libretro/libretro-uae.git
 
