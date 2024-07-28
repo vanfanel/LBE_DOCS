@@ -10264,6 +10264,12 @@ cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DNCINE_PREFERRED_BACKEND=SDL2 \
 -DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native"
 
+OJO!! Si no nos detecta GLVND, es porque has instalado MESA usando MESON/NINJA por lo que las librerías han acabado en /usr/local/lib64,
+que es lo normal cuando se instala con MESON/NINJA y no pasa nada, pero CMAKE y PKGCONFIG no buscan en /usr/local/lib64 por defecto,
+por lo que deberías haber creado el fichero /etc/profile.d/custom.sh con el contenido:
+export CMAKE_LIBRARY_PATH=/usr/local/lib64
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+
 (Si quisiéramos compilar contra GLES en lugar de OpenGL, pasaríamos también "-DNCINE_WITH_OPENGLES=ON")
 (OJO!! Tenemos que pasar "-DNCINE_PREFERRED_BACKEND=SDL2" porque si no, compila contra glfw, y los gamepads no van!!)
 

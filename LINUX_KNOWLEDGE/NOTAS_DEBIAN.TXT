@@ -505,9 +505,11 @@ O bien, en X86_64, usa: modetest -s 236:1280x720
 
 ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ATENCIÓN, ATENCIÓN!!!!!!!!!!!!!!!!!!!!!!!!!!!
 SI ESTÁS EN X86_64:
-1) Como las librerías se instalan en /usr/local/lib64, y como pkg-config no busca
+1) Como NINJA/MESON inatala las librerías en /usr/local/lib64, y como CMAKE y PKG-CONFIG no buscan
 en /usr/local/lib64 por defecto (sólo en /usr/local/lib), creamos el fichero /etc/profile.d/custom.sh con el contenido:
+export CMAKE_LIBRARY_PATH=/usr/local/lib64
 export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+ESTO ES MUY MUY MUY MUY IMPORTANTE HACERLO SIEMPRE. 
 2) Añade al final de /etc/ld.so.conf.d/libc.conf la línea:
 /usr/local/lib64
 
