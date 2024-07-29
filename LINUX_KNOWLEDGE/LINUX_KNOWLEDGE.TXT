@@ -2356,8 +2356,10 @@ el disco duro desde el que se arrancará el sistema ahora.
 
 	NOTAS SOBRE JUEGOS CONCRETOS (NUNCA EMULES UN A500/A600, USA SIEMPRE EL 1200+8MB FAST QUE VIENE POR DEFECTO)
 
--El IsharAGA (versión NO WHDLoad),  es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-60%", y con "Immediate Blitter".
+-El IsharAGA e Ishar2AGA (versiones NO WHDLoad), como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-60%",
+    y con "Immediate Blitter".
     Para que no se salga con parte del área de juego por la derecha, pon "Core Options->Media->WHDLoad Support" a "OFF".
+	(Eso lo deberías desactivar para todos los juegos NO WHDLoad, recuerda).
 	Tanto Ishar como Ishar 2 (versiones NO WHDLoad) van mejor sin memoria extra de ningún tipo, sólo con los 2MB de chip un Amiga 1200 básico,
     así que desconecta todo tipo de memoria extra o habrá corrupción del cursor al guardar objetos, etc.
 	Tanto Ishar como Ishar 2 necesitan video PAL, pero con pixel ratio NTSC si quieres círculos redondos.
