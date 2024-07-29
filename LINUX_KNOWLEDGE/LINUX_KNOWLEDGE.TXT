@@ -2234,29 +2234,32 @@ git clone --depth 1 https://github.com/libretro/libretro-uae.git
 
 Se compila como los demás cores.
 
-Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST, ya que es justo lo que encaja
-con el nivel de exactitud de ciclo que viene configurado (Memory and DMA). Si usas un Amiga 600, darán fallos gráficos los juegos
-a no ser que pongas el nivel de exactitud de ciclo a FULL, con lo que se usa muchísima CPU, así que no tiene sentido.
-Algunos juegos (Hybris, BC Kid, etc...) necesitan la exactitud de ciclo a FULL, o si no dan tironcillos.
+			####¡¡¡¡MUY IMPORTANTE!!!! PRIMEROS AJUSTES DE BASE####
+-NO se puede usar RUNAHEAD con este core, acuérdate de desactivarlos: según el propio autor del core, la carga de savestates
+es muy lenta lo que lo hace imposible. 
 
-Desactiva "Media->WHDLoad Support" siempre que el juego no use WHDLoad. No te olvides, porque si no se usa WHDLoad los juegos
+-Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST.
+Pon "System->CPU Compatibility" a "More Compatible", que es lo único que tiene sentido emulando un 1200 con FAST.
+
+-Pon "Video->Immediate/Waiting Blits" a "OFF" siempre que el juego no tenga ningún fallo gráfico.
+Viene puesto a "Wait for Blitter" pero eso es incorrecto: tanto "Immediate" como "Waiting Blits" son parches para juegos que usan el blitter mal,
+y el arreglo lo necesita el juego realmente. Es decir, un Amiga real es como "Video->Immediate/Waiting Blits" puesto a OFF. 
+
+-Desactiva "Media->WHDLoad Support" siempre que el juego no use WHDLoad. No te olvides, porque si no se usa WHDLoad los juegos
 tienen problemas con esta opción activada.
 
-Desactiva "Video->Immediate/Waiting Blits" siempre que el juego no tenga ningún fallo gráfico. Viene puesto a "Wait for Blitter"
-pero eso es incorrecto: tanto "Immediate" como "Waiting Blits" son parches para juegos que usan el blitter mal,
-y el arreglo lo necesita el juego. Es decir, un Amiga real es como "Video->Immediate/Waiting Blits" puesto a OFF. 
+			####FIN PRIMEROS AJUSTES DE BASE####
+			
+NOTAS PARA CORRER JUEGOS PAL CORRECTAMENTE SIN VRR:
 
 Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSATHREAD con 42ms de latencia.
 (Con el driver ALSA, ni siquiera 45ms de buffer son suficientes en la pantalla del título del Harlequin).
-
+			
 Mírate el cargador de juegos PAL en este mismo documento para que los juegos PAL carguen con la configuración que necesitan.
 
 En Core Options->Video, desactiva "Automatic Crop Delay", para evitar dropouts de audio en los cambios
 de geometría de vídeo (como dar muchas veces a la "P" en el Agony). 
 NO actives pongas "Crop" a "Automatic", ve ajustándolo por cada juego. Lo de Automatic falla y encima produce dropouts de audio.
-
-NO se puede usar RUNAHEAD con este core, acuérdate de desactivarlos: según el propio autor del core, la carga de savestates
-es muy lenta lo que lo hace imposible. 
 
 Para comprobar el estado de los buffers, activa los stats en On-Screen Display Notifications. Los valores de "Deviation" y "Underrun" no deberían
 llegar nunca al 100%, que es cuando se producen dropouts con ALSA y distorsiones con ALSATHREAD.
