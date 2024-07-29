@@ -2235,6 +2235,7 @@ git clone --depth 1 https://github.com/libretro/libretro-uae.git
 Se compila como los demás cores.
 
 			####¡¡¡¡MUY IMPORTANTE!!!! PRIMEROS AJUSTES DE BASE####
+
 -NO se puede usar RUNAHEAD con este core, acuérdate de desactivarlos: según el propio autor del core, la carga de savestates
 es muy lenta lo que lo hace imposible. 
 
@@ -2356,6 +2357,11 @@ el disco duro desde el que se arrancará el sistema ahora.
 
 	NOTAS SOBRE JUEGOS CONCRETOS (NUNCA EMULES UN A500/A600, USA SIEMPRE EL 1200+8MB FAST QUE VIENE POR DEFECTO)
 
+-La mayoría de juegos como el Another, GODs (CUSTOM2=1 para 2 botones), Beast, BC Kid, SuperFrog, Moonstone, Another,
+ Pimball Dreams y Fantasies,etc
+ como mejor van es con "CPU Compatibility" a "More Compatible" y con "Video->Immediate/Waiting Blits" a "OFF". 
+ El BC Kid lo mismo pero con "Immediate Blitter"
+ 
 -El IsharAGA e Ishar2AGA (versiones NO WHDLoad), como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-60%",
     y con "Immediate Blitter".
     Para que no se salga con parte del área de juego por la derecha, pon "Core Options->Media->WHDLoad Support" a "OFF".
@@ -2366,19 +2372,20 @@ el disco duro desde el que se arrancará el sistema ahora.
 	El Ishar 1 puedes acelerarlo sin coste alguno poniendo "Immediate/Waiting Blits" a "Immediate Blitter".
 -El Hybris necesita CUSTOM4=1 para ir en PAL (es como se recomienda porque en NTSC es demasiado complicado, es un juego alemán originalmente)
  y CUSTOM3=1 para quitarle los blitterwaits.
- Como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-80%", y con "Immediate Blitter".
+ Como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-80%", y con "Video->Immediate/Waiting Blits" a "OFF".
 -En los juegos que necesitan integer scaling porque tienen secuencias en alta resolución que se ven mal sin ello si usas shaders
 (Agony, Pinball Dreams, Pinball Fantasies...) pon el CROP a "Minimum" para que se vean más grandes: si lo pones a Maximum se verán,
 de hecho, mucho más pequeños.
--En el GODS, aunque no lo dice en ningún sitio, el parámetro de WHDLoad para saltar usando un botón en vez de arriba es CUSTOM2=1
--En el Lotus III, pon "CPU Compatibility" a "Normal" y "CPU Speed" a "+400%", y a disfrutar de la conducción suave.
--El BC KID como mejor va es con "CPU Compatibility" a "More Compatible" y con "Immediate Blitter".
+-En el Lotus III, pon "CPU Compatibility" a "Normal" y "CPU Speed" a "+400%", y "Video->Immediate/Waiting Blits" a "OFF",
+ y a disfrutar de la conducción suave.
 -El Defender of the Crown (versión NO WHDLoad) como mejor va es con "CPU Compatibility" a "More Compatible"
  y con "Video->Immediate/Waiting Blits" a "OFF". De ese modo no tienes que andar subiendo la velocidad de la CPU para que no se muera la música.
 -El DUNE (versión NO WHDLoad) como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-80%",
  y con "Immediate Blitter".
 -El Lionheart como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-50%".
--El Might & Magic II como mejor va es con "CPU Compatibility" a "More Compatible" e "Immediate Blitter".
+-El Might & Magic II (no WHDLoad) como mejor va es con "CPU Compatibility" a "More Compatible" e "Immediate Blitter".
+
+NOTAS PARA INSTALAR ROCKET RANGER SIN WHDLOAD (OJO: NO FUNCIONA EN MODO AMIGA 1200, DA GURÚS CASI SIEMPRE QUE SE INICIA)
 -El Rocket Ranger se puede instalar a mano en una máquina A500/600 sin ampliación de memoria, sin WHDLoad.
 Para ello, como la versión de CD32 que hay en el FTP de EAB usa el "diskimage.device", y como el "diskimage.device" no funciona
 más que en 68020 y superiores, usamos el XFS:
