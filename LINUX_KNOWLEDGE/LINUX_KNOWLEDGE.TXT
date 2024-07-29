@@ -2240,6 +2240,10 @@ es muy lenta lo que lo hace imposible.
 
 -Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST.
 Pon "System->CPU Compatibility" a "More Compatible", que es lo único que tiene sentido emulando un 1200 con FAST.
+NUNCA EMULES UN A500/A600, ya que son irremediablemente cycle-exact, cosa que NO tiene sentido, y provocan chasquidos de audio (ALSATHREAD)
+o dropouts (ALSA)
+TODO LO EMULAMOS CON EL A1200+8MB FAST+CPU "MORE COMPATIBLE", y si un juego va demasiado rápido le bajamos la velocidad de la CPU y ya.
+De la emulación cycle-exact de un 1200 olvídate: es desconocida incluso para el creador del WinUAE.
 
 -Pon "Video->Immediate/Waiting Blits" a "OFF" siempre que el juego no tenga ningún fallo gráfico.
 Viene puesto a "Wait for Blitter" pero eso es incorrecto: tanto "Immediate" como "Waiting Blits" son parches para juegos que usan el blitter mal,
@@ -2254,7 +2258,7 @@ NOTAS PARA CORRER JUEGOS PAL CORRECTAMENTE SIN VRR:
 
 Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSATHREAD con 42ms de latencia.
 (Con el driver ALSA, ni siquiera 45ms de buffer son suficientes en la pantalla del título del Harlequin).
-			
+
 Mírate el cargador de juegos PAL en este mismo documento para que los juegos PAL carguen con la configuración que necesitan.
 
 En Core Options->Video, desactiva "Automatic Crop Delay", para evitar dropouts de audio en los cambios
@@ -2350,7 +2354,7 @@ el disco duro desde el que se arrancará el sistema ahora.
 -Arranca el core pasándole como contenido el HDF que usas en el core de Minimig.
 -Una vez arrancado el core, ya puedes acceder a ambos. Al disco "local" accedes simplemente haciendo "BootHD:"
 
-	NOTAS SOBRE JUEGOS CONCRETOS
+	NOTAS SOBRE JUEGOS CONCRETOS (NUNCA EMULES UN A500/A600, USA SIEMPRE EL 1200+8MB FAST QUE VIENE POR DEFECTO)
 
 -En el IsharAGA, como lo vas a ejecutar sin instalar con WHDLoad sino instalándolo a mano (porque es un juego totalmente compatible
 con el AmigaDOS), para que no se salga con parte del área de juego por la derecha, pon "Core Options->Media->WHDLoad Support" a "OFF".
@@ -2368,7 +2372,7 @@ de hecho, mucho más pequeños.
 -El BC KID como mejor va es con "CPU Compatibility" a "More Compatible" y con "Immediate Blitter".
 -El Defender of the Crown (versión NO WHDLoad) como mejor va es con "CPU Compatibility" a "More Compatible"
  y con "Video->Immediate/Waiting Blits" a "OFF". De ese modo no tienes que andar subiendo la velocidad de la CPU para que no se muera la música.
--El DUNE (versión NO WHDLoad) como mejor va es emulando un A500+ con 1MB de Chip, con "CPU Compatibility" a "More Compatible",
+-El DUNE (versión NO WHDLoad) como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-80%",
  y con "Immediate Blitter".
 -El Rocket Ranger se puede instalar a mano en una máquina A500/600 sin ampliación de memoria, sin WHDLoad.
 Para ello, como la versión de CD32 que hay en el FTP de EAB usa el "diskimage.device", y como el "diskimage.device" no funciona
