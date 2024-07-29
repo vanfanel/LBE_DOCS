@@ -2357,10 +2357,16 @@ el disco duro desde el que se arrancará el sistema ahora.
 
 	NOTAS SOBRE JUEGOS CONCRETOS (NUNCA EMULES UN A500/A600, USA SIEMPRE EL 1200+8MB FAST QUE VIENE POR DEFECTO)
 
--La mayoría de juegos como el Another, GODs (CUSTOM2=1 para 2 botones), Beast, BC Kid, SuperFrog, Moonstone, Another,
- Pimball Dreams y Fantasies,etc
- como mejor van es con "CPU Compatibility" a "More Compatible" y con "Video->Immediate/Waiting Blits" a "OFF". 
- El BC Kid lo mismo pero con "Immediate Blitter"
+-La mayoría de juegos como el Another, Agony, Gods (CUSTOM2=1 para 2 botones), Beast, BC Kid, Defender of the Crown, Fuzzball,
+ SuperFrog, Moonstone, Another, Pinball Dreams y Fantasies, Turrican 1 y 2, etc
+ como mejor van es con "CPU Compatibility" a "More Compatible" y con "Video->Immediate/Waiting Blits" a "OFF".
+ Así que usa esa configuración de base. Luego algunos necesitan alguna cosilla especial:
+ El BC Kid lo mismo pero con "Immediate Blitter" 
+ El Lotus III con "CPU Speed" a "+400%" para una conducción suave.
+ El DUNE (versión NO WHDLoad)con "CPU Speed" a "-80%" para que la intro no vaya a mil por hora.
+ El Lionheart con "CPU Speed" a "-50%" para que se vea bien el agua del primer nivel.
+ El Hybris (CUSTOM4=1 para ir en PAL, CUSTOM3=1 para quitarle los blitterwaits) con "CPU Speed" a "-80%" para que vaya suave.
+ El Might & Magic II (no WHDLoad) con "Immediate Blitter" para que no se vean los colores raros al moverse.
  
 -El IsharAGA e Ishar2AGA (versiones NO WHDLoad), como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-60%",
     y con "Immediate Blitter".
@@ -2370,20 +2376,10 @@ el disco duro desde el que se arrancará el sistema ahora.
     así que desconecta todo tipo de memoria extra o habrá corrupción del cursor al guardar objetos, etc.
 	Tanto Ishar como Ishar 2 necesitan video PAL, pero con pixel ratio NTSC si quieres círculos redondos.
 	El Ishar 1 puedes acelerarlo sin coste alguno poniendo "Immediate/Waiting Blits" a "Immediate Blitter".
--El Hybris necesita CUSTOM4=1 para ir en PAL (es como se recomienda porque en NTSC es demasiado complicado, es un juego alemán originalmente)
- y CUSTOM3=1 para quitarle los blitterwaits.
- Como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-80%", y con "Video->Immediate/Waiting Blits" a "OFF".
+
 -En los juegos que necesitan integer scaling porque tienen secuencias en alta resolución que se ven mal sin ello si usas shaders
 (Agony, Pinball Dreams, Pinball Fantasies...) pon el CROP a "Minimum" para que se vean más grandes: si lo pones a Maximum se verán,
 de hecho, mucho más pequeños.
--En el Lotus III, pon "CPU Compatibility" a "Normal" y "CPU Speed" a "+400%", y "Video->Immediate/Waiting Blits" a "OFF",
- y a disfrutar de la conducción suave.
--El Defender of the Crown (versión NO WHDLoad) como mejor va es con "CPU Compatibility" a "More Compatible"
- y con "Video->Immediate/Waiting Blits" a "OFF". De ese modo no tienes que andar subiendo la velocidad de la CPU para que no se muera la música.
--El DUNE (versión NO WHDLoad) como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-80%",
- y con "Immediate Blitter".
--El Lionheart como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-50%".
--El Might & Magic II (no WHDLoad) como mejor va es con "CPU Compatibility" a "More Compatible" e "Immediate Blitter".
 
 NOTAS PARA INSTALAR ROCKET RANGER SIN WHDLOAD (OJO: NO FUNCIONA EN MODO AMIGA 1200, DA GURÚS CASI SIEMPRE QUE SE INICIA)
 -El Rocket Ranger se puede instalar a mano en una máquina A500/600 sin ampliación de memoria, sin WHDLoad.
