@@ -2239,6 +2239,13 @@ con el nivel de exactitud de ciclo que viene configurado (Memory and DMA). Si us
 a no ser que pongas el nivel de exactitud de ciclo a FULL, con lo que se usa muchísima CPU, así que no tiene sentido.
 Algunos juegos (Hybris, BC Kid, etc...) necesitan la exactitud de ciclo a FULL, o si no dan tironcillos.
 
+Desactiva "Media->WHDLoad Support" siempre que el juego no use WHDLoad. No te olvides, porque si no se usa WHDLoad los juegos
+tienen problemas con esta opción activada.
+
+Desactiva "Video->Immediate/Waiting Blits" siempre que el juego no tenga ningún fallo gráfico. Viene puesto a "Wait for Blitter"
+pero eso es incorrecto: tanto "Immediate" como "Waiting Blits" son parches para juegos que usan el blitter mal,
+y el arreglo lo necesita el juego.
+
 Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSATHREAD con 42ms de latencia.
 (Con el driver ALSA, ni siquiera 45ms de buffer son suficientes en la pantalla del título del Harlequin).
 
