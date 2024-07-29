@@ -2244,7 +2244,7 @@ tienen problemas con esta opción activada.
 
 Desactiva "Video->Immediate/Waiting Blits" siempre que el juego no tenga ningún fallo gráfico. Viene puesto a "Wait for Blitter"
 pero eso es incorrecto: tanto "Immediate" como "Waiting Blits" son parches para juegos que usan el blitter mal,
-y el arreglo lo necesita el juego.
+y el arreglo lo necesita el juego. Es decir, un Amiga real es como "Video->Immediate/Waiting Blits" puesto a OFF. 
 
 Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSATHREAD con 42ms de latencia.
 (Con el driver ALSA, ni siquiera 45ms de buffer son suficientes en la pantalla del título del Harlequin).
