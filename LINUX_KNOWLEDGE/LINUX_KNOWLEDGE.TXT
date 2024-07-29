@@ -2377,6 +2377,7 @@ de hecho, mucho más pequeños.
  y con "Video->Immediate/Waiting Blits" a "OFF". De ese modo no tienes que andar subiendo la velocidad de la CPU para que no se muera la música.
 -El DUNE (versión NO WHDLoad) como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-80%",
  y con "Immediate Blitter".
+-El Lionheart como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-50%".
 -El Rocket Ranger se puede instalar a mano en una máquina A500/600 sin ampliación de memoria, sin WHDLoad.
 Para ello, como la versión de CD32 que hay en el FTP de EAB usa el "diskimage.device", y como el "diskimage.device" no funciona
 más que en 68020 y superiores, usamos el XFS:
