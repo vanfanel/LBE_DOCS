@@ -2239,7 +2239,9 @@ con el nivel de exactitud de ciclo que viene configurado (Memory and DMA). Si us
 a no ser que pongas el nivel de exactitud de ciclo a FULL, con lo que se usa muchísima CPU, así que no tiene sentido.
 Algunos juegos (Hybris, BC Kid, etc...) necesitan la exactitud de ciclo a FULL, o si no dan tironcillos.
 
-Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSA (NO ALSATHREAD), con 45ms de latencia.
+Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSATHREAD con 42ms de latencia.
+(Con el driver ALSA, ni siquiera 45ms de buffer son suficientes en la pantalla del título del Harlequin).
+
 Mírate el cargador de juegos PAL en este mismo documento para que los juegos PAL carguen con la configuración que necesitan.
 
 En Core Options->Video, desactiva "Automatic Crop Delay", para evitar dropouts de audio en los cambios
@@ -2316,10 +2318,10 @@ else
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
-el RetroArch se quede a 50Hz...¡Los 50Hz, el driver ALSA y los 45ms de latencia son sólo una excepcionalidad para juegos PAL!):
+el RetroArch se quede a 50Hz...¡Los 50Hz y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!):
 video_refresh_rate = "50.000000"
-audio_driver = "alsa"
-audio_latency = "45"
+audio_driver = "alsathread"
+audio_latency = "42"
 config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Amiga que usamos para ejecutarlo
 (en principio deja el modelo por defecto que es un 1200 con 8MB de FAST), las opciones de pixel ratio y de cropping que mejor le sientan, etc.
@@ -7250,8 +7252,8 @@ PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
 
 PARA EL CORE DE SATURN, USA LOS SIGUIENTES OVERRIDES:
 	--Desactiva el Runahead por completo!
-	--Backend de audio ALSA con 42ms de buffer (cuando tengas VRR, puedes desactivar el VSYNC y pasar a ALSATHREAD con 36ms)
-    --Para que vaya bien, hay que ejecutarlo en los performance cores, así que lo lanzamos con: "chrt -f 80 taskset -c 0,1"
+	--Backend de audio ALSATHREAD con 42ms de buffer (con ALSA, ni siquiera 45ms de buffer son suficientes en la pantalla
+	  del título del Harlequin).
 
 PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead, pero sí que funciona bien con max_swapchain a 2
 y el shader Fakelottes con la curvatura comentada.
@@ -7268,10 +7270,10 @@ PARA EL CORE DE AMIGA, deja siempre que puedas el sistema por defecto (Amiga 120
 la exactitud de ciclo del emulador y con un A600+FAST te salen errores en los juegos a no ser que pongas la exactitud de ciclo a FULL,
 y recuerda que los juegos PAL necesitan más buffer de audio por lo que creamos ~/.config/retroarch/config/PAL.cfg
 con este contenido (la última línea es porque NO queremos que al quitar el juego el RetroArch se quede a 50Hz...
-¡Los 50Hz, el driver ALSA y los 45ms de latencia son sólo una excepcionalidad para juegos PAL!) y se lo pasaremos con "--appenconfig":
+¡Los 50Hz y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!) y se lo pasaremos con "--appenconfig":
 video_refresh_rate = "50.000000"
-audio_driver = "alsa"
-audio_latency = "45"
+audio_driver = "alsathread"
+audio_latency = "42"
 config_save_on_exit = "false"
 
 NO USES EL CORE BSNES: tendrías que desactivar el Runahead de RetroArch y activar el Runahead interno de BSNES,
@@ -7584,9 +7586,9 @@ else
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
-el RetroArch se quede a 50Hz...¡Los 50Hz, el driver ALSA y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!):
+el RetroArch se quede a 50Hz...¡Los 50Hz y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!):
 video_refresh_rate = "50.000000"
-audio_driver = "alsa"
+audio_driver = "alsathread"
 audio_latency = "42"
 config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Atari ST que usamos para ejecutarlo
