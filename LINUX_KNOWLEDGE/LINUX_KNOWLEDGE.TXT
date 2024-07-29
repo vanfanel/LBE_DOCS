@@ -2363,7 +2363,8 @@ así que desconecta todo tipo de memoria extra o habrá corrupción del cursor a
 	Tanto Ishar como Ishar 2 necesitan video PAL, pero con pixel ratio NTSC si quieres círculos redondos.
 	El Ishar 1 puedes acelerarlo sin coste alguno poniendo "Immediate/Waiting Blits" a "Immediate Blitter".
 -El Hybris necesita CUSTOM4=1 para ir en PAL (es como se recomienda porque en NTSC es demasiado complicado, es un juego alemán originalmente)
-y CUSTOM3=1 para quitarle los blitterwaits.
+ y CUSTOM3=1 para quitarle los blitterwaits.
+ Como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-80%", y con "Immediate Blitter".
 -En los juegos que necesitan integer scaling porque tienen secuencias en alta resolución que se ven mal sin ello si usas shaders
 (Agony, Pinball Dreams, Pinball Fantasies...) pon el CROP a "Minimum" para que se vean más grandes: si lo pones a Maximum se verán,
 de hecho, mucho más pequeños.
