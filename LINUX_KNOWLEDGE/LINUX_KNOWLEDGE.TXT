@@ -4772,7 +4772,10 @@ xdelta patch parche_CD1_con_videos.xdt Xenogears\ \(USA\)\ \(Disc\ 1\).bin Xeno1
 
 SI ES UN PARCHE XDELTA3:
 
-En este caso, tienes que usar el comando xdelta3, NO el xdelta.
+En este caso, puedes usar el DeltaPatcher si estás en un sistema con escritorio:
+https://github.com/marco-calautti/DeltaPatcher/releases/
+
+O bien usar el comando xdelta3, que se instala con "sudo apt install python xdelta3" y se usa así:
 xdelta3 -d -s original parche resultado
 
 ************Wolf4SDL (Wolfenstein 3D) en GNU/Linux*************************************************************************************
