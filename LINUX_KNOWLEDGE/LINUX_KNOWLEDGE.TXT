@@ -2764,12 +2764,13 @@ Y listo. Con el nuevo gdb ya podemos debugear cosas compiladas con el distcc, ya
 
 *******Saltarse temporalmente los límites de tethering******
 
-iptables -t mangle -A POSTROUTING -j TTL --ttl-set 65
+for N in $(sudo sysctl --all 2>/dev/null |grep -Eo "^net\.ipv6\.conf\.[^\.]+\.hop_limit"); do
+    sudo sysctl --write "$N=128"
+done
 
-(Vale para una descarga, luego los hijos de puta de Yoigo lo detectan).
+Y para hacerlo permanente:
 
-De forma permanente, editamos /etc/sysctl.conf y añadimos:
-net.inet.ip.ttl=65
+sudo sysctl --all 2>/dev/null |grep -E -e "^net\.ipv6\.conf\.[^\.]+\.hop_limit" -e "net.ipv4.ip_default_ttl" |sudo tee /etc/sysctl.d/11-custom-ttl-hop.conf
 
 *******Profiling de programas usando OPROFILE*********
 
