@@ -2768,6 +2768,9 @@ iptables -t mangle -A POSTROUTING -j TTL --ttl-set 255
 
 (Vale para una descarga, luego los hijos de puta de Yoigo lo detectan).
 
+De forma permanente, editamos /etc/sysctl.conf y añadimos:
+net.inet.ip.ttl=65
+
 *******Profiling de programas usando OPROFILE*********
 
 Puede que necesitemos activado el soporte de Oprofile en el kernel: PARA PROGRAMAS NORMALES NO PARECE HACER FALTA ESTO.
