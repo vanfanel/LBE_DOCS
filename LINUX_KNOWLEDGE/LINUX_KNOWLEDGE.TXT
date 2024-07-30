@@ -2764,7 +2764,7 @@ Y listo. Con el nuevo gdb ya podemos debugear cosas compiladas con el distcc, ya
 
 *******Saltarse temporalmente los límites de tethering******
 
-iptables -t mangle -A POSTROUTING -j TTL --ttl-set 255
+iptables -t mangle -A POSTROUTING -j TTL --ttl-set 65
 
 (Vale para una descarga, luego los hijos de puta de Yoigo lo detectan).
 
