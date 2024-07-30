@@ -415,6 +415,23 @@ make rednukem
 
 Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
+******Carmageddon en GNU/Linux***********************************************************************************************
+
+Clonamos el repo:
+git clone --depth 1 --recurse-submodules -j8 https://github.com/dethrace-labs/dethrace.git
+
+Configuramos con:
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+Creamos el directorio ~/carma, y ahí metemos el ejecutable "dethrace".
+Además creamos ~/carma/data, y ahí en data metemos una instalación completa del Carmageddon tal cual (se recomienda versión GOG).
+Ahora, cargamos el juego con:
+
+DETHRACE_ROOT_DIR=./data
+dethrace
+
 ******Cargar juegos de GameMaker (GM) de Android en GNU/Linux****************************************************************
 
 OJO!!! Se tiene que hacer con un Linux de 32bits (armhf).
