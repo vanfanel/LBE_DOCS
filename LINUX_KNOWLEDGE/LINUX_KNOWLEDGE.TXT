@@ -10960,15 +10960,27 @@ y requería usar un fork especial de ffmpeg, así que pasando.
 
 ###########BLOQUE EXCLUSIVO DE AMD64################
 
-	PARTE 1: INTEL MEDIA DRIVER
+	PARTE 1: LIBVA
+
+Bajamos la última estable de:
+https://github.com/intel/libva/releases
+
+Configuramos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
+meson setup .. -Dbuildtype=release
+
+	PARTE 2: INTEL MEDIA DRIVER
 (Es para Gen8 y posteriores, para otros chips más antiguos hacen falta otros drivers específicos).
 
---Instalamos dependendias previas:
-apt-get install libigdgmm-dev --no-install-recommends
---Instalamos otra dependencia previa, libigdgmm, que la versión que viene con DEBIAN 12 es demasiado antigua
-  y si no instalamos una actual, la compilación del driver fallará.
-  Bajamos la última estable de aquí: https://github.com/intel/gmmlib/tags
-  Configuramos con:
+DEPENDENCIA PREVIA: libigdgmm
+DEBIAN 13: apt-get install libigdgmm-dev
+DEBIAN 12:
+-Bajamos la última estable de aquí: https://github.com/intel/gmmlib/tags
+-Configuramos con:
 
   mkdir b4
   cd b4
@@ -10977,7 +10989,8 @@ apt-get install libigdgmm-dev --no-install-recommends
   -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
   -DCMAKE_C_FLAGS="-march=native -mtune=native"   
 
-Vamos con el Intel Media Driver en sí:
+Vamos con el Intel Media Driver en sí (NO podemos instalar el paquete del sistema porque depende de libva2
+y a su vez para compilar ffmpeg necesitaríamos instalar libva-dev que nos instalaría toda la morralla de MESA/X11):
 
 Bajamos la última estable de:
 https://github.com/intel/media-driver/releases
@@ -10990,19 +11003,6 @@ cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
-
-	PARTE 2: LIBVA
-
-Bajamos la última estable de:
-https://github.com/intel/libva/releases
-
-Configuramos con:
-
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
-meson setup .. -Dbuildtype=release
 
 	PARTE 3: VAINFO
 
