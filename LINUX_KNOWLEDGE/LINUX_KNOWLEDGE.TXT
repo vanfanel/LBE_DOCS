@@ -9660,7 +9660,9 @@ antialias=1
 
 PARA USAR SFROTZ SIN VKBASALT, HAY QUE CAMBIAR LA FUENTE DE LETRA POR UNA TRUETYPE ESCALADA CON ANTIALIAS. PARA ELLO:
 
--Instalamos una fuente truetype adecuada. Para ello bajamos el zip de una fuente parcheada nerdfont de aquí:
+-Instalamos una fuente truetype adecuada: apt-get install fonts-jetbrains-mono 
+
+ALTERNATIVA: Si necesitásemos una fuente con glifos, bajaríamos el zip de una fuente parcheada nerdfont de aquí:
 https://www.nerdfonts.com/font-downloads
 (Son fuentes que podrías instalarte como paquetes desde Debian, pero estas versiones parcheadas Nerd traen glifos
 que permiten mostrar iconos gráficos en la consola.)
@@ -9669,19 +9671,19 @@ Por ejemplo, yo me suelo bajar JetBrainsMono. Metemos los contenidos del zip en 
 -Creamos el fichero ~/.sfrotzrc con el contenido:
 
 [Window]
-AcWidth = 1280
-AcHeight = 720 
+AcWidth = 1920
+AcHeight = 1080
 
 [Fonts]
-fontdir=/usr/local/share/fonts/truetype/jetbrains
-textroman=JetBrains Mono Light Nerd Font Complete Mono.ttf@20
-textbold=JetBrains Mono Bold Nerd Font Complete.ttf@20
-textitalic=JetBrains Mono Light Italic Nerd Font Complete.ttf@20
-textbolditalic=JetBrains Mono Bold Italic Nerd Font Complete.ttf@20
-fixedroman=JetBrains Mono Light Nerd Font Complete Mono.ttf@20
-fixedbold=JetBrains Mono Bold Nerd Font Complete.ttf@20
-fixeditalic=JetBrains Mono Light Italic Nerd Font Complete.ttf@20
-fixedbolditalic=JetBrains Mono Bold Italic Nerd Font Complete.ttf@20
+fontdir=/usr/share/fonts/truetype/jetbrains-mono
+textroman=JetBrainsMono-Medium.ttf@34
+textbold=JetBrainsMono-Bold.ttf@34
+textitalic=JetBrainsMono-Italic.ttf@34
+textbolditalic=JetBrainsMono-BoldItalic.ttf@34
+fixedroman=JetBrainsMono-Medium.ttf@34
+fixedbold=JetBrainsMono-Bold.ttf@34
+fixeditalic=JetBrainsMono-Italic.ttf@34
+fixedbolditalic=JetBrainsMono-BoldItalic.ttf@34
 antialias=1
 
 NOTA: Se podrían usar valores de AcWidth y AcHeight que fuesen múltiplos de los 640x400 originales que usa sfrotz,
