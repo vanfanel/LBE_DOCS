@@ -11062,12 +11062,20 @@ PERO no es muy productivo porque reproducir vídeo fullhd sobre SDL2 es lento).
 
 	PARTE 5: MPV
 	
--Instalamos dependencias previas: apt-get install libass-dev --no-install-recommends
-
--Instalamos otra dependencia previa, libplacebo, que está en Debian 12 pero arrastra toda la mierda de X11
+-Instalamos dependencias previa, libass, que está en Debian pero arrastra toda la mierda de X11
 así que la compilamos nosotros.
---Clonamos su repo:
-git clone --depth 1 --recurse-submodules -j8 https://code.videolan.org/videolan/libplacebo.git
+--Nos bajamos la última estable de: https://github.com/libass/libass/releases
+--Configuramos con:	
+
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release ..
+
+-Instalamos otra dependencia previa, libplacebo, que está en Debian pero arrastra toda la mierda de X11
+así que la compilamos nosotros.
+
+--Clonamos su repo (no instalamos desde estable porque necesita submódulos):
+  git clone --depth 1 --recurse-submodules -j8 https://code.videolan.org/videolan/libplacebo.git
 --Configuramos con:	
 
 CFLAGS="-march=native -mtune=native" \
@@ -11075,9 +11083,6 @@ CXXFLAGS="-march=native -mtune=native" \
 meson setup -Ddemos=false -Dbuildtype=release ..
 
 VAMOS CON MPV EN SÍ:
-
--Instalamos dependencias previas:
-apt-get install libass-dev --no-install-recommends
 
 -Bajamos la última estable de: https://github.com/mpv-player/mpv/releases
 
