@@ -1235,6 +1235,9 @@ set(OpenGL_GL_PREFERENCE GLVND)
 
 Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 
+RECUERDA: Para que no de SEGFAULT al iniciarse, creamos el archivo .config/retroarch/config/Flycast/Flycast.cfg
+con el contenido: run_ahead_enabled = "false"
+
 Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
