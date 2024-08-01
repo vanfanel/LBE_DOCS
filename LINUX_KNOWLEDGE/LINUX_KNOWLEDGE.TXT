@@ -7239,9 +7239,9 @@ Si usas el driver GL (NO RECOMENDADO, USA GLCORE!!), para que HARD SYNC ON funci
 haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
 ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
 
--AUDIO: driver ALSA, 44100 Hz, 32ms, resampler quality normal
+-AUDIO: driver ALSATHREAD, 44100 Hz, 32ms, resampler quality normal.
+(No usamos ALSA normal porque, incluso con 36ms, hay dropout al lanzar el Jazz Jackrabbit).
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
-Alternativamente, ALSATHREAD con 36ms.
 
 -En LATENCY, activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 El otro método parecido a Runahead, llamado "Run Preemptive Frames", causa pitch wobbling, así que ni lo antes probando. 
@@ -7304,8 +7304,7 @@ PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
 
 PARA EL CORE DE SATURN, USA LOS SIGUIENTES OVERRIDES:
 	--Desactiva el Runahead por completo!
-	--Backend de audio ALSATHREAD con 42ms de buffer (con ALSA, ni siquiera 45ms de buffer son suficientes en la pantalla
-	  del título del Harlequin).
+	--Backend de audio ALSA con 42ms de buffer
 
 PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead, pero sí que funciona bien con max_swapchain a 2
 y el shader Fakelottes con la curvatura comentada.
