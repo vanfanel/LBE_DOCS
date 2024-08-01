@@ -10960,7 +10960,7 @@ y requería usar un fork especial de ffmpeg, así que pasando.
 
 ###########BLOQUE EXCLUSIVO DE AMD64################
 
-	PARTE 1: LIBVA
+	***PARTE 1: LIBVA***
 
 Bajamos la última estable de:
 https://github.com/intel/libva/releases
@@ -10973,7 +10973,7 @@ cd b4
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
 meson setup .. -Dbuildtype=release
 
-	PARTE 2: INTEL MEDIA DRIVER
+	***PARTE 2: INTEL MEDIA DRIVER***
 (Es para Gen8 y posteriores, para otros chips más antiguos hacen falta otros drivers específicos).
 
 DEPENDENCIA PREVIA: libigdgmm
@@ -11004,7 +11004,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
-	PARTE 3: VAINFO
+	***PARTE 3: VAINFO***
 
 Necesitamos VAINFO para ver qué aceleración soporta nuestra CPU:
 
@@ -11029,7 +11029,8 @@ SÓLO AMD64: Instalamos dependencia previa: apt-get install nasm
 
 VAMOS CON FFMPEG EN SÍ:
 
-Bajamos la última estable de: https://github.com/FFmpeg/FFmpeg/tags
+Bajamos la última estable del branch más reciente de: https://www.ffmpeg.org/download.html#releases
+(Ahora van por la 7.0.x)
 
 -Configuramos con:
 
