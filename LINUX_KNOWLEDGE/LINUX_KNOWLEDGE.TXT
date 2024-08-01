@@ -1238,6 +1238,9 @@ Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 RECUERDA: Para que no de SEGFAULT al iniciarse, creamos el archivo .config/retroarch/config/Flycast/Flycast.cfg
 con el contenido: run_ahead_enabled = "false"
 
+RECUERDA: Para que el framerate sea suave en los juegos que van a 30FPS, debes activar "Full Framebuffe Emulation"
+en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da igual.
+
 Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
