@@ -85,32 +85,6 @@ ctl.!default {
 
 ...Y ya suena todo lo de ALSA por defecto por el HDMI!
 
-USANDO DMIX (LOS JUEGOS FNA/XNA NECESITAN ESTO)
-
-pcm.dmixed {
-    type dmix
-    ipc_key 1234
-    slave {
-        pcm "hw:PCH,3"
-    }
-}
-
-pcm.!default {
-    type plug
-    slave.pcm "dmixed"
-}
-
-ctl.!default {
-    type hw
-    card PCH
-}
-
-NOTA: PODRÍAMOS AÑADIR ESTOS PARÁMETROS EN slave {} PARA CONTROLAR TAMAÑO DE BUFFER, DE PERIODO, ETC:
-period_time 0
-period_size 1024
-buffer_size 4096
-rate 44100
-
 POR JACK TRASERO:
 
 speaker-test -c2 -D hw:HID,0
