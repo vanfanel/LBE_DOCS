@@ -85,7 +85,43 @@ para el BASTION funciona así)
 		CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" make -j4
 		cp libtheorafile.so* ~/bastion/game/lib64/
 
-2--INSTALAR PIPEWIRE
+
+###########################################################################################################################################
+########BLOQUE DE PREPARACIÓN DEL SISTEMA DE AUDIO PARA USAR DMIX, YA QUE LOS JUEGOS FNA ABREN VARIAS VECES EL DISPOSITIVO DE AUDIO########
+###########################################################################################################################################
+
+Tenemos que dejar /etc/asound.conf parecido a esto (hay que ajustar los valores en slave{pcm "hw:PCH,3"} y en ctl.!default{}
+a nuestro sistema concreto, este ejemplo es para sacar el audio de DMIX por el HDMI de un I5-1235U:
+
+pcm.dmixed {
+    type dmix
+    ipc_key 1234
+    slave {
+        pcm "hw:PCH,3"
+    }
+}
+
+pcm.!default {
+    type plug
+    slave.pcm "dmixed"
+}
+
+ctl.!default {
+    type hw
+    card PCH
+}
+
+NOTA: PODRÍAMOS AÑADIR ESTOS PARÁMETROS EN slave {} PARA CONTROLAR TAMAÑO DE BUFFER, DE PERIODO, ETC:
+period_time 0
+period_size 1024
+buffer_size 4096
+rate 44100
+
+##########################################################################################################################################
+########BLOQUE EXCLUSIVO RASPBERRY PI (YA QUE NO TIENE DMIX FUNCIONAL Y LOS JUEGOS FNA ABREN VARIAS VECES EL DISPOSITIVO DE AUDIO)########
+##########################################################################################################################################
+
+INSTALAR PIPEWIRE
 
 Necesitamos compilar SDL2 para que tenga soporte del backend PIPEWIRE, y especificar el driver PIPEWIRE cuando lancemos
 un juego de SDL2.

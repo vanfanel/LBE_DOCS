@@ -7239,13 +7239,14 @@ Si usas el driver GL (NO RECOMENDADO, USA GLCORE!!), para que HARD SYNC ON funci
 haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
 ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
 
--AUDIO: driver ALSATHREAD, 48000 Hz, 36ms, resampler quality normal
+-AUDIO: driver ALSA, 44100 Hz, 32ms, resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
+Alternativamente, ALSATHREAD con 36ms.
 
 -En LATENCY, activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 El otro método parecido a Runahead, llamado "Run Preemptive Frames", causa pitch wobbling, así que ni lo antes probando. 
 
-(No hace falta pasar ningunos parámetros al kernel para usar 36ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
+(No hace falta pasar ningunos parámetros al kernel para usar 32ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
 LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
 SHADERS: En general para todos los cores, usa el shader ZFAST-CRT-HDMASK.
@@ -7292,7 +7293,7 @@ con el contenido: run_ahead_enabled = "false"
 
 PARA EL CORE DE GB (Gambatte) y para el de GBA (mGBA), si usas RunAhead activa lo de "Use second instance", o tendrás pequeños droputs o
 distorsiones de audio.
-Para el Gambatte, además, sube Audio Latency a 40ms, para evitar los típicos dropouts en en Mario Land al entrer en tuberías.
+Para el Gambatte, además, sube Audio Latency a 40ms o usa ALSATHREAD, para evitar los típicos dropouts en en Mario Land al entrer en tuberías.
 (Parece que hay algo raro en el buffering del audio en el core Gambatte...)
 
 PARA EL CORE DE NES (NESTOPIA) USA LA PALETA "CXA2025AS", O LA CONFIGURACIÓN DE SHADERS SE VERÁ MUY RARA.
