@@ -72,15 +72,15 @@ speaker-test -c2 -D hw:PCH,3
 Así que ahora creamos /etc/asound.conf donde especificamos el nombre de la CARD y el número de DEVICE:
 (OJO: NO debemos especificar la CARD por número, porque el número cambia entre reinicios).
 
-pcm.!default {                                                                                                 
-        type hw                                                                                                
-        card PCH                                                                                               
-        device 3                                                                                               
-}                                                                                                              
-                                                                                                               
-ctl.!default {                                                                                                 
-        type hw                                                                                                
-        card PCH                                                                                               
+pcm.!default {
+        type hw
+        card PCH
+        device 3
+}
+
+ctl.!default {
+        type hw
+        card PCH
 }
 
 ...Y ya suena todo lo de ALSA por defecto por el HDMI!
