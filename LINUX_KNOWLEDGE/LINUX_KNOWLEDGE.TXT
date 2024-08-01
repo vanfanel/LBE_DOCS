@@ -11004,7 +11004,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
-	***PARTE 3: VAINFO***
+	***(OPCIONAL!!!) PARTE 3: VAINFO***
 
 Necesitamos VAINFO para ver qué aceleración soporta nuestra CPU:
 
