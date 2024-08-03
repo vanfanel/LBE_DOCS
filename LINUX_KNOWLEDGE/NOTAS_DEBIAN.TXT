@@ -321,8 +321,8 @@ ExecStart=-/usr/bin/amixer set PCM 230 -q
 		Si todo va bien, ALSA va a restaurar esos valores en cada arranque, leyéndolos de /etc/asound.state, sin que hagas nada y sin ningún servicio.
 		Si quieres, puedes aniadir lo de alsactl restore al .profile		
 
-	-CÓMO USAR LA HIFIBERRY: Se supone que funciona siempre porque aunque el ordering de las tarjetas puede cambiar entre arranques, estamos espeficicando la tarjeta por
-	    defecto en /etc/asound.conf con el contenido:
+	-CÓMO USAR LA HIFIBERRY: Se supone que funciona siempre porque aunque el ordering de las tarjetas puede cambiar entre arranques,
+		estamos espeficicando la tarjeta por defecto en /etc/asound.conf con el contenido:
 	    	pcm.!default {
     			type hw
     			card sndrpihifiberry

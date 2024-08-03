@@ -90,8 +90,8 @@ para el BASTION funciona así)
 ########BLOQUE DE PREPARACIÓN DEL SISTEMA DE AUDIO PARA USAR DMIX, YA QUE LOS JUEGOS FNA ABREN VARIAS VECES EL DISPOSITIVO DE AUDIO########
 ###########################################################################################################################################
 
-Tenemos que dejar /etc/asound.conf parecido a esto (hay que ajustar los valores en slave{pcm "hw:PCH,3"} y en ctl.!default{}
-a nuestro sistema concreto, este ejemplo es para sacar el audio de DMIX por el HDMI de un I5-1235U:
+Lo primemo es definir el dispositivo "dmixed" (lo podemos llamar como queramos), para lo cual añadimos en /etc/asound.conf
+algo parecido a esto (hay que ajustar los valores en slave{pcm "hw:PCH,3"} al sistema concreto):
 
 pcm.dmixed {
     type dmix
@@ -101,15 +101,22 @@ pcm.dmixed {
     }
 }
 
-pcm.!default {
-    type plug
-    slave.pcm "dmixed"
-}
+De este modo, "dmixed" queda definido, pero NO se usa, todos los programas normales siguen usando el dispositivo por defecto.
 
-ctl.!default {
-    type hw
-    card PCH
-}
+También añadimos AL FINAL de /etc/asound.conf:
+@hooks [{ func load files ["/tmp/dmix.conf"] }]
+...Para que, si existe ese archivo /tmp/dmix.conf se cargue, y si no, no se haga nada.
+
+Nos interesa que los juegos FNA sí usen el dispositivo dmixed.
+Para ello, en el script de lanzamiento de los juegos, lo que hacemos es crear el /tmp/dmix.conf antes de cargar el juego,
+y borralo al salir del juego:
+
+echo "pcm.!default { type plug slave.pcm "dmixed" }" > /tmp/dmix.conf
+<ejecutar_juego> 
+rm /tmp/dmix.conf
+
+Lo bueno de crear dmix en /tmp, es que como /tmp es un punto de montaje de TMPFS pues está en RAM,
+así que si el juego nos colgase la máquina, al reiniciar todo estaría como al principio, sin usarse el dispositivo "dmixed" vamos.
 
 NOTA: PODRÍAMOS AÑADIR ESTOS PARÁMETROS EN slave {} PARA CONTROLAR TAMAÑO DE BUFFER, DE PERIODO, ETC:
 period_time 0
