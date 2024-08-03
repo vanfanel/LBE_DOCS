@@ -278,3 +278,13 @@ https://www.gog.com/game/chasm
 https://www.gog.com/en/game/owlboy
 https://store.steampowered.com/app/1280300/Steel_Assault/
 https://supergiant-games.itch.io/transistor
+
+###########################################################################
+# BLOQUE PARA QUE FUNCIONEN LOS MANDOS NO SOPORTADOS POR SDL2 INTERNAMENTE#
+###########################################################################
+
+Simplemente hay que hacer un "export SDL_GAMECONTROLLERCONFIG=" antes de lanzar el juego.
+
+Para que funcione el mando SN30 2.4G:
+
+export SDL_GAMECONTROLLERCONFIG="03000000412300003680000001010000,LLC Arduino Leonardo,a:b0,b:b1,x:b2,y:b3,back:b6,start:b7,leftshoulder:b4,rightshoulder:b5,dpup:-a1,dpdown:+a1,dpleft:-a0,dpright:+a0,platform:Linux," 
