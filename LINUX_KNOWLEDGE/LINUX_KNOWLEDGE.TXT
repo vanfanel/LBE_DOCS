@@ -2464,6 +2464,15 @@ cp -R kickstarts ~/amiga/
 
 --IMPORTANTE!!! Creamos el directorio ~/amiga/conf, o si no, no se nos salvarán las configuraciones!!!
 
+								##################################
+								#PARA TENER SCROLL SUAVE PERFECTO#
+								##################################
+
+El emulador Amiberry produce ~59.94 FPS en NTSC (recuerda que la frecuencia típica de NTSC es 59.94005994005994)
+por lo que antes de lanzarlo tenemos que hacer:
+
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.940060
+
 FS-UAE (FSUAE), EMULADOR STANDALONE DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
 =====================================================================================
 
