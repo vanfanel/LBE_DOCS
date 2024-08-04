@@ -809,30 +809,48 @@ sudo ldconfig
 Si quieres filtros por software, entra en gfx/video_filters y haz make, y copias los .so y los .filt a ~/.config/retroarch/filters/video/
 y luego los seleccionas en retroarch.
 
-KERNEL CACHYOS Y SCHEDULER LAVD EN DEBIAN (NO APORTA NADA, ES PARA TENER MÁS FPS MIENTRAS COMPILAS O ALGO ASÍ EN SEGUNDO PLANO)
-===============================================================================================================================
+INSTRUCCIONES GENERALES DE COMPILACIÓN DEL KERNEL DEBIAN
+========================================================
 
-PREVIO: Antes de hacer estos experimentos, edita /etc/default/grub, pon un timeout distinto de 0, y ejecuta "update-grub",
-para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel original del sistema y desinstalar el nuevo.
+-Instalamos dependencias previas:
+apt-get install build-essential libncurses-dev bison flex libssl-dev libelf-dev
 
-	###PARTE 1: INSTALACIÓN DE UN KERNEL QUE SOPORTE SCX (SCHED-EXT): EL KERNEL CACHYOS###
+-Nos descargamos los sources del kernel en uso:
+apt-get source linux
 
--Instalamos una dependencia previa que es necesaria para compilar el kernel con la opción "Generate BTF typeinfo" (CONFIG_DEBUG_INFO_BTF)
- activada: apt-get install pahole
--Usamos un script que nos descarga el kernel y nos permite pre-configurarlo (hay que activar SCHED_CLASS_EXT a mano antes de compilar):
- Clonamos su repo: git clone --depth 1 https://github.com/CachyOS/linux-cachyos-deb
-(No te olvides de poner el governor a PERFORMANCE en las opciones que nos presenta el script!)
-(NO COMPILAMOS EL KERNEL AÚN, lo vamos a hacer después a mano con "make", ya que tenemos que activar CONFIG_SCHED_CLASS_EXT).
--Hacemos "make menuconfig" y hacemos estos cambios (RECUERDA que si una opción no aparece, puedes darle a la Z
- para que aparezca y poder ponerte sobre ella y darle a la "?" para ver qué tienes que tener activado/desactivado para que aparezca): 
-	--Activamos "General Setup->Extensible Scheduling Class" (esto activa lo más importante: CONFIG_SCHED_CLASS_EXT).
-	--Activamos "Kernel hacking->Compile-time checks and compiler options->Generate BTF type information"
-	(Para lo cual tenemos que tener "Debug Information" puesto a "Rely on the toolchain's implicit default DWARF version")
-	--Activamos "Device Drivers->Sound card support->Advanced Linux Sound Architecture -> HR-timer backend support"
-	--Activamos "General Setup->Some kernel tweaks by CachyOS"
-¡¡RECUERDA que usando "/" puedes localizar la opción que quieras!!
+-Entramos en el directorio raiz de los sources:
+cd linux-$(uname -r)
 
--BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL USANDO MODPROBED-DB
+-Le ponemos la configuración del kernel en uso:
+cp /boot/config-$(uname -r) .config
+
+-Entramos en la configuración y ajustamos lo que queramos:
+---Desativamos las mitigations
+---Para evitar depender de la herramienta pahole, deshabilitamos:
+Kernel hacking  --->
+    Compile-time checks and compiler options  --->
+        [*] Provide BPF Type Format (BTF) debug info
+
+-Compilamos el kernel y los módulos:
+make -j8
+
+-Instalamos los módulos (para desinstalarlos, simplemente borramos el directorio "/lib/modules/6.x.x"):
+make INSTALL_MOD_STRIP=1 modules_install
+
+-Instalamos el kernel (para desinstalarlo, borramos de /boot/ todo lo correspondiente a esa versión del kernel):
+make install
+
+-Actualizamos grub para que añada el nuevo kernel a su lista:
+update-grub
+
+CUIDADO!!! NO REINICIES SIN PONER UN TIMEOUT DISTINTO DE 0 EN /etc/default/grub PARA LANZAR EL NUEVO KERNEL DESDE EL MENÚ DE GRUB!!!
+UNA VEZ QUE YA HAYAS COMPROBADO QUE FUNCIONA TODO BIEN, PUEDES PONERLO COMO KERNEL POR DEFECTO CON "GRUB_DEFAULT=..."
+EN /etc/default/grub
+
+################################################################## 
+#BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL USANDO MODPROBED-DB#
+##################################################################
+
 (La información está adaptada de: https://wiki.archlinux.org/title/Modprobed-db)
 --Clonamos su repo: git clone --depth 1 https://github.com/graysky2/modprobed-db.git
 --Entramos en el directorio de los sources y simplemente hacemos "make install" y ya se instala.
@@ -872,8 +890,33 @@ que en un sistema actual de 2024 con NVME son:
 (RECUERDA que si en un submenú no encuentras una opción que debería estar ahí, puedes darle a Z y te aparecerá para poder darle a "?" sobre ella
  y así averiguar de qué depende).
 (RECUERDA que puedes usar "/" para buscar la opción que quieras, te dice cómo llegar a cada opción).
- 
--FIN DEL BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL
+
+###################################################### 
+#FIN DEL BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL#
+######################################################
+
+KERNEL CACHYOS Y SCHEDULER LAVD EN DEBIAN (NO APORTA NADA, ES PARA TENER MÁS FPS MIENTRAS COMPILAS O ALGO ASÍ EN SEGUNDO PLANO)
+===============================================================================================================================
+
+PREVIO: Antes de hacer estos experimentos, edita /etc/default/grub, pon un timeout distinto de 0, y ejecuta "update-grub",
+para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel original del sistema y desinstalar el nuevo.
+
+	###PARTE 1: INSTALACIÓN DE UN KERNEL QUE SOPORTE SCX (SCHED-EXT): EL KERNEL CACHYOS###
+
+-Instalamos una dependencia previa que es necesaria para compilar el kernel con la opción "Generate BTF typeinfo" (CONFIG_DEBUG_INFO_BTF)
+ activada: apt-get install pahole
+-Usamos un script que nos descarga el kernel y nos permite pre-configurarlo (hay que activar SCHED_CLASS_EXT a mano antes de compilar):
+ Clonamos su repo: git clone --depth 1 https://github.com/CachyOS/linux-cachyos-deb
+(No te olvides de poner el governor a PERFORMANCE en las opciones que nos presenta el script!)
+(NO COMPILAMOS EL KERNEL AÚN, lo vamos a hacer después a mano con "make", ya que tenemos que activar CONFIG_SCHED_CLASS_EXT).
+-Hacemos "make menuconfig" y hacemos estos cambios (RECUERDA que si una opción no aparece, puedes darle a la Z
+ para que aparezca y poder ponerte sobre ella y darle a la "?" para ver qué tienes que tener activado/desactivado para que aparezca): 
+	--Activamos "General Setup->Extensible Scheduling Class" (esto activa lo más importante: CONFIG_SCHED_CLASS_EXT).
+	--Activamos "Kernel hacking->Compile-time checks and compiler options->Generate BTF type information"
+	(Para lo cual tenemos que tener "Debug Information" puesto a "Rely on the toolchain's implicit default DWARF version")
+	--Activamos "Device Drivers->Sound card support->Advanced Linux Sound Architecture -> HR-timer backend support"
+	--Activamos "General Setup->Some kernel tweaks by CachyOS"
+¡¡RECUERDA que usando "/" puedes localizar la opción que quieras!!
 
 -Ahora ya sí: Compilamos el kernel y los módulos con "make -j6".
 
