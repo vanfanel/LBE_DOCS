@@ -2465,7 +2465,7 @@ cp -R confs data kickstarts harddrives conf nvram cdrom controllers savestates p
 								#PARA TENER SCROLL SUAVE PERFECTO#
 								##################################
 
-El emulador Amiberry produce ~59.94 FPS en NTSC (recuerda que la frecuencia típica de NTSC es 59.94005994005994)
+El emulador Amiberry produce ~59.94005994 FPS en NTSC (recuerda que la frecuencia típica de NTSC es 59.94005994005994)
 por lo que antes de lanzarlo tenemos que hacer:
 
 wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.940060
