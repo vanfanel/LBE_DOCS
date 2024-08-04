@@ -2459,10 +2459,7 @@ make -j8
 --Creamos ~/amiga, y ahí metemos el ejecutable "amiberry" y ciertos directorios que vienen con los sources:
 mkdir ~/amiga
 cp amiberry ~/amiga/
-cp -R data ~/amiga/
-cp -R kickstarts ~/amiga/
-
---IMPORTANTE!!! Creamos el directorio ~/amiga/conf, o si no, no se nos salvarán las configuraciones!!!
+cp -R confs data kickstarts harddrives conf nvram cdrom controllers savestates plugins screenshots whdboot plugins ~/amiga/
 
 								##################################
 								#PARA TENER SCROLL SUAVE PERFECTO#
