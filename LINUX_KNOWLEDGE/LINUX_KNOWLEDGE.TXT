@@ -2465,7 +2465,10 @@ cp -R confs data kickstarts harddrives conf nvram cdrom controllers savestates p
 								#PARA TENER SCROLL SUAVE PERFECTO#
 								##################################
 
-El emulador Amiberry produce ~59.94005994 FPS en NTSC (recuerda que la frecuencia típica de NTSC es 59.94005994005994)
+Editamos src/osdep/amiberry_gfx.cpp, nos vamos a la función "target_adjust_vblank_hz()", comentamos todo su contenido
+y hacemos que devuelta la frecuencia exacta con decimales de nuestro monitor.
+
+OTRA ALTERNATIVA: El emulador Amiberry produce ~59.94005994 FPS en NTSC (recuerda que la frecuencia típica de NTSC es 59.94005994005994)
 por lo que antes de lanzarlo tenemos que hacer:
 
 wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.940060
@@ -10811,19 +10814,43 @@ INSTALAR CERTIFICADO DIGITAL
 Nos vamos a https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-software
 Este va a ser nuestro índice general desde el que vamos haciendo las cosas.
 
--Primero nos bajamos el programa de Configuración previa, que es un .DEB. 
+-Primero nos bajamos el programa de Configuración Previa, que es un .DEB. 
 ¡¡¡CUIDADO!!! Antes de instalarlo, instalamos sus dependencias previas:
-sudo apt-get install libcanberra-gtk-module libcanberra-gtk3-module --no-install-recommends
-Luego ya lo instalamos:
-sudo dpkg -i configuradorfnmt_1.0.1-0_amd64.deb
+sudo apt-get install libcanberra-gtk3-module libcanberra-gtk3-module --no-install-recommends
+####BLOQUE PARCHE PARA DEBIAN 13 (NO DEBERÍA SER NECESARIO EN EL FUTURO####
+Como el Programa de Configuración Previa necesita el paquete "libcanberra-gtk-module" que en Debian 13 se llama "libcanberra-gtk3-module"
+nos creamos un paquete "libcanberra-gtk-module" falso y lo instalamos.
+Para ello:
+	--Instalamos la herramienta necesaria: sudo apt-get install equivs
+	--Creamos un fichero de texto llamado "libcanberra-gtk-module" con el contenido:
+
+Section: misc
+Priority: optional
+Standards-Version: 3.9.2
+
+Package: libcanberra-gtk-module
+Version: 0.30-2
+Maintainer: Tu Nombre <tu@correo.com>
+Description: Paquete ficticio para satisfacer dependencias de libcanberra-gtk-module
+
+	--Creamos el paquete ficticio y lo instalamos:
+equivs-build libcanberra-gtk-module
+sudo dpkg -i libcanberra-gtk-module_0.30-2_all.deb
+####FIN BLOQUE PARCHE PARA DEBIAN 13###
+Vamos con el programa de Configuración Previa en sí:
+sudo dpkg -i configuradorfnmt_x.x.x-x_amd64.deb
 
 -Ahora nos vamos a la parte de "Solicitud via internet de su certificado". Rellenamos el formulario y lo enviamos.
 Nos llegará al correo un código, que junto con el DNI se presenta en un registro (Ayto por ejemplo) y nos dan el certificado.
+(Tienes copia del certificado en el correo y en el disco duro de backup).
+
+-Ahora nos vamos en Firefox a Settings->Privacy & Security->Certificates, y en la pestaña de "My Certificates",
+importamos el certificado usando el archivo con extensión .p12
 
 PARTE 2: AUTOFIRMA
 
 Instalamos dependencias previas:
-sudo apt-get install openjdk-11-jre libnss3-tools
+sudo apt-get install openjdk-23-jre libnss3-tools
 
 Se descarga un .deb desde: https://firmaelectronica.gob.es/Home/Descargas.html
 Lo instalamos con dpkg desde la consola de comandos. Este paquete instala:
