@@ -870,9 +870,10 @@ I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2.AppImage "$1" >> /dev/
 
 PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
 --En "Settings->Graphics" ponemos el Renderer a "Vulkan".
---En "Settings->Emulation", en la parte de abajo activamos solamente "Sync to Host Refresh Rate",
-  y ponemos "Maximum Frame Latency" a "1 frames". Con Vulkan no es necesario activar "Vertical Sync (VSync)".
-  (PARA CUANDO TENGAS VRR: Activamos "Optimal Frame Pacing" y desactivamos "Sync to Host Refresh Rate").
+--En "Settings->Emulation", en la parte de abajo activamos solamente "Sync to Host Refresh Rate".
+  Con Vulkan no es necesario activar "Vertical Sync (VSync)".
+  (PARA CUANDO TENGAS UNA MÁQUINA MÁS POTENTE podrás activar "Optimal Frame Pacing").
+  (PARA CUANDO TENGAS VRR podrás desactivar "Sync to Host Refresh Rate").
 --En "Settings->Audio", dejamos "Backend" a "Cubeb" y "Driver" a "alsa".
 
 -SI LOS CONTROLES DEL DPAD VAN MAL: En "Settings->Controllers->Controller Port 1->Mapping Settings" activamos "Ignore inversion".
