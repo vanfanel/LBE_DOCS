@@ -1231,7 +1231,7 @@ swaybg -i atari.png >/dev/null 2>&1 &
 LANZAR WAYLAND COMO SERVICIO DE SYSTEMD
 =======================================
 
-Creamos /usr/local/bin/launch-wayfire (o el compositor que sea) con el contenido:
+Creamos /usr/local/bin/launch-labwc (o el compositor que sea) con el contenido:
 
 #############
 
@@ -1241,13 +1241,16 @@ if [[ ! -e $rundir ]]; then
     mkdir -p $rundir
 fi
 export XDG_RUNTIME_DIR=/run/user/0
-/usr/local/bin/wayfire
+source /etc/profile
+/usr/local/bin/labwc
 
 #############
 
-HACEMOS EJECUTABLE /usr/local/bin/launch-wayfire:
-chmod +x /usr/local/bin/launch-wayfire
+(Lo de "source /etc/profile" es porque eso normalmente lo carga el login manager, y nosotros no usamos ninguno,
+estamos ejecutando directamente el compositor desde este script de lanzamiento).
 
+HACEMOS EJECUTABLE /usr/local/bin/launch-labwc:
+chmod +x /usr/local/bin/launch-labwc
 
 Creamos /etc/systemd/system/wayland.service con el contenido:
 
@@ -1262,7 +1265,7 @@ Group=root
 PAMName=login
 WorkingDirectory=%h
 ExecStart=
-ExecStart=-/usr/local/bin/launch-wayfire
+ExecStart=-/usr/local/bin/launch-labwc
 Restart=always
 
 [Install]
