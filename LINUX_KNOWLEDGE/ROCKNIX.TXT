@@ -54,16 +54,6 @@ PARA EL CORE DE GAMEBOY/GBC, EL MEJOR SHADER ES EL "LCD1X" (DEL SUBDIRECTORIO "H
 PARA EL CORE DE MEGADRIVE/MASTER SYSTEM, EL MEJOR SHADER ES EL ZFAST-COMPOSITE, con CONVERGENCE X-AXIS al máximo,
 SATURATION a 1.10, FLICKERING a 5, y los parámetros de scanline y curvature puestos a 0.
 
-ALTERMNATIVA PARA MEGADRIVE: "CRT-CYCLON", con los parámetros de convergencia a tope, sin curvatura,
-"Scanline Weight" a 50 (es como menos se ven las scanlines, menos que eso ya tienes que activar el escalado a enteros),
-"Mask Type" a 0, "Slot Mask" desactivado", y "Black Level" a 0.05. 
-PARA MASTER SYSTEM, el mismo shader con la misma configuración + POTATO BOOST activado.
-
-OTRA ALTERNATIVA (AUNQUE TIENE SHIMMERING POR LA SHADOWMASK QUE USA...) sería usar el fakelottes pero "aligerado".
-Para ello, copia el directorio "crt" del repo slang-shaders de RetroArch a storage/shaders (quedaría como storage/shaders/crt),
-edita storage/shaders/slang/crt/shaders/fakelottes.glsl y comenta las SCANLINES, los EXTRA MASK y la CURVATURA.
-Ese es el shader más óptimo que vas a poder tener en la máquina.
-
 PARA TENER LAS CARÁTULAS CUANDO HAGAS EL SCRAPPING:
 -En "SCRAPPING DATABASE" deja "SCREENSCRAPER"
 -En "IMAGE SOURCE" pon "BOX 2D"
