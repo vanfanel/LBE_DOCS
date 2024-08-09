@@ -47,8 +47,6 @@ lo salvamos como GLOBAL PRESET, en el menú ES ponemos "Shader Set" a "Default" 
 
 EL MEJOR SHADER PARA LA RG353 EN GENERAL ES EL ZFAST, con los parámetros:
 -"Blur Amount X-Axis" al máximo.
--"Mask Effect Amount" al máximo.
-Tenemos dos opciones para que se vea bien (=sin patrones):
 -Activamos el escalado a enteros y dejamos los parámetros de las scanlines a como vienen.
 
 PARA EL CORE DE GAMEBOY/GBC, EL MEJOR SHADER ES EL "LCD1X" (DEL SUBDIRECTORIO "HANDHELDS").
