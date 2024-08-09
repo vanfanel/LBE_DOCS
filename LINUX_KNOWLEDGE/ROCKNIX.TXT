@@ -51,7 +51,11 @@ EL MEJOR SHADER PARA LA RG353 EN GENERAL ES EL ZFAST, con los parámetros:
 
 PARA GAMEBOY/GBC, EL MEJOR SHADER ES EL "LCD1X" (DEL SUBDIRECTORIO "HANDHELDS").
 
-PARA GAMEGEAR Y LYNX, el mejor shader es "handheld/sameboy-lcd" combinado con INTEGER SCALING.
+PARA GAMEGEAR, usamos el shader ZFAST con los parámetros de los scanlines a 0, "BLUR AMOUNT X-AXIS" al máximo,
+y "MASK EFFECT AMOUNT" al máximo.
+Como quitamos las scanlines, podemos quitar el INTEGER SCALING para este core y guardarlo como un override de content directory. 
+
+PARA LYNX, el mejor shader es "handheld/sameboy-lcd" combinado con INTEGER SCALING.
 
 PARA GBA, tenemos que quitar el INTEGER SCALING porque si no se ve muy pequeño
 (lo guardamos como CORE OVERRIDE, para lo cual primero hay que des-ocultar la opción en SETTINGS->USER INTERFACE->MENU ITEM VISIBILITY->QUICK MENU),
