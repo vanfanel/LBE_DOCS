@@ -49,8 +49,7 @@ EL MEJOR SHADER PARA LA RG353 EN GENERAL ES EL ZFAST, con los parámetros:
 -"Blur Amount X-Axis" al máximo.
 -"Mask Effect Amount" al máximo.
 Tenemos dos opciones para que se vea bien (=sin patrones):
--Quitar el escalado a enteros (a toda pantalla!) pero poniendo los parámetros de las scanlines a 0.
--Con escalado a enteros conservando las scanlines.
+-Activamos el escalado a enteros y dejamos los parámetros de las scanlines a como vienen.
 
 PARA EL CORE DE GAMEBOY/GBC, EL MEJOR SHADER ES EL "LCD1X" (DEL SUBDIRECTORIO "HANDHELDS").
 
@@ -79,7 +78,7 @@ y volver a scrapear con estas cosas puestas como acabo de indicar.
 PARA ARRANCAR ROCKNIX EN MODO KMS/DRM EN VEZ DE MODO WAYLAND
 ============================================================
 
-Creamos el fichero .config/profile/799-no-wayland con el contenido:
+Creamos el fichero .config/profile.d/799-no-wayland con el contenido:
 
 SDL_VIDEODRIVER=kmsdrm
 UI_SERVICE="emustation.service"
