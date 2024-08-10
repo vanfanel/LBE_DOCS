@@ -104,7 +104,7 @@ pcm.dmixed {
 De este modo, "dmixed" queda definido, pero NO se usa, todos los programas normales siguen usando el dispositivo por defecto.
 
 También añadimos AL FINAL de /etc/asound.conf:
-@hooks [{ func load files ["/tmp/dmix.conf"] }]
+@hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
 ...Para que, si existe ese archivo /tmp/dmix.conf se cargue, y si no, no se haga nada.
 
 Nos interesa que los juegos FNA sí usen el dispositivo dmixed.
