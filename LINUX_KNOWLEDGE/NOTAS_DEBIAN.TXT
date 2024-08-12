@@ -1019,3 +1019,41 @@ Nos interesa tener "CONFIG_PREEMPT_DYNAMIC=y"
 	--Le damos permisos con "chmod +x" y lo ejecutamos.
 	  Debería salirnos todo en verde. Podemos ignorar el fallo sobre el kernel "tickless" (se supone que nohz_full=1-3 se encarga de eso,
 	  pero el test no se ha actualizado y comprueba otro parámetro del kernel que no es necesario tener activado).
+
+OPTIMIZACIONES PARA JUEGOS
+==========================
+
+La información procede de: https://wiki.archlinux.org/title/Gaming#Improving_performance
+La idea es mejorar el desempeño y la latencia sin instalar un kernel especial.
+
+-Para que nunca se cargue código durante la ejecución de un juego, sino que todas las funciones de las librerías estén precargadas,
+añadimos en /etc/profile.d/custom.sh:
+
+LD_BIND_NOW=1
+
+-Confirmamos que nuestro clock source es TSC, ya que HPET o ACPI_PM son mucho más lentos y no sirven para NADA en juegos:
+cat /sys/devices/system/clocksource/clocksource*/current_clocksource
+
+-Creamos el fichero "/etc/tmpfiles.d/consistent-response-time-for-gaming.conf" con el contenido:
+
+#    Path                  Mode UID  GID  Age Argument
+w /proc/sys/vm/compaction_proactiveness - - - - 0
+w /proc/sys/vm/watermark_boost_factor - - - - 1
+w /proc/sys/vm/min_free_kbytes - - - - 1048576
+w /proc/sys/vm/watermark_scale_factor - - - - 500
+w /proc/sys/vm/swappiness - - - - 10
+w /sys/kernel/mm/lru_gen/enabled - - - - 5
+w /proc/sys/vm/zone_reclaim_mode - - - - 0
+w /sys/kernel/mm/transparent_hugepage/enabled - - - - madvise
+w /sys/kernel/mm/transparent_hugepage/shmem_enabled - - - - advise
+w /sys/kernel/mm/transparent_hugepage/defrag - - - - never
+w /proc/sys/vm/page_lock_unfairness - - - - 1
+w /proc/sys/kernel/sched_child_runs_first - - - - 0
+w /proc/sys/kernel/sched_autogroup_enabled - - - - 1
+w /proc/sys/kernel/sched_cfs_bandwidth_slice_us - - - - 3000
+w /sys/kernel/debug/sched/base_slice_ns  - - - - 3000000
+w /sys/kernel/debug/sched/migration_cost_ns - - - - 500000
+w /sys/kernel/debug/sched/nr_migrate - - - - 8
+
+Reiniciamos, y hacemos algo como: cat /proc/sys/vm/compaction_proactiveness
+...que nos tiene que dar 0 porque acabamos de establecer su valor en ese fichero (por defecto viene a 20).
