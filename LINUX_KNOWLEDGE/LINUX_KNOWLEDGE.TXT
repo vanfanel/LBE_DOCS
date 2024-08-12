@@ -2369,7 +2369,6 @@ fi
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
 el RetroArch se quede a 50Hz...¡Los 50Hz y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!):
 video_refresh_rate = "50.000000"
-audio_driver = "alsathread"
 audio_latency = "42"
 config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Amiga que usamos para ejecutarlo
@@ -7374,7 +7373,6 @@ y recuerda que los juegos PAL necesitan más buffer de audio por lo que creamos 
 con este contenido (la última línea es porque NO queremos que al quitar el juego el RetroArch se quede a 50Hz...
 ¡Los 50Hz y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!) y se lo pasaremos con "--appenconfig":
 video_refresh_rate = "50.000000"
-audio_driver = "alsathread"
 audio_latency = "42"
 config_save_on_exit = "false"
 
