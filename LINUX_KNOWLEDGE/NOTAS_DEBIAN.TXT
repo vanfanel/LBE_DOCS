@@ -1026,7 +1026,8 @@ OPTIMIZACIONES PARA JUEGOS
 La información procede de: https://wiki.archlinux.org/title/Gaming#Improving_performance
 La idea es mejorar el desempeño y la latencia sin instalar un kernel especial.
 
--Para que nunca se cargue código durante la ejecución de un juego, sino que todas las funciones de las librerías estén precargadas,
+-(OJO!! Esto hace que dejen de funcionar emuladores que necesitan links simbólicos a librerías de GLX, como PCSX2!!)
+Para que nunca se cargue código durante la ejecución de un juego, sino que todas las funciones de las librerías estén precargadas,
 añadimos en /etc/profile.d/custom.sh:
 
 LD_BIND_NOW=1
