@@ -28,7 +28,7 @@ Output->Threaded Video OFF
 Output->Automatic Refresh Rate Switch OFF
 (NO necesario si usamos Max Swapchain Images a 2) Synchronization->Hard GPU Sync ON 
 
-En sonido: ALSATHREAD, 32ms de latencia, 48000 Hz.
+En sonido: ALSATHREAD, 36ms de latencia, 48000 Hz.
 Resampler quality NORMAL.
 (Si pones 44100, acuérdate de ponerlo también en las opciones de audio del FBNEO)
 
@@ -45,9 +45,8 @@ cargamos RetroArch 64bits desde TOOLS, ponemos Settings->Directory->Video Shader
 cargamos un juego del sistema que queramos usando LOAD CONTENT, cargamos shader que queramos de los que hemos metido en /STORAGE/shaders/slang,
 lo salvamos como GLOBAL PRESET, en el menú ES ponemos "Shader Set" a "Default" y ya está.
 
-EL MEJOR SHADER PARA LA RG353 EN GENERAL ES EL ZFAST, con los parámetros:
--"Blur Amount X-Axis" al máximo.
--Activamos el escalado a enteros y dejamos los parámetros de las scanlines a como vienen.
+EL MEJOR SHADER PARA CONSOLAS DE SOBREMESA (SOLUCIONA TAMBIÉN LO DEL DITHERING EB MEGADRIVE) ES ZFAST-COMPOSITE,
+con CONVERGENCE X-AXIS al máximo, SATURATION a 1.05, FLICKERING a 0, CURVATURE a 0, y los parámetros de scanline a 10 y 5 respectivamente.
 
 PARA GAMEBOY/GBC, EL MEJOR SHADER ES EL "LCD1X" (DEL SUBDIRECTORIO "HANDHELDS").
 
@@ -62,9 +61,6 @@ PARA GBA, tenemos que quitar el INTEGER SCALING porque si no se ve muy pequeño
 ponemos el "COLOR CORRECTION" del core a los colores de GBA,
 y usamos el shader ZFAST con los parámetros de los scanlines a 0, "BLUR AMOUNT X-AXIS" al máximo,
 y "MASK EFFECT AMOUNT" al máximo. 
-
-PARA EL CORE DE MEGADRIVE/MASTER SYSTEM, EL MEJOR SHADER ES EL ZFAST-COMPOSITE, con CONVERGENCE X-AXIS al máximo,
-SATURATION a 1.10, FLICKERING a 5, y los parámetros de scanline y curvature puestos a 0.
 
 PARA TENER LAS CARÁTULAS CUANDO HAGAS EL SCRAPPING:
 -En "SCRAPPING DATABASE" deja "SCREENSCRAPER"
