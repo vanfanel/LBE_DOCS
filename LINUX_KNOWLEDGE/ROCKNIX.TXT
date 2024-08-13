@@ -28,7 +28,7 @@ Output->Threaded Video OFF
 Output->Automatic Refresh Rate Switch OFF
 (NO necesario si usamos Max Swapchain Images a 2) Synchronization->Hard GPU Sync ON 
 
-En sonido: ALSATHREAD, 36ms de latencia, 48000 Hz.
+En sonido: ALSATHREAD, 38ms de latencia, 48000 Hz.
 Resampler quality NORMAL.
 (Si pones 44100, acuérdate de ponerlo también en las opciones de audio del FBNEO)
 
