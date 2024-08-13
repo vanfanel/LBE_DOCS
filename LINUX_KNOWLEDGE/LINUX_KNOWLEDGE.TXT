@@ -874,6 +874,8 @@ PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
 --En "Settings->Graphics" activamos "Spin GPU during readbacks" y "Spin CPU during readbacks"
   (Evita bajones de FPS durante transiciones).
   (En la BIOS, activa los C-STATES y desactiva el HyperThreading).
+--En "Settings->Emulation", si estás en un sistema con cores P y cores E como los Intel 12th gen,
+  activa "Enable Thread Pinning".
 --En "Settings->Emulation", en la parte de abajo activamos solamente "Sync to Host Refresh Rate".
   Con Vulkan no es necesario activar "Vertical Sync (VSync)".
   (PARA CUANDO TENGAS UNA MÁQUINA MÁS POTENTE podrás activar "Optimal Frame Pacing").
