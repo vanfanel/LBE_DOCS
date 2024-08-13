@@ -7,6 +7,8 @@ Canal: rk3566, y preguntar a Stolen.
 CONFIGURACIÓN PARA SCROLL SIN JITTERING/JUDDERING
 =================================================
 
+Editamos ROCKNIX/extlinux/extlinux.conf y añadimos "mitigations=off"
+
 En menú de ROCKNIX:
 System Settings -> GPU Driver -> PANFROST
 
