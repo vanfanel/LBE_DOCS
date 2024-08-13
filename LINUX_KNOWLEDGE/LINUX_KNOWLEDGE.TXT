@@ -871,6 +871,7 @@ I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2.AppImage "$1" >> /dev/
 PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
 --En "Settings->Graphics" ponemos el Renderer a "Vulkan" y ponemos el Texture Preloading a "None"
   (El Texture Preloading produce parones de audio en las transiciones, cargas, etc).
+--En "Settings->Graphics" activamos "Spin GPU during readbacks" y "Spin CPU during readbacks" (evita bajones de FPS durante transiciones).
 --En "Settings->Emulation", en la parte de abajo activamos solamente "Sync to Host Refresh Rate".
   Con Vulkan no es necesario activar "Vertical Sync (VSync)".
   (PARA CUANDO TENGAS UNA MÁQUINA MÁS POTENTE podrás activar "Optimal Frame Pacing").
