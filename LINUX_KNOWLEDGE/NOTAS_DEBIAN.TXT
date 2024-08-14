@@ -573,13 +573,13 @@ PARA X86_64 CON GRÁFICOS INTEL IRIS (=UHD,XE, etc):
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland \
--Dvulkan-drivers=intel -Dgallium-drivers=iris,kmsro,zink -Dglvnd=enabled ..
+-Dvulkan-drivers=intel -Dgallium-drivers=iris,zink -Dglvnd=enabled ..
 
 PARA PI4/5:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled \
--Dvulkan-drivers=broadcom -Dgallium-drivers=v3d,vc4,kmsro,zink -Dglvnd=enable ..
+-Dvulkan-drivers=broadcom -Dgallium-drivers=v3d,vc4,zink -Dglvnd=enable ..
 
 (Si no quieres soporte para Wayland, usa -Dplatforms='')
 
