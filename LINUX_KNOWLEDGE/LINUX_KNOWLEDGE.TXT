@@ -315,6 +315,30 @@ En QUICK MENU->OPTIONS, ponemos NEO-GEO MODE a UNIBIOS.
 Ahora, una vez dentro del juego, mantenemos pulsado START y nos sale un menú donde podemos activar varias cosas,
 entre ellas la sangre roja o poner el juego en idiomas locos.
 
+COMPILAR/INSTALAR WINE EN DEBIAN AMD64
+======================================
+
+NOTA: A día de hoy, mediante NEW WOW64 podemos ejecutar programas de 32bits (win32) sin librerías de 32bits.
+Para eso sirve "--enable-archs=x86_64,i386".
+
+INSTALAMOS DEPENDENCIAS PREVIAS:
+apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
+(Si usas el gstreamer del sistema, hay que instalar libgstreamer-plugins-base1.0-dev).
+
+VAMOS CON WINE EN SÍ:
+--Bajamos los sources de la última estable de:
+https://gitlab.winehq.org/wine/wine/-/releases
+--Configuramos con:
+./configure --enable-win64 --without-x \
+--without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
+--without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
+--without-gettext --without-gnutls --enable-archs=x86_64,i386
+
+(Lo de "--enable-archs=x86_64,i386" es necesario para compilar con soporte WoW64, es decir, ejecutar juegos de 32bits
+ sin tener las versiones i386 de todas las librerías instaladas).
+
+(Si compilas para un sistema con escritorio X11, NO le pases "--without-x").
+
 ******APOTRIS (clon de Tetris) en GNU/Linux**********************************************************************************
 (OJO: POR AHORA no tiene soporte de pantalla completa ni de joystick, asi que espera a la version 4.1 de los sources).
 
@@ -11002,30 +11026,6 @@ El fichero de configuración va en ~/.drirc
 
 La manera correcta de generarlo es usando "adriconf" (necesita GTK):
 git clone --depth 1 https://gitlab.freedesktop.org/mesa/adriconf
-
-COMPILAR/INSTALAR WINE EN DEBIAN AMD64
-======================================
-
-NOTA: POR AHORA, SI NO INSTALAS LAS LIBERRÍAS DE 32BITS, SÓLO VALE PARA EJECUTAR PROGRAMAS X86_64, NO LOS JUEGOS DE 32BITS QUE QUIERES.
-CUANDO HAYA UNA VERSIÓN PÚBLICA DE **BOX32** (de ptitSeb) LO PODRÁS USAR CON WINE PARA LANZAR JUEGOS DE 32 BITS.
-
-INSTALAMOS DEPENDENCIAS PREVIAS:
-apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
-(Si usas el gstreamer del sistema, hay que instalar libgstreamer-plugins-base1.0-dev).
-
-VAMOS CON WINE EN SÍ:
---Bajamos los sources de la última estable de:
-https://gitlab.winehq.org/wine/wine/-/releases
---Configuramos con:
-./configure --enable-win64 --without-x \
---without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
---without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
---without-gettext --without-gnutls --enable-archs=x86_64,i386
-
-(Lo de "--enable-archs=x86_64,i386" es necesario para compilar con soporte WoW64, es decir, ejecutar juegos de 32bits
- sin tener las versiones i386 de todas las librerías instaladas).
-
-(Si compilas para un sistema con escritorio X11, NO le pases "--without-x").
 
 REPRODUCCIÓN DE VÍDEO EN AMD64 Y RASPBERRY PI CON MPV + FFMPEG
 ==============================================================
