@@ -321,7 +321,7 @@ COMPILAR/INSTALAR WINE EN DEBIAN AMD64
 NOTA: A día de hoy, mediante NEW WOW64 podemos ejecutar programas de 32bits (win32) sin librerías de 32bits.
 Para eso sirve "--enable-archs=x86_64,i386".
 
-INSTALAMOS DEPENDENCIAS PREVIAS:
+INSTALAMOS DEPENDENCIAS PREVIAS (mingw es necesario para compilar un WINE con soporte de WoW64):
 apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
 (Si usas el gstreamer del sistema, hay que instalar libgstreamer-plugins-base1.0-dev).
 
