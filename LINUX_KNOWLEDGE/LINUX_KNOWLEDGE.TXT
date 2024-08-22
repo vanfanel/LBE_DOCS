@@ -325,19 +325,31 @@ INSTALAMOS DEPENDENCIAS PREVIAS (mingw es necesario para compilar un WINE con so
 apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
 (Si usas el gstreamer del sistema, hay que instalar libgstreamer-plugins-base1.0-dev).
 
+INSTALAMOS OTRA DEPENDENCIA PREVIA: libgstreamer (no podemos instalar la de Debian porque nos mete la porquería de X11 y MESA viejo)
+--Clonamos su repo: git clone --depth 1 https://github.com/GStreamer/gstreamer.git
+--Configuramos con:
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled -Dgst-examples=disabled -Drtsp_server=disabled \
+-Dtests=disabled -Dtools=disabled -Dexamples=disabled -Dbenchmarks=disabled -Dorc=disabled -Ddevtools=disabled
+
 VAMOS CON WINE EN SÍ:
 --Bajamos los sources de la última estable de:
 https://gitlab.winehq.org/wine/wine/-/releases
 --Configuramos con:
-./configure --enable-win64 --without-x \
+./configure --enable-win64 --without-x --with-wayland \
 --without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
 --without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
 --without-gettext --without-gnutls --enable-archs=x86_64,i386
 
 (Lo de "--enable-archs=x86_64,i386" es necesario para compilar con soporte WoW64, es decir, ejecutar juegos de 32bits
  sin tener las versiones i386 de todas las librerías instaladas).
-
 (Si compilas para un sistema con escritorio X11, NO le pases "--without-x").
+
+Ahora hacemos:
+wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d wayland
+
+...Y ya debería ir WINE sobre Wayland puro. Prueba a hacer "winecfg" o bien "wine notepad"
 
 ******APOTRIS (clon de Tetris) en GNU/Linux**********************************************************************************
 (OJO: POR AHORA no tiene soporte de pantalla completa ni de joystick, asi que espera a la version 4.1 de los sources).
@@ -8070,7 +8082,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson .. -Dbuildtype=release -Dtests=false -Ddocs=disabled -Dvideo_fbdev=disabled
+meson setup .. -Dbuildtype=release -Dtests=false -Ddocs=disabled -Dvideo_fbdev=disabled
 
 COMPILAR EL KERNEL CON FULL PREEMPTION Y BFS PARA LA RASPBERRY PI
 =================================================================
