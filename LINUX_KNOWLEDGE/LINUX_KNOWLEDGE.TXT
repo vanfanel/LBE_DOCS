@@ -351,7 +351,10 @@ CXXFLAGS="-march=native -mtune=native -O2" \
 Ahora hacemos:
 wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d wayland
 
-...Y ya debería ir WINE sobre Wayland puro. Prueba a hacer "winecfg" o bien "wine notepad"
+Ahora hacemos (ya que por defecto WINE se inicializa como un Windows de 64 bits y los programas que nos interesan son de 32bits):
+WINEARCH=win32 winecfg
+
+...Y ya debería ir WINE sobre Wayland puro y con programas de 32bits usando el modo WoW64. Prueba a hacer "winecfg" o bien "wine notepad"
 
 ******APOTRIS (clon de Tetris) en GNU/Linux**********************************************************************************
 (OJO: POR AHORA no tiene soporte de pantalla completa ni de joystick, asi que espera a la version 4.1 de los sources).
