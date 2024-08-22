@@ -320,6 +320,7 @@ COMPILAR/INSTALAR WINE EN DEBIAN AMD64
 
 NOTA: A día de hoy, mediante NEW WOW64 podemos ejecutar programas de 32bits (win32) sin librerías de 32bits.
 Para eso sirve "--enable-archs=x86_64,i386".
+NO HACE FALTA hacer lo de "WINEARCH=win32 winecfg", ya que de hecho eso no funciona en modo WOW64.
 
 INSTALAMOS DEPENDENCIAS PREVIAS (mingw es necesario para compilar un WINE con soporte de WoW64):
 apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
@@ -350,9 +351,6 @@ CXXFLAGS="-march=native -mtune=native -O2" \
 
 Ahora hacemos:
 wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d wayland
-
-Ahora hacemos (ya que por defecto WINE se inicializa como un Windows de 64 bits y los programas que nos interesan son de 32bits):
-WINEARCH=win32 winecfg
 
 ...Y ya debería ir WINE sobre Wayland puro y con programas de 32bits usando el modo WoW64. Prueba a hacer "winecfg" o bien "wine notepad"
 
