@@ -1,0 +1,65 @@
+COMPILAR UN PROGRAMA QUE USA FUNCIONES DE WLROOTS USANDO CMAKE
+==============================================================
+
+El principal problema es que desde CMAKE tenemos que generar el código del protocolo (un .c con su .h) a partir del XML del protocolo.
+Se hace así:
+
+###########EMPIEZA BLOQUE DE CÓDIGO DE CMAKELISTS.TXT#####################
+
+	# Detectar usando pkg-config si tenemos las librerías wlroots y wayland-client,
+	# y añadir sus correspondientes -l<loquesea> a la lista de librerías contra las que debe linkar el proyecto. 
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_WLROOTS)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(WLROOTS REQUIRED wlroots)
+    pkg_check_modules(WAYLAND REQUIRED wayland-client)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${WLROOTS_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${WAYLAND_LIBRARIES})
+
+	# Definimos la ruta donde los archivos .c/.h del protocolo se van a guardar cuando se generen.
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/wlr_protocol)
+    set(GENERATED_PROTOCOL_DIR ${CMAKE_BINARY_DIR}/wlr_protocol)
+
+	# Comprobamos si tenemos el ejecutable "wayland-scanner" que es lo que se usa para generar los
+	# ficheros .c/.h del protocolo wlroots a partir del XML.
+    find_program(WAYLAND_SCANNER_EXECUTABLE wayland-scanner REQUIRED)
+
+	# Establecemos las rutas tanto del XML como de los ficheros .c/.h del protocolo resultantes
+    set(PROTOCOL_XML ${CMAKE_SOURCE_DIR}/src/osdep/wlr_protocol/wlr-output-management-unstable-v1.xml)
+    set(PROTOCOL_HEADER ${GENERATED_PROTOCOL_DIR}/wlr-output-management-unstable-v1.h)
+    set(PROTOCOL_CODE ${GENERATED_PROTOCOL_DIR}/wlr-output-management-unstable-v1.c)
+
+	# Comando que genera el fichero .h del protocolo 
+    add_custom_command(
+        OUTPUT ${PROTOCOL_HEADER}
+        COMMAND ${WAYLAND_SCANNER_EXECUTABLE} client-header ${PROTOCOL_XML} ${PROTOCOL_HEADER}
+        DEPENDS ${PROTOCOL_XML}
+        COMMENT "Generating wlroots protocol header from ${PROTOCOL_XML}"
+    )
+
+	# Comando que genera el fichero .c del protocolo 
+    add_custom_command(
+        OUTPUT ${PROTOCOL_CODE}
+        COMMAND ${WAYLAND_SCANNER_EXECUTABLE} private-code ${PROTOCOL_XML} ${PROTOCOL_CODE}
+        DEPENDS ${PROTOCOL_XML}
+        COMMENT "Generating wlroots protocol code from ${PROTOCOL_XML}"
+    )
+
+	# Creamos un "custom target" para que se genere el objeto (.o) del protocolo a partir de los .c/.h del mismo
+    add_custom_target(generate_protocol_files ALL
+        DEPENDS ${PROTOCOL_HEADER} ${PROTOCOL_CODE}
+    )
+
+	# Añadimos el directorio donde los ficheros .c/.h del protocolo son generados a la lista de includes,
+	# ya que vamos a querer hacer un include del .h del protocolo para poder usar sus funciones.
+    target_include_directories(${PROJECT_NAME} PRIVATE ${GENERATED_PROTOCOL_DIR})
+
+	# Hacemos que el ejecutable principal dependa del objeto (.o) del protocolo, para que así
+	# se tenga que generar el .o del protocolo.
+    add_dependencies(${PROJECT_NAME} generate_protocol_files)
+
+	# Añadimos los objetos de wlroots (nuestro código y el protocolo) a la lista de ficheros a compilar 
+    # Ese wlroots.cpp es donde he implementado las funciones que necesito, es decir, las funciones de setmode.c
+    target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/osdep/wlroots.cpp)
+    target_sources(${PROJECT_NAME} PRIVATE ${GENERATED_PROTOCOL_DIR}/wlr-output-management-unstable-v1.c) 
+
+###########ACABA BLOQUE DE CÓDIGO DE CMAKELISTS.TXT#####################

@@ -1,0 +1,8 @@
+wayland-scanner private-code wlr-output-management-unstable-v1.xml wlr-output-management-unstable-v1-protocol.c
+wayland-scanner client-header wlr-output-management-unstable-v1.xml wlr-output-management-unstable-v1-client-protocol.h
+
+gcc -c wlr-output-management-unstable-v1-protocol.c -o wlr-output-management-unstable-v1-protocol.o
+
+WLR_USE_UNSTABLE=1 gcc -c setmode.c -o setmode.o -ggdb -O0 
+
+gcc wlr-output-management-unstable-v1-protocol.o setmode.o -o setmode $(pkg-config --cflags --libs wlroots wayland-client) -lm
