@@ -101,8 +101,9 @@ En la fórmula del delay, trabajamos con el TAMAÑO DE FRAME, o sea, en BYTES PO
 TENEMOS QUE TENER CLARO LO SIGUIENTE: ESTA FÓRMULA SIEMPRE EN LA CABEZA AL TRABAJAR CON AUDIO.
 - Cuando se vacía el buffer, se llama a la rutina que lo llena de nuevo. O sea, que cuanto más grande sea el buffer, menos hay que llamar a esta rutina y por tanto menos CPU se usa.
   Pero cuanto más tardemos de una llamada a otra (cuanto mayor sea el buffer), más delay habrá.  
-- El dalay depende del buffer size, la frecuencia y los bytes por muestra. O sea, depende cuánto tardemos en consumir lo que hay en el buffer: por eso, en la fórmula el tamaño
-  del buffer está multiplicando, y la cantidad de info que consumimos por segundo está dividiendo. La fórmula, por lo tanto, es tan sencilla como:
+- El dalay depende del buffer size, la frecuencia y los bytes por muestra. O sea, depende cuánto tardemos en consumir lo que hay en el buffer:
+por eso, en la fórmula el tamaño del buffer está multiplicando, y la cantidad de info que consumimos por segundo está dividiendo.
+La fórmula, por lo tanto, es tan sencilla como:
 
 	delay = tamaño_buffer / (muestras_por_segundo * bytes_por_muestra)
 
