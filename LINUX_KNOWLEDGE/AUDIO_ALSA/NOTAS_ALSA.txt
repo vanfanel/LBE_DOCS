@@ -13,20 +13,23 @@ con un buffer FIFO para intercomunicarlos, típico esquema) tienes que mantenert
 esto es, LA FRECUENCIA. Si el prductor saca 32000 HZ (samples por segundo) y el consumidor (ALSA) consume 44100,
 pues tienes que usar el resampler para compensar eso, o el buffer FIFO se vaciará o se desbordará más tarde o más temprano.
 El número de samples por fotograma se usa para el resampler, PERO NO ES una medida completa,
-ya que entra en juego cada cuánto produce un ftograma el productor (dependiendo del modo físido de video, por la frecuencia
+ya que entra en juego cada cuándo produce un fotograma el productor (dependiendo del modo físido de video, por la frecuencia
 de refresco de la pantalla, ya que normalmente los programas/emus... producen un taco de samples por fotograma de vídeo, actualizando el buffer de audio cada vez que se completa un fotograma), y entra en juego cada cuándo consume un periodo ALSA,
 que no es previsible por debajo del nivel de un segundo en ambos casos.
 Con ALSA sabemos lo que consume por segundo porque lo especificamos nosotros en set_hwparams()
 (será un valor cercano a los 44100 o 48000 samples/seg) , 
 y en el productor podemos averiguarlo haciendo la cuenta: samples_por_fotograma * fotogramas_EXACTOS_CON_6_DECIMALES = samples_por_segundo.
 
--Al usar el resampler, NO TENEMOS CLARO SI DEBEMOS ACUMULAR EL VALOR DE FRACTION entre fotogramas de vídeo (recordemos que la función process del resampler entra una vez por cada
-fotograma de vídeo, o sea que procesa en paquetes de "samples por fotograma"). Esto hace que acumulemos sobrantes entre entradas a process y que produzcamos más
-samples a veces. FRACTION tiene que venir con el valor de threshold ya puesto antes de la primera entrada a process, y se resetearía a ese mismo valor antes de las
-sucesivas entradas a process, o sea, lo dicho: que cada vez que se entre en process no tenemos claro si hay que poner FRACTION al valor de threshold, resetearlo.
-HASTA AHORA LO QUE SABEMOS es que en mi implementación de prueba de un resampler nearest (en la carpeta resampler) si no lo reseteamos al threshold en cada
-fotograma, no obtenemos los samples requeridos tras un segundo (los 48000 exactos), pero en pifba conseguimos menos FIFO underruns si lo dejamos sin resetear y vamos
-acumulando de un frame a otro.
+-Al usar el resampler, NO TENEMOS CLARO SI DEBEMOS ACUMULAR EL VALOR DE FRACTION entre fotogramas de vídeo
+(recordemos que la función process del resampler entra una vez por cada fotograma de vídeo,
+o sea que procesa en paquetes de "samples por fotograma").
+Esto hace que acumulemos sobrantes entre entradas a process y que produzcamos más samples a veces.
+FRACTION tiene que venir con el valor de threshold ya puesto antes de la primera entrada a process,
+y se resetearía a ese mismo valor antes de las sucesivas entradas a process, o sea, lo dicho:
+que cada vez que se entre en process no tenemos claro si hay que poner FRACTION al valor de threshold, resetearlo.
+HASTA AHORA LO QUE SABEMOS es que en mi implementación de prueba de un resampler nearest (en la carpeta resampler)
+si no lo reseteamos al threshold en cada fotograma, no obtenemos los samples requeridos tras un segundo (los 48000 exactos),
+pero en pifba conseguimos menos FIFO underruns si lo dejamos sin resetear y vamos acumulando de un frame a otro.
 
 -PREGUNTA A ALIASPIDER EN #retroarch DE LA RED FREENODE DE IRC SI TIENES DUDAS. ÉL TE AYUDARÁ.
 
