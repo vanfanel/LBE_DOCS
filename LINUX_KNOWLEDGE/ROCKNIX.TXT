@@ -107,8 +107,7 @@ Ahora nos creamos nuestro runemu.sh personalizado (no podemos tenerlo en /usr/bi
 un filesystem de sólo lectura):
 cp /usr/bin/runemu.sh /storage/runemu.sh
 vim /storage/runemu.sh
-Buscamos la línea que empieza por:
-RUNTHIS='${EMUPERF}
+Buscamos "appendconfig", que estará en la línea que empieza por: RUNTHIS='${EMUPERF}
 Y allí quitamos lo del --appendconfig
 Buscamos la sección: ### Configure retroarch
 Y la comentamos o borramos (ojo, sólo esa sección, no la de debajo).
