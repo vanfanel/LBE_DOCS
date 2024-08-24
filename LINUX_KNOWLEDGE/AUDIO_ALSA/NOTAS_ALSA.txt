@@ -39,6 +39,7 @@ Frame y muestra es lo mismo.
 NO PIENSES en el tiempo que tarda ALSA en acceder a su buffer a por el siguiente periodo de samples: es imposible preveer eso.
 
 LO PRIMERO que tienes que tener muy claro es que FRECUENCIA * BYTES_POR_MUESTRA determina LA VELOCIDAD A LA QUE SE VACÍA EL RINGBUFFER DE ALSA.
+
 ALSA va pillando samples de su buffer y reproduciéndolos, periodo a periodo.
 Una vez que ALSA está en modo playback, esto lo hace todo el rato
 SIN NINGUNA INTERVENCIÓN POR NUESTRA PARTE. ESTO LO TIENES QUE VER Y TENERLO EN LA CABEZA TODO EL TIEMPO. 
