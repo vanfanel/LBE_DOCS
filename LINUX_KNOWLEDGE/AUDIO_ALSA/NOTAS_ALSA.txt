@@ -107,8 +107,7 @@ La fórmula, por lo tanto, es tan sencilla como:
 
 	delay = tamaño_buffer / (muestras_por_segundo * bytes_por_muestra)
 
-Muestras por segundo son los hz, o sea, la frecuencia, cuántos samples consumimos por segundo. El resultado, logicamente, estará en segundos (normalmente mucho menos que un segundo,
-y lo mediremos en milisegundos).
+Muestras por segundo son los hz, o sea, la frecuencia, cuántos samples consumimos por segundo. El resultado, logicamente, estará en segundos (normalmente mucho menos que un segundo, y lo mediremos en milisegundos).
 
 Ahora bien,  el tamaño de buffer depende del tamaño de periodo y del número de periodos. Se entiende que se llama período poque, como la rutina que llena el buffer se llama cada vez que
 este se vacía, se tarda un periodo determinado en volver a llamarse, y por eso el tamaño del buffer depende del periodo (¿cada cuándo queremos que se llame a la rutina si medimos
