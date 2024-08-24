@@ -39,32 +39,47 @@ Frame y muestra es lo mismo.
 NO PIENSES en el tiempo que tarda ALSA en acceder a su buffer a por el siguiente periodo de samples: es imposible preveer eso.
 
 LO PRIMERO que tienes que tener muy claro es que FRECUENCIA * BYTES_POR_MUESTRA determina LA VELOCIDAD A LA QUE SE VACÍA EL RINGBUFFER DE ALSA.
-ALSA  va pillando samples de su buffer y reproduciéndolos, periodo a periodo. Una vez que ALSA está en modo playback, esto lo hace todo el rato
+ALSA va pillando samples de su buffer y reproduciéndolos, periodo a periodo.
+Una vez que ALSA está en modo playback, esto lo hace todo el rato
 SIN NINGUNA INTERVENCIÓN POR NUESTRA PARTE. ESTO LO TIENES QUE VER Y TENERLO EN LA CABEZA TODO EL TIEMPO. 
 LA FRECUENCIA*BYTES_POR_MUESTRA DETERMINA A QUÉ VELOCIDAD CONSUME ALSA SU BUFFER,
 Y LO VA A ESTAR CONSUMIENDO TODO EL RATO, CONTINUAMENTE, SIN INTERVENCIÓN NUESTRA, NI LLAMADAS NI NADA.
-Como sabes, un periodo es un divisor (no necesariamente exacto, pero normalmente sí) del tamaño en bytes del buffersize (el tamaño en bytes del ring buffer de ALSA).
-Nosotros trataremos de que haya siempre suficientes bytes en el buffer ALSA, metiéndolos mediante funciones como snd_pcm_writei(). AL HACERLO, AL LLAMAR A ESTA FUNCIÓN, 
-NOSOTROS NO PODEMOS PROVOCAR UN BUFFER OVERRUN NI UN BUFFER UNDERRUN (si hablamos del buffer de ALSA: para otros buffers de nuestros programas, sí que podemos): 
-LOS ALSA BUFFER OVERRUN Y LOS ALSA BUFFER UNDERRUN SE PROVOCA AUTOMÁTICAMENTE AL IR ALSA A LEER A SU BUFFER Y ENCONTRARSE CON QUE NO TIENE SUFICIENTES
-BYTES PREPARADOS PARA LEER UN PERIODO DE ÉL (esto sería un ALSA BUFFER UNDERRUN, cómo se produce un overrun pues ni idea de momento, no parece probable).
-SI LLAMAMOS A snd_pcm_writei() Y NO HAY ESPACIO EN EL BUFFER ALSA PARA LOS BYTES QUE QUEREMOS METER (normalmente será un periodo de bytes, pero no tiene por qué), 
-NO, REPITO, NO SE PRODUCE UN BUFFER OVERRUN, SINO QUE LA FUNCIÓN snd_pcm_writei() BLOQUEA HASTA QUE HAYA ESPACIO PARA METER LOS BYTES EN EL BUFFER ALSA.
-(También es posible que no bloquee y que llame a una función de callback cuando acabe, esto es lo que se llama "asynchronous ALSA", que de momento no he usado pero parece trivial).
-COMO ESTÁ FUNCIÓN snd_pcm_writein() es BLOQUEANTE, VEREMOS A MENUDO QUE EN MUCHAS IMPLEMENTACIONES (programas, juegos, emuladores), LA COPIA DE LOS BUFFERS
-INTERNOS DEL PROGRAMA AL BUFFER DE ALSA SE HACE EN UN THREAD A PARTE, UN "worker thread" O NOMBRE SIMILAR PERO QUE SUELE REALIZAR ESTE TRABAJO RUTINARIO DE COPIA
-ENTRE BUFFERS. La alternativa, como se ha dicho, sería no sacarla a su propio thread PERO inicializar ALSA en modo asíncrono, de manera que no bloquee en snd_pcm_writei() PERO
-nos llame a una función de callback que nos permita saber que ya se ha hecho la escritura en el ringbuffer de ALSA. Esto aún no lo he usado pero es como con los gráficos.
 
-Cuando a ALSA le dices en set_params 44100Hz 4 bytes, ALSA empieza a consumir 44100 muestras de 4 bytes, por segundo, de su buffer. Y si lo que le estamos pasando son los bytes
-de un sample que se grabó a 22050, por ejemplo, pues sonará el doble de rápido y el doble de agudo. Es decir, A ALSA NO LE IMPORTA la frecuencia a la que se grabó ese churro
-de bytes, ALSA SÓLO VE UN CHURRO DE BYTES, los va pillando periodo a periodo de su buffer y ya. 
-Ahora bien, si le dices que agote su buffer a razón de 44100Hz a 4 bytes por muestra, por segundo, y luego el software sólo produce 43000Hz en vez de los 44100 que le estás diciendo a
-ALSA que consuma, pues tendrás más tarde o más pronto un ALSA BUFFER UNDERRUN. Y de ahi vienen muchos problemas...
+Como sabes, un periodo es un divisor (no necesariamente exacto, pero normalmente sí) del tamaño en bytes del buffersize
+(el tamaño en bytes del ring buffer de ALSA).
 
-Por ejemplo, de cara a saber si siempre habrá suficientes bytes en el buffer ALSA, tendrás que tener claras cosas como esta: ¿cada cuánto tiempo va ALSA a acceder a su buffer a buscar
-un periodo de bytes? Pues si tenemos un buffer de tamaño buffersize y cada periodo es de tamaño periodsize, podemos hallar npediodos dividiendo buffersize entre periodsize.
-Una vez que tenemos el nperiodos, dividimos el tiempo de vaciado de buffer (latency) entre nperiodos, y ya sabemos cada cuánto accede ALSA a su buffer en busca de un periodo.
+Nosotros trataremos de que haya siempre suficientes bytes en el buffer ALSA, metiéndolos mediante funciones como snd_pcm_writei(). AL HACERLO, AL LLAMAR A ESTA FUNCIÓN, NOSOTROS NO PODEMOS PROVOCAR UN BUFFER OVERRUN NI UN BUFFER UNDERRUN
+(si hablamos del buffer de ALSA: para otros buffers de nuestros programas, sí que podemos), 
+LOS ALSA BUFFER OVERRUN Y LOS ALSA BUFFER UNDERRUN SE PROVOCA AUTOMÁTICAMENTE AL IR ALSA A LEER A SU BUFFER
+Y ENCONTRARSE CON QUE NO TIENE SUFICIENTES BYTES PREPARADOS PARA LEER UN PERIODO DE ÉL (esto sería un ALSA BUFFER UNDERRUN,
+cómo se produce un overrun pues ni idea de momento, no parece probable).
+
+SI LLAMAMOS A snd_pcm_writei() Y NO HAY ESPACIO EN EL BUFFER ALSA PARA LOS BYTES QUE QUEREMOS METER
+(normalmente será un periodo de bytes, pero no tiene por qué), 
+NO, REPITO, NO SE PRODUCE UN BUFFER OVERRUN, SINO QUE LA FUNCIÓN snd_pcm_writei() BLOQUEA HASTA QUE HAYA ESPACIO
+PARA METER LOS BYTES EN EL BUFFER ALSA.
+(También es posible que no bloquee y que llame a una función de callback cuando acabe, esto es lo que se llama "asynchronous ALSA",
+que de momento no he usado pero parece trivial).
+COMO ESTÁ FUNCIÓN snd_pcm_writein() es BLOQUEANTE, VEREMOS A MENUDO QUE EN MUCHAS IMPLEMENTACIONES (programas, juegos, emuladores),
+LA COPIA DE LOS BUFFERS INTERNOS DEL PROGRAMA AL BUFFER DE ALSA SE HACE EN UN THREAD A PARTE, UN "worker thread"
+O NOMBRE SIMILAR PERO QUE SUELE REALIZAR ESTE TRABAJO RUTINARIO DE COPIA
+ENTRE BUFFERS. La alternativa, como se ha dicho, sería no sacarla a su propio thread PERO inicializar ALSA en modo asíncrono,
+de manera que no bloquee en snd_pcm_writei() PERO nos llame a una función de callback que nos permita saber que ya se ha hecho la escritura
+en el ringbuffer de ALSA. Esto aún no lo he usado pero es como con los gráficos.
+
+Cuando a ALSA le dices en set_params 44100Hz 4 bytes, ALSA empieza a consumir 44100 muestras de 4 bytes, por segundo, de su buffer.
+Y si lo que le estamos pasando son los bytes de un sample que se grabó a 22050, por ejemplo, pues sonará el doble de rápido y el doble de agudo.
+Es decir, A ALSA NO LE IMPORTA la frecuencia a la que se grabó ese churro de bytes, ALSA SÓLO VE UN CHURRO DE BYTES,
+los va pillando periodo a periodo de su buffer y ya. 
+Ahora bien, si le dices que agote su buffer a razón de 44100Hz a 4 bytes por muestra, por segundo,
+y luego el software sólo produce 43000Hz en vez de los 44100 que le estás diciendo a ALSA que consuma,
+pues tendrás más tarde o más pronto un ALSA BUFFER UNDERRUN. Y de ahi vienen muchos problemas...
+
+Por ejemplo, de cara a saber si siempre habrá suficientes bytes en el buffer ALSA, tendrás que tener claras cosas como esta:
+¿cada cuánto tiempo va ALSA a acceder a su buffer a buscar un periodo de bytes? Pues si tenemos un buffer de tamaño buffersize
+y cada periodo es de tamaño periodsize, podemos hallar npediodos dividiendo buffersize entre periodsize.
+Una vez que tenemos el nperiods, dividimos el tiempo de vaciado de buffer (latency) entre nperiodos,
+y ya sabemos cada cuánto accede ALSA a su buffer en busca de un periodo.
 
 NOTAS DE INICIALIZACIÓN DE PARÁMETROS DE ALSA
 =============================================
