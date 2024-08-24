@@ -1003,7 +1003,7 @@ cmake --install .
 Instalamos dependencias previas:
 apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-dev libaio-dev
 
-También se necesita tener en el sistema una versión de QT6 con lo módulo TOOLS.
+También se necesita tener en el sistema una versión de QT6 con el módulo TOOLS.
 En la sección de cómo compilar QT6 tienes también cómo compilar e instalar este módulo.
 
 Clonamos su repo:

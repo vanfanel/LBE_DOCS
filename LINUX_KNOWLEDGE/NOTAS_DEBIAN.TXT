@@ -583,6 +583,9 @@ meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabl
 
 (Si no quieres soporte para Wayland, usa -Dplatforms='')
 
+(Si quisieras soporte para X11, haríamos "-Dplatforms=wayland" e instalaríamos estas dependencias antes:
+ apt-get install libxcb1-dev libxcb-randr0-dev libx11-xcb-dev libxcb-dri3-dev libxcb-present-dev libxcb-shm0-dev libxshmfence-dev libxrandr-dev)
+
 SI QUISIERAS GLES, GLES2 Y OPENGL COMPLETO MEDIANTE GLVND:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \

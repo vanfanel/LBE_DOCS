@@ -5,16 +5,19 @@
 Puede que en estos apuntes te encuentres algunas afirmaciones que no son ciertas, ya que mi comprensión sobre el funcionamiento de ALSA y del resampler 
 NEAREST ha sido gradual y al principio asumí cosas que NO son ciertas:
 
---NO ES POSIBLE saber cada cuánto tiempo accede ALSA a su ringbuffer para coger periodos de samples y consumirlos (reproducirlos). Sí que es cierto que ALSA coge
-los datos de su ringbuffer periodo a periodo (n samples cada periodo, n bytes cada sample), pero no es previsible 
-cuándo coge cada periodo. Así que para equilibrar un sistema de productor/consumidor
-(donde el programa/emulador/juego es el productor y ALSA es el consumidor, con un buffer FIFO para intercomunicarlos, típico esquema) tienes que mantenerte al nivel
-de abstracción de los SAMPLES POR SEGUNDO, esto es, LA FRECUENCIA. Si el prductor saca 32000 HZ (samples por segundo) y el consumidor (ALSA) consume 44100, pues
-tienes que usar el resampler para compensar eso, o el buffer FIFO se vaciará o se desbordará más tarde o más temprano. El número de samples por fotograma se usa para el
-resampler, PERO NO ES una medida completa, ya que entra en juego cada cuánto produce un ftograma el productor (dependiendo del modo físido de video, por la frecuencia
-de refresco de la pantalla, ya que normalmente los programas/emus... producen un taco de samples por fotograma de vídeo, actualizando el buffer de audio cada vez que se
-completa un fotograma), y entra en juego cada cuándo consume un periodo ALSA, que no es previsible por debajo del nivel de un segundo en ambos casos.
-Con ALSA sabemos lo que consume por segundo porque lo especificamos nosotros en set_hwparams() (será un valor cercano a los 44100 o 48000 samples/seg) , 
+--NO ES POSIBLE saber cada cuánto tiempo accede ALSA a su ringbuffer para coger periodos de samples y consumirlos (reproducirlos).
+Sí que es cierto que ALSA coge los datos de su ringbuffer periodo a periodo (n samples cada periodo, n bytes cada sample),
+pero no es previsible cuándo coge cada periodo.
+Así que para equilibrar un sistema de productor/consumidor (donde el programa/emulador/juego es el productor y ALSA es el consumidor,
+con un buffer FIFO para intercomunicarlos, típico esquema) tienes que mantenerte al nivel de abstracción de los SAMPLES POR SEGUNDO,
+esto es, LA FRECUENCIA. Si el prductor saca 32000 HZ (samples por segundo) y el consumidor (ALSA) consume 44100,
+pues tienes que usar el resampler para compensar eso, o el buffer FIFO se vaciará o se desbordará más tarde o más temprano.
+El número de samples por fotograma se usa para el resampler, PERO NO ES una medida completa,
+ya que entra en juego cada cuánto produce un ftograma el productor (dependiendo del modo físido de video, por la frecuencia
+de refresco de la pantalla, ya que normalmente los programas/emus... producen un taco de samples por fotograma de vídeo, actualizando el buffer de audio cada vez que se completa un fotograma), y entra en juego cada cuándo consume un periodo ALSA,
+que no es previsible por debajo del nivel de un segundo en ambos casos.
+Con ALSA sabemos lo que consume por segundo porque lo especificamos nosotros en set_hwparams()
+(será un valor cercano a los 44100 o 48000 samples/seg) , 
 y en el productor podemos averiguarlo haciendo la cuenta: samples_por_fotograma * fotogramas_EXACTOS_CON_6_DECIMALES = samples_por_segundo.
 
 -Al usar el resampler, NO TENEMOS CLARO SI DEBEMOS ACUMULAR EL VALOR DE FRACTION entre fotogramas de vídeo (recordemos que la función process del resampler entra una vez por cada
