@@ -340,7 +340,7 @@ https://gitlab.winehq.org/wine/wine/-/releases
 --Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-./configure --enable-win64 --without-x --with-wayland \
+./configure --without-x --with-wayland \
 --without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
 --without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
 --without-gettext --without-gnutls --without-v4l2 --without-odbc --enable-archs=x86_64,i386
