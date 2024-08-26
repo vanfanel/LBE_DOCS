@@ -516,7 +516,10 @@ plugins = \
   fast-switcher \
   move \
   place \
+  preserve-output \
   resize
+
+NOTA: El "preserve-output" evita que nos pasen cosas raras al apagar y encender el monitor.
 
 --Para que se nos autolance una terminal al iniciar, buscamos [autostart] y debajo ponemos:
 1 = foot
