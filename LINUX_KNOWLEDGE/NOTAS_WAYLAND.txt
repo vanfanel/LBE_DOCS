@@ -524,7 +524,7 @@ plugins = \
 --Eliminamos las secciones [wrot], [fisheye], [zoom], etc.. que corresponden a plugins que no tenemos habilitados en la lista de plugins.
 
 --Para ocultar el cursor cuando no se está moviendo (PCSX2 Standalone...) usamos "plugins-extra":
--Clonamos su repo: git clone --depth 1 https://github.com/WayfireWM/wayfire-plugins-extra.git
+-Bajamos los últimos sources estables de: https://github.com/WayfireWM/wayfire-plugins-extra/releases
 -Configuramos, compilamos e instalamos con:
 mkdir b4
 cd b4
