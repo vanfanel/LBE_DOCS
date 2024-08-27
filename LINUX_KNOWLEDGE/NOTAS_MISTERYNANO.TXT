@@ -66,7 +66,9 @@ FLASHEAR EL CORE DE ATARI ST Y LAS TOS
 
 openFPGALoader -f ~/Downloads/atarist.fs
 
--Flasheamos las TOS (El orden de flasheo de las TOS es: TOS de ST primaria, TOS de STE primaria, TOS de ST secundaria, TOS de STE secundaria)
+-Flasheamos las TOS
+(La mejor página para descargarlas es esta: https://avtandil.narod.ru/tose.html)
+(El orden de flasheo de las TOS es: TOS de ST primaria, TOS de STE primaria, TOS de ST secundaria, TOS de STE secundaria)
 
 openFPGALoader --external-flash -o 0x100000 tos104us.img
 openFPGALoader --external-flash -o 0x140000 tos206us.img
