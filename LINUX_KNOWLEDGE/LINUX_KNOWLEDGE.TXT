@@ -1245,7 +1245,8 @@ RECUERDA: Para que el framerate sea suave en los juegos que van a 30FPS, debes a
 en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da igual.
 
 RECUERDA: Para quitar los crujidos/dropouts de audio, usa el driver de audio SDL2,
-Poner "FastGDRomLoad" a "yes" en ~/.config/flycast/emu.cfg no cambia nada y puede dar problemas. 
+OJO: NO pongas "FastGDRomLoad" a "yes" en ~/.config/flycast/emu.cfg: no mejora NADA y provoca problemas de audio en el REZ,
+cosas raras en el Crazy Taxi, etc 
 
 RECUERDA: Para que el menú se vea a buen tamaño con resolución 1080p, edita ~/.config/flycast/emu.cfg
 y pon "UIScaling" a "200".
