@@ -1247,7 +1247,9 @@ en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da 
 RECUERDA: Para quitar los crujidos/dropouts de audio durante la carga del Soul Calibur, activa
 "Emulation Hacks -> GD-ROM Fast Loading".
 
-ARREGLO PARA EL FRAMERATE, SÓLO WAYLAND (RECUERDA QUE EN WAYLAND+VULKAN EL VSYNC DEBE ESTAR DESACTIVADO!!!):
+	#### BLOQUE ARREGLO PARA EL FRAMERATE ####
+
+SÓLO WAYLAND (RECUERDA QUE EN WAYLAND+VULKAN EL VSYNC DEBE ESTAR DESACTIVADO!!!):
 Creamos este script en /usr/local/bin/dreamcast para lanzar el emulador:
 
 wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.940059
@@ -1256,6 +1258,11 @@ wlr-randr --output HDMI-A-1 --mode 1920x1080@60.000000
 
 SI ESTAMOS EN UN SISTEMA CON CPUs HETEROGÉNEAS, MANDAMOS LA EMULACIÓN A LOS P-CORES:
 taskset -c 0,1 flycast "$1"
+
+PARA LOS JUEGOS DE 30FPS: Activar "full framebuffer emulation"
+
+	#### BLOQUE ARREGLO PARA EL FRAMERATE ####
+
 
 ARREGLO PARA EL FRAMERATE, SÓLO PARA KMS/DRM:
 Editamos core/deps/SDL/src/video/kmsdrm/SDL_kmsdrmvulkan.c y en la función KMSDRM_Vulkan_CreateSurface() comentamos el bloque de:
