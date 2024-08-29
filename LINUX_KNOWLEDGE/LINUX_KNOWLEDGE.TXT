@@ -1232,7 +1232,7 @@ Entra en Settings->Video, desactiva el VSYNC si estás en Wayland+Vulkan, pon "T
 Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador).
 
-Entra en Settings->Audio y pon el driver a SDL2 con 42ms de buffer (el driver ALSA va peor: tiene dropouts de audio).
+Entra en Settings->Audio y pon el driver a ALSA con 42ms de buffer.
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
@@ -1254,9 +1254,6 @@ Creamos este script en /usr/local/bin/dreamcast para lanzar el emulador:
 wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.94
 flycast "$1"
 wlr-randr --output HDMI-A-1 --mode 1920x1080@60.000000
-
-SI ESTAMOS EN UN SISTEMA CON CPUs HETEROGÉNEAS, MANDAMOS LA EMULACIÓN A LOS P-CORES:
-taskset -c 0,1 flycast "$1"
 
 PARA LOS JUEGOS DE 30FPS: Activar "full framebuffer emulation"
 
