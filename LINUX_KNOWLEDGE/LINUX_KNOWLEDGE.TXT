@@ -1231,14 +1231,13 @@ y verás que hay un ENORME botón en el que pone EXIT) con lo que se nos creará
 que puedes configurar a tu gusto: como mínimo, pon el modo del vídeo a 1920x1080, y pon "aica.DSPEnabled" a "yes" (si no activas el DSP,
 el motor del coche en Crazy Taxi no se oye).
 
-Entra en Settings->General, y pon "Cable" a "VGA", de esa manera tendrás scanlines en los juegos de baja resolución.
+Entra en Settings->General, y pon "Cable" a "VGA", de esa manera los juegos irán todos a 640x480@59.94
 
 Entra en Settings->Video, desactiva el VSYNC si estás en Wayland+Vulkan, pon "Transparent Sorting" a "Per Pixel"
-y activa "Native Depth Interpolation", o si no tendrás errores en el Daytona y en el REZ.
-Lo de "Native Depth Interpolation" es necesario para gráficos Intel y AMD, y no consume más recursos ni nada según el autor del emulador.
+Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
+(no consume más recursos ni nada según el autor del emulador).
 
-Entra en Settings->Audio y pon el driver a ALSA y si el dispositivo "auto" no funciona, elige el del ordenador donde estés.
-En el i5-1235U tengo puesto "hw:CARD=PCH,DEV=3".
+Entra en Settings->Audio y pon el driver a SDL2 con 32ms de buffer (el driver ALSA va peor: tiene dropouts de audio).
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
