@@ -1252,7 +1252,7 @@ RECUERDA: Para quitar los crujidos/dropouts de audio, edita ~/.config/flycast/em
 SÓLO WAYLAND (RECUERDA QUE EN WAYLAND+VULKAN EL VSYNC DEBE ESTAR DESACTIVADO!!!):
 Creamos este script en /usr/local/bin/dreamcast para lanzar el emulador:
 
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.940059
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.94
 flycast "$1"
 wlr-randr --output HDMI-A-1 --mode 1920x1080@60.000000
 
@@ -8284,8 +8284,8 @@ Instalamos dependencias previas:
 apt-get install libbz2-dev libpng-dev lsb-release libzip-dev zipcmp zipmerge ziptool \
 libtinyxml2-dev nlohmann-json3-dev libspdlog-dev
 
-Clonamos la última versión estable del repo. Para ello, si por ejemplo es la 8.0.5, hacemos:
-git clone https://github.com/HarbourMasters/Shipwright.git -b 8.0.5 --depth 1 --recurse-submodules
+Clonamos la última versión estable del repo. Para ello, si por ejemplo es la 8.0.6, hacemos:
+git clone https://github.com/HarbourMasters/Shipwright.git -b 8.0.6 --depth 1 --recurse-submodules
 
 Configuramos y compilamos con:
 
