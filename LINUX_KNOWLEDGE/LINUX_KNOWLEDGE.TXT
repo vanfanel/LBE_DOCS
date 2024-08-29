@@ -1226,18 +1226,13 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
 
 Ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
 
-Ahora lanza un juego (basta con pasarle un .CHD al flycast) y salte del emulador (para poder salir, entra en el menú usando TAB, o Select en el pad,
-y verás que hay un ENORME botón en el que pone EXIT) con lo que se nos creará un ~/.config/flycast/emu.cfg completo,
-que puedes configurar a tu gusto: como mínimo, pon el modo del vídeo a 1920x1080, y pon "aica.DSPEnabled" a "yes" (si no activas el DSP,
-el motor del coche en Crazy Taxi no se oye).
-
 Entra en Settings->General, y pon "Cable" a "VGA", de esa manera los juegos irán todos a 640x480@59.94
 
 Entra en Settings->Video, desactiva el VSYNC si estás en Wayland+Vulkan, pon "Transparent Sorting" a "Per Pixel"
 Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador).
 
-Entra en Settings->Audio y pon el driver a SDL2 con 36ms de buffer (el driver ALSA va peor: tiene dropouts de audio).
+Entra en Settings->Audio y pon el driver a SDL2 con 42ms de buffer (el driver ALSA va peor: tiene dropouts de audio).
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
