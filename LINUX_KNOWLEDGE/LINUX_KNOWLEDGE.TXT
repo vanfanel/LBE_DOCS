@@ -1237,7 +1237,7 @@ Entra en Settings->Video, desactiva el VSYNC si estás en Wayland+Vulkan, pon "T
 Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador).
 
-Entra en Settings->Audio y pon el driver a SDL2 con 32ms de buffer (el driver ALSA va peor: tiene dropouts de audio).
+Entra en Settings->Audio y pon el driver a SDL2 con 36ms de buffer (el driver ALSA va peor: tiene dropouts de audio).
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
@@ -1245,7 +1245,7 @@ RECUERDA: Para que el framerate sea suave en los juegos que van a 30FPS, debes a
 en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da igual.
 
 RECUERDA: Para quitar los crujidos/dropouts de audio, usa el driver de audio SDL2,
-y edita ~/.config/flycast/emu.cfg y pon "FastGDRomLoad" a "yes" 
+Poner "FastGDRomLoad" a "yes" en ~/.config/flycast/emu.cfg no cambia nada y puede dar problemas. 
 
 RECUERDA: Para que el menú se vea a buen tamaño con resolución 1080p, edita ~/.config/flycast/emu.cfg
 y pon "UIScaling" a "200".
