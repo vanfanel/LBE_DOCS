@@ -1232,7 +1232,7 @@ Entra en Settings->Video, desactiva el VSYNC si estás en Wayland+Vulkan, pon "T
 Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador).
 
-Entra en Settings->Audio y pon el driver a ALSA con 42ms de buffer.
+Entra en Settings->Audio y pon el driver a ALSA con 45ms de buffer.
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
