@@ -1244,7 +1244,11 @@ Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->c
 RECUERDA: Para que el framerate sea suave en los juegos que van a 30FPS, debes activar "Full Framebuffe Emulation"
 en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da igual.
 
-RECUERDA: Para quitar los crujidos/dropouts de audio, edita ~/.config/flycast/emu.cfg y pon "FastGDRomLoad" a "yes" 
+RECUERDA: Para quitar los crujidos/dropouts de audio, usa el driver de audio SDL2,
+y edita ~/.config/flycast/emu.cfg y pon "FastGDRomLoad" a "yes" 
+
+RECUERDA: Para que el menú se vea a buen tamaño con resolución 1080p, edita ~/.config/flycast/emu.cfg
+y pon "UIScaling" a "200".
 
 	#### BLOQUE ARREGLO PARA EL FRAMERATE ####
 
