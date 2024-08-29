@@ -1248,11 +1248,14 @@ RECUERDA: Para quitar los crujidos/dropouts de audio durante la carga del Soul C
 "Emulation Hacks -> GD-ROM Fast Loading".
 
 ARREGLO PARA EL FRAMERATE, SÓLO WAYLAND (RECUERDA QUE EN WAYLAND+VULKAN EL VSYNC DEBE ESTAR DESACTIVADO!!!):
-Ponemos la resolución interna a 2x (es decir, 1280x960), y creamos este script en /usr/local/bin/dreamcast para lanzar el emulador:
+Creamos este script en /usr/local/bin/dreamcast para lanzar el emulador:
 
-wlr-randr --output HDMI-A-1 --custom-mode 1280x960@59.94
-/usr/local/bin/flycast "$1"
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.940059
+flycast "$1"
+wlr-randr --output HDMI-A-1 --mode 1920x1080@60.000000
+
+SI ESTAMOS EN UN SISTEMA CON CPUs HETEROGÉNEAS, MANDAMOS LA EMULACIÓN A LOS P-CORES:
+taskset -c 0,1 flycast "$1"
 
 ARREGLO PARA EL FRAMERATE, SÓLO PARA KMS/DRM:
 Editamos core/deps/SDL/src/video/kmsdrm/SDL_kmsdrmvulkan.c y en la función KMSDRM_Vulkan_CreateSurface() comentamos el bloque de:
