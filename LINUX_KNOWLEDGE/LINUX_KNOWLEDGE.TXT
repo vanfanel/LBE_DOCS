@@ -1238,14 +1238,14 @@ y activa "Native Depth Interpolation", o si no tendrás errores en el Daytona y 
 Lo de "Native Depth Interpolation" es necesario para gráficos Intel y AMD, y no consume más recursos ni nada según el autor del emulador.
 
 Entra en Settings->Audio y pon el driver a ALSA y si el dispositivo "auto" no funciona, elige el del ordenador donde estés.
+En el i5-1235U tengo puesto "hw:CARD=PCH,DEV=3".
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
 RECUERDA: Para que el framerate sea suave en los juegos que van a 30FPS, debes activar "Full Framebuffe Emulation"
 en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da igual.
 
-RECUERDA: Para quitar los crujidos/dropouts de audio durante la carga del Soul Calibur, activa
-"Emulation Hacks -> GD-ROM Fast Loading".
+RECUERDA: Para quitar los crujidos/dropouts de audio, edita ~/.config/flycast/emu.cfg y pon "FastGDRomLoad" a "yes" 
 
 	#### BLOQUE ARREGLO PARA EL FRAMERATE ####
 
@@ -1262,7 +1262,6 @@ taskset -c 0,1 flycast "$1"
 PARA LOS JUEGOS DE 30FPS: Activar "full framebuffer emulation"
 
 	#### BLOQUE ARREGLO PARA EL FRAMERATE ####
-
 
 ARREGLO PARA EL FRAMERATE, SÓLO PARA KMS/DRM:
 Editamos core/deps/SDL/src/video/kmsdrm/SDL_kmsdrmvulkan.c y en la función KMSDRM_Vulkan_CreateSurface() comentamos el bloque de:
