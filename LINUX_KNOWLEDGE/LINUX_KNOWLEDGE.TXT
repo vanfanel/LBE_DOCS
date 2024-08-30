@@ -1209,8 +1209,9 @@ Y entramos en el directorio "libretro" y compilamos con:
 make platform=rpi4_64 -j4
 
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
-NOTA: Para poder bajar la latencia de audio del emulador, es recomendable tener un kernel PREEMPT_DYNAMIC.
+NOTA PREVIA: Para poder bajar la latencia de audio del emulador, es recomendable tener un kernel PREEMPT_DYNAMIC.
 (General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop))
+Tienes una configuración lista para el i5-1235U en LBE_DOCS.
 
 Instalamos una dependencia previa rara:
 apt-get install libcurl4-openssl-dev
