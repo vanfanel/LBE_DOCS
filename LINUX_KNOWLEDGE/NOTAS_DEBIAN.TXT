@@ -836,6 +836,10 @@ Kernel hacking  --->
     Compile-time checks and compiler options  --->
         [*] Provide BPF Type Format (BTF) debug info
 
+--Otras cosillas que podemos mejorar para juegos:
+General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop)
+Processor Type and Features->Timer Frequency->300Hz
+
 -Compilamos el kernel y los módulos:
 make -j8
 
