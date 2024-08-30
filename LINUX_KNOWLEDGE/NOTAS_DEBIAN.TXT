@@ -827,6 +827,8 @@ cd linux-$(uname -r)
 -Le ponemos la configuración del kernel en uso:
 cp /boot/config-$(uname -r) .config
 
+-Adelgazamos el kernel (ver BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL MÁS ABAJO)
+
 -Entramos en la configuración y ajustamos lo que queramos:
 ---Desativamos las mitigations
 ---Para evitar depender de la herramienta pahole, deshabilitamos:
