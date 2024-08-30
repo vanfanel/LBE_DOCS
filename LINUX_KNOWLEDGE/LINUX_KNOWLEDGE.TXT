@@ -1241,7 +1241,8 @@ Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usa
 Entra en Settings->Video, y desactiva "Fix Upscaling Bleeding Edge" ya que vas a usar los juegos en su resolución nativa,
 así que no hay nada que arreglar.
 
-Entra en Settings->Audio y pon el driver a SDL2 con 16ms de buffer (un tamaño mayor NO nos evita microcortes).
+Entra en Settings->Audio y pon el driver a SDL2 con 42ms de buffer (recuerda que para que el audio no tenga microcortes necesitas
+un kernel "Preemptible Kernel (Low-Latency Desktop)" y a 300 Hz).
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
