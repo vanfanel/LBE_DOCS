@@ -1209,6 +1209,8 @@ Y entramos en el directorio "libretro" y compilamos con:
 make platform=rpi4_64 -j4
 
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
+NOTA: Para poder bajar la latencia de audio del emulador, es recomendable tener un kernel PREEMPT_DYNAMIC
+(General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop))
 
 Instalamos una dependencia previa rara:
 apt-get install libcurl4-openssl-dev
@@ -1235,7 +1237,7 @@ Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usa
 Entra en Settings->Video, y desactiva "Fix Upscaling Bleeding Edge" ya que vas a usar los juegos en su resolución nativa,
 así que no hay nada que arreglar.
 
-Entra en Settings->Audio y pon el driver a SDL2 con 42ms de buffer.
+Entra en Settings->Audio y pon el driver a SDL2 con 16ms de buffer.
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
 
