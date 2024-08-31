@@ -1269,6 +1269,29 @@ PARA LOS JUEGOS DE 30FPS: Activar "full framebuffer emulation"
 
 	#### BLOQUE ARREGLO PARA EL FRAMERATE ####
 
+
+	#### BLOQUE PARA EJECUTAR EL EMULADOR EN UN CONJUNTO DE CPUS AISLADAS ####
+	
+# Esto nos crea dos conjuntos de CPUs: "user" donde quedan las CPUs aisladas que hemos especificado
+# y "system", donde quedarán las demás CPUs.
+cset shield --cpu=0,1,2,3 --kthread=on
+
+# Movemos el compositor al conjunto de CPUs aisladas ("user")
+COMPOSITOR_PIDS=$(pgrep "wayfire")
+for PID in $COMPOSITOR_PIDS; do
+        cset proc --move --pid="$PID" user
+done
+                                                                                                                                       
+# Ejecutamos el emulador en el conjunto de CPUs aisladas ("user")
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.94
+cset shield --exec -- flycast "$1" > /dev/null 2>&1
+wlr-randr --output HDMI-A-1 --mode 1920x1080@60.000000
+                                                                                                                                       
+# Una vez hemos acabado, eliminamos los conjuntos de CPUs para que todo vuelva a la normalidad.                                                                                                                 
+cset shield --reset
+
+		#### FIN BLOQUE PARA EJECUTAR EL EMULADOR EN UN CONJUNTO DE CPUS AISLADAS ####
+
 ARREGLO PARA EL FRAMERATE, SÓLO PARA KMS/DRM:
 Editamos core/deps/SDL/src/video/kmsdrm/SDL_kmsdrmvulkan.c y en la función KMSDRM_Vulkan_CreateSurface() comentamos el bloque de:
 "for (i = 0; i < mode_count; i++) {"

@@ -1,3 +1,23 @@
+AISLAR CPUS DINÁMICAMENTE Y EJECUTAR COSAS EN ELLAS
+===================================================
+PREVIO: Tenemos que instalar esto: apt-get install cpuset
+
+# Esto nos crea dos conjuntos de CPUs: "user" donde quedan las CPUs aisladas que hemos especificado
+# y "system", donde quedarán las demás CPUs.
+cset shield --cpu=0,1,2,3 --kthread=on                                                                    
+                                                                                                 
+#Movemos el compositor al conjunto de CPUs aisladas ("user")
+COMPOSITOR_PIDS=$(pgrep "wayfire")
+for PID in $COMPOSITOR_PIDS; do
+        cset proc --move --pid="$PID" user
+done
+
+# Ejecutamos el emulador en el conjunto de CPUs aisladas ("user")
+cset shield --exec -- <PROGRAMA CON SUS PARÁMETROS>
+                                                                                    
+# Una vez hemos acabado, eliminamos los conjuntos de CPUs para que todo vuelva a la normalidad.                                                                                                                 
+cset shield --reset
+
 LO MÁS BÁSICO
 =============
 
