@@ -57,6 +57,10 @@ PARA GAMEGEAR, usamos el shader ZFAST con los parámetros de los scanlines a 0, 
 y "MASK EFFECT AMOUNT" al máximo.
 Como quitamos las scanlines, podemos quitar el INTEGER SCALING para este core y guardarlo como un override de content directory. 
 
+PARA SNES, usa el core SUPAFAUST. Para que no se vea el cielo por debajo del suelo en los castillos del Super Mario World,
+en las opciones del core pon "Last Displayed Scanline in NTSC mode" a 222.
+(Posiblemente no se aplique hasta que reinicies RetroArch).
+
 PARA LYNX, el mejor shader es "handheld/sameboy-lcd" combinado con INTEGER SCALING.
 
 PARA GBA, tenemos que quitar el INTEGER SCALING porque si no se ve muy pequeño
