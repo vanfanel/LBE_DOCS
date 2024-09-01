@@ -354,6 +354,32 @@ wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d 
 
 ...Y ya debería ir WINE sobre Wayland puro y con programas de 32bits usando el modo WoW64. Prueba a hacer "winecfg" o bien "wine notepad"
 
+******DIRECTX SOBRE VULKAN USANDO WINE***************************************************************************************
+
+--Clonamos su repo:
+git clone --depth 1 --recurse-submodules https://github.com/doitsujin/dxvk.git
+
+--Creamos el directorio donde queremos obtener las DLLs:
+mkdir ~/src/dlls
+
+--Compilamos e instalamos con:
+(NOTA: SÍ, hay que usar "build-win32.txt", es correcto. Y sí, las DLLs se copian a "syswow64", es correcto).
+
+mkdir b4
+cd b4
+
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+meson setup .. -Dbuildtype=release --cross-file ../build-win32.txt --prefix ~/src/dlls
+
+ninja -j4
+ninja install
+
+--Copiamos las DLLs al sistema Windows de WINE:
+cp ~/src/dlls/bin/*.dll ~/.wine/drive_c/windows/syswow64/
+
+--Ejecutamos "winecfg", salimos, y ya está.
+
 ******APOTRIS (clon de Tetris) en GNU/Linux**********************************************************************************
 (OJO: POR AHORA no tiene soporte de pantalla completa ni de joystick, asi que espera a la version 4.1 de los sources).
 
