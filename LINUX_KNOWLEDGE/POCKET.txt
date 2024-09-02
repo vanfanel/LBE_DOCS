@@ -26,3 +26,11 @@ AÑADIR DISPLAY MODES
 
 A parte de que el pocket_updater lo hace automáticamente desde una opción del menú, podemos hacerlo nosotros a mano editando el "video.json"
 del core que queramos, y añadiendo los modos de la tabla que viene aquí: https://www.analogue.co/developer/docs/core-definition-files/video-json
+
+AÑADIR ROMS DE NEOGEO
+=====================
+
+Aunque al instalar los cores con PUPDATE se te instalarán casi todas las ROMs de NEOGEO, si necesitas añadir ROMs que no vienen instaladas
+como la del Xenocrisis (que la tienes en el disco duro de backup), tienes que instalar las de "Darksoft",
+no las de MiSTer, y meter la ROM que quieras sin comprimir en Assets/ng/common/<nombre_juego>
+Tienes todas las ROMs en el formato adecuado en https://archive.org/download/multipacks
