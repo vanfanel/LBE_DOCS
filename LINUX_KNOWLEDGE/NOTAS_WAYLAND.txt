@@ -1329,15 +1329,13 @@ echo "/)_)    This computer's local IP is $MY_IP"
 echo " ¨ ¨    Have fun!"  
 echo "     "
 
-Para poder ejecutar por ssh programas que corran sobre Wayland:
-rundir="/run/user/0"
-if [[ ! -e $rundir ]]; then
-    mkdir -p $rundir
-fi
-export XDG_RUNTIME_DIR=$rundir
+Para poder ejecutar por ssh programas que corran sobre Wayland (también hace falta XDG_RUNTIME_DIR, pero eso lo hago en el script de lanzamiento
+del compositor, es decir, en "/usr/local/bin/launch-wayfire" por ejemplo):
+
 export WAYLAND_DISPLAY=wayland-1
-OJO: Si no funciona con estos valores, mira qué valores tienen estas variables de entorno en el sistema "servidor",
-     y exportas esos mismos valores en el .bashrc del usuario que va a entrar por SSH.
+
+OJO: Si no funciona con ese valor, mira qué valor tiene WAYLAND_DISPLAY en el sistema "servidor", ya que es exportada por el compositor,
+     y exportas ese mismo valore en el .bashrc del usuario que va a entrar por SSH.
 OJO: Puedes exportar el valor correcto de WAYLAND_DISPLAY dinámicamente comprobando si hay algún socket Wayland en el XDG_RUNTIME_DIR,
  y si es así exportando al WAYLAND_DISPLAY el primero de ellos:
 ####
