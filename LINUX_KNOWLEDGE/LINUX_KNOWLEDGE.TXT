@@ -9065,10 +9065,14 @@ make -j4
 
 El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
 
-PARA TENER ANIMACIONES SUAVES DE LAS ARMAS (NO es posible tener animaciones suaves de los enemigos, extra gibbs, etc.. con Vanilla Doom,
-así que confórmate con lo de las armas)
+PARA TENER ANIMACIONES SUAVES DE LAS ARMAS Y DE LOS MONSTRUOS (es posible tener ambos porque crispy-doom soporta DEHEXTRA),
+usamos las versiones especiales para CRISPY-DOOM de SMOOTHED.WAD para los monstruos y BLACKOPS.WAD para las armas:
+https://www.doomworld.com/forum/topic/85991-smoothed-smooth-monsters-for-doom-retro-and-crispy-doom/
+https://www.doomworld.com/forum/topic/84859-black-ops-smooth-weapons-dehacked-mod/
+Los cargaríamos con: ./crispy-doom -iwad doomu.wad -file smoothed.wad blackops.wad
 
-Usamos el Smooth Weapons adaptado a Vanilla, que está aquí:
+NOTA: Si usases otro sourceport y no tuviese DEHXTRA (buuhhhh!!), puedes usar esto para las armas solamente
+(de los monstruos olvídate sin DEHEXTRA):
 https://www.chocolate-doom.org/wiki/index.php/Gameplay_enhancements#Vanilla_Doom_smooth_weapons_patch
 Lo cargaríamos con: ./crispy-doom -iwad doomu.wad -file vsmooth.wad
 
