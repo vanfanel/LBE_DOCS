@@ -9070,6 +9070,7 @@ usamos las versiones especiales para CRISPY-DOOM de SMOOTHED.WAD para los monstr
 https://www.doomworld.com/forum/topic/85991-smoothed-smooth-monsters-for-doom-retro-and-crispy-doom/
 https://www.doomworld.com/forum/topic/84859-black-ops-smooth-weapons-dehacked-mod/
 Los cargaríamos con: ./crispy-doom -iwad doomu.wad -file smoothed.wad blackops.wad
+NOTA: El smoothed.wad provoca unos warnings que simplemente hay que ignorar según el propio autor de crispy-doom.
 
 NOTA: Si usases otro sourceport y no tuviese DEHXTRA (buuhhhh!!), puedes usar esto para las armas solamente
 (de los monstruos olvídate sin DEHEXTRA):
