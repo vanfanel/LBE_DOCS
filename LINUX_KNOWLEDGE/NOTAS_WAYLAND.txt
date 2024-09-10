@@ -6,10 +6,10 @@ LIBSEAT al instalarse instala seatd, un servicio que administra seats, pero NO e
 así que con WLROOTS y un compositor recién instalados, el compositor no funcionará hasta que le demos un valor a XDG_RUNTIME_DIR
 PARA ELLO, normalmente haremos esto en .bashrc:
 ##################################
-rundir="/run/user/0"                                                                                    
-if [[ ! -e $rundir ]]; then                                                                                    
-    mkdir -p $rundir                                                                                           
-fi                                                                                                             
+rundir="/run/user/0"
+if [[ ! -e $rundir ]]; then
+    mkdir -p $rundir
+fi
 export XDG_RUNTIME_DIR=$rundir
 ##################################
 
