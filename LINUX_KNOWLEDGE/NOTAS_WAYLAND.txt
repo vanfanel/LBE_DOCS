@@ -998,8 +998,9 @@ meson -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
 Ahora vamos a por SWAY en sí:
 -Bajamos la última estable o RC de: https://github.com/swaywm/sway/releases
  (Si queremos la última versión GIT del código hacemos: git clone --depth 1 https://github.com/swaywm/sway.git
-  RECUERDA que tenemos que tener la última versión de WLROOTS instalada, aunque lo clones con submódulos no te lo incluye,
-  tendrías que clonarla a mano en el directorio de compilación, así que mejor simplemente ten la última WLROORTS instalada y ya).
+  RECUERDA que en tal caso tenemos que tener la última versión de WLROOTS instalada, aunque lo clones con submódulos no te lo incluye,
+  tendrías que clonar a mano https://gitlab.freedesktop.org/wlroots/wlroots.git y meter el directorio "wlroots"
+  en "subprojects/wlroots).
 -Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
