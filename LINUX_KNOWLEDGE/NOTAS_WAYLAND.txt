@@ -997,6 +997,7 @@ meson -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
 
 Ahora vamos a por SWAY en sí:
 -Bajamos la última estable o RC de: https://github.com/swaywm/sway/releases
+ (Si queremos la última versión GIT del código hacemos: git clone --depth 1 --recurse-submodules https://github.com/swaywm/sway.git)
 -Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
