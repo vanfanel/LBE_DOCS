@@ -719,9 +719,8 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (NO le pases --disable-builtinglslang, porque entonces fallará la compilación de shaders al cargar un segundo juego sin salir de RetroArch)
 
-(Si quisieras OpenGL de escritorio, en lugar de "--enable-opengles --enable-opengles3" pásale "--enable-opengl",
-y además edita qb/config.libs.sh y cambia -lGL por -lOpenGL, sólo hay una ocurrencia que cambiar,
-pero NO es necesario porque el driver GLCORE (GL3, GLES3) soporta HARD SYNC,
+(Si quisieras OpenGL de escritorio, en lugar de "--enable-opengles --enable-opengles3" pásale "--enable-opengl --disable-glx",
+pero NO es necesario compilar con OpenGL de escritorio porque el driver GLCORE (GL3, GLES3) soporta HARD SYNC,
 no necesitas usar el driver GL (GLES2, GL2) que sólo soporta HARD SYNC con OpenGL de escritorio y no con GLES2).
 
 (NO le pasamos "--disable-networking" ni "--disable-libretrodb" porque si lo hacemos no tendremos el "Online Updater"
