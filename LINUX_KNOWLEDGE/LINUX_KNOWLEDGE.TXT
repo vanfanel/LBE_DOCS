@@ -7386,28 +7386,19 @@ y para volver, obviamente, start.
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
-VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado,
+VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado.
+(IMPORTANTE: en Vulkan NO hay ninguna diferencia poniendo MAX_SWAPCHAIN a 2, según el test del ratón).
 (Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato).
 (Lo de poner 120Hz y VSYNC SWAP INTERVAL a 2 nos da el mismo input lag que MAX_SWAPCHAIN a 2, pero también tiene los mismos problemas:
 chasquidos en la intro del Rusty, juegos de Saturn lentos, etc. Así que te puedes ahorrar las pruebas).
-
-SI QUISIERAS USAR MAX_SWAPCHAIN a 2 + "VSYNC" desactivado (es lo que menos latencia produce de todo, pero nos limita el sistema mucho),
-tienes que configurar el "max_render_time" del compositor a un valor medio (sobre 12 o así)
-para evitar que el vsync rate salga a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz) 
-Esto es necesario en Wayfire, Sway y otros wayland compositors.
 
 EN EL FUTURO CUANDO TENGAS VRR:
 VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado y VRR ACTIVADO, sin necesidad de "AUTO FRAME DELAY".
 La gracia de VULKAN es esa, tener triple buffer sin VSYNC (el VSYNC es lo que mete el lag realmente), para lo cual necesitamos
 sí o sí VRR. 
 
-(NO USAR, MUCHO LAG) VIDEO: Driver "GLCORE" que usa GL 3.2 (Es necesario usar GLCORE en vez de GL si queremos que funcione HARD SYNC)
-HARD SYNC ON, y HARD SYNC FRAMES 0.
-	***Usar HARD SYNC ON + HARD SYNC FRAMES 0 NO equivale a usar VULKAN con SWAPCHAIN a 2:
-	   CON HARD SYNC ON + HARD SYNC FRAMES 0 HAY MUCHO MÁS INPUT LAG***
-Si usas el driver GL (NO RECOMENDADO, USA GLCORE!!), para que HARD SYNC ON funcione tenemos que
-haber sustituido "-lGL" por "-lOpenGL" en qb/config.libs.sh,
-ya que es algo exclusivo de OpenGL completo, NO funciona en ninguna versión de GLES.
+(NO USAR POR TENER MUCHO LAG EL DRIVER DE VIDEO "GLCORE" PORQUE TIENE MUCHO INPUT LAG HAGAS LO QUE HAGAS, SEGÚN EL TEST DEL RATÓN.
+ NECESITA GLES3 U OPENGL DE ESCRITORIO, PARA LO CUAL TIENES QUE COMPILAR CON "--disable-glx").
 
 -AUDIO: driver ALSATHREAD, 44100 Hz, 32ms, resampler quality normal.
 (No usamos ALSA normal porque, incluso con 36ms, hay dropout al lanzar el Jazz Jackrabbit).
@@ -7449,11 +7440,11 @@ Así que hacemos esto:
 PARA EL CORE SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
 Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
-Y RECUERDA QUE ESTE CORE TIENE PROBLEMAS DE AUDIO (pequeñas distorsiones) SI PONES 1 FRAME DE RUNAHEAD: PARA SOLUCIONARLO,
-PUEDES ACTIVAR LA OPCIÓN DE "USE SECOND INSTANCE" Y SUBIR EL TAMAÑO DEL BUFFER DE AUDIO A 36ms, O MEJOR AÚN, QUITAR EL RUNAHEAD
-PARA ESTE CORE EN CONCRETO (USANDO OVERRIDES).
-(De todos modos, si usas GL con HARD SYNC, o lo que es lo mismo, si usas Vulkan con max_swapchain a 2, ya tienes
-la misma latencia que la consola original, ya que es una consola con framebuffer).
+Y RESPECTO AL RUNAHEAD:
+--SI USAS EL RENDERER SOFTWARE, PUEDES ACTIVAR EL RUNAHEAD DE RETROARCH CON "USE SECOND INSTANCE"
+(DE LO CONTRARIO HAY PROBLEMAS DE AUDIO).
+--SI USAS EL RENDERER HARDWARE, USA EL RUNAHEAD INTERNO DEL CORE, EN CORE OPTIONS.
+(DEBERÍAS USAR EL RUNAHEAD INTERNO DEL CORE DE TODOS MODOS AUNQUE USES EL RENDERER SOFTWARE).
 
 PARA EL CORE DE PPSSPP Y PARA EL CORE FLYCAST, ACUÉRDATE DE QUITAR EL RUNAHEAD, O DARÁN ERRORES DE INSTRUCCIONES NO VÁLIDAS,
 PANTALLAZOS A NEGRO, ETC...
