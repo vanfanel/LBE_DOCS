@@ -34,3 +34,22 @@ Aunque al instalar los cores con PUPDATE se te instalarán casi todas las ROMs d
 como la del Xenocrisis (que la tienes en el disco duro de backup), tienes que instalar las de "Darksoft",
 no las de MiSTer, y meter la ROM que quieras sin comprimir en Assets/ng/common/<nombre_juego>
 Tienes todas las ROMs en el formato adecuado en https://archive.org/download/multipacks
+
+ELCHEAPOSD
+==========
+
+Para preparar la SD de ElCheapoSD, lo primero es formatearla a FAT32.
+Ahora necesitas meter el "BOOT.BIN" de ATARIGAMER, que está aquí: https://atarilynxvault.itch.io/elcheaposd-menu
+MUY IMPORTANTE: También necesitas el fichero "CONFIG.BIN", que viene en versiones más antiguas del menú de ATARIGAMER,
+y también necesitas crear en el raiz de la tarjeta el directorio "SAVES".
+Total que nos tiene que quedar:
+
+BOOT.BIN
+CONFIG.BIN
+SAVES/
+*.lnx
+
+OJO CON LOS JUEGOS: Los juegos tienen que estar en LNX, PERO no son los de NO-INTRO, necesitas que sean .LNX CON CABECERA:
+se puede saber si valen editándolos con un editor de texto y mirando que empiezen por "LYNX", así literalmente en texto.
+Si no tienen la cadena "LYNX" al principio, no valen y nos dará ERROR.
+En el disco de backup tienes todos los juegos comerciales de Lynx en el formato adecuado para ElCheapoSD. 
