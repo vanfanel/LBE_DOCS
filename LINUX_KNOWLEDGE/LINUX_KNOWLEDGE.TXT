@@ -2054,12 +2054,21 @@ git clone --depth 1 https://github.com/cyxx/REminiscence.git
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
 CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=native -mtune=native
+También quitamos "ogg_player.cpp" de la línea de "SRCS ="
 
 Editamos systemstub_sdl.cpp y cambiamos:
 desired.samples = 2048;
 por
 desired.samples = 512;
 Y también añadimos SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
+
+Compilamos con:
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+make -j10
+
+Nos dará una serie de errores de OGG, MT_OGG, _ogg y cosas así, las vamos quitando del código
+y reintentando la compilación hasta que compile.
 
 Creamos el directorio data y allí metemos los datos de la versión MS-DOS.
 Dentro de data creamos music y ahí metemos los MODs de:
