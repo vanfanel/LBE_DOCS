@@ -2070,10 +2070,12 @@ make -j10
 Nos dará una serie de errores de OGG, MT_OGG, _ogg y cosas así, las vamos quitando del código
 y reintentando la compilación hasta que compile.
 
+### BLOQUE DE RECREACIÓN DE FICHEROS DE DATOS. INNECESARIO: TIENES COPIA DE SEGURIDAD EN EL DISCO DE BACKUP ###
 Creamos el directorio data y allí metemos los datos de la versión MS-DOS.
 Dentro de data creamos music y ahí metemos los MODs de:
 http://wiibrew.org/w/images/2/2b/Flashbackmods.zip
 (NO, no sirven los ficheros de música de AMIGA directamente).
+### FIN BLOQUE DE RECREACIÓN DE FICHEROS DE DATOS ###
 
 Lanzamos con:
 ./rs --datapath=./data --fullscreen
