@@ -2043,7 +2043,7 @@ Si queremos renderer por software, lanzamos con:
 Si queremos renderer por OpenGL, lanzamos con:
 ./rawgl --language=us --render=gl --fullscreen-ar --datapath=data_dos
 
-******FLASHBACK en la Rasberry Pi*********
+******FLASHBACK en GNU/Linux*********
 
 Bajamos los sources de:
 http://cyxdown.free.fr/reminiscence/
@@ -4746,13 +4746,8 @@ Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 Bajamos la última estable de:
 https://github.com/schismtracker/schismtracker/releases
 
-##### BLOQUE EN PRINCIPIO YA INNECESARIO#####
 Instalamos dependencias previas:
-sudo apt-get install autoconf
-
-Ejecutamos:
-autoreconf -vif
-##### FIN BLOQUE EN PRINCIPIO YA INNECESARIO#####
+apt-get install libutf8proc-dev
 
 Configuramos con:
 
