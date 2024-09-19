@@ -2045,11 +2045,11 @@ Si queremos renderer por OpenGL, lanzamos con:
 
 ******FLASHBACK en GNU/Linux*********
 
-Bajamos los sources de:
-http://cyxdown.free.fr/reminiscence/
-
-Instalamos
+Instalamos dependencias previas:
 apt-get install libmodplug-dev --no-install-recommends
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/cyxx/REminiscence.git
 
 Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
  #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
