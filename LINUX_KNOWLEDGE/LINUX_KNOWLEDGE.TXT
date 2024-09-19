@@ -2080,6 +2080,8 @@ http://wiibrew.org/w/images/2/2b/Flashbackmods.zip
 Lanzamos con:
 ./rs --datapath=./data --fullscreen
 
+NOTA: El juego corre internamente a 256x224, por si lo quieres tener en cuenta para los sahders externos.
+
 ********Supaplex en la Pi con OpenSupaplex********************************************************************
 
 Clonamos su repo:
