@@ -51,6 +51,9 @@ lo salvamos como GLOBAL PRESET, en el menú ES ponemos "Shader Set" a "Default" 
 EL MEJOR SHADER PARA CONSOLAS DE SOBREMESA (SOLUCIONA TAMBIÉN LO DEL DITHERING EB MEGADRIVE) ES ZFAST-COMPOSITE,
 con CONVERGENCE X-AXIS al máximo, SATURATION a 1.05, FLICKERING a 0, CURVATURE a 0, y los parámetros de scanline a 10 y 5 respectivamente.
 
+PARA QUE EL CORE DE PC-ENGINE (BEETLE PCE) VAYA A 100% DE VELOCIDAD, ve a "CORE OPTIONS->OWL RESAMPLE QUALITY" y ponlo a "0",
+ya que eso ahorra un 20-25% de CPU y según Tetsuya79 en Github, no se nota nada en absoluto.
+
 PARA GAMEBOY/GBC, EL MEJOR SHADER ES EL "LCD1X" (DEL SUBDIRECTORIO "HANDHELDS").
 
 PARA GAMEGEAR, usamos el shader ZFAST con los parámetros de los scanlines a 0, "BLUR AMOUNT X-AXIS" al máximo,
