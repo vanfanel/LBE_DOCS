@@ -4883,7 +4883,7 @@ Y se compila con:
 
 CFLAGS="-O2 -march=native -mtune=native -O2" cmake -DLIBRETRO=1 ..
 
-***********XASH3D para Raspberry Pi (GLES) **********************************************************************************************
+***********Half Life (XASH3D) en GNU/Linux **********************************************************************************************
 
 XASH3D SOPORTA AHORA TANTO OPENGL COMO GLES1 Y GLES2, SIN WRAPPERS NI NADA.
 OJO; SI ESTAS INSTRUCCIONES TE DAN ERRORES, QUE SEPAS QUE PROCEDEN DE AQUÍ:
@@ -4893,7 +4893,7 @@ Instalamos una pequeña dependencia que hace falta:
 sudo apt-get install --no-install-recommends libfontconfig1-dev
 
 Clonamos el repo principal:
-git clone --depth 1 --recurse-submodules -j8 https://github.com/FWGS/xash3d-fwgs
+git clone --depth 1 --recurse-submodules -j8 https://github.com/FWGS/xash3d-fwgs.git
 
 Ahora creamos el directorio de compilación, configuramos con CMAKE, y compilamos:
 mkdir build
@@ -9136,18 +9136,6 @@ sudo apt-get install iotop
 
 Nos permite ver cuánto se ha escrito en disco, estadísticas después de dejarlo correr minutos u horas, etc:
 iotop -oPa
-
-XASH3D, ENGINE DE HALF LIFE EN GNU/LINUX
-========================================
-
-Clonamos el repo de:
-git clone --depth 1 https://github.com/FWGS/xash3d-fwgs.git
-
-cd source
-Editamos el Makefile.linux y ponemos la línea XASH_X11 ?= 1 a 0, así:
-XASH_X11 ?= 0
-Ahora compilamos:
-make -f Makefile.linux NANO_GL=1 XASH_VGUI=0 -j4
 
 OpenDUNE
 =========
