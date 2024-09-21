@@ -2049,15 +2049,10 @@ Instalamos dependencias previas:
 apt-get install libmodplug-dev --no-install-recommends
 
 Clonamos su repo:
-git clone --depth 1 https://github.com/cyxx/REminiscence.git
-
-Editamos el Makefile y quitamos las librerías de OGG y VORBIS, tocando las líneas:
- #TREMOR_LIBS  := -lvorbisidec -logg <--- Esta la comentamos.
-CXXFLAGS += -Wall -MMD $(SDL_CFLAGS) -DUSE_MODPLUG -DUSE_ZLIB -O2 -march=native -mtune=native
-También quitamos "ogg_player.cpp" de la línea de "SRCS ="
+git clone --depth 1 https://github.com/chermenin/REminiscence.git
 
 Editamos systemstub_sdl.cpp y cambiamos:
-desired.samples = 2048;
+desired.samples = 4096;
 por
 desired.samples = 512;
 Y también añadimos SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
@@ -2067,12 +2062,9 @@ CFLAGS="-O2 -march=native -mtune=native -O2" \
 CXXFLAGS="-O2 -march=native -mtune=native -O2" \
 make -j10
 
-Nos dará una serie de errores de OGG, MT_OGG, _ogg y cosas así, las vamos quitando del código
-y reintentando la compilación hasta que compile.
-
 ### BLOQUE DE RECREACIÓN DE FICHEROS DE DATOS. INNECESARIO: TIENES COPIA DE SEGURIDAD EN EL DISCO DE BACKUP ###
-Creamos el directorio data y allí metemos los datos de la versión MS-DOS.
-Dentro de data creamos music y ahí metemos los MODs de:
+Creamos el directorio DATA y allí metemos los datos de la versión MS-DOS.
+Creamos el directorio TUNES y ahí metemos los MODs de:
 http://wiibrew.org/w/images/2/2b/Flashbackmods.zip
 (NO, no sirven los ficheros de música de AMIGA directamente).
 ### FIN BLOQUE DE RECREACIÓN DE FICHEROS DE DATOS ###
@@ -9149,7 +9141,7 @@ XASH3D, ENGINE DE HALF LIFE EN GNU/LINUX
 ========================================
 
 Clonamos el repo de:
-git clone --depth 1 https://github.com/FWGS/xash3d.git
+git clone --depth 1 https://github.com/FWGS/xash3d-fwgs.git
 
 cd source
 Editamos el Makefile.linux y ponemos la línea XASH_X11 ?= 1 a 0, así:
