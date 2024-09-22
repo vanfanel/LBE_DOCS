@@ -4895,52 +4895,55 @@ sudo apt-get install --no-install-recommends libfontconfig1-dev
 Clonamos el repo principal:
 git clone --depth 1 --recurse-submodules -j8 https://github.com/FWGS/xash3d-fwgs.git
 
-Ahora creamos el directorio de compilación, configuramos con CMAKE, y compilamos:
-mkdir build
-cd build
-cmake .. -DXASH_SDL=ON -DXASH_VGUI=OFF -DXASH_64BIT=1
-make -j4
+Configuramos y compilamos así (usa un buildsystem raro llamado WAF que viene incluido con los sources, no tienes que instalarlo):
 
-Ahora, creamos ~/halai, y vamos copiando los archivos que necesitamos:
-cp engine/libxash.so game_launch/xash3d mainui/libxashmenu64.so ~/halai
-Ahora nos vamos a ~/halai, y creamos nuestro script de lanzamiento, yo lo he llamado también "halai" porque es gracioso, con el siguiente contenido:
-LD_LIBRARY_PATH=. ./xash3d -dev 5
-Ahora copiamos el directorio "valve" de una instalación de Half Life a ~/halai/valve
-(Tienen un CD completo en archive.org, en formato CUE/BIN que puedes convertir a .ISO+.WAV con:
-bchunk -w HALF_LIFE.BIN HALF_LIFE.BIN half
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+./waf configure -T release --64bits --disable-vgui
+
+./waf build
+
+Ahora, creamos el directorio donde vamos a instalar el engine y lo instalamos allí:
+
+mkdir ~/hl
+./waf install --destdir=~/hl/
 
 Ahora vamos a por las librerías del juego: clonamos esto:
-git clone --depth 1 https://github.com/FWGS/hlsdk-xash3d
+git clone --depth 1 https://github.com/FWGS/hlsdk-portable.git
 
-Creamos el directorio de compilación y compilamos para 64bits:
-cd hlsdk-xash3d
-mkdir build
-cd build
-cmake -D64BIT=ON ..
-make -j4
+Compilamos como antes usando WAF:
 
-Esto nos va a generar dos archivos: hl64.so y client64.so
-Mandamos estos a ~/halai/valve/dlls/hl64.so y ~/halai/valve/cl_dlls/client64.so
-Editamos ~/halai/valve/gameinfo.txt, y dejamos la línea de gamedll_linux así:
-gamedll_linux           "dlls/hl64.so"
-(Le estamos diciendo que nuestra librería de juego es de 64bits y se llama hl64.so).
-Ahora nos metemos en ~/halai/valve y nos bajamos el archivo "delta.lst" de los servidores de VALVE. Ya casi estamos!:
-cd ~/halai/valve
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+./waf configure -T release --64bits
+
+./waf build
+./waf install --destdir=~/hl/
+
+Ahora copiamos el directorio "valve" de una instalación de Half Life a ~/hl/valve
+(Tienes los datos listos en el disco duro de backup, PERO si necesitas recuperar el directorio "valve" porque has perdido los datos,
+ busca "half life won archive.org" y baja eso, la versión WON de archive.org, y usa el directorio "valve" que trae).
+
+Ahora editamos ~/hl/valve/gameinfo.txt, y dejamos la línea de gamedll_linux así:
+gamedll_linux           "dlls/hl.so"
+(Se trata de quitar la librería de juego de 32bits y dejar la de 64bits que hemos compilado nosotros).
+
+Y ya deberíamos poder lanzar el juego con "./xash3d"
+Si nos falla algo y quisiéramos ver los logs a ver qué pasa, haríamos: "./xash3d -dev 5"
+
+NOTA ADICIONAL - SI HAS RIPEADO TÚ LOS DATOS DEL JUEGO NECESITAS UN ARCHIVO MÁS QUE NO VIENE EN EL CD:
+Nos metemos en ~/hl/valve y nos bajamos el archivo "delta.lst" de los servidores de VALVE. Ya casi estamos!:
+cd ~/hl/valve
 wget https://raw.githubusercontent.com/ValveSoftware/halflife/master/network/delta.lst
 
-Pues ya tenemos instaladas las librerías del juego. Ya debeíamos poder darle a NEW GAME.
-Nos vamos a ~/halai y ejecutamos nuestro script de lanzamiento, ./halai
-
-Y si quieres counterstrike 1.6, la librería de juego que tendrías que compilar e instalar en ~/halai/valve/dlls/ es esta:
-https://github.com/FWGS/cs16-client/releases
-
-SI QUIERES TENER MÚSICA DURANTE EL JUEGO, cuando ripees el CD con bchunk (porque vas a necesitar hacerlo para sacar el diretorio "valve" de la ISO) hazlo así:
+NOTA ADICIONAL - SI QUIERES TENER MÚSICA DURANTE EL JUEGO Y HAS RIPEADO TÚ LOS DATOS DESDE UNA IMÁGEN DE CD:
+Cuando ripees el CD con bchunk (porque vas a necesitar hacerlo para sacar el diretorio "valve" de la ISO) hazlo así:
 bchunk -w HALF_LIFE.BIN HALF_LIFE.BIN half
 Y ahora, los WAV que has obtenido los conviertes a mp3 con:
 for i in *.wav; do ffmpeg -i "$i" -ab 320k "${i%.*}.mp3"; done
-Los subes a ~/halai/valve/media, y editas cdaudio.txt para que las pistas se llamen como los mp3 que acabas de generar (half01.mp3, half02.mp3, etc).
+Los subes a ~/hl/valve/media, y editas cdaudio.txt para que las pistas se llamen como los mp3 que acabas de generar (half01.mp3, half02.mp3, etc).
 
-Y si quieres counterstrike 1.6, la librería de juego que tendrías que compilar e instalar en ~/halai/valve/dlls/ es esta:
+NOTA ADICIONAL - Si quieres counterstrike 1.6, la librería de juego que tendrías que compilar e instalar en ~/hl/valve/dlls/ es esta:
 https://github.com/FWGS/cs16-client/releases
 
 ************SABER QUÉ CFLAGS USAR*******************************************************************************************************
