@@ -10713,6 +10713,32 @@ sudo ninja install
 
 ######FIN BLOQUE OPCIONAL: COMPILAR DESDE LOS SOURCES######
 
+ISHAR NATIVO EN GNU/LINUX
+=========================
+
+Esta no la viste venir, ¿eh?
+Compilamos su repo: git clone --depth 1 https://github.com/maestun/alis.git
+
+Compilamos con:
+CFLAGS="-O2 -march=native -mtune=native" make -j10
+
+Creamos el directorio "ishar" y copiamos allí el ejecutable del engine:
+mkdir ~/ishar
+cp -R build/alis ~/ishar/
+
+Dentro de ~/ishar, creamos los directorios de los diferentes juegos:
+cd ~/ishar
+mkdir ishar1
+mkdir ishar2
+mkdir crystals
+
+Metemos los datos de los juegos (versiones DOS) en esos directorios, y para cada uno de ellos hacemos
+(ojo, hay que instalar el paquete "rename" antes):
+rename 'y/A-Z/a-z/' *
+
+Ejecutamos con:
+alis <directorio_datos>
+
 WARCRAFT II NATIVO EN LINUX
 ===========================
 
@@ -10724,7 +10750,6 @@ sudo apt-get install tolua++ libluajit-5.1-dev libbz2-dev --no-install-recommend
 Instalamos el stratagus:
 git clone --depth 1 https://github.com/Wargus/stratagus.git
 cd stratagus && mkdir b3 && cmake .. && make -j4 && sudo make install
-
 
 Instalamos el wargus:
 git clone --depth 1 https://github.com/Wargus/wargus.git
