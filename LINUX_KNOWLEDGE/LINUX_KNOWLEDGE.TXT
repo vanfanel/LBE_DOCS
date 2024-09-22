@@ -8982,10 +8982,10 @@ set_target_properties(OpenGL::OpenGL PROPERTIES
 BARONY, UN DUNGEON CRAWLER 3D OPENSOURCE PARA LINUX
 ====================================================
 
-Clonamos su repo o pillamos la última estable de:
-https://github.com/TurningWheel/Barony
+Nos bajamos la última estable de:
+https://github.com/TurningWheel/Barony/releases
 
-Instalamos una dependencia adicional que tiene:
+Instalamos dependencias adicionales:
 sudo apt-get install libphysfs-dev rapidjson-dev --no-install-recommends
 
 Editamos src/main.hpp y quitamos
@@ -9007,12 +9007,15 @@ por esto:
     endif(OpenGL_FOUND)
 
 Configuramos y compilamos con:
+
 mkdir b4
 cd b4
+
 EDITOR_ENABLED=0 cmake -DCMAKE_BUILD_TYPE=Release -Wno-dev \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DFMOD_ENABLED=OFF -DOPENAL_ENABLED=ON  ..
+
 make -j4
 
 CSBWin, UN PORT DEL DUNGEON MASTER DE ATARI ST PARA LINUX
@@ -9385,7 +9388,7 @@ Compilamos con:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-make -f Makefiles/Makefile.UNIX -j8
+make -f Makefiles/Makefile.UNIX -j10
 
 Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
