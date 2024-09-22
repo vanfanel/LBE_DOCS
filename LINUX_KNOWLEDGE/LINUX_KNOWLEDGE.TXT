@@ -10721,6 +10721,7 @@ Compilamos su repo: git clone --depth 1 https://github.com/maestun/alis.git
 Editamos src/sys/sdl2/sys_sdl2.c y allí:
 -Añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear") antes de la llamada de SDL_CreateRenderer()
 -Añadimos SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
+-Añadimos el flag SDL_WINDOW_FULLSCREEN_DESKTOP a la llamada de SDL_CreateWindow, y añadimos SDL_ShowCursor(false) antes de SDL_CreateWindow()
 -Cambiamos:
   SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255)
  por:
