@@ -4922,7 +4922,8 @@ CXXFLAGS="-march=native -mtune=native -O2" \
 
 Ahora copiamos el directorio "valve" de una instalación de Half Life a ~/hl/valve
 (Tienes los datos listos en el disco duro de backup, PERO si necesitas recuperar el directorio "valve" porque has perdido los datos,
- busca "half life won archive.org" y baja eso, la versión WON de archive.org, y usa el directorio "valve" que trae).
+ busca "half life won archive.org" y baja eso, la versión "Half Life WON v1.1.1.0 + working music" de archive.org,
+ y usa el directorio "valve" que trae esa versión, ya que va perfecta).
 
 Ahora editamos ~/hl/valve/gameinfo.txt, y dejamos la línea de gamedll_linux así:
 gamedll_linux           "dlls/hl.so"
