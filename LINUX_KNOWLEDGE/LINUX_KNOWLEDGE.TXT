@@ -10737,8 +10737,10 @@ ratio = (float)(ch->freq) / (float)(_audio_spec->freq);
 por:
 ratio = (float)(ch->freq) / (float)(_audio_spec->freq) / 2;
 
+Editamos Makefile y en la línea "CFLAGS =" quitamos el "-g" y ponemos: "-O2 -march=native -mtune=native" 
+
 Compilamos con:
-CFLAGS="-O2 -march=native -mtune=native" make -j10
+make -j10
 
 Creamos el directorio "ishar" y copiamos allí el ejecutable del engine:
 mkdir ~/ishar
