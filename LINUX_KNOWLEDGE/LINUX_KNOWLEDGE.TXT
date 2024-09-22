@@ -10731,6 +10731,11 @@ float ratio = 50000.0f / _audio_spec->freq;
 por:
 float ratio = 22050.0f / _audio_spec->freq;
 
+Editamos src/sys/sdl2/sys_sdl2.c, buscamos "acase eChannelTypeSample" y cambiamos:
+ratio = (float)(ch->freq) / (float)(_audio_spec->freq);
+por:
+ratio = (float)(ch->freq) / (float)(_audio_spec->freq) / 2;
+
 Compilamos con:
 CFLAGS="-O2 -march=native -mtune=native" make -j10
 
