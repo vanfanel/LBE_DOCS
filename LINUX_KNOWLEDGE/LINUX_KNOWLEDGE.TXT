@@ -9393,14 +9393,13 @@ make -f Makefiles/Makefile.UNIX -j10
 Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
 
-wlr-randr --output HDMI-A-1 --custom-mode 992x768@60
-./supermodel -fullscreen -res=992,768 -channels=2 daytona2.zip
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@57.524
+./supermodel -fullscreen -res=1920,1080 -channels=2 -true-hz daytona2.zip
+wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 
-En ese ejemplo estamos corriendo los juegos al doble de su resolución original.
-Si en lugar de eso le pasas tu resolución nativa (-res=1920,1080) no hace falta que pongas la resolución con wlr-randr.
-(Es necesario cambiar la resolución con wlr-randr si usas resoluciones "no standard" porque OpenGL no puede renderizar
-a una resolución y escalar a otra).  
+LO DEL MODO DE VÍDEO CUSTOM DE 57.524 ES PARA QUE COINCIDA EL REFRESCO DE PANTALLA CON LOS 57.524 Hz
+A LOS QUE ORIGINALMENTE CORRE LA PLACA MODEL3, Y QUE ESPECIFICAMOS QUE CORRA A ESOS Hz AL PASARLE "-true-hz".
+Si no queremos 57.524Hz, no le pasamos "-true-hz" y entonces la emulación corre a 60.0000 Hz. 
 
 PARA CONFIGURAR LOS CONTROLES: Ejecuta simplemente "supermodel -config-inputs", y puedes usar las flechas ARRIBA Y ABAJO del teclado
 para saltarte los controles que no te intererese configurar. Para configurar una tecla, dale a INTRO, y ya al botón o eje que sea.
