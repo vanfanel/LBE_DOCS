@@ -1808,9 +1808,9 @@ Editamos el juego con el hexedit. Nos vamos a la dirección $1F0. Pulsamos TAB p
 Salimos y salvamos con CTRL+X.
 Si el juego así alterado nos da un pantallazo rojo o negro, es que nos hemos cargado el checksum, pero sería muy raro. Hay programas para repararlo, anyway.
 
-Para juegos de Master System, buscamos $7FFF, que ya sé que está muy avanzada, pero es esa, y cambiamos el valor correspondiente a los primeros 4 bits de esa dirección , 
-si es PAL vendrá un 4, pones un 3 donde el 4 SIN CAMBIAR al texto con TAB, sino directamente en los valores en HEX, y ya.
-y ya tienes JAP.
+Para juegos de Master System, buscamos $7FFF, que ya sé que está muy avanzada, pero es esa,
+y cambiamos el valor correspondiente a los primeros 4 bits de esa dirección: 
+si es PAL vendrá un 4, pones un 3 donde el 4 SIN CAMBIAR al texto con TAB, sino directamente en los valores en HEX, y ya lo tienes en JAP.
 Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHeader#ProductCode7ffc25Bytes
 
 ******Emulando arcades con la frecuencia de vídeo correcta en RetroArch sin VRR*****
@@ -10721,11 +10721,6 @@ Compilamos su repo: git clone --depth 1 https://github.com/maestun/alis.git
 Editamos src/sys/sdl2/sys_sdl2.c y allí:
 -Añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear") antes de la llamada de SDL_CreateRenderer()
 -Añadimos SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
--Añadimos el flag SDL_WINDOW_FULLSCREEN_DESKTOP a la llamada de SDL_CreateWindow, y añadimos SDL_ShowCursor(false) antes de SDL_CreateWindow()
--Cambiamos:
-  SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255)
- por:
-  SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0);
 
 Editamos src/audio/music_v2.c y cambiamos
 float ratio = 50000.0f / _audio_spec->freq;
@@ -10757,7 +10752,8 @@ Metemos los datos de los juegos (versiones DOS) en esos directorios, y para cada
 rename 'y/A-Z/a-z/' *
 
 Ejecutamos con:
-alis <directorio_datos>
+alis -f <directorio_datos>
+(El "-f" es para pantalla completa)
 
 WARCRAFT II NATIVO EN LINUX
 ===========================
