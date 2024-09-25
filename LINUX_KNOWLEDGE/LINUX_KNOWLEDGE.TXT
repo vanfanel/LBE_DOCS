@@ -1271,13 +1271,16 @@ con el contenido: run_ahead_enabled = "false"
 RECUERDA: Para que el framerate sea suave en los juegos que van a 30FPS, debes activar "Full Framebuffe Emulation"
 en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da igual.
 
-RECUERDA: Para quitar los crujidos/dropouts de audio durante la carga del Soul Calibur, activa
-"Emulation Hacks -> GD-ROM Fast Loading".
+RECUERDA: NO ACTIVES "Emulation Hacks -> GD-ROM Fast Loading", porque aunque evita los crujidos de la intro del Soul Calibur,
+introduce microcortes en el audio de la intro/demo del DOA2. No es solución. No lo uses.
 
 Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 Y ya podemos lanzar juegos en GDI, CDI o CHD.
 
-Este es un core con audio de 44100Hz, así que configura RetroArch con esta frecuencia y sálvalo en Overrides->Save Core Overrides 
+RECUERDA: El audio de este core sólo va bien con los valores por defecto, es decir, 48000Hz y 64ms,
+configura así el audio y sálvalo en "Overrides->Save Core Overrides".
+En general, para cores 3D (es decir, que usen la GPU para el rendering) es así la cosa.
+Puedes hacer todas las pruebas que quieras, pero al final esa es la conclusión. 
 
 (NO FUNCIONA) ARREGLAR LOS CORTES DE AUDIO DEL CORE ENTRE ESCENAS (COMO CUANDO PULSAS START EN EL SOUL CALIBUR):
 https://github.com/flyinghead/flycast/issues/1211
