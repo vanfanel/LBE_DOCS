@@ -1199,7 +1199,7 @@ Configuramos y compilamos:
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DIMGUI=OFF \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -DEGL_NO_X11"
 
