@@ -1213,8 +1213,10 @@ Creamos el directorio: mkdir ~/doom3
 --Metemos los archivos .pk4 del Doom 3 en ~/doom3/base/ (NO VALE la BFG Edition, que además está censurada así que evítala).
   (Tienes un ZIP con los datos del Doom 3 y todas sus extensiones en el disco duro de backup).
 
-Lanzamos con:
+Lanzamos así, ya que el juego corre internamenre a 62.5 FPS:
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@62.5000
 ./dhewm3 +set fs_basepath .
+wlr-randr --output HDMI-A-1 --mode 1920x1080@60.0000
 
 La primera vez que lo lancemos, nos saldrá en ventana. Salimos inmediatamente y editamos:
 vim ~/.config/dhewm3/base/dhewm.cfg
