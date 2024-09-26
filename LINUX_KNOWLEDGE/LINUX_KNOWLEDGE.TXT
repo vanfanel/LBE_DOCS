@@ -1187,6 +1187,34 @@ IWAD_DIRECTORY="~/doom" IWAD_PREFIX="DOOM" make -j8
 Donde IWAD_DIRECTORY es el directorio donde guardamos nuestros .WAD (que deben tener nombres todo en mayúsculas)
 e IWAD_PREFIX es el identificador de juego: DOOM, DOOM2, DOOMU, etc.
 
+******Doom 3 en GNU/Linux****************************************************************************************************
+
+Bajamos los últimos sources estables de: https://github.com/dhewm/dhewm3/releases
+
+Descomprimimos y entramos en el directorio "neo", y editamos "sys/linux/main.cpp", buscamos "root"
+y eliminamos el check que evita que funcione al ejecutarlo como root.
+
+Configuramos y compilamos:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -DEGL_NO_X11"
+
+make -j10
+
+Creamos el directorio: mkdir ~/doom3
+--Metemos ahí el ejecutable:
+  cp dhewm3 ~/doom3/
+--Copiamos el directorio "base" que viene con los sources:
+  cp -R base ~/doom3/
+--Metemos ahí los datos del Doom 3 (NO VALE la BFG Edition, que además está censurada así que evítala).
+
+Lanzamos con:
+./dhewm3 +set fs_basepath . +set r_fullscreen 1
+
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
 Clonamos duckstation:
@@ -1201,7 +1229,7 @@ sudo apt-get install extra-cmake-modules --no-install-recommends
 
 Configuramos con:
 
-cmake .. \
+doom cmake .. \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -DEGL_NO_X11" \
 -DCMAKE_BUILD_TYPE=Release -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF -DUSE_X11=OFF -DUSE_DRMKMS=ON \
