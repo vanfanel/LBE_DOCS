@@ -1206,8 +1206,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DIMGUI=OFF \
 make -j10
 
 Creamos el directorio: mkdir ~/doom3
---Metemos ahí el ejecutable:
-  cp dhewm3 ~/doom3/
+--Metemos ahí el ejecutable y unas librerías que se nos acaban de generar:
+  cp dhewm3 base.so d3xp.so ~/doom3/
 --Copiamos el directorio "base" que viene con los sources:
   cp -R base ~/doom3/
 --Metemos los archivos .pk4 del Doom 3 en ~/doom3/base/ (NO VALE la BFG Edition, que además está censurada así que evítala).
