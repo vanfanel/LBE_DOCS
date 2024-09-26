@@ -1210,10 +1210,10 @@ Creamos el directorio: mkdir ~/doom3
   cp dhewm3 ~/doom3/
 --Copiamos el directorio "base" que viene con los sources:
   cp -R base ~/doom3/
---Metemos ahí los datos del Doom 3 (NO VALE la BFG Edition, que además está censurada así que evítala).
+--Metemos los archivos .pk4 del Doom 3 en ~/doom3/base/ (NO VALE la BFG Edition, que además está censurada así que evítala).
 
 Lanzamos con:
-./dhewm3 +set fs_basepath . +set r_fullscreen 1
+./dhewm3 +set fs_basepath .
 
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
