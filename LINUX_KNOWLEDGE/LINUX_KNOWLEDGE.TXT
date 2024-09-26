@@ -4935,6 +4935,8 @@ gamedll_linux           "dlls/hl.so"
 Y ya deberíamos poder lanzar el juego con "./xash3d"
 Si nos falla algo y quisiéramos ver los logs a ver qué pasa, haríamos: "./xash3d -dev 5"
 
+PARA QUE NO HAGA AUTOSAVES, editamos valve/config.cfg y ponemos "sv_autosave" a "0".
+
 NOTA ADICIONAL - SI HAS RIPEADO TÚ LOS DATOS DEL JUEGO NECESITAS UN ARCHIVO MÁS QUE NO VIENE EN EL CD:
 Nos metemos en ~/hl/valve y nos bajamos el archivo "delta.lst" de los servidores de VALVE. Ya casi estamos!:
 cd ~/hl/valve
