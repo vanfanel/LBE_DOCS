@@ -840,7 +840,7 @@ General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop)
 Processor Type and Features->Timer Frequency->300Hz
 
 -Compilamos el kernel y los módulos:
-make -j8
+make -j10
 
 -Instalamos los módulos (para desinstalarlos, simplemente borramos el directorio "/lib/modules/6.x.x"):
 make INSTALL_MOD_STRIP=1 modules_install
