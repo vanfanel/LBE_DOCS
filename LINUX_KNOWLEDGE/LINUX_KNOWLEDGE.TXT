@@ -1211,9 +1211,15 @@ Creamos el directorio: mkdir ~/doom3
 --Copiamos el directorio "base" que viene con los sources:
   cp -R base ~/doom3/
 --Metemos los archivos .pk4 del Doom 3 en ~/doom3/base/ (NO VALE la BFG Edition, que además está censurada así que evítala).
+  (Tienes un ZIP con los datos del Doom 3 y todas sus extensiones en el disco duro de backup).
 
 Lanzamos con:
 ./dhewm3 +set fs_basepath .
+
+La primera vez que lo lancemos, nos saldrá en ventana. Salimos inmediatamente y editamos:
+vim ~/.config/dhewm3/base/dhewm.cfg
+Allí, ponemos a "1" los valores "r_fullscreenDesktop" y "r_fullscreen". Cuando volvamos a entrar, ya se verá a pantalla completa.
+Podemos activar el VSYNC en las opciones avanzadas de vídeo.
 
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
