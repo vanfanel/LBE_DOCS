@@ -4869,6 +4869,26 @@ Miramos cuál es la última versión etiquetada en: https://github.com/crawl/cra
 Clonamos la última versión etiquetada y sus submódulos (en este ejemplo estamos clonando la versión 0.32.1):
 git clone --depth 1 -b 0.32.1 --recurse-submodules -j8 https://github.com/crawl/crawl.git
 
+Entramos en crawl-ref/source para continuar desde allí.
+
+    ####BLOQUE COMPILAR CONTRA OPENGL 1.x####
+
+Editamos glwrapper-ogl.cc y allí:
+--Comentamos la línea:
+#   include <GL/glu.h>
+--Buscamos "if (mip_opt == MIPMAP_CREATE)" y comentamos todo lo de ese bloque, incluido el "if" que acabamos de buscar.
+  (Se trata de comentar la llamada a gluBuild2DMipmaps() que hay en ese bloque, que es lo que nos estorba para compilar,
+   pero si quitamos todo el bloque además se ve la pantalla que nos avisa al principio de que ya se ha acabado de cargar el juego).
+
+Editamos el Makefile, buscamos "LIBS += -lGL -lGLU" y lo sustituimos por "LIBS += -L/usr/local/lib64 -lOpenGL"
+
+Compilamos con:
+make -j10 TILES=y CFOPTIMIZE="-march=native -mtune=native -O2"
+
+	####FIN BLOQUE COMPILAR CONTRA OPENGL 1.x####
+
+	####BLOQUE COMPILAR CONTRA GLES1####
+
 Editamos glwrapper-ogl.cc, y allí:
 --Cambiamos:
 #   include <SDL_gles.h>
@@ -4883,10 +4903,9 @@ Editamos el Makefile y añadimos:
 LIBS += -L/usr/local/lib64 -lGLESv1_CM  
 
 Compilamos con:
-
-cd crawl-ref/source
-
 make -j10 GLES=y TILES=y CFOPTIMIZE="-march=native -mtune=native -O2"
+
+	####FIN BLOQUE COMPILAR CONTRA GLES1####
 
 Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
 Ahora copiamos los directorios "dat" y "settings" que viene dentro de "sources" a ~/crawl
