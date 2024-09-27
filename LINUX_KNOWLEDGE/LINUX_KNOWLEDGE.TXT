@@ -1220,6 +1220,7 @@ Ahora editamos el archivo ~/.config/dhewm3/base/dhewm.cfg
 Allí, ponemos a "1" los valores "r_fullscreenDesktop", "r_fullscreen", "r_swapInterval", y "r_fixedTic".
 El valor "r_fixedTic" es para que el juego no vaya a 62.5 Hz internamente, lo que nos obligaría a poner un modo de vídeo de 62.5Hz,
 y "r_swapInterval" activa el VSYNC.
+Opcionalmente, podemos poner a 1 también el valor "r_finish" para disminuir el input lag.
 
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
