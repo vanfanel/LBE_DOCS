@@ -4860,6 +4860,24 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-march=native -mtune=native" .
 
 Se ejecuta igual que el del otro repo.
 
+************DUNGEON CRAWL STONE SOUP en GNU/Linux******************************************************************************************
+
+Instalamos dependencias previas:
+apt-get install libfreetype6-dev libpng-dev fonts-dejavu-core advancecomp pngcrush
+
+Miramos cuál es la última versión etiquetada en: https://github.com/crawl/crawl/releases
+Clonamos la última versión etiquetada y sus submódulos (en este ejemplo estamos clonando la versión 0.32.1):
+git clone --depth 1 -b 0.32.1 --recurse-submodules -j8 https://github.com/crawl/crawl.git
+
+Compilamos con:
+
+cd crawl-ref/source
+
+make -j10 TILES=y GLES=y CFOPTIMIZE="-march=native -mtune=native -O2"
+
+Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
+Ahora copiamos el directorio "dat" que viene dentro de "sources" a ~/crawl
+
 ************AQUARIA en GNU/Linux***********************************************************************************************************
 
 Dependencias previas: Necesita OpenAL y SDL2 en el sistema, como muchos otros sourceports.
@@ -6250,11 +6268,14 @@ Editamos src/sdl2/audio.c y:
 -Cambiamos el 4096 en Mix_OpenAudio() por 1024.
 
 Compilamos con:
+
 mkdir b4
 cd b4
+
 cmake -DUSE_SDL2=ON -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
+
 make -j4
 
 Copiamos el directorio data que viene con los sources al mismo directorio donde metamos el ejecutable.
@@ -8933,23 +8954,6 @@ Eso es para que el jugador se llame Manuel, y que se use el numpad para jugar co
 porque Nethack necesita que nos movamos en diagonal (o se gasta comida innecesariamente y no se puede ganar).
 
 Para salir del juego, pulsa #, escribe quit, y dale al intro.
-
-DUNGEON CRAWL STONE EN GNU/LINUX
-================================
-
-Instalamos una dependencias previas (se puede compilar contra LUA o contra LUA-JIT, que es más rápido en la Pi):
-sudo apt-get install libluajit-5.1-dev python3-yaml
-
-Clonamos su repo (no se puede compilar desde release por el tema de las dependencias incluidas que lleva como submódulos):
-git clone --depth 1 --recurse-submodules -j8 https://github.com/crawl/crawl.git
-
-Descomprimimos y nos vamos al directorio crawl-ref/source, y compilamos con:
-CFLAGS="-march=native -mtune=native -O2" \
-CXXFLAGS="-march=native -mtune=native -O2" \
-make -j4 TILES=y LUAJIT=y
-
-Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
-Ahora copiamos el directorio "dat" que viene dentro de "sources" a ~/crawl
 
 ARREGLAR JUEGOS QUE SE COMPILAN CON CMAKE Y NO ENCUENTRAN OPENGL (GLVND)
 ========================================================================
