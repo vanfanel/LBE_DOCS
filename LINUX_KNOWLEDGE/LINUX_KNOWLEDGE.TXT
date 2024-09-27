@@ -4914,8 +4914,20 @@ Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
 Ahora copiamos los directorios "dat" y "settings" que viene dentro de "sources" a ~/crawl
 (OJO!! Si al lanzar el juego te dice que te falta algún asset, bájate la versión de Windows y usa los directorios que trae esa versión,
  que viene todo seguro).
-Para que se vea a pantalla completa, editamos "settings/init.txt" y añadimos:
+
+Editamos "settings/init.txt" y añadimos estas opciones:
+
+#Para que se vea a pantalla completa, 
 tile_full_screen = true
+#Para que el juego se vea más grande:
+game_scale=2
+#Para tener filtro bilineal:
+tile_filter_scaling = true
+#Para que la fuente se vea más pequeña para ese tamaño de juego:
+tile_font_stat_size=10
+tile_font_msg_size=10
+#Para que se vean más grandes los gráficos (el valor por defecto es 32):
+tile_cell_pixels = 64
 
 ************AQUARIA en GNU/Linux***********************************************************************************************************
 
