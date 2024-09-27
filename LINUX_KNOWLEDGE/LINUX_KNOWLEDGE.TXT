@@ -4890,6 +4890,8 @@ make -j10 GLES=y TILES=y CFOPTIMIZE="-march=native -mtune=native -O2"
 
 Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
 Ahora copiamos los directorios "dat" y "settings" que viene dentro de "sources" a ~/crawl
+(OJO!! Si al lanzar el juego te dice que te falta algún asset, bájate la versión de Windows y usa los directorios que trae esa versión,
+ que viene todo seguro).
 Para que se vea a pantalla completa, editamos "settings/init.txt" y añadimos:
 tile_full_screen = true
 
