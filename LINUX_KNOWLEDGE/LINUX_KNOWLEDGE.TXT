@@ -4869,11 +4869,24 @@ Miramos cuál es la última versión etiquetada en: https://github.com/crawl/cra
 Clonamos la última versión etiquetada y sus submódulos (en este ejemplo estamos clonando la versión 0.32.1):
 git clone --depth 1 -b 0.32.1 --recurse-submodules -j8 https://github.com/crawl/crawl.git
 
+Editamos glwrapper-ogl.cc, y allí:
+--Cambiamos:
+#   include <SDL_gles.h>
+Por:
+#   include <SDL_opengles.h>
+--Cambiamos:
+case GL_INVALID_FRAMEBUFFER_OPERATION:
+Por:
+case GL_INVALID_FRAMEBUFFER_OPERATION_OES:
+
+Editamos el Makefile y añadimos:
+LIBS += -L/usr/local/lib64 -lGLESv1_CM  
+
 Compilamos con:
 
 cd crawl-ref/source
 
-make -j10 TILES=y GLES=y CFOPTIMIZE="-march=native -mtune=native -O2"
+make -j10 GLES=y TILES=y CFOPTIMIZE="-march=native -mtune=native -O2"
 
 Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
 Ahora copiamos el directorio "dat" que viene dentro de "sources" a ~/crawl
