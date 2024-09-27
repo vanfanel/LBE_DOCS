@@ -4880,7 +4880,10 @@ Editamos glwrapper-ogl.cc y allí:
   (Se trata de comentar la llamada a gluBuild2DMipmaps() que hay en ese bloque, que es lo que nos estorba para compilar,
    pero si quitamos todo el bloque además se ve la pantalla que nos avisa al principio de que ya se ha acabado de cargar el juego).
 
-Editamos el Makefile, buscamos "LIBS += -lGL -lGLU" y lo sustituimos por "LIBS += -L/usr/local/lib64 -lOpenGL"
+Editamos el Makefile, buscamos:
+"LIBS += -lGL -lGLU"
+y lo sustituimos por:
+"LIBS += -L/usr/local/lib64 -lOpenGL"
 
 Compilamos con:
 make -j10 TILES=y CFOPTIMIZE="-march=native -mtune=native -O2"
