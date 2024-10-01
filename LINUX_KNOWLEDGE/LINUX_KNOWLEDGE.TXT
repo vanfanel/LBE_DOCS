@@ -7991,10 +7991,15 @@ COMPILAR EL CORE MUPEN64 DE LIBRETRO
 Clonamos su repo:
 git clone --depth 1 https://github.com/libretro/mupen64plus-libretro-nx.git
 
-Compilamos con:
+--Si hemos compilado RetroArch contra OpenGL de escritorio que es como lo hacemos ahora, compilamos con:
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-FORCE_GLES3=1 HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1  make -j10
+HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1 make -j10
+
+--Si hemos compilado RetroArch contra OpenGL_ES, compilamos con:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+FORCE_GLES3=1 HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1 make -j10
 
 Para este core, desactiva el RunAhead y guarda eso como un override, o si no se producen fugas de memoria al salir.
 
