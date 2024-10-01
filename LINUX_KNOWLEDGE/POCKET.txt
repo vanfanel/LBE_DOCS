@@ -52,4 +52,5 @@ SAVES/
 OJO CON LOS JUEGOS: Los juegos tienen que estar en LNX, PERO no son los de NO-INTRO, necesitas que sean .LNX CON CABECERA:
 se puede saber si valen editándolos con un editor de texto y mirando que empiezen por "LYNX", así literalmente en texto.
 Si no tienen la cadena "LYNX" al principio, no valen y nos dará ERROR.
-En el disco de backup tienes todos los juegos comerciales de Lynx en el formato adecuado para ElCheapoSD. 
+En el disco de backup tienes todos los juegos comerciales de Lynx en el formato adecuado para ElCheapoSD.
+Si necesitas convertir un juego al formato correcto, usa https://github.com/42Bastian/new_bll
