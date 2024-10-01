@@ -7526,18 +7526,13 @@ El otro método parecido a Runahead, llamado "Run Preemptive Frames", causa pitc
 (No hace falta pasar ningunos parámetros al kernel para usar 32ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
 LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
-SHADERS: En general para todos los cores, usa el shader ZFAST-CRT-HDMASK.
-Para consolas podrías usar el ZFAST-CRT-COMPOSITE con la curvatura a 0.0, MASK TYPE a 1.00,
-el FLICKER a 1.00 (NO necesita editar el código para eliminar los cálculos de la curvatura
-ya que si la desactivas no los hace, a diferencia del ZFAST original) PERO activa INTEGER SCALING o forma patrones.
-(Otra alternativa sería Fakelottes con el "Monitor Gamma" bajado a 1.95, PERO se ve mal en el texto del DOS del core DOSBOX-CORE).
-Para el core de SEGA, debido al tema del dithering y tal, yenemos dos opciones:
+Para el core de SEGA, debido al tema del dithering y tal, tenemos varias opciones:
 
-1) El shader ZFAST_CRT_COMPOSITE con los parámetros: CURVATURE a 0, CONVERGENCE X-AXIS al máximo,
+1) El shader CRT-LOTTES-FAST con el parámetro SHARPNESS puesto al mínimo (que es 1) y CRT GAMMA puesto 1 3.00.
+2) El shader ZFAST_CRT_COMPOSITE con los parámetros: CURVATURE a 0, CONVERGENCE X-AXIS al máximo,
    SCANLINE LOW a 0.10 y SCANLINE HIGH a 0.05, MASK EFFECT AMOUNT a 0.50, SATURATION a 1.10, y FLICKERING a 5.00. 
    Para evitar patrones de las scanlines, activa también en Settings->Video->Scaling el INTEGER SCALE y el INTEGER SCALE OVERSCALE,
    y sálvalo como un override pero sólo para MegaDrive (o sea, usando "Save Content Directory Override").
-2) El shader CRT-LOTTES-FAST con el parámetro SHARPNESS puesto al mínimo (que es 1) y CRT GAMMA puesto 1 3.00.
 3) Una combinación de GDAPT (está entre los shaders "Dithering") y FAKELOTTES.
    Para ello, primero pon el número de pasadas a 2, en la pasada 1 carga el shader GDAPT PASS 0, y en la pasada 2 carga el FAKELOTTES.
    Para que las sombras en el Comix Zone no se vean tramadas sobre algunos colores, hay que ajustar algún parámetro.

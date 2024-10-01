@@ -734,14 +734,16 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 		Configuración óptima de RetroArch (En Wayland)
 
-VIDEO: Driver VULKAN, con VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL en AUTO, porque si lo tienes a 1
-es cuando el vsync rate sale a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz),
-y con VIDEO->SYNCHRONIZATION->MAX SWAPCHAIN IMAGES a 2.
-ALTERNATIVA: Driver GLCORE (necesario para que funcione HARD SYNC), VSYNC ON, HARD SYNC ON, HARD SYNC FRAMES 0
-AUDIO: driver ALSATHREAD, 44100 Hz, 36ms, resampler quality normal
+VIDEO: Driver VULKAN, con:
+--VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL en 1 como viene por defecto
+Si el vsync rate sale a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz), ponlo en AUTO.
+--VIDEO->SYNCHRONIZATION->MAX SWAPCHAIN IMAGES a 3 (lo que mete lag NO es el número de buffers, sino el VSYNC activado).
+--ALTERNATIVA (NO USAR PORQUE TIENE MÁS LAG): Driver GLCORE (es necesario que sea GLCORE y no GL para que funcione HARD SYNC),
+con VSYNC ON, HARD SYNC ON, HARD SYNC FRAMES 0
+AUDIO: driver ALSATHREAD, 44100 Hz, 32ms (kernel a 300Hz necesario), resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
-SHADER: usamos FAKELOTTES, que tiene una mask increíble.
+SHADER: usamos LOTTES-FAST en general.
 
 LATENCY: RunAhead con 1 frame y "second instance" activado.
 
