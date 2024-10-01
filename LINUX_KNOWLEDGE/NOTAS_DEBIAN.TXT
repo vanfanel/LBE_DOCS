@@ -719,9 +719,10 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (NO le pases --disable-builtinglslang, porque entonces fallará la compilación de shaders al cargar un segundo juego sin salir de RetroArch)
 
-(Si quisieras OpenGL de escritorio, en lugar de "--enable-opengles --enable-opengles3" pásale "--enable-opengl --disable-glx",
-pero NO es necesario compilar con OpenGL de escritorio porque el driver GLCORE (GL3, GLES3) soporta HARD SYNC,
-no necesitas usar el driver GL (GLES2, GL2) que sólo soporta HARD SYNC con OpenGL de escritorio y no con GLES2).
+(Si quisieras OpenGL_ES, en lugar de "--enable-opengl --disable-glx" pásale "--enable-opengles --enable-opengles3",
+en realidad OpenGL de escritorio no es imprescindible porque el driver GLCORE (GL3, GLES3) soporta HARD SYNC,
+PERO es más compatible por defecto con cores que tiran de OpenGL en vez de GLES a no ser que los compiles contra GLES,
+como es el caso del core de N64).
 
 (NO le pasamos "--disable-networking" ni "--disable-libretrodb" porque si lo hacemos no tendremos el "Online Updater"
 que es lo que nos permite que se descarguen automáticamente los thumbnails para las playlist. Hacerlo a mano es horroroso.)
