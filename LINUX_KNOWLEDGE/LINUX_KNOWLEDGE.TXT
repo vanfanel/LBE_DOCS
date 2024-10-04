@@ -1165,7 +1165,9 @@ SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y
 
 ******Doom 64 EX en GNU/Linux************************************************************************************************
 
-Clonamos su repo: git clone --depth 1 https://github.com/svkaiser/Doom64EX.git
+Clonamos su repo:
+git clone --depth 1 https://github.com/svkaiser/Doom64EX.git
+git submodule update --init --recursive
 
 Editamos CMakeLists.txt, buscamos:
   find_package(OpenGL REQUIRED)
@@ -10844,19 +10846,10 @@ Esta no la viste venir, ¿eh?
 Compilamos su repo: git clone --depth 1 https://github.com/maestun/alis.git
 
 Editamos src/sys/sdl2/sys_sdl2.c y allí:
--Añadimos "SDL_ShowCursor(SDL_DISABLE);" antes de la llamada a SDL_CreateWindow()
--Añadimos "SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");" antes de la llamada de SDL_CreateRenderer()
+-Añadimos antes de la llamada a SDL_CreateWindow():
+SDL_ShowCursor(SDL_DISABLE); 
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 -Añadimos el flag SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
-
-Editamos src/audio/music_v2.c y cambiamos
-float ratio = 50000.0f / _audio_spec->freq;
-por:
-float ratio = 22050.0f / _audio_spec->freq;
-
-Editamos src/sys/sdl2/sys_sdl2.c, buscamos "case eChannelTypeSample" y cambiamos:
-ratio = (float)(ch->freq) / (float)(_audio_spec->freq);
-por:
-ratio = (float)(ch->freq) / (float)(_audio_spec->freq) / 2;
 
 Editamos Makefile y en la línea "CFLAGS =" quitamos el "-g" y ponemos: "-O2 -march=native -mtune=native" 
 
