@@ -1163,6 +1163,32 @@ NOTAS ADICIONALES para el core:
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
+******Doom 64 EX en GNU/Linux************************************************************************************************
+
+Clonamos su repo: git clone --depth 1 https://github.com/svkaiser/Doom64EX.git
+
+Editamos CMakeLists.txt, buscamos:
+  find_package(OpenGL REQUIRED)
+Y lo dejamos como:
+  set(OPENGL_USE_OPENGL ON)
+  find_package(OpenGL REQUIRED)
+
+Compilamos con:
+
+mkdir b4
+cd b4
+
+cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_SYSTEM_FLUIDSYNTH=ON .. \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+
+Creamos el directorio ~/doom64 y allí metemos:
+-El ejecutable "doom64ex"
+-El fichero "doom64ex.pk3"
+-Los ficheros "doom64.wad" y "doomsnd.sf2", que se obtienen haciendo:
+ doom64ex -wadgen PATH_TO_ROM
+ (Los tienes en el disco de backup, pero por si lo tienes que volver a hacer, la ROM necesaria es la USA que NO sea la Rev1.)
+
 ******Crosscompilar el 64doom de N64-****************************************************************************************
 
 --Nos bajamos el último .deb de la toolchain de N64 para x86_64 (compilador, librerías, etc) de aquí: https://github.com/DragonMinded/libdragon/releases/tag/toolchain-continuous-prerelease
@@ -9029,7 +9055,7 @@ SI AUN ASÍ NO FUNCIONA, haz esto:
 set(OPENGL_USE_OPENGL ON)
 find_package(OpenGL REQUIRED)
 ...para que así busque GLVND en primer lugar en vez de GLX.
-W
+
 NOTAS SOBRE CÓMO USAR CMAKE PARA BUSCAR OPENGL (GLVND)
 ======================================================
 
