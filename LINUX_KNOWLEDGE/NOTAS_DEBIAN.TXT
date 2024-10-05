@@ -843,6 +843,9 @@ General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop)
 Processor Type and Features->Timer Frequency->300Hz
 ...Y también activamos como módulo:
 Device Drivers->Input device support->Joysticks/Gamepads->Xbox gamepad support
+...Y nos aseguramos de tener activado esto para WINE si queremos juegos de 32bits usando WOW64:
+Binary Emulations->IA32 Emulation
+(NO HACE FALTA que actives el resto de opciones de "Binary Emulations", sólo esa, las demás NO aportan NADA).
 
 -Compilamos el kernel y los módulos:
 make -j10
