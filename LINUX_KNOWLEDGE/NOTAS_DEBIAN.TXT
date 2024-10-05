@@ -833,14 +833,16 @@ cp /boot/config-$(uname -r) .config
 
 -Entramos en la configuración y ajustamos lo que queramos:
 ---Desativamos las mitigations
----Para evitar depender de la herramienta pahole, deshabilitamos:
+---Para evitar depender de la herramienta "pahole", deshabilitamos:
 Kernel hacking  --->
     Compile-time checks and compiler options  --->
         [*] Provide BPF Type Format (BTF) debug info
 
---Otras cosillas que podemos mejorar para juegos:
+--MUY IMPORTANTE PARA JUEGOS:
 General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop)
 Processor Type and Features->Timer Frequency->300Hz
+...Y también activamos como módulo:
+Device Drivers->Input device support->Joysticks/Gamepads->Xbox gamepad support
 
 -Compilamos el kernel y los módulos:
 make -j10
