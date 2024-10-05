@@ -8968,33 +8968,35 @@ en la función openDLL(). Así que si no arranca, fíjate que tu libSDL2.so (que
 a una librería que realmente exista en el sistema (a veces hay lio con esto porque en Lubuntu desinstalas malamente
 las SDL2 que vienen e instalas las tuyas para desarrollo, etc).
 
-GZDOOM en la Raspberry Pi 5
-===========================
+GZDOOM en GNU/Linux
+===================
 
 -Primero, necesita OpenAL. Tienes las instrucciones de instalación en este documento.
 
 -Segundo, necesita ZMUSIC. Vamos con ZMUSIC pues:
-Instala libmpg123-dev y libvorbis-dev.
-Descarla los últimos sources estables de:
-https://github.com/coelckers/ZMusic/releases
-
-Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
+--Instala libmpg123-dev y libvorbis-dev.
+--Descarga los últimos sources estables de:
+https://github.com/ZDoom/ZMusic/tags
+--Compilamos con:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 make -j4
-sudo make install
 
-Vamos a por GZDoom en sí.
-Instalamos dependencias previas: apt-get install libvpx-dev libwebp-dev --no-install-recommends
+-Tercero, más dependencias previas: apt-get install libvpx-dev libwebp-dev --no-install-recommends
+
+
+
+	VAMOS A POR GZDOOM EN SÍ
+
 
 git clone --depth 1 https://github.com/ZDoom/gzdoom.git
 
 Configuramos con:
 
-cmake -DCMAKE_C_FLAGS="-march=native -mtune=native" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_BUILD_TYPE=Release -DVULKAN_USE_XLIB=OFF -DVULKAN_USE_WAYLAND=ON ..
+cmake .. -DCMAKE_BUILD_TYPE=Release -DVULKAN_USE_XLIB=OFF -DVULKAN_USE_WAYLAND=ON \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 Tenemos que copiar, al directorio de ~/doom:
 gzdoom
@@ -9021,6 +9023,43 @@ LOS SHADERS NO VAN EN LA PI5 PORQUE LE FALTA UNA EXTENSIÓN DE VULKAN Y SÓLO VA
 Y LOS SHADERS SÓLO VAN EN MODO OPENGL Y EN MODO VULKAN.
 Le falta la extensión "multiDrawIndirect" que es comprobada en la función "VulkanDeviceBuilder::FindDevices", aquí:
 https://github.com/ZDoom/gzdoom/blob/f369cd7f6d8c4e6dc339e51d645f410c8fc897e2/libraries/ZVulkan/src/vulkanbuilders.cpp#L1833
+
+VKDOOOM EN GNU/LINUX
+====================
+
+-Primero, necesita OpenAL. Tienes las instrucciones de instalación en este documento.
+
+-Segundo, necesita ZMUSIC. Vamos con ZMUSIC pues:
+--Instala libmpg123-dev y libvorbis-dev.
+--Descarga los últimos sources estables de:
+https://github.com/ZDoom/ZMusic/tags
+--Compilamos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+make -j4
+
+-Tercero, otras dependencias:
+apt-get install libvpx-dev
+
+	VAMOS A POR VKDOOM EN SÍ
+
+Clonamos su repo: git clone --depth 1 https://github.com/dpjudas/VkDoom.git
+
+Compilamos con:
+
+mkdir b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DVULKAN_USE_XLIB=OFF -DVULKAN_USE_WAYLAND=ON \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+
+Creamos el directorio ~/vkdoom, y allí copiamos el ejecutable vkdoom y los .pk3 que se nos generan al compilar:
+mkdir ~/vkdoom
+cp vkdoom *.pk3 ~/vkdoom/
+
+Para la música, no te compliques: usa los WAD de música que usas con el Crispy o con el ZDoom así:
+./vkdoom -iwad doom.wad -file doom1music.wad
 
 NETHACK EN GNU/LINUX
 ====================
