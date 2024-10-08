@@ -1250,6 +1250,8 @@ El valor "r_fixedTic" es para que el juego no vaya a 62.5 Hz internamente, lo qu
 y "r_swapInterval" activa el VSYNC.
 Opcionalmente, podemos poner a 1 también el valor "r_finish" para disminuir el input lag.
 
+PARA PANTALLA PANORÁMICA EN LOS MENÚS, usa este mod: https://www.moddb.com/mods/doom-3-redux
+
 ******Compilar DUCKSTATION versión NOGUI (directo a KMSDRM!)*****************************************************************
 
 Clonamos duckstation:
