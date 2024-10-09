@@ -7530,13 +7530,16 @@ y para volver, obviamente, start.
 
 **********Configuración óptima de RetroArch (En Wayland)************
 
+ANTES DE NADA, PARA TENER RETROARCH DE BAJA LATENCIA, debemos compilar el kernel con 300 HZ y LOW-LATENCY DESKTOP
+(tienes instrucciones en este mismo fichero).
+Eso es así porque, si no tenemos VRR, tenemos que poner un modo de 120Hz (100Hz para contenido PAL) para evitar tener "vsync lag",
+acompañado de "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" puesto a "AUTO" y los 120Hz sólo son estables con un kernel así.
+
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
 VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado.
 (IMPORTANTE: en Vulkan NO hay ninguna diferencia poniendo MAX_SWAPCHAIN a 2, según el test del ratón).
 (Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato).
-(Lo de poner 120Hz y VSYNC SWAP INTERVAL a 2 nos da el mismo input lag que MAX_SWAPCHAIN a 2, pero también tiene los mismos problemas:
-chasquidos en la intro del Rusty, juegos de Saturn lentos, etc. Así que te puedes ahorrar las pruebas).
 
 EN EL FUTURO CUANDO TENGAS VRR:
 VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado y VRR ACTIVADO, sin necesidad de "AUTO FRAME DELAY".
