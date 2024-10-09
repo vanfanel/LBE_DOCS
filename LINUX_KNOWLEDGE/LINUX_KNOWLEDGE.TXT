@@ -10891,7 +10891,7 @@ Compilamos su repo: git clone --depth 1 https://github.com/maestun/alis.git
 
 Editamos src/sys/sdl2/sys_sdl2.c y allí:
 -Añadimos antes de la llamada a SDL_CreateWindow():
-SDL_ShowCursor(SDL_DISABLE); 
+SDL_ShowCursor(SDL_DISABLE);
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 -Añadimos el flag SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
 
