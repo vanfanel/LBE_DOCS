@@ -2551,7 +2551,7 @@ PARA CARGAR JUEGOS PAL A 50Hz:
 las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 if [[ "$1" == *"PAL"* ]]; then
-  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@50
+  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@100
   sleep 1
   retroarch -L ~/.config/retroarch/cores/puae_libretro.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
   wlr-randr --output HDMI-A-1 --mode 1920x1080@60
@@ -2560,9 +2560,9 @@ else
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
-el RetroArch se quede a 50Hz...¡Los 50Hz y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!):
-video_refresh_rate = "50.000000"
-audio_latency = "42"
+el RetroArch se quede a 100Hz...¡Los 100Hz son sólo una excepcionalidad para juegos PAL! Y si la pantalla no soportase 100Hz
+y tuviésemos que ponerlos a 50Hz, tendríamos que añadir también audio_latency = "42"):
+video_refresh_rate = "100.000000"
 config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Amiga que usamos para ejecutarlo
 (en principio deja el modelo por defecto que es un 1200 con 8MB de FAST), las opciones de pixel ratio y de cropping que mejor le sientan, etc.
@@ -7613,7 +7613,7 @@ PARA EL CORE DE SATURN NECESITAS, O BIEN UN KERNEL CON LAS TÍPICAS OPTIMIZACION
 ..O BIEN LANZAR EL CORE CON "taskset -c 0,1" PARA QUE SE EJECUTE EN LOS P-CORES SOLAMENTE.
 Y ADEMÁS, DEBES USAR LOS SIGUIENTES OVERRIDES:
 	--Desactiva el Runahead por completo!
-	--Backend de audio ALSA con 42ms de buffer
+	--SI LA PANTALLA NO SOPORTA 100Hz: Backend de audio ALSA con 42ms de buffer
 
 PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead, pero sí que funciona bien con max_swapchain a 2
 y el shader Fakelottes con la curvatura comentada.
@@ -7629,10 +7629,10 @@ y usa el shader "handheld/sameboy-lcd" combinado con INTEGER SCALING.
 PARA EL CORE DE AMIGA, deja siempre que puedas el sistema por defecto (Amiga 1200, 8MB FAST) ya que es para lo que viene configurada
 la exactitud de ciclo del emulador y con un A600+FAST te salen errores en los juegos a no ser que pongas la exactitud de ciclo a FULL,
 y recuerda que los juegos PAL necesitan más buffer de audio por lo que creamos ~/.config/retroarch/config/PAL.cfg
-con este contenido (la última línea es porque NO queremos que al quitar el juego el RetroArch se quede a 50Hz...
-¡Los 50Hz y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!) y se lo pasaremos con "--appenconfig":
-video_refresh_rate = "50.000000"
-audio_latency = "42"
+con este contenido (la última línea es porque NO queremos que al quitar el juego el RetroArch se quede a 100Hz...
+¡Los 100Hz son sólo una excepcionalidad para juegos PAL! y si la pantalla no soportase 100Hz y tuviésemos que usar 50Hz,
+también tendríamos que añadir audio_latency = "42") y se lo pasaremos con "--appenconfig":
+video_refresh_rate = "100.000000"
 config_save_on_exit = "false"
 
 NO USES EL CORE BSNES: tendrías que desactivar el Runahead de RetroArch y activar el Runahead interno de BSNES,
@@ -7936,7 +7936,7 @@ PARA CARGAR JUEGOS PAL A 50Hz:
 cargue las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
 if [[ "$1" == *"PAL"* ]]; then
-  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@50
+  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@100
   sleep 1
   retroarch -L ~/.config/retroarch/cores/hatarib.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
   wlr-randr --output HDMI-A-1 --mode 1920x1080@60
@@ -7945,10 +7945,10 @@ else
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
-el RetroArch se quede a 50Hz...¡Los 50Hz y los 42ms de latencia son sólo una excepcionalidad para juegos PAL!):
+el RetroArch se quede a 100Hz...¡Los 100Hz son sólo una excepcionalidad para juegos PAL! Y si la pantalla no soporta 100 Hz,
+tendríamos que añadir tabién audio_latency = "42"):
 video_refresh_rate = "50.000000"
 audio_driver = "alsathread"
-audio_latency = "42"
 config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Atari ST que usamos para ejecutarlo
 (Recuerda que si es PAL tendrás que elegir una TOS europea), las opciones de pixel ratio que mejor le sientan, etc.
