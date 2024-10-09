@@ -1333,8 +1333,8 @@ Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 RECUERDA: Para que no de SEGFAULT al iniciarse, creamos el archivo .config/retroarch/config/Flycast/Flycast.cfg
 con el contenido: run_ahead_enabled = "false"
 
-RECUERDA: Para que el framerate sea suave en los juegos que van a 30FPS, debes activar "Full Framebuffe Emulation"
-en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da igual.
+RECUERDA: Para que el framerate sea suave en los juegos que van a 30FPS, debes activar "Full Framebuffer Emulation"
+y "Delay Frame Swapping" en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da igual.
 
 RECUERDA: NO ACTIVES "Emulation Hacks -> GD-ROM Fast Loading", porque aunque evita los crujidos de la intro del Soul Calibur,
 introduce microcortes en el audio de la intro/demo del DOA2. No es solución. No lo uses.
