@@ -2554,7 +2554,7 @@ if [[ "$1" == *"PAL"* ]]; then
   wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@100
   sleep 1
   retroarch -L ~/.config/retroarch/cores/puae_libretro.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@60
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@120
 else
   retroarch -L ~/.config/retroarch/cores/puae_libretro.so "$1"
 fi
@@ -7939,7 +7939,7 @@ if [[ "$1" == *"PAL"* ]]; then
   wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@100
   sleep 1
   retroarch -L ~/.config/retroarch/cores/hatarib.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@60
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@120
 else
   retroarch -L ~/.config/retroarch/cores/hatarib_libretro.so "$1"
 fi
@@ -9566,13 +9566,13 @@ make -f Makefiles/Makefile.UNIX -j10
 Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
 
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@57.524
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@
 ./supermodel -fullscreen -res=1920,1080 -channels=2 -true-hz daytona2.zip
-wlr-randr --output HDMI-A-1 --mode 1920x1080@60
+wlr-randr --output HDMI-A-1 --mode 1920x1080@120
 
-LO DEL MODO DE VÍDEO CUSTOM DE 57.524 ES PARA QUE COINCIDA EL REFRESCO DE PANTALLA CON LOS 57.524 Hz
-A LOS QUE ORIGINALMENTE CORRE LA PLACA MODEL3, Y QUE ESPECIFICAMOS QUE CORRA A ESOS Hz AL PASARLE "-true-hz".
-Si no queremos 57.524Hz, no le pasamos "-true-hz" y entonces la emulación corre a 60.0000 Hz. 
+LO DEL MODO DE VÍDEO CUSTOM DE 115.048 Hz (=2 x 57.524) ES PARA QUE COINCIDA EL REFRESCO DE PANTALLA CON EL DOBLE DE LOS 57.524 Hz
+QUE ES LA FRECUENCIA DE PANTALLA ORIGINAL DE MODEL3, Y QUE ESPECIFICAMOS QUE CORRA A ESOS Hz AL PASARLE "-true-hz".
+Si no queremos 57.524Hz, no le pasamos "-true-hz" y entonces la emulación corre a 60.0000 Hz, con lo que nos interesaría un modo de 120Hz. 
 
 PARA CONFIGURAR LOS CONTROLES: Ejecuta simplemente "supermodel -config-inputs", y puedes usar las flechas ARRIBA Y ABAJO del teclado
 para saltarte los controles que no te intererese configurar. Para configurar una tecla, dale a INTRO, y ya al botón o eje que sea.
