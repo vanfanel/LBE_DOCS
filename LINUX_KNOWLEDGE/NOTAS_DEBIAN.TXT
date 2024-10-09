@@ -732,11 +732,13 @@ PARA COMPILAR CUALQUIER CORE:
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
 
-		Configuración óptima de RetroArch (En Wayland)
-
-VIDEO: Driver VULKAN, con:
---VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL en 1 como viene por defecto
-Si el vsync rate sale a la mitad (es decir, te detecta 30Hz en pantallas a 60Hz), ponlo en AUTO.
+		CONFIGURACIÓN ÓPTIMA DE RETROARCH EN WAYLAND
+VIDEO:
+ANTES DE NADA, PARA TENER RETROARCH DE BAJA LATENCIA, debemos compilar el kernel con 300 HZ y LOW-LATENCY DESKTOP
+(tienes instrucciones en este mismo fichero).
+Eso es así porque, si no tenemos VRR, tenemos que poner un modo de 120Hz (100Hz para contenido PAL) para evitar tener "vsync lag",
+acompañado de "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" puesto a "AUTO" y los 120Hz sólo son estables con un kernel así.
+Usamos el driver VULKAN, con:
 --VIDEO->SYNCHRONIZATION->MAX SWAPCHAIN IMAGES a 3 (lo que mete lag NO es el número de buffers, sino el VSYNC activado).
 --ALTERNATIVA (NO USAR PORQUE TIENE MÁS LAG): Driver GLCORE (es necesario que sea GLCORE y no GL para que funcione HARD SYNC),
 con VSYNC ON, HARD SYNC ON, HARD SYNC FRAMES 0
