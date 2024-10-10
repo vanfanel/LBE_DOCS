@@ -1339,9 +1339,6 @@ y "Delay Frame Swapping" en las opciones del emulador. Esto nos limita la resolu
 RECUERDA: NO ACTIVES "Emulation Hacks -> GD-ROM Fast Loading", porque aunque evita los crujidos de la intro del Soul Calibur,
 introduce microcortes en el audio de la intro/demo del DOA2. No es solución. No lo uses.
 
-RECUERDA: Para evitar microcortes en el audio durante las transiciones de los juegos, desactiva
-en las opciones del core "Performance > Threaded Rendering"
-
 RECUERDA: El audio de este core sólo va bien con los valores por defecto, es decir, 48000Hz y 64ms,
 configura así el audio y sálvalo en "Overrides->Save Core Overrides".
 En general, para cores 3D (es decir, que usen la GPU para el rendering) es así la cosa.
