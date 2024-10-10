@@ -1347,6 +1347,8 @@ configura así el audio y sálvalo en "Overrides->Save Core Overrides".
 En general, para cores 3D (es decir, que usen la GPU para el rendering) es así la cosa.
 Puedes hacer todas las pruebas que quieras, pero al final esa es la conclusión. 
 
+RECUERDA: Si estás usando un modo de vídeo de 120Hz, desactiva en las opciones del core "Performance > Threaded Rendering"
+
 (NO FUNCIONA) ARREGLAR LOS CORTES DE AUDIO DEL CORE ENTRE ESCENAS (COMO CUANDO PULSAS START EN EL SOUL CALIBUR):
 https://github.com/flyinghead/flycast/issues/1211
 Lee el hilo completo para entenderlo, pero dice esto el autor:
