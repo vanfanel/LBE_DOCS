@@ -1339,21 +1339,15 @@ y "Delay Frame Swapping" en las opciones del emulador. Esto nos limita la resolu
 RECUERDA: NO ACTIVES "Emulation Hacks -> GD-ROM Fast Loading", porque aunque evita los crujidos de la intro del Soul Calibur,
 introduce microcortes en el audio de la intro/demo del DOA2. No es solución. No lo uses.
 
-Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
-Y ya podemos lanzar juegos en GDI, CDI o CHD.
+RECUERDA: Para evitar microcortes en el audio durante las transiciones de los juegos, desactiva
+en las opciones del core "Performance > Threaded Rendering"
 
 RECUERDA: El audio de este core sólo va bien con los valores por defecto, es decir, 48000Hz y 64ms,
 configura así el audio y sálvalo en "Overrides->Save Core Overrides".
 En general, para cores 3D (es decir, que usen la GPU para el rendering) es así la cosa.
 Puedes hacer todas las pruebas que quieras, pero al final esa es la conclusión. 
 
-RECUERDA: Si estás usando un modo de vídeo de 120Hz, desactiva en las opciones del core "Performance > Threaded Rendering"
-
-(NO FUNCIONA) ARREGLAR LOS CORTES DE AUDIO DEL CORE ENTRE ESCENAS (COMO CUANDO PULSAS START EN EL SOUL CALIBUR):
-https://github.com/flyinghead/flycast/issues/1211
-Lee el hilo completo para entenderlo, pero dice esto el autor:
-There's no easy way to fix this but there are at least 2 workarounds: disable "Performance > Threaded Rendering"
-or enable "Video > Full Framebuffer Emulation." In both cases it adds a new synchronization source.
+RECUERDA, SI NO USAS WAYLAND: Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
 NOTA PREVIA: El emulador standalone NO SINCRONIZA BIEN VIDEO Y AUDIO: o bien le sobran frames de audio o de vídeo.
