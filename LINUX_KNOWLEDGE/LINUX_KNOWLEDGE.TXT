@@ -2585,8 +2585,10 @@ el disco duro desde el que se arrancará el sistema ahora.
  El Hybris (CUSTOM4=1 para ir en PAL, CUSTOM3=1 para quitarle los blitterwaits) con "CPU Speed" a "-80%" para que vaya suave.
  El Might & Magic II (no WHDLoad) con "Immediate Blitter" para que no se vean los colores raros al moverse.
  
--El IsharAGA e Ishar2AGA (versiones NO WHDLoad), como mejor va es con "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-60%",
-    y con "Immediate Blitter".
+-En el IsharAGA e Ishar2AGA (versiones NO WHDLoad), para tener todos los sonidos de la intro, etc, tienes que
+    tener "CPU Compatibility" puesto a "Cycle-exact (DMA/Memory). 
+    (Con una CPU pocha tipo N100, podrías poner "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-60%",
+    y con "Immediate Blitter", y también iría, más lento el juego como en un Amiga 500 o un Atari ST, claro, pero iría).
     Para que no se salga con parte del área de juego por la derecha, pon "Core Options->Media->WHDLoad Support" a "OFF".
 	(Eso lo deberías desactivar para todos los juegos NO WHDLoad, recuerda).
 	Tanto Ishar como Ishar 2 (versiones NO WHDLoad) van mejor sin memoria extra de ningún tipo, sólo con los 2MB de chip un Amiga 1200 básico,
