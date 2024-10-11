@@ -2477,9 +2477,6 @@ tienen problemas con esta opción activada.
 			
 NOTAS PARA CORRER JUEGOS PAL CORRECTAMENTE SIN VRR:
 
-Recuerda que los juegos PAL sólo suenan bien con el driver de audio ALSATHREAD con 42ms de latencia.
-(Con el driver ALSA, ni siquiera 45ms de buffer son suficientes en la pantalla del título del Harlequin).
-
 Mírate el cargador de juegos PAL en este mismo documento para que los juegos PAL carguen con la configuración que necesitan.
 
 En Core Options->Video, desactiva "Automatic Crop Delay", para evitar dropouts de audio en los cambios
@@ -2538,18 +2535,19 @@ PUEDES AHORRAR RAM Y TIEMPO DE ARRANQUE si, en los juegos instalados sin WHDLoad
 "WHDLoad Support" a "OFF". Además, debes copiar el comando "Assign" al directorio raíz del juego, porque casi todos lo usan.
 (NO hace falta que esté en C/, con que esté en el raíz del juego ahí tirado vale).
 
-PARA CARGAR JUEGOS PAL A 50Hz:
+PARA CARGAR JUEGOS PAL A 100Hz:
 -Añade "PAL" al nombre del juego. Por ejemplo, "ShadowOfTheBeast" pasaría a ser "ShadowOfTheBeastPAL", lo mismo con su .info
--Crea un script /usr/local/bin/amiga como este, que en caso de ser PAL el juego, ponga el monitor a 50Hz si el juego es PAL y además cargue
+-Crea un script /usr/local/bin/amiga como este, que en caso de ser PAL el juego, ponga el monitor a 100Hz si el juego es PAL y además cargue
 las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 if [[ "$1" == *"PAL"* ]]; then
   wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@100
-  sleep 1
   retroarch -L ~/.config/retroarch/cores/puae_libretro.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@120
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 else
+  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@120
   retroarch -L ~/.config/retroarch/cores/puae_libretro.so "$1"
+  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
@@ -7923,18 +7921,19 @@ Si queremos que se autolanze el command.prg para arrancar a consola de comandos 
 Tienes MUCHOS juegos instalados en disco duro aquí: https://atari.8bitchip.info/fromhd3.php
 (Busca por nombre del juego, y si tiene una "D" azul en esa fila, pincha en ella para ir a la ficha y descargarlo).
 
-PARA CARGAR JUEGOS PAL A 50Hz:
+PARA CARGAR JUEGOS PAL A 100Hz:
 -Añade "PAL" al nombre del juego. Por ejemplo, "gods" pasaría a ser "godsPAL", lo mismo con su .gem
--Crea un script /usr/local/bin/atari como este, que en caso de ser PAL el juego, ponga el monitor a 50Hz si el juego es PAL y además
+-Crea un script /usr/local/bin/atari como este, que en caso de ser PAL el juego, ponga el monitor a 100Hz si el juego es PAL y además
 cargue las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
 if [[ "$1" == *"PAL"* ]]; then
   wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@100
-  sleep 1
   retroarch -L ~/.config/retroarch/cores/hatarib.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
   wlr-randr --output HDMI-A-1 --mode 1920x1080@120
 else
+  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@120
   retroarch -L ~/.config/retroarch/cores/hatarib_libretro.so "$1"
+  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
