@@ -9025,6 +9025,10 @@ Y LOS SHADERS SÓLO VAN EN MODO OPENGL Y EN MODO VULKAN.
 Le falta la extensión "multiDrawIndirect" que es comprobada en la función "VulkanDeviceBuilder::FindDevices", aquí:
 https://github.com/ZDoom/gzdoom/blob/f369cd7f6d8c4e6dc339e51d645f410c8fc897e2/libraries/ZVulkan/src/vulkanbuilders.cpp#L1833
 
+MODs para GZDOOM que molan:
+https://www.moddb.com/mods/doom-3-doom-ii-mod/downloads/doom-iii-doom-ii-mod-v10b
+https://www.moddb.com/mods/doom-64-unseen-evil
+
 VKDOOOM EN GNU/LINUX
 ====================
 
@@ -10350,6 +10354,9 @@ Se hace con extundelete. Desmonta la partición en la que estaba el archivo ante
 Si no te sabes el nombre del archivo, extundelete te lo sugerirá, así que tranquilo.
 
 sudo extundelete /dev/sdb5 --restore-file installed_os.json
+
+Si quieres recurerar un directorio:
+sudo extundelete /dev/sdb1 --restore-directory /dirname
 
 Te lo va a guardar en RESTORED_FILES, en el directorio donde estés cuando ejecutes extundelete. Así que lo tienes que copiar a mano a donde estaba originalmente.
 
