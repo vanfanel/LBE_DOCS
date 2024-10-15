@@ -9035,6 +9035,11 @@ que se usa junto con este para la música: https://www.moddb.com/mods/doom-64-re
 
 --Doom64 para Doom 1 y Doom 2: https://www.moddb.com/mods/doom-64-unseen-evil
 
+--Hocus Pocus TC para Doom 2: https://www.moddb.com/mods/hocus-pocus-doom/downloads/hocus-pocus-doom1
+Para que vaya bien y se vea bien, conviene tener "RESOLUTION SCALE" a "Lowest Possible Mode" y "SCREEN SIZE" a "8",
+y para salvar esos settings por separado sin que afecten al resto de juegos, nos copiamos ~/.config/gzdoom/gzdoom.ini
+a ~/gzdoom/hocus.ini, que cargaremos con "-config hocus.ini".
+
 VKDOOOM EN GNU/LINUX
 ====================
 
