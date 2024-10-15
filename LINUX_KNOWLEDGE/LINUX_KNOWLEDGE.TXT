@@ -829,6 +829,9 @@ wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
 dos confs/juego.conf
 #########
 
+-Si hay juegos que te dan dropouts o distorsiones de audio al cambiar de modo de vídeo, es porque no has compilado el kernel
+con 300 Hz + Preemptible Kernel (Low-Latency Desktop). Mírate el documento de DEBIAN para saber cómo compilarlo.
+
 -Para los "juegos de 70Hz" vayan bien (son juegos como Lemmings, Lotus 3... que tienen música lenta a 60 hagas lo que hagas),
 crea el archivo ~/.config/retroarch/config/70hz.cfg con el contenido:
 ####CONFIG DE RETROARCH PARA JUEGOS DE 70Hz####
