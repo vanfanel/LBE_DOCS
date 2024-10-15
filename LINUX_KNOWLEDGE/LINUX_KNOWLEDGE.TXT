@@ -8990,7 +8990,7 @@ make -j4
 	VAMOS A POR GZDOOM EN SÍ
 
 
-git clone --depth 1 https://github.com/ZDoom/gzdoom.git
+Bajamos los últimos sources estables de: https://github.com/ZDoom/gzdoom/releases
 
 Configuramos con:
 
