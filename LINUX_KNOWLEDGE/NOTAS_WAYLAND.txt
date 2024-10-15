@@ -565,6 +565,11 @@ de manera que la tasa de fotogramas queda recortada a la mitad.
 Esto explica que si en RetroArch usas max_swapchain=2 en Vulkan y no ajustas el MTR (con lo cual el segundo buffer está ocupado desde
 el primer momento de cada periodo entre vblanks), la tasa de fotogramas sea la mitad, es decir, 30fps en un modo de vídeo de 60Hz. 
 
+INSTALAR UN ESCRITORIO COMPLETO SOBRE WAYFIRE
+=============================================
+
+https://github.com/mate-desktop/mate-wayland-session
+
 INSTALAR FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
 ===================================================
 
