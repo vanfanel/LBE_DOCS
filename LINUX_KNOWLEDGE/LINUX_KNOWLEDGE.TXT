@@ -815,11 +815,19 @@ WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WIT
 
 -Para que todo vaya suave en general (luego veremos que hay ciertos juegos que necesitan 70Hz sí o sí), en OPTIONS del core:
 En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
-Para evitar que el sonido vaya ralentizaaaaaado en los juegos de 70Hz, ponemos "TIMING->OVERRIDE EMULATED VIDEO REFRESH RATE" a 59.
-(Debería ser 60, pero para evitar micro-dropouts de audio en juegos que cambian de modo de vídeo "al vuelo", lo ponemos a 59 o 58.
- Esto cuando tengas VRR ya no debería ser necesario).
-Y para que los juegos a 70HZ también vayan suaves, "SETTINGS->AUDIO->SYNCHRONIZATION->MAXIUM TIMING SKEW" a 20% o más,
-para que resamplee de los 70HZ a los ~60HZ de nuestro monitor.
+
+-Para evitar el input lag causado por tener el VSYNC activado (es necesario si no tienes VRR),
+puedes poner un modo de vídeo de 120Hz y además tener "VSYNC SWAP INTERVAL" en "AUTO".
+A tal efecto, lo más cómodo es que crees /usr/local/bin/dos con este contenido:
+########
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@120
+retroarch -L ~/.config/retroarch/cores/dosbox_core_libretro.so "$1" &> /dev/null
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
+#########
+...Y luego en el script de lanzamiento de cada juego simplemente tendrías este contenido:
+#########
+dos confs/juego.conf
+#########
 
 -Para los "juegos de 70Hz" vayan bien (son juegos como Lemmings, Lotus 3... que tienen música lenta a 60 hagas lo que hagas),
 crea el archivo ~/.config/retroarch/config/70hz.cfg con el contenido:
