@@ -9018,6 +9018,8 @@ y se carga el .zip directamente con "-file" como cualquier otro PWAD.
 
 También podrías usar este, que tiene un link con la última versión en .PK3 y se carga igual:
 https://github.com/dron12261games/MOD-VHS-CRT-Shader-by-DRON12261
+Si usas este, se activa en un menú especial que tiene. Para acceder a él, entra en "OPTIONS->FULL OPTIONS MENU->VHS&CRT Shader Mod v2"
+que está abajo del todo una vez que entras en "FULL OPTIONS MENU".
 
 LOS SHADERS NO VAN EN LA PI5 PORQUE LE FALTA UNA EXTENSIÓN DE VULKAN Y SÓLO VA EN MODO GLES,
 Y LOS SHADERS SÓLO VAN EN MODO OPENGL Y EN MODO VULKAN.
