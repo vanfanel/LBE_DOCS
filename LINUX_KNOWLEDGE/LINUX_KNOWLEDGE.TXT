@@ -5090,6 +5090,27 @@ Los subes a ~/hl/valve/media, y editas cdaudio.txt para que las pistas se llamen
 NOTA ADICIONAL - Si quieres counterstrike 1.6, la librería de juego que tendrías que compilar e instalar en ~/hl/valve/dlls/ es esta:
 https://github.com/FWGS/cs16-client/releases
 
+************Half Life 2 en GNU/Linux****************************************************************************************************
+
+--Lo primero, necesita OpenAL, mira en la sección correspondiente cómo instalarlas.
+
+--Instalamos otras dependencias previas:
+apt-get install libbz2-dev libedit-dev
+
+--Clonamos el repo de los sources:
+git clone --depth 1 --recursive https://github.com/nillerusr/source-engine.git
+
+--Editamos togl/linuxwin/glentrypoints.cpp y allí:
+----Comentamos el "#include <GL/glx.h>"
+----Buscamos "glXGetCurrentDisplay" y comentamos todo lo del bloque "#elif" donde está, que empieza con:
+#elif !defined ( OSX ) && !defined( __ANDROID__ ) 
+
+--Desde el raiz de los sources, configuramos y compilamos:
+./waf configure -T release --prefix=hl2 --build-games=hl2 --disable-warns
+./waf build -p -v
+
+Queda meter los datos del juego y demás.
+
 ************SABER QUÉ CFLAGS USAR*******************************************************************************************************
 
 Para saber qué hace GCC cuando le decimos que use "-march=native" en nuestra plataforma, hacemos:
