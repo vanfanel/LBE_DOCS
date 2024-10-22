@@ -8505,9 +8505,10 @@ make clean
 
 Si aun así da error, borra el fichero con el que da error (el tool que da el error seguramente ya lo hayas borrado antes).
 
-Para usar el mando Saffun N64 2.4G, la cadena de SDL2 que tenemos que exportar antes de ejecutar el juego es:
+Para usar el mando Saffun N64 2.4G, la cadena de SDL2 que tenemos que exportar antes de ejecutar el juego es
+(el mando ya está en el gamecontrollerdb, pero esta config es mejor):
 
-export SDL_GAMECONTROLLERCONFIG="030000006f0e00001311000011010000,SWITCH CO.LTD. Usb Controller,platform:Linux,crc:4b21,a:b2,x:b1,b    ack:b8,start:b9,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,leftx:a0,lefty:a1,-rightx:b0,+right    x:b10,-righty:b11,+righty:b3,righttrigger:b6,"
+export SDL_GAMECONTROLLERCONFIG="030000006f0e00001311000011010000,SWITCH CO.LTD. Usb Controller,platform:Linux,crc:4b21,a:b2,x:b1,back:b8,start:b9,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,leftx:a0,lefty:a1,-rightx:b0,+rightx:b10,-righty:b11,+righty:b3,righttrigger:b6,"
 
 SM64-COOP, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
 ==================================================
@@ -8630,9 +8631,10 @@ GENERAR EL MOD DE TRADUCCIÓN
 https://github.com/xoascf/OTRMod/releases
 -Lo ejecutamos con WINE, y nos pide la ROM traducida y el script de extracción, y ya.
 
-Para usar el mando Saffun N64 2.4G, la cadena de SDL2 que tenemos que exportar antes de ejecutar el juego es:
+Para usar el mando Saffun N64 2.4G, la cadena de SDL2 que tenemos que exportar antes de ejecutar el juego es esta
+(el mando ya está en el gamecontrollerdb, pero esta config es mejor):
 
-export SDL_GAMECONTROLLERCONFIG="030000006f0e00001311000011010000,SWITCH CO.LTD. Usb Controller,platform:Linux,crc:4b21,a:b2,x:b1,b    ack:b8,start:b9,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,leftx:a0,lefty:a1,-rightx:b0,+right    x:b10,-righty:b11,+righty:b3,righttrigger:b6,"
+export SDL_GAMECONTROLLERCONFIG="030000006f0e00001311000011010000,SWITCH CO.LTD. Usb Controller,platform:Linux,crc:4b21,a:b2,x:b1,back:b8,start:b9,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,leftx:a0,lefty:a1,-rightx:b0,+rightx:b10,-righty:b11,+righty:b3,righttrigger:b6,"
 
 ZELDA MAJORA'S MASK en GNU/Linux
 ================================
