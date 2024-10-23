@@ -848,6 +848,10 @@ Device Drivers->Input device support->Joysticks/Gamepads->Xbox gamepad support
 ...Y nos aseguramos de tener activado esto para WINE si queremos juegos de 32bits usando WOW64:
 Binary Emulations->IA32 Emulation
 (NO HACE FALTA que actives el resto de opciones de "Binary Emulations", sólo esa, las demás NO aportan NADA).
+...Y desactivamos estas cosas para evitar picos de uso de la CPU:
+Memory Management options->Support for paging of anonymous memory (swap)
+Memory Management options->Defer initialisation of struct pages to kthreads
+Memory Management options->Slab allocator options->(Todo lo que hay ahí)
 
 -Compilamos el kernel y los módulos:
 make -j10
