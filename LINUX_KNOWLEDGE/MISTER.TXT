@@ -1,6 +1,14 @@
 PREPARAR LA TARJETA SD
 ======================
 
+
+	****OPCIÓN RECOMENDADA A DÍA DE HOY: USANDO Mr. FUSION****
+
+Nos bajamos la última release estable de https://github.com/MiSTer-devel/mr-fusion/releases
+Grabamos la imágen en la microSD con DD, arrancamos la MiSTer con ella, y seguimos las instrucciones en pantalla.
+
+	****OPCIÓN NO RECOMENDADA, PERO POR SI TE HACE FALTA PREPARAR LA TARJETA A MANO****
+
 No hace falta ningún programa de Windows. Simplemente hazle este layout con GPARTED.
 (OJO!!! Crea las particiones como tipo EXT4, da igual, luego lo vas a cambiar con FDISK. GPARTED NO SOPORTA EXFAT.):
 
