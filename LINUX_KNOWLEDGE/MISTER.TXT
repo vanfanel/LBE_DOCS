@@ -30,6 +30,8 @@ https://github.com/theypsilon/Update_All_MiSTer/releases/latest/download/update_
 y metemos el script "Update_All.sh" en /media/fat/Scripts.
 Ejecutamos el "Update_All" y ya como siempre.
 
+----Ahora activamos el fast polling de los mandos USB. Para ello, simplemente ejecutamos "fast_USB_polling_on.sh".
+
 	****OPCIÓN NO RECOMENDADA, PERO POR SI TE HACE FALTA PREPARAR LA TARJETA A MANO****
 
 No hace falta ningún programa de Windows. Simplemente hazle este layout con GPARTED.
