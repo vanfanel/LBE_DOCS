@@ -155,6 +155,11 @@ que te bajes de aquí: http://retrograde.inf.ua/tandyroms.htm) y cargar la BIOS 
 Lo mismo para arrancar con un PCXT original: BIOS de XT limpia (si no lo está tenemos que editarla con HEXEDIT y machacar el primer byte,
 que es una letra "U", para que no cargue la XTIDE interna que lleva esa BIOS) y cargar la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
 
+Para obtener BIOS ya preparadas de XT, tienes que bajar los scripts de Python de aquí:
+https://github.com/spark2k06/PCXT_MiSTer/tree/main/SW/ROMs
+...Y luego ejecutas "python <nombre_script>".
+La BIOS resultante está lista para usarse. NO tienes que descargar nada a mano, lo hace todo el script.
+
 Para crear la imágen simplemente desde el propio GNU/Linux de la Mister haz:
 dd if=/dev/zero of=hdd.vhd bs=128M count=1
 
