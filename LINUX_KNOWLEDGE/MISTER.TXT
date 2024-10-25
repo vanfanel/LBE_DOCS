@@ -4,8 +4,31 @@ PREPARAR LA TARJETA SD
 
 	****OPCIÓN RECOMENDADA A DÍA DE HOY: USANDO Mr. FUSION****
 
-Nos bajamos la última release estable de https://github.com/MiSTer-devel/mr-fusion/releases
-Grabamos la imágen en la microSD con DD, arrancamos la MiSTer con ella, y seguimos las instrucciones en pantalla.
+----Nos bajamos la última release estable de https://github.com/MiSTer-devel/mr-fusion/releases
+	Grabamos la imágen en la microSD con DD, arrancamos la MiSTer con ella, y seguimos las instrucciones en pantalla.
+
+----Ahora vamos a configurar la conexión WIFI. Editamos /media/fat/linux/wpa_supplicant.conf lo dejamos así:
+
+####FICHERO WPA_SUPPLICANT.CONF####
+
+ctrl_interface=/run/wpa_supplicant
+update_config=1
+country=ES
+
+network={
+        ssid="tu_ssid_aqui"
+        psk="tu_clave_aqui"
+}
+
+####FIN FICHERO WPA_SUPPLICANT.CONF####
+
+Ahora reiniciamos y ya nos tendría que salir el icono de WiFi como conectado en el menú principal.
+
+----Ahora ya metemos el Downloader.ini con los sistemas que queremos que no se actualicen, el MiSTer.ini que queramos,
+e instalamos el Update_All, para lo cual descargamos este zip:
+https://github.com/theypsilon/Update_All_MiSTer/releases/latest/download/update_all.zip 
+y metemos el script "Update_All.sh" en /media/fat/Scripts.
+Ejecutamos el "Update_All" y ya como siempre.
 
 	****OPCIÓN NO RECOMENDADA, PERO POR SI TE HACE FALTA PREPARAR LA TARJETA A MANO****
 
