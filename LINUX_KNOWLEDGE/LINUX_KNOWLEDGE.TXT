@@ -8554,9 +8554,6 @@ cmake .. -GNinja \
 
 ninja -j6
 
-IMPORTANTE: Para que el juego no tenga stuttering si usas ZINK, NO ACTIVES "Match Frame Rate to Refresh Rate",
-pon 60 fps pero sin activar eso.
-
 OPCIONAL:
 Si queremos compilar una versión del juego contra OpenGL en vez de contra GLES, editamos _deps/imgui-src/backends/imgui_impl_opengl3_loader.h
 y dejamos esas dos funciones así (ya que las versiones que hay usan mierdas de GLX):
