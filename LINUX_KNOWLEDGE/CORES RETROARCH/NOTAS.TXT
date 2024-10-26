@@ -1,0 +1,60 @@
+NOTAS GENERALES DE ACTUALIZACIÓN DEL CORE BEETLE-SATURN
+=======================================================
+
+El repositorio que registra los cambios entre versiones de Mednafen Upstream es:
+https://github.com/libretro-mirrors/mednafen-git
+
+Para ver cómo se abren archivos en LIBRETRO, busca "RETRO_VFS"
+
+MIRA!!! HACERLO COMO SE HACE EN:
+
+case CART_ULTRAMAN:                                                                                                              
+     CART_ROM_Init(&Cart, rom_stream);
+
+El equilavente a Load() de ss.cpp del Mednafen original es GameLoad() de libretro.cpp de beetle-saturn.
+
+sgi (es decir, "const STVGameInfo* sgi") es de STV. Sólo tiene un valor válido NO NULL si DB_LookupSTV() lo devuelve, es decir,
+si se localiza en la base de datos de los cartuchos.
+
+La extensión .ss es de cartuchos de la Saturn. El core no los soporta.
+
+(HECHO!!) ACTUALIZACIÓN A 1.31.0-Unstable, para luego actualizar a 1.32 los demás ficheros
+==========================================================================================
+
+ss.cpp				NO NO NO
+
+	NO ACTUALIZAR, TODO STV, LOS PEQUEÑOS CAMBIOS EN INPUT TAMPOCO PORQUE EL INPUT LLEVA CÓDIGO DE LIBRETRO ---- 
+	(SIN lo de STV. OJO: Lo de "multitap" es de STV también
+				OJO: Lo de "sgi" es de STV también: "STVGameInfo* sgi = ...")
+
+sound.cpp			OK
+sound.h				OK
+
+smpc.h				NO NO NO, no necesitamos modificar el prototipo de SMPC_Init()
+					para pasarle "bool block_soundcpu_control" porque eso sólo se usa para STV.
+
+smpc.cpp			OK, PERO no se actualiza todo lo que tenga que ver con SetTSFreq(), ya que eso es de STV
+					(La función SetTSFreq() viene implementada en AK93c45 que es un chip que sólo está en STV).
+
+smpc_iodevice.h		NO NO NO, sólo trae mierdas del SetTSFreq(), que es de STV.
+
+ssf.cpp				NO NO NO, sólo trae que el paso de "false" a Sound_Init(), referido a que no es STV.
+
+Los ficheros STVIO.* y AK93C45.* NO SE INCORPORAN, porque son todo cosas de STV.
+
+cart.cpp			NO NO NO, todo STV
+cart.h				NO NO NO, todo STV
+
+(EN PROGRESO!!) ACTUALIZACIÓN INICIAL BEETLE-SATURN A 1.32.0 UNSTABLE
+=====================================================================
+
+vdp1_common.h 		OK
+vdp1.cpp 			OK
+vdp2_render.cpp 	OK
+
+vdp1_poly.cpp		OK
+vdp1_sprite.cpp		OK
+
+sh7095.inc			OK
+
+ss.cpp 				EN PROGRESO... (NO actualizar el rollo ese del MIDI)
