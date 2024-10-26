@@ -1764,8 +1764,12 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 make -j4
 
-Copiamos el ejecutable y los datos del juego (que los tienes ya preparados en el disco duro de backup) y a jugar.
-Puedes ajustar la configuración (fullscreen, uncapped framerate, etc..) usando ~/.local/share/SpaceCadetPinball/imgui_pb.ini
+Copiamos el ejecutable y los datos del juego (que los tienes ya preparados en el disco duro de backup).
+
+Cargamos el juego pasándole una fuente SF2 a SDL así para que suene la música:
+SDL_SOUNDFONTS=TimGM6mb.sf2 ./SpaceCadetPinball
+
+Puedes ajustar la configuración (fullscreen, uncapped framerate, etc..) en el menú, o editando ~/.local/share/SpaceCadetPinball/imgui_pb.ini
 
 ******Juegos JAVA que usan GL/GLES en GNU/Linux*********************************************************************
 
