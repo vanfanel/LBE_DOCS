@@ -159,24 +159,29 @@ En PCXT BIOS va "pcxt_original.rom", en TANDY BIOS va "tandy.rom", y en EC00 BIO
 NOTAS SOBRE LAS IMÁGENES DE DISCO PARA EL CORE PCXT
 ===================================================
 
-Para arrancar en modo TANDY y con disco duro IDE real, necesitamos una BIOS TANDY limpia (=sin XTIDE incluido, es decir, una BIOS TANDY 1000
-que te bajes de aquí: http://retrograde.inf.ua/tandyroms.htm) y cargar la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
-Lo mismo para arrancar con un PCXT original: BIOS de XT limpia (si no lo está tenemos que editarla con HEXEDIT y machacar el primer byte,
-que es una letra "U", para que no cargue la XTIDE interna que lleva esa BIOS) y cargar la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
-
-Para obtener BIOS ya preparadas de XT, tienes que bajar los scripts de Python de aquí:
+Para obtener BIOS ya preparadas tanto de XT como de TANDY 1000, tienes que bajar los scripts de Python de aquí:
 https://github.com/spark2k06/PCXT_MiSTer/tree/main/SW/ROMs
 ...Y luego ejecutas "python <nombre_script>".
 La BIOS resultante está lista para usarse. NO tienes que descargar nada a mano, lo hace todo el script.
+Si no te arranca de disco duro, carga la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
+
+Para arrancar en modo TANDY y con disco duro IDE real, necesitamos una BIOS TANDY limpia (=sin XTIDE incluido, es decir, una BIOS TANDY 1000
+que te bajes de aquí: http://retrograde.inf.ua/tandyroms.htm) y cargar la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
+
+Si queremos arrancar con una BIOS de XT limpia, tenemos que cargar la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
+(Si queremos hacer que una BIOS de XT esté "limpia" tenemos que editarla con HEXEDIT y machacar el primer byte,
+que es una letra "U", para que no cargue la XTIDE interna que lleva esa BIOS)
 
 Para crear la imágen simplemente desde el propio GNU/Linux de la Mister haz:
 dd if=/dev/zero of=hdd.vhd bs=128M count=1
 
-Ahora tenemos que particionarla y formatearla desde la MiSTER, para lo cual tenempos que arrancar desde una imágen de disco de MSDOS.
-RECUERDA que para que lea imágenes de 1.44MB, necesitamos usar la BIOS micro8088, que podemos descargar aquí:
-https://github.com/spark2k06/PCXT_MiSTer/tree/main/SW/ROMs
-PERO esa viene con el XTIDE integrado, así que tenemos que editarla con HEXEDIT y machacar el primer byte (una letra "U")
-para que no cargue la XTIDE interna que lleva esa BIOS.
+Ahora tenemos que particionarla y formatearla desde la MiSTER, para lo cual tenemos que arrancar desde una imágen de disco de MSDOS.
+Lo mejor con diferencia es instalar MS-DOS 5.0 o 3.3 (aunque si instalas 3.3 estás limtado a discos duros de 32MB)
+desde imágenes de disco de 320KB 5-1/4 que hay en WinWordPC disponibles para bajar.
+-NO uses las imágenes de 720KB porque fallan.
+-Si quisiéramos instalar desde una imágen de disco de 1.44MB (no hace falta complicarse con esto...),
+para que el core lea imágenes de 1.44MB tenemos que usar la BIOS micro8088, PERO esa viene con el XTIDE integrado,
+así que tenemos que editarla con HEXEDIT y machacar el primer byte (una letra "U") para que no cargue la XTIDE interna que lleva esa BIOS.
 
 Una vez que hemos arrancado desde el diskette de MSDOS y el core nos ha reconocido el disco, podemos particionarlo con fdisk y formatearlo
 con format.
