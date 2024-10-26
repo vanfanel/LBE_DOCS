@@ -159,6 +159,7 @@ En PCXT BIOS va "pcxt_original.rom", en TANDY BIOS va "tandy.rom", y en EC00 BIO
 NOTAS SOBRE LAS IMÁGENES DE DISCO PARA EL CORE PCXT
 ===================================================
 
+La mejor BIOS para XT es la de Juko Electronics, ya que tiene scroll suave en el texto.
 Para obtener BIOS ya preparadas tanto de XT como de TANDY 1000, tienes que bajar los scripts de Python de aquí:
 https://github.com/spark2k06/PCXT_MiSTer/tree/main/SW/ROMs
 ...Y luego ejecutas "python <nombre_script>".
@@ -203,6 +204,7 @@ Hay muchos juegos preparados para XT de verdad aquí: https://www.pcjs.org
 Se pueden descargar dándole a SAVE.
 
 NOTAS SOBRE JUEGOS ESPECÍFICOS DE PCXT
+--El driver de ratón (CTMOUSE.COM) no es compatible con el EDIT.COM de MS-DOS, se cuelga el EDIT, así que cárgalo bajo demanda.
 --El Might & Magic 2 lo arreglé para que funcionase en TANDY y lo subí a Archive.org y a mi disco de backup.
 --El Pool of Radiance de la colección EXODOS funciona en TANDY, pero tienes que editar el archivo POOL.CFG para especificar
 la ruta donde lo vas a meter (viene como C:\POOLRAD, así que si lo metes en C:\JUEGOS\POOLRAD no funcionará).
