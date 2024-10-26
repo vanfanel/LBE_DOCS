@@ -10952,7 +10952,7 @@ Editamos src/sys/sdl2/sys_sdl2.c y allí:
 -Añadimos antes de la llamada a SDL_CreateWindow():
 SDL_ShowCursor(SDL_DISABLE);
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
--Añadimos el flag SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
+-(SÓLO SI NO VAS A USAR ZINK!!) Añadimos el flag SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
 
 Editamos Makefile y en la línea "CFLAGS =" quitamos el "-g" y ponemos: "-O2 -march=native -mtune=native" 
 
