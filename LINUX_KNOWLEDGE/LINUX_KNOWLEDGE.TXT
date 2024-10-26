@@ -1761,7 +1761,7 @@ mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 make -j4
 
 Copiamos el ejecutable y los datos del juego (que los tienes ya preparados en el disco duro de backup) y a jugar.
