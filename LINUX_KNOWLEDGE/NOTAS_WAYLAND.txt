@@ -667,7 +667,7 @@ git clone --depth 1 https://github.com/raphamorim/rio.git
 --Compilamos una release para Wayland con:
 cargo build -p rioterm --release --no-default-features --features=wayland
 
---El ejecutable queda en target/release/rio, lo copiamos a /usr/local/bin
+--El ejecutable queda en target/release/rio, lo copiamos a /usr/local/bin:
 cp target/release/rio /usr/local/bin
 
 INSTALAR ALACRITTY, UN EMULATOR DE TERMINAL PARA WAYLAND ESCRITO EN RUST
