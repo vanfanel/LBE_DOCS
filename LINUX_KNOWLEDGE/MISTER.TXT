@@ -99,11 +99,14 @@ O bien el StrikeTerm2014 de: https://csdb.dk/release/?id=130807
 ---Vamos a "UART mode (Modem)", ponemos "Connection" a "Modem", dejamos "Link" a "TCP" y "Baud" a "9600" .
 ---Vamos a "Hardware", ponemos "Expansion" a "RS232", "RS232 Connection" a "Internal", "RS232 mode" a "UP9600" y salvamos.
 
---Entramos en el core y cargamos el PRG del CCGMS, y escribimos "at" y le damos a intro, nos tiene que decir "ok".
-  Ahora marcamos la dirección de la BBS con:
-  "atdt"
+--Entramos en el core y cargamos el PRG del CCGMS y allí:
+----Pulsamos F7 para entrar en el menú de opciones de dialing, pulsamos "M" para poner el tipo de módem a "UP9600/EZ232",
+    pulsamos "B" para poner los baudios a 9600, y le damos a ENTER para volver al menú principal.
+----Escribimos "at" y le damos a intro, nos tiene que decir "ok".
+----Ahora marcamos la dirección de la BBS con:
+  "atdt13th.hoyvision.com:6400"
 ALTERNAVTIVAS A CCGMS:
-Cargamos el Novaterm o el Striketerm, y en el menú principal (F1) nos aseguramos de estar a 2400 baudios.
+Cargamos el Novaterm o el Striketerm, y en el menú principal (F1) nos aseguramos de estar a 9600 baudios.
 Entramos en el phonebook (F5) y allí añadimos las BBS que queramos, hay unas cuantas aquí: http://cbbsoutpost.servebbs.com/
 
 CARGAR RÁPIDO CON JIFFYDOS Y SIN JIFFYDOS
