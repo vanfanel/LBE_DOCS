@@ -652,12 +652,32 @@ selection-background=1a3272
 include=/usr/local/share/foot/themes/NOMBRE_TEMA
 ...Donde NOMBRE_TEMA es el nombre de un tema de los que tienes en /usr/local/shared/foot/themes
 
+INSTALAR RIO, UN EMULADOR DE TERMINAL PARA WAYLAND ESCRITO EN RUST
+==================================================================
+
+--Primero instalamos Rust. Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+--Si ya tenemos Rust instalado, lo actualizamos a la última versión:
+rustup update
+
+--Clonamos el repo de RIO:
+git clone --depth 1 https://github.com/raphamorim/rio.git
+
+--Compilamos una release para Wayland con:
+cargo build -p rioterm --release --no-default-features --features=wayland
+
+--El ejecutable queda en target/release/rio, lo copiamos a /usr/local/bin
+cp target/release/rio /usr/local/bin
+
 INSTALAR ALACRITTY, UN EMULATOR DE TERMINAL PARA WAYLAND ESCRITO EN RUST
 ========================================================================
 
---Primero instalamos el buildsystem que necesita.
-Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
+--Primero instalamos Rust. Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+--Si ya tenemos Rust instalado, lo actualizamos a la última versión:
+rustup update
 
 --Instalamos dependencias previas:
 apt-get install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 --no-install-recommends
