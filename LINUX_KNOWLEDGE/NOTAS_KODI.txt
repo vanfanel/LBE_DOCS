@@ -15,20 +15,20 @@ Sólo nos queda Duff You.
 
 Para instalarlo:
 1-En Sistema->Sistema->Add-Ons (SÍ, "SISTEMA" DENTRO DE "SISTEMA"), activamos la opción "Orígenes desconocidos"
-2-En Sistema->Explorador de Archivos, nos vamos a "Añadir fuente" y añadimos la fuente: https://luarsource.github.io/Fuente
-  y la llamamos "luar".
-3-Volvemos al menú principal y nos vamos a Add-Ons->Instalar desde un archivo zip->luar, y nos saldrán 3 zips ahí.
-  Elegimos "script.luar-0.8.1.zip" y hacemos doble click sobre él.
-  Con esto se nos instala el plugin Luar, que nos permite instalar otros plugins desde él.
-4-Volvemos al menú principal y nos vamos a Add-Ons->Addons de programas, y desde el Luar instalamos el Duff You que está en los recomendados.
+2-En Sistema->Explorador de Archivos, nos vamos a "Añadir fuente" y añadimos la fuente: https://stva.es/r
+  y la llamamos "stva".
+3-Volvemos al menú principal y nos vamos a Add-Ons->Instalar desde un archivo zip->stva, y nos saldrán 3 zips ahí.
+  Instalamos el ZIP correspondiente al repositorio "stva".
+  Con esto se nos instala el repositorio STVA, que nos permite instalar otros add-ons desde él.
+4-Volvemos al menú de add-ons, elegimos "Install from repository", elegimos el repositorio STVA, y desde ahí instalamos el addon de DUFF YOU.
 
 NOTA: NO vas a poder instalar el plugin Duff You directamente por el hostigamiento de los cerdos de Google, así que hay que
-usar Luar para instalarlo sí o sí.
+usar el repo STVA para instalarlo sí o sí.
 
 VER RTVE EN KODI/LIBREELEC
 ==========================
 
-Instalar el plugin Luar (justo encima tienes cómo hacerlo) y desde dentro de él instala Moe's TV.
+Instalar el repo STVA (justo encima tienes cómo hacerlo) y desde dentro de él instala Moe's TV.
 
 VER CANALES DE TDT EN KODI/LIBREELEC
 ====================================
