@@ -88,6 +88,24 @@ https://mister-devel.github.io/MkDocs_MiSTer/advanced/computer/#serial-connectio
 ...Al que llegué desde este hilo:
 https://misterfpga.org/viewtopic.php?t=6106
 
+--LO PRIMERO: HAS DE USAR EL KERNAL ORIGINAL DE COMMODORE, porque ni el DolphinDOS ni el JiffyDOS tienen las funcionalidades necesarias.
+
+--Nos bajamos el CCGMS en PRG, que lo tienes en: https://csdb.dk/release/?id=173065
+ALTERNATIVAS A CCGMS:
+Novaterm 9.6c de: https://commodore.software/downloads/download/19-novaterm/653-novaterm-9-6c
+O bien el StrikeTerm2014 de: https://csdb.dk/release/?id=130807
+
+--En el core:
+---Vamos a "UART mode (Modem)", ponemos "Connection" a "Modem", dejamos "Link" a "TCP" y "Baud" a "9600" .
+---Vamos a "Hardware", ponemos "Expansion" a "RS232", "RS232 Connection" a "Internal", "RS232 mode" a "UP9600" y salvamos.
+
+--Entramos en el core y cargamos el PRG del CCGMS, y escribimos "at" y le damos a intro, nos tiene que decir "ok".
+  Ahora marcamos la dirección de la BBS con:
+  "atdt"
+ALTERNAVTIVAS A CCGMS:
+Cargamos el Novaterm o el Striketerm, y en el menú principal (F1) nos aseguramos de estar a 2400 baudios.
+Entramos en el phonebook (F5) y allí añadimos las BBS que queramos, hay unas cuantas aquí: http://cbbsoutpost.servebbs.com/
+
 CARGAR RÁPIDO CON JIFFYDOS Y SIN JIFFYDOS
 ========================================
 
