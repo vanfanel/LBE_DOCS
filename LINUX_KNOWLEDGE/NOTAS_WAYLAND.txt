@@ -670,6 +670,27 @@ cargo build -p rioterm --release --no-default-features --features=wayland
 --El ejecutable queda en target/release/rio, lo copiamos a /usr/local/bin:
 cp target/release/rio /usr/local/bin
 
+(NOTA: Para saber cómo configurar Rio, mira en el menú de la izquiera las secciones en: https://raphamorim.io/rio/docs/config/)
+--Ahora editamos ~/.config/rio/config.toml, y allí:
+----Nos vamos a [fonts], descomentamos la cabecera de la sección y añadimos:
+	size = 32
+----Nos vamos a [window], descomentamos la cabecera de la sección y añadimos:
+	width = 1620
+	height = 960
+	mode = "windowed"
+	opacity = 1.0
+	decorations = "disabled"
+----Nos vamos a [colors], descomentamos la cabecera de la sección y añadimos:
+	foreground="#008800"
+----Nos vamos a [renderer], descomentamos la cabecera de la sección y añadimos:
+	backend="vulkan"
+	filters = ["/root/.config/retroarch/shaders/crt/newpixie-crt.slangp"]
+	target-fps = 60
+	strategy = "continuous"
+(NOTA: Si tuvieses que ajustar parámetros en los shaders, también acepta los .slangp que genera RetroArch cuando configuras
+ los parámetros de un shader, como el típico ~/.config/retroarch/shaders/retroarch.slangp)
+----Descomentamos "confirm-before-quit = false"
+
 INSTALAR ALACRITTY, UN EMULATOR DE TERMINAL PARA WAYLAND ESCRITO EN RUST
 ========================================================================
 

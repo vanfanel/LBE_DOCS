@@ -5248,7 +5248,7 @@ dependency based booting sequence.
 LA MEJOR guía para esto la tienes en este mismo directorio como "Orden de arranque o inicio de scripts (DBBS)" y procede de la página
 http://www.openredes.com/2011/05/13/orden-de-arranque-o-inicio-de-scripts-de-etcinit-d-en-debian-squeeze-6-0-solucion-a-update-rc-d-using-dependency-based-boot-sequencing/ 
 
-************MÉTODO ANTIGUO para ejecutar programas  o scripts al inicio como root: LUBUNTU (NO DEBIAN)**************************************************************
+************MÉTODO ANTIGUO para ejecutar programas o scripts al inicio como root: LUBUNTU (NO DEBIAN)************************
 
 ¡¡¡CUIDADO!!! ESTO SÓLO SIRVE PARA DISTROS BASADAS EN UBUNTU, QUE NO CUMPLE EL "DEPENDENCY BASED BOOTING SEQUENCE" DE LA FSS.
 ASÍ QUE EN RASPBIAN O DEBIAN NO SE USA ESTO. 
@@ -5302,6 +5302,15 @@ ANEXO:
 -Para saber en qué runlevel estamos, simplemente tenemos el comando "runlevel".
 -Los runlevels importantes son: 0 para haltear el sistema, 1 es el modo single-user para reparaciones, 2 al 5 son los normales o modos multiusuario
 (en raspbian empezamos al logarnos en modo texto en el runlevel 2) y el 6 es reiniciar el sistema.
+
+*************Conectarse a una BBS desde GNU/Linux*************************************************************
+
+--Lo primero es instalar un terminal BBS (que correrá dentro de nuestro emulator de terminal, no va independiente)
+que se llama Syncterm:
+----Clonamos su repo: git clone --depth 1 https://gitlab.synchro.net/main/sbbs.git
+----Compilamos con:
+cd src/syncterm
+make RELEASE=1 USE_SDL_AUDIO=1 -j10
 
 *************Raspberry Pi y establecimiento de modos de vídeo tras el arranque: tvservice*********************
 
