@@ -104,7 +104,8 @@ O bien el StrikeTerm2014 de: https://csdb.dk/release/?id=130807
     pulsamos "B" para poner los baudios a 9600, y le damos a ENTER para volver al menú principal.
 ----Escribimos "at" y le damos a intro, nos tiene que decir "ok".
 ----Ahora marcamos la dirección de la BBS con:
-  "atdt13th.hoyvision.com:6400"
+  "atdtstreetcorner.ddns.net:6400"
+  (Tienes cuenta en StreetCornet: El login handle es "sc48" y el pass es "brightblade")
 ALTERNAVTIVAS A CCGMS:
 Cargamos el Novaterm o el Striketerm, y en el menú principal (F1) nos aseguramos de estar a 9600 baudios.
 Entramos en el phonebook (F5) y allí añadimos las BBS que queramos, hay unas cuantas aquí: http://cbbsoutpost.servebbs.com/
