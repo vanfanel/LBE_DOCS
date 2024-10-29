@@ -793,7 +793,7 @@ env | grep WAYLAND_DISPLAY
 
 Exportamos en el PC de debugueo:
 export XDG_RUNTIME_DIR=/run                 <---(Sólo si, NO USANDO systemd, hemos exportado XDG_RUNTIME_DIR=/run en /etc/minimal).
-export WAYLAND_DISPLAY=wayland-1
+export WAYLAND_DISPLAY=wayland-0
 
 (Puedes elegir que valor exporta Weston en WAYLAND_DISPLAY con el parametro -S).
 (Normalmente, si usasemos SSH usaría PAM y pillaría las mismas variables de entorno para todas las sesiones de un usuario).
@@ -1382,7 +1382,7 @@ echo "     "
 Para poder ejecutar por ssh programas que corran sobre Wayland (también hace falta XDG_RUNTIME_DIR, pero eso lo hago en el script de lanzamiento
 del compositor, es decir, en "/usr/local/bin/launch-wayfire" por ejemplo):
 
-export WAYLAND_DISPLAY=wayland-1
+export WAYLAND_DISPLAY=wayland-0
 
 OJO: Si no funciona con ese valor, mira qué valor tiene WAYLAND_DISPLAY en el sistema "servidor", ya que es exportada por el compositor,
      y exportas ese mismo valore en el .bashrc del usuario que va a entrar por SSH.
