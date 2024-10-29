@@ -8663,6 +8663,8 @@ cmake .. -GNinja \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGLES=1
 
+ninja -j10
+
 mkdir ~/majora
 cp mm/2s2h.elf ~/majora/
 
