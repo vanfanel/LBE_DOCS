@@ -820,9 +820,9 @@ En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
 puedes poner un modo de vídeo de 120Hz y además tener "VSYNC SWAP INTERVAL" en "AUTO".
 A tal efecto, lo más cómodo es que crees /usr/local/bin/dos con este contenido:
 ########
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@120
+wlr-randr --output HDMI-A-1 --mode 1920x1080@120
 retroarch -L ~/.config/retroarch/cores/dosbox_core_libretro.so "$1" &> /dev/null
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
+wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 #########
 ...Y luego en el script de lanzamiento de cada juego simplemente tendrías este contenido:
 #########
@@ -2556,13 +2556,13 @@ PARA CARGAR JUEGOS PAL A 100Hz:
 las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 if [[ "$1" == *"PAL"* ]]; then
-  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@100
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@100
   retroarch -L ~/.config/retroarch/cores/puae_libretro.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
   wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 else
-  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@120
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@120
   retroarch -L ~/.config/retroarch/cores/puae_libretro.so "$1"
-  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
@@ -7974,13 +7974,13 @@ PARA CARGAR JUEGOS PAL A 100Hz:
 cargue las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
 if [[ "$1" == *"PAL"* ]]; then
-  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@100
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@100
   retroarch -L ~/.config/retroarch/cores/hatarib.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
   wlr-randr --output HDMI-A-1 --mode 1920x1080@120
 else
-  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@120
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@120
   retroarch -L ~/.config/retroarch/cores/hatarib_libretro.so "$1"
-  wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
@@ -9629,9 +9629,9 @@ make -f Makefiles/Makefile.UNIX -j10
 Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
 
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@
+wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@115.048
 ./supermodel -fullscreen -res=1920,1080 -channels=2 -true-hz daytona2.zip
-wlr-randr --output HDMI-A-1 --mode 1920x1080@120
+wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 
 LO DEL MODO DE VÍDEO CUSTOM DE 115.048 Hz (=2 x 57.524) ES PARA QUE COINCIDA EL REFRESCO DE PANTALLA CON EL DOBLE DE LOS 57.524 Hz
 QUE ES LA FRECUENCIA DE PANTALLA ORIGINAL DE MODEL3, Y QUE ESPECIFICAMOS QUE CORRA A ESOS Hz AL PASARLE "-true-hz".
