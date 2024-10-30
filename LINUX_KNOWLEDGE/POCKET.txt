@@ -42,6 +42,8 @@ Lo primero es que uses la versión LITE del Quartus, ya que la FULL es de pago (
 no te genera el .RBF que necesitamos.
 Para descargar la LITE busca "Quartus lite download". Yo uso la 21.1 que no es la última pero es la que usa el porter del core de PC Engine y NES.
 
+Al instalar el Quartus LITE, sólo necesitas el soporte para Cyclon V, que es el que lleva la Pocket.
+
 Todos los cores tienen un directorio "projects" y dentro un fichero .QIP, que es el que tienes que abrir en Quartus.
 Simplemente le das a la flecha azul y empieza la compilación.
 
