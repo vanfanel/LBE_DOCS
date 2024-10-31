@@ -569,9 +569,6 @@ Editamos src/broadcom/vulkan/v3dv_device.c y buscamos "destroy dumb object" y co
 CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
 
 PARA X86_64 CON GRÁFICOS INTEL IRIS (=UHD,XE, etc):
---Lo primero es revertir el commit que jodió el VSYNC en ZINK, que es este:
-https://gitlab.freedesktop.org/mesa/mesa/-/commit/10bcfb63d56da203c173d8123339c055a86fc9f6
-Hay que hacerlo a mano, porque si no, nos crea otro branch y luego al hacer GIT PULL es un lio.
 --Ahora ya configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
