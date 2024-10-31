@@ -8672,7 +8672,7 @@ cp mm/2s2h.elf ~/majora/
 
 --Bajamos la ROM USA 1.0 (Nos vale la ROM americana que hay en CDRomance), y la metemos en OTRExporter.
 --En el mismo directorio donde acabamos de compilar el juego, hacemos:
-cmake --build . --target ExtractAssets -j4
+cmake --build . --target ExtractAssets -j10
 --Copiamos los archivos de datos a su sitio:
 cp mm/mm.o2r mm/2ship.o2r ~/majora/
 
