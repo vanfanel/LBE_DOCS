@@ -51,7 +51,7 @@ uniform float video_sizeY <
 	ui_max = BUFFER_HEIGHT;
 	ui_label = "Frame Height [CRT-FakeLottes]";
 	ui_tooltip = "This should be sized according to the video data in the texture (If you're using emulators, set this to the Emu video frame size, otherwise, keep it the same as Screen Width/Height or Fullscreen res.)";
-> = 240.0;
+> = 200.0;
 
 uniform float shadowMask <
 	ui_type = "drag";
@@ -107,8 +107,7 @@ uniform float crt_gamma <
 	ui_max = 4.0;
 	ui_step = 0.05;
 	ui_label = "CRT Gamma [CRT-FakeLottes]";
-//> = 2.5;
-> = 2.1;
+> = 2.5;
 
 uniform float monitor_gamma  <
 	ui_type = "drag";
@@ -118,6 +117,7 @@ uniform float monitor_gamma  <
 	ui_label = "Monitor Gamma [CRT-FakeLottes]";
 //> = 2.2;
 > = 2.5;
+
 uniform float SCANLINE_SINE_COMP_A <
 	ui_type = "drag";
 	ui_min = 0.0;
@@ -259,6 +259,7 @@ float4 PS_CRTFakeLottes(float4 vpos : SV_Position, float2 txcoord : TexCoord) : 
 	#else
 		col = scanline(pos, res);
 	#endif
+
 
 	#if (CURVATURE == 1)
                /* Clamp */
