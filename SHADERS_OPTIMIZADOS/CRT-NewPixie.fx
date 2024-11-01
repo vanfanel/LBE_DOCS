@@ -137,6 +137,16 @@ float4 PS_NewPixie_Final(float4 pos: SV_Position, float2 uv_tx : TexCoord) : SV_
     if (curved_uv.y < 0.008 || curved_uv.y > 0.992)
         col *= 0.0;
 
+    /* Clamp */
+    float alpha = 0.0; // Inicializar alpha
+    // Calcular el efecto de oscurecimiento en los bordes
+    alpha += smoothstep(0.06, 0.0, curved_uv.x); // Suavizado al salir del límite izquierdo
+    alpha += smoothstep(0.94, 1.0, curved_uv.x); // Suavizado al salir del límite derecho
+    alpha += smoothstep(0.01, 0.0, curved_uv.y); // Suavizado al salir del límite inferior
+    alpha += smoothstep(0.992, 1.0, curved_uv.y); // Suavizado al salir del límite superior
+    // Aplicar el efecto de oscurecimiento
+    col *= 1.0 - alpha; // Oscurecer el color original dependiendo de alpha
+
     return float4( col, 1.0 );
 }
 

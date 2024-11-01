@@ -9396,7 +9396,7 @@ Bajamos los últimos sources de:
 https://github.com/OpenDUNE/OpenDUNE.git
 
 Configuramos con:
-./configure --with-asound --without-oss --without-pulse --with-sdl2 --with-munt
+./configure --with-asound --without-oss --without-pulse --with-sdl2 --with-fluid
 
 NOTAS TIMIDITY
 ==============
