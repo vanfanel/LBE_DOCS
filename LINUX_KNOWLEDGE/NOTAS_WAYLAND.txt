@@ -1281,6 +1281,49 @@ swaybg -i atari.png >/dev/null 2>&1 &
 
 (NOTA: Acepta sólo PNG a no ser que lo compiles con gdk-pixbuf habilitado, así que con PNG nos vale).
 
+INSTALAR YAMBAR, UNA BARRA DE TAREAS PARA WAYLAND QUE NO DEPENDE DE GTK/QT
+==========================================================================
+
+Instalamos dependencias previas:
+apt-get install libyaml-dev scdoc fonts-font-awesome
+(Lo de font-awesome es porque no soporta iconos en sí, usa una fuente cuyos caracteres son gráficos).
+
+Bajamos los últimos sources estables de:
+https://codeberg.org/dnkl/yambar/tags
+
+Configuramos y compilamos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release -Dbackend-x11=disabled -Dplugin-backlight=disabled -Dplugin-battery=disabled \
+-Dplugin-disk-io=disabled -Dplugin-cpu=disabled -Dplugin-mem=disabled -Dplugin-pulse=disabled \
+-Dplugin-river=disabled -Dplugin-xwindow=disabled
+
+Creamos el fichero de configuración ~/.config/yambar/config.yml con el contenido:
+
+#######EMPIEZA CONFIG.YML########
+
+bar:
+  height: 52
+  location: bottom
+  background: 000000ff
+
+  right:
+    - clock:
+        content:
+          - string: {text: , font: "Font Awesome 6 Free:style=solid:size=24"}                                                         
+          - string: {text: "{date}", right-margin: 5}
+          - string: {text: , font: "Font Awesome 6 Free:style=solid:size=24"}                                                         
+          - string: {text: "{time}"}
+
+#######TERMINA CONFIG.YML########
+
+NOTA: Esos cuadrados son códigos hexadecimales correspondientes a glifos. Por ejemplo, el del calendario es f133,
+así que si tuvieses que escribirlo a mano en VIM, te pondrías en modo inserción, pulsarías CTLR+V, y luego escribirías "uf133",
+sí, con esa "u" de UNICODE al principio ya que es el caracter UNICODE con código f133.
+
 LANZAR WAYLAND COMO SERVICIO DE SYSTEMD
 =======================================
 
