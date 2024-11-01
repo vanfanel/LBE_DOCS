@@ -132,12 +132,6 @@ float4 PS_NewPixie_Final(float4 pos: SV_Position, float2 uv_tx : TexCoord) : SV_
     col = filmic( col );
 		
     /* Clamp */
-    if (curved_uv.x < 0.06 || curved_uv.x > 0.94)
-        col *= 0.0;
-    if (curved_uv.y < 0.008 || curved_uv.y > 0.992)
-        col *= 0.0;
-
-    /* Clamp */
     float alpha = 0.0; // Inicializar alpha
     // Calcular el efecto de oscurecimiento en los bordes
     alpha += smoothstep(0.01, 0.0, curved_uv.x); // Suavizado al salir del límite izquierdo
