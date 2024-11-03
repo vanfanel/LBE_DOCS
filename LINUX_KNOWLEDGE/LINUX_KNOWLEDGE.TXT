@@ -5317,6 +5317,8 @@ cd src/syncterm
 make RELEASE=1 WITH_SDL=1 USE_SDL_AUDIO=1 -j10
 ----Instalamos a mano (no hay "make uninstall", por eso instalamos a mano!!):
 cp gcc.linux.x64.exe.release/syncterm /usr/local/bin/
+----Para ponerlo a pantalla completa y en modo gráfico (por defecto se inicia en modo CURSES,
+que no entiende de pantallas completas ni de nada) nos vamos a "Program Settings->Video Output Mode" y lo ponemos a "SDL Fullscreen".
 
 *************Raspberry Pi y establecimiento de modos de vídeo tras el arranque: tvservice*********************
 
