@@ -5308,6 +5308,10 @@ ANEXO:
 --Lo primero es instalar un terminal BBS (que correrá dentro de nuestro emulator de terminal, no va independiente)
 que se llama Syncterm:
 ----Clonamos su repo: git clone --depth 1 https://gitlab.synchro.net/main/sbbs.git
+----Editamos src/xpdev/xp_dl.c y en la primera vez que vemos esta línea:
+sprintf(fname, "lib%s.so.%d", name, major);
+la dejamos así:
+sprintf (fname, "libSDL2-2.0.so.0", NULL);
 ----Compilamos con:
 cd src/syncterm
 make RELEASE=1 WITH_SDL=1 USE_SDL_AUDIO=1 -j10
