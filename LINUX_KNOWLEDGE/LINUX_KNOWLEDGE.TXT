@@ -5310,7 +5310,9 @@ que se llama Syncterm:
 ----Clonamos su repo: git clone --depth 1 https://gitlab.synchro.net/main/sbbs.git
 ----Compilamos con:
 cd src/syncterm
-make RELEASE=1 USE_SDL_AUDIO=1 -j10
+make RELEASE=1 WITH_SDL=1 USE_SDL_AUDIO=1 -j10
+----Instalamos a mano (no hay "make uninstall", por eso instalamos a mano!!):
+cp gcc.linux.x64.exe.release/syncterm /usr/local/bin/
 
 *************Raspberry Pi y establecimiento de modos de vídeo tras el arranque: tvservice*********************
 
