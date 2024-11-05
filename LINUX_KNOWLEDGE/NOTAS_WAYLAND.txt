@@ -685,7 +685,8 @@ Por ejemplo, si tienes la fuente "DejavuSansMono.ttf", estará registrada como "
 	opacity = 1.0
 	decorations = "disabled"
 ----Nos vamos a [colors], descomentamos la cabecera de la sección y añadimos:
-	foreground="#008800"
+	foreground = '#008800'
+	cursor = '#F38BA3'
 ----Nos vamos a [renderer], descomentamos la cabecera de la sección y añadimos:
 	backend="vulkan"
 	filters = ["/root/.config/retroarch/shaders/crt/newpixie-crt.slangp"]
