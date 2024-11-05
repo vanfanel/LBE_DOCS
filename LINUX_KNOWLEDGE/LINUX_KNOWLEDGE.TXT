@@ -2803,7 +2803,26 @@ Clonamos su repo:
 git clone --depth 1 https://github.com/OpenXcom/OpenXcom.git
 (...no está listo para compilar contra SDL2 aún).
 
-*******jfduke3d, el port güeno del duke3d para Pi*********************************
+*******Catacomb3d en GNU/Linux****************************************************
+
+--Descargamos los últimos sources estables de: https://github.com/ArnoAnsems/CatacombGL/releases
+
+--Compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+
+--Creamos el directorio de instalación y metemos allí el ejecutable:
+
+mkdir ~/catacomb
+cp CatacombGL ~/catacomb/
+
+--Metemos los datos de cada juego soportado en subdirectorios de ~/catacomb.
+Es posible lanzar cada juego directamente con "--descent", "--abyss", "--armageddon", "--apocalypse", etc...
+
+*******jfduke3d, el port güeno del duke3d para GNU/Linux**************************
 
 Es el port original en el que colabora Ken Silverman!
 Clonamos su repo de:
