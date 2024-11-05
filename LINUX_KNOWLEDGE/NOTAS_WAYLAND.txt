@@ -672,8 +672,12 @@ cp target/release/rio /usr/local/bin
 
 (NOTA: Para saber cómo configurar Rio, mira en el menú de la izquiera las secciones en: https://raphamorim.io/rio/docs/config/)
 --Ahora editamos ~/.config/rio/config.toml, y allí:
-----Nos vamos a [fonts], descomentamos la cabecera de la sección y añadimos:
+----PARA CONFIGURAR LAS FUENTES, nos vamos a [fonts], descomentamos la cabecera de la sección y añadimos la fuente por el nombre con el que está registrada la familia de esa fuente en el sistema.
+Mira las fuentes que tienes en /usr/share/fonts/truetype: El nombre de la familia de cada fuente es simplemente
+el nombre de la fuente, la variante y si es monospace o no, separado por espacios.
+Por ejemplo, si tienes la fuente "DejavuSansMono.ttf", estará registrada como "Dejavu Sans Mono" y la pondríamos así:
 	size = 32
+    family = "DejaVu Sans Mono"
 ----Nos vamos a [window], descomentamos la cabecera de la sección y añadimos:
 	width = 1620
 	height = 960
