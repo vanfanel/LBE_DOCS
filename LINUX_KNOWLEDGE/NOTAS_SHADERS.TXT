@@ -75,10 +75,14 @@ MODIFICACIONES AL SHADER CRT-NewPixie:
 dejamos la sección /* Clamp */ descomentada y así:
 
     /* Clamp */
-    if (curved_uv.x < 0.06 || curved_uv.x > 0.94)
-        col *= 0.0;
-    if (curved_uv.y < 0.008 || curved_uv.y > 0.992)
-        col *= 0.0;
+    float alpha = 0.0; // Inicializar alpha
+    // Calcular el efecto de oscurecimiento en los bordes
+    alpha += smoothstep(0.01, 0.0, curved_uv.x); // Suavizado al salir del límite izquierdo
+    alpha += smoothstep(0.99, 1.0, curved_uv.x); // Suavizado al salir del límite derecho
+    alpha += smoothstep(0.01, 0.0, curved_uv.y); // Suavizado al salir del límite inferior
+    alpha += smoothstep(0.99, 1.0, curved_uv.y); // Suavizado al salir del límite superior
+    // Aplicar el efecto de oscurecimiento
+    col *= 1.0 - alpha; // Oscurecer el color original dependiendo de alpha
 
 --Para que se vea la shadowmask:
 	--Añadimos "#define gl_FragCoord (uv_tx.xy * resolution)" al final de la única sección de #defines que hay.
@@ -106,10 +110,14 @@ Otras mejoras que podemos hacerle:
 añadimos esta sección /* Clamp */ justo antes de la línea "fragColor = float4(col,1.0);" 
 
     /* Clamp */
-    if (uv.x < 0.0 || uv.x > 1.0)
-        col *= 0.0;
-    if (uv.y < 0.0 || uv.y > 1.0)
-        col *= 0.0;
+    float alpha = 0.0; // Inicializar alpha
+    // Calcular el efecto de oscurecimiento en los bordes
+    alpha += smoothstep(0.01, 0.0, uv.x); // Suavizado al salir del límite izquierdo
+    alpha += smoothstep(0.99, 1.0, uv.x); // Suavizado al salir del límite derecho
+    alpha += smoothstep(0.01, 0.0, uv.y); // Suavizado al salir del límite inferior
+    alpha += smoothstep(0.99, 1.0, uv.y); // Suavizado al salir del límite superior
+    // Aplicar el efecto de oscurecimiento
+    col *= 1.0 - alpha; // Oscurecer el color original dependiendo de alpha
 
 --Para quitarle la shadowmask comentamos la línea:
 col*=1.0-0.65*float3(clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0),clamp((mod(fragCoord.x, 2.0)-1.0)*2.0,0.0,1.0));
@@ -145,7 +153,7 @@ ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./doomretro -nosplash -iwad d
 
 (NOTA: Si fuesen juegos de Vulkan directamente, no tendríamos que pasarle MESA_LOADER_DRIVER_OVERRIDE=zink, como es obvio).
 
-OTRAS NOTAS:
+#########OTRAS NOTAS################################
 
 La otra alternativa para conseguir lo mismo sería usar el compositor GAMESCOPE (https://github.com/ValveSoftware/gamescope)
 que directamente soporta shaders de ReShade para todo, pero que mete latencia al hacerlo tal como dice en su propio README.
