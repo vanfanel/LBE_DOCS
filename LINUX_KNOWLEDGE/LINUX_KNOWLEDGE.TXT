@@ -8086,6 +8086,8 @@ COMPILAR EL CORE MUPEN64 DE LIBRETRO
 Clonamos su repo:
 git clone --depth 1 https://github.com/libretro/mupen64plus-libretro-nx.git
 
+--Editamos Makefile y cambiamos "-lGL" por "-lOpenGL"
+
 --Si hemos compilado RetroArch contra OpenGL de escritorio que es como lo hacemos ahora, compilamos con:
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
@@ -8098,7 +8100,10 @@ FORCE_GLES3=1 HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1 make -j10
 
 NOTAS MUY IMPORTANTES PARA EL CORE:
 Para este core, desactiva el RunAhead y guarda eso como un override, o si no se producen fugas de memoria al salir.
-Poner "CPU Core" a "Cached Interpreter", ya que aunque parezca increíble "Dynarec" es bastante más lento y provoca problemas de audio.
+Y configuramos las opciones del core así:
+-"RDP Plugin" a "ParaLLEI-RDP"
+-"CPU Core" a "Cached Interpreter", ya que aunque parezca increíble "Dynarec" es bastante más lento y provoca problemas de audio.
+-"RSP Pligin" a "ParaLLEI"
 
 COMPILAR EL CORE DIRKSIMPLE (LASERDISC EN RETROARCH!!!)
 =======================================================
