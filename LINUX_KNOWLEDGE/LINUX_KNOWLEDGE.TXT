@@ -309,26 +309,39 @@ no puede generar audio en formato IEC958_SUBFRAME_LE. De hecho, ningún programa
 Se puede volcar y ver con:
 cat /sys/class/drm/card1-HDMI-A-0/edid | edid-decode
 
-******Forzar VRR en una pantalla hackeando el EDID****************************************************************************
+******Forzar VRR en una pantalla hackeando el EDID (NO FUNCIONA)*************************************************************
 
 --Lo primero, necesitamos un kernel con "CONFIG_DRM_LOAD_EDID_FIRMWARE" activado.
 Lo comprobamos con:
 grep CONFIG_DRM_LOAD_EDID_FIRMWARE /boot/config-6.11.2
 
 --Obtenemos el EDID de la pantalla:
-cp /sys/class/drm/card0-HDMI-A-1/edid ./edid_alterado
+cp /sys/class/drm/card0-HDMI-A-1/edid ./edid_custom
 
 --Nos llevamos el EDID a una máquina con escritorio completo donde podamos instalar "wxedit" que es con lo que lo vamos a editar.
 El "wxedit" se instala en Debian y derivados así: apt-get install wxedit
 
---En "wxedit" nos vamos a
+--En "wxedit", buscamos "CEA-861" y dentro de esa rama buscamos "VSD" que es el "Vendor Specific Data Block".
+  Ahí activamos el bit 6 (cuyo nombre aparece como "Reserved"), es decir, lo ponemos a 1. 
+  Una vez hecho esto, le damos a FILE->SAVE EDID BINARY.
 
 --Metemos el EDID alterado en un lugar donde lo podamos cargar desde el arranque:
 mkdir -p /usr/lib/firmware/edid
-cp edid_aterado mkdir -p /usr/lib/firmware/edid/
+cp edid_custom /usr/lib/firmware/edid/
 
---Cargamos el EDID alterado con:
-drm.edid_firmware=HDMI-A-1:edid/
+--Cargamos el EDID alterado añadiendo esto a los parámetros del kernel:
+drm.edid_firmware=HDMI-A-1:edid/edid_custom
+
+--No te olvides de ejecutar "update-grub" antes de reiniciar!
+
+NOTAS EXPLORATORIAS (No han dado ningún resultado funcional)
+--En el kernel Linux:
+Buscamos “vrr_capable", "VRR_ENABLED"
+En drm_object_attach_property() de de drivers/gpu/drm/drm_connector.c, el último valor puede ser puesto a 1 para que la propiedad
+"vrr_capable" sea puesta a 1 cuando es creada.
+En drm_connector_set_vrr_capable_property() de drivers/gpu/drm/drm_connector.c es donde se especifica si un conector es VRR capable o no.
+Usa drm_object_property_set_value() de drivers/gpu/drm/drm_mode_object.c para establecer ese valor.
+En intel_vrr_is_capable() y intel_vrr_is_in_range() de drivers/gpu/drm/i915/display/intel_vrr.c se especifica si es vrr capable.
 
 ******Sangre roja en el Metal Slug de Neo Geo*********************************************************************************
 
