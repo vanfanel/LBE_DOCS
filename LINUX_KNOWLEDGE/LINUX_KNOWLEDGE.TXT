@@ -309,6 +309,27 @@ no puede generar audio en formato IEC958_SUBFRAME_LE. De hecho, ningún programa
 Se puede volcar y ver con:
 cat /sys/class/drm/card1-HDMI-A-0/edid | edid-decode
 
+******Forzar VRR en una pantalla hackeando el EDID****************************************************************************
+
+--Lo primero, necesitamos un kernel con "CONFIG_DRM_LOAD_EDID_FIRMWARE" activado.
+Lo comprobamos con:
+grep CONFIG_DRM_LOAD_EDID_FIRMWARE /boot/config-6.11.2
+
+--Obtenemos el EDID de la pantalla:
+cp /sys/class/drm/card0-HDMI-A-1/edid ./edid_alterado
+
+--Nos llevamos el EDID a una máquina con escritorio completo donde podamos instalar "wxedit" que es con lo que lo vamos a editar.
+El "wxedit" se instala en Debian y derivados así: apt-get install wxedit
+
+--En "wxedit" nos vamos a
+
+--Metemos el EDID alterado en un lugar donde lo podamos cargar desde el arranque:
+mkdir -p /usr/lib/firmware/edid
+cp edid_aterado mkdir -p /usr/lib/firmware/edid/
+
+--Cargamos el EDID alterado con:
+drm.edid_firmware=HDMI-A-1:edid/
+
 ******Sangre roja en el Metal Slug de Neo Geo*********************************************************************************
 
 En QUICK MENU->OPTIONS, ponemos NEO-GEO MODE a UNIBIOS.
