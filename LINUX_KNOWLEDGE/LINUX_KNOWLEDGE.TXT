@@ -9361,13 +9361,15 @@ Ejecutamos con:
 CRISPY DOOM / CRISPY HERETIC
 ============================
 
-Primero instalamos una dependencia suya para que pre-convierta TODOS los efectos de sonido y así el juego no pegue tirones:
+--Primero instalamos una dependencia suya para que pre-convierta TODOS los efectos de sonido y así el juego no pegue tirones:
 sudo apt-get install --no-install-recommends libsamplerate0-dev
 
-Nos bajamos la última estable de:
+--Nos bajamos la última estable de:
 https://github.com/fabiangreffrath/crispy-doom/releases
 
-Compilamos con CMAKE:
+--Editamos src/i_video.c, buscamos "SDL_SetHint" y ponemos todas las ocurrencias a "linear".
+
+--Compilamos con CMAKE:
 mkdir b4
 cd b4
 
@@ -9376,9 +9378,9 @@ cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -fsigned-char" \
 
 make -j4
 
-El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
+--El fichero de configuración está en ~/.local/share/crispy-doom/crispy-doom.cfg
 
-PARA TENER ANIMACIONES SUAVES DE LAS ARMAS Y DE LOS MONSTRUOS (es posible tener ambos porque crispy-doom soporta DEHEXTRA),
+--PARA TENER ANIMACIONES SUAVES DE LAS ARMAS Y DE LOS MONSTRUOS (es posible tener ambos porque crispy-doom soporta DEHEXTRA),
 usamos las versiones especiales para CRISPY-DOOM de SMOOTHED.WAD para los monstruos y BLACKOPS.WAD para las armas:
 https://www.doomworld.com/forum/topic/85991-smoothed-smooth-monsters-for-doom-retro-and-crispy-doom/
 https://www.doomworld.com/forum/topic/84859-black-ops-smooth-weapons-dehacked-mod/
