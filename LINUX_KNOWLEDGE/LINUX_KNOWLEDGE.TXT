@@ -188,6 +188,30 @@ for i in *.chd; do chdman extractcd -i "$i" -o "${i%.*}.cue"; done
 Y para extraer de CHD a CUE/BIN:
 chdman extractcd -i image.chd -o image.cue -ob image.bin
 
+******Descargar desde Myrient directorios completos usando RCLONE*********************************************************************
+
+--Instalamos RCLONE (instrucciones sacadas de https://rclone.org/install/):
+sudo -v ; curl https://rclone.org/install.sh | sudo bash
+
+--Configuramos RCLONE con "rclone config" y allí:
+Añadimos una nueva conexión con "n" y la llamamos "myrient" por ejemplo.
+Elegimos el tipo de almacenamiento 21 que es el "HTTP".
+En el "Remote URL" ponemos "https://myrient.erista.me"
+El resto de preguntas que nos hace las dejamos con los valores por defecto.
+Salvamos y salimos de la configuración.
+
+--Comprobamos que podemos acceder a los archivos:
+rclone ls myrient:
+
+--Descargamos con:
+rclone --http-no-head sync <DIRECCIÓN_DEL_DIRECTORIO> <DIRECTORIO_DE_DESTINO> -P
+(El "-P" es para ver el progreso, opcionalmente deberíamos poder añadir también al final "--http-no-head",
+ que es para que no pida las HEAD de HTTP que indican el tamaño de archivo, etc.. sino que se ponga a descargarlo directamente).
+
+Por ejemplo, para descargar el No-Intro de Atari 2600 haríamos:
+mkdir Atari\ 2600
+rclone sync "myrient:files/No-Intro/Atari - 2600" ./Atari\ 2600/ -P
+
 ******Descargar desde ARCHIVE.ORG desde la línea de comandos usando un download manager***********************************************
 
 (!!!!)NOTA: Lo más práctico y rápido NO para descargar de Archive NO es hacerlo desde la línea de comandos, sino descargar desde el navegador
