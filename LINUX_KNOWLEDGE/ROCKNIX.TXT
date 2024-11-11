@@ -22,7 +22,7 @@ Configuración de RETROARCH:
 
 En vídeo:
 Output->Video->GLCore
-(GLCore es n ecesario para usar GLES3, que a su vez es necesario para que "Hard GPU Sync" funcione. 
+(GLCore es necesario para usar GLES3, que a su vez es necesario para que "Hard GPU Sync" funcione. 
  "Hard GPU Sync" es el equivalente a "Max Swapchain" a 2 en Vulkan o GL/GLES sobre KMSDRM).
 Output->Synchronization->Max Swapchain Images 2
 Output->Synchronization->VSYNC OFF (sí, OFF: el VSYNC sólo tiene sentido con triple buffering).

@@ -189,6 +189,8 @@ Y para extraer de CHD a CUE/BIN:
 chdman extractcd -i image.chd -o image.cue -ob image.bin
 
 ******Descargar desde Myrient directorios completos usando RCLONE*********************************************************************
+NOTA: Los sets NO-INTRO de Myrient están bastante más desactualizados de lo que estaban los de ARCHIVE.ORG,
+así que por ahora sigue usando los que tengas de ARCHIVE.ORG aunque ya no se puedan descargar, porque serán más recientes.
 
 --Instalamos RCLONE (instrucciones sacadas de https://rclone.org/install/):
 sudo -v ; curl https://rclone.org/install.sh | sudo bash
