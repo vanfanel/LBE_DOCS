@@ -211,7 +211,7 @@ que indican el tamaño de archivo, etc.. pero hay que pedirlas por cada archivo 
 que se ponga a descargarlo directamente).
 
 Por ejemplo, para descargar el No-Intro de Atari 2600 haríamos:
-rclone sync "myrient:/files/No-Intro/Atari - 2600/" Atari\ -\ 2600 --http-no-head -P
+rclone sync "myrient:/files/No-Intro/Atari - 2600/" "Atari - 2600" --http-no-head -P
 (¡¡¡CUIDADO!!! ¡¡¡HAY QUE PONER LAS BARRAS DEL PRINCIPIO Y DEL FINAL DE LA RUTA AL DIRECTORIO!!!)
 
 ******Descargar desde ARCHIVE.ORG desde la línea de comandos usando un download manager***********************************************
