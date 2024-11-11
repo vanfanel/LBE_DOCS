@@ -48,7 +48,7 @@ cargamos RetroArch 64bits desde TOOLS, ponemos Settings->Directory->Video Shader
 cargamos un juego del sistema que queramos usando LOAD CONTENT, cargamos shader que queramos de los que hemos metido en /STORAGE/shaders/slang,
 lo salvamos como GLOBAL PRESET, en el menú ES ponemos "Shader Set" a "Default" y ya está.
 
-EL MEJOR SHADER PARA CONSOLAS DE SOBREMESA (SOLUCIONA TAMBIÉN LO DEL DITHERING EB MEGADRIVE) ES ZFAST-COMPOSITE,
+EL MEJOR SHADER PARA CONSOLAS DE SOBREMESA (SOLUCIONA TAMBIÉN LO DEL DITHERING EN MEGADRIVE) ES ZFAST-COMPOSITE,
 con CONVERGENCE X-AXIS al máximo, SATURATION a 1.05, FLICKERING a 0, CURVATURE a 0, y los parámetros de scanline a 10 y 5 respectivamente.
 
 PARA QUE EL CORE DE PC-ENGINE (BEETLE PCE) VAYA A 100% DE VELOCIDAD, ve a "CORE OPTIONS->OWL RESAMPLE QUALITY" y ponlo a "0",
