@@ -204,13 +204,15 @@ Salvamos y salimos de la configuración.
 rclone ls myrient:
 
 --Descargamos con:
-rclone --http-no-head sync <DIRECCIÓN_DEL_DIRECTORIO> <DIRECTORIO_DE_DESTINO> -P
-(El "-P" es para ver el progreso, opcionalmente deberíamos poder añadir también al final "--http-no-head",
- que es para que no pida las HEAD de HTTP que indican el tamaño de archivo, etc.. sino que se ponga a descargarlo directamente).
+rclone --http-no-head sync <DIRECCIÓN_DEL_DIRECTORIO> <DIRECTORIO_DE_DESTINO> --http-no-head -P
+(El nombre de directorio de destino nos lo crea, no tenemos que tenerlo creado de antemano)
+(El "-P" es para ver el progreso, "--http-no-head", es para que no pida las HEAD de HTTP,
+que indican el tamaño de archivo, etc.. pero hay que pedirlas por cada archivo y son muchos, así que nos interesa
+que se ponga a descargarlo directamente).
 
 Por ejemplo, para descargar el No-Intro de Atari 2600 haríamos:
-mkdir Atari\ 2600
-rclone sync "myrient:files/No-Intro/Atari - 2600" ./Atari\ 2600/ -P
+rclone sync "myrient:/files/No-Intro/Atari - 2600/" Atari\ -\ 2600 --http-no-head -P
+(¡¡¡CUIDADO!!! ¡¡¡HAY QUE PONER LAS BARRAS DEL PRINCIPIO Y DEL FINAL DE LA RUTA AL DIRECTORIO!!!)
 
 ******Descargar desde ARCHIVE.ORG desde la línea de comandos usando un download manager***********************************************
 
