@@ -198,7 +198,7 @@ chdman extractcd -i image.chd -o image.cue -ob image.bin
 
 --El VENTOY nos crea una partición EFI de 32MB para el arranque, y una grande con el resto del espacio del pendrive.
   Montamos la partición "grande" (se monta sola al acabar de instalar el VENTOY, si no pues con sacar y meter el pen ya está),
-  y ahí copiamos la ISO de Windows que queramos. Yo uso la "Tiny10 x64 23h2.iso" que está en Archive.org 
+  y ahí copiamos la ISO de Windows que queramos.
 
 --Metemos el pendrive en el ordenador donde queramos instalar, reiniciamos, establecemos o elegimos el pen como unidad de arranque,
   y nos presentará inmediatamente las diferentes ISOS que hemos metido. Elegimos una y listo.
