@@ -188,7 +188,7 @@ for i in *.chd; do chdman extractcd -i "$i" -o "${i%.*}.cue"; done
 Y para extraer de CHD a CUE/BIN:
 chdman extractcd -i image.chd -o image.cue -ob image.bin
 
-******Crear un disco de arranque de Windows 10 desde GNU/Linux************************************************************************
+******Crear un disco de arranque con varias ISOS arrancables (útil para tener un sólo pen capaz de inslatar Debian Linux, Windows 10, etc)******
 
 --Descargamos VENTOY de: https://github.com/ventoy/Ventoy/releases
   Nos descargamos el archivo ventoy*-linux.tar.gz, lo descomprimimos y ya, no hay que compilar nada.
