@@ -188,6 +188,18 @@ for i in *.chd; do chdman extractcd -i "$i" -o "${i%.*}.cue"; done
 Y para extraer de CHD a CUE/BIN:
 chdman extractcd -i image.chd -o image.cue -ob image.bin
 
+******Crear un disco de arranque de Windows 10 desde GNU/Linux************************************************************************
+
+--Descargamos VENTOY de: https://github.com/ventoy/Ventoy/releases
+  Nos descargamos el archivo ventoy*-linux.tar.gz, lo descomprimimos y ya, no hay que compilar nada.
+
+--Instalamos VENTOY en el pendrive:
+  sudo ./Ventoy2Disk.sh -I /dev/<NODO_DEL_PENDRIVE>
+
+--El VENTOY nos crea una partición EFI de 32MB para el arranque, y una grande con el resto del espacio del pendrive.
+  Montamos la partición "grande" (se monta sola al acabar de instalar el VENTOY, si no pues con sacar y meter el pen ya está),
+  y ahí copiamos la ISO de Windows que queramos. Yo uso la "Tiny10 x64 23h2.iso" que está en Archive.org 
+
 ******Descargar desde Myrient directorios completos usando RCLONE*********************************************************************
 NOTA: Los sets NO-INTRO de Myrient están bastante más desactualizados de lo que estaban los de ARCHIVE.ORG,
 así que por ahora sigue usando los que tengas de ARCHIVE.ORG aunque ya no se puedan descargar, porque serán más recientes.
