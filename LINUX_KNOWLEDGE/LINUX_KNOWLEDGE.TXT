@@ -193,7 +193,7 @@ chdman extractcd -i image.chd -o image.cue -ob image.bin
 --Descargamos VENTOY de: https://github.com/ventoy/Ventoy/releases
   Nos descargamos el archivo ventoy*-linux.tar.gz, lo descomprimimos y ya, no hay que compilar nada.
 
---Instalamos VENTOY en el pendrive:
+--Instalamos VENTOY en el pendrive desde la consola de comandos (NO USES el GUI, porque se instala mal y luego no te deja copiar las ISOS):
   sudo ./Ventoy2Disk.sh -I /dev/<NODO_DEL_PENDRIVE>
 
 --El VENTOY nos crea una partición EFI de 32MB para el arranque, y una grande con el resto del espacio del pendrive.
