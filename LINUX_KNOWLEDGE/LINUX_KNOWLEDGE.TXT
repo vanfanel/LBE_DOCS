@@ -200,6 +200,9 @@ chdman extractcd -i image.chd -o image.cue -ob image.bin
   Montamos la partición "grande" (se monta sola al acabar de instalar el VENTOY, si no pues con sacar y meter el pen ya está),
   y ahí copiamos la ISO de Windows que queramos. Yo uso la "Tiny10 x64 23h2.iso" que está en Archive.org 
 
+--Metemos el pendrive en el ordenador donde queramos instalar, reiniciamos, establecemos o elegimos el pen como unidad de arranque,
+  y nos presentará inmediatamente las diferentes ISOS que hemos metido. Elegimos una y listo.
+
 ******Descargar desde Myrient directorios completos usando RCLONE*********************************************************************
 NOTA: Los sets NO-INTRO de Myrient están bastante más desactualizados de lo que estaban los de ARCHIVE.ORG,
 así que por ahora sigue usando los que tengas de ARCHIVE.ORG aunque ya no se puedan descargar, porque serán más recientes.
