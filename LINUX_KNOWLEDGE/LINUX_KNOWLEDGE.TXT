@@ -557,6 +557,21 @@ make rednukem
 
 Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
+******Compilar core PCSX2 para LIBRETRO**************************************************************************************
+
+Clonamos su repo con sus submódulos:
+git clone --depth 1 https://git.libretro.com/libretro/ps2.git
+cd ps2
+git submodule update --init --recursive
+
+Instalamos dependencias previas:
+apt-get install liblzma-dev
+
+Compilamos con:
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGL=FALSE \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
 ******Carmageddon en GNU/Linux***********************************************************************************************
 
 Clonamos el repo:
