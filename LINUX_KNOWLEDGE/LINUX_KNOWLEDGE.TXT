@@ -564,6 +564,9 @@ git clone --depth 1 https://git.libretro.com/libretro/ps2.git
 cd ps2
 git submodule update --init --recursive
 
+--Editamos pcsx2/CMakeLists.txt, buscamos "OpenGL::GL" y comentamos esa inclusión (ya que aunque le pasemos luego
+el "-DUSE_OPENGL=FALSE", se empeña en hacer el linkado contra OpenGL).
+
 --Instalamos dependencias previas:
 apt-get install liblzma-dev
 
