@@ -579,6 +579,12 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGL=FALSE \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
+--La BIOS que necesitamos está en https://pcsx2.gitlab.io/ps2bios/ (tienes copia de seguridad en el disco de backup)
+  Nos bajamos la que queramos de las tres, ya que el core no implementa region locking, y la metemos en:
+  ~/.config/retroarch/system/pcsx2/bios/
+ADEMÁS DE LA BIOS, se necesita tener "bin/resources" copiado al mismo sitio:
+cp -R bin/resources ~/.config/retroarch/system/pcsx2/bios/
+
 ******Carmageddon en GNU/Linux***********************************************************************************************
 
 Clonamos el repo:
