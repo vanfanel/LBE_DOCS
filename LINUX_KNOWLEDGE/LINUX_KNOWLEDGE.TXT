@@ -3050,7 +3050,7 @@ make -j4
 
 CFLAGS="-march=native -mtune=native -O2" make -j4
 
-*******Quakespasm en la Pi*******************************************************
+*******Quakespasm en GNU/Linux*****************************************************
 
 Clonamos su repo:
 git clone --depth 1 https://github.com/sezero/quakespasm.git
