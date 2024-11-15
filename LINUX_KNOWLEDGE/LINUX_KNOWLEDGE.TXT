@@ -9571,6 +9571,7 @@ mkdir ~/dune2
 cp objs/release/opendune ~/dune2/
 cp bin/opendune.ini.sample ~/dune2/opendune.ini
 En el directorio "~/dune2/data" metemos también los datos de la versión 1.07 del juego original, incluyendo el .exe
+(Tienes copia de los datos preparados en el disco duro de backup).
 También metemos en "~/dune2" la fuente de Fluidsynth que queramos usar, yo uso la que se llama "UHD3.sf2".
 
 --Editamos el .ini y establecemos la fuente para fluidsynth (el único backend que soporta es ALSA) así:
@@ -9580,14 +9581,6 @@ fs_soundfont=/root/dune2/UHD3.sf2
 echo "pcm.!default { type plug slave.pcm "dmixed" }" > /tmp/dmix.conf
 ./opendune                                                                                                                             
 rm /tmp/dmix.conf
-
-NOTA: Si quieres que no se muestre la intro (no se puede saltar la primera vez), en 
-
-	OPCIONAL: Música con MUNT
-
-Clonamos su repo: git clone --depth 1 https://github.com/munt/munt.git
-
-Ahora entramos en munt/
 
 NOTAS TIMIDITY
 ==============
