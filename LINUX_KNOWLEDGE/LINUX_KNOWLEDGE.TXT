@@ -9557,19 +9557,31 @@ iotop -oPa
 OpenDUNE
 =========
 
-Clonamos su repo: git clone --depth 1 https://github.com/OpenDUNE/OpenDUNE.git
+--Clonamos su repo: git clone --depth 1 https://github.com/OpenDUNE/OpenDUNE.git
 
-Configuramos y compilamos con (MUY IMPORTANTE, NO NOS INTERESA EL SONIDO POR ALSA porque no soporta el formato de audio requerido
+--Editamos src/video/video_sdl2.c y allí cambiamos todos los "SDL_FULLSCREEN" por "SDL_FULLSCREEN_DESKTOP".
+
+--Configuramos y compilamos con (MUY IMPORTANTE, NO NOS INTERESA EL SONIDO POR ALSA porque no soporta el formato de audio requerido
 y suenan "chillidos" en vez de efectos de sonido):
 ./configure --with-sdl2 --with-fluid --without-asound --without-oss --without-pulse
 make -j10
 
-Copiamos el ejecutable y el .ini que viene con los sources al directorio "~/dune2":
+--Copiamos el ejecutable y el .ini que viene con los sources al directorio "~/dune2":
 mkdir ~/dune2
 cp objs/release/opendune ~/dune2/
 cp bin/opendune.ini.sample ~/dune2/opendune.ini
+En el directorio "~/dune2/data" metemos también los datos de la versión 1.07 del juego original, incluyendo el .exe
+También metemos en "~/dune2" la fuente de Fluidsynth que queramos usar, yo uso la que se llama "UHD3.sf2".
 
-Ahora, en el directorio "~/dune2/data" metemos también los datos de la versión 1.07 del juego original, incluyendo el .exe.
+--Editamos el .ini y establecemos la fuente para fluidsynth (el único backend que soporta es ALSA) así:
+fs_soundfont=/root/dune2/UHD3.sf2 
+
+--Para ejecutarlo y que suene la música y los efectos al mismo tiempo, tenemos que activar DMIX temporalmente, así que hacemos:
+echo "pcm.!default { type plug slave.pcm "dmixed" }" > /tmp/dmix.conf
+./opendune                                                                                                                             
+rm /tmp/dmix.conf
+
+NOTA: Si quieres que no se muestre la intro (no se puede saltar la primera vez), en 
 
 	OPCIONAL: Música con MUNT
 
