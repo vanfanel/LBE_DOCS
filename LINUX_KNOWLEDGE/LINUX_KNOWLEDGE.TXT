@@ -9564,9 +9564,10 @@ y suenan "chillidos" en vez de efectos de sonido):
 ./configure --with-sdl2 --with-fluid --without-asound --without-oss --without-pulse
 make -j10
 
-Instalamos:
+Copiamos el ejecutable y el .ini que viene con los sources al directorio "~/dune2":
 mkdir ~/dune2
 cp objs/release/opendune ~/dune2/
+cp bin/opendune.ini.sample ~/dune2/opendune.ini
 
 Ahora, en el directorio "~/dune2/data" metemos también los datos de la versión 1.07 del juego original, incluyendo el .exe.
 
