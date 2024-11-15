@@ -9557,18 +9557,24 @@ iotop -oPa
 OpenDUNE
 =========
 
-Empezamos con los sources del munt (emulador de mt32):
-Clonamos de:
-https://github.com/munt/munt.git
+Clonamos su repo: git clone --depth 1 https://github.com/OpenDUNE/OpenDUNE.git
+
+Configuramos y compilamos con (MUY IMPORTANTE, NO NOS INTERESA EL SONIDO POR ALSA porque no soporta el formato de audio requerido
+y suenan "chillidos" en vez de efectos de sonido):
+./configure --with-sdl2 --with-fluid --without-asound --without-oss --without-pulse
+make -j10
+
+Instalamos:
+mkdir ~/dune2
+cp objs/release/opendune ~/dune2/
+
+Ahora, en el directorio "~/dune2/data" metemos también los datos de la versión 1.07 del juego original, incluyendo el .exe.
+
+	OPCIONAL: Música con MUNT
+
+Clonamos su repo: git clone --depth 1 https://github.com/munt/munt.git
 
 Ahora entramos en munt/
-
-Ahora, vamos a por el OpenDUNE en sí.
-Bajamos los últimos sources de:
-https://github.com/OpenDUNE/OpenDUNE.git
-
-Configuramos con:
-./configure --with-asound --without-oss --without-pulse --with-sdl2 --with-fluid
 
 NOTAS TIMIDITY
 ==============
