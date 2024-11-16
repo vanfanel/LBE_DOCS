@@ -3068,7 +3068,16 @@ https://github.com/baldurk/renderdoc/releases
 --Compilamos con:
 mkdir b4
 cd b4
-cmake .. -DENABLE_XLIB=FALSE -DENABLE_XCB=FALSE -DENABLE_UNSUPPORTED_EXPERIMENTAL_POSSIBLY_BROKEN_WAYLAND=TRUE -DENABLE_GLES=OFF -DENABLE_GL=OFF
+
+cmake .. -DENABLE_XLIB=FALSE -DENABLE_XCB=FALSE \
+-DENABLE_UNSUPPORTED_EXPERIMENTAL_POSSIBLY_BROKEN_WAYLAND=TRUE \
+-DENABLE_PYRENDERDOC=OFF -DENABLE_QRENDERDOC=OFF -DENABLE_GLES=OFF -DENABLE_GL=OFF
+
+(RECUERDA: Si queremos una versión para QT, no le pasamos "-DENABLE_QRENDERDOC=OFF", pero necesitamos QT instalado,
+ en tal caso mira el apartado correspondiente de este mismo documento).
+
+make -j10
+
 
 *******Capturar escenas de Vulkan para los informes de errores de MESA*************
 
