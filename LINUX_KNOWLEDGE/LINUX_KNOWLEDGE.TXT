@@ -1085,7 +1085,7 @@ Las instrucciones básicas las he sacado de: https://wiki.qt.io/Building_Qt_6_fr
 VERSION ESTABLE (RECOMENDADO):
 wget https://download.qt.io/official_releases/qt/6.8/6.8.0/submodules/qtbase-everywhere-src-6.8.0.tar.xz
 
-ALTERNATIVA BAJANDO LA VERSIÓN ESTABLE Y LOS SUBMÓDULOS DE GITHUB (NO RECOMENDADO):
+ALTERNATIVA: BAJANDO DE GITHUB LA VERSIÓN ESTABLE Y LOS SUBMÓDULOS (NO RECOMENDADO):
 Clonamos su repo:
 git clone https://code.qt.io/qt/qt5.git qt6
 Nos vamos a la versión tagged LTS actual:
