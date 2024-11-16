@@ -1156,7 +1156,7 @@ cmake --install .
 ******Compilar PCSX2 standalone**********************************************************************************************
 
 Instalamos dependencias previas:
-apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-dev libaio-dev liblz4-dev
+apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-dev libaio-dev liblz4-dev libshaderc-dev libbacktrace-dev
 
 También se necesita tener en el sistema una versión de QT6 con el módulo TOOLS.
 En la sección de cómo compilar QT6 tienes también cómo compilar e instalar este módulo.
@@ -1173,6 +1173,7 @@ cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DX11_API=OFF \
 -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.8.0/lib/cmake" \
+-DSHADERC_LIBRARY=/usr/lib/x86_64-linux-gnu/libshaderc.so \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
