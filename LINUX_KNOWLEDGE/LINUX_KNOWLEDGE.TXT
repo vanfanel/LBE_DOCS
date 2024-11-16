@@ -1078,7 +1078,7 @@ sync
 I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2.AppImage "$1" >> /dev/null 2>&1
 sed -i "s/ hide-cursor//g" ~/.config/wayfire.ini
 
-******Compilar QT6***********************************************************************************************************
+******Compilar e instalar QT6 en GNU/Linux****************************************************************************************
 
 Las instrucciones básicas las he sacado de: https://wiki.qt.io/Building_Qt_6_from_Git
 
