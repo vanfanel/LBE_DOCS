@@ -1114,6 +1114,12 @@ cmake --build . --parallel 10
 
 --INSTALACIÓN:
 cmake --install .
+Y ahora editamos /etc/profile.d/custom.sh y añadimos algo como esto para que los ejecutables de QT queden en el PATH:
+export PATH=/usr/local/Qt-6.8.0/bin:$PATH
+(NO instales en /usr/local/bin, déjalo donde se instala por defecto, en ese subdirectorio de /usr/local con número de versión,
+ ya que es lo correcto según la documentación debido a que se pueden tener varias versiones de QT en el mismo sistema, etc).
+(PARA DESINSTALAR mira en "install_manifest.txt" los archivos que se han instalado y dónde.
+ Es fácil porque queda todo en el mismo subdirectorio de /usr/local/).
 
 PARTE 2: MÓDULOS DE QT6 NECESARIOS PARA LOS EMULADORES
 
