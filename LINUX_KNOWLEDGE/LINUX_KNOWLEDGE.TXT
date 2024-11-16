@@ -1125,31 +1125,31 @@ PARTE 2: MÓDULOS DE QT6 NECESARIOS PARA LOS EMULADORES
 
 ---WAYLAND (Necesario para PCSX2)---
 
-wget https://download.qt.io/official_releases/qt/6.6/6.6.0/submodules/qtwayland-everywhere-src-6.6.0.tar.xz
+wget https://download.qt.io/official_releases/qt/6.8/6.8.0/submodules/qtwayland-everywhere-src-6.8.0.tar.xz
 
 mkdir b4
 cd b4
-cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake"
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.8.0/lib/cmake"
 cmake --build . --parallel 12
 cmake --install .
 
 ---TOOLS (Necesario para PCSX2)---
 
-wget https://download.qt.io/official_releases/qt/6.6/6.6.0/submodules/qttools-everywhere-src-6.6.0.tar.xz
+wget https://download.qt.io/official_releases/qt/6.8/6.8.0/submodules/qttools-everywhere-src-6.8.0.tar.xz
 
 mkdir b4
 cd b4
-cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake"
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.8.0/lib/cmake"
 cmake --build . --parallel 12
 cmake --install .
 
 ---SVG (Necesario para Dolphin)---
 
-wget https://download.qt.io/official_releases/qt/6.6/6.6.0/submodules/qtsvg-everywhere-src-6.6.0.tar.xz
+wget https://download.qt.io/official_releases/qt/6.8/6.8.0/submodules/qtsvg-everywhere-src-6.8.0.tar.xz
 
 mkdir b4
 cd b4
-cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake"
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/usr/local/Qt-6.8.0/lib/cmake"
 cmake --build . --parallel 12
 cmake --install .
 
