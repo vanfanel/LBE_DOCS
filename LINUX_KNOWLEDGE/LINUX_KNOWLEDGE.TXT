@@ -1156,7 +1156,7 @@ cmake --install .
 ******Compilar PCSX2 standalone**********************************************************************************************
 
 Instalamos dependencias previas:
-apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-dev libaio-dev
+apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-dev libaio-dev liblz4-dev
 
 También se necesita tener en el sistema una versión de QT6 con el módulo TOOLS.
 En la sección de cómo compilar QT6 tienes también cómo compilar e instalar este módulo.
@@ -1172,7 +1172,7 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DX11_API=OFF \
--DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake" \
+-DCMAKE_PREFIX_PATH="/usr/local/Qt-6.8.0/lib/cmake" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
@@ -3061,6 +3061,9 @@ CFLAGS="-march=native -mtune=native -O2" make -j4
 *******Debugear programas de Vulkan con RENDERDOC**********************************
 
 --En primer lugar, se necesita QT instalado. Mira el apartado correspondiente de este documento para instalarlo si no lo tienes instalado.
+
+--Instalamos dependencias previas:
+apt-get install python3-dev
 
 --Bajamos los últimos sources estables de:
 https://github.com/baldurk/renderdoc/releases
