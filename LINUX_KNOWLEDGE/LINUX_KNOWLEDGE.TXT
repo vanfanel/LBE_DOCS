@@ -3068,7 +3068,7 @@ https://github.com/baldurk/renderdoc/releases
 --Compilamos con:
 mkdir b4
 cd b4
-cmake .. -DENABLE_XLIB=FALSE -DENABLE_XCB=FALSE -DENABLE_UNSUPPORTED_EXPERIMENTAL_POSSIBLY_BROKEN_WAYLAND=TRUE
+cmake .. -DENABLE_XLIB=FALSE -DENABLE_XCB=FALSE -DENABLE_UNSUPPORTED_EXPERIMENTAL_POSSIBLY_BROKEN_WAYLAND=TRUE -DENABLE_GLES=OFF -DENABLE_GL=OFF
 
 *******Capturar escenas de Vulkan para los informes de errores de MESA*************
 
