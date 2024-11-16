@@ -3060,7 +3060,7 @@ CFLAGS="-march=native -mtune=native -O2" make -j4
 
 *******Debugear programas de Vulkan con RENDERDOC**********************************
 
---Instalamos dependencias previas: apt-get install libpython3-dev python3-dev
+--En primer lugar, se necesita QT instalado. Mira el apartado correspondiente de este documento para instalarlo si no lo tienes instalado.
 
 --Bajamos los últimos sources estables de:
 https://github.com/baldurk/renderdoc/releases
@@ -3071,13 +3071,16 @@ cd b4
 
 cmake .. -DENABLE_XLIB=FALSE -DENABLE_XCB=FALSE \
 -DENABLE_UNSUPPORTED_EXPERIMENTAL_POSSIBLY_BROKEN_WAYLAND=TRUE \
--DENABLE_PYRENDERDOC=OFF -DENABLE_QRENDERDOC=OFF -DENABLE_GLES=OFF -DENABLE_GL=OFF
+-DENABLE_PYRENDERDOC=OFF -DENABLE_GLES=OFF -DENABLE_GL=OFF
 
-(RECUERDA: Si queremos una versión para QT, no le pasamos "-DENABLE_QRENDERDOC=OFF", pero necesitamos QT instalado,
- en tal caso mira el apartado correspondiente de este mismo documento).
+(RECUERDA: SE NECESITA QT. Se le podría pasar "-DENABLE_QRENDERDOC=OFF", pero entonces sólo nos compilaría renderdoccmd,
+ que NO nos deja salvar lo que capturemos y es sólo "una herramienta interna sin soporte" según los desarrolladores de Renderdoc).
 
 make -j10
 
+--Instalamos:
+make install
+(Para desinstalar, miramos el "install_manifest.txt" para ver qué archivos se han instalado y los borramos a mano).
 
 *******Capturar escenas de Vulkan para los informes de errores de MESA*************
 
