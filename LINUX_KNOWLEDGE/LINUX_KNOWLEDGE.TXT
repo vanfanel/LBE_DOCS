@@ -1164,11 +1164,8 @@ apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-
 
 -Instalamos a mano otra dependencia previa: libshaderc. (La versión que viene con Debian 13 es muy antigua y no nos vale).
 ----Clonamos su repo: git clone --depth 1 https://github.com/google/shaderc.git
-----Clonamos a mano sus sub-dependencias así (NO tiene lo necesario para clonarlas al clonar el repo ni justo después, hay que hacerlo a mano):
-cd third_party
-git clone --depth 1 https://github.com/KhronosGroup/SPIRV-Tools.git spirv-tools
-git clone --depth 1 https://github.com/KhronosGroup/SPIRV-Headers.git spirv-headers
-git clone --depth 1  https://github.com/KhronosGroup/glslang.git glslang
+----Entramos en el raiz de los sources y clonamos a mano sus sub-dependencias así:
+./utils/git-sync-deps
 ----Configuramos y compilamos con:
 mkdir b4
 cd b4
@@ -3081,8 +3078,6 @@ CFLAGS="-march=native -mtune=native -O2" make -j4
 
 *******Debugear programas de Vulkan con RENDERDOC**********************************
 
---En primer lugar, se necesita QT instalado. Mira el apartado correspondiente de este documento para instalarlo si no lo tienes instalado.
-
 --Instalamos dependencias previas:
 apt-get install python3-dev
 
@@ -3095,17 +3090,20 @@ cd b4
 
 cmake .. -DENABLE_XLIB=FALSE -DENABLE_XCB=FALSE \
 -DENABLE_UNSUPPORTED_EXPERIMENTAL_POSSIBLY_BROKEN_WAYLAND=TRUE \
--DENABLE_PYRENDERDOC=OFF -DENABLE_GLES=OFF -DENABLE_GL=OFF
-
-(RECUERDA: SE NECESITA QT. Se le podría pasar "-DENABLE_QRENDERDOC=OFF", pero entonces sólo nos compilaría renderdoccmd,
- que NO nos deja salvar lo que capturemos y es sólo "una herramienta interna sin soporte" según los desarrolladores de Renderdoc).
+-DENABLE_QRENDERDOC=OFF -DENABLE_PYRENDERDOC=OFF -DENABLE_GLES=OFF -DENABLE_GL=OFF
 
 make -j10
+
+(RECUERDA: Si quieres compilar QRenderdoc, una versión de Renderdoc con interface de ventanas y diálogos mediante QT,
+ no le pases "-DENABLE_QRENDERDOC=OFF", pero en ese caso necesitas QT instalado: mira el apartado corresponiente para saber cómo instalo.
+ PERO OJO!!! QRENDERDOC NO FUNCIONA EN WAYLAND!!!).
 
 --Instalamos:
 make install
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
 for f in $(cat install_manifest.txt) ; do rm "$f"; done
+
+--Si usas renderdoccmd, las capturas van a /tmp.
 
 *******Capturar escenas de Vulkan para los informes de errores de MESA*************
 
