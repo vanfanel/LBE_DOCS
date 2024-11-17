@@ -1169,9 +1169,10 @@ apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-
 ----Configuramos y compilamos con:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DSHADERC_SKIP_TESTS=ON \
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DSHADERC_SKIP_TESTS=ON \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+ninja -j10
 
 PARA DESINSTALAR (no hay "make uninstall"):
 for f in $(cat install_manifest.txt) ; do rm "$f"; done
