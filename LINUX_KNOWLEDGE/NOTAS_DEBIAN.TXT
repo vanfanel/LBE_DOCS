@@ -608,7 +608,7 @@ INSTALAR SDL2
 Instalamos dependencias previas:
 
 apt-get install libudev-dev libasound2-dev libvorbis-dev libflac-dev libmpg123-dev libmodplug-dev \
-libpng-dev libjpeg-dev libfreetype6-dev --no-install-recommends
+libpng-dev libjpeg-dev libfreetype6-dev libsamplerate0-dev --no-install-recommends
 
 Añadimos "export SDL_VIDEO_DOUBLE_BUFFER=1" en /etc/profile.d/custom.sh
 
@@ -621,29 +621,33 @@ CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
 
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
-./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-offscreen --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
+./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-offscreen --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-3dnow
 
-CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA, PERO EN MODO DEBUG:
+(PARA SISTEMAS EMBEDIDOS O CON MUY POCA POTENCIA, PODEMOS PASARLE --diable-libsamplerate, QUE HACE QUE SDL2 RESAMPLEE USANDO SUS ALGORITMOS INTERNOS
+ QUE SON DE MENOR CALIDAD Y METEN MÁS RUIDO PERO SON MUCHO MÁS RÁPIDOS).
 
-CFLAGS="-O0 -ggdb -DEGL_NO_X11" \
-CXXFLAGS=" -O0 -ggdb -DEGL_NO_X11" \
-./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-libsamplerate
+(LO DE "--disable-3dnow" ES FUNDAMENTAL PORQUE SI NO EL COMPILADOR GENERA UNAS INSTRUCCIONES QUE NO EXISTEN EN LOS PROCESADORES INTEL
+ AL PASARLE LOS FLAGS "-march=native -mtune=native -O2" Y LOS PROGRAMAS DAN ERRORES DE "illegal instruction").
 
 (LO DE -DMESA_EGL_NO_X11_HEADERS LO HEMOS SACADO DE /usr/lib/pkgconfig/egl.pc. Como el viejo buildsystem de las SDL2 basado en configure y make no usa pkgconfig para saber qué flags tiene que pasar cuando
 se compile eglplatform.h, parte de EGL de MESA, que es donde  MESA_EGL_NO_X11_HEADERS evita intentar incluir las headers de X11, pues se lo tenemos que pasar nosotros a mano. El buildsystem de las SDL2 basado en CMAKE sí
 pasa correctamente el  -DMESA_EGL_NO_X11_HEADERS de /usr/lib/pkgconfig/egl.pc, porque usa pkconfig para saber qué flags tiene que pasar cuando compila los headers de EGL).
 
-TEMPORAL (SIN PROBAR DEL TODO) CON CMAKE POR SI UN DÍA HAY QUE CAMBIAR AL CMAKE (ESPEREMOS QUE NO!):
-cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DASSERTIONS=disabled -DVIDEO_DUMMY=OFF -DVIDEO_VULKAN=OFF -DDISKAUDIO=OFF -DDUMMYAUDIO=OFF -DOSS=OFF ..
+CON CMAKE SERÍA:
+mkdir b4
+cd b4
 
-Compilar e instalar.
+cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release \
+-DSDL_3DNOW=OFF -DSDL_DISKAUDIO=OFF -DSDL_DUMMYAUDIO=OFF -DSDL_DUMMYVIDEO=OFF -DSDL_OSS=OFF -DSDL_WAYLAND_QT_TOUCH=OFF
 
-No te olvides de añadir en /etc/profile:
+OTRAS NOTAS IMPORTANTES:
+
+--No te olvides de añadir en /etc/profile:
 export SDL_VIDEO_DOUBLE_BUFFER=1
 Luego puedes comprobarlo con echo $<nombre_variable>, en plan:
 echo $SDL_VIDEO_DOUBLE_BUFFER
 
-Si te da un error "No available video device", y cumplas estos requisitos:
+--Si te da un error "No available video device", y cumplas estos requisitos:
 tienes libdrm instalada en /usr/local/lib/<nombre_arquitectura>/,
 tienes libgbm que es instalada por MESA también en /usr/local/lib/<nombre_arquitectura>/,
 tienes al usuario pi añadido al grupo "render",
@@ -651,7 +655,7 @@ tienes al usuario pi añadido al grupo "render",
 sudo rm /etc/ld.so.cache
 sudo ldconfig
 
-Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sabrás porque no funciona con el Prince...),
+--Y si tienes un mando que no es detectado por las SDL2 como gamecontroller (lo sabrás porque no funciona con el Prince...),
 saca su cadena de mapping de la SDL2 Gamepad Tool (http://www.generalarcade.com/gamepadtool),
 y la añades en /etc/profile usando la variable de entorno SDL_GAMECONTROLLERCONFIG, tal que así:
 SDL_GAMECONTROLLERCONFIG="030000009b2800000800000001010000,raphnet.net Dreamcast to USB,a:b10,b:b9,x:b2,y:b1,back:b0,guide:b3,start:b8,dpup:b4,dpdown:b5,dpleft:b6,dpright:b7,platform:Linux,"
