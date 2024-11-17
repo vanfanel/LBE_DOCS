@@ -3103,7 +3103,7 @@ make install
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
 for f in $(cat install_manifest.txt) ; do rm "$f"; done
 
---Si usas renderdoccmd, las capturas van a /tmp.
+--PARA CAPTURAR, pulsamos F12 o PrintScreen. Las capturas van a /tmp.
 
 *******Capturar escenas de Vulkan para los informes de errores de MESA*************
 
