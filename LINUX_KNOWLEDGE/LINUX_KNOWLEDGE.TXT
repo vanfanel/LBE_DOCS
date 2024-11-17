@@ -1170,6 +1170,7 @@ apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-
 mkdir b4
 cd b4
 cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DSHADERC_SKIP_TESTS=ON \
+-DSPIRV_SKIP_EXECUTABLES=ON -DSKIP_GLSLANG_INSTALL=ON \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 ninja -j10
