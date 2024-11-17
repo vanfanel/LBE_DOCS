@@ -3107,7 +3107,8 @@ for f in $(cat install_manifest.txt) ; do rm "$f"; done
 
 --PARA CAPTURAR, lanzamos con:
 renderdoccmd capture <PROGRAMA>
-Y pulsamos F12 o PrintScreen para capturar un frame.MUY IMPORTANTE: Las capturas van a /tmp.
+Y pulsamos F12 o PrintScreen para capturar un frame.
+MUY IMPORTANTE: Las capturas van a /tmp/RenderDoc/
 
 *******Capturar escenas de Vulkan para los informes de errores de MESA*************
 
