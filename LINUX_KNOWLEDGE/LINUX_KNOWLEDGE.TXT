@@ -3096,9 +3096,9 @@ cmake .. -DENABLE_XLIB=FALSE -DENABLE_XCB=FALSE \
 
 make -j10
 
-(RECUERDA: Si quieres compilar QRenderdoc, una versión de Renderdoc con interface de ventanas y diálogos mediante QT,
- no le pases "-DENABLE_QRENDERDOC=OFF", pero en ese caso necesitas QT instalado: mira el apartado corresponiente para saber cómo instalo.
- PERO OJO!!! QRENDERDOC NO FUNCIONA EN WAYLAND!!!).
+RECUERDA: Si quisieras compilar QRenderdoc, NO RECOMENDADO PORQUE NO FUNCIONA EN WAYLAND,
+que es una versión de Renderdoc con interface de ventanas y diálogos mediante QT,
+no le pases "-DENABLE_QRENDERDOC=OFF", pero en ese caso necesitas QT instalado: mira el apartado corresponiente para saber cómo instalo.
 
 --Instalamos:
 make install
