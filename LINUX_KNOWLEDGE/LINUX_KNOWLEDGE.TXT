@@ -585,6 +585,15 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGL=FALSE \
 ADEMÁS DE LA BIOS, se necesita tener "bin/resources" copiado al mismo sitio:
 cp -R bin/resources ~/.config/retroarch/system/pcsx2/bios/
 
+--RECUERDA QUE EL CORE NO ES COMPATIBLE CON RUNAHEAD!! Para desactivarlo sólo para este core, creamos el archivo
+~/.config/retroarch/config/LRPS2/LRPS2.cfg con el contenido:
+run_ahead_enabled = "false"
+
+--Las opciones del core las dejamos como vienen por defecto:
+Renderer: Auto
+Internal Resolution: 1xNative (PS2)
+Mipmapping: ON
+
 ******Carmageddon en GNU/Linux***********************************************************************************************
 
 Clonamos el repo:
