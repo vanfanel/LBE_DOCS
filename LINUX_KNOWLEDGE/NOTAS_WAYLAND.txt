@@ -1190,27 +1190,23 @@ Instalar labwc en sí:
 Bajamos la última release estable de aquí:
 https://github.com/labwc/labwc/releases
 
-(PARA SOLUCIONAR LO DE LOS PROGRAMAS DE SDL2 EN MODO DE PANTALLA COMPLETA)
-Editamos src/xdg.c, y al final de la función handle_commit(), bajo el comentario que empieza "wlroots retains the size"...,
-comentamos esto que hay:
-
-struct wlr_xdg_toplevel *toplevel =
-						xdg_toplevel_from_view(view);
-						toplevel->scheduled.width = view->current.width;
-						toplevel->scheduled.height = view->current.height;
-
 Configuramos con:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release -Dxwayland=disabled ..
 
-PARA PODER LANZAR LABWC O CUALQUIER COMPOSITOR, ANTES TENEMOS QUE AÑADIR A ~/.bashrc:
+PARA PODER LANZAR LABWC O CUALQUIER COMPOSITOR, EN SU SCRIPT DE LANZAMIENTO (NORMALMENTE /usr/local/bin/launch-labwc)
+TENDREMOS QUE HACER ESTAS COSAS:
+
 rundir="/run/user/0"
 if [[ ! -e $rundir ]]; then
     mkdir -p $rundir
 fi
 export XDG_RUNTIME_DIR=$rundir
+
+Y PARA QUE PODAMOS EJECUTAR PROGRAMAS DE WAYLAND POR SSH, TENEMOS QUE TENER EN ~/.bashrc:
+export WAYLAND_DISPLAY=wayland-0
 
 Podemos lanzar un programa a la vez que el compositor con:
 labwc -s foot
