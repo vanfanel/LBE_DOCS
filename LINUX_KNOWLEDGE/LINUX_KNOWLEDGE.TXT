@@ -9648,7 +9648,7 @@ fs_soundfont=/root/dune2/UHD3.sf2
 
 --Para ejecutarlo y que suene la música y los efectos al mismo tiempo, tenemos que activar DMIX temporalmente, así que hacemos:
 echo "pcm.!default { type plug slave.pcm "dmixed" }" > /tmp/dmix.conf
-./opendune                                                                                                                             
+./opendune
 rm /tmp/dmix.conf
 
 NOTAS TIMIDITY
