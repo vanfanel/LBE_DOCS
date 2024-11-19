@@ -1706,18 +1706,18 @@ make REGENIE=1 -f Makefile.libretro -j10
  
 -Creamos el directorio ~/mac128, y ahí metemos el core (llamado "mame_libretro.so").
 Dentro de ~/mac128, creamos el directorio "macse", y dentro de ~/mac128/macse, metemos las roms necesarias
-(adbmodem.zip, macse.zip, macsefd.zip, maciici.zip) y la imágen de disco que queramos usar (la mía se llama system608.hdv),
+(adbmodem.zip, macse.zip, macsefd.zip, maciici.zip) y la imágen de disco que queramos usar (la mía se llama system.hdv),
 de manera que la cosa queda así:
 ~/mac128/mame_libretro.so
 ~/mac128/macse/macse.zip
 ~/mac128/macse/macsefd.zip
 ~/mac128/macse/maciici.zip
 ~/mac128/macse/adbmodem.zip
-~/mac128/macse/system608.hdv
+~/mac128/macse/system.hdv
 
 -Creamos en ~/mac128 un archivo llamado "macse.cmd" (lo podemos llamar como queramos, PERO ES FUNDAMENTAL que tenga extensión ".cmd")
 con el contenido:
-macse -rompath macse -hard macse/system608.hdv
+macse -rompath macse -hard macse/system.hdv
 
 -Lo cargamos con:
 retroarch -L mame_libretro.so macse.cmd
@@ -1733,7 +1733,7 @@ PARA SALIR de "The Manhole", mantén presionado COMMAND (en PC es ALTGr) junto c
 	(Info destilada de: https://wiki.mamedev.org/index.php/Driver:Mac_68K)
 	
 -Nos creamos una imágen de disco de 128M:
-dd if=/dev/zero of=system608.hdv bs=1000000 count=128
+dd if=/dev/zero of=system.hdv bs=1000000 count=128
 
 -Lo primero, en RetroArch, ponemos "Settings->Input->Auto Enable Game Focus Mode" a "Detect",
  y "Settings->Input->Hotkeys->Game Focus(Toggle)" a "Key LSuper".
@@ -1742,7 +1742,7 @@ dd if=/dev/zero of=system608.hdv bs=1000000 count=128
 -Arrancamos en modo Mac II tanto si vamos a emular un Mac 128/SE como si vamos a emular un Mac II (ya que si no, no tenemos CDROM)
  con el Apple Legacy Recovery Oct 1999, que lo tienes en el disco de backup y también está en archive.org.
  Para ello, creamos "maciici.cmd" con el contenido:
- maciici -rompath macse -ramsize 8M -hard macse/system608.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
+ maciici -rompath macse -ramsize 8M -hard macse/system.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
  Y lo lanzamos con:
  retroarch -L mame_libretro.so maciici.cmd
  
@@ -1816,11 +1816,11 @@ make REGENIE=1 USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSE
  ..Y deberíamos ver el arranque sin disco duro (se escuchará el "ting!" y nos saldrá el disquette con la interrogación).
 
 -Nos creamos una imágen de disco de 128M:
-dd if=/dev/zero of=system608.hdv bs=1000000 count=128
+dd if=/dev/zero of=system.hdv bs=1000000 count=128
 
 -Arrancamos en modo Mac II tanto si vamos a emular un Mac 128/SE como si vamos a emular un Mac II, ya que si no, no tenemos CDROM)
  con el Apple Legacy Recovery Oct 1999, que lo tienes en el disco de backup y también está en archive.org:
- mame maciici -ramsize 8M -hard1 system608.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
+ mame maciici -ramsize 8M -hard1 system.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
  
  Nos vamos a "Legacy Recovery" y a "Disk Utilities" y a "Formatting Software" y a "Driver Setup 1.5",
  seleccionamos el disco y le damos a inicializar.
@@ -1830,7 +1830,7 @@ dd if=/dev/zero of=system608.hdv bs=1000000 count=128
  
 -Arrancamos sin el CD-ROM:
 
-Si es un Mac en blanco y negro (128/SE): mame macse -ramsize 4M -hard1 system608.hdv
+Si es un Mac en blanco y negro (128/SE): mame macse -ramsize 4M -hard1 system.hdv
 Si es un Mac II:       	  				 mame maciici -ramsize 8M -hard1 myhdd.hdv
 
 -Ahora, para meter juegos en la imágen HDV, usamos HFSUTILS. Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
