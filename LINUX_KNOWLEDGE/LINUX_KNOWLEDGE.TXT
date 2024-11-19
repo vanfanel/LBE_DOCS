@@ -1747,8 +1747,10 @@ dd if=/dev/zero of=system608.hdv bs=1000000 count=128
  retroarch -L mame_libretro.so maciici.cmd
  
  Nos vamos a "Legacy Recovery" y a "Disk Utilities" y a "Formatting Software" y a "Driver Setup 1.5",
- seleccionamos el disco y le damos a inicializar.
- Para Mac 128/SE instaremos el System 6.0.8, y para Mac II el System 7.1.1 (más que eso, usa ya MUCHA RAM).
+ seleccionamos el disco y le damos a inicializar. Cuando acabe, reiniciamos la emulación.
+ Para Mac 128/SE instaremos el System 6.0.8, y para Mac II el System 7.1 (El 7.1.1 Pro sólo se diferencia
+ en que trae algunos extras que no usamos como AppleTalk, utilidades de file sharing, etc..,
+ y las versiones más modernas que 7.1.1 usan ya MUCHA RAM).
  Para ello, nos vamos a "System Software by CPU" e instalamos la versión del System que corresponda según hemos dicho,
  usando el "Net Install.scr". Le damos a "Customize", elegimos "System Software for all Macs" y le damos a INSTALL.
  
