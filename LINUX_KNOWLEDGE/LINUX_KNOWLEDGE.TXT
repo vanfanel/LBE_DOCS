@@ -1777,14 +1777,14 @@ humount "StuffIt Expander 5.5":
 Ahora montamos el disco de sistema (nos quedamos con el "Volume name"):
 hmount macse/system.hdv
 Y copiamos el instalador del stuffit allí:
-hcopy stuffit/* System:
+hcopy -m stuffit/* System:
 Y desmontamos el disco de sistema:
 humount System
 Ahora en el Mac instalamos el Stuffit (dice que necesita System 7.1.1 pero con 7.1 va igual),
 y ya podemos descomprimir archivos SIT que le podemos subir directamente como queramos ya que no hay que preocuparse por el tema de los forks.
 
 Ahora, por ejemplo podemos bajarnos un puñado de juegos en .SIT (macintoshgarden.org),
-y luego los copiamos al sistema para después descomprimirlos con Stuffit, así:
+y luego los copiamos al sistema para después descomprimirlos con Stuffit, así (en este caso no hace falta "-m" porque no tenemos resource fork):
 hmount macse/system.hdv
 hcopy juegos/* System:
 humount System
