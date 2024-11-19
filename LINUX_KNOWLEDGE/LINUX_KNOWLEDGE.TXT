@@ -1699,7 +1699,7 @@ SOURCES = apple/mac128.cpp,apple/maciici.cpp
 Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make REGENIE=1 -f Makefile.libretro -j4
+make REGENIE=1 -f Makefile.libretro -j10
 
 -Las ROMs necesarias de los Mac que vamos a emular las bajamos de retroroms.info (Downloads->MAME->Current ROMs)
  Para emular un Mac SE, necesitamos adbmodem.zip y macse.zip.
