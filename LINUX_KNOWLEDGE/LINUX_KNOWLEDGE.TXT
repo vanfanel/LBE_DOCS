@@ -1754,7 +1754,10 @@ dd if=/dev/zero of=system.hdv bs=1000000 count=128
  Para ello, nos vamos a "System Software by CPU" e instalamos la versión del System que corresponda según hemos dicho,
  usando el "Net Install.scr". Le damos a "Customize", elegimos "System Software for all Macs" y le damos a INSTALL.
  
--Ahora, para meter juegos en la imágen HDV, usamos HFSUTILS. Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
+-Ahora, para meter juegos en la imágen HDV, usamos HFSUTILS.
+(Si no nos funciona "apt-get install hfsutils" (no parece haber hfsutils en Debian 13),
+nos bajamos la última versión del paquete .deb desde https://debian.stanford.edu/debian/pool/main/h/hfsutils/ y la instalamos a mano con dpkg).
+Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
 al sistema de archivos de Linux, extracción que hacemos en formato macbinary (para eso es el "-m") para que no se pierda el "resource fork",
 y luego copiamos esos archivos al disco HFV:
 
@@ -3872,7 +3875,8 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 NOTA: NO permite copiar directorios, sólo archivos sueltos, pudiendo copiar todos los archivos con *,
 por lo que el método tiene sus limitaciones.
 
--Instalamos: apt-get install hfsutils
+-Instalamos: Si no nos funciona "apt-get install hfsutils" (no parece haber hfsutils en Debian 13),
+ nos bajamos la última versión del paquete .deb desde https://debian.stanford.edu/debian/pool/main/h/hfsutils/ y la instalamos a mano con dpkg.
 Ahora, montamos la imágen de disco de orígen con:
 hmount juego.dsk
 Nos dirá qué nombre de volúmen tiene. Quédate con él.
