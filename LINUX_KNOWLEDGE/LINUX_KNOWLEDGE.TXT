@@ -1687,7 +1687,7 @@ y guárdalo para este core en Quick Menu->Overrides->Save Core Overrides
 OJO!!! OJO!! OJO!! MAME al emular Mac NO soporta Runahead, si lo tienes fallará el arranque con un error del sistema Mac,
 y habrá un sonido popping de fondo muy desagradable. 
 
-El Mac 128 no soporta disco duro, si queremos un Mac en blaco y negro emulamos el Mac SE (el Mac Plus no arranca con discos
+El Macintosh 128 original no soporta disco duro, si queremos un Mac en blaco y negro emulamos el Mac SE (el Mac Plus no arranca con discos
 de más de 20MBm y el Mac Classic es incompatible con el Arkanoid).
 
 -Bajamos la última versión estable de: https://github.com/libretro/mame/tags
@@ -1788,6 +1788,10 @@ y luego los copiamos al sistema para después descomprimirlos con Stuffit, así 
 hmount macse/system.hdv
 hcopy juegos/* System:
 humount System
+
+OJO!!! NOTAS PARA JUEGOS ESPECÍFICOS:
+-Dungeon Master II: Necesita el QuickTime 2.1 y el Sound Manager 3.1. Ambos vienen en el CD "Apple Legacy Recovery Oct 1999"
+ que has usado para instalar el sistema.
 
 ALTERNATIVA: TRAERNOS LOS JUEGOS YA INSTALADOS DESDE UNA IMÁGEN DE DISCO PRE-COCINADA
 Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
