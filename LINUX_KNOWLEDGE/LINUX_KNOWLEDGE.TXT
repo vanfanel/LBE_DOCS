@@ -1735,10 +1735,14 @@ PARA SALIR de "The Manhole", mantén presionado COMMAND (en PC es ALTGr) junto c
 -Nos creamos una imágen de disco de 128M:
 dd if=/dev/zero of=system608.hdv bs=1000000 count=128
 
+-Lo primero, en RetroArch, ponemos "Settings->Input->Auto Enable Game Focus Mode" a "Detect",
+ y "Settings->Input->Hotkeys->Game Focus(Toggle)" a "Key LSuper".
+ Esto es imprescindible para que el ratón vaya bien dentro del emulador y para tener teclado.
+
 -Arrancamos en modo Mac II tanto si vamos a emular un Mac 128/SE como si vamos a emular un Mac II (ya que si no, no tenemos CDROM)
  con el Apple Legacy Recovery Oct 1999, que lo tienes en el disco de backup y también está en archive.org.
  Para ello, creamos "maciici.cmd" con el contenido:
- maciici -rompath macse -ramsize 8M -hard system608.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
+ maciici -rompath macse -ramsize 8M -hard macse/system608.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
  Y lo lanzamos con:
  retroarch -L mame_libretro.so maciici.cmd
  
