@@ -1783,7 +1783,8 @@ humount System
 Ahora en el Mac instalamos el Stuffit (dice que necesita System 7.1.1 pero con 7.1 va igual),
 y ya podemos descomprimir archivos SIT que le podemos subir directamente como queramos ya que no hay que preocuparse por el tema de los forks.
 
-Ahora, por ejemplo podemos bajarnos un puñado de juegos en .SIT, y luego los copiamos al sistema para después descomprimirlos con Stuffit, así:
+Ahora, por ejemplo podemos bajarnos un puñado de juegos en .SIT (macintoshgarden.org),
+y luego los copiamos al sistema para después descomprimirlos con Stuffit, así:
 hmount macse/system.hdv
 hcopy juegos/* System:
 humount System
@@ -1902,7 +1903,8 @@ humount System
 Ahora en el Mac instalamos el Stuffit (dice que necesita System 7.1.1 pero con 7.1 va igual),
 y ya podemos descomprimir archivos SIT que le podemos subir directamente como queramos ya que no hay que preocuparse por el tema de los forks.
 
-Ahora, por ejemplo podemos bajarnos un puñado de juegos en .SIT, y luego los copiamos al sistema para después descomprimirlos con Stuffit, así:
+Ahora, por ejemplo podemos bajarnos un puñado de juegos en .SIT (macintoshgarden.org),
+y luego los copiamos al sistema para después descomprimirlos con Stuffit, así:
 hmount macse/system.hdv
 hcopy juegos/* System:
 humount System
