@@ -2820,55 +2820,6 @@ por lo que antes de lanzarlo tenemos que hacer:
 
 wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.940060
 
-FS-UAE (FSUAE), EMULADOR STANDALONE DE AMIGA BASADO EN SOURCES ACTUALIZADOS DE WINUAE
-=====================================================================================
-
-INSTRUCCIONES ESPECÍFICAS PARA PI4 QUE NO DEBES PERDER DE VISTA:
-https://github.com/FrodeSolheim/fs-uae/blob/master/docs/raspberry-pi-4.md
-
-Instalamos dependencias previas:
-sudo apt-get install gettext --no-install-recommends
-
-Clonamos su repo:
-git clone --depth 1 https://github.com/FrodeSolheim/fs-uae.git
-
-Ejecutamos el script bootstrap incluido con los sources, y ya podemos ejecutar ./configure
-
-Configuramos con:
-CFLAGS="-march=native -mtune=native -O2" \
-CXXFLAGS="-march=native -mtune=native -O2" \
-./configure --without-x11 --with-alsa --without-midi --without-libmpeg2 --without-openal --disable-x86 --disable-qemu-cpu --disable-drivesound --disable-netplay --disable-slirp
-
-Editamos src/fsemu-background.c y comentamos la línea:
-#define FSEMU_WITH_BACKGROUND 1
-
-Creamos el directorio ~/amiga, y ahí copiamos el ejecutable fs-uae, fs-uae.dat y los directorios "data" y "fsemu" que viene con los sources.
-
-Tenemos una configuración mínuma de referencia que viene con los docs, en docs/examples/example.conf
-Podemos copiarla como ~/amiga/configs/amiga500.conf y se la pasamos al emulador como:
-
-./fs-uae configs/amiga500.conf
-
-Configuración de Amiga 500 que tengo:
-
-[config]
-amiga_model = A500
-kickstart_file = ../roms/kick13.rom
-floppy_drive_0 =  ../disks/enchanted.adf
-fullscreen = 1 
-fullscreen_mode = fullscreen
-
-Podemos por ejemplo correr fs-uae con una configuración de un 1200 con:
-./fs-uae configs/1200.fs-uae --fullscreen=1
-
-OJO! Queda mucho por hacer en la versión 4 del emulador y muchas opciones de vídeo son ignoradas por ahora.
-Por ejemplo, para tener 50Hz, el monitor debe soportar 1080P a 50Hz que es lo que el emulador intenta establecer en
-fsemu/src/fsemu-sdlwindow.c, en la función fsemu_sdlwindow_find_mode(). Puedes hacer que ponga un modo de 720p a 50Hz
-mientras tanto, si lo necesitas.
-
-Puedes ver otras opciones de vídeo que le puedes pasar como parámetro al ejecutable en:
-https://fs-uae.net/video-options
-
 MONTAR DISCOS ADF DE AMIGA EN LINUX
 ===================================
 
