@@ -1754,9 +1754,41 @@ dd if=/dev/zero of=system.hdv bs=1000000 count=128
  Para ello, nos vamos a "System Software by CPU" e instalamos la versión del System que corresponda según hemos dicho,
  usando el "Net Install.scr". Le damos a "Customize", elegimos "System Software for all Macs" y le damos a INSTALL.
  
--Ahora, para meter juegos en la imágen HDV, usamos HFSUTILS.
+	BLOQUE PARA METER JUEGOS EN LA IMÁGEN DE DISCO
+ 
+Usamos HFSUTILS.
 (Si no nos funciona "apt-get install hfsutils" (no parece haber hfsutils en Debian 13),
 nos bajamos la última versión del paquete .deb desde https://debian.stanford.edu/debian/pool/main/h/hfsutils/ y la instalamos a mano con dpkg).
+
+Lo primero, nos bajamos el Stuffit Expander 5.5 en formato .img de aquí:
+https://winworldpc.com/product/stuffit-expander/55
+(La primera descarga, en la que pone "3.5-1.44mb" y el icono de un diskette)
+
+Ahora montamos el IMG con el hmount (nos quedamos con el "Volume name"):
+hmount stuffit_expander_5.5.img
+Miramos sus contenidos si queremos:
+hdir "StuffIt Expander 5.5":
+Copiamos el instalador a un directorio de Linux:
+mkdir stuffit
+hcopy -m "StuffIt Expander 5.5":* stuffit/
+(El "-m" es para que no se pierda el "resource fork")
+Desmontamos el IMG:
+humount "StuffIt Expander 5.5":
+Ahora montamos el disco de sistema (nos quedamos con el "Volume name"):
+hmount macse/system.hdv
+Y copiamos el instalador del stuffit allí:
+hcopy stuffit/* System:
+Y desmontamos el disco de sistema:
+humount System
+Ahora en el Mac instalamos el Stuffit (dice que necesita System 7.1.1 pero con 7.1 va igual),
+y ya podemos descomprimir archivos SIT que le podemos subir directamente como queramos ya que no hay que preocuparse por el tema de los forks.
+
+Ahora, por ejemplo podemos bajarnos un puñado de juegos en .SIT, y luego los copiamos al sistema para después descomprimirlos con Stuffit, así:
+hmount macse/system.hdv
+hcopy juegos/* System:
+humount System
+
+ALTERNATIVA: TRAERNOS LOS JUEGOS YA INSTALADOS DESDE UNA IMÁGEN DE DISCO PRE-COCINADA
 Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
 al sistema de archivos de Linux, extracción que hacemos en formato macbinary (para eso es el "-m") para que no se pierda el "resource fork",
 y luego copiamos esos archivos al disco HFV:
@@ -1836,7 +1868,47 @@ dd if=/dev/zero of=system.hdv bs=1000000 count=128
 Si es un Mac en blanco y negro (128/SE): mame macse -ramsize 4M -hard1 system.hdv
 Si es un Mac II:       	  				 mame maciici -ramsize 8M -hard1 myhdd.hdv
 
--Ahora, para meter juegos en la imágen HDV, usamos HFSUTILS. Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
+-Ahora configuramos el vídeo de MAME como es debido. Para ello creamos un fichero de configuración con "mame -createconfig", que nos creará
+mame.ini en el directorio local, que podemos editar y poner "waitvsync" y "syncrefresh" a 1, y "throttle" a 0.
+También puedes poner "video" a "bgfx", y "bgfx_backend" a "vulkan".
+Tras esto, copiamos el mame.ini donde MAME lo va a buscar por defecto: cp mame.ini ~/.mame/
+
+	BLOQUE PARA METER JUEGOS EN LA IMÁGEN DE DISCO
+ 
+Usamos HFSUTILS.
+(Si no nos funciona "apt-get install hfsutils" (no parece haber hfsutils en Debian 13),
+nos bajamos la última versión del paquete .deb desde https://debian.stanford.edu/debian/pool/main/h/hfsutils/ y la instalamos a mano con dpkg).
+
+Lo primero, nos bajamos el Stuffit Expander 5.5 en formato .img de aquí:
+https://winworldpc.com/product/stuffit-expander/55
+(La primera descarga, en la que pone "3.5-1.44mb" y el icono de un diskette)
+
+Ahora montamos el IMG con el hmount (nos quedamos con el "Volume name"):
+hmount stuffit_expander_5.5.img
+Miramos sus contenidos si queremos:
+hdir "StuffIt Expander 5.5":
+Copiamos el instalador a un directorio de Linux:
+mkdir stuffit
+hcopy -m "StuffIt Expander 5.5":* stuffit/
+(El "-m" es para que no se pierda el "resource fork")
+Desmontamos el IMG:
+humount "StuffIt Expander 5.5":
+Ahora montamos el disco de sistema (nos quedamos con el "Volume name"):
+hmount macse/system.hdv
+Y copiamos el instalador del stuffit allí:
+hcopy stuffit/* System:
+Y desmontamos el disco de sistema:
+humount System
+Ahora en el Mac instalamos el Stuffit (dice que necesita System 7.1.1 pero con 7.1 va igual),
+y ya podemos descomprimir archivos SIT que le podemos subir directamente como queramos ya que no hay que preocuparse por el tema de los forks.
+
+Ahora, por ejemplo podemos bajarnos un puñado de juegos en .SIT, y luego los copiamos al sistema para después descomprimirlos con Stuffit, así:
+hmount macse/system.hdv
+hcopy juegos/* System:
+humount System
+
+ALTERNATIVA: TRAERNOS LOS JUEGOS YA INSTALADOS DESDE UNA IMÁGEN DE DISCO PRE-COCINADA
+Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
 al sistema de archivos de Linux, extracción que hacemos en formato macbinary (para eso es el "-m") para que no se pierda el "resource fork",
 y luego copiamos esos archivos al disco HFV:
 
@@ -1851,10 +1923,10 @@ hmkdir "System7":"Prince of Persia"
 hcopy -m prin/* "System7":"Prince of Persia":
 humount hyhdd.hdv
 
--Ahora configuramos el vídeo de MAME como es debido. Para ello creamos un fichero de configuración con "mame -createconfig", que nos creará
-mame.ini en el directorio local, que podemos editar y poner "waitvsync" y "syncrefresh" a 1, y "throttle" a 0.
-También puedes poner "video" a "bgfx", y "bgfx_backend" a "vulkan".
-Tras esto, copiamos el mame.ini donde MAME lo va a buscar por defecto: cp mame.ini ~/.mame/
+PARA EVITAR PROBLEMAS AL PULSAR SHIFT, ve a Menú Manzana->Control Panels, crea una carpeta llamada DISABLED, y mete ahí el panel "Easy Access".
+De lo contrario, pulsando shift varias veces (como en el Prince cuando luchas) se interrumpe todo el sistema para activar "sticky keys".
+PARA DESACTIVAR EXTENSIONES, ve a SYSTEM FOLDER, EXTENSIONS, y ahí creas una carpeta llamada DISABLED y metes las extensiones
+que quieras deshabilitar.
 
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
