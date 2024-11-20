@@ -1794,6 +1794,8 @@ OJO!!! NOTAS PARA JUEGOS ESPECÍFICOS:
  que has usado para instalar el sistema.
 -Para extraer juegos comprimidos con .CPT debes usar Stuffit Deluxe 4.5, PERO instalarlo supone que te llena de mierda el sistema
  y no se puede limpiar ni borrando las extensiones que mete. Así que usa una copia desechable del disco duro de sistema.
+-Hay juegos, como el Alone in the Dark, que están en un IMG que es para DiskCopy, un programa de Mac, y que
+por lo tanto no se pueden montar desde Linux con el típico "mount -t hfs". Para esos, usa DiskCopy 6.3.3 de Mac.
 
 ALTERNATIVA: TRAERNOS LOS JUEGOS YA INSTALADOS DESDE UNA IMÁGEN DE DISCO PRE-COCINADA
 Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
