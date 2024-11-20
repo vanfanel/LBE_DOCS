@@ -1966,26 +1966,6 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
-******Compilar core PCSX2 libretro****************************
-
-Instalamos dependencia previa:
-sudo apt-get install liblzma-dev
-
-git clone --depth 1 --recurse-submodules -j8 https://github.com/libretro/pcsx2.git
-
-Editamos CMakeLists.txt y borramos las líneas:
-set(CMAKE_C_COMPILER_LAUNCHER ccache)
-set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
-
-Configuramos y compilamos con:
-
-mkdir b4
-cd b4
-
-cmake .. -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_C_FLAGS="-march=native -mtune=native"
-
 ******Space Cadet pinball en GNU/Linux*********
 
 Bajamos los últimos sources estables de aquí:
