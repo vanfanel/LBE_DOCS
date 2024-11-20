@@ -44,6 +44,9 @@ Para descargar la LITE busca "Quartus lite download". Yo uso la 21.1 que no es l
 
 Al instalar el Quartus LITE, sólo necesitas el soporte para Cyclon V, que es el que lleva la Pocket.
 
+Para ejecutarlo, haz doble click en el icono que te crea en el escritorio. NO te compliques ejeuctándolo desde la consola de comandos
+porque te dice que faltan librerías y mierdas así.
+
 Todos los cores tienen un directorio "projects" y dentro un fichero .QIP, que es el que tienes que abrir en Quartus.
 Simplemente le das a la flecha azul y empieza la compilación.
 
