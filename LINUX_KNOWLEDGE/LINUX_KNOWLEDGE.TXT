@@ -3940,6 +3940,16 @@ NOTA!!! TAMBIÉN PUEDES PREPARAR EL DISCO E INSTALAR EL SISTEMA DESDE ESA MISMA 
 SIN REINICIAR EL SISTEMA EMULADO. SE HACE IGUAL LA PREPARACIÓN DEL DISCO DURO, Y LUEGO SE INSTALA ELIGIENDO EL MODELO DE ORDENADOR DESDE
 "MAC OS -> SYSTEM SOFTWARE BY CPU-> CENTRIS/QUADRA -> QUADRA 800 -> SYSTEM 7.1 -> NET INSTALL.SRC"
 
+-Si te tienes que traer juegos o cosas desde otro sistema (por ejemplo, que hayas instalado para emular Mac en MAME)
+puedes montar el disco del otro sistema como segundo disco así ("system.img" sería el disco del otro sistema):
+qemu-system-m68k -M q800 -m 32 -bios q800.rom \                                                                                        
+-display sdl -audio driver=alsa \                                                                                                      
+-device scsi-hd,scsi-id=0,drive=hd0 \                                                                                                  
+-drive file=system71.img,media=disk,format=raw,if=none,id=hd0 \                                                                        
+-device scsi-hd,scsi-id=1,drive=hd1 \                                                                                                  
+-drive file=system.img,media=disk,format=raw,if=none,id=hd1 \                                                                          
+-display sdl 
+
 -PARA EVITAR PROBLEMAS AL PULSAR SHIFT, ve a Menú Manzana->Control Panels, crea una carpeta llamada DISABLED, y mete ahí el panel "Easy Access".
 De lo contrario, pulsando shift varias veces (como en el Prince cuando luchas) se interrumpe todo el sistema para activar "sticky keys".
 PARA DESACTIVAR EXTENSIONES, ve a SYSTEM FOLDER, EXTENSIONS, y ahí creas una carpeta llamada DISABLED y metes las extensiones
