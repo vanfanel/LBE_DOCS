@@ -746,7 +746,7 @@ Usamos el driver VULKAN, con:
 --VIDEO->SYNCHRONIZATION->MAX SWAPCHAIN IMAGES a 3 (lo que mete lag NO es el número de buffers, sino el VSYNC activado).
 --ALTERNATIVA (NO USAR PORQUE TIENE MÁS LAG): Driver GLCORE (es necesario que sea GLCORE y no GL para que funcione HARD SYNC),
 con VSYNC ON, HARD SYNC ON, HARD SYNC FRAMES 0
-AUDIO: driver ALSATHREAD, 44100 Hz, 32ms (necesario kernel a 300Hz + Preemptible Kernel), resampler quality normal
+AUDIO: driver ALSATHREAD, 48000 Hz, 32ms (necesario kernel a 300Hz + Preemptible Kernel), resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 SHADER: usamos LOTTES-FAST en general.

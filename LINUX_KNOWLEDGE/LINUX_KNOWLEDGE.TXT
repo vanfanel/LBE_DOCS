@@ -7864,7 +7864,7 @@ sí o sí VRR.
 (NO USAR POR TENER MUCHO LAG EL DRIVER DE VIDEO "GLCORE" PORQUE TIENE MUCHO INPUT LAG HAGAS LO QUE HAGAS, SEGÚN EL TEST DEL RATÓN.
  NECESITA GLES3 U OPENGL DE ESCRITORIO, PARA LO CUAL TIENES QUE COMPILAR CON "--disable-glx").
 
--AUDIO: driver ALSATHREAD, 44100 Hz, 32ms, resampler quality normal.
+-AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal.
 (No usamos ALSA normal porque, incluso con 36ms, hay dropout al lanzar el Jazz Jackrabbit).
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
