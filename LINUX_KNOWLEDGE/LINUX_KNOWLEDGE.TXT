@@ -3940,7 +3940,7 @@ NOTA!!! TAMBIÉN PUEDES PREPARAR EL DISCO E INSTALAR EL SISTEMA DESDE ESA MISMA 
 SIN REINICIAR EL SISTEMA EMULADO. SE HACE IGUAL LA PREPARACIÓN DEL DISCO DURO, Y LUEGO SE INSTALA ELIGIENDO EL MODELO DE ORDENADOR DESDE
 "MAC OS -> SYSTEM SOFTWARE BY CPU-> CENTRIS/QUADRA -> QUADRA 800 -> SYSTEM 7.1 -> NET INSTALL.SRC"
 
-PARA EVITAR PROBLEMAS AL PULSAR SHIFT, ve a Menú Manzana->Control Panels, crea una carpeta llamada DISABLED, y mete ahí el panel "Easy Access".
+-PARA EVITAR PROBLEMAS AL PULSAR SHIFT, ve a Menú Manzana->Control Panels, crea una carpeta llamada DISABLED, y mete ahí el panel "Easy Access".
 De lo contrario, pulsando shift varias veces (como en el Prince cuando luchas) se interrumpe todo el sistema para activar "sticky keys".
 PARA DESACTIVAR EXTENSIONES, ve a SYSTEM FOLDER, EXTENSIONS, y ahí creas una carpeta llamada DISABLED y metes las extensiones
 que quieras deshabilitar.
