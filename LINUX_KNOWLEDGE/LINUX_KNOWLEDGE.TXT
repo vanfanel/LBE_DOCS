@@ -3787,6 +3787,23 @@ find ./ -name gl*
 
 Lo de iname es para ignorar las mayúsculas o minúsculas.
 
+******************Compilar core QEMU para Libretro*****************************************************************************
+
+-Clonamos su repo:
+git clone --depth 1 https://git.libretro.com/libretro/qemu-libretro.git
+git submodule init
+
+-Configuramos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-Os -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
+--without-default-features --glib=internal --zlib=internal -disable-pie --enable-fdt=internal --disable-modules --disable-plugins \
+--enable-libretro --audio-drv-list=libretro --disable-sdl -Dwrap_mode=forcefallback
+
+make -j10
+
 ******************USAR QEMU PARA EMULAR UN MAC QUADRA 800**********************************************************************
 
 NOTAS PREVIAS:
