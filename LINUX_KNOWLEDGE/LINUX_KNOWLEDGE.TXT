@@ -3793,7 +3793,7 @@ Lo de iname es para ignorar las mayúsculas o minúsculas.
 apt-get install python3-venv flex bison zlib1g-dev
 
 -Clonamos su repo:
-git clone --depth 1 --recursive -j8 https://git.libretro.com/libretro/qemu-libretro.git
+git clone --depth 1 --recursive https://git.libretro.com/libretro/qemu-libretro.git
 
 -Configuramos con (sólo soporte para Mac 68k):
 
