@@ -1740,7 +1740,7 @@ dd if=/dev/zero of=system.hdv bs=1000000 count=128
  Esto es imprescindible para que el ratón vaya bien dentro del emulador y para tener teclado.
 
 -Arrancamos en modo Mac II tanto si vamos a emular un Mac 128/SE como si vamos a emular un Mac II (ya que si no, no tenemos CDROM)
- con el Apple Legacy Recovery Oct 1999, que lo tienes en el disco de backup y también está en archive.org.
+ con el "Apple Legacy Recovery Oct 1999", que lo tienes en el disco de backup y también está en archive.org.
  Para ello, creamos "maciici.cmd" con el contenido:
  maciici -rompath macse -ramsize 8M -hard macse/system.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
  Y lo lanzamos con:
@@ -3927,6 +3927,18 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -device scsi-hd,scsi-id=0,drive=hd0 \
 -drive file=system71.img,media=disk,format=raw,if=none,id=hd0 \
 -display sdl,gl=on -full-screen
+
+-Para instalar QuickTime 2.1 y SoundManager 3.1, lo más cómodo es arrancar desde el "Apple Legacy Recovery Oct 1999",
+que lo tienes en el disco de backup y también está en archive.org, así:
+qemu-system-m68k -M q800 -m 32 -bios q800.rom \
+-display sdl -audio driver=alsa \
+-device scsi-hd,scsi-id=0,drive=hd0 \
+-drive file=system71.img,media=disk,format=raw,if=none,id=hd0 \
+-cdrom ../"Apple Legacy Recovery Oct 1999.iso" \
+-display sdl
+NOTA!!! TAMBIÉN PUEDES PREPARAR EL DISCO E INSTALAR EL SISTEMA DESDE ESA MISMA ISO. DE HECHO, ES MÁS CÓMODO PORQUE LO PUEDES HACER TODO
+SIN REINICIAR EL SISTEMA EMULADO. SE HACE IGUAL LA PREPARACIÓN DEL DISCO DURO, Y LUEGO SE INSTALA ELIGIENDO EL MODELO DE ORDENADOR DESDE
+"MAC OS -> SYSTEM SOFTWARE BY CPU-> CENTRIS/QUADRA -> QUADRA 800 -> SYSTEM 7.1 -> NET INSTALL.SRC"
 
 PARA EVITAR PROBLEMAS AL PULSAR SHIFT, ve a Menú Manzana->Control Panels, crea una carpeta llamada DISABLED, y mete ahí el panel "Easy Access".
 De lo contrario, pulsando shift varias veces (como en el Prince cuando luchas) se interrumpe todo el sistema para activar "sticky keys".
