@@ -3891,7 +3891,7 @@ Un vídeo muy bueno sobre el tema (aunque emula un Mac POWERPC, el mac99) es est
 -Creamos una imágen donde guardar los parámetros de la BIOS del Mac:
 qemu-img create -f raw pram-macos.img 256b
 
-		RECOMENADAO: INSTALAR SYSTEM 7.1
+		RECOMENADADO: INSTALAR SYSTEM 7.1
 
 -Creamos la imágen de disco (con preallocation, porque si no, nos crea un archivo de esos enanos que van creciendo según lo usamos,
 además un Quadra 800 venía con 256M):
