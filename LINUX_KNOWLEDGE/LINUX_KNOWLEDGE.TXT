@@ -3915,8 +3915,9 @@ y seguimos estas instrucciones para particionar el disco e instalar el sistema o
 -Start the Apple HD SC v3.0 (A/UX) tool and initialise your disk. Verification can take a long time. When finished give the disk a name.
 -Next, click Partition and then Custom. You'll notice a partition of 20Mb was created with the name you entered.
 -Click the name and click Remove, OK.
--Click in the gray area to create a new partition. Click Macintosh Volume and then manually enter the desired partition size, not exceeding the maximum size indicated. Click OK.
-The partition will be created. Click Done, then Quit to have the disk available on the desk top.
+-Click in the gray area to create a new partition. Click Macintosh Volume and then manually enter the desired partition size,
+ not exceeding the maximum size indicated. Click OK.
+ The partition will be created. Click Done, then Quit to have the disk available on the desktop.
 -Open the InstallMeFirst folder and start the installer.
 If you want CD Rom support, open the corresponding folder and install it. This will also install Quicktime 1.5.
 
