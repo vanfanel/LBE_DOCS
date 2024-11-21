@@ -3800,8 +3800,9 @@ git clone --depth 1 --recursive -j8 https://git.libretro.com/libretro/qemu-libre
 mkdir b4
 cd b4
 
-CFLAGS="-Os -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
+CFLAGS="-march=native -mtune=native -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
 --without-default-features --glib=internal --zlib=internal -disable-pie --enable-fdt=internal --disable-modules --disable-plugins \
+--disable-selinux --disable-iconv --disable-qom-cast-debug --disable-dbus-display --disable-keyring --disable-vnc --disable-png \
 --enable-libretro --audio-drv-list=libretro --disable-sdl -Dwrap_mode=forcefallback --target-list=m68k-softmmu
 
 make -j10
