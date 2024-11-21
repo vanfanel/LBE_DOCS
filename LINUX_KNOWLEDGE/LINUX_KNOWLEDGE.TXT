@@ -3802,7 +3802,7 @@ cd b4
 
 CFLAGS="-Os -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
 --without-default-features --glib=internal --zlib=internal -disable-pie --enable-fdt=internal --disable-modules --disable-plugins \
---enable-libretro --audio-drv-list=libretro --disable-sdl -Dwrap_mode=forcefallback
+--enable-libretro --audio-drv-list=libretro --disable-sdl -Dwrap_mode=forcefallback --target-list=m68k-softmmu
 
 make -j10
 
