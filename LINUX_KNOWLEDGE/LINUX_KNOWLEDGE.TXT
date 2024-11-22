@@ -1704,26 +1704,19 @@ make REGENIE=1 -f Makefile.libretro -j10
 -Las ROMs necesarias de los Mac que vamos a emular las bajamos de retroroms.info (Downloads->MAME->Current ROMs)
  Para emular un Mac SE, necesitamos adbmodem.zip y macse.zip.
  
--Creamos el directorio ~/mac128, y ahí metemos el core (llamado "mame_libretro.so").
-Dentro de ~/mac128, creamos el directorio "macse", y dentro de ~/mac128/macse, metemos las roms necesarias
-(adbmodem.zip, macse.zip, macsefd.zip, maciici.zip) y la imágen de disco que queramos usar (la mía se llama system.hdv),
-de manera que la cosa queda así:
-~/mac128/mame_libretro.so
-~/mac128/macse/macse.zip
-~/mac128/macse/macsefd.zip
-~/mac128/macse/maciici.zip
-~/mac128/macse/adbmodem.zip
-~/mac128/macse/system.hdv
+-Creamos el directorio "macse" y ahí metemos las roms
+adbmodem.zip
+macse.zip
+macsefd.zip
+maciici.zip y la imágen de disco que queramos usar (la mía se llama system.hdv),
 
--Creamos en ~/mac128 un archivo llamado "macse.cmd" (lo podemos llamar como queramos, PERO ES FUNDAMENTAL que tenga extensión ".cmd")
+-Creamos un archivo llamado "macse.cmd" (lo podemos llamar como queramos, PERO ES FUNDAMENTAL que tenga extensión ".cmd")
 con el contenido:
 macse -rompath macse -hard macse/system.hdv
 
 -Lo cargamos con:
-retroarch -L mame_libretro.so macse.cmd
+retroarch -L ~/.config/retroarch/cores/mame_libretro.so macse.cmd
 
-MAME es un core con sonido de 48000Hz, así que configura el audio en Settings->Audio->Output para esta frecuencia,
-y guárdalo para este core en Quick Menu->Overrides->Save Core Overrides
 OJO!!! OJO!! OJO!! MAME al emular Mac NO soporta Runahead, si lo tienes fallará el arranque con un error del sistema Mac,
 y habrá un sonido popping de fondo muy desagradable. 
 
@@ -1731,7 +1724,10 @@ PARA SALIR de "The Manhole", mantén presionado COMMAND (en PC es ALTGr) junto c
 
 	BLOQUE PARA CREAR LA IMÁGEN DE DISCO DURO (NO NECESARIO, TIENES LA IMÁGEN .HDV EN EL DISCO DE BACKUP, ES POR SI LA PIERDES)
 	(Info destilada de: https://wiki.mamedev.org/index.php/Driver:Mac_68K)
-	
+
+El ejemplo va a ser para crear una imágen de Macintosj II ci (maciici) pero para Mac SE es muy parecido (sólo cambia la versión
+del sistema que instalamos).
+
 -Nos creamos una imágen de disco de 128M:
 dd if=/dev/zero of=system.hdv bs=1000000 count=128
 
@@ -3836,26 +3832,6 @@ find ./ -name gl*
 
 Lo de iname es para ignorar las mayúsculas o minúsculas.
 
-******************Compilar core QEMU para Libretro*****************************************************************************
-
--Instalamos dependencias previas:
-apt-get install python3-venv flex bison zlib1g-dev
-
--Clonamos su repo:
-git clone --depth 1 --recursive https://git.libretro.com/libretro/qemu-libretro.git
-
--Configuramos con (sólo soporte para Mac 68k):
-
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
---without-default-features --glib=internal --zlib=internal -disable-pie --enable-fdt=internal --disable-modules --disable-plugins \
---disable-selinux --disable-iconv --disable-qom-cast-debug --disable-dbus-display --disable-keyring --disable-vnc --disable-png \
---enable-libretro --audio-drv-list=libretro --disable-sdl -Dwrap_mode=forcefallback --target-list=m68k-softmmu
-
-make -j10
-
 ******************USAR QEMU PARA EMULAR UN MAC QUADRA 800**********************************************************************
 
 NOTAS PREVIAS:
@@ -4047,6 +4023,26 @@ Y copiamos los datos del juego al disco de destino:
 hcopy -m directorio_temporal_juego/* nombre_volumen_destino: 
 
 NOTA: Se puede usar ctrl-alt-f para salir del modo fullscreen.
+
+******************USAR CORE QEMU LIBRETRO (QEMU-LIBRETRO) PARA EMULAR UN MAC QUADRA 800*****************************************************
+
+-Instalamos dependencias previas:
+apt-get install python3-venv flex bison zlib1g-dev
+
+-Clonamos su repo:
+git clone --depth 1 --recursive https://git.libretro.com/libretro/qemu-libretro.git
+
+-Configuramos con (sólo soporte para Mac 68k):
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
+--without-default-features --glib=internal --zlib=internal -disable-pie --enable-fdt=internal --disable-modules --disable-plugins \
+--disable-selinux --disable-iconv --disable-qom-cast-debug --disable-dbus-display --disable-keyring --disable-vnc --disable-png \
+--enable-libretro --audio-drv-list=libretro --disable-sdl -Dwrap_mode=forcefallback --target-list=m68k-softmmu
+
+make -j10
 
 ******************Actualizar a de DEBIAN WHEEZY a DEBIAN JESSIE****************************************************************************
 
