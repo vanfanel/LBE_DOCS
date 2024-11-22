@@ -4038,11 +4038,30 @@ mkdir b4
 cd b4
 
 CFLAGS="-march=native -mtune=native -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
---without-default-features --glib=internal --zlib=internal -disable-pie --enable-fdt=internal --disable-modules --disable-plugins \
---disable-selinux --disable-iconv --disable-qom-cast-debug --disable-dbus-display --disable-keyring --disable-vnc --disable-png \
---enable-libretro --audio-drv-list=libretro --disable-sdl -Dwrap_mode=forcefallback --target-list=m68k-softmmu
+    --target-list=m68k-softmmu \
+    --without-default-features \
+    --glib=internal \
+    --zlib=internal \
+    --disable-pie \
+    --enable-fdt=internal \
+    --disable-modules \
+    --disable-plugins \
+    --enable-libretro \
+    --audio-drv-list=libretro \
+    --disable-sdl \
+    -Dwrap_mode=forcefallback
 
-make -j10
+make -j$(nproc) libqemu_libretro.so
+(OJO!!! ES MUY IMPORTANTE COMPILAR JUSTAMENTE ASÍ PARA EVITAR ERRORES!!! NO HAGAS SIMPLEMENTE "make -j10"!!!)
+
+-Para ejecutarlo:
+----Creamos un directorio llamado "quadra800" donde metemos la BIOS (que llamaremos "q800.rom")
+    y el disco duro con el sistema y los juegos (que llamaremos "system71.img" y que tienes instrucciones en otra parte
+    de este documento de cómo crearlo, instalar el sistema, meterle juegos, etc).
+----Creamos un fichero llamado "quadra800.qemu_cmd_line" con el contenido:
+qemu-system-m68k -M q800 -m 32 -bios quadra800/q800.rom -device scsi-hd,scsi-id=0,drive=hd0 -drive file=quadra800/system71.img,media=disk,format=raw,if=none,id=hd0
+----Lo ejecutamos con:
+retroarch -L ~/.config/retroarch/cores/libqemu_libretro.so quadra800.qemu_cmd_line
 
 ******************Actualizar a de DEBIAN WHEEZY a DEBIAN JESSIE****************************************************************************
 
