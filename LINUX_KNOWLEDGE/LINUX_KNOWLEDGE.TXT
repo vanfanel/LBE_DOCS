@@ -1849,6 +1849,9 @@ Para cargar una imágen de disco duro con juegos:
 apple2gs -rompath apple2gs -ramsize 8M \
 -sl7 scsi -hard1 apple2gs/colección.hdv
 
+Por ejemplo, para cargar la conección de Ninja Force:
+apple2gs -rompath apple2gs -ramsize 8M -sl7 scsi -hard1 apple2gs/A_Boot.po
+
 Colección de juegos de Apple IIGS en disco duro:
 http://www.ninjaforce.com/downloads/wita2gs_0_70.zip
 Colección EXOAPPLEIIGS:
