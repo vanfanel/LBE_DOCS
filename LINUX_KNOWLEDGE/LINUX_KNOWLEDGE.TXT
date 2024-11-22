@@ -1849,6 +1849,9 @@ LO MÁS RECOMENDADO: para cargar una imágen de un juego en disco duro individua
 en https://www.retro-exo.com/appleIIGS.html) hacemos:
 apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/Immortal.po
 
+SI FUESE UN JUEGO DE DOS DISCOS, como el Rocket Ranger, haríamos:
+apple2gs -rompath apple2gs -sl7 cffa2 -hard1 "apple2gs/Rocket-1.2mg" -hard2 "apple2gs/Rocket-1.2mg"
+
 Y para cargar el cmd hacemos así:
 retroarch -L mame_libretro.so apple2gs.cmd
 
