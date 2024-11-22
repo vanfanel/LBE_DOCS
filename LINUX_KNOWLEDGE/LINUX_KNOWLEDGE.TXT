@@ -1833,12 +1833,13 @@ CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make REGENIE=1 -f Makefile.libretro -j10
 
-Creamos ~/apple2gs con las ROMS a2scsi.zip y apple2gs.zip
+Creamos ~/apple2gs con las ROMS:
+apple2gs.zip
+a2scsi.zip
+a2cffa2.zip
 
 Para lanzar un juego en floppy, creamos apple2gs.cmd con este contenido:
-apple2gs -rompath apple2gs -ramsize 8M \
--flop3 apple2gs/juego.2mg
-
+apple2gs -rompath apple2gs -ramsize 8M -flop3 apple2gs/juego.2mg
 (NOTA: flop3 y flop4 son para discos 2mg/po de 800K del IIGS, ya que flop1 y flop2 son para discos de AppleII.
  Por eso para cargar discos de IIGS le pasamos "-flop3").
 
@@ -1846,11 +1847,10 @@ Cargamos el cmd así:
 retroarch -L mame_libretro.so apple2gs.cmd
 
 Para cargar una imágen de disco duro con juegos:
-apple2gs -rompath apple2gs -ramsize 8M \
--sl7 scsi -hard1 apple2gs/colección.hdv
+apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/imagen.hdv
 
 Por ejemplo, para cargar la conección de Ninja Force:
-apple2gs -rompath apple2gs -ramsize 8M -sl7 scsi -hard1 apple2gs/A_Boot.po
+apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/A_Boot.po
 
 Colección de juegos de Apple IIGS en disco duro:
 http://www.ninjaforce.com/downloads/wita2gs_0_70.zip
@@ -1869,9 +1869,7 @@ dd if=/dev/zero of=system6.hdv bs=1000000 count=32
 Nos descargamos los discos de instalación del System 601 de https://mirrors.apple2.org.za/ftp.apple.asimov.net/images/gs/os/gsos/System_6.0.1.zip
 
 Creamos apple2gs.cmd con este contenido:
-apple2gs -rompath apple2gs -ramsize 8M \
--sl7 scsi -hard1 apple2gs/system6.hdv \
--flop3 apple2gs/install.2mg
+apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/system6.hdv -flop3 apple2gs/install.2mg
 
 ******USAR MAME STANDALONE PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
 
