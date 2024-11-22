@@ -1742,7 +1742,7 @@ dd if=/dev/zero of=system.hdv bs=1000000 count=128
 -Arrancamos en modo Mac II tanto si vamos a emular un Mac 128/SE como si vamos a emular un Mac II (ya que si no, no tenemos CDROM)
  con el "Apple Legacy Recovery Oct 1999", que lo tienes en el disco de backup y también está en archive.org.
  Para ello, creamos "maciici.cmd" con el contenido:
- maciici -rompath macse -ramsize 8M -hard macse/system.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
+ maciici -rompath macse -ramsize 8M -hard maciici/system.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
  Y lo lanzamos con:
  retroarch -L mame_libretro.so maciici.cmd
  
@@ -3864,7 +3864,9 @@ NOTAS PREVIAS:
  Es así, no se puede hacer absolutamente nada para evitarlo.
 -QEMU sólo puede usar las tecnologías de virtualización (KMV) si emulamos una máquina con la misma arquitectura que la máquina host.
  O sea, que olvídate de KVM para cosas como emular un Mac 68K en X86.
- 
+-OJO!!! OJO!! OJO!! Algunos juegos más antiguos de Mac II como el Ishar 1 y 2 NO FUNCIONAN en un Macintosh Quadra 800 real.
+ Si los ejecutas en el QEMU petarán con un segfault del QEMU.
+
 -La info sobre los modos de vídeo de los modelos de Mac fue sacada de:
 http://adb.arcadeitalia.net/lista_mame.php buscando por el fabricante Apple y des-marcando la casilla "MameCab only".
 
