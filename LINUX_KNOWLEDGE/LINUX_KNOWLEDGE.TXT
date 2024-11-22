@@ -1845,10 +1845,7 @@ apple2gs -rompath apple2gs -ramsize 8M -flop3 apple2gs/juego.2mg
 (NOTA: flop3 y flop4 son para discos 2mg/po de 800K del IIGS, ya que flop1 y flop2 son para discos de AppleII.
  Por eso para cargar discos de IIGS le pasamos "-flop3").
 
-Cargamos el cmd así:
-retroarch -L mame_libretro.so apple2gs.cmd
-
-Para cargar una imágen de disco duro con juegos (puede ser un .po, .2gm, .hdv...):
+Para cargar una imágen de disco duro con juegos (puede ser un fichero .po, .2mg, .hdv...):
 apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/imagen.po
 
 Por ejemplo, para cargar un juego en disco duro de la colección EXOAPPLEIIGS (que es lo más recomendado):
@@ -1858,6 +1855,9 @@ Por ejemplo, para cargar la conección de Ninja Force, cargamos a la vez el disc
 y los discos que queramos de las diferentes categorías de juegos (por eso usamos cffa2 en vez de scsi,
 ya que con scsi sólo se puede cargar una única imágen de disco cada vez):
 apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/A_Boot.po -hard2 "apple2gs/C_Adventure and Sim Games.hdv"
+
+Y para cargar el cmd hacemos así:
+retroarch -L mame_libretro.so apple2gs.cmd
 
 Colección EXOAPPLEIIGS:
 https://www.retro-exo.com/appleIIGS.html
