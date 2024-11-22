@@ -1837,6 +1837,8 @@ Creamos ~/apple2gs con las ROMS:
 apple2gs.zip
 a2scsi.zip
 a2cffa2.zip
+(La ROM "a2cffa2.zip" es para emular la expansión interface CF, llamada cffa2, que nos permite cargar imágenes de disco duro en un IIGS,
+que normalmente funciona con floppies y no sabe nada de discos duros).
 
 Para lanzar un juego en floppy, creamos apple2gs.cmd con este contenido:
 apple2gs -rompath apple2gs -ramsize 8M -flop3 apple2gs/juego.2mg
