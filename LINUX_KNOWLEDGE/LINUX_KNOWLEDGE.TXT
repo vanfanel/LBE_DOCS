@@ -1820,6 +1820,28 @@ que quieras deshabilitar.
 
 		FIN BLOQUE PARA CREAR LA IMÁGEN DE DISCO DURO
 
+******USAR MAME LIBRETRO PARA EMULAR UN APPLE2GS************************************************
+
+Información adicional: https://wiki.mamedev.org/index.php/Driver:Apple_II
+
+En makefile, dejamos así la línea SOURCES:
+SOURCES = apple/apple2.cpp,apple/apple2gs.cpp
+
+Creamos ~/apple2gs con las ROMS a2scsi.zip y apple2gs.zip
+En ese mismo directorio metemos una imágen de disco duro de 32MB que creamos así:
+dd if=/dev/zero of=system6.hdv bs=1000000 count=32
+
+Nos descargamos los discos de instalación del System 601 de https://mirrors.apple2.org.za/ftp.apple.asimov.net/images/gs/os/gsos/System_6.0.1.zip
+
+Creamos apple2gs.cmd con este contenido:
+apple2gs -rompath apple2gs -ramsize 8M \
+-sl7 scsi -hard1 apple2gs/system6.hdv \
+-flop3 apple2gs/install.2mg
+(NOTA: flop3 y flop4 son para discos 2mg/po de 800K, que son la mayoría de los que vamos a usar, por eso le pasamos "-flop3").
+
+Cargamos el cmd así:
+retroarch -L mame_libretro.so apple2gs.cmd
+
 ******USAR MAME STANDALONE PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
 
 El Mac 128 no soporta disco duro, si queremos un Mac en blaco y negro emulamos el Mac SE (el Mac Plus no arranca con discos
