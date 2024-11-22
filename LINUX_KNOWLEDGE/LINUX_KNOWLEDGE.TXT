@@ -1848,16 +1848,21 @@ apple2gs -rompath apple2gs -ramsize 8M -flop3 apple2gs/juego.2mg
 Cargamos el cmd así:
 retroarch -L mame_libretro.so apple2gs.cmd
 
-Para cargar una imágen de disco duro con juegos:
-apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/imagen.hdv
+Para cargar una imágen de disco duro con juegos (puede ser un .po, .2gm, .hdv...):
+apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/imagen.po
 
-Por ejemplo, para cargar la conección de Ninja Force:
-apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/A_Boot.po
+Por ejemplo, para cargar un juego en disco duro de la colección EXOAPPLEIIGS (que es lo más recomendado):
+apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/Immortal.po
 
-Colección de juegos de Apple IIGS en disco duro:
-http://www.ninjaforce.com/downloads/wita2gs_0_70.zip
+Por ejemplo, para cargar la conección de Ninja Force, cargamos a la vez el disco de arranque con el sistema
+y los discos que queramos de las diferentes categorías de juegos (por eso usamos cffa2 en vez de scsi,
+ya que con scsi sólo se puede cargar una única imágen de disco cada vez):
+apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/A_Boot.po -hard2 "apple2gs/C_Adventure and Sim Games.hdv"
+
 Colección EXOAPPLEIIGS:
 https://www.retro-exo.com/appleIIGS.html
+Colección de juegos de Apple IIGS en disco duro:
+http://www.ninjaforce.com/downloads/wita2gs_0_70.zip
 Software en disco duro preparado:
 https://www.whatisthe2gs.apple2.org.za/home/index.html
 Concretamente, juegos instalados en disco duro y parcheados para funcionar:
