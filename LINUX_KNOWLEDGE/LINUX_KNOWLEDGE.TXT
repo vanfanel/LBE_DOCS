@@ -1845,38 +1845,26 @@ apple2gs -rompath apple2gs -ramsize 8M -flop3 apple2gs/juego.2mg
 (NOTA: flop3 y flop4 son para discos 2mg/po de 800K del IIGS, ya que flop1 y flop2 son para discos de AppleII.
  Por eso para cargar discos de IIGS le pasamos "-flop3").
 
-Para cargar una imágen de disco duro con juegos (puede ser un fichero .po, .2mg, .hdv...):
-apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/imagen.po
-
-Por ejemplo, para cargar un juego en disco duro de la colección EXOAPPLEIIGS (que es lo más recomendado):
+LO MÁS RECOMENDADO: para cargar una imágen de un juego en disco duro individual de la colección EXOAPPLEIIGS (disponible por Torrent
+en https://www.retro-exo.com/appleIIGS.html) hacemos:
 apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/Immortal.po
+
+Y para cargar el cmd hacemos así:
+retroarch -L mame_libretro.so apple2gs.cmd
+
+OTRAS ALTERNATIVAS DE SOFTWARE PREINSTALADO EN DISCO DURO PARA EL IIGS
 
 Por ejemplo, para cargar la conección de Ninja Force, cargamos a la vez el disco de arranque con el sistema
 y los discos que queramos de las diferentes categorías de juegos (por eso usamos cffa2 en vez de scsi,
 ya que con scsi sólo se puede cargar una única imágen de disco cada vez):
 apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/A_Boot.po -hard2 "apple2gs/C_Adventure and Sim Games.hdv"
 
-Y para cargar el cmd hacemos así:
-retroarch -L mame_libretro.so apple2gs.cmd
-
-Colección EXOAPPLEIIGS:
-https://www.retro-exo.com/appleIIGS.html
 Colección de juegos de Apple IIGS en disco duro:
 http://www.ninjaforce.com/downloads/wita2gs_0_70.zip
 Software en disco duro preparado:
 https://www.whatisthe2gs.apple2.org.za/home/index.html
 Concretamente, juegos instalados en disco duro y parcheados para funcionar:
 https://www.whatisthe2gs.apple2.org.za/files/Games_with_Path_Mods.zip
-
-INSTALAR EL SISTEMA EN UN DISCO DURO Y METERLE JUEGOS
-
-En el directorio ~/apple2gs metemos una imágen de disco duro de 32MB que creamos así:
-dd if=/dev/zero of=system6.hdv bs=1000000 count=32
-
-Nos descargamos los discos de instalación del System 601 de https://mirrors.apple2.org.za/ftp.apple.asimov.net/images/gs/os/gsos/System_6.0.1.zip
-
-Creamos apple2gs.cmd con este contenido:
-apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/system6.hdv -flop3 apple2gs/install.2mg
 
 ******USAR MAME STANDALONE PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
 
