@@ -1459,8 +1459,8 @@ Y entramos en el directorio "libretro" y compilamos con:
 make platform=rpi4_64 -j4
 
 ******Compilar el core FLYCAST LIBRETRO en GNU/Linux********
-NOTA PREVIA: Para poder bajar la latencia de audio, es recomendable tener un kernel PREEMPT_DYNAMIC
-(General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop))
+NOTA PREVIA: Para poder bajar la latencia de audio (es perfectamente posible tener 32ms de latencia a 48000Hz con Alsathread),
+es recomendable tener un kernel PREEMPT_DYNAMIC (General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop))
 y tener los HZ del planificador de tareas a 300Hz ya que es múltiplo de PAL y NTSC,
 NO se te ocurra subirlo a 1000Hz porque penaliza mucho el rendimiento.
 (Processor Type and Features->Timer Frequency->300Hz)
@@ -1494,11 +1494,6 @@ y "Delay Frame Swapping" en las opciones del emulador. Esto nos limita la resolu
 
 RECUERDA: NO ACTIVES "Emulation Hacks -> GD-ROM Fast Loading", porque aunque evita los crujidos de la intro del Soul Calibur,
 introduce microcortes en el audio de la intro/demo del DOA2. No es solución. No lo uses.
-
-RECUERDA: El audio de este core sólo va bien con los valores por defecto, es decir, 48000Hz y 64ms,
-configura así el audio y sálvalo en "Overrides->Save Core Overrides".
-En general, para cores 3D (es decir, que usen la GPU para el rendering) es así la cosa.
-Puedes hacer todas las pruebas que quieras, pero al final esa es la conclusión. 
 
 RECUERDA, SI NO USAS WAYLAND: Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 
@@ -1650,8 +1645,6 @@ CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make REGENIE=1 USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
 
-MAME tiene un sonido nativo de 48000Hz.
-
 (+)MÁS INFO DE REFERENCIA:
 
 Un hilo sobre el asunto con la solución para compilar sólo un driver:
@@ -1678,9 +1671,6 @@ Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configu
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make REGENIE=1 -f Makefile.libretro -j4
-
-MAME es un core con sonido de 48000Hz, así que configura el audio en Settings->Audio->Output para esta frecuencia,
-y guárdalo para este core en Quick Menu->Overrides->Save Core Overrides
 
 ******USAR MAME LIBRETRO PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
 
