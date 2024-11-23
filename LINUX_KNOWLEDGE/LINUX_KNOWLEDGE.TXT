@@ -4032,12 +4032,12 @@ apt-get install python3-venv flex bison zlib1g-dev
 -Clonamos su repo:
 git clone --depth 1 --recursive https://git.libretro.com/libretro/qemu-libretro.git
 
--Configuramos con (sólo soporte para Mac 68k):
+-Configuramos con (sólo soporte para Mac 68k, y OJO!!! NO USES "-march=native -mtune=native" porque la versión resultante no funciona bien):
 
 mkdir b4
 cd b4
 
-CFLAGS="-march=native -mtune=native -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
+CFLAGS="-Os -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
     --target-list=m68k-softmmu \
     --without-default-features \
     --glib=internal \
@@ -8936,7 +8936,7 @@ cmake .. -GNinja \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGLES=1
 
-ninja -j6
+ninja -j10
 
 OPCIONAL:
 Si queremos compilar una versión del juego contra OpenGL en vez de contra GLES, editamos _deps/imgui-src/backends/imgui_impl_opengl3_loader.h
