@@ -2067,6 +2067,16 @@ Ahora ya, lo de las llaves va así:
 10)Y luego cada uno elige la predeterminación que desea.
 11)Llave finalizada.
 
+******Overclockear la GPU Intel integrada en GNU/Linux*************
+
+Ve a sys/class/drm/card0 y juega con esos valores.
+Por ejemplo, para que la GPU no baje de 1200 MHz, puedes hacer:
+echo 1200 > gt_min_freq_mhz
+Y lo puedes comprobar con:
+cat gt_cur_freq_mhz
+
+...Pero no vale realmente para nada.
+
 ******Overclockear la Raspberry Pi 4*******************************
 
 [pi4]
