@@ -1459,12 +1459,16 @@ Y entramos en el directorio "libretro" y compilamos con:
 make platform=rpi4_64 -j4
 
 ******Compilar el core FLYCAST LIBRETRO en GNU/Linux********
-NOTA PREVIA: Para poder bajar la latencia de audio (es perfectamente posible tener 32ms de latencia a 48000Hz con Alsathread),
+
+¡¡¡¡NOTA PREVIA IMPORTANTE!!!! Para poder bajar la latencia de audio (es perfectamente posible tener 32ms de latencia a 48000Hz con Alsathread),
 es recomendable tener un kernel PREEMPT_DYNAMIC (General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop))
 y tener los HZ del planificador de tareas a 300Hz ya que es múltiplo de PAL y NTSC,
 NO se te ocurra subirlo a 1000Hz porque penaliza mucho el rendimiento.
 (Processor Type and Features->Timer Frequency->300Hz)
 Tienes una configuración lista para el i5-1235U en LBE_DOCS.
+
+¡¡¡¡NOTA PREVIA IMPORTANTE!!!! Cargar juegos en CHD tiene un overhead MUY notable en este core, que hace que el Sould Calibur tenga crujidos
+al principio. Usa juegos en CUE/BIN. Si metes un juego en CHD, descomprímelo antes de jugar.
 
 Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
