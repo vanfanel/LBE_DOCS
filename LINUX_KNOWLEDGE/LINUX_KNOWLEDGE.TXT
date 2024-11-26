@@ -1859,6 +1859,23 @@ https://www.whatisthe2gs.apple2.org.za/home/index.html
 Concretamente, juegos instalados en disco duro y parcheados para funcionar:
 https://www.whatisthe2gs.apple2.org.za/files/Games_with_Path_Mods.zip
 
+******COMPILAR MAME STANDALONE****************************************************
+
+-Clonamos su repo:
+git clone -b mame0271 --depth 1 https://github.com/mamedev/mame.git mame0271
+
+-Editamos scripts/src/osd/modules.lua, nos vamos a la función osdmodulestargetconf(), y donde pone
+links { 
+	"GL",
+lo cambiamos por "OpenGL".
+
+-En makefile, en la línea de SOURCES ponemos los .cpp de las plataformas que queremos emular.
+
+-Compilamos con:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make REGENIE=1 USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j4
+
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
 Lo más fácil es mirar en su fichero de código si tiene algún flag como MACHINE_IMPERFECT_SOUND, MACHINE_IMPERFECT_GRAPHICS, etc.
