@@ -9764,7 +9764,9 @@ OpenDUNE
 
 --Clonamos su repo: git clone --depth 1 https://github.com/OpenDUNE/OpenDUNE.git
 
---Editamos src/video/video_sdl2.c y allí cambiamos todos los "SDL_FULLSCREEN" por "SDL_FULLSCREEN_DESKTOP".
+--Editamos src/video/video_sdl2.c y allí: 
+----Cambiamos todos los "SDL_FULLSCREEN" por "SDL_FULLSCREEN_DESKTOP".
+----Buscamos la llamada a SDL_RenderSetLogicalSize() y le pasamos "320, 240". 
 
 --Configuramos y compilamos con (MUY IMPORTANTE, NO NOS INTERESA EL SONIDO POR ALSA porque no soporta el formato de audio requerido
 y suenan "chillidos" en vez de efectos de sonido):
