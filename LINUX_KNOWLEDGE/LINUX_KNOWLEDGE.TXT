@@ -2913,11 +2913,19 @@ Compilamos con:
 
 make -f Makefile.libretro -j8 platform=rpi2
 
-*******OpenXComm, el UFO para la Pi***********************************************
+*******OpenXComm, el UFO para la GNU/Linux***********************************************
 
-Clonamos su repo:
+(NO ESTÁ LISTO PARA SDL2 AÚN)
+
+--Clonamos su repo:
 git clone --depth 1 https://github.com/OpenXcom/OpenXcom.git
-(...no está listo para compilar contra SDL2 aún).
+
+--Compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 *******Catacomb3d en GNU/Linux****************************************************
 
@@ -11254,7 +11262,7 @@ ISHAR NATIVO EN GNU/LINUX
 Esta no la viste venir, ¿eh?
 Compilamos su repo: git clone --depth 1 https://github.com/maestun/alis.git
 
-Editamos src/sys/sdl2/sys_sdl2.c y allí:
+Editamos src/sys/sys.c y allí:
 -Añadimos antes de la llamada a SDL_CreateWindow():
 SDL_ShowCursor(SDL_DISABLE);
 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
