@@ -1807,6 +1807,21 @@ https://www.whatisthe2gs.apple2.org.za/home/index.html
 Concretamente, juegos instalados en disco duro y parcheados para funcionar:
 https://www.whatisthe2gs.apple2.org.za/files/Games_with_Path_Mods.zip
 
+*************EMULAR UN X68000 EN MAME*******************************************************************************************
+
+Creamos un directorio que voy a llamar "x68k" (lo podría llamar como quisiera) y dentro ponemos los archivos de la BIOS del sistema
+que se llama "x68000.zip" y de la expansión SCSI que se llama "x68k_cz6bs1.zip"
+
+Para lanzar un foppy, creamos el archivo "x68k.cmd" con el contenido:
+
+x68000 -flop1 disco.xd
+
+Y para lanzar una imágen de disco duro:
+
+x68000 -exp1 cz6bs1 -hard1 akumajou.hds
+
+Tienes imágenes de disco duro para cada juego si buscas "x68000 collection" en Archive.org
+
 *************Compilar MAME standalone con drivers selectos**********************************************************************
 
 Instalamos dependencias previas:
