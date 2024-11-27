@@ -1809,16 +1809,19 @@ https://www.whatisthe2gs.apple2.org.za/files/Games_with_Path_Mods.zip
 
 *************EMULAR UN X68000 EN MAME*******************************************************************************************
 
-Creamos un directorio que voy a llamar "x68k" (lo podría llamar como quisiera) y dentro ponemos los archivos de la BIOS del sistema
-que se llama "x68000.zip" y de la expansión SCSI que se llama "x68k_cz6bs1.zip"
+Creamos un directorio llamado "x68000" y dentro ponemos:
+x68000.zip
+x68k_cz6bs1.zip
+akumajou.hdf
 
-Para lanzar un foppy, creamos el archivo "x68k.cmd" con el contenido:
+Para lanzar un foppy, creamos el archivo "x68000.cmd" con el contenido:
 
-x68000 -flop1 disco.d88/dim/xdf
+x68000 -rompath x68000 -flop1 disco.d88/dim/xdf
 
-Y para lanzar una imágen de disco duro:
+Y para lanzar una imágen de disco duro (el x68000 original no arranca desde el disco duro SCSI así que arrancamos desde
+un disco maestro o algo así):
 
-x68000 -exp1 cz6bs1 -hard1 akumajou.hds
+x68000 -rompath x68000 -flop1 MasterDisk_V2.xdf -exp1 cz6bs1 -hard1 x68000/akumajou.hdf 
 
 Tienes imágenes de disco duro para cada juego si buscas "x68000 collection" en Archive.org
 
