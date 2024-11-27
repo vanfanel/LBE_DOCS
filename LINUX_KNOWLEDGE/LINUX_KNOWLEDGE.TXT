@@ -1814,6 +1814,9 @@ x68000.zip
 x68k_cz6bs1.zip
 +Juegos en floppy o en disco duro.
 
+Cargamos el core así con el .cmd que crearemos con las instrucciones a continuación:
+retroarch -L mame_libretro.so x68000.cmd
+
 --Para arrancar con los dos floppys del Akumajou Dracula, creamos el archivo "x68000.cmd" con el contenido:
 x68000 -rompath x68000 -flop1 "x68000/Akumajou Dracula (Disk A).hdm" -flop2 "x68000/Akumajou Dracula (Disk B).hdm"
 
