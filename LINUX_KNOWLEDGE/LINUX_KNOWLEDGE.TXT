@@ -1814,7 +1814,7 @@ que se llama "x68000.zip" y de la expansión SCSI que se llama "x68k_cz6bs1.zip"
 
 Para lanzar un foppy, creamos el archivo "x68k.cmd" con el contenido:
 
-x68000 -flop1 disco.xd
+x68000 -flop1 disco.d88/dim/xdf
 
 Y para lanzar una imágen de disco duro:
 
