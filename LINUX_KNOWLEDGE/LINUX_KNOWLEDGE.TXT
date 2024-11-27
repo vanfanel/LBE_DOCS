@@ -1611,6 +1611,7 @@ cmake .. -DMOJOZORK_MULTIZORK=OFF \
 -DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
 
 ******Compilar MAME LIBRETRO con soporte sólo para unos ciertos drivers************
+NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, mantén pulsado SELECT y pulsa el botón que tengas asignado como Y.
 
 git clone --depth 1 https://github.com/libretro/mame.git
 
@@ -1623,9 +1624,9 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make REGENIE=1 -f Makefile.libretro -j4
 
 ******USAR MAME LIBRETRO PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
-
 OJO!!! OJO!! OJO!! MAME al emular Mac NO soporta Runahead, si lo tienes fallará el arranque con un error del sistema Mac,
 y habrá un sonido popping de fondo muy desagradable. 
+NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, mantén pulsado SELECT y pulsa el botón que tengas asignado como Y.
 
 El Macintosh 128 original no soporta disco duro, si queremos un Mac en blaco y negro emulamos el Mac SE (el Mac Plus no arranca con discos
 de más de 20MBm y el Mac Classic es incompatible con el Arkanoid).
@@ -1759,6 +1760,7 @@ que quieras deshabilitar.
 ******USAR MAME LIBRETRO PARA EMULAR UN APPLE2GS************************************************
 NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
 Si lo dejas activado, los programas se comportan de manera muy extraña: no tienen sonido, se resetean al pulsar teclas o botones, etc.
+NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, mantén pulsado SELECT y pulsa el botón que tengas asignado como Y.
 
 Información adicional: https://wiki.mamedev.org/index.php/Driver:Apple_II
 (Ver sección "Quickstart")
@@ -1810,6 +1812,7 @@ https://www.whatisthe2gs.apple2.org.za/files/Games_with_Path_Mods.zip
 *************EMULAR UN X68000 EN MAME*******************************************************************************************
 NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
 Si lo dejas activado, los programas se comportan de manera muy extraña: no tienen sonido, se resetean al pulsar teclas o botones, etc.
+NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, mantén pulsado SELECT y pulsa el botón que tengas asignado como Y.
 
 Creamos un directorio llamado "x68000" y dentro ponemos:
 x68000.zip
