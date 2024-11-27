@@ -1808,13 +1808,15 @@ Concretamente, juegos instalados en disco duro y parcheados para funcionar:
 https://www.whatisthe2gs.apple2.org.za/files/Games_with_Path_Mods.zip
 
 *************EMULAR UN X68000 EN MAME*******************************************************************************************
+NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
+Si lo dejas activado, los programas se comportan de manera muy extraña: no tienen sonido, se resetean al pulsar teclas o botones, etc.
 
 Creamos un directorio llamado "x68000" y dentro ponemos:
 x68000.zip
 x68k_cz6bs1.zip
 +Juegos en floppy o en disco duro.
 
-Cargamos el core así con el .cmd que crearemos con las instrucciones a continuación:
+--Cargamos el core así con el .cmd que crearemos con las instrucciones a continuación:
 retroarch -L mame_libretro.so x68000.cmd
 
 --Para arrancar con los dos floppys del Akumajou Dracula, creamos el archivo "x68000.cmd" con el contenido:
