@@ -2085,6 +2085,7 @@ Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHead
 
 ******Emulando arcades con la frecuencia de vídeo correcta en RetroArch sin VRR*****
 
+OJO!!! Si usas esta técnica, NO ACTIVES "Force 60Hz" en FBNeo: son mutuamente excluyentes!!!
 Usando un shellscript, es posible establecer un refresco de pantalla según el nombre del juego,
 y pasarle un fichero de configuración con ese refresco a RetroArch.
 Se usa frecuencia doble para evitar el input lag por vsync, por lo que un juego de 55Hz usará una frecuencia de 110Hz,
@@ -2097,7 +2098,10 @@ Este sería mi cargador de juegos arcade:
 CORE=fbneo_libretro.so
 
 case "$1" in
-  *mk*|*hharry*|*rtype*|*demonwld*|*outzone*|*nspirit*)
+  *mk*)
+    new_refreshrate=108.000000
+    ;;
+  *hharry*|*rtype*|*demonwld*|*outzone*|*nspirit*)
     new_refreshrate=110.000000
     ;;
   *rodland*|*vigilant*)
