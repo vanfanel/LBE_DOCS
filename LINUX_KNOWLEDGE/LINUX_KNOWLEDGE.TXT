@@ -2152,7 +2152,9 @@ if [ $new_refreshrate != 0 ]; then
     wlr-randr --output HDMI-A-1 --mode 1920x1080@60
     rm /tmp/video_adjust.cfg
 else
+	wlr-randr --output HDMI-A-1 --mode 1920x1080@120
     retroarch -L .config/retroarch/cores/$CORE "$1"
+    wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 fi
 
 ##########ACABA EL CARGADOR DE ARCADES############# 
