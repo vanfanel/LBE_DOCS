@@ -2086,54 +2086,43 @@ Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHead
 ******Emulando arcades con la frecuencia de vídeo correcta en RetroArch sin VRR*****
 
 Usando un shellscript, es posible establecer un refresco de pantalla según el nombre del juego,
-y pasarle un fichero de configuración con ese refresco a RetroArch. Este sería mi cargador de juegos arcade:
+y pasarle un fichero de configuración con ese refresco a RetroArch.
+Se usa frecuencia doble para evitar el input lag por vsync, por lo que un juego de 55Hz usará una frecuencia de 110Hz,
+y se usan números enteros: un juego de 54.70684 se considerará que va a 55Hz.
+Además, algunos juegos se ejecutan con MAME en lugar de FBNeo.
+Este sería mi cargador de juegos arcade:
 
 ##########EMPIEZA EL CARGADOR DE ARCADES############# 
 
+CORE=fbneo_libretro
+
 case "$1" in
-  *mk*)
-    new_refreshrate=54.70684
+  *mk*|*hharry*|*rtype*|*demonwld*|*outzone*|*nspirit*)
+    new_refreshrate=110.000000
     ;;
-  *hharry*|*rtype*)
-    new_refreshrate=55.017606
+  *rodland*|*vigilant*)
+    new_refreshrate=112.000000
     ;;
-  *pang*|*spang*|*thoop*)
-    new_refreshrate=57.420000
+  *pang*|*spang*|*thoop*|*tumblep*|*robocop*|*baddudes*|*drgninja*|*xsleena*|vf*|vr*)
+    new_refreshrate=114.000000
     ;;
-  *demonwld*|*outzone*)
-    new_refreshrate=55.161545
-    ;;
-  *cbuster*|*darkseal*)
-    new_refreshrate=58.00000
-    ;;
-  *cninja*)
-    new_refreshrate=58.238857
+  *cbuster*|*darkseal*|*cninja*|*snowbros*)
+    new_refreshrate=116.000000
     ;;
   *aligator*)
-    new_refreshrate=59.100000
-    ;;
-  *rodland*)
-    new_refreshrate=56.19135
-    ;;
-  *snowbros*)
-    new_refreshrate=57.500000
-    ;;
-  *nspirit*)
-    new_refreshrate=55.017606
-    ;;
-  *tumblep*)
-    new_refreshrate=57.79965
-    ;;
-  *robocop*|*baddudes*|*drgninja*|*xsleena*)
-    new_refreshrate=57.444853
-    ;;
-  *vigilant*)
-    new_refreshrate=56.338028
+    new_refreshrate=118.000000
     ;;
   *)
     new_refreshrate=0
     ;;
 esac
+
+
+# Para ciertos juegos, usamos el MAME porque no están en el FBNeo.
+if [[ "$1" =~ ^(vf*|vr*|ridgerac*)$ ]]; then
+	CORE=mame_libretro.so
+fi
+
 
 if [ $new_refreshrate != 0 ]; then
     echo "This game needs refresh rate adjustment. Adjusting screen refresh rate."
@@ -2148,7 +2137,7 @@ if [ $new_refreshrate != 0 ]; then
     sleep 1
 
     sync
-    retroarch -L .config/retroarch/cores/fbneo_libretro.so --appendconfig /tmp/video_adjust.cfg "$1"
+    retroarch -L .config/retroarch/cores/$CORE --appendconfig /tmp/video_adjust.cfg "$1"
 
     echo 'Restoring default screen refresh rate...'
     wlr-randr --output HDMI-A-1 --mode 1920x1080@60
