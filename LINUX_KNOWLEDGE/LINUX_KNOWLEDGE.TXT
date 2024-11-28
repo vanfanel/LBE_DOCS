@@ -2103,7 +2103,7 @@ case "$1" in
   *rodland*|*vigilant*)
     new_refreshrate=112.000000
     ;;
-  *pang*|*spang*|*thoop*|*tumblep*|*robocop*|*baddudes*|*drgninja*|*xsleena*|vf*|vr*)
+  *pang*|*spang*|*thoop*|*tumblep*|*robocop*|*baddudes*|*drgninja*|*xsleena*|*vf*|*vr*)
     new_refreshrate=114.000000
     ;;
   *cbuster*|*darkseal*|*cninja*|*snowbros*)
@@ -2119,7 +2119,7 @@ esac
 
 
 # Para ciertos juegos, usamos el MAME porque no están en el FBNeo.
-if [[ "$1" =~ ^(vf*|vr*|ridgerac*)$ ]]; then
+if [[ "$1" =~ vf|vr|ridgerac ]]; then
 	CORE=mame_libretro.so
 fi
 
@@ -2143,7 +2143,7 @@ if [ $new_refreshrate != 0 ]; then
     wlr-randr --output HDMI-A-1 --mode 1920x1080@60
     rm /tmp/video_adjust.cfg
 else
-    retroarch -L .config/retroarch/cores/fbneo_libretro.so "$1"
+    retroarch -L .config/retroarch/cores/$CORE "$1"
 fi
 
 ##########ACABA EL CARGADOR DE ARCADES############# 
