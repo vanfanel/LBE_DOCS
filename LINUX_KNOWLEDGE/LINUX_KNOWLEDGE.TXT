@@ -2094,7 +2094,7 @@ Este sería mi cargador de juegos arcade:
 
 ##########EMPIEZA EL CARGADOR DE ARCADES############# 
 
-CORE=fbneo_libretro
+CORE=fbneo_libretro.so
 
 case "$1" in
   *mk*|*hharry*|*rtype*|*demonwld*|*outzone*|*nspirit*)
