@@ -11070,6 +11070,30 @@ Los datos del Cannon Fodder 2 irían en ~/cf/Data/Amiga2 y simplemente hay que m
 en este mismo archivo) y sacarlos de ahí. Puede que te el OpenFoder te diga que el MD5 un fichero llamado MAPM1.SPT es incorrecto. En ese caso,
 puedes sacar el MAPM1.SPT correcto del ADF marcado como [a]. 
 
+ABUSE en GNU/Linux
+==================
+
+--Clonamos su repo:
+git clone --depth 1 https://github.com/Xenoveritas/abuse.git
+
+--ANTES DE CONFIGURAR Y COMPILAR LOS SOURCES, DEBEMOS TENER LOS DATOS DE MÚSICA Y FX EN EL DIRECTORIO "data"
+O AL NO DETECTARLOS NO NOS COMPILARÁ SOPORTE DE MÚSICA Y FX!!! Para ello:
+Nos bajamos la versión de Wii ya preparada de: https://oscwii.org/library/app/abuse
+La descomprimimos y copiamos el contenido de "data" al directorio "data" que viene con los sources.
+
+--Configuramos y compilamos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+
+--Creamos ~/abuse y copiamos allí el ejecutable:
+cp src/abuse ~/abuse/
+
+--Copiamos el directorio "data" a ~/abuse
+
+--Ejecutamos con:
+SDL_SOUNDFONTS=UHD3.sf2 ./abuse -datadir ./data -fullscreen
+
 JAZZ JACKRABBIT 2 (jazz2) en GNU/Linux (jazz2resurrection-native)
 =================================================================
 
