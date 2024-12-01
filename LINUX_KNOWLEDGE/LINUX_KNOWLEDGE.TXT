@@ -1761,6 +1761,7 @@ que quieras deshabilitar.
 ******USAR MAME LIBRETRO PARA EMULAR UN APPLE2GS************************************************
 NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
 Si lo dejas activado, los programas se comportan de manera muy extraña: no tienen sonido, se resetean al pulsar teclas o botones, etc.
+NOTA IMPORTANTE!!! Para que funcione el joystick, ve a "QUICK MENU->CONTROLS->PORT 1 CONTROLS" y pon "MAPPED PORT" a 2.
 NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, como este es un core de ordenador primero debes pulsar ScrollLock y después
 mantén pulsado SELECT y pulsa el botón que tengas asignado como Y.
 
@@ -1814,6 +1815,7 @@ https://www.whatisthe2gs.apple2.org.za/files/Games_with_Path_Mods.zip
 *************EMULAR UN X68000 EN MAME*******************************************************************************************
 NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
 Si lo dejas activado, los programas se comportan de manera muy extraña: no tienen sonido, se resetean al pulsar teclas o botones, etc.
+NOTA IMPORTANTE!!! Para que funcione el joystick, ve a "QUICK MENU->CONTROLS->PORT 1 CONTROLS" y pon "MAPPED PORT" a 2.
 NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, como este es un core de ordenador primero debes pulsar ScrollLock y después
 mantén pulsado SELECT y pulsa el botón que tengas asignado como Y.
 NOTA IMPORTANTE!!! Para quitar los LEDs de la pantalla, entra en el menú interno de MAME,y ve a "VIDEO OPTIONS->SCREEN #0" y selecciona 
