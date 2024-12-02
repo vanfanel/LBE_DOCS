@@ -1761,8 +1761,8 @@ que quieras deshabilitar.
 ******USAR MAME LIBRETRO PARA EMULAR UN APPLE2GS************************************************
 NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
 Si lo dejas activado, los programas se comportan de manera muy extraña: no tienen sonido, se resetean al pulsar teclas o botones, etc.
-NOTA IMPORTANTE!!! Para que funcione el joystick, ve a "QUICK MENU->CONTROLS->PORT 1 CONTROLS" y pon "MAPPED PORT" a 2.
-También ve a "QUICK MENU->CONTROLS->PORT 2 CONTROLS" y pon "MAPPED PORT" a 1.
+NOTA IMPORTANTE!!! Para que funcione el joystick tienes que pasarle en el .cmd la opción "-gameio joy"
+Hay otras cosas que puedes conectar en el slot "gameio", lo puedes ver aquí: https://wiki.mamedev.org/index.php/Driver:Apple_II
 NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, como este es un core de ordenador primero debes pulsar ScrollLock y después
 mantén pulsado SELECT y pulsa el botón que tengas asignado como Y.
 
@@ -1785,13 +1785,13 @@ a2cffa2.zip
 que normalmente funciona con floppies y no sabe nada de discos duros).
 
 Para lanzar un juego en floppy, creamos apple2gs.cmd con este contenido:
-apple2gs -rompath apple2gs -ramsize 8M -flop3 apple2gs/juego.2mg
+apple2gs -rompath apple2gs -ramsize 8M -gameio joy -flop3 apple2gs/juego.2mg
 (NOTA: flop3 y flop4 son para discos 2mg/po de 800K del IIGS, ya que flop1 y flop2 son para discos de AppleII.
  Por eso para cargar discos de IIGS le pasamos "-flop3").
 
 LO MÁS RECOMENDADO: para cargar una imágen de un juego en disco duro individual de la colección EXOAPPLEIIGS (disponible por Torrent
 en https://www.retro-exo.com/appleIIGS.html) hacemos:
-apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/Immortal.po
+apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -gameio joy -hard1 apple2gs/Immortal.po
 
 SI FUESE UN JUEGO DE DOS DISCOS, como el Rocket Ranger, haríamos:
 apple2gs -rompath apple2gs -sl7 cffa2 -hard1 "apple2gs/Rocket-1.2mg" -hard2 "apple2gs/Rocket-1.2mg"
