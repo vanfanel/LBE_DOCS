@@ -1460,8 +1460,9 @@ make platform=rpi4_64 -j4
 
 ******Compilar el core FLYCAST LIBRETRO en GNU/Linux********
 
-¡¡¡¡NOTA PREVIA IMPORTANTE!!!! Para poder bajar la latencia de audio (es perfectamente posible tener 32ms de latencia a 48000Hz con Alsathread),
-es recomendable tener un kernel PREEMPT_DYNAMIC (General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop))
+¡¡¡¡NOTA PREVIA IMPORTANTE!!!! Para poder bajar la latencia de audio (es perfectamente posible tener 32ms de latencia a 44100Hz con Alsathread,
+este es un core de 44100 Hz y se nota), es recomendable tener un kernel con
+PREEMPT_DYNAMIC (General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop))
 y tener los HZ del planificador de tareas a 300Hz ya que es múltiplo de PAL y NTSC,
 NO se te ocurra subirlo a 1000Hz porque penaliza mucho el rendimiento.
 (Processor Type and Features->Timer Frequency->300Hz)
@@ -1500,6 +1501,8 @@ RECUERDA: Puede ser necesario activar "Native Depth Interpolation" si tienes err
 (no consume más recursos ni nada según el autor del emulador). Deja la segunda demo del Daytona USA 2001
 y si hay errores de clipping en los edificios del lado izquierdo, lo activas.
 
+RECUERDA: Este es un core de 44100 Hz, se nota mucho, usa esa frecuencia de audio y guárdalo como un override para este core.
+
 RECUERDA: NO ACTIVES "Emulation Hacks -> GD-ROM Fast Loading", porque aunque evita los crujidos de la intro del Soul Calibur,
 introduce microcortes en el audio de la intro/demo del DOA2. No es solución. No lo uses.
 
@@ -1523,6 +1526,7 @@ done
 gpu_min_freq=$(cat /sys/class/drm/card0/gt_min_freq_mhz)
 echo $(cat /sys/class/drm/card0/gt_max_freq_mhz > /sys/class/drm/card0/gt_min_freq_mhz)
 
+# Ejecutar la emulación
 sync
 wlr-randr --output HDMI-A-1 --mode 1920x1080@120
 taskset -c 0,1 retroarch -L .config/retroarch/cores/flycast_libretro.so "$1"
