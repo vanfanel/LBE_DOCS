@@ -1501,6 +1501,39 @@ introduce microcortes en el audio de la intro/demo del DOA2. No es solución. No
 
 RECUERDA, SI NO USAS WAYLAND: Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 
+RECUERDA QUE PARA QUE VAYA FULLSPEED A 120Hz NECESITAS UN SCRIPT CARGADOR CON OVERCLOCK DE LOS P-CORES Y GPU,
+Y MANDANDO EL EMULADOR A CORRER EN LOS P-CORES:
+
+####EMPIEZA EL SCRIPT####
+
+#Declaramos un array para guardar los valores originales de min_freq de los P-Cores
+declare -A cpu_min_freqs
+
+#Ponemos los dos P-Cores al máximo
+for cpu in cpu0 cpu1; do
+        cpu_min_freqs[$cpu]=$(cat /sys/devices/system/cpu/$cpu/cpufreq/scaling_min_freq)
+        echo $(cat /sys/devices/system/cpu/$cpu/cpufreq/scaling_max_freq) > /sys/devices/system/cpu/$cpu/cpufreq/scaling_min_freq
+done
+
+# Overclockear GPU
+gpu_min_freq=$(cat /sys/class/drm/card0/gt_min_freq_mhz)
+echo $(cat /sys/class/drm/card0/gt_max_freq_mhz > /sys/class/drm/card0/gt_min_freq_mhz)
+
+sync
+wlr-randr --output HDMI-A-1 --mode 1920x1080@120
+taskset -c 0,1 retroarch -L .config/retroarch/cores/flycast_libretro.so "$1"
+wlr-randr --output HDMI-A-1 --mode 1920x1080@60
+
+#Restaurar los P-Cores
+for cpu in cpu0 cpu1; do
+        echo ${cpu_min_freqs[$cpu]} > /sys/devices/system/cpu/$cpu/cpufreq/scaling_min_freq
+done
+
+# Restaurar GPU
+echo $gpu_min_freq > /sys/class/drm/card0/gt_min_freq_mhz
+
+####ACABA EL SCRIPT####
+
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
 NOTA PREVIA: El emulador standalone NO SINCRONIZA BIEN VIDEO Y AUDIO: o bien le sobran frames de audio o de vídeo.
              No le des vueltas, USA EL CORE DE RETROARCH.
@@ -2050,7 +2083,7 @@ Con este script pondríamos a velocidad máxima las CPUs 0 y 1, y después de ej
 
 ####EMPIEZA SCRIPT####
 
-#Declaramos un array para guardar los valores originales de min_freq de las CPUs
+#Declaramos un array para guardar los valores originales de min_freq de los P-Cores
 declare -A cpu_min_freqs
 
 #Ponemos los dos P-Cores al máximo
