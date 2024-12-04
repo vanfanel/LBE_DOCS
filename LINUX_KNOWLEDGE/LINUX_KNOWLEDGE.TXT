@@ -2105,6 +2105,11 @@ done
 
 ####ACABA SCRIPT####
 
+Puedes vigilar la temperatura de la CPU con:
+watch -n 0.5 'cat /sys/class/thermal/thermal_zone1/temp'
+Es en milésimas de grado, así que con que mires las dos primeras cifras es suficiente.
+El i5-1235U hace thermal throttling a los 100 grados.
+
 ******Overclockear la Raspberry Pi 4*******************************
 
 [pi4]
