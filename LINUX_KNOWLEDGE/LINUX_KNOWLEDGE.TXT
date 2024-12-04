@@ -1467,6 +1467,8 @@ y tener los HZ del planificador de tareas a 300Hz ya que es múltiplo de PAL y N
 NO se te ocurra subirlo a 1000Hz porque penaliza mucho el rendimiento.
 (Processor Type and Features->Timer Frequency->300Hz)
 Tienes una configuración lista para el i5-1235U en LBE_DOCS.
+Además es necesario lanzarlo con un script que ponga la GPU y los dos P-CORES al máximo y mande el core a correr en los P-CORES,
+tienes ese script al final de esta sección. 
 
 ¡¡¡¡NOTA PREVIA IMPORTANTE!!!! Cargar juegos en CHD tiene un overhead MUY notable en este core, que hace que el Sould Calibur tenga crujidos
 al principio. Usa juegos en CUE/BIN. Si metes un juego en CHD, descomprímelo antes de jugar.
