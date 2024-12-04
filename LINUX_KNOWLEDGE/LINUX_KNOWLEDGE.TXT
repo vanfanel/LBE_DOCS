@@ -2011,13 +2011,62 @@ Ahora ya, lo de las llaves va así:
 
 ******Overclockear la GPU Intel integrada en GNU/Linux*************
 
-Ve a sys/class/drm/card0 y juega con esos valores.
+Ve a /sys/class/drm/card0 y juega con esos valores.
 Por ejemplo, para que la GPU no baje de 1200 MHz, puedes hacer:
 echo 1200 > gt_min_freq_mhz
 Y lo puedes comprobar con:
 cat gt_cur_freq_mhz
 
-...Pero no vale realmente para nada.
+Con este script pondríamos a velocidad máxima constante la GPU, y después de ejecutar un programa la devolvemos a su velocidad normal:
+
+####EMPIEZA SCRIPT####
+
+gpu_min_freq=$(cat /sys/class/drm/card0/gt_min_freq_mhz)
+echo $(cat /sys/class/drm/card0/gt_max_freq_mhz > /sys/class/drm/card0/gt_min_freq_mhz)
+
+<EJECUTAR_PROGRAMA>
+
+echo $gpu_min_freq > /sys/class/drm/card0/gt_min_freq_mhz
+
+####ACABA SCRIPT####
+
+*******Overclockear la CPU Intel en GNU/Linux**********************
+
+Ve a /sys/devices/system/cpu/cpu0/cpufreq/ y juega con esos valores.
+Por ejemplo, mira la velocidad máxima de la CPU con:
+cat scaling_max_freq
+Y para que siempre vaya a la velocidad máxima, puedes hacer (4400000 es la velocidad máxima en este caso):
+echo 4400000 scaling_min_freq
+Y lo puedes comprobar con:
+cat scaling_cur_freq
+
+Podrías pensar que poner a performance el governor tiene el mismo efecto, pero no, si haces:
+echo performance > scaling_governor
+Puedes comprobar que si haces:
+cat scaling_cur_freq
+...No va a la velocidad máxima.
+
+Con este script pondríamos a velocidad máxima las CPUs 0 y 1, y después de ejecutar un programa las devolvemos a su velocidad normal:
+
+####EMPIEZA SCRIPT####
+
+#Declaramos un array para guardar los valores originales de min_freq de las CPUs
+declare -A cpu_min_freqs
+
+#Ponemos los dos P-Cores al máximo
+for cpu in cpu0 cpu1; do
+        cpu_min_freqs[$cpu]=$(cat /sys/devices/system/cpu/$cpu/cpufreq/scaling_min_freq)
+        echo $(cat /sys/devices/system/cpu/$cpu/cpufreq/scaling_max_freq) > /sys/devices/system/cpu/$cpu/cpufreq/scaling_min_freq
+done
+
+<EJECUTAR_PROGRAMA>
+
+#Devolvemos los P-Cores a su estado normal
+for cpu in cpu0 cpu1; do
+        echo ${cpu_min_freqs[$cpu]} > /sys/devices/system/cpu/$cpu/cpufreq/scaling_min_freq
+done
+
+####ACABA SCRIPT####
 
 ******Overclockear la Raspberry Pi 4*******************************
 
