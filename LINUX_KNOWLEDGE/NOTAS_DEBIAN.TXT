@@ -564,8 +564,6 @@ SATISFECHAS SUS DEPENDENCIAS, PASAMOS A LA COMPILACIÓN DE MESA COMO TAL:
 Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
 
-Editamos src/broadcom/vulkan/v3dv_device.c y buscamos "destroy dumb object" y comentamos el fprintf() que lo contiene.
-
 CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
 
 PARA X86_64 CON GRÁFICOS INTEL IRIS (=UHD,XE, etc):
@@ -576,6 +574,9 @@ meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland \
 -Dvulkan-drivers=intel -Dgallium-drivers=iris,zink -Dglvnd=enabled ..
 
 PARA PI4/5:
+--Editamos src/broadcom/vulkan/v3dv_device.c y buscamos "destroy dumb object" y comentamos el fprintf() que lo contiene.
+
+--Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled \
