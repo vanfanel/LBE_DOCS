@@ -1057,11 +1057,22 @@ Alsathread) con 32ms de latencia.
 Nos bajamos el último AppImage de: https://github.com/PCSX2/pcsx2/releases
 ...Y le damos permisos de ejecución.
 
-Creamos un softlink de nuestra versión al GLX que espera encontrar el emulador:
-ln -s /usr/local/lib64/libOpenGL.so.0 ./libGLX.so.0
+La AppImage viene linkada contra libGLX, así que la simulamos. Para ello, creamos un fichero llamado "fake_glx.c" con el contenido:
+####EMPIEZA fake_glx.c#####
+void* glXChooseFBConfig(void* dpy, int screen, int* attribList, int* nElements) { return 0; }
+int glXGetConfig(void* dpy, void* visual, int attrib, int* value) { return 0; }
+void* glXGetVisualFromFBConfig(void* dpy, void* fbConfig) { return 0; }
+int glXGetFBConfigAttrib(void* dpy, void* fbConfig, int attrib, int* value) { return 0; }
+void* glXChooseVisual(void* dpy, int screen, int* attribList) { return 0; }
+####ACABA fake_glx.c#####
+...Y lo compilamos como librería así:
+gcc -shared -fPIC -o libGLX.so.0 fake_glx.c
+...¡¡¡Y ya tenemos nuestro libGLX.so.0!!!
+(Antes, en lugar de crearnos una librería GLX fake, hacíamos "ln -s /usr/local/lib64/libOpenGL.so.0 ./libGLX.so.0",
+pero eso ya no funciona porque nos da "undefined symbols" para funciones de GLX).
 
 Lanzamos el emulador con:
-I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2.AppImage "$1" >> /dev/null 2>&1
+I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ LD_PRELOAD=libshim.so ./pcsx2.AppImage "$1" >> /dev/null 2>&1
 
 PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
 --En "Settings->Graphics" ponemos el Renderer a "Vulkan" y ponemos el Texture Preloading a "None"
