@@ -259,6 +259,9 @@ git clone --depth 1 https://github.com/john-corcoran/internetarchive-downloader.
 sudo cp ia_downloader.py /usr/local/bin/ia_downloader
 sudo chmod +x /usr/local/bin/ia_downloader
  
+Editamos /usr/local/bin/ia_downloader, y buscamos "Reducing download threads" para allí, justo debajo,
+ajustar el número de bajadas simultáneas, que viene puesto a 5, pero le metemos 20 o 30.
+
 Descargamos tal que así. Para bajarnos una colección completa al directorio actual...:
 
 ia_downloader download -i no-intro_romsets ./
