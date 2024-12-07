@@ -277,9 +277,8 @@ Y para continuar si se cortó la bajada anterior:
 
 ia_downloader download -i no-intro_romsets ./ -f Super\ Nintendo Megadrive -r
 
-Y como lo venimos haciendo ahora, para descargar con una sola línea todos los romsets que solemos usar:
-
-ia_downloader download -i no-intro_romsets ./ -f Super\ Nintendo Mega\ Drive Nintendo\ Entertainment\ System Game\ Boy\ \(2022 Game\ Boy\ Color Game\ Gear Master\ System 32X Lynx PC\ Engine Atari\ -\ 2600 Atari\ -\ 5200 Atari\ -\ 7800 Jaguar WonderSwan ColecoVision Virtual\ Boy SG-1000 -r
+Ahora, si quisieras comprimir cada ROMSET en un zip:
+for i in */; do zip -r "${i%/}.zip" "$i"; done
 
 ******Descargar vídeos de RTVE A LA CARTA*********************************************************************************************
 
