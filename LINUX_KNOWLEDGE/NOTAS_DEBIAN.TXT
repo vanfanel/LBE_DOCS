@@ -859,6 +859,11 @@ Binary Emulations->IA32 Emulation
 Memory Management options->Support for paging of anonymous memory (swap)
 Memory Management options->Defer initialisation of struct pages to kthreads
 Memory Management options->Slab allocator options->(Todo lo que hay ahí)
+...Y MUY IMPORTANTE TAMBIÉN!!! Para evitar que aumente el valor de "/sys/class/drm/card0/power/rc6_residency_ms",
+lo que significa que la GPU entra y sale de estados de bajo consumo aunque desactivemos el RC6 en la BIOS,
+editamos drivers/gpu/drm/i915/gt/intel_rc6.c y allí buscamos la función rc6_supported()
+y borramos todo su contenido, dejando solamente "return false;".
+Borramos la función bxt_check_bios_rc6_setup() que está justo encima porque ya no se va a usar.
 
 -Compilamos el kernel y los módulos:
 make -j10
