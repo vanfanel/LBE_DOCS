@@ -231,11 +231,11 @@ Por ejemplo, para descargar el No-Intro de Atari 2600 haríamos:
 rclone sync "myrient:/files/No-Intro/Atari - 2600/" "Atari - 2600" --http-no-head -P
 (¡¡¡CUIDADO!!! ¡¡¡HAY QUE PONER LAS BARRAS DEL PRINCIPIO Y DEL FINAL DE LA RUTA AL DIRECTORIO!!!)
 
-******Descargar desde ARCHIVE.ORG desde la línea de comandos usando un download manager***********************************************
+******Descargar desde ARCHIVE.ORG (BULK DOWNLOAD) desde la línea de comandos**************
 
-(!!!!)NOTA: Lo más práctico y rápido para descargar de Archive NO es hacerlo desde la línea de comandos, sino descargar desde el navegador
-(!!!!)usando un DOWNLOAD MANAGER. El más recomendable es "Turbo Download Manager" que es una extensión para Firefox.
-PERO vamos, que si te quieres complicar, sigue leyendo...
+(!!!!)NOTA: Para archivos sueltos, lo más práctico y rápido para descargar de Archive NO es hacerlo desde la línea de comandos,
+sino descargar desde el navegador usando un DOWNLOAD MANAGER. El más recomendable es "Turbo Download Manager" que es una extensión para Firefox.
+PERO para bulk-download de romsets completos, sigue leyendo...
 
 Normalmente se podría usar WGET, pero como hay items que sólo se pueden descargar estando logueado, y como archive.org usa HTTPS y no es posible
 loguearse por HTTPS con WGET, pues al final con muchos items no funciona WGET y nos da el famoso error 403: "forbidden".
@@ -244,6 +244,9 @@ Así que usamos la librería de python llamada "internearchive", una herramienta
 Instalamos la librería "internetarchive":
 
 pip install internetarchive
+
+NOTA: Si al acabar de instalar no te encuentra el ejecutable "ia", añade al final de .bashrc:
+export PATH="$PATH:/home/manuel/.local/bin"
 
 Ahora configuramos la librería "ia", para darle nuestro user/pass:
 
