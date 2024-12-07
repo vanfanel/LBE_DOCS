@@ -250,7 +250,7 @@ Ahora configuramos la librería "ia", para darle nuestro user/pass:
 ia configure
 
 Y AHORA instalamos el script downloader en python también que vamos a usar:
-(Con ia se puede descargar, pero NO soporta resume así que no me vale).
+(Con "ia" se puede descargar, pero NO soporta resume así que no me vale).
 
 git clone --depth 1 https://github.com/john-corcoran/internetarchive-downloader.git
 sudo cp ia_downloader.py /usr/local/bin/ia_downloader
