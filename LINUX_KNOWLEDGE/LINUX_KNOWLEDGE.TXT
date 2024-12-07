@@ -2060,10 +2060,12 @@ Y podemos pasarle parámetros en la línea de comandos del GRUB editando /etc/de
 tras lo cual debemos ejecutar "update-grub".
 
 ******Overclockear la GPU Intel integrada en GNU/Linux*************
-NOTA: ESTO NO ES NECESARIO CON MIS KERNELS COMPILADOS, ya que cuando compilo un kernel siempre edito "drivers/gpu/drm/i915/gt/intel_rc6.c"
-y hago que la función rc6_supported() retorne siempre "false", con lo cual "/sys/class/drm/card0/gt_cur_freq_mhz" siempre está al máximo
-y además podemos ver que nunca se entra en RC6 porque "/sys/class/drm/card0/power/rc6_residency_ms" nunca aumenta.
-NINGUNO de los parámetros del módulo i915 funciona para ninguna de estas dos cosas ("i915.enable_rc6=0" no existe desde 2017,
+NOTA: A PARTE DE ESTO, ME INTERESA DESACTIVAR EL RC6 DE DE LOS GRÁFICOS INTEL, YA QUE AUNQUE LO DESACTIVEMOS EN LA BIOS,
+SIGUE ACTIVÁNDOSE EN EL KERNEL, COSA QUE SABEMOS PORQUE "/sys/class/drm/card0/power/rc6_residency_ms" SIGUE AUMENTANDO.
+PARA ELLO, cuando compilo un kernel siempre edito "drivers/gpu/drm/i915/gt/intel_rc6.c"
+y hago que la función rc6_supported() retorne siempre "false" (esto está en NOTAS_DEBIAN.TXT en la sección de compilación del kernel),
+con lo cual nunca se entra en RC6 (podemos monitorear "/sys/class/drm/card0/power/rc6_residency_ms" para comprobar que nunca sube de 0).
+NINGUNO de los parámetros del módulo i915 funciona para desactivar el RC6 ("i915.enable_rc6=0" no existe desde 2017,
 "i915.enable_dc=0" no hace nada, y el módulo "intel_idle" no existe).
 
 Ve a /sys/class/drm/card0 y juega con esos valores.
