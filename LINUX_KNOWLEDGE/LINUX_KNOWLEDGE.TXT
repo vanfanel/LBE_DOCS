@@ -233,6 +233,8 @@ rclone sync "myrient:/files/No-Intro/Atari - 2600/" "Atari - 2600" --http-no-hea
 
 ******Descargar desde ARCHIVE.ORG (BULK DOWNLOAD) desde la línea de comandos**************
 
+(!!!!)NOTA: Los nombres de las colecciones que queremos bajar las sacamos del "ROMS MEGATHREAD", búscalo así en el buscador.
+
 (!!!!)NOTA: Para archivos sueltos, lo más práctico y rápido para descargar de Archive NO es hacerlo desde la línea de comandos,
 sino descargar desde el navegador usando un DOWNLOAD MANAGER. El más recomendable es "Turbo Download Manager" que es una extensión para Firefox.
 PERO para bulk-download de romsets completos, sigue leyendo...
@@ -265,7 +267,7 @@ pero le metemos 20 o 30.
 
 Descargamos tal que así. Para bajarnos una colección completa al directorio actual...:
 
-ia_downloader download -i no-intro_romsets ./
+ia_downloader download -i nointro.gb ./
 
 Para bajarnos sólo unos ítems concretos de una colección (por ejemplo los romsets completos de SNES y Megadrive):
 
@@ -2047,6 +2049,16 @@ Ahora ya, lo de las llaves va así:
 9)Para rotarla se debe tocar con el botón derecho, posición y tamaño y en el mismo rotación.
 10)Y luego cada uno elige la predeterminación que desea.
 11)Llave finalizada.
+
+******AVERIGUAR QUÉ PARÁMETROS ACEPTA UN MÓDULO DEL KERNEL*********
+
+modinfo -p <nomre_módulo>
+
+Por ejemplo:
+modinfo -p i915
+
+Y podemos pasarle parámetros en la línea de comandos del GRUB editando /etc/default/grub,
+tras lo cual debemos ejecutar "update-grub".
 
 ******Overclockear la GPU Intel integrada en GNU/Linux*************
 
