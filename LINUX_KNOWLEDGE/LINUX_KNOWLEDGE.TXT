@@ -2088,6 +2088,9 @@ Ahora puedes probar a pasarle: "i915.enable_dc=0 intel_idle.max_cstate=1"
 
 ...Y monitorear "/sys/class/drm/card0/power/rc6_residency_ms" para ver si deja de aumentar.
 
+También podrías editar en el kernel "drivers/gpu/drm/i915/gt/intel_rc6.c", buscar "enable_rc6", ponerlo a "false",
+recompilar y reinstalar el kernel, y ver si funciona.
+
 *******Overclockear la CPU Intel en GNU/Linux**********************
 
 Ve a /sys/devices/system/cpu/cpu0/cpufreq/ y juega con esos valores.
