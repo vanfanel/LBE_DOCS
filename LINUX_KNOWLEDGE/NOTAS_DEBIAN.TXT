@@ -844,6 +844,8 @@ cp /boot/config-$(uname -r) .config
 Kernel hacking  --->
     Compile-time checks and compiler options  --->
         [*] Provide BPF Type Format (BTF) debug info
+--Nos vamos a "Device Drivers->X86 Platform Specific Device Drivers" y desactivamos todo lo que veamos de marcas (DELL, HP, etc)
+y sobre todo desactivamos "Intel Platform Monitoring Technology (PMT) Telemetry Driver".
 
 --MUY IMPORTANTE PARA JUEGOS:
 General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop)
