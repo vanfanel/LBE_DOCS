@@ -622,13 +622,10 @@ CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
 
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
-./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-offscreen --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-3dnow
+./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-offscreen --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx
 
 (PARA SISTEMAS EMBEDIDOS O CON MUY POCA POTENCIA, PODEMOS PASARLE --diable-libsamplerate, QUE HACE QUE SDL2 RESAMPLEE USANDO SUS ALGORITMOS INTERNOS
  QUE SON DE MENOR CALIDAD Y METEN MÁS RUIDO PERO SON MUCHO MÁS RÁPIDOS).
-
-(LO DE "--disable-3dnow" ES FUNDAMENTAL PORQUE SI NO EL COMPILADOR GENERA UNAS INSTRUCCIONES QUE NO EXISTEN EN LOS PROCESADORES INTEL
- AL PASARLE LOS FLAGS "-march=native -mtune=native -O2" Y LOS PROGRAMAS DAN ERRORES DE "illegal instruction").
 
 (LO DE -DMESA_EGL_NO_X11_HEADERS LO HEMOS SACADO DE /usr/lib/pkgconfig/egl.pc. Como el viejo buildsystem de las SDL2 basado en configure y make no usa pkgconfig para saber qué flags tiene que pasar cuando
 se compile eglplatform.h, parte de EGL de MESA, que es donde  MESA_EGL_NO_X11_HEADERS evita intentar incluir las headers de X11, pues se lo tenemos que pasar nosotros a mano. El buildsystem de las SDL2 basado en CMAKE sí
