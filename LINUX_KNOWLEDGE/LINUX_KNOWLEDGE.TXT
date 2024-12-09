@@ -2250,7 +2250,11 @@ Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHead
 ******Emulando arcades con la frecuencia de vídeo correcta en RetroArch sin VRR*****
 
 OJO!!! Si usas esta técnica, NO ACTIVES "Force 60Hz" en FBNeo: son mutuamente excluyentes!!!
-Usando un shellscript, es posible establecer un refresco de pantalla según el nombre del juego,
+OJO!!! Si usas esta técnica, recuerda incrementar "MAXIMIMUM TIMING SKEW" hasta 0.100 o algo así,
+ya que no vas a usar frecuencias exactas de los juegos sino redondeadas para más compatibilidad,
+por lo que va a haber una diferencia de a veces más de 1Hz con la velocidad original del juego.
+
+Vamos al lio: Usando un shellscript, es posible establecer un refresco de pantalla según el nombre del juego,
 y pasarle un fichero de configuración con ese refresco a RetroArch.
 Se usa frecuencia doble para evitar el input lag por vsync, por lo que un juego de 55Hz usará una frecuencia de 110Hz,
 y se usan números enteros: un juego de 54.70684 se considerará que va a 55Hz.
@@ -2275,7 +2279,8 @@ case "$1" in
     new_refreshrate=114.000000
     ;;
   *cbuster*|*darkseal*|*cninja*|*snowbros*)
-    new_refreshrate=116.000000
+	# Estos deberían ir a ~116Hz, pero el monitor no acepta esa frecuecia.
+    new_refreshrate=115.000000
     ;;
   *aligator*)
     new_refreshrate=118.000000
