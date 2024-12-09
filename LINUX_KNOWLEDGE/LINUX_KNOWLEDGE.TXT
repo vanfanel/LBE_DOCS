@@ -2252,7 +2252,8 @@ Míralo aquí mejor si no lo pillas: http://www.smspower.org/Development/ROMHead
 OJO!!! Si usas esta técnica, NO ACTIVES "Force 60Hz" en FBNeo: son mutuamente excluyentes!!!
 OJO!!! Si usas esta técnica, recuerda incrementar "MAXIMIMUM TIMING SKEW" hasta 0.100 o algo así,
 ya que no vas a usar frecuencias exactas de los juegos sino redondeadas para más compatibilidad,
-por lo que va a haber una diferencia de a veces más de 1Hz con la velocidad original del juego.
+por lo que va a haber una diferencia de a veces más de 1Hz con la velocidad original del juego, así que
+con el "MAXIMIMUM TIMING SKEW" por defecto habría micro-stuttering debido a esa diferencia.
 
 Vamos al lio: Usando un shellscript, es posible establecer un refresco de pantalla según el nombre del juego,
 y pasarle un fichero de configuración con ese refresco a RetroArch.
