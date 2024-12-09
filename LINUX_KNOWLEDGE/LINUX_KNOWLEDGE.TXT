@@ -441,7 +441,7 @@ wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d 
 
 ******DIRECTX SOBRE VULKAN USANDO WINE**************************************************************************************
 
-OPCIÓN 1: USANDO EL SOPORTE D3D->VULKAN QUE INCLUYE WINE DE SERIE
+OPCIÓN 1 (RECOMENDADO): USANDO EL SOPORTE D3D->VULKAN QUE INCLUYE WINE DE SERIE
 (Arregla el marco blanco del Maldita Castilla!!!)
 
 Ejecutamos "regedit", nos vamos a HKEY_CURRENT_USER\Software\Wine, añadimos una nueva clave llamada "Direct3D",
