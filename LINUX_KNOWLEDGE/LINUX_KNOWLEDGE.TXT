@@ -441,14 +441,14 @@ wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d 
 
 ******DIRECTX SOBRE VULKAN USANDO WINE**************************************************************************************
 
-OPCIÓN 1: USANDO EL SOPORTE D3D->VULKAN QUE INCLUYE WINE DE SERIE
+OPCIÓN 1 (PARA DIRECTX12->VULKAN): USANDO EL SOPORTE D3D->VULKAN QUE INCLUYE WINE DE SERIE
 
 Ejecutamos "regedit", nos vamos a HKEY_CURRENT_USER\Software\Wine, añadimos una nueva clave llamada "Direct3D",
 y dentro de ella añadimos un nuevo valor string llamado "renderer" al que daremos el valor "vulkan".
 
 Alternativamente, podríamos hacer "winetricks renderer=vulkan", pero para eso hay que tener instalado winetricks.
 
-OPCIÓN 2: USANDO DXVK
+OPCIÓN 2 (PARA DIRECTX9-11->VULKAN): USANDO DXVK
 
 --Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/doitsujin/dxvk.git
