@@ -14,7 +14,7 @@ CXXFLAGS="-march=native -mtune=native -O2" \
 --disable-eventrecorder --disable-cloud --disable-savegame-timestamp \
 --enable-mt32emu --disable-timidity --disable-flac --disable-alsa \
 --enable-vorbis --disable-mad --disable-tremor --disable-theoradec \
---disable-taskbar --disable-sdlnet --disable-libcurl --enable-plugins --default-dynamic \
+--disable-taskbar --disable-sdlnet --disable-libcurl \
 --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,hypno,hadesch,private,stark,ags,asylum,chewy,pink,mtropolis,glk,freescape,nancy,efh,kingdom,vcruise,qdengine,m4,crab,bagel
 
 LO PRIMERO, PARA QUE LAS FUENTES VAYAN BIEN EN EL MENÚ PRINCIPAL (SIN ESTO SE VEN CON ESCALADO IRREGULAR...),
@@ -30,6 +30,9 @@ PARA TENER ICONOS en el modo GRID VIEW del menú, bájate todos los archivos de 
 	wget -r -np -nd -R "index.html*" https://downloads.scummvm.org/frs/icons/
 (No tienes que renombrarlos, tienen que estar con sus nombres originales que llevan una fecha, porque son incrementales).
 Los metes en ~/scummvm/icons y pones el "ICON PATH" apuntando a ~/scummvm/icons. Y ya se deberían ver.
+
+NO LE PASAMOS POR AHORA "--enable-plugins --default-dynamic" ya que eso hace que el LBA de un segfault al salir.
+Está pendiente de arreglar y cuando lo esté podemos volver al sistema de plugins.
 
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
 
