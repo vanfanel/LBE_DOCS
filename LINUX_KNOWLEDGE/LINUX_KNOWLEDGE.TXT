@@ -9537,6 +9537,8 @@ soundfonts
 Yo lanzo doom así:
 ./gzdoom -iwad doom.wad -file doom1music.wad smoothed.wad blackops.wad
 
+MUY IMPORTANTE: Para tener el mejor rendimiento y baja latencia, desactiva VSYNC y pon "MAX FPS" a 60.
+
 NOTA PARA RASPBERRY PI: Por defecto, va en GLES aunque le pongas Vulkan en las opciones (fallará al inicializar Vulkan).
 Si te empeñas en que funcione sobre OpenGL en la Pi, puedes hacer:
 MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ./gzdoom
