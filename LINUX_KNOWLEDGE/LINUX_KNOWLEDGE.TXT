@@ -8069,7 +8069,7 @@ LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
 Para el core de SEGA, debido al tema del dithering y tal, tenemos varias opciones:
 
-1) El shader CRT-LOTTES-FAST con el parámetro SHARPNESS puesto al mínimo (que es 1) y CRT GAMMA puesto 1 3.00.
+1) El shader CRT-LOTTES-FAST con el parámetro SHARPNESS puesto al mínimo (que es 1) y CRT GAMMA puesto a 3.40.
 2) El shader ZFAST_CRT_COMPOSITE con los parámetros: CURVATURE a 0, CONVERGENCE X-AXIS al máximo,
    SCANLINE LOW a 0.10 y SCANLINE HIGH a 0.05, MASK EFFECT AMOUNT a 0.50, SATURATION a 1.10, y FLICKERING a 5.00. 
    Para evitar patrones de las scanlines, activa también en Settings->Video->Scaling el INTEGER SCALE y el INTEGER SCALE OVERSCALE,
@@ -8123,10 +8123,9 @@ Y ADEMÁS, DEBES USAR LOS SIGUIENTES OVERRIDES:
 	--Desactiva el Runahead por completo!
 	--SI LA PANTALLA NO SOPORTA 100Hz: Backend de audio ALSA con 42ms de buffer
 
-PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead, pero sí que funciona bien con max_swapchain a 2
-y el shader Fakelottes con la curvatura comentada.
+PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead.
 
-PARA EL CORE "GENESIS PLUS GX", usa RunAhead PERO no uses "SECOND INSTANCE", o algunos juegos (Comix Zone, por ejemplo)
+PARA EL CORE "GENESIS PLUS GX", usa RunAhead PERO NO USES "SECOND INSTANCE MODE", o algunos juegos (Comix Zone, por ejemplo)
 irán a tirones laaaargos y se quedará parada la imágen a veces.
 
 PARA EMULAR GAMEGEAR Y LYNX, el mejor shader es "handheld/sameboy-lcd" combinado con INTEGER SCALING.
