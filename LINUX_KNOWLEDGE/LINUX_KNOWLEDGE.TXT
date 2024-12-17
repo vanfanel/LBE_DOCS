@@ -8133,6 +8133,10 @@ PARA EMULAR GAMEGEAR Y LYNX, el mejor shader es "handheld/sameboy-lcd" combinado
 PARA EMULAR GAMEBOY Y GAMEBOY COLOR, si usas el GAMBATTE pon "Core Options->Color Correction" a "GBC Only",
 y usa el shader "handheld/sameboy-lcd" combinado con INTEGER SCALING. 
 
+PARA EL CORE GEOLITH (emulador muy preciso de NEOGEO) mete "aes.zip" y "neogeo.zip" en ~/.config/retroarch/system
+Como por defecto se inicia en modo AES, lo más importante para que funcione es tener "aes.zip".
+Las ROMs son en formato ".neo", te valen las de la MiSTer, o busca el pack LunaGarlic en Archive.org  
+
 PARA EL CORE DE AMIGA, deja siempre que puedas el sistema por defecto (Amiga 1200, 8MB FAST) ya que es para lo que viene configurada
 la exactitud de ciclo del emulador y con un A600+FAST te salen errores en los juegos a no ser que pongas la exactitud de ciclo a FULL,
 y recuerda que los juegos PAL necesitan más buffer de audio por lo que creamos ~/.config/retroarch/config/PAL.cfg
