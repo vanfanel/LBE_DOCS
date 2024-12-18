@@ -8075,15 +8075,17 @@ LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
 Para el core de SEGA, debido al tema del dithering y tal, tenemos varias opciones:
 
-1) El shader CRT-LOTTES-FAST con el parámetro SHARPNESS puesto al mínimo (que es 1) y CRT GAMMA puesto a 3.40.
-2) El shader ZFAST_CRT_COMPOSITE con los parámetros: CURVATURE a 0, CONVERGENCE X-AXIS al máximo,
+1) RECOMENDADO: El shader CRT-CONSUMER con "Pre-Scale Sharpening" a 1.00, "Convergence X" a 1.00, "Corner Size" a 0.00,
+   "Mask Type" a 3, y "Vignette" a "1.00".
+2) El shader CRT-LOTTES-FAST con el parámetro SHARPNESS puesto al mínimo (que es 1) y CRT GAMMA puesto a 3.40.
+3) El shader ZFAST_CRT_COMPOSITE con los parámetros: CURVATURE a 0, CONVERGENCE X-AXIS al máximo,
    SCANLINE LOW a 0.10 y SCANLINE HIGH a 0.05, MASK EFFECT AMOUNT a 0.50, SATURATION a 1.10, y FLICKERING a 5.00. 
    Para evitar patrones de las scanlines, activa también en Settings->Video->Scaling el INTEGER SCALE y el INTEGER SCALE OVERSCALE,
    y sálvalo como un override pero sólo para MegaDrive (o sea, usando "Save Content Directory Override").
-3) Una combinación de GDAPT (está entre los shaders "Dithering") y FAKELOTTES.
+4) Una combinación de GDAPT (está entre los shaders "Dithering") y FAKELOTTES.
    Para ello, primero pon el número de pasadas a 2, en la pasada 1 carga el shader GDAPT PASS 0, y en la pasada 2 carga el FAKELOTTES.
    Para que las sombras en el Comix Zone no se vean tramadas sobre algunos colores, hay que ajustar algún parámetro.
-4) El shader crt-Cyclon con los parámetros de convergencia al máximo. Lo malo de esta opción es que se ve un poco "granuloso" todo.
+5) El shader crt-Cyclon con los parámetros de convergencia al máximo. Lo malo de esta opción es que se ve un poco "granuloso" todo.
 
 APUNTES SOBRE CORES ESPECÍFICOS:
 
