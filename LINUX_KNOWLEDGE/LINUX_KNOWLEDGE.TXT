@@ -9091,8 +9091,7 @@ cp soh/*.otr ~/zelda64/
 
 --NOTAS ADICIONALES--
 
-PARA QUE NO DESAPAREZCAN CACHOS DEL ESCENARIO EN MODO 16:9, ponemos "Enhancements->Graphics->Fix Vanishing Paths" a "Consistent Vanish".
-PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Disable Draw Distance"
+PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
 PARA USAR MODS, creamos el directorio ~/zelda64/mods y los metemos ahí.
 Si el MOD tiene directorios, da igual, lo metes tal cual con sus directorios.
@@ -9145,6 +9144,8 @@ ninja -j10
 
 mkdir ~/majora
 cp mm/2s2h.elf ~/majora/
+
+PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
 	----EXTRACCIÓN DE LOS DATOS----
 
