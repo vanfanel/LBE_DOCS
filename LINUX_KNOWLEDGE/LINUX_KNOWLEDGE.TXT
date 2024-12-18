@@ -6744,6 +6744,7 @@ Ajustes del juego:
 
 -Editamos Settings.ini, que el juego crea en el mismo directorio donde tengamos el ejecutable, y allí:
 ----Ponemos "windowed" a "n" (OJO: exclusiveFS no hace nada en Wayland, es para X11, DirectX, etc. Desactívalo también).
+----Ponemos "disableFocusPause" a "y", no necesitamos que se pause al hacer Alt+TAB.
 ----Ponemos "faceButtonFlip" a "y", para que la X y el O en el mando actuen como esperamos para confirmar y cancelar.
 
 NOTAS ADICIONALES SOBRE EL ENGINE:
