@@ -6706,7 +6706,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 Copiamos RSDKv5 a ~/sonicmania:
-cp dependencies/RSDKv5U ~/sonicmania/
+cp dependencies/RSDKv5/RSDKv5U ~/sonicmania/
 
 Copiamos libGame.so a ~/sonicmania/Game.so:
 cp libGame.so ~/sonicmania/Game.so
@@ -6768,7 +6768,7 @@ NOTAS ADICIONALES SOBRE EL ENGINE:
 -Clonamos este repo: git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-2011-Script-Decompilation.git
  Y copiamos el directorio "Scripts" a ~/soniccd/
 
--En Settings.ini ponemos "gameType=1", porque estamos usando los datos de la versión ORIGINS.
+-En Settings.ini ponemos "datafile=SonicCDu.rsdk" y ponemos "gameType=1", porque estamos usando los datos de la versión ORIGINS.
 
 -Metemos los mods que queramos en ~/soniccd/mods, y los cargamos desde el "dev menu" (tienes que tener "devMenu=y"
 en Settings.ini y darle a ESC para acceder a él)
@@ -9463,7 +9463,7 @@ como:
 LIB += -lOpenGL
 
 Compilamos con:
-FLAGS="-march=native -mtune=native -O2" make -j4 LINUX=1 SDL=2 DEBUG=0
+FLAGS="-march=native -mtune=native -O2" make -j10 LINUX=1 SDL=2 DEBUG=0
 
 Creamos el directorio ~/stunt, y allí metemos el ejecutable "stuntcarracer", el archivo "DejaVuSans-Bold.ttf",
 y los directorios "Bitmap", "Tracks", y "Sounds" que vienen con los sources.
