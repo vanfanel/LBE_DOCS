@@ -758,6 +758,24 @@ CRTL+S: activar y desactivar sonido.
 CTRL+A: Reiniciar nivel.
 CTRL+V: Mostrar la versión del juego.
 
+*********COMPILAR CORES DE MISTER********************************************************
+
+Se compilan con el Quartus Lite. 
+Algunos cores al compilar te darán errores tipo:
+
+Error (12006): Node instance "pll_hdmi" instantiates undefined entity "pll_hdmi". Ensure that required library paths are specified correctly, define the specified entity, or change the instantiation. If this entity represents Intel FPGA or third-party IP, generate the synthesis files for the IP.
+
+En tal caso tienes que usar Quartus Lite 17.0.0, y compilarán correctamente. Es la versión que recomienda Sorgelig.
+Una vez instalada, si ves que lanzándolo con el icono del escritorio no pasa nada, ejecútalo a mano así para ver cuál es el problema:
+
+cd ~/intelFPGA_lite/17.0/quartus/bin
+quartus --64bit
+
+Probablemente sea que necesita libpng12 en lugar de libpng16 que es lo que usa Debian Testing a día de hoy,
+así que descarga el paquete de libpng12 de aquí:
+http://snapshot.debian.org/archive/debian/20160413T160058Z/pool/main/libp/libpng/libpng12-0_1.2.54-6_amd64.deb
+E instálalo con "sudo dpkg -i" y ya debería funcionar en un Debian reciente.
+
 *********HACER QUE EL UPDATE_ALL NO ACTUALIZE LOS CHEATS*********************************
 
 Editamos /media/fat/downloader.ini y añadimos:
