@@ -797,3 +797,7 @@ Y para que no nos instale el core de NeoGeo Pocket, añadimos en "[jtcores]" el 
 [jtcores]
 db_url = https://raw.githubusercontent.com/jotego/jtcores_mister/main/jtbindb.json.zip
 filter = [MiSTer] !console
+
+**********APUNTES CABLE VGA->SCART********************************************************
+
+--Si no se ve, pon "composite_sync=1" en el MiSTer.ini
