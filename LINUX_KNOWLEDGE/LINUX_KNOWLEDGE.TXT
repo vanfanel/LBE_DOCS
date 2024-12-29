@@ -9165,6 +9165,10 @@ cp mm/mm.o2r mm/2ship.o2r ~/majora/
 
 STARFOX64 EN GNU/LINUX
 ======================
+NOTAS PREVIAS:
+---Este port no tiene soporte GLES, así que como vas a ver, retocamos ligeramente el CMakeLists.txt para que compile contra GLVND.
+---Por ahora no podemos pasarle ni "CMAKE_C_FLAGS", ni "CMAKE_CXX_FLAGS" ni "-DCMAKE_BUILD_TYPE=Release",
+porque entonces el ejecutable resultante nos da errores.
 
 --Clonamos su repo:
 git clone --depth 1 https://github.com/HarbourMasters/Starship.git
@@ -9177,8 +9181,16 @@ set(OPENGL_USE_OPENGL ON)
 --Configuramos y compilamos con:
 mkdir b4
 cd b4
-cmake .. -GNinja -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release
-ninja -j10
+cmake .. -GNinja
+make -j10
+
+	BLOQUE EXTRACCIÓN DE LOS DATOS
+	
+--La ROM necesaria es "Star Fox 64 (USA) (Rev 1).z64" con SHA1: 09f0d105f476b00efa5303a3ebc42e60a7753b7a
+  La renombramos a "baserom.us.rev1.z64" y la metemos en el directorio raíz de los sources, y en el directorio donde acabamos de
+  compilar el engine hacemos:
+  cmake --build . --target ExtractAssets -j10
+  ...Y copiamos el archivo resultante "" al mismo directorio que el ejecutable (yo lo meto todo en "~/starfox64").
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
