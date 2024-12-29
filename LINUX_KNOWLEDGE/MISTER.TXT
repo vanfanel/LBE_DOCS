@@ -801,3 +801,8 @@ filter = [MiSTer] !console
 **********APUNTES CABLE VGA->SCART********************************************************
 
 --Si no se ve, pon "composite_sync=1" en el MiSTer.ini
+
+**********APUNTES DIRECT VIDEO************************************************************
+
+--Hay que poner "direct_video=1" en el MiSTer.ini
+--El conversor que yo tengo, y que funciona más o menos, lleva un chip EP94Z1E.
