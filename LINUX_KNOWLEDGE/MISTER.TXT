@@ -800,7 +800,9 @@ filter = [MiSTer] !console
 
 **********APUNTES CABLE VGA->SCART********************************************************
 
---Si no se ve, pon "composite_sync=1" en el MiSTer.ini
+--Debes poner en el MiSTer.ini: 
+"composite_sync=1"
+"vga_scaler=0" 
 
 **********APUNTES DIRECT VIDEO************************************************************
 
