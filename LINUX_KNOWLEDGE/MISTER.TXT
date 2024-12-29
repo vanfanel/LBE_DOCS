@@ -806,5 +806,7 @@ filter = [MiSTer] !console
 
 **********APUNTES DIRECT VIDEO************************************************************
 
---Hay que poner "direct_video=1" en el MiSTer.ini
+--Debes poner en el MiSTer.ini:
+"direct_video=1"
+"composite_sync=1"
 --El conversor que yo tengo, y que funciona más o menos, lleva un chip EP94Z1E.
