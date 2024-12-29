@@ -9163,16 +9163,22 @@ cmake --build . --target ExtractAssets -j10
 --Copiamos los archivos de datos a su sitio:
 cp mm/mm.o2r mm/2ship.o2r ~/majora/
 
-ZELDA MAJORA'S MASK en GNU/Linux usando la recompilación
-========================================================
+STARFOX64 EN GNU/LINUX
+======================
 
-Instalamos dependencias previas:
-apt-get install libfreetype-dev
+--Clonamos su repo:
+git clone --depth 1 https://github.com/HarbourMasters/Starship.git
+git submodule init
+git submodule update
 
-Clonamos su repo:
-git clone --depth 1 --recurse-submodules -j8 https://github.com/Mr-Wiseguy/Zelda64Recomp.git
+--Editamos "CMakeLists.txt", buscamos "find_package(OpenGL REQUIRED)", y justo encima ponemos:
+set(OPENGL_USE_OPENGL ON)
 
-(NECESITA X11 Y GTK, CONTINUARÁ...)
+--Configuramos y compilamos con:
+mkdir b4
+cd b4
+cmake .. -GNinja -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release
+ninja -j10
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
