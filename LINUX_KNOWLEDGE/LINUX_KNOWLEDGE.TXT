@@ -9182,7 +9182,7 @@ set(OPENGL_USE_OPENGL ON)
 mkdir b4
 cd b4
 cmake .. -GNinja
-make -j10
+ninja -j10
 
 	BLOQUE EXTRACCIÓN DE LOS DATOS
 	
