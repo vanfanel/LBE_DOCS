@@ -581,7 +581,7 @@ Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 apt-get install liblzma-dev
 
 --Clonamos su repo con sus submódulos:
-git clone --depth 1 https://git.libretro.com/libretro/ps2.git
+git clone --depth 1 https://github.com/libretro/ps2.git
 cd ps2
 git submodule update --init --recursive
 
@@ -1893,6 +1893,10 @@ x68000 -rompath x68000 -flop1 MasterDisk_V2.xdf -exp1 cz6bs1 -hard1 x68000/akuma
 --Tienes imágenes de floppy y de disco duro para cada juego si buscas "x68000 collection" en Archive.org
 --Tienes imágenes de disco duro grandes con muchos juegos por imágen (poco práctico en MAME...) en:
 https://nfggames.com/forum2/index.php?board=14.0
+
+*************ROMS MAME**********************************************************************************************************
+
+https://pleasuredome.github.io/pleasuredome/mame/
 
 *************Compilar MAME standalone con drivers selectos**********************************************************************
 
