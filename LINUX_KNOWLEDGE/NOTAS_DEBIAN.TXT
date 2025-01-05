@@ -716,10 +716,11 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
 --disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra --disable-discord \
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
---enable-egl --disable-opengl --enable-vulkan
+--enable-egl --disable-glx --enable-opengl_core --enable-vulkan
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (NO le pases --disable-builtinglslang, porque entonces fallará la compilación de shaders al cargar un segundo juego sin salir de RetroArch)
+(Lo de "--enable-opengl_core" es para que use OpenGL moderno, en vez de GL1/GL2)
 
 (Si quisieras OpenGL_ES, en lugar de "--enable-opengl --disable-glx" pásale "--enable-opengles --enable-opengles3",
 en realidad OpenGL de escritorio no es imprescindible porque el driver GLCORE (GL3, GLES3) soporta HARD SYNC,
