@@ -9036,19 +9036,19 @@ Busca e instala, en Aurora Store, el "FWD PORT FORWARDER".
 ZELDA OOT EN GNU/LINUX
 ======================
 
-Instalamos dependencias previas:
+--Instalamos dependencias previas:
 apt-get install libbz2-dev libpng-dev lsb-release libzip-dev zipcmp zipmerge ziptool \
 libtinyxml2-dev nlohmann-json3-dev libspdlog-dev
 
-Clonamos su repo:
+--Clonamos su repo:
 git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules
 Si quisié la última versión estable del repo, y si por ejemplo fuese la 8.0.6, haríamos:
 git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules -b 8.0.6 
 
-Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
+--Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
 
-Configuramos y compilamos con:
+--Configuramos y compilamos con:
 
 mkdir b4
 cd b4
@@ -9120,10 +9120,16 @@ lo cual se hace pulsando START + B durante 3 segundos.
 ZELDA MAJORA'S MASK en GNU/Linux
 ================================
 
-Instalamos dependencias previas:
+--Instalamos dependencias previas:
 apt-get install lsb-release
 
-git clone --depth 1 --recurse-submodules -j8 https://github.com/HarbourMasters/2ship2harkinian
+--Clonamos su repo:
+git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/2ship2harkinian
+
+--Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
+set(OPENGL_USE_OPENGL ON)
+
+--Configuramos y compilamos:
 
 mkdir b4
 cd b4
@@ -9131,7 +9137,7 @@ cd b4
 cmake .. -GNinja \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_BUILD_TYPE=Release -DUSE_OPENGLES=1
+-DCMAKE_BUILD_TYPE=Release
 
 ninja -j10
 
