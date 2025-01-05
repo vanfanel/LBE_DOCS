@@ -9191,7 +9191,7 @@ ninja -j10
 	BLOQUE EXTRACCIÓN DE LOS DATOS
 	
 --La ROM necesaria es "Star Fox 64 (USA) (Rev 1).z64" con SHA1: 09f0d105f476b00efa5303a3ebc42e60a7753b7a
-  La renombramos a "baserom.us.rev1.z64" y la metemos en el directorio raíz de los sources, y en el directorio donde acabamos de
+  La renombramos a "baserom.z64" y la metemos en el directorio raíz de los sources, y en el directorio donde acabamos de
   compilar el engine hacemos:
   cmake --build . --target ExtractAssets -j10
   ...Y copiamos el archivo resultante "" al mismo directorio que el ejecutable (yo lo meto todo en "~/starfox64").
