@@ -9045,6 +9045,9 @@ git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-s
 Si quisié la última versión estable del repo, y si por ejemplo fuese la 8.0.6, haríamos:
 git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules -b 8.0.6 
 
+Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
+set(OPENGL_USE_OPENGL ON)
+
 Configuramos y compilamos con:
 
 mkdir b4
@@ -9053,31 +9056,9 @@ cd b4
 cmake .. -GNinja \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_BUILD_TYPE=Release -DUSE_OPENGLES=1
+-DCMAKE_BUILD_TYPE=Release
 
 ninja -j10
-
-OPCIONAL:
-Si queremos compilar una versión del juego contra OpenGL en vez de contra GLES, editamos _deps/imgui-src/backends/imgui_impl_opengl3_loader.h
-y dejamos esas dos funciones así (ya que las versiones que hay usan mierdas de GLX):
-
-static int open_libgl(void)                                                                                                            
-{
-    libgl = dlopen("libOpenGL.so", RTLD_LAZY | RTLD_LOCAL);
-    if (!libgl)
-        return GL3W_ERROR_LIBRARY_OPEN;
-    return GL3W_OK;
-}
-
-static GL3WglProc get_proc(const char *proc)
-{
-    GL3WglProc res;
-    *(void **)(&res) = dlsym(libgl, proc);
-    return res;
-}
-
-La culpa de que no funcione contra OpenGL completo sin hacer esta modificación NO es de SOH/LUS, sino de imgui.
-Está pendiente hacer un PR al repositorio de imgui para que esto se haga así en sistemas sin GLX.
 
 NOTA: Para Pi5, usa -j2
 (No hace falta disco de swap. Y recuerda NO pasarle más de -j2, porque en la Pi5 fallará aunque le metas gigas y gigas de swap).
