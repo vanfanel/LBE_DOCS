@@ -41,3 +41,9 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 make install
 
 --Metemos la BIOS "mpr-17933.bin" en .local/share/jollygood/bios/
+
+--Ahora simplemente lanzamos la imágen de CD que queramos así:
+jollygood imágen.cue
+
+--Para configurar el emulador y el frontend (pantalla completa, etc), pulsamos TAB durante la emulación.
+Tienes más información sobre los directorios donde se guardan las configuraciones, BIOS, etc. en https://gitlab.com/jgemu/jgrf
