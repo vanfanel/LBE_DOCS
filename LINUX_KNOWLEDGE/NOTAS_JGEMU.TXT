@@ -39,3 +39,5 @@ CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j10
 
 make install
+
+--Metemos la BIOS "mpr-17933.bin" en .local/share/jollygood/bios/
