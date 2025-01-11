@@ -1,6 +1,6 @@
 "you will need the jg repo which contains the API headers, then jgrf which is the frontend, then whatever cores"
 
-PARTE 1: API HEADERS
+			PARTE 1: API HEADERS
 
 --Clonamos JG:
 git clone --depth 1 https://gitlab.com/jgemu/jg.git
@@ -8,19 +8,21 @@ git clone --depth 1 https://gitlab.com/jgemu/jg.git
 make install
 
 
-PARTE 2: EL FRONTEND JGRF
+			PARTE 2: EL FRONTEND JGRF
 --Instalamos dependencias previas:
 apt-get install libspeexdsp-dev
 
 --Clonamos JGRF:
 git clone --depth 1 https://gitlab.com/jgemu/jgrf.git
---Compilamos el JGRF:
+
+--Compilamos e instalamos con:
+
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j10
---Instalamos el ejecutable:
-cp jollygood /usr/local/bin/
 
-PARTE 3: LOS CORES
+make install
+
+			PARTE 3: LOS CORES
 
 CORE MEDNAFEN
 -------------
@@ -29,9 +31,11 @@ CORE MEDNAFEN
 apt-get install liblzo2-dev
 
 --Clonamos el repo: git clone --depth 1 https://gitlab.com/jgemu/mednafen.git
---Compilamos con:
+--Compilamos e instalamos con:
 
 cd jollygood
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j10
+
+make install
