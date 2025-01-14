@@ -889,7 +889,10 @@ Ahora copiamos el directorio "assets" al mismo directorio del ejecutable PPSSPP
 
 	NOTAS SOBRE JUEGOS ESPECÍFICOS (OPCIONES DEL CORE)
 
-EN GENERAL, para evitar "tirones" de vídeo y audio en las cargas, pon "System -> I/O Timing Method" a "Host"
+EN GENERAL:
+--Para evitar framerate errático, pon "Video -> Buffer Graphics Commands" a "No Buffer".
+De ese modo, verás que el scroll de texto del menú del Ridge Racers va perfectamente suave. 
+--Para evitar "tirones" de vídeo y audio en las cargas, pon "System -> I/O Timing Method" a "Host"
 y déjalo así a no ser que algún juego pete, en cuyo caso lo desactivas para ese juego y ya.
 
 -OUTRUN 2006:
@@ -8114,7 +8117,7 @@ Y RESPECTO AL RUNAHEAD:
 --SI USAS EL RENDERER HARDWARE, USA EL RUNAHEAD INTERNO DEL CORE, EN CORE OPTIONS.
 (DEBERÍAS USAR EL RUNAHEAD INTERNO DEL CORE DE TODOS MODOS AUNQUE USES EL RENDERER SOFTWARE).
 
-PARA EL CORE DE PPSSPP Y PARA EL CORE FLYCAST, ACUÉRDATE DE QUITAR EL RUNAHEAD, O DARÁN ERRORES DE INSTRUCCIONES NO VÁLIDAS,
+PARA EL CORE PPSSPP Y PARA EL CORE FLYCAST, ACUÉRDATE DE QUITAR EL RUNAHEAD, O DARÁN ERRORES DE INSTRUCCIONES NO VÁLIDAS,
 PANTALLAZOS A NEGRO, ETC...
 Para ello, simplemente crea el archivo .config/retroarch/config/PPSSPP/PPSSPP.cfg
 o el archivo .config/retroarch/config/Flycast/Flycast.cfg
