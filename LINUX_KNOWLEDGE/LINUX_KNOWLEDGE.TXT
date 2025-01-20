@@ -5257,13 +5257,12 @@ Nos bajamos la última estable de: https://github.com/ZDoom/Raze/releases
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DVULKAN_USE_XLIB=0
-make -j4
+make -j10
 
 --Creamos ~/raze y metemos allí el ejecutable resultante ("raze"), raze.pk3, el directorio soundfonts, y los ficheros de datos del BLOOD.
 
-Para ejecutarlo con el renderer GLES2, lo lanzamos con: +vid_preferbackend 2
-Para ejecutarlo con el renderer VULKAN, lo lanzamos con: +vid_preferbackend 1 (OJO!! REVIENTA LA RAM Y EL ORDENADOR SE CUELGA!! USA GLES!!)
-Para que vaya a 60FPS sólidos, puedes desactivar TODO el antialiasing, poner FPS a UNLIMITED, etc
+Para que vaya a 60FPS sólidos, puedes desactivar TODO el antialiasing, activar el VSYNC, poner FPS a UNLIMITED,
+y sobre todo lanzarlo con "taskset -c 0,1 raze" si estás en un sistema con procesadores asimétricos.
 
 ***********EDUKE32: Duke Nukem 3D en GNU/Linux*********************************************************************************************
 
