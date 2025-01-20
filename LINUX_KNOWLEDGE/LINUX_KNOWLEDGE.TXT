@@ -3154,7 +3154,10 @@ Es posible lanzar cada juego directamente con "--descent", "--abyss", "--armaged
 
 Es el port original en el que colabora Ken Silverman!
 Clonamos su repo de:
-git clone --depth 1 --recurse-submodules -j8 https://github.com/jonof/jfduke3d.git
+git clone --depth 1 https://github.com/jonof/jfduke3d.git
+cd jfduke3d
+git submodule init
+git submodule update
 
 Editamos jfaudiolib/src/driver_sdl.c, y dejamos spec.samples a 1024, comentando el while que hay debajo.
 Editamos jfbuild/src/sdlayer2.c, y cambiamos, justo antes de SDL_CreateRenderer(), en la llamada a SDL_SetHint(), "nearest" por "linear".
@@ -5238,11 +5241,10 @@ sudo apt-get install libvpx-dev
 -Primero, necesita OpenAL. Tienes las instrucciones de instalación en este documento.
 
 -Segundo, necesita ZMUSIC. Vamos con ZMUSIC pues:
-Instala libmpg123-dev y libvorbis-dev.
-Clonamos su repo (las versiones que hay en "releases" buscan versiones de FluidSynth viejas así que no irán):
+---Instalamos dependencias previas: apt-get install libmpg123-dev libvorbis-dev.
+---Clonamos su repo (las versiones que hay en "releases" buscan versiones de FluidSynth viejas así que no irán):
 git clone --depth 1 https://github.com/ZDoom/ZMusic.git
-
-Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
+---Creamos el directorio de compilación, entramos y configuramos, compilamos e instalamos:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
