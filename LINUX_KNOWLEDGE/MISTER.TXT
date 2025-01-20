@@ -31,9 +31,19 @@ country=ES
 network={
         ssid="tu_ssid_aqui"
         psk="tu_clave_aqui"
+		priority=2
+}
+
+network={
+        ssid="tu_ssid_aqui"
+        psk="tu_clave_aqui"
+		priority=1
 }
 
 ####FIN FICHERO WPA_SUPPLICANT.CONF####
+
+Fíjate que podemos tener configuradas varias redes, y se conectará preferentemente a la que tenga un valor "priority" mayor,
+si no la encuentra se conectará a la siguiente, etc.
 
 Ahora reiniciamos y ya nos tendría que salir el icono de WiFi como conectado en el menú principal.
 
