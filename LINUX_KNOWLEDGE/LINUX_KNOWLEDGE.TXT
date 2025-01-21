@@ -3151,6 +3151,8 @@ cp CatacombGL ~/catacomb/
 Es posible lanzar cada juego directamente con "--descent", "--abyss", "--armageddon", "--apocalypse", etc...
 
 *******jfduke3d, el port güeno del duke3d para GNU/Linux**************************
+OJO!! ESTE PORT NO SOPORTA ARMAS CORREGIDAS PARA WIDESCREEN, ASÍ QUE SE VERÁN CORTADAS EN 16:9.
+USA NBLOOD EN SU LUGAR SI BUSCAS UN PORT VANILLA-ACURATE!!
 
 Es el port original en el que colabora Ken Silverman!
 Clonamos su repo de:
@@ -3165,13 +3167,8 @@ Editamos jfaudiolib/Makefile, y eliminamos el "-g" ese que hay ahí perdido.
 
 Compilamos con:
 
-PARA PC:
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GL3
-
-PARA RASPBERRY PI:
-CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make -j4 WITHOUT_GTK=1 RELEASE=1 USE_POLYMOST=1 USE_OPENGL=USE_GLES2
 
 Mete el duke3d.grp en el mismo directorio que el ejecutable.
 Para tener música con .ogg: Mete un zip con la música en el mismo directorio donde tengas el duke3d.grp.
@@ -5266,29 +5263,32 @@ make -j10
 Para que vaya a 60FPS sólidos, puedes desactivar TODO el antialiasing, activar el VSYNC, poner FPS a UNLIMITED,
 y sobre todo lanzarlo con "taskset -c 0,1 raze" si estás en un sistema con procesadores asimétricos.
 
-***********EDUKE32: Duke Nukem 3D en GNU/Linux*********************************************************************************************
+***********NBLOOD: Duke Nukem 3D en GNU/Linux*********************************************************************************************
 
 Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
 
-Preferentemente, usa este fork, que inclue soporte para BLOOD y EXHUMED también (OJO: el soporte de OpenGL no va):
+--Preferentemente, usa este fork, que inclue soporte para BLOOD y EXHUMED también (OJO: el soporte de OpenGL no va):
 git clone --depth 1 https://github.com/nukeykt/NBlood.git
 
 Si quieres usar el eduke32 original, clona su repo de aquí:
 git clone --depth 1 https://voidpoint.io/terminx/eduke32.git
 
-Compilamos con:
+--Compilamos con:
 
 make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=1 USE_LIBVPX=0 HAVE_FLAC=0 \
 OPTOPT="-march=native -mtune=native -O2"
 
-Mete el duke3d.grp en el mismo directorio que el ejecutable.
+--Mete el duke3d.grp en el mismo directorio que el ejecutable.
 Para tener música con .ogg: Mete un zip con la música en el mismo directorio donde tengas el duke3d.grp.
 Y lanzaríamos el juego con:
 ./duke3d -g<nombre_archivo_zip_música>
 RECUERDA: entre el -g y el nombre de archivo NO hay ningún espacio. Va todo seguido. 
 Por ahora, usamos este: https://sc55.duke4.net/
 
-Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
+--Para tener filtrado lineal de texturas, creamos el archivo ~/duke3d/autoexec.cfg con el contenido:
+r_texfilter 1
+
+--Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
 ************Schismtracker en GNU/Linux*******************************************************************
 
