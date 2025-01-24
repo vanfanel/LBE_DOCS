@@ -2867,7 +2867,7 @@ en nada superior a un 68000, como el DUNE, tienes varias opciones:
 -MEJOR OPCIÓN SI FUNCIONA: Correr el juego en una configuracón A1200+8MB FAST+CPU "Cycle-exact (DMA/Memory)" como para todos los demás,
  y poner "Immediate/Waiting Blits" to "Immediate Blitter" con lo que los errores derivados de correr un juego de 68000
  en una máquina más rápida deberían desaparecer (lee https://eab.abime.net/showthread.php?t=95418 para entender lo que sucede).
--Emular un A500/A600 y en ese caso sí que tendría sentido poner "System->CPU Compatibility" a "Cycle-Exact (DMA/Memory)"
+-Emular un A500/A600 (no he visto ninguno en el que haga falta aún si se hace lo anterior).
 -Usar una instalación WHDLoad cdel juego, on sus fixes para que funcionen en modo A1200 sin Cycle-Exact.
 
 -Pon "Video->Immediate/Waiting Blits" a "OFF" siempre que el juego no tenga ningún fallo gráfico.
