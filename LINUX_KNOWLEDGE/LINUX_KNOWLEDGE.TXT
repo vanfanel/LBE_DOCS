@@ -2852,10 +2852,12 @@ y se pierden los saves. No merece la pena, déjalos descomprimidos y ya).
 
 -Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST.
 Pon "System->CPU Compatibility" a "More Compatible", que es lo único que tiene sentido emulando un 1200 con FAST.
-NUNCA EMULES UN A500/A600, ya que son irremediablemente cycle-exact, cosa que NO tiene sentido, y provocan chasquidos de audio (ALSATHREAD)
-o dropouts (ALSA)
-TODO LO EMULAMOS CON EL A1200+8MB FAST+CPU "MORE COMPATIBLE", y si un juego va demasiado rápido le bajamos la velocidad de la CPU y ya.
+A SER POSIBLE, TODO LO EMULAMOS CON EL A1200+8MB FAST+CPU "MORE COMPATIBLE", y si un juego va demasiado rápido le bajamos la velocidad de la CPU y ya.
 De la emulación cycle-exact de un 1200 olvídate: es desconocida incluso para el creador del WinUAE.
+ES MÁS: Podría parecer que necesitas emular un A500/A600 para ciertos juegos instalados sin WHDLoad que además son MUY pejigueros,
+y en ese caso sí que tendría sentido poner "System->CPU Compatibility" a "Cycle-Exact (DMA/Memory)",
+pero para eso te sale mejor usar una instalación WHDLoad con sus fixes para que funcionen en modo A1200 sin Cycle-Exact,
+o simplemente córrelo en el modo 1200 por defecto pero con el truco de bajarle la CPU a -80% y te va igual de bien sin fallos que si emulas un A500.
 
 -Pon "Video->Immediate/Waiting Blits" a "OFF" siempre que el juego no tenga ningún fallo gráfico.
 Viene puesto a "Wait for Blitter" pero eso es incorrecto: tanto "Immediate" como "Waiting Blits" son parches para juegos que usan el blitter mal,
