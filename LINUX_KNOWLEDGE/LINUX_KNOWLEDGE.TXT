@@ -2855,8 +2855,15 @@ De la emulación cycle-exact de un 1200 olvídate: es desconocida incluso para e
 Viene puesto a "Wait for Blitter" pero eso es incorrecto: tanto "Immediate" como "Waiting Blits" son parches para juegos que usan el blitter mal,
 y el arreglo lo necesita el juego realmente. Es decir, un Amiga real es como "Video->Immediate/Waiting Blits" puesto a OFF. 
 
+-Para evitar problemas de audio en ciertos juegos (intro del Harlequin, etc), debes dejar "Allow Hz Change" a "Locked PAL/NTSC"
+en las opciones del core (viene así por defecto así que no deberías tener problema si no lo cambias),
+y subir la latencia de audio a 38ms en las opciones de RetroArch.
+
 -Desactiva "Media->WHDLoad Support" siempre que el juego no use WHDLoad. No te olvides, porque si no se usa WHDLoad los juegos
 tienen problemas con esta opción activada.
+
+-Para evitar problemas de audio en ciertos juegos (intro del Harlequin, etc), debes poner
+en las opciones del core "Allow Hz Change" a "Locked PAL/NTSC", y subir la latencia de audio a 38ms en las opciones de RetroArch.
 
 			####FIN PRIMEROS AJUSTES DE BASE####
 			
