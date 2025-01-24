@@ -2846,8 +2846,9 @@ es muy lenta lo que lo hace imposible.
 
 -La mejor manera de tener los juegos instalados es cada uno en su directorio (cuyo nombre incluirá la cadena "PAL" si es PAL,
 para que mi script de lanzamiento desde GNU/Linux ponga un modo de 100Hz para los juegos PAL y 120Hz si es NTSC),
-sin comprimir, porque aunque funciona lo de tener cada juego instalado en un ZIP, a veces falla al lanzarlos, hace cosas raras,
-y se pierden los saves. No merece la pena.
+sin comprimir, y sin un .info acompañando al directorio ni nada.
+(Aunque funciona lo de tener cada juego instalado en un ZIP, a veces falla al lanzarlos, hace cosas raras,
+y se pierden los saves. No merece la pena, déjalos descomprimidos y ya).
 
 -Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST.
 Pon "System->CPU Compatibility" a "More Compatible", que es lo único que tiene sentido emulando un 1200 con FAST.
