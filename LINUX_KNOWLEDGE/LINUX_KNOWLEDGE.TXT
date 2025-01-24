@@ -2851,14 +2851,19 @@ sin comprimir, y sin un .info acompañando al directorio ni nada.
 y se pierden los saves. No merece la pena, déjalos descomprimidos y ya).
 
 -Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST.
-Deja "System->CPU Compatibility" como viene, es decir, a "Cycle-exact (DMA/Memory)".
+
+-Deja "System->CPU Compatibility" como viene, es decir, a "Cycle-exact (DMA/Memory)".
 Lo que NO tiene sentido emulando un 1200 es "Cycle-exact (Full)" ya que la emulación de la CPU 68020 no es cycle-exact,
-sólo la de 68000 plano. La emulación cycle-exact de un 68020 es desconocida incluso para el creador del WinUAE.
-ASÍ QUE, A SER POSIBLE, TODO LO EMULAMOS CON EL A1200+8MB FAST+CPU "Cycle-exact (DMA/Memory)", y si un juego va demasiado rápido
-le bajamos la velocidad de la CPU y ya.
+sólo la de 68000 plano. Pero SÍ QUEREMOS que la comunicación DMA/Memory sea cycle-exact SIEMPRE.
+La emulación cycle-exact de un 68020 es desconocida incluso para el creador del WinUAE.
 (NO PONGAS "System->CPU Compatibility" a "More compatible" porque fallan juegos, como el Ishar 1 y 2 AGA que pierden efectos de sonido, etc,
 hazte caso y deja siempre "System->CPU Compatibility" como viene, es decir, a "Cycle-exact (DMA/Memory)").
-Para ciertos juegos instalados sin WHDLoad que además son MUY pejigueros como el DUNE, tienes varias opciones:
+
+-COMO HEMOS VISTO, TODO LO EMULAMOS CON EL A1200+8MB FAST+CPU "Cycle-exact (DMA/Memory)", y si un juego va demasiado rápido
+o hace cosas raras, tenemos varios remedios posibles (a parte de simplemente bajarle la velocidad de la CPU, claro, que no suele prevenir
+las corropciones gráficas derivadas de correr en CPUs más rápidas de lo esperado juegos de 68000 que no esperan al blitter, pero prueba).
+Así que, para ciertos juegos instalados sin WHDLoad que efectivamente no esperan al blitter porque nunca pensaron que fuesen a correr
+en nada superior a un 68000, como el DUNE, tienes varias opciones:
 -MEJOR OPCIÓN SI FUNCIONA: Correr el juego en una configuracón A1200+8MB FAST+CPU "Cycle-exact (DMA/Memory)" como para todos los demás,
  y poner "Immediate/Waiting Blits" to "Immediate Blitter" con lo que los errores derivados de correr un juego de 68000
  en una máquina más rápida deberían desaparecer (lee https://eab.abime.net/showthread.php?t=95418 para entender lo que sucede).
