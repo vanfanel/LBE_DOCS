@@ -2858,8 +2858,8 @@ Lo que NO tiene sentido emulando un 1200 es "Cycle-exact (Full)" ya que la emula
 el autor del WinUAE no tiene información para hacerlo, no se conoce el 68020 como para implementar su emulación cycle-exact y no hace falta.
 PERO SÍ QUEREMOS que la comunicación DMA/Memory sea cycle-exact SIEMPRE.
 (Si no lo fuese, por ejemplo al poner "System->CPU Compatibility" a "More compatible" pues fallan cosas en los juegos,
-como el Ishar 1 y 2 AGA que pierden efectos de sonido, etc,
-hazte caso y deja siempre "System->CPU Compatibility" como viene, es decir, a "Cycle-exact (DMA/Memory)").
+como el Ishar 1 y 2 AGA que pierden efectos de sonido, etc. Así que hazte caso y deja siempre "System->CPU Compatibility"
+puesto a "Cycle-exact (DMA/Memory)").
 La emulación de 68000 plano sí es full cycle exact y podría tener sentido poner "Cycle-exact (Full)", pero no nos hace falta para nada
 ya que nosotros emulamos un Amiga 1200+FAST y tiramos de WHDLoad mayoritariamente.
 
