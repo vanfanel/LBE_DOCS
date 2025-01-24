@@ -2853,11 +2853,15 @@ y se pierden los saves. No merece la pena, déjalos descomprimidos y ya).
 -Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST.
 
 -Deja "System->CPU Compatibility" como viene, es decir, a "Cycle-exact (DMA/Memory)".
-Lo que NO tiene sentido emulando un 1200 es "Cycle-exact (Full)" ya que la emulación de la CPU 68020 no es cycle-exact,
-sólo la de 68000 plano. Pero SÍ QUEREMOS que la comunicación DMA/Memory sea cycle-exact SIEMPRE.
-La emulación cycle-exact de un 68020 es desconocida incluso para el creador del WinUAE.
-(NO PONGAS "System->CPU Compatibility" a "More compatible" porque fallan juegos, como el Ishar 1 y 2 AGA que pierden efectos de sonido, etc,
+Esto se refiere a que la comunicación DMA/Memoria SÍ será cycle-exact aunque la emulación de la CPU no lo sea.
+Lo que NO tiene sentido emulando un 1200 es "Cycle-exact (Full)" ya que la emulación de la CPU 68020 en el WinUAE no es cycle-exact,
+el autor del WinUAE no tiene información para hacerlo, no se conoce el 68020 como para implementar su emulación cycle-exact y no hace falta.
+PERO SÍ QUEREMOS que la comunicación DMA/Memory sea cycle-exact SIEMPRE.
+(Si no lo fuese, por ejemplo al poner "System->CPU Compatibility" a "More compatible" pues fallan cosas en los juegos,
+como el Ishar 1 y 2 AGA que pierden efectos de sonido, etc,
 hazte caso y deja siempre "System->CPU Compatibility" como viene, es decir, a "Cycle-exact (DMA/Memory)").
+La emulación de 68000 plano sí es full cycle exact y podría tener sentido poner "Cycle-exact (Full)", pero no nos hace falta para nada
+ya que nosotros emulamos un Amiga 1200+FAST y tiramos de WHDLoad mayoritariamente.
 
 -COMO HEMOS VISTO, TODO LO EMULAMOS CON EL A1200+8MB FAST+CPU "Cycle-exact (DMA/Memory)", y si un juego va demasiado rápido
 o hace cosas raras, tenemos varios remedios posibles (a parte de simplemente bajarle la velocidad de la CPU, claro, que no suele prevenir
