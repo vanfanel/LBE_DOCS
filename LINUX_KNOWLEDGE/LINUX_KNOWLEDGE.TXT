@@ -2857,7 +2857,7 @@ y el arreglo lo necesita el juego realmente. Es decir, un Amiga real es como "Vi
 
 -Para evitar problemas de audio en ciertos juegos (intro del Harlequin, etc), debes dejar "Allow Hz Change" a "Locked PAL/NTSC"
 en las opciones del core (viene así por defecto así que no deberías tener problema si no lo cambias),
-y subir la latencia de audio a 38ms en las opciones de RetroArch.
+y si aún así notas algo, subir la latencia de audio a 38ms en las opciones de RetroArch.
 
 -Desactiva "Media->WHDLoad Support" siempre que el juego no use WHDLoad. No te olvides, porque si no se usa WHDLoad los juegos
 tienen problemas con esta opción activada.
