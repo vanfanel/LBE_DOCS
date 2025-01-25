@@ -2880,9 +2880,11 @@ y el arreglo lo necesita el juego realmente. Es decir, un Amiga real es como "Vi
 
 -Para evitar problemas de audio en ciertos juegos (intro del Harlequin, etc), debes dejar "Allow Hz Change" a "Locked PAL/NTSC"
 en las opciones del core (viene así por defecto así que no deberías tener problema si no lo cambias),
-y si aún así notas algo, subir la latencia de audio a 38ms en las opciones de RetroArch.
+y para juegos PAL 40ms en las opciones de RetroArch.
 (NOTA: Lo que hace "Allow Hz Change" a "Locked PAL/NTSC" es redondear NTSC a 60.0000Hz y PAL a 50.0000Hz, todo con 44100Hz de audio,
 con lo que el buffer de audio es mucho más estable y no se dan tantas distorsiones si tenemos un buffer de audio pequeño).
+POR SI QUIERES SABER MÁS SOBRE POR QUÉ HACEN FALTA 40ms EN PAL, ESTO DICE SONNINOS AL RESPECTO:
+"Oh right you said 32ms, so since the audio buffer is supposed to only saturate half of the buffer, meaning that it targets 16ms which is not even enough for 60fps since it is a bit more than 16ms. Meaning that PAL needs minimum 40ms in that case."
 
 -Desactiva "Media->WHDLoad Support" siempre que el juego no use WHDLoad. No te olvides, porque si no se usa WHDLoad los juegos
 tienen problemas con esta opción activada.
