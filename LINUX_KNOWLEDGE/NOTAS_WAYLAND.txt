@@ -1244,6 +1244,10 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 		<keybind key="A-F4"><action name="Close" /></keybind>
 	</keyboard>
 
+	<placement>
+		<policy>center</policy>
+	</placement>
+
 	<theme>
     	<name>BL-Lithium</name>
     	<cornerRadius>0</cornerRadius>
