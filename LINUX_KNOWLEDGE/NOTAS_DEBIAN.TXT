@@ -748,6 +748,9 @@ con VSYNC ON, HARD SYNC ON, HARD SYNC FRAMES 0
 AUDIO: driver ALSATHREAD, 48000 Hz, 32ms (necesario kernel a 300Hz + Preemptible Kernel), resampler quality normal
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
+SCALING: "Integer Scale" a "ON", con "Integer Scale Scaling" a "Smart".
+(De lo contrario hay patrones en las scanlines que sólo se ven en fondos azulados o blancos, etc).
+
 SHADER: usamos LOTTES-FAST en general.
 
 LATENCY: RunAhead con 1 frame y "second instance" activado.
