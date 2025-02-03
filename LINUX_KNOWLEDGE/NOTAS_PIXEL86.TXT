@@ -1,0 +1,15 @@
+ARRANQUE DEL SISTEMA
+====================
+
+El sistema SIEMPRE debe arrancar desde una unidad USB.
+Para empezar, estoy usando esta imágen de diskette que es un disco de arranque de Win98:
+https://winworldpc.com/download/49c380c2-a9c3-af25-c389-11c3a6e28094
+La flasheas a un USB con "dd" desde Linux, y arrancará. Usa la opción de arrancar sin CD-ROM porque si no te dará errores.
+
+Una vez arrancado desde el USB, ya puedes acceder a la tarjeta SD si está en FAT, simplemente cambiando a "C:"
+
+SONIDO MEDIANTE EL CHIP CRYSTAL
+===============================
+
+Debes flashear la ROM de la Orpheus, con el comando "FLASH.COM" y cuando te salga el menú, eliges la primera opción (la que pone "330"),
+le metes un power-cycling y listo.
