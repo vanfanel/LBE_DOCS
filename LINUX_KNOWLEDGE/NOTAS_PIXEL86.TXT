@@ -11,5 +11,6 @@ Una vez arrancado desde el USB, ya puedes acceder a la tarjeta SD si está en FA
 SONIDO MEDIANTE EL CHIP CRYSTAL
 ===============================
 
-Debes flashear la ROM de la Orpheus, con el comando "FLASH.COM" y cuando te salga el menú, eliges la primera opción (la que pone "330"),
-le metes un power-cycling y listo.
+Debes flashear la ROM de la Orpheus (disponible en https://pixelx86.com/downloads/drivers/dx/Orpheus_EEPROM_v2.zip,
+pero debería estar en más sitios porque en realidad no es del proyecto Pixel 86), con el comando "FLASH.COM"
+y cuando te salga el menú, eliges la primera opción (la que pone "330"), le metes un power-cycling y ya debería ir el audio.
