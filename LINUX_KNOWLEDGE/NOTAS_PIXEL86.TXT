@@ -2,6 +2,7 @@ ARRANQUE DEL SISTEMA
 ====================
 
 El sistema arranca desde SD. La tarjeta se prepara igual que para el Tinyllama.
+En la BIOS, puedes seleccionar si quieres arrancar desde la SD o desde un pendrive USB.
 
 SONIDO MEDIANTE EL CHIP CRYSTAL
 ===============================
@@ -9,3 +10,12 @@ SONIDO MEDIANTE EL CHIP CRYSTAL
 Debes flashear la ROM de la Orpheus (disponible en https://pixelx86.com/downloads/drivers/dx/Orpheus_EEPROM_v2.zip,
 pero debería estar en más sitios porque en realidad no es del proyecto Pixel 86), con el comando "FLASH.COM"
 y cuando te salga el menú, eliges la primera opción (la que pone "330"), le metes un power-cycling y ya debería ir el audio.
+
+USA SIEMPRE EL IRQ 5, NO USES EL 7: Con el 7 parece que funciona pero fallan cosas como los FX en el Doom, Tyrian, Duke3D, etc.
+Esto es así porque el IRQ 5 está reservado para el speaker o algo así.
+Por lo tanto, la variable BLASTER la tendremos así en el AUTOEXEC.BAT:
+
+SET BLASTER=A220 I5 D1 T4 P330
+
+..Y ya el UNISOUND usará esos valores siempre (la mayoría de los juegos no usan la variable BLASTER de todos modos,
+así que si no la estableces, UNISOUND usará el IRQ 5 que es el que tiene asignado la CRYSTAL en la EEPROM).
