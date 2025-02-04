@@ -8187,6 +8187,7 @@ y usa el shader "handheld/sameboy-lcd" combinado con INTEGER SCALING.
 PARA EL CORE GEOLITH (emulador muy preciso de NEOGEO) mete "aes.zip" y "neogeo.zip" en ~/.config/retroarch/system
 Como por defecto se inicia en modo AES, lo más importante para que funcione es tener "aes.zip".
 Las ROMs son en formato ".neo", las tienes en el disco duro de backup, o busca el pack LunaGarlic en Archive.org  
+NO USES RUNAHEAD CON ESTE CORE, o el sonido y el vídeo se empiezan a desincronizar cada vez más. No tiene RUNAHEAD interno tampoco.
 Para el escalado, si usas integer scaling en modo "smart", debes poner el "Viewport Anchor Bias Y" a 85 o así
 para que se vea el marcador de créditos del Puzzle Bobble, etc.
 
