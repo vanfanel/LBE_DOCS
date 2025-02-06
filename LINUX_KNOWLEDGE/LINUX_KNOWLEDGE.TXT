@@ -9228,7 +9228,7 @@ ninja -j10
   La renombramos a "baserom.z64" y la metemos en el directorio raíz de los sources, y en el directorio donde acabamos de
   compilar el engine hacemos:
   cmake --build . --target ExtractAssets -j10
-  ...Y copiamos el archivo resultante "" al mismo directorio que el ejecutable (yo lo meto todo en "~/starfox64").
+  ...Y copiamos el archivo resultante "sf64.o2r" al mismo directorio que el ejecutable (yo lo meto todo en "~/starfox64").
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
