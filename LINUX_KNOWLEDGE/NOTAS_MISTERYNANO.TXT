@@ -115,19 +115,15 @@ Para asegurar la máxima compatibilidad con juegos, cuando arranques el core:
 FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
 ===========================================================================================
 
-RECUERDA QUE EL USB/TTL QUE TIENES QUE USAR ES EL QUE TIENE EL CHIP FTDI, ES DECIR, EL QUE VA AL ORDENADOR CON UN CABLE USB MINI-USB.
 RECUERDA que si usas el interno de la TANG NANO 20K, tendrás que volver a meterle su firmware original de fábrica para poder volver a flashearlo.
 
 -Nos bajamos el Bouffalo Lab Dev Cube de aquí: https://dev.bouffalolab.com/download
--Conectamos el adapador USB/TTL al PC, y los cables a los pines SERIAL de la placa de la MisteryNano (hay que usar los cables GND, 5V, TX/RX, y DTR)
-con el TX/RX cruzados pero sin conectar aún el cable de 5V. Entonces, manteniendo pulsado el botón BOOT, conectamos el cable de 5V.
--Manteniendo pulsado el botón BOOT, abrimos el Bouffalo Lab Dev Cube, nos vamos a la pestaña MCU, le damos a OPEN UART,
-seleccionamos el .bin que queramos flashear, y le damos a "CREATE AND DOWNLOAD".
+-Manteniendo pulsado el botón BOOT, conectamos el cable USB-C al M0S.
+-Abrimos el Bouffalo Lab Dev Cube, nos vamos a la pestaña MCU, en PORT/SN seleccionamos "/dev/ttyACM0", y le damos a OPEN UART.
+-Seleccionamos el .bin que queramos flashear, y le damos a "CREATE AND DOWNLOAD".
 
 ERRORES Y SOLUCIONES AL FLASHEAR EL BL616:
--Si te da error con el handshake: no has cruzado los cables TX y RX (lo que es TX en un extremo, va al RX del otro).
--Si te da error leyendo la MAC del BL616 (pero el handshake sí se hizo bien): el adaptador USB/TTL no es compatible o no funciona bien,
-prueba con otro.
+-Si te da error aunque te abra bien el puerto, es que en la pestaña MCU tienes seleccionado otro puerto que no es el "/dev/ttyACM0". 
 
 CUBASE EN EL CORE DE ATARIST
 ============================
