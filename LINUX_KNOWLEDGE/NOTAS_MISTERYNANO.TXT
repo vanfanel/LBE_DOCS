@@ -62,6 +62,26 @@ Los tornillos necesarios son M3x12.
 FLASHEAR EL CORE DE ATARI ST Y LAS TOS
 ======================================
 
+	--USANDO EL GOWIN PROGRAMMER (YA QUE EL OPENFPGA LOADER HA DEJADO DE FUNCIONAR--
+
+--Usamos el Gowin Programmer versión 1.9.10.03, disponible en:
+https://www.gowinsemi.com/en/document/main/database/14/?support_search=&type=version&order=ASC&page=1
+--Tras descargarlo y descomprimirlo, entramos en su directorio "Drivers" y ejecutamos:
+Gowin_USB_Cable_Installer.sh
+...y a continuación:
+Makefile
+...y reiniciamos.
+--Entramos en su directorio "bin" y ejecutamos "./programmer"
+--Pinchamos en la columna "Series", elegimos "GW2AR", pinchamos en la columna "Device" y elegimos "GW2AR-18C"
+--Pinchamos en la columna "Operation" y en "Acces Mode" elegimos "External Flash Mode"
+  y en "Operation" elegimos "exFlash Erase, Program Thru GAO-Bridge"
+  En "File name" elegimos el .fs que queremos flashear, en "Device" dejamos "Generic Flash" y dejamos "Start Address" a 0x000000 
+--Volvemos al menú principal y le damos al icono de "Program/Configure" (flecha verde), y ya debería ir. 
+--Falta flashear las ROMS de sistema que se hace igual pero en diferentes "Start Address". Para hacerlo, mira en:
+https://github.com/harbaum/MiSTeryNano/blob/main/INSTALLATION_WINDOWS.md
+
+	--PARA CUANDO VUELVA A FUNCIONAR EL OPENFPGA LOADER--
+
 -Flasheamos el core:
 
 openFPGALoader -f ~/Downloads/atarist.fs
@@ -86,6 +106,26 @@ el MT32 u otro sinte. Le das a "INSTALL GAME" y así queda guardada la configura
 
 FLASHEAR EL CORE DE C64 Y LAS ROMS DE SISTEMA
 =============================================
+
+	--USANDO EL GOWIN PROGRAMMER (YA QUE EL OPENFPGA LOADER HA DEJADO DE FUNCIONAR--
+
+--Usamos el Gowin Programmer versión 1.9.10.03, disponible en:
+https://www.gowinsemi.com/en/document/main/database/14/?support_search=&type=version&order=ASC&page=1
+--Tras descargarlo y descomprimirlo, entramos en su directorio "Drivers" y ejecutamos:
+Gowin_USB_Cable_Installer.sh
+...y a continuación:
+Makefile
+...y reiniciamos.
+--Entramos en su directorio "bin" y ejecutamos "./programmer"
+--Pinchamos en la columna "Series", elegimos "GW2AR", pinchamos en la columna "Device" y elegimos "GW2AR-18C"
+--Pinchamos en la columna "Operation" y en "Acces Mode" elegimos "External Flash Mode"
+  y en "Operation" elegimos "exFlash Erase, Program Thru GAO-Bridge"
+  En "File name" elegimos el .fs que queremos flashear, en "Device" dejamos "Generic Flash" y dejamos "Start Address" a 0x000000 
+--Volvemos al menú principal y le damos al icono de "Program/Configure" (flecha verde), y ya debería ir. 
+--Falta flashear las ROMS de sistema que se hace igual pero en diferentes "Start Address". Para hacerlo, mira en:
+https://github.com/vossstef/tang_nano_20k_c64/blob/main/INSTALLATION_WINDOWS.md
+
+	--PARA CUANDO VUELVA A FUNCIONAR EL OPENFPGA LOADER--
 
 openFPGALoader -f tang_nano_20k_c64.fs
 
