@@ -441,39 +441,48 @@ wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d 
 
 ******DIRECTX SOBRE VULKAN USANDO WINE**************************************************************************************
 
-OPCIÓN 1 (RECOMENDADO): USANDO EL SOPORTE D3D->VULKAN QUE INCLUYE WINE DE SERIE
-(¡¡¡Arregla el marco blanco del Maldita Castilla!!!)
+OPCIÓN 1 (RECOMENDADO): USANDO DXVK
+
+--Clonamos su repo:
+git clone --depth 1 --recurse-submodules https://github.com/doitsujin/dxvk.git
+
+--Compilamos las versions de 32 bits:
+
+mkdir build32
+cd build32
+
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+meson setup .. -Dbuildtype=release --cross-file ../build-win32.txt
+
+ninja -j10
+
+--Las metemos en el profile de Wine que estemos usando:
+find ./ -name "*.dll" -exec cp {} ~/.wine/drive_c/windows/syswow64 \;
+
+--Compilamos las versions de 64 bits:
+
+mkdir build64
+cd build64
+
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+meson setup .. -Dbuildtype=release --cross-file ../build-win64.txt
+
+ninja -j10
+
+--Las metemos en el profile de Wine que estemos usando:
+find ./ -name "*.dll" -exec cp {} ~/.wine/drive_c/windows/system32 \;
+
+--Ejecutamos "winecfg", y allí vamos a la pestaña LIBRARIES, y vamos añadiendo overrides para "d3d8", "d3d9" y "d3d10",
+poniéndolos a "NATIVE" solamente, y ya está, ya todo lo de DirectX 8, 9 y 10 te irá sobre Vulkan.
+
+OPCIÓN 2: USANDO EL SOPORTE D3D->VULKAN QUE INCLUYE WINE DE SERIE
 
 Ejecutamos "regedit", nos vamos a HKEY_CURRENT_USER\Software\Wine, añadimos una nueva clave llamada "Direct3D",
 y dentro de ella añadimos un nuevo valor string llamado "renderer" al que daremos el valor "vulkan".
 
 Alternativamente, podríamos hacer "winetricks renderer=vulkan", pero para eso hay que tener instalado winetricks.
-
-OPCIÓN 2: USANDO DXVK
-
---Clonamos su repo:
-git clone --depth 1 --recurse-submodules https://github.com/doitsujin/dxvk.git
-
---Creamos el directorio donde queremos obtener las DLLs:
-mkdir ~/src/dlls
-
---Compilamos e instalamos con:
-(NOTA: SÍ, hay que usar "build-win32.txt", es correcto. Y sí, las DLLs se copian a "syswow64", es correcto).
-
-mkdir b4
-cd b4
-
-CFLAGS="-O2 -march=native -mtune=native -O2" \
-CXXFLAGS="-O2 -march=native -mtune=native -O2" \
-meson setup .. -Dbuildtype=release --cross-file ../build-win32.txt --prefix ~/src/dlls
-
-ninja -j10
-ninja install
-
---Copiamos las DLLs al sistema Windows de WINE:
-cp ~/src/dlls/bin/*.dll ~/.wine/drive_c/windows/syswow64/
-
---Ejecutamos "winecfg", salimos, y ya está.
 
 ******APOTRIS (clon de Tetris) en GNU/Linux**********************************************************************************
 (OJO: POR AHORA no tiene soporte de pantalla completa ni de joystick, asi que espera a la version 4.1 de los sources).
@@ -5416,13 +5425,6 @@ git submodule update
 --Entramos en crawl-ref/source para continuar desde allí.
 
     ####BLOQUE COMPILAR CONTRA OPENGL 1.x####
-
---Editamos glwrapper-ogl.cc y allí:
-----Comentamos la línea:
-#   include <GL/glu.h>
-----Buscamos "if (mip_opt == MIPMAP_CREATE)" y comentamos todo lo de ese bloque, incluido el "if" que acabamos de buscar.
-  (Se trata de comentar la llamada a gluBuild2DMipmaps() que hay en ese bloque, que es lo que nos estorba para compilar,
-   pero si quitamos todo el bloque además se ve la pantalla que nos avisa al principio de que ya se ha acabado de cargar el juego).
 
 --Editamos el Makefile, buscamos:
 "LIBS += -lGL -lGLU"
