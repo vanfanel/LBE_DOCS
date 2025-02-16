@@ -41,7 +41,7 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 make install
 
---Metemos la BIOS "mpr-17933.bin" en .local/share/jollygood/bios/
+--Metemos las BIOS (para Saturn: "mpr-17933.bin", para PSX: "scph*.bin") en ~/.local/share/jollygood/bios/
 
 --Ahora simplemente lanzamos la imágen de CD que queramos así:
 jollygood imágen.cue
