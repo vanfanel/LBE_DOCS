@@ -48,3 +48,9 @@ jollygood imágen.cue
 
 --Para configurar el emulador y el frontend (pantalla completa, etc), pulsamos TAB durante la emulación.
 Tienes más información sobre los directorios donde se guardan las configuraciones, BIOS, etc. en https://gitlab.com/jgemu/jgrf
+
+CONFIGURACIÓN
+=============
+
+Usamos el shader CRTea, con "CTRea Mode" puesto a "Custom" (o si no se ignorarán nuestros ajustes al shader),
+"Scanline Strength" puesto a 2, "Sharpness" puesto a 1, y quitados los parámetros de curvatura y corner.
