@@ -3787,6 +3787,24 @@ sudo crontab -e
 
 sudo service cron restart 
 
+SCREENSHOTS EN WAYLAND
+======================
+
+Usamos GRIM.
+--Clonamos su repo: git clone --depth 1 https://git.sr.ht/~emersion/grim
+--Compilamos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release ..
+
+ninja -j4
+ninja install
+
+--Ahora ya podemos capturar la pantalla simplemente escribiendo "grim", o si queremos capturar una salida concreta usamos "grim -o HDMI-A-1". 
+
 *******Captura de pantalla en Linux y apertura automática con el PINTA*****************************************************************************
 
 Creamos un script, captura, con permisos de ejecución y el siguiente contenido:
