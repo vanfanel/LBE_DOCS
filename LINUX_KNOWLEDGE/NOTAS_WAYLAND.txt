@@ -780,24 +780,6 @@ kitty --start-as fullscreen
 cambiamos lo que sea y guardamos.
 De este modo, se nos crea ~/.config/kitty/kitty.conf, que podemos editar luego y cambiar lo que queramos.
 
-SCREENSHOTS EN WAYLAND
-======================
-
-Usamos GRIM.
---Clonamos su repo: git clone --depth 1 https://git.sr.ht/~emersion/grim
---Compilamos con:
-
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native" \
-meson setup -Dbuildtype=release ..
-
-ninja -j4
-ninja install
-
---Ahora ya podemos capturar la pantalla simplemente escribiendo "grim", o si queremos capturar una salida concreta usamos "grim -o HDMI-A-1". 
-
 DEBUGEAR PROGRAMAS SOBRE WAYLAND POR SSH
 ========================================
 
