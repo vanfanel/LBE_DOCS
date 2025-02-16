@@ -2,13 +2,14 @@
 
 			PARTE 1: API HEADERS
 
---Clonamos JG:
+--Clonamos las JG headers:
 git clone --depth 1 https://gitlab.com/jgemu/jg.git
 --Instalamos las JG headers:
 make install
 
 
 			PARTE 2: EL FRONTEND JGRF
+
 --Instalamos dependencias previas:
 apt-get install libspeexdsp-dev
 
