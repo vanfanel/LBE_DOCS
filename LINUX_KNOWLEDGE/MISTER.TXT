@@ -260,6 +260,7 @@ El driver de ratón que pone en los docs del core que hay que usar (CTMOUSE vers
 que está en https://github.com/spark2k06/PCXT_MiSTer/tree/main/hdd/) no es compatible con el EDIT.COM de MS-DOS, se cuelga el EDIT.
 Si el que debes usar es este CTMOUSE.EXE: https://github.com/davidebreso/ctmouse
 La diferencia es que este está adaptado a procesadores 8088, ya que el CUTEMOUSE normal usa instrucciones de 286 y por eso falla.
+Con este driver funciona tanto el EDIT como los juegos, tanto en modo XT como en modo TANDY.
 No necesitas poner "LH" delante cuando cargas el CUTEMOUSE desde el AUTOEXEC.BAT: el driver se carga él solo en memoria alta.
 NO USES el driver de Microsoft, ya que sólo funciona en modo Tandy: en modo XT el cursor no se mueve.
 
