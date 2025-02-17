@@ -256,12 +256,14 @@ https://github.com/MiSTer-devel/PCXT_MiSTer/tree/main/hdd
 Hay muchos juegos preparados para XT de verdad aquí: https://www.pcjs.org
 Se pueden descargar dándole a SAVE.
 
+El driver de ratón que pone en los docs del core que hay que usar (CTMOUSE versión 1.9,
+que está en https://github.com/spark2k06/PCXT_MiSTer/tree/main/hdd/) no es compatible con el EDIT.COM de MS-DOS, se cuelga el EDIT.
+Si el que debes usar es este CTMOUSE.EXE: https://github.com/davidebreso/ctmouse
+La diferencia es que este está adaptado a procesadores 8088, ya que el CUTEMOUSE normal usa instrucciones de 286 y por eso falla.
+No necesitas poner "LH" delante cuando cargas el CUTEMOUSE desde el AUTOEXEC.BAT: el driver se carga él solo en memoria alta.
+NO USES el driver de Microsoft, ya que sólo funciona en modo Tandy: en modo XT el cursor no se mueve.
+
 NOTAS SOBRE JUEGOS ESPECÍFICOS DE PCXT
---El driver de ratón que hay que usar (CTMOUSE versión 1.9, que está en https://github.com/spark2k06/PCXT_MiSTer/tree/main/hdd/)
-  no es compatible con el EDIT.COM de MS-DOS, se cuelga el EDIT, así que cárgalo bajo demanda,
-  o bien usa el driver de Microsoft (MSMOUSE.COM) que sí que es compatible con EDIT.COM.
-  Si lo necesitas volver a descargar, busca "Microsoft mouse driver for ms-dos" en google.
-  El driver de MSMOUSE.COM debes cargarlo con LH para ahorrar memoria, pero el CTMOUSE no, ya que se carga sólo en memoria alta.
 --El Might & Magic 2 lo arreglé para que funcionase en TANDY y lo subí a Archive.org y a mi disco de backup.
 --El Pool of Radiance de la colección EXODOS funciona en TANDY, pero tienes que editar el archivo POOL.CFG para especificar
 la ruta donde lo vas a meter (viene como C:\POOLRAD, así que si lo metes en C:\JUEGOS\POOLRAD no funcionará).
