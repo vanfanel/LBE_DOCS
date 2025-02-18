@@ -398,6 +398,21 @@ network={
 
 Ahora es cosa de reiniciar, ejecutar wifi.sh y listo.
 
+***********Cambiar la fuente de la consola TTY local de Busybox/Linux*******************************************************************
+NOTA PREVIA: Lo hacemos así porque si hacemos el setfont en /etc/profile o en un script de /etc/profile.d/,
+no surte efecto hasta después de loguearnos, lo cual es feo y poco práctico.
+
+-Nos traemos la fuente que queramos de un sistema GNU/Linux completo (yo uso la TerminusBold de 24x12):
+scp /usr/share/consolefonts/Lat2-TerminusBold24x12.psf.gz root@192.168.207.xxx:/usr/share/consolefonts/
+
+-Editamos /etc/inittab, buscamos "agetty" (hay dos líneas que contienen esa cadena) y justo encima ponemos:
+::sysinit:/bin/setfont /usr/share/consolefonts/Lat2-Terminus24x12.psf.gz
+
+-Reiniciamos y listo!
+
+Si queremos autologin, ahí mismo en /etc/inittab dejamos la segunda línea de "agetty" así:
+console::respawn:/sbin/agetty --nohostname -L -a root tty1 linux
+
 ***********Montar el VHD de MSDOS (AO486) para la MiSTer********************************************************************************
 
 mount -o loop,offset=32256 msdos622.vhd /mnt
@@ -803,7 +818,7 @@ https://github.com/MiSTer-devel/Distribution_MiSTer#list-of-tags-that-you-may-us
 COMO LO VENIMOS HACIENDO AHORA MISMO:
 
 [mister]
-filter = !cheats !acornatom !acornelectron !adam !adventurevision !alicemc10 !altair8800 !amstrad-pcw !ao486 !apogee !apple-i !aquarius !arduboy !atari2600 !atari7800 !atarilynx !ay-3-8500 !bk0011m !c16 !channelf !arcadia !archie !astrocade !bbcbridgecompanion !c16 !casio_pv-1000 !casio_pv-2000 !chess !chip8 !coco2 !coco3 !coleco !colecoadam !colecovision !creativision !edsac !eg2000 !epochgalaxyii !flappybird !galaksija !gamate !gamenwatch !genesis-core !gnw !gameoflife !handheld2p !homelab !intellivision !interact !jupiter !laser !laser310 !lynx48 !macplus !megacd !megaduck !msx !multicomp !myvision !n64 !odyssey2 !ondra_spo186 !orao !oric !other-cores !pc88 !pc8801 !pdp1 !pet2001 !pmd85 !pocketchallengev2 !pokemonmini !ql !rx78 !s32x !samcoupe !segacd !sgb !sharpmz !slugcross !sms !sordm5 !specialist !supervision !supervision8000 !super_vision_8000 !svi328 !tatungeinstein !ti994a !tomyscramble !tomytutor !trs-80 !tsconf !uk101 !vc4000 !vector-06c !vectrex !vic20 !vt52 !x68000 !zx48 !zx81 !zxnext
+filter = !cheats !acornatom !acornelectron !adam !adventurevision !alicemc10 !altair8800 !amstrad-pcw !ao486 !apogee !apple-i !aquarius !arduboy !atari2600 !atari7800 !atarilynx !ay-3-8500 !bbcmicro !bk0011m !c16 !channelf !arcadia !archie !astrocade !bbcbridgecompanion !c16 !casio_pv-1000 !casio_pv-2000 !chess !chip8 !coco2 !coco3 !coleco !colecoadam !colecovision !creativision !edsac !eg2000 !epochgalaxyii !flappybird !galaksija !gamate !gamenwatch !genesis-core !gnw !gameoflife !handheld2p !homelab !intellivision !interact !jupiter !laser !laser310 !lynx48 !macplus !megacd !megaduck !msx !multicomp !myvision !n64 !odyssey2 !ondra_spo186 !orao !oric !other-cores !pc88 !pc8801 !pdp1 !pet2001 !pmd85 !pocketchallengev2 !pokemonmini !ql !rx78 !s32x !samcoupe !segacd !sgb !sharpmz !slugcross !sms !sordm5 !specialist !supervision !supervision8000 !super_vision_8000 !svi328 !tatungeinstein !ti994a !tomyscramble !tomytutor !trs-80 !tsconf !uk101 !vc4000 !vector-06c !vectrex !vic20 !vt52 !wonderswan !wonderswancolor !x68000 !zx48 !zx81 !zxnext
 
 Y para que no nos instale el core de NeoGeo Pocket, añadimos en "[jtcores]" el filtro "!console":
 
