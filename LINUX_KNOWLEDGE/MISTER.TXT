@@ -399,6 +399,8 @@ network={
 Ahora es cosa de reiniciar, ejecutar wifi.sh y listo.
 
 ***********Cambiar la fuente de la consola TTY local de Busybox/Linux*******************************************************************
+NOTA PREVIA: Recuerda que estos ajustes no sobrevivirán a una actualización del sistema Linux de la MiSTer
+porque en esas actualizaciones se sobreescribe /linux/linux.img que es donde vive el /etc del sistema embedido de la MiSTer!
 NOTA PREVIA: Si liamos cualquier movida y el sistema no arranca por haber modificado alto en /etc,
 tenemos que sacar la SD y montar el archivo /linux/linux.img, que es la partición EXT4 que contiene el sistema embedido de la MiSTer.
 No hace falta ningún parámetro ni nada, un "mount" mondo y lirondo funciona.
@@ -408,12 +410,12 @@ no surte efecto hasta después de loguearnos, lo cual es feo y poco práctico.
 -Nos traemos la fuente que queramos de un sistema GNU/Linux completo (yo uso la TerminusBold de 24x12):
 scp /usr/share/consolefonts/Lat2-TerminusBold24x12.psf.gz root@192.168.207.xxx:/usr/share/consolefonts/
 
--Editamos /etc/inittab, buscamos "agetty" (hay dos líneas que contienen esa cadena) y justo encima ponemos:
+-Editamos /etc/inittab, buscamos "setfont" y dejamos la línea así:
 ::sysinit:/bin/setfont /usr/share/consolefonts/Lat2-Terminus24x12.psf.gz
 
 -Reiniciamos y listo!
 
-Si queremos autologin, ahí mismo en /etc/inittab dejamos la segunda línea de "agetty" así:
+Si queremos autologin, ahí mismo en /etc/inittab, buscamos "agetty" y dejamos la segunda línea de "agetty" así:
 console::respawn:/sbin/agetty --nohostname -L -a root tty1 linux
 
 ***********Montar el VHD de MSDOS (AO486) para la MiSTer********************************************************************************
