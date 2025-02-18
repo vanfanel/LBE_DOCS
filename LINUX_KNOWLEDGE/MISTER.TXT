@@ -399,6 +399,9 @@ network={
 Ahora es cosa de reiniciar, ejecutar wifi.sh y listo.
 
 ***********Cambiar la fuente de la consola TTY local de Busybox/Linux*******************************************************************
+NOTA PREVIA: Si liamos cualquier movida y el sistema no arranca por haber modificado alto en /etc,
+tenemos que sacar la SD y montar el archivo /linux/linux.img, que es la partición EXT4 que contiene el sistema embedido de la MiSTer.
+No hace falta ningún parámetro ni nada, un "mount" mondo y lirondo funciona.
 NOTA PREVIA: Lo hacemos así porque si hacemos el setfont en /etc/profile o en un script de /etc/profile.d/,
 no surte efecto hasta después de loguearnos, lo cual es feo y poco práctico.
 
