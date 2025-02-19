@@ -1,0 +1,18 @@
+NOTAS DE MONTAJE
+================
+
+--La CPU simplemente se "coloca" haciendo coincidir el triangulito que trae dibujado la CPU con el triangulito que trae dibujado la placa.
+  Es dejarlo caer y cerrar la "jaula", no hay que apretar la CPU hacia abajo ni nada de eso.
+--La RAM va con los chips mirando a la CPU.
+
+--Si no quieres usar puta pasta térmica, usa el Thermalgrizzly Kyrosheet. La medida que tienes que comprar
+  para CPUs AMD de socket A5 es la de de 33x33.
+
+--Para que encaje el disipador Thermalright AXP90-x47:
+----En la placa: quitamos los brackets que trae atornillados la placa (esos negros de plástico)
+----En el disipador: quitamos los brackets plateados que trae en la parte de abajo y le ponemos, de los que trae de repuesto,
+    los que son "más cerrados", o "más cuadrados", por así decirlo.
+----En el disipador: ponemos, de los tornillos esos cabezones que trae el disipador, los más largos de los que trae por arriba,
+    y ya tiene que entrar perfecto en los orificios de la placa.
+----En la placa: le ponemos cuatro tuercas por la parte de atrás a esos tornillos largos, y ya está, ya queda perfectamente sujeto y pegado.
+
