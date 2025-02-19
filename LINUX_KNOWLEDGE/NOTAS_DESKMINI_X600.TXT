@@ -21,3 +21,9 @@ NOTAS DE USO
 
 --Para entrar en la BIOS a ajustar cosas, es con DELETE.
 --Para elegir unindad de arranque sin entrar en la BIOS, es con F11.
+
+NOTAS ESPECÍFICAS DEL HARDWARE EN GNU/LINUX
+===========================================
+
+--Hay que instalar estos paquetes para compatibilidad:
+apt-get install firmware-amd-graphics
