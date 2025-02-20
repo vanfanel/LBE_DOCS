@@ -124,6 +124,7 @@ Y reinicia. Ya no debería salir más.
 		[Service]
 		ExecStart=
 		ExecStart=-/sbin/agetty --autologin root --noclear --skip-login --nonewline %I $TERM
+		TTYVTDisallocate=no
 	-Activamos los servicios:
 		systemctl enable getty@tty1.service
 		systemctl enable getty@tty2.service	
@@ -458,7 +459,8 @@ Si MESA te da un error de que no encuentra GL/glxproto.h, reinstala el paquete x
 
 FIN NOCIONES PREVIAS
 
-¡¡¡OJO!!! LO PRIMERO EN LA PI4, AÑADE AL USUARIO "pi" AL GRUPO RENDER, O TE VOLVERÁS LOCO PORQUE GLES NO IRÁ PERO DRM SÍ (o sea, modetest funciona pero MESA no puede cargar GLES). PARA ELLO, HAZ:
+¡¡¡OJO!!! LO PRIMERO EN DEBIAN SI ESTÁS CON UN USUARIO NORMAL, AÑADE AL USUARIO "pi" AL GRUPO RENDER,
+O TE VOLVERÁS LOCO PORQUE GLES NO IRÁ PERO DRM SÍ (o sea, modetest funciona pero MESA no puede cargar GLES). PARA ELLO, HAZ:
 sudo usermod -a -G render pi
 
 Empezamos con libDRM:
@@ -477,6 +479,13 @@ mkdir b4
 cd b4
 
 CONFIGURAMOS DRM con esto:
+
+PARA X86_64 CON GPU AMD:
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+meson setup -Dudev=true -Dvc4=disabled -Dintel=disabled -Dvmwgfx=disabled -Dradeon=disabled -Damdgpu=enabled -Dnouveau=disabled \
+-Dfreedreno=disabled -Detnaviv=disabled \
+-Dinstall-test-programs=true ..
 
 PARA X86_64 CON GPU INTEL XE
 CFLAGS="-march=native -mtune=native -O2" \
@@ -500,7 +509,8 @@ sudo ninja install
 En este punto, puedes probar si libdrm te funciona bien haciendo:
 modetest -s 32:1280x720
 (donde 32 es un ID de conector válido: puedes ver los conectores con "modetest|grep connected").
-O bien, en X86_64, usa: modetest -s 236:1280x720
+O bien, en X86_64 con AMD, usa: modetest -s 93:1280x720
+O bien, en X86_64 con Intel, usa: modetest -s 236:1280x720
 
 ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ATENCIÓN, ATENCIÓN!!!!!!!!!!!!!!!!!!!!!!!!!!!
 SI ESTÁS EN X86_64:
@@ -556,7 +566,7 @@ meson setup -Dbuildtype=release -Dglx=disabled -Dx11=disabled ..
 SI QUIERES QUE MESA FUNCIONE SOBRE WAYLAND, VE E INSTALA WAYLAND AHORA (Mira en el fichero de notas de Wayland).
 
 NO TE OLVIDES DE AÑADIR AL USUARIO AL GRUPO RENDER:
-sudo adduser pi render
+sudo adduser manuel render
 (Si ves un error como "MESA-LOADER: failed to open kms_swrast", es porque no lo has hecho).
 
 SATISFECHAS SUS DEPENDENCIAS, PASAMOS A LA COMPILACIÓN DE MESA COMO TAL:
@@ -564,19 +574,21 @@ SATISFECHAS SUS DEPENDENCIAS, PASAMOS A LA COMPILACIÓN DE MESA COMO TAL:
 Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
 
-CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
+--CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
+
+PARA X86_64 CON GRÁFICOS AMD (Radeon 780M, etc):
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland \
+-Dvulkan-drivers=amd -Dgallium-drivers=radeonsi,zink -Dglvnd=enabled ..
 
 PARA X86_64 CON GRÁFICOS INTEL IRIS (=UHD,XE, etc):
---Ahora ya configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland \
 -Dvulkan-drivers=intel -Dgallium-drivers=iris,zink -Dglvnd=enabled ..
 
 PARA PI4/5:
---Editamos src/broadcom/vulkan/v3dv_device.c y buscamos "destroy dumb object" y comentamos el fprintf() que lo contiene.
-
---Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dllvm=disabled \
