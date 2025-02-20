@@ -21,6 +21,30 @@ NOTAS DE USO
 
 --Para entrar en la BIOS a ajustar cosas, es con DELETE.
 --Para elegir unindad de arranque sin entrar en la BIOS, es con F11.
+--Para resetear la CMOS, apaga el sistema y desconéctado de la corriente y CON EL SISTEMA APAGADO pon en contacto (con el destornillador o algo así)
+  los pines CLEAR CMOS de la placa, mantenlos durante unos 20 segundos y reconecta el sistema.
+  Si eso no funciona, enciende el sistema y líate a darle a CTRL+ALT+SUP como un mono y creo que eso funcionó.
+
+ACTUALIZAR LA BIOS
+==================
+Las actualizaciones están todas aquí: https://www.asrock.com/nettop/AMD/DeskMini%20X600%20Series/index.asp#BIOS
+Las instrucciones están sacadas de aquí: https://www.asrock.com/support/QA/X600M-STX_FirmwareUpdate.pdf
+Deberías tener copia de seguridad de todo en el disco de backup.
+
+--Lo primero es actualizar el firmware.
+Para ello formatea un pen a FAT32, y mete ahí un prompt de EFI tal como este (es dejar el directorio EFI con sus contenidos
+en el raiz de la tarjeta y ya):
+https://download.asrock.com/TSD/Desktop/Tool/EFICreate.zip
+Mete también ahí la última actualización del firmware (OJO, del firmware, NO de la BIOS).
+Ahora reinicia y pulsando F11 elige arrancar desde el pen. Navega hasta el directorio "NvFlash" de la actualización, y ejecuta "flash.nsh".
+Al acabar la pantalla se queda glicheada, no pasa nada, es normal. Apaga el sistema totalmente (quítale la alimentación) durante 30 segundos.
+
+--Ahora actualizamos la BIOS.
+Para ello, en el mismo pen en FAT32, mete el fichero de actualización de la BIOS (es un fichero .ROM) dejándolo tirado en el raiz
+del pen o donde quieras, porque el sistema de actualización lo va a buscar, pero vamos que en raiz está bien.
+Ahora reinicia y entra en la BIOS (pulsando SUP/DELETE como un mono) y vete a "TOOLS->INSTANT FLASH" y te localizará el fichero .ROM,
+dale a flashear y déjalo tranquilo un rato que acabe (durante el proceso volverá a entrar en la BIOS y tal él solo, déjalo a su rollo).
+Cuando acabe del todo, reiniciará normal al sistema operativo que tengas instalado.
 
 NOTAS ESPECÍFICAS DEL HARDWARE EN GNU/LINUX
 ===========================================
