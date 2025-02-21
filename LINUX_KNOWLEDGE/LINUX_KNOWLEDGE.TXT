@@ -966,7 +966,7 @@ WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WIT
 -Para que todo vaya suave en general (luego veremos que hay ciertos juegos que necesitan 70Hz sí o sí), en OPTIONS del core:
 En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
 
--Para evitar el input lag causado por tener el VSYNC activado (es necesario si no tienes VRR),
+-SÓLO SI NO TIENES VRR: Para evitar el input lag causado por tener el VSYNC activado (es necesario si no tienes VRR),
 puedes poner un modo de vídeo de 120Hz y además tener "VSYNC SWAP INTERVAL" en "AUTO".
 A tal efecto, lo más cómodo es que crees /usr/local/bin/dos con este contenido:
 ########
@@ -982,7 +982,7 @@ dos confs/juego.conf
 -Si hay juegos que te dan dropouts o distorsiones de audio al cambiar de modo de vídeo, es porque no has compilado el kernel
 con 300 Hz + Preemptible Kernel (Low-Latency Desktop). Mírate el documento de DEBIAN para saber cómo compilarlo.
 
--Para los "juegos de 70Hz" vayan bien (son juegos como Lemmings, Lotus 3... que tienen música lenta a 60 hagas lo que hagas),
+-SÓLO SI NO TIENES VRR: Para los "juegos de 70Hz" vayan bien (son juegos como Lemmings, Lotus 3... que tienen música lenta a 60 hagas lo que hagas),
 crea el archivo ~/.config/retroarch/config/70hz.cfg con el contenido:
 ####CONFIG DE RETROARCH PARA JUEGOS DE 70Hz####
 video_refresh_rate = "69.920288"                                                                                                       
@@ -1896,7 +1896,7 @@ x68000.zip
 x68k_cz6bs1.zip
 +Juegos en floppy o en disco duro.
 
---Cargamos el core así con el .cmd que crearemos con las instrucciones a continuación (el sistema va a 55.86254 Hz):
+--SÓLO SI NO TIENES VRR: Cargamos el core así con el .cmd que crearemos con las instrucciones a continuación (el sistema va a 55.86254 Hz):
 wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@111.72508
 retroarch -L mame_libretro.so x68000.cmd
 wlr-randr --output HDMI-A-1 --mode 1920x1080@60
@@ -8114,14 +8114,15 @@ acompañado de "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" puesto a "AUTO" y l
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
+VIDEO (SE NECESITA VRR!!!):
+Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado y VRR ACTIVADO, sin necesidad de "AUTO FRAME DELAY".
+La gracia de VULKAN es esa, tener triple buffer sin VSYNC (el VSYNC es lo que mete el lag realmente), para lo cual necesitamos
+sí o sí VRR. 
+
+SI NO TIENES VRR:
 VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado.
 (IMPORTANTE: en Vulkan NO hay ninguna diferencia poniendo MAX_SWAPCHAIN a 2, según el test del ratón).
 (Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato).
-
-EN EL FUTURO CUANDO TENGAS VRR:
-VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado y VRR ACTIVADO, sin necesidad de "AUTO FRAME DELAY".
-La gracia de VULKAN es esa, tener triple buffer sin VSYNC (el VSYNC es lo que mete el lag realmente), para lo cual necesitamos
-sí o sí VRR. 
 
 (NO USAR POR TENER MUCHO LAG EL DRIVER DE VIDEO "GLCORE" PORQUE TIENE MUCHO INPUT LAG HAGAS LO QUE HAGAS, SEGÚN EL TEST DEL RATÓN.
  NECESITA GLES3 U OPENGL DE ESCRITORIO, PARA LO CUAL TIENES QUE COMPILAR CON "--disable-glx").
