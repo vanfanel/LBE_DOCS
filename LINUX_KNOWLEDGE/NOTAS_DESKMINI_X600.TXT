@@ -46,6 +46,12 @@ Ahora reinicia y entra en la BIOS (pulsando SUP/DELETE como un mono) y vete a "T
 dale a flashear y déjalo tranquilo un rato que acabe (durante el proceso volverá a entrar en la BIOS y tal él solo, déjalo a su rollo).
 Cuando acabe del todo, reiniciará normal al sistema operativo que tengas instalado.
 
+NOTAS DE LA CONFIGURACIÓN DE LA BIOS
+====================================
+
+--Para desactivar el Hyperthreading (en AMD se llama "SMT") nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement"
+  y ahí ponemos "SMT Control" a "Disable".
+
 NOTAS ESPECÍFICAS DEL HARDWARE EN GNU/LINUX
 ===========================================
 
