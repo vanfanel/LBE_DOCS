@@ -5350,6 +5350,14 @@ r_texfilter 1
 
 --Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
+************ProTracker en GNU/Linux**********************************************************************
+
+--Bajamos la última estable de: https://github.com/8bitbubsy/pt2-clone/releases
+--Le damos permisos de ejecución a "make-linux.sh", lo ejecutamos, y se compilará con los flags correctos. 
+--Creamos nuestro directorio ~/pt, y allí copiamos el ejecutable y el .ini que se nos han generado:
+cp release/other/pt2-clone release/other/protracker.ini ~/pt
+--Editamos ~/pt/protracker.ini y ponemos "FULLSCREEN" a "TRUE"
+
 ************Schismtracker en GNU/Linux*******************************************************************
 
 Bajamos la última estable de:
