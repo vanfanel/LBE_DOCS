@@ -8184,7 +8184,11 @@ PARA EL CORE PPSSPP Y PARA EL CORE FLYCAST, ACUÉRDATE DE QUITAR EL RUNAHEAD, O 
 PANTALLAZOS A NEGRO, ETC...
 Para ello, simplemente crea el archivo .config/retroarch/config/PPSSPP/PPSSPP.cfg
 o el archivo .config/retroarch/config/Flycast/Flycast.cfg
-con el contenido: run_ahead_enabled = "false"
+con el contenido: run_ahead_enabled = "false
+PARA ESTOS MISMOS CORES, SI ESTÁS USANDO "SYNC TO EXACT" (=VRR, =AdaptiveSync), DESACTÍVALO, ACTIVA VSYNC,
+Y PON EL "VSYNC SWAP INTERVAL" A "AUTO", O NO TENDRÁS REFRESCO DE PANTALLA PERFECTAMENTE SUAVE.
+COMO AL TENER ADAPTIVE SYNC ACTIVADO EN EL COMPOSITOR WAYLAND ESTÁS EN UN MODO DE ~120Hz POR DEFECTO, NO TENDRÁS INPUT LAG A PESAR DEL VSYNC,
+LO PUEDES COMPROBAR CON LA PRUEBA DEL CURSOR.
 
 PARA EL CORE DE GB (Gambatte) y para el de GBA (mGBA), si usas RunAhead activa lo de "Use second instance", o tendrás pequeños droputs o
 distorsiones de audio.
