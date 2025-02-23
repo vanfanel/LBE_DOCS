@@ -8180,15 +8180,17 @@ Y RESPECTO AL RUNAHEAD:
 --SI USAS EL RENDERER HARDWARE, USA EL RUNAHEAD INTERNO DEL CORE, EN CORE OPTIONS.
 (DEBERÍAS USAR EL RUNAHEAD INTERNO DEL CORE DE TODOS MODOS AUNQUE USES EL RENDERER SOFTWARE).
 
+PARA LOS CORES 3D, debes usar el "Adaptive Sync Vsync".
+Esto consiste en que, teniendo activado el "Adaptive Sync" en el compositor Wayland,
+y en RetroArch desactivamos "SYNC TO EXACT" (=VRR, =AdaptiveSync), y activamos el VSYNC y ponemos "VSYNC SWAP INTERVAL" a "AUTO".
+Como tenemos el "Adaptive Sync" activado en el compositor Wayland, estamos a 120Hz por defecto,
+por lo que a pesar de tener el VSYNC activo no hay input lag (se puede comprobar con la prueba del ratón típica que usas siempre).
+
 PARA EL CORE PPSSPP Y PARA EL CORE FLYCAST, ACUÉRDATE DE QUITAR EL RUNAHEAD, O DARÁN ERRORES DE INSTRUCCIONES NO VÁLIDAS,
 PANTALLAZOS A NEGRO, ETC...
 Para ello, simplemente crea el archivo .config/retroarch/config/PPSSPP/PPSSPP.cfg
 o el archivo .config/retroarch/config/Flycast/Flycast.cfg
 con el contenido: run_ahead_enabled = "false
-PARA ESTOS MISMOS CORES, SI ESTÁS USANDO "SYNC TO EXACT" (=VRR, =AdaptiveSync), DESACTÍVALO, ACTIVA VSYNC,
-Y PON EL "VSYNC SWAP INTERVAL" A "AUTO", O NO TENDRÁS REFRESCO DE PANTALLA PERFECTAMENTE SUAVE.
-COMO AL TENER ADAPTIVE SYNC ACTIVADO EN EL COMPOSITOR WAYLAND ESTÁS EN UN MODO DE ~120Hz POR DEFECTO, NO TENDRÁS INPUT LAG A PESAR DEL VSYNC,
-LO PUEDES COMPROBAR CON LA PRUEBA DEL CURSOR.
 
 PARA EL CORE DE GB (Gambatte) y para el de GBA (mGBA), si usas RunAhead activa lo de "Use second instance", o tendrás pequeños droputs o
 distorsiones de audio.
