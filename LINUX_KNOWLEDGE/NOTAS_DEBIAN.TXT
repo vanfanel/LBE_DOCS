@@ -532,26 +532,14 @@ ASÍ QUE HAZ LAS DOS COSAS QUE ACABO DE DECIRTE.
 
 ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡
 
-DEPENDENCIAS PREVIAS DE MESA:
+				DEPENDENCIAS PREVIAS DE MESA
 
-SI QUIERES GLES Y GLES2 NECESITAS ESTAS DEPENDENCIAS:
+SI QUIERES OPENGL NECESITAS ESTAS DEPENDENCIAS:
 apt-get install --no-install-recommends \
-    flex bison python3-mako python3-setuptools \
+    flex bison python3-mako python3-setuptools python3-yaml \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
     zlib1g-dev pkg-config
-
-#####
-DEPENDENCIAS EXCLUSIVAS PARA INTEL GALLIUM IRIS (los números de versión son para Debian 12, pueden cambian en Debian 13 y posteriores):
-
-PARA DEBIAN 13:
-apt-get install python3-ply libclang-common-17-dev libllvmspirvlib-17-dev llvm-17-dev libclang-cpp17-dev libclang-17-dev libclc-17 libclc-17-dev
-
-SI AÚN ESTÁS EN DEBIAN 12:
-apt-get install python3-ply libclang-common-15-dev libllvmspirvlib-15-dev llvm-15-dev libclang-cpp15-dev libclang-15-dev libclc-15 libclc-15-dev
-
-¡¡¡OJO!!! ES MUY IMPORTANTE QUE COINCIDA EL NÚMERO DE VERSIÓN DE TODO. SI NO, NO COMPILARÁ Y LOS ERRORES SERÁN IMPOSIBLES DE ENTENDER.
-#####
 
 SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
 apt-get install libvulkan-dev libvulkan1 vulkan-tools glslang-tools --no-install-recommends
@@ -565,29 +553,42 @@ meson setup -Dbuildtype=release -Dglx=disabled -Dx11=disabled ..
 
 SI QUIERES QUE MESA FUNCIONE SOBRE WAYLAND, VE E INSTALA WAYLAND AHORA (Mira en el fichero de notas de Wayland).
 
+#####
+DEPENDENCIAS EXCLUSIVAS PARA GRÁFICOS INTEL (los números de versión son para Debian 12, pueden cambian en Debian 13 y posteriores):
+
+PARA DEBIAN 13:
+apt-get install python3-ply libclang-common-17-dev libllvmspirvlib-17-dev llvm-17-dev libclang-cpp17-dev libclang-17-dev libclc-17 libclc-17-dev
+
+SI AÚN ESTÁS EN DEBIAN 12:
+apt-get install python3-ply libclang-common-15-dev libllvmspirvlib-15-dev llvm-15-dev libclang-cpp15-dev libclang-15-dev libclc-15 libclc-15-dev
+
+¡¡¡OJO!!! ES MUY IMPORTANTE QUE COINCIDA EL NÚMERO DE VERSIÓN DE TODO. SI NO, NO COMPILARÁ Y LOS ERRORES SERÁN IMPOSIBLES DE ENTENDER.
+#####
+
 NO TE OLVIDES DE AÑADIR AL USUARIO AL GRUPO RENDER:
 sudo adduser manuel render
 (Si ves un error como "MESA-LOADER: failed to open kms_swrast", es porque no lo has hecho).
 
-SATISFECHAS SUS DEPENDENCIAS, PASAMOS A LA COMPILACIÓN DE MESA COMO TAL:
+					COMPILACIÓN DE MESA COMO TAL
 
 Bajamos los últimos estables de:
 https://mesa.freedesktop.org/archive/
 
 --CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
 
-PARA X86_64 CON GRÁFICOS AMD (Radeon 780M, etc):
+PARA X86_64 CON GRÁFICOS AMD (No necesita LLVM, usa el compilador ACO, por eso no hemos instalado LLVM y lo desactivamos aquí):
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland \
--Dvulkan-drivers=amd -Dgallium-drivers=radeonsi,zink -Dglvnd=enabled \
+-Dvulkan-drivers=amd -Dgallium-drivers=radeonsi,zink -Dglvnd=enabled -Dllvm=false \
 -Dvideo-codecs=h264dec,h265dec,vc1dec ..
 
 PARA X86_64 CON GRÁFICOS INTEL IRIS (=UHD,XE, etc):
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland \
--Dvulkan-drivers=intel -Dgallium-drivers=iris,zink -Dglvnd=enabled ..
+-Dvulkan-drivers=intel -Dgallium-drivers=iris,zink -Dglvnd=enabled \
+-Dvideo-codecs=h264dec,h265dec,vc1dec ..
 
 PARA PI4/5:
 CFLAGS="-march=native -mtune=native -O2" \
