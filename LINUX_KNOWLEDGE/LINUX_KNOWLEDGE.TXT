@@ -585,8 +585,8 @@ make rednukem
 Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
 ******Compilar core PCSX2 para LIBRETRO**************************************************************************************
-NOTA: La idea por ahora es compilarlo sólo con soporte OpenGL, ya que tanto el renderer Vulkan como el Parallel-GS son
-mucho más lentos que el renderer software, Y EL RENDERER SOFTWARE SÓLO FUNCIONA CON OPENGL.
+NOTA: EL RENDERER SOFTWARE SÓLO FUNCIONA CON OPENGL. Necesitas activar OpenGL tanto cuando compiles RetroArch
+como cuando compiles el core.
 
 --Instalamos dependencias previas:
 apt-get install liblzma-dev
@@ -599,16 +599,14 @@ git submodule update --init --recursive
 --Editamos "cmake/SearchForStuff.cmake", buscamos la línea "find_package(OpenGL REQUIRED)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
 
---Editamos "pcsx2/CMakeLists.txt", buscamos "OpenGL::GL" y lo borramos.
-(Si vamos a usar OpenGL, lo cambiamos por "OpenGL::OpenGL", pero vamos, que no usamos OpenGL porque es más lento que Vulkan,
-y sólo sirve para el renderizador software que también es lentísimo).
+--Editamos "pcsx2/CMakeLists.txt", buscamos "OpenGL::GL" y lo cambiamos por "OpenGL::OpenGL".
 
 --Compilamos con:
 
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=TRUE -DUSE_OPENGL=FALSE \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=TRUE -DUSE_OPENGL=TRUE \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
