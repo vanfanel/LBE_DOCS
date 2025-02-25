@@ -8,6 +8,19 @@ NOTAS DE MONTAJE
 --Si no quieres usar puta pasta térmica, usa el Thermalgrizzly Kyrosheet. La medida que tienes que comprar
   para CPUs AMD de socket A5 es la de de 33x33.
 
+--El dispador+ventilador que uso finalmente es el "Noctua NH-L9A-AM5" y como su nombre indica es especialmente indicaco para socket AMD AM5
+  que es el socket de AMD más actual.
+  Para montarlo, lo primero quitamos las piezas de plástico que vienen puestas en la placa porque son para el disipador que viene incluido.
+  Ahora, quitamos del disipador las sujecciones de abajo que van atornilladas,
+  y en esas piezas ponemos mirando hacia abajo los cuatro tornillos allen negros que vienen en la caja del disipador.
+  Ahora metemos los cuatro tornillos negros por los orificios de la placa base, y desde el otro lado los sujetamos con tuercas del tamaño adecuado
+  (Las que yo tenía eran de otro ventilador...) y ya queda montado y fijado.
+  Si lo haces así incluso puedes ponerle un Kyrosheet de grafeno, poque como sólo es "dejar caer" el disipador desde arriba con sus tornillos
+  ya puestos, no tiene por qué deslizarse el Kyrosheet si lo haces bien.
+  OJO antes de meter los cuatro tornillos por los orificios de la placa base: asegúrate de que están rectos. Si están torcidos no entra bien,
+  se queda atascado a medio camino, entra de un lado y del otro no, se atasca al sacarlo... De verdad, asegúrate de que están bien rectos antes,
+  si los ves algo torcidos endereza las sujecciones del disipador o los tornillos, si no lo haces puede ser una penuria. 
+
 --El módulo WIFI que he comprado es el módulo M.2 Intel AX200. Viene sin antenas, y se necesita un cable "IPEX MHF4 a RP-SMA"
 (donde "IPEX MHF4" es el conector de la tarjeta M.2 Intel AX200, y "RP-SMA" es el conector de la antena)
 y un par de antenas RP-SMA.
