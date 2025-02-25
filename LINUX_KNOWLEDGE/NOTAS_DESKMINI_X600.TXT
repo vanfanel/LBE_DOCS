@@ -8,13 +8,17 @@ NOTAS DE MONTAJE
 --Si no quieres usar puta pasta térmica, usa el Thermalgrizzly Kyrosheet. La medida que tienes que comprar
   para CPUs AMD de socket A5 es la de de 33x33.
 
---Para que encaje el disipador Thermalright AXP90-x47:
-----En la placa: quitamos los brackets que trae atornillados la placa (esos negros de plástico)
-----En el disipador: quitamos los brackets plateados que trae en la parte de abajo y le ponemos, de los que trae de repuesto,
-    los que son "más cerrados", o "más cuadrados", por así decirlo.
-----En el disipador: ponemos, de los tornillos esos cabezones que trae el disipador, los más largos de los que trae por arriba,
-    y ya tiene que entrar perfecto en los orificios de la placa.
-----En la placa: le ponemos cuatro tuercas por la parte de atrás a esos tornillos largos, y ya está, ya queda perfectamente sujeto y pegado.
+--El módulo WIFI que he comprado es el módulo M.2 Intel AX200. Viene sin antenas, y se necesita un cable "IPEX MHF4 a RP-SMA"
+(donde "IPEX MHF4" es el conector de la tarjeta M.2 Intel AX200, y "RP-SMA" es el conector de la antena)
+y un par de antenas RP-SMA.
+El conector "IPEX MHF4" sí conecta en la tarjeta aunque parezca que no: la primera vez hay que apretar bastante, pero entra y se queda fijo.
+El cable viene con dos tuercas y dos arandelas: una arandela dentada y una arandela que está "desencajada".
+Para fijar el cable a la carcasa se hace así, de dentro a fuera:
+1) Tuerca interna
+2) Arandela dentada mirando hacia la carcasa
+3) (Aquí va la carcasa)
+4) Arandela "desencajada"
+5) Tuerca externa
 
 NOTAS DE USO
 ============

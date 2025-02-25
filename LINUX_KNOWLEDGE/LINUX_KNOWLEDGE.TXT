@@ -1106,7 +1106,7 @@ gcc -shared -fPIC -o libGLX.so.0 fake_glx.c
 pero eso ya no funciona porque nos da "undefined symbols" para funciones de GLX).
 
 Lanzamos el emulador con:
-I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ LD_PRELOAD=libshim.so ./pcsx2.AppImage "$1" >> /dev/null 2>&1
+I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2.AppImage "$1" >> /dev/null 2>&1
 
 PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
 --En "Settings->Graphics" ponemos el Renderer a "Vulkan" y ponemos el Texture Preloading a "None"
