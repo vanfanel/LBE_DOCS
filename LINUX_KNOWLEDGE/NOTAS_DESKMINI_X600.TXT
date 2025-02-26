@@ -66,9 +66,9 @@ Cuando acabe del todo, reiniciará normal al sistema operativo que tengas instal
 NOTAS DE LA CONFIGURACIÓN DE LA BIOS
 ====================================
 
---Para ajustar la velocidad de la RAM (ya que por defecto usa el perfil JEDEC a 4800MHz y la memoria que tengo soporta 6400),
-vamos a "Advanced->OC Tweaker->DRAM Profile Setting" y allí elegimos el perfil que queramos.
-NO AJUSTES LA VELOCIDAD A MANO, ya que cada velocidad necesita otros ajustes como el voltaje, etc., si lo haces a mano,
+--Para ajustar la velocidad de la RAM (ya que por defecto se pone a JEDEC, que es la velocidad por defecto para DDR5 con socket AM5 y son 4800MHz,
+pero la memoria que tengo soporta 6400), vamos a "Advanced->OC Tweaker->DRAM Profile Setting" y allí elegimos el perfil XMP que queramos.
+NO AJUSTES LA VELOCIDAD A MANO DE FORMA AISLADA, ya que cada velocidad necesita otros ajustes como el voltaje, etc., si lo haces a mano,
 el sistema será inestable, con errores gráficos, etc.
 
 --Para desactivar el Hyperthreading (en AMD se llama "SMT") nos vamos a "ADVANCED->CPU CONFIGURATION->SMT MODE" y lo ponemos a "DISABLED",

@@ -1113,13 +1113,12 @@ PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
   (El Texture Preloading produce parones de audio en las transiciones, cargas, etc).
 --En "Settings->Graphics" activamos "Spin GPU during readbacks" y "Spin CPU during readbacks"
   (Evita bajones de FPS durante transiciones).
-  (En la BIOS, desactiva los C-STATES y el HyperThreading).
---En "Settings->Emulation", si estás en un sistema con cores P y cores E como los Intel 12th gen,
-  activa "Enable Thread Pinning".
---En "Settings->Emulation", en la parte de abajo activamos solamente "Sync to Host Refresh Rate".
-  Con Vulkan no es necesario activar "Vertical Sync (VSync)".
-  (PARA CUANDO TENGAS UNA MÁQUINA MÁS POTENTE podrás activar "Optimal Frame Pacing").
-  (PARA CUANDO TENGAS VRR podrás desactivar "Sync to Host Refresh Rate").
+--PARA SISTEMAS CON P-CORES Y E-CORES SOLAMENTE: En "Settings->Emulation", activamos "Enable Thread Pinning".
+--En "Settings->Emulation", en la parte de abajo:
+  ----SI TENEMOS VRR: DESACTIVAMOS TODO. ABSOLUTAMENTE TODO.
+  ----SI NO TENEMOS VRR:
+          Activamos solamente "Sync to Host Refresh Rate".
+          Con Vulkan no es necesario activar "Vertical Sync (VSync)".
 --En "Settings->Audio", dejamos "Backend" a "Cubeb" y "Driver" a "alsa".
 
 -SI LOS CONTROLES DEL DPAD VAN MAL: En "Settings->Controllers->Controller Port 1->Mapping Settings" activamos "Ignore inversion".
