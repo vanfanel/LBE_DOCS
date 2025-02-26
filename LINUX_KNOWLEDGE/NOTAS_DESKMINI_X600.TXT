@@ -71,8 +71,8 @@ vamos a "Advanced->OC Tweaker->DRAM Profile Setting" y allí elegimos el perfil 
 NO AJUSTES LA VELOCIDAD A MANO, ya que cada velocidad necesita otros ajustes como el voltaje, etc., si lo haces a mano,
 el sistema será inestable, con errores gráficos, etc.
 
---Para desactivar el Hyperthreading (en AMD se llama "SMT") nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement"
-  y ahí ponemos "SMT Control" a "Disable".
+--Para desactivar el Hyperthreading (en AMD se llama "SMT") nos vamos a "ADVANCED->CPU CONFIGURATION->SMT MODE" y lo ponemos a "DISABLED",
+y nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement" y ponemos "SMT Control" a "DISABLED".
 
 NOTAS ESPECÍFICAS DEL HARDWARE EN GNU/LINUX
 ===========================================
