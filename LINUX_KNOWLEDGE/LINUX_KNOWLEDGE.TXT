@@ -1931,16 +1931,16 @@ typedef struct gbm_device  *EGLNativeDisplayType;
 typedef struct gbm_bo      *EGLNativePixmapType;                                                               
 typedef void               *EGLNativeWindowType;
 
---Editamos scripts/src/osd/modules.lua, y borramos "input_x11.cpp".
+--Editamos scripts/src/osd/modules.lua, y allí:
+----Borramos "input_x11.cpp".
+----Nos vamos a la función osdmodulestargetconf(), y donde pone
+links { 
+	"GL",
+lo cambiamos por "OpenGL".
 
 --Editamos src/osd/modules/lib/osdobj_common.cpp y borramos estas dos líneas que no van seguidas:
 REGISTER_MODULE(m_mod_man, LIGHTGUN_X11)
 REGISTER_MODULE(m_mod_man, JOYSTICKINPUT_XINPUT);
-
---Editamos scripts/src/osd/modules.lua, nos vamos a la función osdmodulestargetconf(), y donde pone
-links { 
-	"GL",
-lo cambiamos por "OpenGL".
 
 --Editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
 SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp,src/mame/namco/namcos22.cpp
