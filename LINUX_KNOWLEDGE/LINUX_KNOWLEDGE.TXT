@@ -1953,12 +1953,6 @@ CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make REGENIE=1 USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j10
 
-Sin Wayland:
-
-CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make REGENIE=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j10
-
 (+)MÁS INFO DE REFERENCIA:
 
 Un hilo sobre el asunto con la solución para compilar sólo un driver:
