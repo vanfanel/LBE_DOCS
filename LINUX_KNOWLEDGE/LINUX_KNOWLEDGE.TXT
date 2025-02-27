@@ -1976,8 +1976,11 @@ Lo editamos a nuestro gusto, y le pasamos a MAME la ruta del .ini para cargarlo:
 mame -inipath /home/manuel/mame ridgerac
 Por defecto busca las ROMs en el directorio "roms" del directorio del ejecutable, y podemos espeficar otras rutas en el .ini
 
-Para usar los shaders:
---Copiamos el directorio "bgfx" que viene en la raiz de los sources a "~/mame/bgfx"
+		SECCIÓN PARA USAR LOS SHADERS
+
+--Copiamos los directorios "bgfx" y "artwork" que vienen en la raiz de los sources a "~/mame/bgfx":
+cp -R bgfx artwork ~/mame/
+
 --Editamos "mame.ini" y allí:
 ----Ponemos "video" a "bgfx"
 ----En la sección "BGFX POST-PROCESSING OPTIONS" ponemos:
