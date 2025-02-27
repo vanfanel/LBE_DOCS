@@ -1996,6 +1996,10 @@ y así se carga sola.
 Nos podemos bajar fuentes en BDF ya listas de https://mrdo.mameworld.info/mame_artwork_supp.php
 A mi me gusta la llamada "Nostalgia Four", que es estilo AtariST.
 
+--Para que no nos salgan los warnings con los juegos imperfectos:
+Ejecutamos "mame" sin ningún parámetro para entrar en el menú del MAME en sí.
+Nos vamos a "GENERAL SETTINGS -> MISCELLANEOUS OPTIONS" y ponemos "Skip imperfect emulation warnings" a "ON".
+
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
 Lo más fácil es mirar en su fichero de código si tiene algún flag como MACHINE_IMPERFECT_SOUND, MACHINE_IMPERFECT_GRAPHICS, etc.
