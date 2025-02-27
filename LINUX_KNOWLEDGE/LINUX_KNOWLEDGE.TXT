@@ -1938,9 +1938,8 @@ links {
 	"GL",
 lo cambiamos por "OpenGL".
 
---Editamos src/osd/modules/lib/osdobj_common.cpp y borramos estas dos líneas que no van seguidas:
+--Editamos src/osd/modules/lib/osdobj_common.cpp y borramos la línea:
 REGISTER_MODULE(m_mod_man, LIGHTGUN_X11)
-REGISTER_MODULE(m_mod_man, JOYSTICKINPUT_XINPUT);
 
 --Editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
 SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp,src/mame/namco/namcos22.cpp
@@ -1967,6 +1966,15 @@ Quote:
     You can do driver specific builds by using SOURCES=<driver> in your make statement. For instance, building Pac-Man by itself would be:
     "make SOURCES=src/mame/drivers/pacman.cpp REGENIE=1"
     including the necessary REGENIE for rebuilding the settings
+
+USAR MAME STANDALONE
+====================
+
+Primero creamos un .ini en el directorio actual:
+mame -createconfig
+Lo editamos a nuestro gusto, y le pasamos a MAME la ruta del .ini para cargarlo:
+mame -inipath /home/manuel/mame ridgerac
+Uno de los sitios donde busca por defecto los .zip de las ROMs es en $HOME/mame/roms, pero pedemos espeficar otras rutas en el .ini
 
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
@@ -11063,16 +11071,6 @@ con iwconfig.
 O bien, déjalo blacklisteado, y lo cargas manualmente en: 
 
 sudo modprobe brcmfmac
-
-USAR MAME (a palo seco)
-=======================
-
-Va contra las SDL2 y usa el renderer que usen las SDL2.
-Primero creamos un .ini en el directorio actual:
-mame -createconfig
-Lo editamos a nuestro gusto, y le pasamos a MAME la ruta del .ini para cargarlo:
-mame -inipath /home/manuel/mame ridgerac
-Uno de los sitios donde busca por defecto los .zip de las ROMs es en $HOME/mame/roms, pero pedemos espeficar otras rutas en el .ini
 
 INSTALAR CHDMAN A MANO
 ======================
