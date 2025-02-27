@@ -1974,7 +1974,15 @@ Primero creamos un .ini en el directorio actual:
 mame -createconfig
 Lo editamos a nuestro gusto, y le pasamos a MAME la ruta del .ini para cargarlo:
 mame -inipath /home/manuel/mame ridgerac
-Uno de los sitios donde busca por defecto los .zip de las ROMs es en $HOME/mame/roms, pero pedemos espeficar otras rutas en el .ini
+Por defecto busca las ROMs en el directorio "roms" del directorio del ejecutable, y podemos espeficar otras rutas en el .ini
+
+Para usar los shaders:
+--Copiamos el directorio "bgfx" que viene en la raiz de los sources a "~/mame/bgfx"
+--Editamos "mame.ini" y allí:
+----Ponemos "video" a "bgfx"
+----En la sección "BGFX POST-PROCESSING OPTIONS" ponemos:
+	"bgfx_backend"			vulkan
+	"bgfx_screen_chains"	crt-geom
 
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
