@@ -1919,7 +1919,7 @@ Instalamos dependencias previas:
 apt-get install libfontconfig-dev
 
 Clonamos su repo:
-git clone -b mame0263 --depth 1 https://github.com/mamedev/mame.git mame0263
+git clone -b mame0275 --depth 1 https://github.com/mamedev/mame.git mame0275
 
 Editamos 3rdparty/bgfx/3rdparty/khronos/EGL/eglplatform.h, buscamos la línea:
 
@@ -1970,7 +1970,7 @@ Quote:
 ******COMPILAR MAME STANDALONE****************************************************
 
 -Clonamos su repo:
-git clone -b mame0271 --depth 1 https://github.com/mamedev/mame.git mame0271
+git clone -b mame0275 --depth 1 https://github.com/mamedev/mame.git mame0275
 
 -Editamos scripts/src/osd/modules.lua, nos vamos a la función osdmodulestargetconf(), y donde pone
 links { 
