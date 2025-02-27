@@ -1986,6 +1986,8 @@ cp -R bgfx artwork ~/mame/
 ----En la sección "BGFX POST-PROCESSING OPTIONS" ponemos:
 	"bgfx_backend"			vulkan
 	"bgfx_screen_chains"	crt-geom
+----Lanzamos MAME, entramos en el menú TAB, nos vamos a "Slider Controls", allí a "Window 0, Screen 0 Effect"
+y con el cursor situado ahí, usamos los cursores a derecha/izquierda para seleccionar el efecto deseado. 
 
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
