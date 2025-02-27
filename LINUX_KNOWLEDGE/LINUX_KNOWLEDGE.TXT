@@ -1986,6 +1986,11 @@ bgfx_backend	vulkan
 --Lanzamos MAME, entramos en el menú TAB, nos vamos a "Slider Controls", allí a "Window 0, Screen 0 Effect"
 y con el cursor situado ahí, usamos los cursores a derecha/izquierda para seleccionar el efecto deseado. Se queda guardado para cada juego. 
 
+--Para tener una fuente mejor en el menú, usamos una fuente en formato .BDF que guardamos como "ui.bfd" en el mismo directorio del ejecutable.
+Nos podemos bajar fuentes en BDF ya listas de https://mrdo.mameworld.info/mame_artwork_supp.php
+A mi me gusta la llamada "Nostalgia Four", que es estilo AtariST.
+También se pueden usar fuentes TTF, pero no lo he investigado aún.
+
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
 Lo más fácil es mirar en su fichero de código si tiene algún flag como MACHINE_IMPERFECT_SOUND, MACHINE_IMPERFECT_GRAPHICS, etc.
