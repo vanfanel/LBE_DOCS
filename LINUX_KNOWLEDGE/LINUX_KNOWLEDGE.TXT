@@ -1970,24 +1970,21 @@ Quote:
 USAR MAME STANDALONE
 ====================
 
-Primero creamos un .ini en el directorio actual:
-mame -createconfig
-Lo editamos a nuestro gusto, y le pasamos a MAME la ruta del .ini para cargarlo:
-mame -inipath /home/manuel/mame ridgerac
-Por defecto busca las ROMs en el directorio "roms" del directorio del ejecutable, y podemos espeficar otras rutas en el .ini
-
-		SECCIÓN PARA USAR LOS SHADERS
-
 --Copiamos los directorios "bgfx" y "artwork" que vienen en la raiz de los sources a "~/mame/bgfx":
 cp -R bgfx artwork ~/mame/
 
---Editamos "mame.ini" y allí:
-----Ponemos "video" a "bgfx"
-----En la sección "BGFX POST-PROCESSING OPTIONS" ponemos:
-	"bgfx_backend"			vulkan
-	"bgfx_screen_chains"	crt-geom
-----Lanzamos MAME, entramos en el menú TAB, nos vamos a "Slider Controls", allí a "Window 0, Screen 0 Effect"
-y con el cursor situado ahí, usamos los cursores a derecha/izquierda para seleccionar el efecto deseado. 
+--Creamos un .ini en el directorio actual:
+mame -createconfig
+Por defecto busca las ROMs en el directorio "roms" del directorio del ejecutable, y podemos espeficar otras rutas en el .ini
+
+Ajustes a mame.ini:
+--Ponemos estos valores así:
+skip_gameinfo	1
+video			bgfx
+bgfx_backend	vulkan
+
+--Lanzamos MAME, entramos en el menú TAB, nos vamos a "Slider Controls", allí a "Window 0, Screen 0 Effect"
+y con el cursor situado ahí, usamos los cursores a derecha/izquierda para seleccionar el efecto deseado. Se queda guardado para cada juego. 
 
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
