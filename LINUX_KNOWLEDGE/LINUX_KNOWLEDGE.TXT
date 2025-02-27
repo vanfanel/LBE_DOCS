@@ -1931,7 +1931,7 @@ typedef struct gbm_device  *EGLNativeDisplayType;
 typedef struct gbm_bo      *EGLNativePixmapType;                                                               
 typedef void               *EGLNativeWindowType;
 
---Editamos scripts/src/osd/modules.lua, y borramos "input_x11.cpp" y todo lo que hay junto a eso relacionado con X11.
+--Editamos scripts/src/osd/modules.lua, y borramos "input_x11.cpp".
 
 --Editamos src/osd/modules/lib/osdobj_common.cpp y borramos estas dos líneas que no van seguidas:
 REGISTER_MODULE(m_mod_man, LIGHTGUN_X11)
