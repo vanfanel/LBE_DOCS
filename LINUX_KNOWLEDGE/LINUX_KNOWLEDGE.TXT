@@ -7251,11 +7251,15 @@ darkwar.rtl
 darkwar.rtc
 remote1.rts
 
--Nos bajamos la fuente FluidR3_GM.sf2, y la metemos en /usr/local/share/soundfonts
+-Nos bajamos la fuente FluidR3_GM.sf2, y la metemos en el directorio ~/rott
+(El juego la busca por defecto en "/usr/local/share/soundfonts", pero vamos, que es más cómodo tenerla en el mismo directorio del juego).
 
 -Lanzamos el juego así para tener música (RECUERDA que hay que compilar el SDL2_Mixer con soporte para fluidsynth,
  para lo cual hay que tener fluidsynth instalado antes de compilar SDL2_Mixer):
-SDL_SOUNDFONTS=/usr/local/share/soundfonts/FluidR3_GM.sf2 ./taradino
+SDL_SOUNDFONTS=./FluidR3_GM.sf2 ./taradino
+
+-Si quieres poner la resolución a 320x200 o cosas así, lo más cómodo es editar ~/.local/share/taradino/darkwar/config.rot
+ y ajustar allí lo que quieras.
 
 		BLOQUE DE INTENTOS DE MOVIMIENTO SUAVE SIN VRR (NO VA BIEN, USA VRR O NADA)
 
