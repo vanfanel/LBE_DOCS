@@ -2507,7 +2507,7 @@ CXXFLAGS += -flto
 -En mixer.cpp, ajusta el tamaño del buffer de 4096 a 1024
 -En systemstub_sdl.cpp:
 	-Descomenta el SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 1) y ponlo como SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear")
-	-Añade SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
+	-SÓLO SI NO TIENES VRR NI USAS VKBASALT: Añade SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
 
 Si queremos renderer por software, lanzamos con:
 ./rawgl --language=us --render=software --fullscreen-ar --datapath=data_dos
