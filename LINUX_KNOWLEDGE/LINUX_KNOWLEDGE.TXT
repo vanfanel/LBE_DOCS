@@ -8654,10 +8654,9 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 FORCE_GLES3=1 HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1 make -j10
 
 NOTAS MUY IMPORTANTES PARA EL CORE:
-Para este core, desactiva el RunAhead y guarda eso como un override, o si no se producen fugas de memoria al salir.
+Para este core NO USES RUNAHEAD, si lo haces se producen fugas de memoria al salir.
 Y configuramos las opciones del core así:
 -"RDP Plugin" a "ParaLLEI-RDP"
--"CPU Core" a "Cached Interpreter", ya que aunque parezca increíble "Dynarec" es bastante más lento y provoca problemas de audio.
 -"RSP Pligin" a "ParaLLEI"
 
 COMPILAR EL CORE DIRKSIMPLE (LASERDISC EN RETROARCH!!!)
