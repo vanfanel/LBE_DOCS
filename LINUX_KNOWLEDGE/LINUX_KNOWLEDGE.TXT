@@ -2505,7 +2505,7 @@ CXXFLAGS += -flto
 (NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
 
 -En mixer.cpp, ajusta el tamaño del buffer de 4096 a 1024
--En systemstub_sdl.cp:
+-En systemstub_sdl.cpp:
 	-Descomenta el SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 1) y ponlo como SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear")
 	-Añade SDL_RENDERER_PRESENTVSYNC a la llamada de SDL_CreateRenderer()
 
