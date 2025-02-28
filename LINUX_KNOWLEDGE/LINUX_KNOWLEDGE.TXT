@@ -7274,7 +7274,7 @@ git clone --depth 1 https://github.com/opentyrian/opentyrian.git
 Editamos src/nortsong.c y en la función setDelaySpeed() dejamos delayPeriod = 0
 (Con esto conseguimos que no se espere a ningún timer interno).
 
-Editamos src/video.c, y:
+Editamos src/video.c, y allí:
 -Repetimos la secuencia de llamadas:
        SDL_RenderClear(main_window_renderer);
        SDL_RenderCopy(main_window_renderer, main_window_texture, NULL, &dst_rect);
