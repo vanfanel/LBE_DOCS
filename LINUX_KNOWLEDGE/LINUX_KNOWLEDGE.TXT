@@ -7267,22 +7267,9 @@ wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@60
 
 **************Tyrian en GNU/Linux con OpenTyrian********************************************************************************
 
-Clonamos el repo de:
+-Clonamos su repo: git clone --depth 1 https://github.com/opentyrian/opentyrian.git
 
-git clone --depth 1 https://github.com/opentyrian/opentyrian.git
-
-Editamos src/nortsong.c y en la función setDelaySpeed() dejamos delayPeriod = 0
-(Con esto conseguimos que no se espere a ningún timer interno).
-
-Editamos src/video.c, y allí:
--Repetimos la secuencia de llamadas:
-       SDL_RenderClear(main_window_renderer);
-       SDL_RenderCopy(main_window_renderer, main_window_texture, NULL, &dst_rect);
-       SDL_RenderPresent(main_window_renderer);
-(Con esto conseguimos que cada frame se pinte dos veces, con lo que el juego va a la mitad de frames que nuestro modo de vídeo,
-así que irá a unos 30FPS suaves que no está mal).
--Añadimos SDL_RENDERER_PRESENTVSYNC a SDL_CreateRenderer()
--Añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear"); antes de la llamada a SDL_CreateRenderer()
+-Editamos src/video.c y añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear"); antes de la llamada a SDL_CreateRenderer()
 
 -Editamos src/keyboard.c y comentamos entera la sección que dice "Show system mouse pointer if outside screen",
 que es simplemente un SDL_ShowCursor() que sobra totalmente.
@@ -7300,6 +7287,20 @@ Puedes bajar el original de:
 https://exodos.the-eye.us/public/eXo/
 Los archivos originales de DOS vienen todos en mayúsculas, los puedes pasar a minúsculas con:
 sudo rename 'y/A-Z/a-z/' * 
+
+			BLOQUE VÍDEO SUAVE SIN VRR
+
+Editamos src/nortsong.c y en la función setDelaySpeed() dejamos delayPeriod = 0
+(Con esto conseguimos que no se espere a ningún timer interno).
+
+Editamos src/video.c, y allí:
+-Repetimos la secuencia de llamadas:
+       SDL_RenderClear(main_window_renderer);
+       SDL_RenderCopy(main_window_renderer, main_window_texture, NULL, &dst_rect);
+       SDL_RenderPresent(main_window_renderer);
+(Con esto conseguimos que cada frame se pinte dos veces, con lo que el juego va a la mitad de frames que nuestro modo de vídeo,
+así que irá a unos 30FPS suaves que no está mal).
+-Añadimos SDL_RENDERER_PRESENTVSYNC a SDL_CreateRenderer()
 
 **************Extraer datos de CUALQUIER ejeculable*******************************************************************************
 
