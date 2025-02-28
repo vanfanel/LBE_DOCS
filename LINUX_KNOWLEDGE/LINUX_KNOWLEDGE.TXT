@@ -10518,7 +10518,7 @@ cmake ../src -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
-make -j4
+make -j10
 
 Copia al mismo directorio donde metas el ejecutable hypseus los directorios "sound", "fonts" y "pics".
 
