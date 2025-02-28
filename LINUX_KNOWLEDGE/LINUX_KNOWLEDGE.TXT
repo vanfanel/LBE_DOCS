@@ -1113,7 +1113,8 @@ PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
   (El Texture Preloading produce parones de audio en las transiciones, cargas, etc).
 --En "Settings->Graphics" activamos "Spin GPU during readbacks" y "Spin CPU during readbacks"
   (Evita bajones de FPS durante transiciones).
---PARA SISTEMAS CON P-CORES Y E-CORES SOLAMENTE: En "Settings->Emulation", activamos "Enable Thread Pinning".
+--En "Settings->Emulation", activamos "Enable Thread Pinning" (aunque ponga que es para sistemas con CPUs asimétricas,
+  evita droputs de audio en cualquier CPU al evitarse los fallos de caché por cambio de contexto).
 --En "Settings->Emulation", en la parte de abajo:
   ----SI TENEMOS VRR: DESACTIVAMOS TODO. ABSOLUTAMENTE TODO.
   ----SI NO TENEMOS VRR:
@@ -1593,9 +1594,10 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
 
 Ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
 
-Entra en Settings->General, y pon "Cable" a "VGA", de esa manera los juegos irán todos a 640x480@59.94
+PARA VÍDEO SUAVE (CON O SIN VRR, ES LO MISMO EN ESTE EMULADOR):
+En Settings->Video, activa Vsync y "Duplicate Frames"
 
-Entra en Settings->Video, desactiva el VSYNC si estás en Wayland+Vulkan, pon "Transparent Sorting" a "Per Pixel"
+Entra en Settings->Video, y pon "Transparent Sorting" a "Per Pixel"
 Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador).
 
