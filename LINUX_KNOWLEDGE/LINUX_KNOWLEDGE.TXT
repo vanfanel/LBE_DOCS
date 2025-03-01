@@ -12248,7 +12248,7 @@ mpv --profile=crt-lottes my_video.mp4
 --Si queremos ajustar los parámetros de un shader, lo editamos, no hay otra manera.
 Por ejemplo, para quitar la curvatura del shader crt-lottes.glsl, dejamos así el parámetro CURVATURE:
 #define CURVATURE vec2(0.0, 0.0)
-Y podemos ajustar el tipo de máscara dándole a SHADOW_MASK valores de 0 a 4.
+Y podemos ajustar el tipo de máscara dándole a SHADOW_MASK valores de 0 a 4 (casi que la mejor para contenido en 1080p es la 4).
 
 --NOTA EXTRA: Para que un shader se active con CTRL+1, por ejemplo, creamos el fichero ".config/mpv/input.conf" con el contenido:
 CTRL+1 no-osd change-list glsl-shaders set "~~/shaders/crt-lottes.glsl"; show-text "Shader engaged"
