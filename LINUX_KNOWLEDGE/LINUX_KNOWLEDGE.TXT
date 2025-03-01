@@ -12047,9 +12047,10 @@ Página aclaratoria sobre el asunto: https://wiki.debian.org/HardwareVideoAccele
 Y en la Raspberry Pi 4, aunque había decodificación de H264 por hardware, era más lenta que por software,
 y requería usar un fork especial de ffmpeg, así que pasando.
 
-###########BLOQUE EXCLUSIVO DE INTEL################
-
 	***PARTE 1: LIBVA***
+
+NOTA: Aunque LIBVA es un desarrollo de Intel, es necesario tanto para VAAPI mediante INTEL-MEDIA-DRIVER (=CPUs INTEL)
+como para VAAPI mediante MESA (=CPUs AMD).
 
 Bajamos la última estable de:
 https://github.com/intel/libva/releases
@@ -12061,6 +12062,8 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
 meson setup .. -Dbuildtype=release
+
+###########BLOQUE EXCLUSIVO DE INTEL################
 
 	***PARTE 2: INTEL MEDIA DRIVER***
 (Es para Gen8 y posteriores, para otros chips más antiguos hacen falta otros drivers específicos).
