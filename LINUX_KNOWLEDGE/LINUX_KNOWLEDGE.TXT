@@ -12190,7 +12190,7 @@ meson setup -Dbuildtype=release ..
 -Creamos ~/.config/mpv/mpv.conf con el contenido:
 fs=yes
 
-En AMD64 puedes añadir:
+En AMD/INTEL puedes añadir:
 hwdec=vaapi
 video-sync=display-resample
 
