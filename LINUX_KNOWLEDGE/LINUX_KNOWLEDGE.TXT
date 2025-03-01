@@ -584,6 +584,9 @@ make rednukem
 
 Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
+PARA TENER VÍDEO CORRECTAMENTE SINCRONIZADO CON VRR, en VIDEO MODE ponemos FRAME LIMIT a 120 FPS,
+y eso nos permite poner VSYNC a ADAPTIVE. Con eso, va perfecto y consume sólo un 15% de CPU.
+
 ******Compilar core PCSX2 para LIBRETRO**************************************************************************************
 NOTA: EL RENDERER SOFTWARE SÓLO FUNCIONA CON OPENGL. Necesitas activar OpenGL tanto cuando compiles RetroArch
 como cuando compiles el core.
