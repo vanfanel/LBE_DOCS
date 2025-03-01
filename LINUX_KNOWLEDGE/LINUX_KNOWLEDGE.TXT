@@ -12040,12 +12040,14 @@ REPRODUCCIÓN DE VÍDEO EN AMD64 Y RASPBERRY PI CON MPV + FFMPEG
 ==============================================================
 Página aclaratoria sobre el asunto: https://wiki.debian.org/HardwareVideoAcceleration
 
--En AMD64, se hace con la decodificación por hardware con VAAPI, por eso hay un bloque exclusivo de AMD64.
+-En AMD, la decodificación por hardware funciona mediante la implementación de VAAPI de MESA VAAPI
+(por eso, al compilar MESA para AMD, le pasas "-Dvideo-codecs=h264dec,h265dec,vc1dec").
+-En INTEL, la decodificación por hardware funciona mediante la implementación de VAAPI de INTEL-MEDIA-DRIVER.
 -En Raspberry Pi 5 NO HAY decodificación de H264 por hardware ya, la han quitado, va por software.
 Y en la Raspberry Pi 4, aunque había decodificación de H264 por hardware, era más lenta que por software,
 y requería usar un fork especial de ffmpeg, así que pasando.
 
-###########BLOQUE EXCLUSIVO DE AMD64################
+###########BLOQUE EXCLUSIVO DE INTEL################
 
 	***PARTE 1: LIBVA***
 
@@ -12108,11 +12110,11 @@ meson setup .. -Dbuildtype=release
 
 Una vez instalado, podemos ejecutar "vainfo" para ver qué métodos de aceleración soporta nuestro chip.
 
-###########FIN BLOQUE EXCLUSIVO DE AMD64################
+###########FIN BLOQUE EXCLUSIVO DE INTEL################
 
 	PARTE 4: FFMPEG
 	
-SÓLO AMD64: Instalamos dependencia previa: apt-get install nasm
+SÓLO AMD/INTEL: Instalamos dependencia previa: apt-get install nasm
 
 VAMOS CON FFMPEG EN SÍ:
 
