@@ -12041,7 +12041,7 @@ REPRODUCCIÓN DE VÍDEO EN AMD64 Y RASPBERRY PI CON MPV + FFMPEG
 Página aclaratoria sobre el asunto: https://wiki.debian.org/HardwareVideoAcceleration
 
 -En AMD, la decodificación por hardware funciona mediante la implementación de VAAPI de MESA VAAPI
-(por eso, al compilar MESA para AMD, le pasas "-Dvideo-codecs=h264dec,h265dec,vc1dec").
+(por eso, al compilar MESA para AMD, le pasas "-Dgallium-va=enabled -Dvideo-codecs=h264dec,h265dec,vc1dec").
 -En INTEL, la decodificación por hardware funciona mediante la implementación de VAAPI de INTEL-MEDIA-DRIVER.
 -En Raspberry Pi 5 NO HAY decodificación de H264 por hardware ya, la han quitado, va por software.
 Y en la Raspberry Pi 4, aunque había decodificación de H264 por hardware, era más lenta que por software,

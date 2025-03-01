@@ -581,7 +581,7 @@ CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland \
 -Dvulkan-drivers=amd -Dgallium-drivers=radeonsi,zink -Dglvnd=enabled -Dllvm=disabled \
--Dvideo-codecs=h264dec,h265dec,vc1dec ..
+-Dgallium-va=enabled -Dvideo-codecs=h264dec,h265dec,vc1dec ..
 
 PARA X86_64 CON GRÁFICOS INTEL IRIS (=UHD,XE, etc):
 CFLAGS="-march=native -mtune=native -O2" \
