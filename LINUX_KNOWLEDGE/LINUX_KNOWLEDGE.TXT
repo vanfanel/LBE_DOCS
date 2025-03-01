@@ -12209,7 +12209,7 @@ También podríamos ver las APIs de la GPU disponibles con:
 mpv --gpu-api=help
 ...con el resto de cosas de las que quieras ver qué hay disponible, igual.
 
---OPCIONAL: Ponemos el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir,
+--OPCIONAL SI NO TENEMOS VRR: Ponemos el refresco de pantalla a lo mismo que los frames por segundo del vídeo a reproducir,
 usando para ello este script para lanzar el mpv:
 
 ####SCRIPT PARA PONER EL REFRESCO DE PANTALLA DEL VÍDEO A REPRODUCIR, LANZAR MPV Y RESTAURAR REFRESCO ORIGINAL AL ACABAR####
@@ -12231,6 +12231,17 @@ mpv "$1"
 
 wlr-randr --output HDMI-A-1 --custom-mode $original_res@$original_rate
 ####FIN SCRIPT####
+
+SHADERS CON MPV
+===============
+
+--Clonamos el repo: git clone --depth 1 https://github.com/hhirtz/mpv-retro-shaders.git
+--Creamos el directorio donde deben ir los shaders, y copiamos los shaders allí:
+mkdir ~/.config/mpv/shaders
+cp mpv-retro-shaders/* ~/.config/mpv/shaders/
+--Para que un shader se active con CTRL+1, por ejemplo, creamos el fichero ".config/mpv/input.conf" con el contenido:
+CTRL+1 no-osd change-list glsl-shaders set "~~/shaders/crt-lottes.glsl"; show-text "Shader engaged"
+CTRL+0 no-osd change-list glsl-shaders clr ""; show-text "Shaders cleared"
 
 NAVEGAR POR THREADS DE TWITTER/X SIN TENER CUENTA EN LA RED DEL PUTO NAZI DE MIERDA
 ===================================================================================
