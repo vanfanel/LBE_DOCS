@@ -1949,9 +1949,9 @@ REGISTER_MODULE(m_mod_man, LIGHTGUN_X11)
 
 Para Wayland:
 
-CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j8
+
+NOTA: No le pasamos de momento parámetros de optimización porque entonces VR sale con los gráficos mal.
 
 	##### COMPILAR SÓLO CON DRIVERS SELECTOS #####
 
