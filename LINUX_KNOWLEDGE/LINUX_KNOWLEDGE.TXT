@@ -12123,7 +12123,7 @@ Bajamos la última estable del branch más reciente de: https://www.ffmpeg.org/d
 
 -Configuramos con:
 
-PARA X64_64:
+PARA AMD/INTEL:
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --disable-network --disable-debug \
 --disable-muxers --disable-encoders --disable-indevs \
 --disable-outdev=fbdev,oss \
