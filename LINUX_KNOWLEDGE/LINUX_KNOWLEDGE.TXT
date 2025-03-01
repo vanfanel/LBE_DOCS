@@ -8184,7 +8184,7 @@ LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 Para el core de SEGA, debido al tema del dithering y tal, tenemos varias opciones:
 
 1) RECOMENDADO: El shader CRT-CONSUMER con "Pre-Scale Sharpening" a 1.00, "Convergence X" a 1.00, "Corner Size" a 0.00,
-   "Mask Type" a 3, y "Vignette" a "1.00".
+   "Mask Type" a 0, y "Vignette" a "1.00".
 2) El shader CRT-LOTTES-FAST con el parámetro SHARPNESS puesto al mínimo (que es 1) y CRT GAMMA puesto a 3.40.
 3) El shader ZFAST_CRT_COMPOSITE con los parámetros: CURVATURE a 0, CONVERGENCE X-AXIS al máximo,
    SCANLINE LOW a 0.10 y SCANLINE HIGH a 0.05, MASK EFFECT AMOUNT a 0.50, SATURATION a 1.10, y FLICKERING a 5.00. 

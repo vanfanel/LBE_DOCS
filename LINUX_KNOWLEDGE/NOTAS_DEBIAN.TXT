@@ -774,7 +774,11 @@ AUDIO: driver ALSATHREAD, 48000 Hz, 32ms (necesario kernel a 300Hz + Preemptible
 SCALING: "Integer Scale" a "ON", con "Integer Scale Scaling" a "Smart".
 (De lo contrario hay patrones en las scanlines que sólo se ven en fondos azulados o blancos, etc).
 
-SHADER: usamos LOTTES-FAST en general.
+SHADER:
+Opción 1: CRT-CONSUMER con "Pre-Scale Sharpening" a 1.00, "Convergence X" a 0.40, todo lo de curvatura quitado,
+          "Scanlines dark" a 1.20, "Scanlines bright" a 0.80,
+          "Vignette on/off" a 1.00, "Vignette Power" a 0.10, "Vignette Strength" a 20.00.
+Opción 2: LOTTES-FAST
 
 LATENCY: RunAhead con 1 frame y "second instance" activado.
 
