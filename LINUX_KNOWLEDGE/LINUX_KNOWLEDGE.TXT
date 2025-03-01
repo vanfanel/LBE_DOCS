@@ -5557,12 +5557,12 @@ cd b4
 cmake -DCMAKE_BUILD_TYPE=Release -DGPL=ON -DCMAKE_C_FLAGS="-march=native -mtune=native" ..
 (PARA compilar en modo verbose, haz make VERBOSE=1)
 
-Ahora, para activar el vsync es en los menús. Y para que vaya suave, le pasas al ejecutable el parámetro --noadaptive
 Puedes establecer un buffer de audio menor con --audiobuffer 512
+SÓLO SI NO TIENES VRR: Activamos el vsync es en los menús y le pasamos al ejecutable el parámetro --noadaptive
 
 Sólo hace falta tener el ejecutable en el mismo directorio que los datos del wolfenstein (versión de ACTIVISION, NO la original de Apogee, OJO!!!), y funcionará sin más.
 
-Pon la resolución a 320x200 en el menú, fullscreen, vsync ON.
+Pon la resolución a 320x200 en el menú, fullscreen.
 
 NO soporta el Rise Of The Triad, sólo el Wolfenstein y el Spear of Destiny.
 
