@@ -12235,11 +12235,22 @@ wlr-randr --output HDMI-A-1 --custom-mode $original_res@$original_rate
 SHADERS CON MPV
 ===============
 
---Clonamos el repo: git clone --depth 1 https://github.com/hhirtz/mpv-retro-shaders.git
---Creamos el directorio donde deben ir los shaders, y copiamos los shaders allí:
-mkdir ~/.config/mpv/shaders
-cp mpv-retro-shaders/* ~/.config/mpv/shaders/
---Para que un shader se active con CTRL+1, por ejemplo, creamos el fichero ".config/mpv/input.conf" con el contenido:
+--Clonamos el repo al lugar donde se van a guardar los shaders:
+mkdir -p ~/.config/mpv/shaders
+git clone --depth https://git.sr.ht/~taiite/mpv-retro-shaders ~/.config/mpv/shaders/mpv-retro-shaders
+
+--Añadimos esto al principio del fichero ~/.config/mpv/mpv.conf:
+include=~~/shaders/all.conf
+
+--Ahora ya cargaríamos un vídeo con un shader así:
+mpv --profile=crt-lottes my_video.mp4
+
+--Si queremos ajustar los parámetros de un shader, lo editamos, no hay otra manera.
+Por ejemplo, para quitar la curvatura del shader crt-lottes.glsl, dejamos así el parámetro CURVATURE:
+#define CURVATURE vec2(0.0, 0.0)
+Y podemos ajustar el tipo de máscara dándole a SHADOW_MASK valores de 0 a 4.
+
+--NOTA EXTRA: Para que un shader se active con CTRL+1, por ejemplo, creamos el fichero ".config/mpv/input.conf" con el contenido:
 CTRL+1 no-osd change-list glsl-shaders set "~~/shaders/crt-lottes.glsl"; show-text "Shader engaged"
 CTRL+0 no-osd change-list glsl-shaders clr ""; show-text "Shaders cleared"
 
