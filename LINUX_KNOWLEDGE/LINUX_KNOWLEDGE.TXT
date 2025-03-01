@@ -12192,11 +12192,10 @@ fs=yes
 
 En AMD/INTEL puedes añadir:
 hwdec=vaapi
-SI TIENES VRR:
-video-sync=fps
 SI NO TIENES VRR:
 video-sync=display-resample
 
+(Para saber qué posibles métodos de sincronización tienes disponibles, puedes hacer "mpv --video-sync=help")
 (NO le pases "video-sync=display-resample" a la Pi, porque no va bien de ninguna manera).
 (En realidad, no poner "hwdec" es suficiente, no haría falta poner "hwdec=vaapi".
 
