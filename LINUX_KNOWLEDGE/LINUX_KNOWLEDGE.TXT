@@ -1919,7 +1919,7 @@ https://nfggames.com/forum2/index.php?board=14.0
 
 https://pleasuredome.github.io/pleasuredome/mame/
 
-*************Compilar MAME standalone con drivers selectos**********************************************************************
+*************Compilar MAME standalone*******************************************************************************************
 
 Instalamos dependencias previas:
 apt-get install libfontconfig-dev
@@ -1947,16 +1947,22 @@ lo cambiamos por "OpenGL".
 --Editamos src/osd/modules/lib/osdobj_common.cpp y borramos la línea:
 REGISTER_MODULE(m_mod_man, LIGHTGUN_X11)
 
---Editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
-SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp,src/mame/namco/namcos22.cpp
-
---Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
-
 Para Wayland:
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make REGENIE=1 USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j10
+make USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j8
+
+	##### COMPILAR SÓLO CON DRIVERS SELECTOS #####
+
+--Editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
+SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp,src/mame/namco/namcos22.cpp
+
+--Compilamos añadiendo el parámetro "REGENIE=1" a MAKE (es para que se regenere la configuración o algo así):
+
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 REGENIE=1 -j8
 
 (+)MÁS INFO DE REFERENCIA:
 
