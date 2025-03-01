@@ -8205,7 +8205,7 @@ Y RESPECTO AL RUNAHEAD:
 
 PARA LOS CORES 3D, debes usar el "Adaptive Sync Vsync".
 Esto consiste en que, teniendo activado el "Adaptive Sync" en el compositor Wayland,
-y en RetroArch desactivamos "SYNC TO EXACT" (=VRR, =AdaptiveSync), y activamos el VSYNC y ponemos "VSYNC SWAP INTERVAL" a "AUTO".
+en RetroArch desactivamos "SYNC TO EXACT" (=VRR, =AdaptiveSync), y activamos el VSYNC y ponemos "VSYNC SWAP INTERVAL" a "AUTO".
 Como tenemos el "Adaptive Sync" activado en el compositor Wayland, estamos a 120Hz por defecto,
 por lo que a pesar de tener el VSYNC activo no hay input lag (se puede comprobar con la prueba del ratón típica que usas siempre).
 
