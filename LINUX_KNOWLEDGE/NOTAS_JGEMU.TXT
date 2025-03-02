@@ -32,6 +32,11 @@ CORE MEDNAFEN
 apt-get install liblzo2-dev
 
 --Clonamos el repo: git clone --depth 1 https://gitlab.com/jgemu/mednafen.git
+
+--Editamos "jollygood/jg.cpp", buscamos la función "mdfn_setup_psx" y allí ponemos "psx.h_overscan" a "1",
+  y añadimos justo debajo:
+  MDFNI_SetSetting("psx.slstart", "5");:
+
 --Compilamos e instalamos con:
 
 cd jollygood
