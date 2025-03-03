@@ -54,7 +54,7 @@ CONFIGURACIÓN
 =============
 
 --Usamos el shader CRTea, con "CTRea Mode" puesto a "Custom" (o si no se ignorarán nuestros ajustes al shader),
-"Scanline Strength" puesto a 0, "Sharpness" puesto a 1, "Custom Mask Type" puesto a "Aperture Grille" y quitados los parámetros de curvatura y corner.
+"Scanline Strength" puesto a 3, "Sharpness" puesto a 1, "Custom Mask Type" puesto a "Aperture Grille" y quitados los parámetros de curvatura y corner.
 
 --Para tener scanlines correctas:
 ----En el core de PSX: El objetivo es dejar las 240 líneas de la PSX en 216, que es divisor exacto de 1080,
