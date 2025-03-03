@@ -6942,10 +6942,13 @@ Clonamos su repo:
 
 git clone --depth 1 https://github.com/ptitSeb/hydracastlelabyrinth.git
 
-Editamos src/sdl2/graphics.c y:
--En la llamada a SDL_CreateRenderer(), añadimos SDL_RENDERER_PRESENTVSYNC
--Antes de eso, añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
--En PHL_EndDrawing(), quitamos la sección de "implement some crude frameskipping...", y el while con el SDL_Delay() al final.
+Editamos src/sdl2/graphics.c y allí:
+-Añadimos SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+-SÓLO SI NO TIENES VRR:
+-----Quitamos la sección de "implement some crude frameskiping" y el "while" con el SDL_Delay() que hay al final de la función,
+     ya que al no tener VRR queremos que todo el juego se sincronize con el VSYNC.
+-----En la llamada a SDL_CreateRenderer(), añadimos SDL_RENDERER_PRESENTVSYNC
+
 -Para controlarlo mejor con teclado usando Z y X, editamos src/sdl2/input.c, y dejamos las líneas:
 case SDLK_x:        bFaceDown = w; break;
 case SDLK_s:        bFaceLeft = w; break;
@@ -6975,6 +6978,21 @@ Copiamos el directorio data que viene con los sources al mismo directorio donde 
 
 Para que se ejecute en modo fullscreen, sin cambiar resolución, sin escalado XBRZ y con escalado 1x, ejecutamos con:
 ./hcl -f -d -x1 --no-xbrz
+
+CÓMO TENER VELOCIDAD CORRECTA CON VRR
+
+Si tenemos VRR, como el juego utiliza el VSYNC para sincronizarse, el juego irá a toda hostia.
+Así que editamos "src/sdl2/graphics.c", buscamos la función "PHL_EndDrawing" y al principio de la función añadimos:
+
+uint32_t tnext = tframe + 1000/60;
+
+...Y al final añadimos:
+
+while((tframe = SDL_GetTicks())<tnext)                                                                                         
+	SDL_Delay(10);
+
+...lo hemos sacado de la versión de la función "PHL_EndDrawing" de SDL1.x (que está en "src/sdl/graphics.c") ya que en SDL1.x
+no hay VSYNC y se sincroniza con timings internos como tenemos que hacer con VRR. 
 
 *************CELESTE nativo en GNU/Linux**************
 
