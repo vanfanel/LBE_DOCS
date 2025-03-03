@@ -9295,6 +9295,9 @@ ninja -j10
   cmake --build . --target ExtractAssets -j10
   ...Y copiamos el archivo resultante "sf64.o2r" al mismo directorio que el ejecutable (yo lo meto todo en "~/starfox64").
 
+	NOTA IMPORTANTE: Si oyes "clicks" cuando empiezan y terminan las conversaciones por radio, baja el volúmen de las voces y efectos
+	en el menú del configuración del engine.
+
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
 
