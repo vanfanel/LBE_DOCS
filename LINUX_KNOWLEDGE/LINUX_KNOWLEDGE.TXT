@@ -9288,7 +9288,9 @@ cmake .. -GNinja
 ninja -j10
 
 NOTA MUY IMPORTANTE: Si oyes "clicks" cuando empiezan y terminan las conversaciones por radio, baja el "Master Volume" a ~80%
-y el "Voice Volume" a ~90% en el menú del configuración del engine.
+en el menú del configuración del engine.
+Si no se salva al volver a entrar (hay un bug con esto, ya lo he reportado), ponlo a capón editando "starship.cfg.json"
+que se crea solo en el directorio donde tienes el ejecutable.
 
 	BLOQUE EXTRACCIÓN DE LOS DATOS
 	
