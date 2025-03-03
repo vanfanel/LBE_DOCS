@@ -49,6 +49,20 @@ si lo compilas con -flto, no contendrá las cadenas que se buscan. No lo vamos a
 
 Para hacer una release (engines como plugins dinámicos, todos los que vienen activados por defecto estarán activados, necesitarás libjpeg-dev, libpng-dev y libvorbis-dev, aunque estos no tienen por qué ser sus nombres exatctos, para engines como Sword 2.5 o Wintermute):
 
+*************SHADERS EN RETROARCH**********************************************************************************************************
+
+--Clonamos el repositorio de shaders GLSL de LibRetro:
+git clone --depth 1 https://github.com/libretro/glsl-shaders.git
+
+--En lugar de usar los shaders "internos" que vienen en "shaders.dat", usamos shaders de LibRetro en archivos sueltos
+porque así podemos editarlos y cambiar cosas ya que los parámetros de los shaders no se pueden ajustar desde Scummvm.
+Para ello, creamos el directorio ~/scummvm/shaders, y allí metemos el directorio "crt" de los shaders de LibRetro:
+mkdir ~/scummvm/shaders
+cp -R crt ~/scummvm/shaders
+
+--El shader que más me gusta ahora mismo es el CRT-Lottes, lo elegimos con "GLOBAL CONFIGURATION -> SHADER -> PICK FILE INSTEAD".
+Para quitar la curvatura, editamos "crt/shaders/crt-lottes.glsl" y eliminamos todas las líneas donde aparecen "warpX" y "warpY". 
+
 *************Compilar versión DEBUG sólo con el engine SCUMM activo************************************************************************
 
 CFLAGS="-O0 -ggdb" CXXFLAGS="-O0 -ggdb" ./configure --enable-debug --opengl-mode=gles2 --disable-hq-scalers --disable-fribidi --disable-eventrecorder --disable-cloud --disable-savegame-timestamp --enable-mt32emu --enable-nuked-opl --disable-timidity --disable-flac --disable-alsa --enable-vorbis --disable-mad --disable-tremor --disable-theoradec --disable-taskbar --disable-sdlnet --disable-libcurl --enable-plugins --default-dynamic --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,hypno,hadesch,private,stark,ags,asylum,chewy,glk,twine,mtropolis,adl,agi,agos,ultima,toon,gob,grim,groovie,kyra,made,mohawk,dreamweb,neverhood,saga,sci,sky,sword1,sword2,xeen,pink
