@@ -9977,6 +9977,8 @@ Ahora editamos ~/.local/share/crispy-doom/crispy-heretic.cfg y en el setting mus
 Vengo usando estas músicas, que están en OGG directamente para bajar:
 https://zandronum.com/forum/viewtopic.php?t=97
 
+PARA AJUSTAR LA GAMMA DEL JUEGO: pulsamos F11 varias veces mientras estamos jugando, hasta que esté a nuestro gusto.
+
 PARA TENER MÚSICA GUS (COMO CURIOSIDAD: ES MEJOR MÚSICA DIGITAL), tenemos que tener SDL2-mixer compilado con soporte de Timidity,
 y en crispy-heretic.ini ponemos la ruta de los patches que vienen en el directorio "base":
 
