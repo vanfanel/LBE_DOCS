@@ -1531,10 +1531,13 @@ Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 
 RECUERDA: Este core NO SOPORTA RUNAHEAD, SI LO TIENES ACTIVADO DARÁ UN SEGFAULT AL INICIARSE.
 
-RECUERDA, SI TIENES VRR: Para que el framerate sea suave en los juegos que van a 30FPS,
-basta con activar "Detect Framerate Changes" en las opciones del emulador.
-NO ES NECESARIO ACTIVAR "Full Framebuffer Emulation", ya que eso destroza el rendimiento.
-Al menos con VRR en Vulkan es suficiente con "Detect Framerate Changes" para que los juegos de 30FPS vayan perfectos.
+RECUERDA, PARA TENER VÍDEO PERFECTAMENTE SUAVE EN LOS JUEGOS DE 30FPS:
+Activar VSYNC, desactiva "SYNC TO EXACT", y en las opciones del emulador activa "FULL FRAMEBUFFER EMULATION".
+ALTERNATIVA CASI-FUNCIONAL SI TIENES VRR: Puedes hacer como en el resto de cores, es decir, desactivar el VSYNC, activar "SYNC TO EXACT",
+y activar "Detect Framerate Changes" en las opciones del emulador.
+Si haces esto, no necesitarás activar "Full Framebuffer Emulation" para tener framerate perfecto en los juegos de 30FPS,
+PERO tendrás los típicos "cortes de audio" en la locución del principio del DOA2 y cuando pulses START durante la intro del Soul Calibur.
+No he encontrado ninguna combinación de opciones que evite estos silencios.
 
 RECUERDA: Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador). Deja la segunda demo del Daytona USA 2001
@@ -8205,7 +8208,7 @@ Y RESPECTO AL RUNAHEAD:
 --SI USAS EL RENDERER HARDWARE, USA EL RUNAHEAD INTERNO DEL CORE, EN CORE OPTIONS.
 (DEBERÍAS USAR EL RUNAHEAD INTERNO DEL CORE DE TODOS MODOS AUNQUE USES EL RENDERER SOFTWARE).
 
-PARA ALGUNOS CORES 3D (PPSSPP), debes usar el "Adaptive Sync Vsync".
+PARA ALGUNOS CORES 3D (FLYCAST, PPSSPP), debes usar el "Adaptive Sync Vsync".
 Esto consiste en que, teniendo activado el "Adaptive Sync" en el compositor Wayland,
 en RetroArch desactivamos "SYNC TO EXACT" (=VRR, =AdaptiveSync), y activamos el VSYNC y ponemos "VSYNC SWAP INTERVAL" a "AUTO".
 Como tenemos el "Adaptive Sync" activado en el compositor Wayland, estamos a 120Hz por defecto,
