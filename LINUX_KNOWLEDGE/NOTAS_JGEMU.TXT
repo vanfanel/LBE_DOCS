@@ -33,10 +33,6 @@ apt-get install liblzo2-dev
 
 --Clonamos el repo: git clone --depth 1 https://gitlab.com/jgemu/mednafen.git
 
---Editamos "jollygood/jg.cpp", buscamos la función "mdfn_setup_psx" y allí ponemos "psx.h_overscan" a "1",
-  y añadimos justo debajo:
-  MDFNI_SetSetting("psx.slstart", "5");:
-
 --Compilamos e instalamos con:
 
 cd jollygood
@@ -57,8 +53,14 @@ Tienes más información sobre los directorios donde se guardan las configuracio
 CONFIGURACIÓN
 =============
 
-Usamos el shader CRTea, con "CTRea Mode" puesto a "Custom" (o si no se ignorarán nuestros ajustes al shader),
-"Scanline Strength" puesto a 0, "Sharpness" puesto a 1, "Custom Mask Type" puesto a "Shadow Mask" y quitados los parámetros de curvatura y corner.
+--Usamos el shader CRTea, con "CTRea Mode" puesto a "Custom" (o si no se ignorarán nuestros ajustes al shader),
+"Scanline Strength" puesto a 0, "Sharpness" puesto a 1, "Custom Mask Type" puesto a "Aperture Grille" y quitados los parámetros de curvatura y corner.
 
-Para usar el mando Saturn Retro-Bit, pon "X" en C, "[]" en B, "O" en C, "triángulo" en Y, y no uses los botones L y R del mando:
+--Para tener scanlines correctas:
+----En el core de PSX: El objetivo es dejar las 240 líneas de la PSX en 216, que es divisor exacto de 1080,
+    así que tenemos que eliminar 24 líneas, 12 por arriba y 12 por abajo
+    (recuerda que para eliminar líneas inferiores se empieza a contar desde abajo!) 
+    Así que ponemos "First Scanline" a 12 y "Last Scanline" a 227. 
+
+--Para usar el mando Saturn Retro-Bit, pon "X" en C, "[]" en B, "O" en C, "triángulo" en Y, y no uses los botones L y R del mando:
 para el L1 y R1 usa los gatillos del mando. 

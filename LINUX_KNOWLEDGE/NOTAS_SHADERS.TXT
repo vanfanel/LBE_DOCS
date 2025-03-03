@@ -1,7 +1,7 @@
 SHADERS PARA TODOS LOS PROGRAMAS DE OPENGL Y VULKAN EN GNU/LINUX
 ================================================================
 
-La idea es usar vkbasalt: https://github.com/DadSchoorse/vkBasalt
+La idea es usar VKBASALT.
 Los programas que usen OpenGL, que son la mayoría, se pueden hacer correr sobre Vulkan con Zink
 (Hay que compilar MESA con soporte para Zink, que ya lo tienes así en las instrucciones de compilación de MESA).
 
@@ -10,7 +10,8 @@ Vamos con VKBasalt:
 --Instalamos dependencias previas:
 apt-get install spirv-headers
 
---Clonamos su repo: git clone --depth 1 https://github.com/DadSchoorse/vkBasalt.git
+--Clonamos su repo: git clone --depth 1 https://github.com/Redemp/vkBasalt.git
+(NOTA: El repo original es --> https://github.com/DadSchoorse/vkBasalt.git pero está abandonado desde hace años)
 (OJO!! Nos va a tocar eliminar cosas de X11 del meson.build y de otros ficheros, es fácil, lo que te vaya dando problemas lo quitas
 y compila y funciona igualmente).
 
