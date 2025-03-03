@@ -1509,16 +1509,6 @@ make platform=rpi4_64 -j4
 
 ******Compilar el core FLYCAST LIBRETRO en GNU/Linux********
 
-¡¡¡¡NOTA PREVIA IMPORTANTE!!!! Para poder bajar la latencia de audio (es perfectamente posible tener 32ms de latencia a 44100Hz con Alsathread,
-este es un core de 44100 Hz y se nota), es recomendable tener un kernel con
-PREEMPT_DYNAMIC (General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop))
-y tener los HZ del planificador de tareas a 300Hz ya que es múltiplo de PAL y NTSC,
-NO se te ocurra subirlo a 1000Hz porque penaliza mucho el rendimiento.
-(Processor Type and Features->Timer Frequency->300Hz)
-Tienes una configuración lista para el i5-1235U en LBE_DOCS.
-Además es necesario lanzarlo con un script que ponga la GPU y los dos P-CORES al máximo y mande el core a correr en los P-CORES,
-tienes ese script al final de esta sección. 
-
 Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
 
@@ -1539,11 +1529,12 @@ set(OpenGL_GL_PREFERENCE GLVND)
 
 Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 
-RECUERDA: Para que no de SEGFAULT al iniciarse, creamos el archivo .config/retroarch/config/Flycast/Flycast.cfg
-con el contenido: run_ahead_enabled = "false"
+RECUERDA: Este core NO SOPORTA RUNAHEAD, SI LO TIENES ACTIVADO DARÁ UN SEGFAULT AL INICIARSE.
 
-RECUERDA: Para que el framerate sea suave en los juegos que van a 30FPS, debes activar "Full Framebuffer Emulation"
-y "Delay Frame Swapping" en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da igual.
+RECUERDA, SI TIENES VRR: Para que el framerate sea suave en los juegos que van a 30FPS,
+basta con activar "Detect Framerate Changes" en las opciones del emulador.
+NO ES NECESARIO ACTIVAR "Full Framebuffer Emulation", ya que eso destroza el rendimiento.
+Al menos con VRR en Vulkan es suficiente con "Detect Framerate Changes" para que los juegos de 30FPS vayan perfectos.
 
 RECUERDA: Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador). Deja la segunda demo del Daytona USA 2001
@@ -1556,30 +1547,15 @@ introduce microcortes en el audio de la intro/demo del DOA2. No es solución. No
 
 RECUERDA, SI NO USAS WAYLAND: Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 
-RECUERDA QUE PARA QUE VAYA FULLSPEED A 120Hz NECESITAS UN SCRIPT CARGADOR CON OVERCLOCK DE LOS P-CORES Y GPU,
-Y MANDANDO EL EMULADOR A CORRER EN LOS P-CORES.
-LOS SCRIPTS PARA PONER AL MÁXIMO LA CPU Y LA GPU Y PARA LUEGO DEJARLO TODO A LOS VALORES POR DEFECTO SE LLAMAN "turbo" Y "noturbo",
-Y LOS TIENES EN ESTE DOCUMENTO.
+SI NO TIENES VRR: Ejecuta el emulador a 120Hz para evitar el input lag:
 
-# Ejecutar la emulación
-turbo
-sync
 wlr-randr --output HDMI-A-1 --mode 1920x1080@120
 taskset -c 0,1 retroarch -L .config/retroarch/cores/flycast_libretro.so "$1"
 wlr-randr --output HDMI-A-1 --mode 1920x1080@60
-noturbo
-
-####ACABA EL SCRIPT####
 
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
 NOTA PREVIA: El emulador standalone NO SINCRONIZA BIEN VIDEO Y AUDIO: o bien le sobran frames de audio o de vídeo.
              No le des vueltas, USA EL CORE DE RETROARCH.
-NOTA PREVIA: Para poder bajar la latencia de audio, es recomendable tener un kernel PREEMPT_DYNAMIC
-(General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop))
-y tener los HZ del planificador de tareas a 300Hz ya que es múltiplo de PAL y NTSC,
-NO se te ocurra subirlo a 1000Hz porque penaliza mucho el rendimiento.
-(Processor Type and Features->Timer Frequency->300Hz)
-Tienes una configuración lista para el i5-1235U en LBE_DOCS.
 
 Instalamos una dependencia previa rara:
 apt-get install libcurl4-openssl-dev
@@ -1611,9 +1587,6 @@ Entra en Settings->Audio y pon el driver a SDL2 con 42ms de buffer (recuerda que
 un kernel "Preemptible Kernel (Low-Latency Desktop)" y a 300 Hz).
 
 Si quieres puedes configurar la tecla de EXIT asignándola a ESC, en settings->controls->keyboard->map
-
-RECUERDA: Para que el framerate sea suave en los juegos que van a 30FPS, debes activar "Full Framebuffe Emulation"
-en las opciones del emulador. Esto nos limita la resolución a 640x480, pero da igual.
 
 RECUERDA: Para quitar los crujidos/dropouts de audio, usa el driver de audio SDL2,
 OJO: NO pongas "FastGDRomLoad" a "yes" en ~/.config/flycast/emu.cfg: no mejora NADA y provoca problemas de audio en el REZ,
@@ -8232,7 +8205,7 @@ Y RESPECTO AL RUNAHEAD:
 --SI USAS EL RENDERER HARDWARE, USA EL RUNAHEAD INTERNO DEL CORE, EN CORE OPTIONS.
 (DEBERÍAS USAR EL RUNAHEAD INTERNO DEL CORE DE TODOS MODOS AUNQUE USES EL RENDERER SOFTWARE).
 
-PARA LOS CORES 3D, debes usar el "Adaptive Sync Vsync".
+PARA ALGUNOS CORES 3D (PPSSPP), debes usar el "Adaptive Sync Vsync".
 Esto consiste en que, teniendo activado el "Adaptive Sync" en el compositor Wayland,
 en RetroArch desactivamos "SYNC TO EXACT" (=VRR, =AdaptiveSync), y activamos el VSYNC y ponemos "VSYNC SWAP INTERVAL" a "AUTO".
 Como tenemos el "Adaptive Sync" activado en el compositor Wayland, estamos a 120Hz por defecto,
