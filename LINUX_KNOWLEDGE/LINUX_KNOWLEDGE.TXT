@@ -9287,6 +9287,9 @@ cd b4
 cmake .. -GNinja
 ninja -j10
 
+NOTA MUY IMPORTANTE: Si oyes "clicks" cuando empiezan y terminan las conversaciones por radio, baja el "Master Volume" a ~80%
+y el "Voice Volume" a ~90% en el menú del configuración del engine.
+
 	BLOQUE EXTRACCIÓN DE LOS DATOS
 	
 --La ROM necesaria es "Star Fox 64 (USA) (Rev 1).z64" con SHA1: 09f0d105f476b00efa5303a3ebc42e60a7753b7a
@@ -9295,8 +9298,6 @@ ninja -j10
   cmake --build . --target ExtractAssets -j10
   ...Y copiamos el archivo resultante "sf64.o2r" al mismo directorio que el ejecutable (yo lo meto todo en "~/starfox64").
 
-	NOTA IMPORTANTE: Si oyes "clicks" cuando empiezan y terminan las conversaciones por radio, baja el volúmen de las voces y efectos
-	en el menú del configuración del engine.
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
