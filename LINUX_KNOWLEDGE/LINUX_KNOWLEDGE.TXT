@@ -9300,6 +9300,58 @@ que se crea solo en el directorio donde tienes el ejecutable.
   cmake --build . --target ExtractAssets -j10
   ...Y copiamos el archivo resultante "sf64.o2r" al mismo directorio que el ejecutable (yo lo meto todo en "~/starfox64").
 
+GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
+============================================================
+NOTA: La documentación original está aquí --> https://github.com/klorfmorf/Goemon64Recomp/blob/modding/BUILDING.md
+
+--Instalamos dependencias previas: sudo apt-get install cmake ninja-build libsdl2-dev libgtk-3-dev lld llvm clang
+--Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/Goemon64Recomp.git
+
+BLOQUE DE DESCOMPRESIÓN DE LA ROM
+
+--Instalamos dependencias previas: sudo apt install build-essential python3 git binutils-mips-linux-gnu
+--Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/mnsg.git
+--Entramos en el raiz los sources, y allí creamos un entorno Python virtual, entramos en él e instalamos las dependencias de Python necesarias:
+cd mnsg
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+--Metemos la ROM USA del Mystical Ninja 64 como "baserom.us.z64" en el raiz de los sources (es decir, en la raiz de "msng").
+--Extraemos los assets de la ROM:
+make setup VERSION=us
+--Reconstruimos la ROM:
+make VERSION=us
+--Copiamos el fichero resultante "baserom.us.decompressed.z64" al raiz de los sources de Goemon64Recomp como "mnsg.us.decompressed.z64":
+cp baserom.us.decompressed.z64 ~/src/Goemon64Recomp/mnsg.us.decompressed.z64
+
+BLOQUE "N64RECOMP"
+
+--Clonamos su repo: git clone --depth 1 --recurse-submodules https://github.com/N64Recomp/N64Recomp.git
+--Compilamos con:
+mkdir b4
+cd b4
+cmake ..
+make -j10
+--Copiamos los ejecutables "N64Recomp" y "RSPRecomp" al raiz de los sources de Goemon64Recomp
+
+BLOQUE DE RECOMPILACIÓN
+
+--Nos vamos al raiz de los sources de Goemon64Recomp y hacemos:
+./N64Recomp mnsg.us.toml
+./RSPRecomp aspMain.us.toml
+
+--Aplicamos unos parches:
+cp N64ModernRuntime.patch lib/N64ModernRuntime
+cd lib/N64ModernRuntime
+git apply N64ModernRuntime.patch
+
+cp rt64.patch lib/rt64
+cd lib/rt64
+git apply rt64.patch
+
+--Compilamos para nuestra arquitectura al fin:
+cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build-cmake --target Goemon64Recompiled -j$(nproc) --config Release
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
