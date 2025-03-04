@@ -776,9 +776,9 @@ SCALING: "Integer Scale" a "ON", con "Integer Scale Scaling" a "Smart".
 
 SHADER:
 Opción 1: CRT-CONSUMER con "Pre-Scale Sharpening" a 1.00, "Convergence X" a 0.40, todo lo de curvatura quitado,
-          "Scanlines dark" a 1.20, "Scanlines bright" a 0.80,
+          "Scanlines dark" a 1.20, "Scanlines bright" a 0.80, "Mask Type" a 4.00,
           "Vignette on/off" a 1.00, "Vignette Power" a 0.10, "Vignette Strength" a 20.00.
-Opción 2: LOTTES-FAST
+Opción 2: LOTTES
 
 LATENCY: RunAhead con 1 frame y "second instance" activado.
 
