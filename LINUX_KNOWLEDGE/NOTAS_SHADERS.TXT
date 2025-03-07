@@ -62,6 +62,14 @@ Por ejemplo, para los juegos en 320x200 como el Prince o el Another, nos creamos
 donde le pasamos como tamaño de textura ese 320x200. Alternativamente, le podemos pasar el tamaño total de la pantalla y se verá
 también muy bien, sólo que las scanlines no se verán, pero la shadowmask queda como en un monitor CRT de alta definición).
 
+########NOTAS SOBRE AJUSTES EN LOS SHADERS######
+
+--PARA CRTFakeottes: Pon "crt_gamma" a 2.0 y "monitor_gamma" a 2.5, para evitar tener colores "washed out" (rojo pálido, amarillo caca, etc).
+                     Combínalo con brillo/contraste en el monitor puestos a 45/85.
+
+--PARA CRTLottes2: Los valores "INPUT_X" e "INPUT_Y" vienen configurados con valores raros y se ve todo mal.
+  Pon en ellos la resolución del juego que vayas a usar y se verá bien.
+
 ########SECCIÓN DE EDICIÓN DE SHADERS###########
 
 TIENES COPIAS YA ARREGLADAS Y OPTIMIZADAS DE LOS SHADERS NEWPIXIE Y MATTIAS SUBIDOS A LBE_DOCS.
