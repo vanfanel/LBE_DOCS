@@ -887,7 +887,7 @@ Binary Emulations->IA32 Emulation
 Memory Management options->Support for paging of anonymous memory (swap)
 Memory Management options->Defer initialisation of struct pages to kthreads
 Memory Management options->Slab allocator options->(Todo lo que hay ahí)
-...Y MUY IMPORTANTE TAMBIÉN!!! Para evitar que aumente el valor de "/sys/class/drm/card0/power/rc6_residency_ms",
+EN INTEL: Para evitar que aumente el valor de "/sys/class/drm/card0/power/rc6_residency_ms",
 lo que significa que la GPU entra y sale de estados de bajo consumo aunque desactivemos el RC6 en la BIOS,
 editamos drivers/gpu/drm/i915/gt/intel_rc6.c y allí buscamos la función rc6_supported()
 y borramos todo su contenido, dejando solamente "return false;".
@@ -937,9 +937,8 @@ quitar todo lo que puedas de "Security Options", en Device Drivers los "Multiple
 y los "Macintosh Device Drivers",
 En "Enable the block layer->Partition Types" quitamos todas las particiones que no necesitamos.
 En "Drivers->Network device support->Ethernet driver support" y "Drivers->Network device support->Wireless LAN"
-quitamos todo el hardware que no tengamos (habremos hecho "lscpi" antes para averiguar cuál sí necesitamos,
-POR EJEMPLO en el N100 hay que dejar los Ethernet de REALTEK y los WIFI de INTEL, y ya).
-Activamos "Device Drivers->Graphics support->Intel Xe Graphics", que no lo detecta modprobed-db.
+quitamos todo el hardware que no tengamos (habremos hecho "lscpi" antes para averiguar cuál sí necesitamos).
+En INTEL: Activamos "Device Drivers->Graphics support->Intel Xe Graphics", que no lo detecta modprobed-db.
 Usando "/", buscamos ANDROID, AMAZON, MICROSOFT, GOOGLE... Y nos aseguramos de que todas las opciones están desactivadas,
 ¡nos dice cómo llegar a cada opción!.
 Cuidado: no andes quitando cosas de "Kernel Hacking" o los schedulers externos no funcionarán.
@@ -950,7 +949,7 @@ que en un sistema actual de 2024 con NVME son:
 ----"Device Drivers->Memory Technology Device (MTD) support"
 ----"Device Drivers->NVME Support->NVM Express block device"
 
-(OJO no desactives el DEBUGFS o no compilará el driver gráfico de Intel)
+(EN INTEL: NO DESACTIVES el DEBUGFS o no compilará el driver gráfico de Intel)
 (RECUERDA que si en un submenú no encuentras una opción que debería estar ahí, puedes darle a Z y te aparecerá para poder darle a "?" sobre ella
  y así averiguar de qué depende).
 (RECUERDA que puedes usar "/" para buscar la opción que quieras, te dice cómo llegar a cada opción).
