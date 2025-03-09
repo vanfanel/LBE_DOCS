@@ -592,6 +592,10 @@ y luego dentro del juego elegimos el renderer "POLYMER".
 NOTA: El "POLYMOST" es más rápido, pero toda la iluminación se quita al disparar si activamos el filtrado bilineal,
 por eso usamos el "POLYMER" de momento. 
 
+SI QUEREMOS USAR UN SHADER DE VKBASALT DISTINTO AL QUE TENEMOS PUESTO POR DEFECTO EN ~/.config/vkBasalt/vkBasalt.conf,
+debemos añadir a la línea de comandos:
+VKBASALT_CONFIG_FILE=/root/duke3d/vkBasalt.conf
+
 ******Compilar core PCSX2 para LIBRETRO**************************************************************************************
 NOTA: EL RENDERER SOFTWARE SÓLO FUNCIONA CON OPENGL. Necesitas activar OpenGL tanto cuando compiles RetroArch
 como cuando compiles el core.
