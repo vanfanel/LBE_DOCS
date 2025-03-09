@@ -915,8 +915,8 @@ EN /etc/default/grub
 
 (La información está adaptada de: https://wiki.archlinux.org/title/Modprobed-db)
 --Clonamos su repo: git clone --depth 1 https://github.com/graysky2/modprobed-db.git
---Entramos en el directorio de los sources y simplemente hacemos "make install" y ya se instala.
-(Para desinstalarlo simplemente se usa "make uninstall" y ya).
+--Entramos en el directorio de los sources y simplemente hacemos "make && make install" y ya se instala,
+es un script y no tiene que compilar nada. (Para desinstalarlo simplemente se usa "make uninstall" y ya).
 --(OJO!! ESTO HAZLO CON UNA UNINDAD DE ALMACENAMIENTO USB CONECTADA O LUEGO NO TENDRÁS LOS MÓDULOS NECESARIOS! Y NO FUNCIONARÁN!!)
 Ejecutamos "modprobed-db" y se nos creará el archivo "~/.config/modprobed-db.conf"
 Este archivo nos permite añadir módulos que NO queremos que se tengan en cuenta aunque estén cargados, para lo cual
