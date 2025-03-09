@@ -575,7 +575,7 @@ Clonamos su repo:
 git clone --depth 1 https://github.com/nukeykt/NBlood.git
 
 Compilamos con:
-make rednukem -j3 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=1 USE_LIBVPX=0 LTO=1 OPTOPT="-march=native -mtune=native -O3"
+make rednukem -j8 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=1 USE_LIBVPX=0 LTO=1 OPTOPT="-march=native -mtune=native -O3"
 
 Podríamos compilar sólo el blood, o sólo el exxhumed, etc.. así:
 make blood
@@ -586,6 +586,11 @@ Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
 PARA TENER VÍDEO CORRECTAMENTE SINCRONIZADO CON VRR, en VIDEO MODE ponemos FRAME LIMIT a 120 FPS,
 y eso nos permite poner VSYNC a ADAPTIVE. Con eso, va perfecto y consume sólo un 15% de CPU.
+
+PARA TENER FILTRADO BILINEAL, editamos .config/rednukem/settings.cfg, ponemos "r_texfilter" a "1"
+y luego dentro del juego elegimos el renderer "POLYMER".
+NOTA: El "POLYMOST" es más rápido, pero toda la iluminación se quita al disparar si activamos el filtrado bilineal,
+por eso usamos el "POLYMER" de momento. 
 
 ******Compilar core PCSX2 para LIBRETRO**************************************************************************************
 NOTA: EL RENDERER SOFTWARE SÓLO FUNCIONA CON OPENGL. Necesitas activar OpenGL tanto cuando compiles RetroArch
