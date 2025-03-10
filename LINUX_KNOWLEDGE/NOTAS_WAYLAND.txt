@@ -1199,6 +1199,10 @@ Pero lo suyo es meterlo en ~/.config/labwc/autostart así:
 (info sacada de esta guía: https://labwc.github.io/getting-started.html)
 (para ver todas las opciones posibles: https://github.com/labwc/labwc/blob/master/docs/rc.xml.all)
 
+--Para tener un modo de vídeo de 60Hz (NECESARIO para tener scrolles verdaderamenre suaves, no sólo aparentemente suaves, incluso si usamos VRR!)
+añadimos a ~/.config/labwc/autostart:
+wlr-randr --output DP-1 --mode 1920x1080@60
+
 --Para teclado en español creamos ~/.config/labwc/environment con el contenido:
 XKB_DEFAULT_LAYOUT=es
 XKB_DEFAULT_VARIANT=deadtilde

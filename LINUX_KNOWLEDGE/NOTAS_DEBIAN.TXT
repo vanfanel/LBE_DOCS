@@ -1031,8 +1031,8 @@ VAMOS CON SCHED_EX EN SÍ...
 mkdir b4
 cd b4
 
-CFLAGS="-O2 -march=native -mtune=native -O2" \
-CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+CFLAGS="-O2 -march=native -mtune=native" \
+CXXFLAGS="-O2 -march=native -mtune=native" \
 meson setup -Dbuildtype=release ..
 
 ninja -j6

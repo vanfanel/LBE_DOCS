@@ -948,6 +948,44 @@ taskset -c 0-1 retroarch -L ~/.config/retroarch/cores/mednafen_saturn_libretro.s
 Esto es así porque el core oscila muy rápido en el uso de la CPU: cuando usa poca es asignado a una CPU de tipo EFFICIENCY y luego
 cuando de repente usa mucha se ralentiza porque el scheduler no llega a tiempo de pasarlo a una CPU de tipo PERFORMANCE.
 
+*******Compilar DOSBOX-STAGING***************************************
+
+--Instalamos dependencias previas:
+apt-get install libopusfile-dev
+
+--Bajamos los últimos sources estables de:
+https://github.com/dosbox-staging/dosbox-staging/releases
+
+--Editamos "meson.build", buscamos la línea:
+opengl_dep = dependency('gl', not_found_message: msg.format('use_opengl'))
+...Y la dejamos así:
+opengl_dep = dependency('opengl', not_found_message: msg.format('use_opengl'))
+
+--Compilamos con:
+mkdir b4
+cd b4
+
+CFLAGS="-O2 -march=native -mtune=native" \
+CXXFLAGS="-O2 -march=native -mtune=native" \
+meson setup -Dbuildtype=release -Ddefault_library=static ..
+
+ninja -j10
+
+--Copiamos unos directorios de resources obligatorios a donde dosbox espera encontrarlos:
+mkdir ~/.config/dosbox
+cp -R resources/glshaders  ~/.config/dosbox/
+cp -R resources/mapping ~/.config/dosbox/
+cp -R resources/mapping-unicode.org ~/.config/dosbox/
+
+--Metemos las ROMs de MT32 (MT32_CONTROL.ROM, MT32_PCM.ROM) en ~/.config/dosbox/mt32-roms
+
+	AJUSTES EN DOSBOX.CONF
+
+Está en ~/.config/dosbox/dosbox.conf
+--Ponemos "vsync" a "off, "host_rate" a "vrr" y "presentation_mode" a "vfr"
+--Ponemos "integer_scaling" a "off"
+--Ponemos "cpu_cycles" a "6000" (los "cpu_protected_cycles" a "60000" están bien si no encuentras ningún juego que vaya lento con eso).
+
 *******Compilar el core DOSBOX-CORE**********************************
 
 Este sí sincroniza el vídeo bien (al fin).
