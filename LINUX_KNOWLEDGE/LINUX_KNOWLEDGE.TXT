@@ -4097,6 +4097,9 @@ cp build/qemu-system-i386 /usr/local/bin/
 cp build/qemu-system-m68k /usr/local/bin/
 
 		CÓMO USAR QEMU PARA EJECUTAR MS-DOS
+(OJO!! NO recomendado, QEMU va fatal con MS-DOS: el escalado de pantalla es una mierda pixelada con shimmering y ratio incorrecto,
+ la compatibilidad con juegos es atroz, no va ni el Lemmings, el refresco de pandalla va a lo loco, etc.
+ QEMU es para Windows 95 en adelante SOLAMENTE. Para DOS, usa DOSBOX o similar).
 
 Copiamos la BIOS que incluye QEMU a ~/msdos:
 cp build/qemu-bundle/usr/local/share/qemu/bios-256k.bin ~/msdos/
@@ -4108,11 +4111,13 @@ wget https://gitlab.com/qemu-project/qemu/-/raw/master/pc-bios/vgabios-cirrus.bi
 wget https://gitlab.com/qemu-project/qemu/-/raw/master/pc-bios/kvmvapic.bin
 wget https://gitlab.com/qemu-project/qemu/-/raw/master/pc-bios/efi-e1000.rom
 
-Creamos la imágen de disco necesaria:
-qemu-img create -f raw msdos.img -o preallocation=full 256M
+Y con este script de inicio lo lanzamos:
+qemu-system-i386 -display sdl,gl=core -full-screen -machine pc -cpu 486 -hda msdos.img -device sb16
 
-Ahora nos creamos un script de inicio para lanzarlo así:
-qemu-system-i386 -hda msdos.img -device sb16 -no-shutdown
+SOBRE LA IMÁGEN DE DISCO
+Se puede usar la misma imágen de disco que se usa en la MiSTer.
+Si quisiéramos, podríamos crear una imágen de disco así:
+qemu-img create -f raw msdos.img -o preallocation=full 256M
 
 NOTA: Si quisiéramos ejecutar Windows 3.x, le pasaríamos "-vga cirrus". Para MS-DOS nos interesa la VGA estándard.
 

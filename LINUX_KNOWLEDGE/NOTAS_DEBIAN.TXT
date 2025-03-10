@@ -868,6 +868,9 @@ cp /boot/config-$(uname -r) .config
 
 -Entramos en la configuración y ajustamos lo que queramos:
 ---Desativamos las mitigations
+---Nos aseguramos de tener activado
+"Device Drivers->USB support->USB Mass Storage support"
+"Device Drivers->USB support->USB Mass Storage support->USB Attached SCSI"
 ---Para evitar depender de la herramienta "pahole", deshabilitamos:
 Kernel hacking  --->
     Compile-time checks and compiler options  --->
@@ -887,11 +890,6 @@ Binary Emulations->IA32 Emulation
 Memory Management options->Support for paging of anonymous memory (swap)
 Memory Management options->Defer initialisation of struct pages to kthreads
 Memory Management options->Slab allocator options->(Todo lo que hay ahí)
-EN INTEL: Para evitar que aumente el valor de "/sys/class/drm/card0/power/rc6_residency_ms",
-lo que significa que la GPU entra y sale de estados de bajo consumo aunque desactivemos el RC6 en la BIOS,
-editamos drivers/gpu/drm/i915/gt/intel_rc6.c y allí buscamos la función rc6_supported()
-y borramos todo su contenido, dejando solamente "return false;".
-Borramos la función bxt_check_bios_rc6_setup() que está justo encima porque ya no se va a usar.
 
 -Compilamos el kernel y los módulos:
 make -j10
@@ -917,8 +915,7 @@ SI ESO NO FUNCIONA, PON "GRUB_SAVEDEFAULT=true" y "GRUB_DEFAULT=saved", eliges d
 --Clonamos su repo: git clone --depth 1 https://github.com/graysky2/modprobed-db.git
 --Entramos en el directorio de los sources y simplemente hacemos "make && make install" y ya se instala,
 es un script y no tiene que compilar nada. (Para desinstalarlo simplemente se usa "make uninstall" y ya).
---(OJO!! ESTO HAZLO CON UNA UNINDAD DE ALMACENAMIENTO USB CONECTADA O LUEGO NO TENDRÁS LOS MÓDULOS NECESARIOS! Y NO FUNCIONARÁN!!)
-Ejecutamos "modprobed-db" y se nos creará el archivo "~/.config/modprobed-db.conf"
+--Ejecutamos "modprobed-db" y se nos creará el archivo "~/.config/modprobed-db.conf"
 Este archivo nos permite añadir módulos que NO queremos que se tengan en cuenta aunque estén cargados, para lo cual
 añadiríamos en él una línea estilo "IGNORE=(nvidia vboxdrv..."
 --Ejecutamos "modprobed-db store" y se nos creará el archivo "~/.config/modprobed.db", que es donde quedan reflejados los módulos
@@ -928,9 +925,9 @@ make LSMOD=~/.config/modprobed.db localmodconfig
 (Te preguntará cosas: dile a todo que NO, no nos interesa, gracias).
 (OJO!!! Si te pregunta algo como "Additional X.509 keys for default system keyring (SYSTEM_TRUSTED_KEYS)", dale al intro sin más,
  NO se te ocurra poner una "n" ahí o intentará crear un certificado llamado "n" y fallará la compilación!!!)
---Hacemos "make menuconfig" y nos aseguramos de tener activado "Device Drivers->USB support->USB Mass Storage support"
-  (Esto es por si no teníamos una unidad de almacenamiento USB cuando previamente ejecutamos "modprobed-db store" y por tanto
-   no se detectó el módulo como cargado)
+--Hacemos "make menuconfig" y nos aseguramos de tener activado
+"Device Drivers->USB support->USB Mass Storage support"
+"Device Drivers->USB support->USB Mass Storage support->USB Attached SCSI"
 --Podemos aprovechar para volver a hacer "make menuconfig" y aligerar funcionalidades internas del kernel,
 como desactivar "Mitigations for speculative execution vulnerabilities",
 quitar todo lo que puedas de "Security Options", en Device Drivers los "Multiple devices driver support (RAID and LVM)"
