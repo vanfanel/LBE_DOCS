@@ -4092,7 +4092,9 @@ CXXFLAGS="-march=native -mtune=native" \
 
 -Ahora compilamos simplemente con: make
 Y los ejecutables qemu-* quedan en el directorio "build". Los copiamos a /usr/local/bin:
-sudo cp build/qemu-img build/qemu-system-m68k /usr/local/bin/
+cp build/qemu-img /usr/local/bin/
+cp build/qemu-system-i386 /usr/local/bin/
+cp build/qemu-system-m68k /usr/local/bin/
 
 		CÓMO USAR QEMU PARA EMULAR UN MAC QUADRA 800
 
