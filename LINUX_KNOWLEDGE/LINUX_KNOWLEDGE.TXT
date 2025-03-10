@@ -9343,6 +9343,14 @@ NOTA: La documentación original está aquí --> https://github.com/klorfmorf/Go
 --Instalamos dependencias previas: sudo apt-get install cmake ninja-build libsdl2-dev libgtk-3-dev lld llvm clang
 --Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/Goemon64Recomp.git
 
+NOTA: Ahora mismo falla la compilación final con CLANG 19, que es la versión de CLANG que se nos instala con DEBIAN
+al instalar el paquete "clang". Así que si el comando "clang --version" no te da que estás en la versión 18, haz esto:
+apt-get purge clang
+apt-get install clang-18
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
+sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
+ESTO DENTRO DE UN TIEMPO NO DEBERÍA SER NECESARIO (lo tienen que arreglar desde el recomp).
+
 BLOQUE DE DESCOMPRESIÓN DE LA ROM
 
 --Instalamos dependencias previas: sudo apt install build-essential python3 git binutils-mips-linux-gnu
