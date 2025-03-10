@@ -4096,6 +4096,26 @@ cp build/qemu-img /usr/local/bin/
 cp build/qemu-system-i386 /usr/local/bin/
 cp build/qemu-system-m68k /usr/local/bin/
 
+		CÓMO USAR QEMU PARA EJECUTAR MS-DOS
+
+Copiamos la BIOS que incluye QEMU a ~/msdos:
+cp build/qemu-bundle/usr/local/share/qemu/bios-256k.bin ~/msdos/
+
+Nos bajamos las BIOS necesarias al directorio ~/msdos:
+cd ~/msdos
+wget https://gitlab.com/qemu-project/qemu/-/raw/master/pc-bios/vgabios-stdvga.bin
+wget https://gitlab.com/qemu-project/qemu/-/raw/master/pc-bios/vgabios-cirrus.bin
+wget https://gitlab.com/qemu-project/qemu/-/raw/master/pc-bios/kvmvapic.bin
+wget https://gitlab.com/qemu-project/qemu/-/raw/master/pc-bios/efi-e1000.rom
+
+Creamos la imágen de disco necesaria:
+qemu-img create -f raw msdos.img -o preallocation=full 256M
+
+Ahora nos creamos un script de inicio para lanzarlo así:
+qemu-system-i386 -hda msdos.img -device sb16 -no-shutdown
+
+NOTA: Si quisiéramos ejecutar Windows 3.x, le pasaríamos "-vga cirrus". Para MS-DOS nos interesa la VGA estándard.
+
 		CÓMO USAR QEMU PARA EMULAR UN MAC QUADRA 800
 
 		INSTALAR UN SISTEMA OPERATIVO
