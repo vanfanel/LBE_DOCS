@@ -4083,12 +4083,12 @@ glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 por:
 glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
--Para compilar con sólo la emulación de plataformas basadas en Motorola 68000, configuramos con:
+-Para compilar con emulación de 386 y de plataformas basadas en Motorola 68000, configuramos con:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 ./configure --disable-gtk --disable-tpm --disable-pa --disable-oss --disable-sndio --disable-vnc --disable-png --enable-sdl --disable-sdl-image \
---disable-selinux --disable-iconv --disable-qom-cast-debug --disable-dbus-display --disable-keyring --target-list=m68k-softmmu
+--disable-selinux --disable-iconv --disable-qom-cast-debug --disable-dbus-display --disable-keyring --target-list=m68k-softmmu,i386-softmmu
 
 -Ahora compilamos simplemente con: make
 Y los ejecutables qemu-* quedan en el directorio "build". Los copiamos a /usr/local/bin:
