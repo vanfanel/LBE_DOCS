@@ -868,7 +868,8 @@ cp /boot/config-$(uname -r) .config
 
 -Entramos en la configuración y ajustamos lo que queramos:
 ---Desativamos las mitigations
----Nos aseguramos de tener activado
+---Nos aseguramos de tener activadas estas opciones que son imprescindibles para que funcionen los discos USB externos:
+"Device Drivers->SCSI device support->SCSI disk support"
 "Device Drivers->USB support->USB Mass Storage support"
 "Device Drivers->USB support->USB Mass Storage support->USB Attached SCSI"
 ---Para evitar depender de la herramienta "pahole", deshabilitamos:
@@ -925,7 +926,8 @@ make LSMOD=~/.config/modprobed.db localmodconfig
 (Te preguntará cosas: dile a todo que NO, no nos interesa, gracias).
 (OJO!!! Si te pregunta algo como "Additional X.509 keys for default system keyring (SYSTEM_TRUSTED_KEYS)", dale al intro sin más,
  NO se te ocurra poner una "n" ahí o intentará crear un certificado llamado "n" y fallará la compilación!!!)
---Hacemos "make menuconfig" y nos aseguramos de tener activado
+--Hacemos "make menuconfig" y nos aseguramos de tener activadas estas opciones que son para que funcionen los discos USB externos:
+"Device Drivers->SCSI device support->SCSI disk support"
 "Device Drivers->USB support->USB Mass Storage support"
 "Device Drivers->USB support->USB Mass Storage support->USB Attached SCSI"
 --Podemos aprovechar para volver a hacer "make menuconfig" y aligerar funcionalidades internas del kernel,
