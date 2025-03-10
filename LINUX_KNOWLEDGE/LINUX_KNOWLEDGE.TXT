@@ -949,7 +949,10 @@ Esto es así porque el core oscila muy rápido en el uso de la CPU: cuando usa p
 cuando de repente usa mucha se ralentiza porque el scheduler no llega a tiempo de pasarlo a una CPU de tipo PERFORMANCE.
 
 *******Compilar DOSBOX-STAGING***************************************
-
+NOTA PREVIA: Para tener scrolls perfectos con VRR (no sólo aparentemente perfectos!), tenemos que tener puesto un modo de 60Hz.
+Para ello, en LABWC añadimos a ~/.config/labwc/autostart:
+wlr-randr --output DP-1 --mode 1920x1080@60
+ 
 --Instalamos dependencias previas:
 apt-get install libopusfile-dev
 
