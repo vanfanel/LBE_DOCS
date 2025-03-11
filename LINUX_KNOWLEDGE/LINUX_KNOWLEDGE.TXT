@@ -9436,8 +9436,11 @@ cmake --build build-cmake --target Goemon64Recompiled -j$(nproc) --config Releas
 
 BLOQUE DE EJECUCIÓN
 
-Creamos el directorio ~/goemon64, y allí copiamos el ejecutable "Goemon64Recompiled" y el directorio "assets" que viene con los sources,
-y ya deberíamos poder ejecutar "Goemon64Recompiled".
+Creamos el directorio ~/goemon64, y allí copiamos:
+-El ejecutable "Goemon64Recompiled"
+-El directorio "assets" que viene con los sources
+-La ROM original USA del Goemon64.
+Y ya deberíamos poder ejecutar "Goemon64Recompiled", y en el menú que nos sale seleccionar la ROM y jugar.
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
