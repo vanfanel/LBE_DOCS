@@ -149,132 +149,6 @@ boot disk1.img disk2.img -l a
 (Para ir cambiando de un diskette a otro durante la instalación, es con CTRL+FN+F4, 
 y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
 
-*******CONFIG.SYS Y AUTOEXEC.BAT PARA MS-DOS (MÁXIMA COMPATIBILIDAD)*******************
-
-################ CONFIG.SYS #######################
-
-[MENU]
-MENUITEM=QEMM, QEMM con XMS+EMS (Ultimos juegos para MS-DOS, TES Arena, etc)
-MENUITEM=JEMMEX, JEMMEX con XMS+EMS y RAM limitada a 16MB (Aladdin, Arkania2, etc)
-MENUITEM=NOEMS, QEMM con XMS solamente
-MENUITEM=EMM386, EMM386 con EMS (Lemmings 2)
-MENUITEM=SIMPLE, Solamente HIMEM.SYS (Lemmings, Another World, Turrican II, etc)
-
-[QEMM]
-DEVICE=C:\QEMM\DOSDATA.SYS
-SET LOADHIDATA=C:\QEMM\LOADHI.RF
-DEVICE=C:\QEMM\QEMM386.SYS RAM BE:N RF
-DEVICE=C:\QEMM\DOS-UP.SYS @C:\QEMM\DOS-UP.DAT
-SHELL=C:\QEMM\LOADHI.COM /RF C:\COMMAND.COM /E:2048 /P
-DOS=HIGH,UMB
-FILES=40
-BUFFERS=40
-STACKS=9,256
-
-[JEMMEX]
-DEVICE=C:\DOS\JEMMEX.EXE X2MAX=16384 I=B000-B7FF I=TEST X=EC00-EFFF
-DOS=HIGH,UMB
-FILES=40
-BUFFERS=40
-STACKS=9,256
-
-[NOEMS]
-DEVICE=C:\QEMM\DOSDATA.SYS
-SET LOADHIDATA=C:\QEMM\LOADHI.RF
-DEVICE=C:\QEMM\QEMM386.SYS RAM NOEMS BE:N RF
-DEVICE=C:\QEMM\DOS-UP.SYS @C:\QEMM\DOS-UP.DAT
-SHELL=C:\QEMM\LOADHI.COM /RF C:\COMMAND.COM /E:2048 /P
-DOS=HIGH,UMB
-FILES=40
-BUFFERS=40
-STACKS=9,256
-
-[EMM386]
-DEVICE=C:\DOS\HIMEM.SYS /Q /TESTMEM:OFF
-DEVICE=C:\DOS\EMM386.EXE RAM AUTO NOTR
-DOS=HIGH,UMB
-FILES=40
-BUFFERS=40
-STACKS=9,256
-
-[SIMPLE]
-DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF
-DOS=HIGH,UMB
-FILES=40
-STACKS=9,256
-                                                                                                                                       
-################ AUTOEXEC.BAT ######################
-
-@ECHO OFF
-PATH=C:\QEMM;C:\;C:\DOS
-SET DIRCMD=/A/OGN/P
-SET BLASTER=A220 I7 D1 P330 T4
-PROMPT $P$G
-
-GOTO %CONFIG%
-
-:QEMM
-:NOEMS
-C:\QEMM\LOADHI /RF C:\DOS\EDOSKEY
-C:\QEMM\LOADHI /RF C:\DOS\CTMOUSE
-C:\QEMM\LOADHI /RF C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0
-C:\QEMM\LOADHI /RF C:\DOS\KEYB SP
-ECHO.
-GOTO EXIT
-
-:EMM386
-C:\DOS\EDOSKEY
-C:\DOS\CTMOUSE
-C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0
-C:\DOS\KEYB.COM SP
-ECHO.
-GOTO EXIT
-
-:SIMPLE
-:JEMMEX
-C:\DOS\EDOSKEY
-C:\DOS\CTMOUSE
-C:\UNISOUND\UNISOUND.COM /V60 /VW60 /VF60 /VL60 /VP60 /VC0 /VM0
-C:\DOS\KEYB.COM SP
-ECHO.
-GOTO EXIT
-
-:EXIT
-
-###################################################
-
-
-********FDCONFIG.SYS Y FDAUTO.BAT para FREEDOS*****************
-
-
-################# FDCONFIG.SYS ######################
-
-BUFFERS=20     
-FILES=40
-DOS=HIGH,UMB
-DEVICE=C:\FREEDOS\BIN\JEMMEX.EXE X2MAX=32767
-
-SHELLHIGH=C:\FreeDOS\BIN\COMMAND.COM C:\FreeDOS\BIN /E:1024 /P=C:\FDAUTO.BAT
-
-################# FDAUTO.BAT #####################
-
-@ECHO OFF
-PATH=C:\;C:\FREEDOS\BIN
-SET DIRCMD=/A/OGN/P
-SET BLASTER=A220 I7 D1 P330 T4
-PROMPT $P$G
-
-MODE CON RATE=32 DELAY=1
-rem MODE CON CP PREPARE=((437) C:\DOS\EGA.CPI)
-rem MODE CON CP SELECT=437
-
-C:\UNISOUND\UNISOUND.COM /V90 /VW90 /VF90 /VL90 /VP90 /VC0 /VM0
-CTMOUSE
-
-mkeyb SP
-
-ECHO.
-
 ####################################################
 
 ------------------------INSTALACIÓN DEL SONIDO----------------------------------
@@ -368,7 +242,7 @@ Si es así, pásale al JEMMEX el parámetro FRAME=D000
 
 SE SUPONE según el autor de JEMMEX (https://github.com/Baron-von-Riedesel/Jemm/issues/16#issuecomment-1573499665),
 que el juego funciona perfecto en FreeDOS si usamos JEMMEX así:
-DEVICE=C:\DOS\JEMMEX.EXE MAX=32M MIN=48 I=B000-B7FF I=TEST
+DEVICE=C:\DIV\JEMMEX.EXE MAX=32M MIN=48 I=B000-B7FF I=TEST
 ...PERO queda pendiente conseguir esto en el TinyLlama.
 
 En DOSBOX, para tener música GUS, no puedes usar la GUS para el sonido y para la música a la vez: tienes que tener una SB16 para el sonido
@@ -401,14 +275,14 @@ Lo mismo que el Aladdin.
 Necesita EMS y no soporta más de 16MB. Para ello podemos usar HIMEMX + EMM386, o bien JEMMEX.
 Además sólo va en MS-DOS: en FreeDOS peta en el templo del principio hagamos lo que hagamos.
 
+En MS-DOS, con JEMMEX:
+DEVICE=C:\DOS\JEMMEX.EXE X2MAX=16384 I=B000-B7FF I=TEST X=EC00-EFFF
+
 En MS-DOS, con HIMEMX (que nos permite limitar la RAM porque con más de 16megas peta) + EMM386,
 la configuración de memoria la tengo así para que el juego vaya perfecto:
 DEVICE=C:\DOS\HIMEMX.EXE /MAX=16384                                                                                                    
 DEVICE=C:\DOS\EMM386.EXE HIGHSCAN X=EC00-EFFF                                                                                          
 FILES=30
-
-En MS-DOS, con JEMMEX:
-DEVICE=C:\DOS\JEMMEX.EXE X2MAX=16384 I=B000-B7FF I=TEST X=EC00-EFFF
 
 ***REALMS OF THE HAUNTING (ROTH)***
 Si te da un error de que no encuentra un archivo, edita CONFIG.INI y pon "SourcePath" y "DestinationPath" apuntando
