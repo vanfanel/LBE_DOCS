@@ -883,7 +883,9 @@ o si no, el Ridge Racers se nos quedará en una pantalla en gris después del me
 
 Es un core con sonido 44100Hz, así que configura los settings de audio así y guarda los core overrides.
 
-Para evitar el micro-stuttering, ve a Core Options->Video, y allí activa "Duplicate Frames in 30Hz games".
+Para evitar el micro-stuttering, en las opciones del core:
+Desactiva "Buffer Graphis Commands"
+Activa "Duplicate Frames in 30Hz games"
 
 	COMPILAR VERSIÓN STANDALONE:
 
@@ -1579,11 +1581,6 @@ RECUERDA: Este core NO SOPORTA RUNAHEAD, SI LO TIENES ACTIVADO DARÁ UN SEGFAULT
 
 RECUERDA, PARA TENER VÍDEO PERFECTAMENTE SUAVE EN LOS JUEGOS DE 30FPS:
 Activar VSYNC, desactiva "SYNC TO EXACT", y en las opciones del emulador activa "FULL FRAMEBUFFER EMULATION".
-ALTERNATIVA CASI-FUNCIONAL SI TIENES VRR: Puedes hacer como en el resto de cores, es decir, desactivar el VSYNC, activar "SYNC TO EXACT",
-y activar "Detect Framerate Changes" en las opciones del emulador.
-Si haces esto, no necesitarás activar "Full Framebuffer Emulation" para tener framerate perfecto en los juegos de 30FPS,
-PERO tendrás los típicos "cortes de audio" en la locución del principio del DOA2 y cuando pulses START durante la intro del Soul Calibur.
-No he encontrado ninguna combinación de opciones que evite estos silencios.
 
 RECUERDA: Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador). Deja la segunda demo del Daytona USA 2001
@@ -9154,6 +9151,11 @@ Para saber más de su contenido, mira esto: https://github.com/diasurgical/devil
 Si nos da un error repetido de "Unhandled SDL Event: SDL_AUDIODEVICEADDED", ni caso. No es por el sistema sino porque el código del juego imprime eventos que no usa.
 Manda la salida a /dev/null y fuera.
 
+PARA TENER FRAMERATE ESTABLE CON VRR, PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR, ASÍ:
+wlr-randr --output DP-1 --mode 1920x1080@60
+ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./devilutionx &> /dev/null
+wlr-randr --output DP-1 --preferred
+
 SM64EX, port del Mario64 para GNU/Linux
 ========================================
 
@@ -11507,6 +11509,11 @@ el OpenFodder.
 Los datos del Cannon Fodder 2 irían en ~/cf/Data/Amiga2 y simplemente hay que montar el ADF del juego (tienes instrucciones de cómo montar ADFs
 en este mismo archivo) y sacarlos de ahí. Puede que te el OpenFoder te diga que el MD5 un fichero llamado MAPM1.SPT es incorrecto. En ese caso,
 puedes sacar el MAPM1.SPT correcto del ADF marcado como [a]. 
+
+PARA TENER FRAMERATE CORRECTO CON VRR (SI NO, EL JUEGO VA DEMASIADO RÁPIDO), PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR, ASÍ:
+wlr-randr --output DP-1 --mode 1920x1080@60
+ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./hcl
+wlr-randr --output DP-1 --preferred
 
 ABUSE en GNU/Linux
 ==================
