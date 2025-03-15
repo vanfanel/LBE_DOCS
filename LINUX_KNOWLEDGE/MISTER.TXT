@@ -755,6 +755,12 @@ los presiones correctamente.
 -En el core de SATURN, en las opciones de INPUT ponemos "3D PAD".
 -En el core de PSX, ponemos el mando 1 como DualShock.
 
+*********Mando 8BitDo M30 2.4G en la MiSTer**********************************************
+
+Para evitar que tarde 5 segundos en responder cuando enciendes la MiSTer o cuando entras en un core, ponlo en modo DInput.
+Para ello, mantén pulsado HOME (botón con un corazón pixelado) + START durante 5 segundos. NO esperes ninguna luz,
+simplemente cambiará de modo y ya no tardará en responder al iniciar la MiSTer o al cargar un core.
+
 **********Notas core Apple II/e**********************************************************
 
 Los juegos deberías bajarlos siempre de https://archive.org/details/apple-ii-play-it-by-year-collection-v-0.1

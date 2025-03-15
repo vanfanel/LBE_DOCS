@@ -1557,23 +1557,22 @@ make platform=rpi4_64 -j4
 
 ******Compilar el core FLYCAST LIBRETRO en GNU/Linux********
 
-Clonamos su repo:
+--Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
 
-Configuramos y compilamos:
+--Editamos CMakeLists.txt y cambiar la línea:
+set(OpenGL_GL_PREFERENCE LEGACY)
+por
+set(OpenGL_GL_PREFERENCE GLVND)
+
+--Configuramos y compilamos:
 
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_VULKAN=ON -DUSE_OPENGL=ON \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
-
-NOTA INNECESARIA: Si quisiéramos compilarlo con soporte de OpenGL, a parte de pasarle -DUSE_OPENGL=ON en vez de -DUSE_OPENGL=OFF,
-tenemos que editar CMakeLists.txt y cambiar la línea:
-set(OpenGL_GL_PREFERENCE LEGACY)
-por
-set(OpenGL_GL_PREFERENCE GLVND)
 
 Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 
