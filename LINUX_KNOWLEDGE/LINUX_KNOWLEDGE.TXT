@@ -6965,7 +6965,26 @@ Extraer sólo el vídeo de la versión de PC, escalándolo a 1024x512 que es lo 
 (Pongo la calidad de vídeo a 9 porque a 10 sale un frame corrupto al principio)
 ffmpeg -i Opening.ogv -q:v 9 -vf scale=1024:512 -an Opening.ogv
 
-*************HYDRA CASTLE LABYRINTH EN LA PI**************************************************************************************
+*************Sonic 3 AIR en GNU/Linux*********************************************************************************************
+
+--Nos bajamos los últimos sources de: https://github.com/Eukaryot/sonic3air/tags
+
+--Editamos Oxygen/sonic3air/build/_cmake/CMakeLists.txt, buscamos la línea:
+find_package(OpenGL REQUIRED)
+...Y justo encima ponemos:
+set(OPENGL_USE_OPENGL ON)
+...Y buscamos todas las ocurrencias de "OpenGL::GL" y las cambiamos por "OpenGL::OpenGL"
+
+--Compilamos con:
+cd ./Oxygen/sonic3air/build/_cmake
+
+mkdir b4
+cd b4
+
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make -j10
+
+*************HYDRA CASTLE LABYRINTH EN GNU/Linux**************************************************************************************
 
 Clonamos su repo:
 
