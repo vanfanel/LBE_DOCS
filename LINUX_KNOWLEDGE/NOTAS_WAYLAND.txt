@@ -1215,6 +1215,8 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 <labwc_config>
 
 	<core>
+		<adaptiveSync>yes</adaptiveSync>
+		<allowTearing>yes</allowTearing>
 		<reuseOutputMode>yes</reuseOutputMode>
 	</core>
 
@@ -1240,6 +1242,10 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 	</theme>
 
 </labwc_config>
+
+--La opción "allowTearing" es FUNDAMENTAL porque son los emuladores y juegos los que deben controlar el vsync,
+NO el compositor Wayland. Gracias a esa opción, se puede tener scroll perfectamente suave en cores 3D RetroArch
+con AdaptiveSync/FreeSync/VRR y sin activar VSYNC.
 
 --Para poder ver los eventos de teclado, podemos verlo desde un ordenador con X11 (son los mismos eventos),
 pero si nos empeñamos en verlo desde wayland, podemos usar wev:
