@@ -584,8 +584,8 @@ make rednukem
 
 Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
-PARA TENER VÍDEO CORRECTAMENTE SINCRONIZADO CON VRR, en VIDEO MODE ponemos FRAME LIMIT a 120 FPS,
-y eso nos permite poner VSYNC a ADAPTIVE. Con eso, va perfecto y consume sólo un 15% de CPU.
+PARA TENER VÍDEO CORRECTAMENTE SINCRONIZADO CON VRR (con "allowTearing" activado en el compositor Wayland)
+en VIDEO MODE ponemos "FRAME LIMIT" a "AUTO", y "VSYNC OFF". Con eso, va perfecto.
 
 PARA TENER FILTRADO BILINEAL, editamos .config/rednukem/settings.cfg, ponemos "r_texfilter" a "1"
 y luego dentro del juego elegimos el renderer "POLYMER".
