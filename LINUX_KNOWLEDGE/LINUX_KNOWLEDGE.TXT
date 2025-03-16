@@ -2031,6 +2031,7 @@ Ajustes a mame.ini:
 skip_gameinfo	1
 video			bgfx
 bgfx_backend	vulkan
+lowlatency		1
 
 --Lanzamos MAME, entramos en el menú TAB, nos vamos a "Slider Controls", allí a "Window 0, Screen 0 Effect"
 y con el cursor situado ahí, usamos los cursores a derecha/izquierda para seleccionar el efecto deseado. Se queda guardado para cada juego. 
