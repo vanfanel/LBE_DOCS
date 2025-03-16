@@ -6966,6 +6966,7 @@ Extraer sólo el vídeo de la versión de PC, escalándolo a 1024x512 que es lo 
 ffmpeg -i Opening.ogv -q:v 9 -vf scale=1024:512 -an Opening.ogv
 
 *************Sonic 3 AIR en GNU/Linux*********************************************************************************************
+(PENDIENTE: Que librmx compile contra libglew del sistema en vez de contra la mierda de libglew reducido que lleva)
 
 --Nos bajamos los últimos sources de: https://github.com/Eukaryot/sonic3air/tags
 
@@ -6975,13 +6976,15 @@ find_package(OpenGL REQUIRED)
 set(OPENGL_USE_OPENGL ON)
 ...Y buscamos todas las ocurrencias de "OpenGL::GL" y las cambiamos por "OpenGL::OpenGL"
 
+--Editamos librmx/source/rmxmedia/_glew/GL/glew.h y borramos todo el bloque /*----GLU----*/
+
 --Compilamos con:
 cd ./Oxygen/sonic3air/build/_cmake
 
 mkdir b4
 cd b4
 
-cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=Release -DSDL_SHARED=ON ..
 make -j10
 
 *************HYDRA CASTLE LABYRINTH EN GNU/Linux**************************************************************************************
