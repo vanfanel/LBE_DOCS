@@ -973,6 +973,8 @@ meson setup -Dbuildtype=release -Ddefault_library=static ..
 
 ninja -j10
 
+--Copiamos el ejecutable "dosbox" a /usr/local/bin
+
 --Copiamos unos directorios de resources obligatorios a donde dosbox espera encontrarlos:
 mkdir ~/.config/dosbox
 cp -R resources/glshaders  ~/.config/dosbox/
@@ -986,6 +988,11 @@ cp -R resources/mapping-unicode.org ~/.config/dosbox/
 Está en ~/.config/dosbox/dosbox.conf
 --Ponemos "integer_scaling" a "off"
 --Ponemos "cpu_cycles" a "6000" (los "cpu_protected_cycles" a "60000" están bien si no encuentras ningún juego que vaya lento con eso).
+--Para tener scroll perfecto en monitor VRR:
+vsync = on
+presentation_mode = cfr
+host_rate = 119
+dos_rate = host
 
 *******Compilar el core DOSBOX-CORE**********************************
 
@@ -2815,29 +2822,6 @@ screen -R -A -DD
 *******Guardar LOG de una ventana en el IRSSI********
 
 /lastlog -file <archivo>.log
-
-*******DOSBOX STAGING en la Pi***************************************************************************************************
-
-Clonamos su repo:
-git clone --depth 1 https://github.com/dosbox-staging/dosbox-staging.git
-
-Instalamos unas dependencias previas:
-sudo apt-get install libopusfile-dev --no-install-recommends
-
-mkdir b4
-cd b4
-
-Configuramos con:
-CFLAGS="-O2 -march=native -mtune=native -O2" \
-CXXFLAGS="-O2 -march=native -mtune=native -O2" \
-meson setup -Dbuildtype=release -Duse_opengl=false -Duse_sdl2_net=false ..
-
-Compilamos con:
-ninja -j4
-
-Copia al directorio ~/dos tanto el ejecutable dosbox como el subdirectorio subprojects tal cual.
-Cuando lo ejecutes te genera un .conf en ~/.config/dosbox. Cópialo a ~/dos, y se lo puedes pasar a dosbox con:
-./dosbox -conf dosbox.conf
 
 JUEGOS DE JAVA DE MÓVIL CON FREEJ2ME
 ====================================
