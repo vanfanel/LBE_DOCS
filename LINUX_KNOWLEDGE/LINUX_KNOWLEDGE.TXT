@@ -585,8 +585,7 @@ make rednukem
 Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
 PARA TENER VÍDEO CORRECTAMENTE SINCRONIZADO CON VRR (con "allowTearing" activado en el compositor Wayland):
-Con POLYMOST/POLYMER: En VIDEO MODE ponemos "FRAME LIMIT" a "AUTO", y "VSYNC OFF".
-Con renderizado por software: En VIDEO MODE ponemos "FRAME LIMIT" a "60", y "VSYNC OFF".
+En VIDEO MODE ponemos "FRAME LIMIT" a "NONE", y "VSYNC ON".
 
 PARA TENER FILTRADO BILINEAL, editamos .config/rednukem/settings.cfg, ponemos "r_texfilter" a "1"
 y luego dentro del juego elegimos el renderer "POLYMER".
@@ -9164,7 +9163,8 @@ Para saber más de su contenido, mira esto: https://github.com/diasurgical/devil
 Si nos da un error repetido de "Unhandled SDL Event: SDL_AUDIODEVICEADDED", ni caso. No es por el sistema sino porque el código del juego imprime eventos que no usa.
 Manda la salida a /dev/null y fuera.
 
-PARA TENER FRAMERATE ESTABLE CON VRR, PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR, ASÍ:
+PARA TENER FRAMERATE ESTABLE CON VRR Y POCO USO DE CPU, ACTIVAMOS EL VSYNC EN LAS OPCIONES.
+SI AÚN ASÍ NOTAMOS "EFECTO CINTA TRANSPORTADORA", ADEMÁS PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR, ASÍ:
 wlr-randr --output DP-1 --mode 1920x1080@60
 ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./devilutionx &> /dev/null
 wlr-randr --output DP-1 --preferred
