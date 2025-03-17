@@ -584,8 +584,9 @@ make rednukem
 
 Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
-PARA TENER VÍDEO CORRECTAMENTE SINCRONIZADO CON VRR (con "allowTearing" activado en el compositor Wayland):
-En VIDEO MODE ponemos "FRAME LIMIT" a "NONE", y "VSYNC ON".
+PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
+Y EN LAS OPCIONES DEL JUEGO PONEMOS "FRAME LIMIT" a "NONE", y "VSYNC ON".
 
 PARA TENER FILTRADO BILINEAL, editamos .config/rednukem/settings.cfg, ponemos "r_texfilter" a "1"
 y luego dentro del juego elegimos el renderer "POLYMER".
@@ -9163,10 +9164,12 @@ Para saber más de su contenido, mira esto: https://github.com/diasurgical/devil
 Si nos da un error repetido de "Unhandled SDL Event: SDL_AUDIODEVICEADDED", ni caso. No es por el sistema sino porque el código del juego imprime eventos que no usa.
 Manda la salida a /dev/null y fuera.
 
-PARA TENER FRAMERATE ESTABLE CON VRR Y POCO USO DE CPU, ACTIVAMOS EL VSYNC EN LAS OPCIONES.
+PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
+Y ACTIVAMOS EL VSYNC EN LAS OPCIONES DEL JUEGO.
 SI AÚN ASÍ NOTAMOS "EFECTO CINTA TRANSPORTADORA", ADEMÁS PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR, ASÍ:
 wlr-randr --output DP-1 --mode 1920x1080@60
-ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./devilutionx &> /dev/null
+MESA_VK_WSI_PRESENT_MODE=mailbox ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./devilutionx &> /dev/null
 wlr-randr --output DP-1 --preferred
 
 SM64EX, port del Mario64 para GNU/Linux
@@ -9284,6 +9287,9 @@ cp soh/*.otr ~/zelda64/
 
 --NOTAS ADICIONALES--
 
+PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
+
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
 PARA USAR MODS, creamos el directorio ~/zelda64/mods y los metemos ahí.
@@ -9343,6 +9349,9 @@ ninja -j10
 
 mkdir ~/majora
 cp mm/2s2h.elf ~/majora/
+
+PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
 
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
@@ -9762,6 +9771,9 @@ y los directorios "Bitmap", "Tracks", y "Sounds" que vienen con los sources.
 Ejecutamos con:
 stuntcarracer -f -d -n
 ..Donde "-f" es para pantalla completa, "-d" para usar la resolución actual, y "-n" para desactivar el MSAA.
+
+PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
 
 ELDRITCH en GNU/LINUX
 =====================
@@ -11523,9 +11535,13 @@ Los datos del Cannon Fodder 2 irían en ~/cf/Data/Amiga2 y simplemente hay que m
 en este mismo archivo) y sacarlos de ahí. Puede que te el OpenFoder te diga que el MD5 un fichero llamado MAPM1.SPT es incorrecto. En ese caso,
 puedes sacar el MAPM1.SPT correcto del ADF marcado como [a]. 
 
-PARA TENER FRAMERATE CORRECTO CON VRR (SI NO, EL JUEGO VA DEMASIADO RÁPIDO), PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR, ASÍ:
+
+PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
+PARA TENER FRAMERATE CORRECTO CON VRR (SI NO, EL JUEGO VA DEMASIADO RÁPIDO), PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR.
+TOTAL, QUE EL JUEGO LO CARGAMOS ASÍ:
 wlr-randr --output DP-1 --mode 1920x1080@60
-ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./hcl
+MESA_VK_WSI_PRESENT_MODE=mailbox ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./hcl
 wlr-randr --output DP-1 --preferred
 
 ABUSE en GNU/Linux
