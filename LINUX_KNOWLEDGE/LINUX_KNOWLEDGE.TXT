@@ -8239,22 +8239,10 @@ y para volver, obviamente, start.
 
 Configuración base de la que partiremos, es decir, lo primero que ponemos:
 
-VIDEO (SE NECESITA VRR!!!):
-Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" desactivado y VRR ACTIVADO, sin necesidad de "AUTO FRAME DELAY".
-La gracia de VULKAN es esa, tener triple buffer sin VSYNC (el VSYNC es lo que mete el lag realmente), para lo cual necesitamos
-sí o sí VRR. 
-
-SI NO TIENES VRR:
-PARA TENER RETROARCH DE BAJA LATENCIA SIN VRR, debemos compilar el kernel con 300 HZ y LOW-LATENCY DESKTOP
-(tienes instrucciones en este mismo fichero).
-Eso es así porque, si no tenemos VRR, tenemos que poner un modo de 120Hz (100Hz para contenido PAL) para evitar tener "vsync lag",
-acompañado de "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" puesto a "AUTO" y los 120Hz sólo son estables con un kernel así.
-VIDEO: Driver VULKAN, "MAX SWAPCHAIN" a 3, "VSYNC" activado.
-(IMPORTANTE: en Vulkan NO hay ninguna diferencia poniendo MAX_SWAPCHAIN a 2, según el test del ratón).
-(Si desativas VSYNC, aparentemente no hay tearing PERO aparecen stuttering al cabo de un rato).
-
-(NO USAR POR TENER MUCHO LAG EL DRIVER DE VIDEO "GLCORE" PORQUE TIENE MUCHO INPUT LAG HAGAS LO QUE HAGAS, SEGÚN EL TEST DEL RATÓN.
- NECESITA GLES3 U OPENGL DE ESCRITORIO, PARA LO CUAL TIENES QUE COMPILAR CON "--disable-glx").
+Modo de vídeo de 120Hz para evitar tener "vsync lag", "VSYNC" a "ON", "SYNC TO EXACT CONTENT FRAME" a "OFF"
+(excepto para cores que lo necesiten, como FBNEO, AMIGA, DOSBOX, FLYCAST... EN LOS QUE ACTIVAMOS TANTO "SYNC TO EXACT CONTENT FRAME" COMO "VSYNC"),
+"VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO"
+SI NO TENEMOS VRR/AdaptiveSync, es lo mismo pero con modos físicos de vídeo adecuados (100Hz para Amiga, modos de entre 50-60Hz para arcade, etc). 
 
 -SCALING: "Integer Scale" a "ON", con "Integer Scale Scaling" a "Smart".
 (De lo contrario hay patrones en las scanlines que sólo se ven en fondos azulados o blancos, etc).
