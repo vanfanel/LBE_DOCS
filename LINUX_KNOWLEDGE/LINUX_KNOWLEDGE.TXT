@@ -8284,6 +8284,12 @@ Para el core de SEGA, debido al tema del dithering y tal, tenemos varias opcione
 
 APUNTES SOBRE CORES ESPECÍFICOS:
 
+#####MUY IMPORTANTE######
+EN GENERAL, "SYNC TO EXACT CONTENT FRAME" SIEMPRE LO DEJAMOS A "OFF" EN TODOS LOS CORES, Y SÓLO LO ACTIVAMOS EN CORES
+ARCADE (FBNEO, MAME), DOSBOX Y AMIGA.
+SÓLO FUNCIONA BIEN EN ESOS CORES CON FRECUENCIAS EXÓTICAS, EN LOS DEMÁS, QUE VAN A ~60HZ NOS ESTROPEA CASI IMPERCEPTIBLEMENTE LOS SCROLLES.
+#####MUY IMPORTANTE######
+
 PARA CORES DE ORDENADOR QUE NECESITAN TODO EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
 NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE", ya que son dos funcionalidades que se solapan
 y si tuvieses ambas la "HOTKEY ENABLE" no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
