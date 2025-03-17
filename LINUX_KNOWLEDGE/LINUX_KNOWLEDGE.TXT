@@ -584,7 +584,7 @@ make rednukem
 
 Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
-PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
 CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
 Y EN LAS OPCIONES DEL JUEGO PONEMOS "FRAME LIMIT" a "NONE", y "VSYNC ON".
 
@@ -2318,6 +2318,10 @@ https://github.com/NagyD/SDLPoP/tags
 
 Entramos en el directorio "src", y compilamos con:
 CFLAGS="-march=native -mtune=native" CPPFLAGS="-march=native -mtune=native" make -j4
+
+PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
+Y EN LAS OPCIONES DEL JUEGO PONEMOS "FRAME LIMIT" a "NONE", y "VSYNC ON".
 
 ******Cambiar la región de un juego de MegaDrive y Master System********************
 
@@ -9164,7 +9168,7 @@ Para saber más de su contenido, mira esto: https://github.com/diasurgical/devil
 Si nos da un error repetido de "Unhandled SDL Event: SDL_AUDIODEVICEADDED", ni caso. No es por el sistema sino porque el código del juego imprime eventos que no usa.
 Manda la salida a /dev/null y fuera.
 
-PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
 CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
 Y ACTIVAMOS EL VSYNC EN LAS OPCIONES DEL JUEGO.
 SI AÚN ASÍ NOTAMOS "EFECTO CINTA TRANSPORTADORA", ADEMÁS PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR, ASÍ:
@@ -9287,7 +9291,7 @@ cp soh/*.otr ~/zelda64/
 
 --NOTAS ADICIONALES--
 
-PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
 CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
 
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
@@ -9350,7 +9354,7 @@ ninja -j10
 mkdir ~/majora
 cp mm/2s2h.elf ~/majora/
 
-PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
 CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
 
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
@@ -9772,7 +9776,7 @@ Ejecutamos con:
 stuntcarracer -f -d -n
 ..Donde "-f" es para pantalla completa, "-d" para usar la resolución actual, y "-n" para desactivar el MSAA.
 
-PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
 CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
 
 ELDRITCH en GNU/LINUX
@@ -11535,8 +11539,7 @@ Los datos del Cannon Fodder 2 irían en ~/cf/Data/Amiga2 y simplemente hay que m
 en este mismo archivo) y sacarlos de ahí. Puede que te el OpenFoder te diga que el MD5 un fichero llamado MAPM1.SPT es incorrecto. En ese caso,
 puedes sacar el MAPM1.SPT correcto del ADF marcado como [a]. 
 
-
-PARA TENER FRAMERATE ESTABLE CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
+PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
 CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
 PARA TENER FRAMERATE CORRECTO CON VRR (SI NO, EL JUEGO VA DEMASIADO RÁPIDO), PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR.
 TOTAL, QUE EL JUEGO LO CARGAMOS ASÍ:

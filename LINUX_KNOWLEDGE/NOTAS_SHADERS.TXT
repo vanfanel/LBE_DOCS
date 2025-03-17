@@ -1,6 +1,14 @@
 SHADERS PARA TODOS LOS PROGRAMAS DE OPENGL Y VULKAN EN GNU/LINUX
 ================================================================
 
+NOTA PREVIA IMPORTANTE
+Si en el compositor de Wayland hemos activado "allowTearing"
+(ya que Wayland por defecto no permite tearing, pero nosotros le decimos que SÍ permita tearing para no alterar el VRR y tener menos input lag
+al controlar los juegos el VSYNC y no el compositor), al usar el driver ZINK se pone el PRESENTATION MODE a "immediate".
+Esto se traduce en que si usamos allowTearing y ZINK juntos, juegos que sobre el driver normal de OpenGL no tienen tearing empiezan a tenerlo.
+Para corregir esto cuando te pase, ejecuta el juego precedido de la variable de entorno MESA_VK_WSI_PRESENT_MODE=mailbox"
+(o "fifo", que se supone que da más suavidad pero yo no lo noto, así que usa mailbox si es posible porque se supone que da menos lag).
+
 La idea es usar VKBASALT.
 Los programas que usen OpenGL, que son la mayoría, se pueden hacer correr sobre Vulkan con Zink
 (Hay que compilar MESA con soporte para Zink, que ya lo tienes así en las instrucciones de compilación de MESA).
