@@ -2320,8 +2320,7 @@ Entramos en el directorio "src", y compilamos con:
 CFLAGS="-march=native -mtune=native" CPPFLAGS="-march=native -mtune=native" make -j4
 
 PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
-CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
-Y EN LAS OPCIONES DEL JUEGO PONEMOS "FRAME LIMIT" a "NONE", y "VSYNC ON".
+CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
 
 ******Cambiar la región de un juego de MegaDrive y Master System********************
 
@@ -10411,6 +10410,9 @@ make -j4
 
 Creamos el directorio ~/hurrican, y allí copiamos el ejecutable, junto con los directorios data y lang, que vienen con los sources.
 
+Cargamos el juego usando su propio shader CRT en vez de usar ZINK+VKBASALT. El shader que trae no es gran cosa, pero nos vale:
+./hurrican.exe --crt --colorbleed
+
 EMULADOR MODEL 3 (SUPERMODEL) EN GNU/LINUX
 ==========================================
 
@@ -10713,7 +10715,10 @@ uno de los formatos PNG, JPG o WEBP.
 Para poner un buffer de audio más pequeño, puedes pasar el parámetro -sound_buffer 1024
 (Por defecto viene puesto 2048 que es mucho).
 
-Para tener scanlines, pasa: -scanlines -scanline_alpha 32
+Para tener scanlines, pasa: -scanlines
+
+Para que el SuperDonQuixote se vea a 4:3, pasa: -force_aspect_ratio
+(OJO que en este parámetro se usan guiones bajos!)
 
 Para configurar el joystick:
 Copia, al mismo directorio donde metas el ejecutable hypseus, el archivo docs/hypinput.ini,
