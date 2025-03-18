@@ -1029,10 +1029,10 @@ WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WIT
 En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
 
 -PARA TENER VÍDEO PERFECTO SI TIENES VRR/AdaptiveSync:
-----Juegos de 60Hz:
+----Juegos de 60Hz (la GRAN mayoría!):
 	En las opciones de RetroArch activa el VSYNC y mantén desactivado "SYNC TO EXACT".
 	Además, van mejor poniéndole en "Timmings->Override emulated video refresh rate" a "59" (previene dropouts al cambiar el modo de vídeo).
-----Juegos de 70Hz:
+----Juegos de 70Hz (Lemmings, Lemmings 2, Lotus 3, Pinball Dreams):
 	En las opciones de RetroArch activa el VSYNC y el "SYNC TO EXACT".
 	Además, pon "Timmings->Override emulated video refresh rate" a "OFF"
 LÓGICAMENTE, trata siempre de tratar los juegos como si fuesen compatibles con 60Hz. Para saber si un juego es compatible con 60Hz,
