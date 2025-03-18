@@ -766,6 +766,7 @@ SI NO TENEMOS VRR/AdaptiveSync, es lo mismo pero con modos físicos de vídeo ad
 (es decir, 100Hz para Amiga, modos de entre 50-60Hz para arcade, etc).
 
 AUDIO: driver ALSATHREAD, 48000 Hz, 32ms (necesario kernel a 300Hz + Preemptible Kernel), resampler quality normal
+(IMPORTANTE!!! Si tienes VRR/AdaptiveSync, incluso si usas sólo VSYNC, desactiva "Synchronization", no te hace falta y se oye mejor sin eso).
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 SCALING: "Integer Scale" a "ON", con "Integer Scale Scaling" a "Smart".

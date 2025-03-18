@@ -8275,6 +8275,7 @@ SI NO TENEMOS VRR/AdaptiveSync, es lo mismo pero con modos físicos de vídeo ad
 (De lo contrario hay patrones en las scanlines que sólo se ven en fondos azulados o blancos, etc).
 
 -AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal.
+(IMPORTANTE!!! Si tienes VRR/AdaptiveSync, incluso si usas sólo VSYNC, desactiva "Synchronization", no te hace falta y se oye mejor sin eso).
 (No usamos ALSA normal porque, incluso con 36ms, hay dropout al lanzar el Jazz Jackrabbit).
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
