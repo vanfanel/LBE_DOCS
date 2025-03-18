@@ -9305,7 +9305,8 @@ cp soh/*.otr ~/zelda64/
 --NOTAS ADICIONALES--
 
 PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
-CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
+CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
+Y ACTIVAMOS EL VSYNC EN LAS OPCIONES DEL JUEGO.
 
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
@@ -9368,7 +9369,8 @@ mkdir ~/majora
 cp mm/2s2h.elf ~/majora/
 
 PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
-CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
+CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
+Y ACTIVAMOS EL VSYNC EN LAS OPCIONES DEL JUEGO.
 
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
@@ -9411,7 +9413,7 @@ que se crea solo en el directorio donde tienes el ejecutable.
 --La ROM necesaria es "Star Fox 64 (USA) (Rev 1).z64" con SHA1: 09f0d105f476b00efa5303a3ebc42e60a7753b7a
   La renombramos a "baserom.z64" y la metemos en el directorio raíz de los sources, y en el directorio donde acabamos de
   compilar el engine hacemos:
-  cmake --build . --target ExtractAssets -j10
+  cmake --build . --target GeneratePortO2R -j10
   ...Y copiamos el archivo resultante "sf64.o2r" al mismo directorio que el ejecutable (yo lo meto todo en "~/starfox64").
 
 GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
