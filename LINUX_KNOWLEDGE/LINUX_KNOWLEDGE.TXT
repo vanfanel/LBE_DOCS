@@ -1029,12 +1029,12 @@ WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WIT
 En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
 
 -PARA TENER VÍDEO PERFECTO SI TIENES VRR/AdaptiveSync:
-----Juegos de 60Hz (para esto no nos hace falta VRR para nada...):
-	Van mejor poniéndole en "Timmings->Override emulated video refresh rate" a "59" (previene dropouts al cambiar el modo de vídeo).
-	Además, en las opciones de RetroArch activa el VSYNC y mantén desactivado "SYNC TO EXACT".
+----Juegos de 60Hz:
+	En las opciones de RetroArch activa el VSYNC y mantén desactivado "SYNC TO EXACT".
+	Además, van mejor poniéndole en "Timmings->Override emulated video refresh rate" a "59" (previene dropouts al cambiar el modo de vídeo).
 ----Juegos de 70Hz:
-	Pon "Timmings->Override emulated video refresh rate" a "OFF"
-	Además, en las opciones de RetroArch activa el VSYNC y el "SYNC TO EXACT".
+	En las opciones de RetroArch activa el VSYNC y el "SYNC TO EXACT".
+	Además, pon "Timmings->Override emulated video refresh rate" a "OFF"
 LÓGICAMENTE, trata siempre de tratar los juegos como si fuesen compatibles con 60Hz. Para saber si un juego es compatible con 60Hz,
 ponle "Timmings->Override emulated video refresh rate" a "59" y comprueba que no hace nada raro (músicas lentas). Si suena bien,
 es compatible con 60Hz.
