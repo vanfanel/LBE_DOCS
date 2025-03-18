@@ -1083,6 +1083,8 @@ D-Pad UP: Left Analog Y+
 D-Pad UP: Left Analog X-
 D-Pad UP: Left Analog X+
 
+PARA TENER escalado non-integer sin que se jodan las scanlines es el LOTTES, con la curvatura quitada.
+
 PARA EL ASPECT RATIO: Lo de siempre para todos los cores en general: en SETTINGS->VIDEO se pone en 4:3 para todo y fuera.  
 
 PARA EVITAR PANTALLA NEGRA al principio del SUPERFROG si se usa el driver de vídeo VULKAN: desactiva el "FRAME DUPING" en las opciones del core.
@@ -1102,8 +1104,6 @@ LA EQUIVALENCIA DE CICLOS VA ASÍ:
 Pentium 90        50000
 Pentium MMX-166  100000
 Pentium II 300   200000
-
-PARA TENER escalado non-integer sin que se jodan las scanlines es el GEOM, con la curvatura quitada.
 
 PARA CARGAR EL Might & Magic 2, antes tienes que ejecutar LOADFIX (es un comando del propio DOSBOX), para que no se queje de la memoria.
 
