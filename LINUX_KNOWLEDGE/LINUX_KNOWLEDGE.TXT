@@ -1028,6 +1028,17 @@ WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WIT
 -Para que todo vaya suave en general (luego veremos que hay ciertos juegos que necesitan 70Hz sí o sí), en OPTIONS del core:
 En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
 
+-PARA TENER VÍDEO PERFECTO SI TIENES VRR/AdaptiveSync:
+----Juegos de 60Hz (para esto no nos hace falta VRR para nada...):
+	Van mejor poniéndole en "Timmings->Override emulated video refresh rate" a "59" (previene dropouts al cambiar el modo de vídeo).
+	Además, en las opciones de RetroArch activa el VSYNC y mantén desactivado "SYNC TO EXACT".
+----Juegos de 70Hz:
+	Pon "Timmings->Override emulated video refresh rate" a "OFF"
+	Además, en las opciones de RetroArch activa el VSYNC y el "SYNC TO EXACT".
+LÓGICAMENTE, trata siempre de tratar los juegos como si fuesen compatibles con 60Hz. Para saber si un juego es compatible con 60Hz,
+ponle "Timmings->Override emulated video refresh rate" a "59" y comprueba que no hace nada raro (músicas lentas). Si suena bien,
+es compatible con 60Hz.
+
 -SÓLO SI NO TIENES VRR: Para evitar el input lag causado por tener el VSYNC activado (es necesario si no tienes VRR),
 puedes poner un modo de vídeo de 120Hz y además tener "VSYNC SWAP INTERVAL" en "AUTO".
 A tal efecto, lo más cómodo es que crees /usr/local/bin/dos con este contenido:
@@ -1040,9 +1051,6 @@ wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 #########
 dos confs/juego.conf
 #########
-
--Si hay juegos que te dan dropouts o distorsiones de audio al cambiar de modo de vídeo, es porque no has compilado el kernel
-con 300 Hz + Preemptible Kernel (Low-Latency Desktop). Mírate el documento de DEBIAN para saber cómo compilarlo.
 
 -SÓLO SI NO TIENES VRR: Para los "juegos de 70Hz" vayan bien (son juegos como Lemmings, Lotus 3... que tienen música lenta a 60 hagas lo que hagas),
 crea el archivo ~/.config/retroarch/config/70hz.cfg con el contenido:
