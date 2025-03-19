@@ -8261,25 +8261,22 @@ sudo service lightdm stop
 y para volver, obviamente, start.
 
 **********Configuración óptima de RetroArch (En Wayland)************
-MUY IMPORTANTE: Lo primero es entender que "SYNC TO EXACT CONTENT FRAME" NO ES VRR/AdaptiveSync: "SYNC TO EXACT CONTENT FRAME" es sólo para
-que se sincronize el juego con su velocidad original. En consolas y en ordenadores NTSC esto da igual, así que en general
-aunque nuestro sistema soporte VRR/AdaptiveSync, no activamos "SYNC TO EXACT CONTENT FRAME" en la gran mayoría de los sistemas
-(activamos "SYNC TO EXACT CONTENT FRAME" SOLAMENTE en cores que lo necesiten, como FBNEO, AMIGA, DOSBOX, FLYCAST...
-Actives o no actives "SYNC TO EXACT CONTENT FRAME", VSYNC usará VRR/AdaptiveSync si lo tienes para sincronizar sin input lag.
 
-Así que ponemos modo de vídeo de 120Hz para evitar tener "vsync lag" (si tienes VRR. entonces Wayland debería empezar automáticamente a ~119Hz
-y si no lo tienes, pues estableces 120Hz),
-"VSYNC" a "ON", "SYNC TO EXACT CONTENT FRAME" a "OFF"
-(excepto para cores que lo necesiten, como FBNEO, AMIGA, DOSBOX, FLYCAST... EN LOS QUE ACTIVAMOS TANTO "SYNC TO EXACT CONTENT FRAME" COMO "VSYNC"),
-"VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO"
-SI NO TENEMOS VRR/AdaptiveSync, es lo mismo pero con modos físicos de vídeo adecuados puestos "a mano"
-(es decir, 100Hz para Amiga, modos de entre 50-60Hz para arcade, etc).
+-VÍDEO CON VRR/AdaptiveSync
+ACTIVA "SYNC TO EXACT CONTENT FRAME",
+Y DESACTIVA "VSYNC" Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
+Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "1"
+
+-VÍDEO SIN VRR/AdaptiveSync
+Activamos VSYNC y "Settings->Audio->Synchronization->Synchronization"
+y ponemos modos "de refresco doble" antes de entrar a RetroArch
+(es decir, normalmente 120Hz, 100Hz para Amiga, modos de entre 100Hz y 120Hz para arcade, etc).
+Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "2"
 
 -SCALING: "Integer Scale" a "ON", con "Integer Scale Scaling" a "Smart".
 (De lo contrario hay patrones en las scanlines que sólo se ven en fondos azulados o blancos, etc).
 
 -AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal.
-(IMPORTANTE!!! Si tienes VRR/AdaptiveSync, incluso si usas sólo VSYNC, desactiva "Synchronization", no te hace falta y se oye mejor sin eso).
 (No usamos ALSA normal porque, incluso con 36ms, hay dropout al lanzar el Jazz Jackrabbit).
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 

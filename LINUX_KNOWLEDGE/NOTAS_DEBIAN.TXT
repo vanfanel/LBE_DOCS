@@ -750,20 +750,16 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 		CONFIGURACIÓN ÓPTIMA DE RETROARCH EN WAYLAND
 
-VÍDEO
-MUY IMPORTANTE: Lo primero es entender que "SYNC TO EXACT CONTENT FRAME" NO ES VRR/AdaptiveSync: "SYNC TO EXACT CONTENT FRAME" es sólo para
-que se sincronize el juego con su velocidad original. En consolas y en ordenadores NTSC esto da igual, así que en general
-aunque nuestro sistema soporte VRR/AdaptiveSync, no activamos "SYNC TO EXACT CONTENT FRAME" en la gran mayoría de los sistemas
-(activamos "SYNC TO EXACT CONTENT FRAME" SOLAMENTE en cores que lo necesiten, como FBNEO, AMIGA, DOSBOX, FLYCAST...
-Actives o no actives "SYNC TO EXACT CONTENT FRAME", VSYNC usará VRR/AdaptiveSync si lo tienes para sincronizar sin input lag.
+-VÍDEO CON VRR/AdaptiveSync
+ACTIVA "SYNC TO EXACT CONTENT FRAME",
+Y DESACTIVA "VSYNC" Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
+Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "1"
 
-Así que ponemos modo de vídeo de 120Hz para evitar tener "vsync lag" (si tienes VRR. entonces Wayland debería empezar automáticamente a ~119Hz
-y si no lo tienes, pues estableces 120Hz),
-"VSYNC" a "ON", "SYNC TO EXACT CONTENT FRAME" a "OFF"
-(excepto para cores que lo necesiten, como FBNEO, AMIGA, DOSBOX, FLYCAST... EN LOS QUE ACTIVAMOS TANTO "SYNC TO EXACT CONTENT FRAME" COMO "VSYNC"),
-"VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO"
-SI NO TENEMOS VRR/AdaptiveSync, es lo mismo pero con modos físicos de vídeo adecuados puestos "a mano"
-(es decir, 100Hz para Amiga, modos de entre 50-60Hz para arcade, etc).
+-VÍDEO SIN VRR/AdaptiveSync
+Activamos VSYNC y "Settings->Audio->Synchronization->Synchronization"
+y ponemos modos "de refresco doble" antes de entrar a RetroArch
+(es decir, normalmente 120Hz, 100Hz para Amiga, modos de entre 100Hz y 120Hz para arcade, etc).
+Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "2"
 
 AUDIO: driver ALSATHREAD, 48000 Hz, 32ms (necesario kernel a 300Hz + Preemptible Kernel), resampler quality normal
 (IMPORTANTE!!! Si tienes VRR/AdaptiveSync, incluso si usas sólo VSYNC, desactiva "Synchronization", no te hace falta y se oye mejor sin eso).
