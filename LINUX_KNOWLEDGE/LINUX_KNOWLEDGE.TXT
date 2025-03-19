@@ -2170,6 +2170,10 @@ Ahora ya, lo de las llaves va así:
 10)Y luego cada uno elige la predeterminación que desea.
 11)Llave finalizada.
 
+******ESTABILIZAR FRAMERATE CON VRR********************************
+
+echo "high" > /sys/class/drm/card0/device/power_dpm_force_performance_level
+
 ******AVERIGUAR QUÉ PARÁMETROS ACEPTA UN MÓDULO DEL KERNEL*********
 
 modinfo -p <nomre_módulo>

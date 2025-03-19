@@ -765,10 +765,6 @@ y si no lo tienes, pues estableces 120Hz),
 SI NO TENEMOS VRR/AdaptiveSync, es lo mismo pero con modos físicos de vídeo adecuados puestos "a mano"
 (es decir, 100Hz para Amiga, modos de entre 50-60Hz para arcade, etc).
 
-PARA QUE EL VÍDEO VAYA SIN MICRO-STUTTERING CUANDO USAS "SYNC TO EXACT CONTENT FRAME"
-echo manual > /sys/class/drm/card0/device/power_dpm_force_performance_level
-echo 1 > /sys/class/drm/card0/device/pp_power_profile_mode
-
 AUDIO: driver ALSATHREAD, 48000 Hz, 32ms (necesario kernel a 300Hz + Preemptible Kernel), resampler quality normal
 (IMPORTANTE!!! Si tienes VRR/AdaptiveSync, incluso si usas sólo VSYNC, desactiva "Synchronization", no te hace falta y se oye mejor sin eso).
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
@@ -883,6 +879,7 @@ y sobre todo desactivamos "Intel Platform Monitoring Technology (PMT) Telemetry 
 
 --MUY IMPORTANTE PARA JUEGOS:
 General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop)
+...Y desactivamos "Preemption behaviour defined on boot"
 Processor Type and Features->Timer Frequency->300Hz
 ...Y también activamos como módulo:
 Device Drivers->Input device support->Joysticks/Gamepads->Xbox gamepad support
