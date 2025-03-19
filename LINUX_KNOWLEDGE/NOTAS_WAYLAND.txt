@@ -1564,7 +1564,6 @@ en retroach.cfg, y en los overrides del core (en este caso .config/retroarch/con
 video_refresh_rate = "50.005001". Esa frecuencia se ha detectado poniendo el modo de vídeo a 50Hz con wlr-ranrd y entrando en RA.
 Y al cargar una ROM de ese core, debería cambiarnos el modo de vídeo a 50Hz. (OJO: En Wayland de momento no funciona, sólo en KMS/DRM).
 
-
 CÓMO SABER SI UN PROGRAMA ESTÁ CORRIENDO EN MODO DIRECT SCANOUT ON WAYLAND
 ==========================================================================
 
@@ -1584,3 +1583,12 @@ Ejecutamos RetroArch, o algún juego de SDL2, y enseguida vemos:
 Y al salir el programa en cuestión:
 
 00:00:15.025 [types/scene/wlr_scene.c:1709] Direct scan-out enabled
+
+ERROR "Failed to connect to display" AL CAMBIAR ENTRE COMPOSITORES DE WAYLAND
+=============================================================================
+
+A veces, al cambiar de un compositor de Wayland a otro, vemos que los programas gráficos no funcionan y que al ejecutar wlr-randr
+nos dice: "Failed to connect to display"
+
+Se debe simplemente a que para ese compositor tienes que exportar la variable de entorno WAYLAND_DISPLAY con otro valor,
+si le tienes puesto "wayland-0" ponle "wayland-1" y viceversa. Lo sueles exportar en ~/.bashrc, así que ajústalo allí.
