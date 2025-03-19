@@ -8277,7 +8277,7 @@ Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "2"
 (De lo contrario hay patrones en las scanlines que sólo se ven en fondos azulados o blancos, etc).
 
 -AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal.
-(No usamos ALSA normal porque, incluso con 36ms, hay dropout al lanzar el Jazz Jackrabbit).
+(IMPORTANTE!!! Si tienes VRR/AdaptiveSync, recuerda desactivar "Synchronization"!!!)
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 Para el core de SEGA, debido al tema del dithering y tal, tenemos varias opciones:

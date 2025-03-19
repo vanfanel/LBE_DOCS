@@ -762,7 +762,7 @@ y ponemos modos "de refresco doble" antes de entrar a RetroArch
 Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "2"
 
 AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal
-(IMPORTANTE!!! Si tienes VRR/AdaptiveSync, incluso si usas sólo VSYNC, desactiva "Synchronization", no te hace falta y se oye mejor sin eso).
+(IMPORTANTE!!! Si tienes VRR/AdaptiveSync, recuerda desactivar "Synchronization"!!!)
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 
 SCALING: "Integer Scale" a "ON", con "Integer Scale Scaling" a "Smart".
