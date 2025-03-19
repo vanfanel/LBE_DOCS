@@ -750,7 +750,7 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 		CONFIGURACIÓN ÓPTIMA DE RETROARCH EN WAYLAND
 
--VÍDEO CON VRR/AdaptiveSync
+-VÍDEO CON VRR/AdaptiveSync (NOTA: Se usa un kernel a 300Hz + "Preemptible Kernel/Low Latency Desktop" y "allowTearing" activado en el compositor)
 ACTIVA "SYNC TO EXACT CONTENT FRAME",
 Y DESACTIVA "VSYNC" Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
 Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "1"
@@ -761,7 +761,7 @@ y ponemos modos "de refresco doble" antes de entrar a RetroArch
 (es decir, normalmente 120Hz, 100Hz para Amiga, modos de entre 100Hz y 120Hz para arcade, etc).
 Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "2"
 
-AUDIO: driver ALSATHREAD, 48000 Hz, 32ms (necesario kernel a 300Hz + Preemptible Kernel), resampler quality normal
+AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal
 (IMPORTANTE!!! Si tienes VRR/AdaptiveSync, incluso si usas sólo VSYNC, desactiva "Synchronization", no te hace falta y se oye mejor sin eso).
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
 

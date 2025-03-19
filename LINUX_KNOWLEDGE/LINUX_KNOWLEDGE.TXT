@@ -8262,7 +8262,7 @@ y para volver, obviamente, start.
 
 **********Configuración óptima de RetroArch (En Wayland)************
 
--VÍDEO CON VRR/AdaptiveSync
+-VÍDEO CON VRR/AdaptiveSync (NOTA: Se usa un kernel a 300Hz + "Preemptible Kernel/Low Latency Desktop" y "allowTearing" activado en el compositor)
 ACTIVA "SYNC TO EXACT CONTENT FRAME",
 Y DESACTIVA "VSYNC" Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
 Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "1"
@@ -8279,12 +8279,6 @@ Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "2"
 -AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal.
 (No usamos ALSA normal porque, incluso con 36ms, hay dropout al lanzar el Jazz Jackrabbit).
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
-
--En LATENCY, activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
-El otro método parecido a Runahead, llamado "Run Preemptive Frames", causa pitch wobbling, así que ni lo antes probando. 
-
-(No hace falta pasar ningunos parámetros al kernel para usar 32ms, ningún parámetro te dejará bajar de 32ms en SNES9x)
-LATENCY: activa RUNAHEAD con 1 frame y activa SECOND INSTANCE.
 
 Para el core de SEGA, debido al tema del dithering y tal, tenemos varias opciones:
 
