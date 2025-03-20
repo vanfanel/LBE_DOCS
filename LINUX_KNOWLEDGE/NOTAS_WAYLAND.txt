@@ -448,6 +448,68 @@ cage <nombre_ejecutable>
 Y si es con parámetros, usamos -- entre cage y el nombre del ejecutable, así:
 cage -- <nombre_ejecutable> <parámetros>
 
+INSTALAR HYPRLAND
+=================
+
+DEPENDENCIAS PREVIAS (HAY QUE INSTALARLAS EN ESTE ÓRDEN PORQUE DEPENDEN A SU VEZ UNAS DE OTRAS)
+
+-Instalamos hyprwayland-scanner:
+----Instalamos dependencias previas: apt-get install libpugixml-dev
+----Bajamos los últimos sources de: https://github.com/hyprwm/hyprwayland-scanner/releases
+----Compilamos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release
+
+--Instalamos hyprultils:
+----Bajamos los últimos sources de https://github.com/hyprwm/hyprutils/releases
+----Compilamos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release
+
+-Instalamos Aquamarine:
+----Bajamos los últimos sources de: https://github.com/hyprwm/aquamarine/releases
+----Compilamos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release
+
+--Instalamos hyprlang:
+----Bajamos los últimos sources de: https://github.com/hyprwm/hyprlang/releases
+----Compilamos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release
+
+--Instalamos librsvg:
+----Instalamos dependencias previas:
+--------Instalamos RUST según las instrucciones de https://www.rust-lang.org/tools/install (se desinstala con "rustup self uninstall"):
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+----Bajamos los últimos sources de: https://gitlab.gnome.org/GNOME/librsvg/-/releases
+----Compilamos con:
+mkdir b4
+cd b4
+meson setup ..
+
+--Instalamos hyprcursor:
+----Bajamos los últimos sources de: https://github.com/hyprwm/hyprcursor/releases
+----Compilamos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release
+
+VAMOS CON HYPRLAND EN SÍ
+
+-Clonamos su repo:
+git clone --depth 1 --recursive https://github.com/hyprwm/Hyprland
+
+-Compilamos con:
+
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release
+
 INSTALAR WAYFIRE, EL COMPOSITOR DE WAYLAND POR DEFECTO DE RASPBERRY PI OS
 =========================================================================
 
