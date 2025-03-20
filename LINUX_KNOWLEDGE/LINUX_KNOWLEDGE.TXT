@@ -584,10 +584,6 @@ make rednukem
 
 Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
-PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
-CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
-Y EN LAS OPCIONES DEL JUEGO PONEMOS "FRAME LIMIT" a "NONE", y "VSYNC ON".
-
 PARA TENER FILTRADO BILINEAL, editamos .config/rednukem/settings.cfg, ponemos "r_texfilter" a "1"
 y luego dentro del juego elegimos el renderer "POLYMER".
 NOTA: El "POLYMOST" es más rápido, pero toda la iluminación se quita al disparar si activamos el filtrado bilineal,
@@ -888,7 +884,6 @@ PARA QUE VAYA SIN LAG Y A LA VEZ PERFECTAMENTE SUAVE, LO PRIMERO ES ACEPTAR QUE 
 SIEMPRE VAS A TENER MICRO-NANO-MINI-TIRONCILLOS SI LO INTENTAS.
 ASÍ QUE ÚSALO EN UN MODO DE 120Hz, Y EN "VIDEO->SYNCHRONIZATION":
 PON "VSYNC" a "ON", VSYNC_SWAP_INTERVAL A "2" O "AUTO" Y "SYNC TO EXACT CONTENT FRAME" A "OFF".
-ADEMÁS, EN EL COMPOSITOR ACTIVA "allowTearing" PARA QUE SEA RETROARCH EL QUE CONTROLE EL VSYNC, Y NO EL COMPOSITOR.
 Además, para evitar el micro-stuttering causado por el propio core, en las opciones del core:
 Desactiva "Buffer Graphis Commands"
 Activa "Duplicate Frames in 30Hz games"
@@ -1611,10 +1606,6 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_VULKAN=ON -DUSE_OPENGL=O
 Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 
 RECUERDA: Este core NO SOPORTA RUNAHEAD, SI LO TIENES ACTIVADO DARÁ UN SEGFAULT AL INICIARSE.
-
-PARA QUE PARA QUE LOS JUEGOS VAYAN SUAVES CON VRR Y SIN VSYNC,
-RECUERDA QUE DEBES TENER ACTIVADO "allowTearing" EN EL COMPOSITOR WAYLAND. EN GENERAL, ESTO SIEMPRE DEBE SER ASÍ,
-YA QUE EL VSYNC LO DEBE CONTROLAR EL JUEGO, NUNCA EL COMPOSITOR.
 
 PARA TENER VÍDEO PERFECTAMENTE SUAVE EN LOS JUEGOS DE 30FPS ("REZ", "Napple Tale"),
 ACTIVA EN LAS OPCIONES DE RETROARCH "SYNC TO EXACT CONTENT FRAME" (ES DE LOS POCOS CORES QUE QUEDA PERFECTO CON ESTO) Y MANTÉN ACTIVADO "VSYNC",
@@ -2349,9 +2340,6 @@ https://github.com/NagyD/SDLPoP/tags
 
 Entramos en el directorio "src", y compilamos con:
 CFLAGS="-march=native -mtune=native" CPPFLAGS="-march=native -mtune=native" make -j4
-
-PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
-CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
 
 ******Cambiar la región de un juego de MegaDrive y Master System********************
 
@@ -8262,7 +8250,7 @@ y para volver, obviamente, start.
 
 **********Configuración óptima de RetroArch (En Wayland)************
 
--VÍDEO CON VRR/AdaptiveSync (NOTA: Se usa un kernel a 300Hz + "Preemptible Kernel/Low Latency Desktop" y "allowTearing" activado en el compositor)
+-VÍDEO CON VRR/AdaptiveSync:
 ACTIVA "SYNC TO EXACT CONTENT FRAME",
 Y DESACTIVA "VSYNC" Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
 Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "1"
@@ -8296,21 +8284,6 @@ Para el core de SEGA, debido al tema del dithering y tal, tenemos varias opcione
 
 APUNTES SOBRE CORES ESPECÍFICOS:
 
-#####MUY IMPORTANTE######
-EN GENERAL, "SYNC TO EXACT CONTENT FRAME" SIEMPRE LO DEJAMOS A "OFF" EN TODOS LOS CORES, Y SÓLO LO ACTIVAMOS EN CORES
-ARCADE (FBNEO, MAME), DOSBOX, AMIGA Y FLYCAST (QUE TIENE LA OPCIÓN "DETECT FRAMERATE CHANGES" PARA INFORMAR AL FRONTEND DEL FRAMERATE EXACTO).
-SÓLO FUNCIONA BIEN EN ESOS CORES CON FRECUENCIAS EXÓTICAS.
-TODOS LOS CORES EN GENERAL SE USAN CON ~120HZ, CON "VSYNC" A "ON" Y "SYNC TO EXACT CONTENT FRAME" A "OFF".
-
-AUNQUE TENGAS ACTIVADO VSYNC, NO TENDRÁS INPUT LAG SI TU SISTEMA TIENE VRR/ADAPTIVESYNC.
-
-CUANDO ACTIVES "SYNC TO EXACT CONTENT FRAME" EN UN CORE (SÓLO TIENE SENTIDO SI TIENES VRR/ADAPTIVESYNC), DEJA TAMBIÉN ACTIVADO "VSYNC".
-GRACIAS A VRR/ADAPTIVESYNC, NO VAS A TENER INPUT LAG CAUSADO POR EL VSYNC, Y ADEMÁS "SYNC TO EXACT CONTENT FRAME" AL SER VRR ELIMINA PARTE DEL INPUT LAG POR SI QUEDA ALGO.
-
-ADEMÁS, EN EL COMPOSITOR WAYLAND ACTIVA SIEMPRE EL "allowTearing", PARA QUE SEA RETROARCH EL QUE CONTROLE EL VSYNC, Y NO EL COMPOSITOR.
-ESTO MEJORA LA LATENCIA Y EL CONTROL DE FRAMES EN GENERAL EN JUEGOS Y EMULADORES.
-#####MUY IMPORTANTE######
-
 PARA CORES DE ORDENADOR QUE NECESITAN TODO EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
 NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE", ya que son dos funcionalidades que se solapan
 y si tuvieses ambas la "HOTKEY ENABLE" no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
@@ -8321,7 +8294,6 @@ Así que hacemos esto:
 
 PARA CORES QUE NECESITAN "SYNC TO EXACT CONTENT FRAME" (FBNEO, AMIGA, DOSBOX, FLYCAST)
 ACTIVA TANTO "SYNC TO EXACT CONTENT FRAME" COMO VSYNC.
-Y RECUERDA QUE EN EL COMPOSITOR DEBES TENER ACTIVADO "allowTearing" PARA QUE EL VSYNC LO HAGA RETROACH Y NO EL COMPOSITOR.
 
 PARA EL CORE SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
@@ -8336,8 +8308,6 @@ PARA EL CORE PPSSPP: PARA QUE VAYA SIN LAG Y A LA VEZ PERFECTAMENTE SUAVE, LO PR
 SIEMPRE VAS A TENER MICRO-NANO-MINI-TIRONCILLOS SI LO INTENTAS.
 ASÍ QUE ÚSALO EN UN MODO DE 120Hz, Y EN "VIDEO->SYNCHRONIZATION":
 PON "VSYNC" a "ON", VSYNC_SWAP_INTERVAL A "2" O "AUTO" Y "SYNC TO EXACT CONTENT FRAME" A "OFF".
-ADEMÁS, EN EL COMPOSITOR ACTIVA "allowTearing", PARA QUE SEA RETROARCH EL QUE CONTROLE EL VSYNC, Y NO EL COMPOSITOR.
-ESTO MEJORA LA LATENCIA Y EL CONTROL DE FRAMES EN GENERAL EN JUEGOS Y EMULADORES.
 
 PARA EL CORE PPSSPP Y PARA EL CORE FLYCAST, ACUÉRDATE DE QUITAR EL RUNAHEAD, O DARÁN ERRORES DE INSTRUCCIONES NO VÁLIDAS,
 PANTALLAZOS A NEGRO, ETC...
@@ -9206,14 +9176,6 @@ Para saber más de su contenido, mira esto: https://github.com/diasurgical/devil
 Si nos da un error repetido de "Unhandled SDL Event: SDL_AUDIODEVICEADDED", ni caso. No es por el sistema sino porque el código del juego imprime eventos que no usa.
 Manda la salida a /dev/null y fuera.
 
-PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
-CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
-Y ACTIVAMOS EL VSYNC EN LAS OPCIONES DEL JUEGO.
-SI AÚN ASÍ NOTAMOS "EFECTO CINTA TRANSPORTADORA", ADEMÁS PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR, ASÍ:
-wlr-randr --output DP-1 --mode 1920x1080@60
-MESA_VK_WSI_PRESENT_MODE=mailbox ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./devilutionx &> /dev/null
-wlr-randr --output DP-1 --preferred
-
 SM64EX, port del Mario64 para GNU/Linux
 ========================================
 
@@ -9329,10 +9291,6 @@ cp soh/*.otr ~/zelda64/
 
 --NOTAS ADICIONALES--
 
-PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
-CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
-Y ACTIVAMOS EL VSYNC EN LAS OPCIONES DEL JUEGO.
-
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
 PARA USAR MODS, creamos el directorio ~/zelda64/mods y los metemos ahí.
@@ -9392,10 +9350,6 @@ ninja -j10
 
 mkdir ~/majora
 cp mm/2s2h.elf ~/majora/
-
-PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
-CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto)
-Y ACTIVAMOS EL VSYNC EN LAS OPCIONES DEL JUEGO.
 
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
@@ -9815,9 +9769,6 @@ y los directorios "Bitmap", "Tracks", y "Sounds" que vienen con los sources.
 Ejecutamos con:
 stuntcarracer -f -d -n
 ..Donde "-f" es para pantalla completa, "-d" para usar la resolución actual, y "-n" para desactivar el MSAA.
-
-PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
-CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
 
 ELDRITCH en GNU/LINUX
 =====================
@@ -11591,12 +11542,9 @@ Los datos del Cannon Fodder 2 irían en ~/cf/Data/Amiga2 y simplemente hay que m
 en este mismo archivo) y sacarlos de ahí. Puede que te el OpenFoder te diga que el MD5 un fichero llamado MAPM1.SPT es incorrecto. En ese caso,
 puedes sacar el MAPM1.SPT correcto del ADF marcado como [a]. 
 
-PARA TENER FRAMERATE ESTABLE SIN TEARING CON ZINK/VKBASALT, AdaptiveSync/VRR, allowTearing ACTIVADO EN EL COMPOSITOR, Y POCO USO DE CPU,
-CARGAMOS EL JUEGO CON LA VARIABLE DE ENTORNO "MESA_VK_WSI_PRESENT_MODE=mailbox" (o "fifo", que se supone que da más suavidad pero yo no lo noto).
-PARA TENER FRAMERATE CORRECTO CON VRR (SI NO, EL JUEGO VA DEMASIADO RÁPIDO), PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR.
-TOTAL, QUE EL JUEGO LO CARGAMOS ASÍ:
+PARA TENER FRAMERATE CORRECTO CON VRR (SI NO, EL JUEGO VA DEMASIADO RÁPIDO), PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR:
 wlr-randr --output DP-1 --mode 1920x1080@60
-MESA_VK_WSI_PRESENT_MODE=mailbox ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./hcl
+ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./hcl
 wlr-randr --output DP-1 --preferred
 
 ABUSE en GNU/Linux

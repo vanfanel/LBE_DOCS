@@ -1219,7 +1219,6 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 
 	<core>
 		<adaptiveSync>yes</adaptiveSync>
-		<allowTearing>yes</allowTearing>
 		<reuseOutputMode>yes</reuseOutputMode>
 	</core>
 
@@ -1246,9 +1245,9 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 
 </labwc_config>
 
---La opción "allowTearing" es FUNDAMENTAL porque son los emuladores y juegos los que deben controlar el vsync,
-NO el compositor Wayland. Gracias a esa opción, se puede tener scroll perfectamente suave en cores 3D RetroArch
-con AdaptiveSync/FreeSync/VRR y sin activar VSYNC.
+--La opción "allowTearing" no es necesaria usarla: lo que nos hace es poner el presentation mode de Vulkan a IMMEDIATE,
+en vez de MAILBOX que es el valor por defecto, pero luego tendríamos que ir poniéndolo a MAILBOX o FIFO para cada juego
+(export MESA_VK_WSI_PRESENT_MODE=mailbox) con lo que no me aporta nada realmente.
 
 --Para poder ver los eventos de teclado, podemos verlo desde un ordenador con X11 (son los mismos eventos),
 pero si nos empeñamos en verlo desde wayland, podemos usar wev:

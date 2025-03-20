@@ -750,7 +750,7 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 		CONFIGURACIÓN ÓPTIMA DE RETROARCH EN WAYLAND
 
--VÍDEO CON VRR/AdaptiveSync (NOTA: Se usa un kernel a 300Hz + "Preemptible Kernel/Low Latency Desktop" y "allowTearing" activado en el compositor)
+-VÍDEO CON VRR/AdaptiveSync
 ACTIVA "SYNC TO EXACT CONTENT FRAME",
 Y DESACTIVA "VSYNC" Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
 Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "1"
