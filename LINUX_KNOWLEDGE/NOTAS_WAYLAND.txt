@@ -482,10 +482,12 @@ mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release
 
---Instalamos librsvg:
+--Instalamos librsvg (es dependencia de hyprcursor):
 ----Instalamos dependencias previas:
 --------Instalamos RUST según las instrucciones de https://www.rust-lang.org/tools/install (se desinstala con "rustup self uninstall"):
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+--------Instalamos "cargo-cbuild":
+cargo install cargo-c
 ----Bajamos los últimos sources de: https://gitlab.gnome.org/GNOME/librsvg/-/releases
 ----Compilamos con:
 mkdir b4
