@@ -1635,8 +1635,7 @@ taskset -c 0,1 retroarch -L .config/retroarch/cores/flycast_libretro.so "$1"
 wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 
 ******Compilar FLYCAST STANDALONE en GNU/Linux*******
-NOTA PREVIA: El emulador standalone NO SINCRONIZA BIEN VIDEO Y AUDIO: o bien le sobran frames de audio o de vídeo.
-             No le des vueltas, USA EL CORE DE RETROARCH.
+NOTA PREVIA: Usa el emulador standalone sólo si tienes VRR/AdaptiveSync. Sin eso, es imposible que se sincronice bien.
 
 Instalamos una dependencia previa rara:
 apt-get install libcurl4-openssl-dev
