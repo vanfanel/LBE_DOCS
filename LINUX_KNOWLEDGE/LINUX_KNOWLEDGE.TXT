@@ -1025,11 +1025,13 @@ En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
 
 -PARA TENER VÍDEO PERFECTO SI TIENES VRR/AdaptiveSync:
 ----Juegos de 60Hz (la GRAN mayoría!):
-	En las opciones de RetroArch activa el VSYNC y mantén desactivado "SYNC TO EXACT".
-	Además, van mejor poniéndole en "Timmings->Override emulated video refresh rate" a "59" (previene dropouts al cambiar el modo de vídeo).
+	Deja las opciones de RetroArch como las tienes en general para los cores de ~60Hz, es decir:
+	Activa el VSYNC y mantén desactivado "SYNC TO EXACT".
+	Además, van mejor poniéndole en las opciones del core "Timmings->Override emulated video refresh rate" a "59"
+	(previene dropouts de audio al cambiar el modo de vídeo en el PF, por ejemplo).
 ----Juegos de 70Hz (Lemmings, Lemmings 2, Lotus 3, Pinball Dreams):
 	En las opciones de RetroArch activa el VSYNC y el "SYNC TO EXACT".
-	Además, pon "Timmings->Override emulated video refresh rate" a "OFF"
+	Además, en las opciones del core, pon "Timmings->Override emulated video refresh rate" a "OFF"
 LÓGICAMENTE, trata siempre de tratar los juegos como si fuesen compatibles con 60Hz. Para saber si un juego es compatible con 60Hz,
 ponle "Timmings->Override emulated video refresh rate" a "59" y comprueba que no hace nada raro (músicas lentas). Si suena bien,
 es compatible con 60Hz.
@@ -8257,7 +8259,8 @@ ya que los cores ~60Hz no van bien con "SYNC TO EXACT".
 
 -VÍDEO CON VRR/AdaptiveSync:
 ACTIVA "VSYNC" y DESACTIVA "SYNC TO EXACT CONTENT FRAME"
-Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
+Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization"
+DEJANDO EL RESTO DE VALORES DE "Settings->Audio->Synchronization" A SUS VALORES POR DEFECTO
 Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO"
 
 -VÍDEO SIN VRR/AdaptiveSync
