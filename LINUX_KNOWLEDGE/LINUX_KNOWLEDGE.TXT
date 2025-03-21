@@ -8249,11 +8249,15 @@ sudo service lightdm stop
 y para volver, obviamente, start.
 
 **********Configuración óptima de RetroArch (En Wayland)************
+(LO PRIMERO: Entiende que la opción VSYNC usa VRR/AdaptiveSync "por debajo" si tienes VRR/AdaptiveSync en tu sistem.
+Por tanto, aunque tengas VRR/AdaptiveSync, NO DEBES desactivar VSYNC.
+"SYNC TO EXACT" sólo se activa para sincronizar cores cuando no hay más remedio, déjalo quitado en general, NO ES LO MISMO que VRR,
+es para que los cores vayan a su velocidad original, pero no es lo mismo que usar VRR: VRR depende de VSYNC para funcionar).
 
 -VÍDEO CON VRR/AdaptiveSync:
-ACTIVA "SYNC TO EXACT CONTENT FRAME",
-Y DESACTIVA "VSYNC" Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
-Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "1"
+ACTIVA "VSYNC" y DESACTIVA "SYNC TO EXACT CONTENT FRAME"
+Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
+Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO"
 
 -VÍDEO SIN VRR/AdaptiveSync
 Activamos VSYNC y "Settings->Audio->Synchronization->Synchronization"
@@ -8261,12 +8265,12 @@ y ponemos modos "de refresco doble" antes de entrar a RetroArch
 (es decir, normalmente 120Hz, 100Hz para Amiga, modos de entre 100Hz y 120Hz para arcade, etc).
 Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "2"
 
--SCALING: "Integer Scale" a "ON", con "Integer Scale Scaling" a "Smart".
-(De lo contrario hay patrones en las scanlines que sólo se ven en fondos azulados o blancos, etc).
-
 -AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal.
 (IMPORTANTE!!! Si tienes VRR/AdaptiveSync, recuerda desactivar "Synchronization"!!!)
 (Si usas otra frecuencia de audio, modifícalo también en las opciones del core FBNeo)
+
+-SCALING: "Integer Scale" a "ON", con "Integer Scale Scaling" a "Smart".
+(De lo contrario hay patrones en las scanlines que sólo se ven en fondos azulados o blancos, etc).
 
 Para el core de SEGA, debido al tema del dithering y tal, tenemos varias opciones:
 

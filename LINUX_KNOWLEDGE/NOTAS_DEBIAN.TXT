@@ -750,10 +750,15 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 		CONFIGURACIÓN ÓPTIMA DE RETROARCH EN WAYLAND
 
--VÍDEO CON VRR/AdaptiveSync
-ACTIVA "SYNC TO EXACT CONTENT FRAME",
-Y DESACTIVA "VSYNC" Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
-Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "1"
+(LO PRIMERO: Entiende que la opción VSYNC usa VRR/AdaptiveSync "por debajo" si tienes VRR/AdaptiveSync en tu sistem.
+Por tanto, aunque tengas VRR/AdaptiveSync, NO DEBES desactivar VSYNC.
+"SYNC TO EXACT" sólo se activa para sincronizar cores cuando no hay más remedio, déjalo quitado en general, NO ES LO MISMO que VRR,
+es para que los cores vayan a su velocidad original, pero no es lo mismo que usar VRR: VRR depende de VSYNC para funcionar).
+
+-VÍDEO CON VRR/AdaptiveSync:
+ACTIVA "VSYNC" y DESACTIVA "SYNC TO EXACT CONTENT FRAME"
+Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization".
+Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO"
 
 -VÍDEO SIN VRR/AdaptiveSync
 Activamos VSYNC y "Settings->Audio->Synchronization->Synchronization"
