@@ -758,8 +758,7 @@ ya que los cores ~60Hz no van bien con "SYNC TO EXACT".
 
 -VÍDEO CON VRR/AdaptiveSync:
 ACTIVA "VSYNC" y DESACTIVA "SYNC TO EXACT CONTENT FRAME"
-Y MUY IMPORTANTE DESACTIVA TAMBIÉN "Settings->Audio->Synchronization->Synchronization",
-DEJANDO EL RESTO DE VALORES DE "Settings->Audio->Synchronization" A SUS VALORES POR DEFECTO
+Y DESACTIVA "Settings->Audio->Synchronization->Synchronization" Y PON "Maximum Timing Skew" A "0.000"
 Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO"
 
 -VÍDEO SIN VRR/AdaptiveSync
