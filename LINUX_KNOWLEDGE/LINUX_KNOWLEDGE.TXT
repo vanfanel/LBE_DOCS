@@ -1020,6 +1020,7 @@ WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WIT
 En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
 
 -PARA TENER VÍDEO PERFECTO SI TIENES VRR/AdaptiveSync:
+----Para TODOS los juegos: pon "SETTINGS->AUDIO->SYNCHRONIZATION->MAX TIMING SKEW" a su valor por defecto.
 ----Juegos de 60Hz (la GRAN mayoría!):
 	En las opciones de RetroArch activa el VSYNC y desactiva "SYNC TO EXACT" (en este core NO funciona bien).
 	Además, van mejor poniéndole en las opciones del core "Timmings->Override emulated video refresh rate" a "59"
