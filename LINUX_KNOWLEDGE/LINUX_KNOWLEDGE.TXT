@@ -880,9 +880,7 @@ o si no, el Ridge Racers se nos quedará en una pantalla en gris después del me
 
 Es un core con sonido 44100Hz, así que configura los settings de audio así y guarda los core overrides.
 
-PARA FRAMERATE ESTABLE CON VRR/AdaptiveSync:
-"VSYNC ON", "SYNC TO EXACT ON", y quitada la sincronización de audio y el "MAX TIMING SKEW" puesto a cero.
-Además, para evitar el micro-stuttering causado por el propio core, en las opciones del core:
+PARA FRAMERATE ESTABLE:
 Desactiva "Buffer Graphis Commands"
 Activa "Duplicate Frames in 30Hz games"
 
@@ -1023,8 +1021,7 @@ En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
 
 -PARA TENER VÍDEO PERFECTO SI TIENES VRR/AdaptiveSync:
 ----Juegos de 60Hz (la GRAN mayoría!):
-	Deja las opciones de RetroArch como las tienes en general para los cores de ~60Hz, es decir:
-	Activa el VSYNC y mantén desactivado "SYNC TO EXACT".
+	En las opciones de RetroArch activa el VSYNC y desactiva "SYNC TO EXACT" (en este core NO funciona bien).
 	Además, van mejor poniéndole en las opciones del core "Timmings->Override emulated video refresh rate" a "59"
 	(previene dropouts de audio al cambiar el modo de vídeo en el PF, por ejemplo).
 ----Juegos de 70Hz (Lemmings, Lemmings 2, Lotus 3, Pinball Dreams):
@@ -8291,9 +8288,6 @@ Así que hacemos esto:
 -En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
 -En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
 
-PARA CORES QUE NECESITAN "SYNC TO EXACT CONTENT FRAME" (FBNEO, AMIGA, DOSBOX, FLYCAST)
-ACTIVA TANTO "SYNC TO EXACT CONTENT FRAME" COMO VSYNC.
-
 PARA EL CORE SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
 Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
@@ -8302,11 +8296,6 @@ Y RESPECTO AL RUNAHEAD:
 (DE LO CONTRARIO HAY PROBLEMAS DE AUDIO).
 --SI USAS EL RENDERER HARDWARE, USA EL RUNAHEAD INTERNO DEL CORE, EN CORE OPTIONS.
 (DEBERÍAS USAR EL RUNAHEAD INTERNO DEL CORE DE TODOS MODOS AUNQUE USES EL RENDERER SOFTWARE).
-
-PARA EL CORE PPSSPP: PARA QUE VAYA SIN LAG Y A LA VEZ PERFECTAMENTE SUAVE, LO PRIMERO ES ACEPTAR QUE VRR/AdaptiveSync NO VA BIEN CON ESTE CORE.
-SIEMPRE VAS A TENER MICRO-NANO-MINI-TIRONCILLOS SI LO INTENTAS.
-ASÍ QUE ÚSALO EN UN MODO DE 120Hz, Y EN "VIDEO->SYNCHRONIZATION":
-PON "VSYNC" a "ON", VSYNC_SWAP_INTERVAL A "2" O "AUTO" Y "SYNC TO EXACT CONTENT FRAME" A "OFF".
 
 PARA EL CORE PPSSPP Y PARA EL CORE FLYCAST, ACUÉRDATE DE QUITAR EL RUNAHEAD, O DARÁN ERRORES DE INSTRUCCIONES NO VÁLIDAS,
 PANTALLAZOS A NEGRO, ETC...
@@ -8766,9 +8755,6 @@ Para este core NO USES RUNAHEAD, si lo haces se producen fugas de memoria al sal
 Y configuramos las opciones del core así:
 -"RDP Plugin" a "ParaLLEI-RDP"
 -"RSP Pligin" a "ParaLLEI"
-
-PARA FRAMERATE ESTABLE CON VRR/AdaptiveSync:
--"VSYNC ON", "SYNC TO EXACT ON", y quitada la sincronización de audio y el "MAX TIMING SKEW" puesto a cero.
 
 COMPILAR EL CORE DIRKSIMPLE (LASERDISC EN RETROARCH!!!)
 =======================================================
