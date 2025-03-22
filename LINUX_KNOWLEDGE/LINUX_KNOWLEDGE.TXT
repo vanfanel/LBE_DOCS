@@ -880,10 +880,8 @@ o si no, el Ridge Racers se nos quedará en una pantalla en gris después del me
 
 Es un core con sonido 44100Hz, así que configura los settings de audio así y guarda los core overrides.
 
-PARA QUE VAYA SIN LAG Y A LA VEZ PERFECTAMENTE SUAVE, LO PRIMERO ES ACEPTAR QUE VRR/AdaptiveSync NO VA BIEN CON ESTE CORE.
-SIEMPRE VAS A TENER MICRO-NANO-MINI-TIRONCILLOS SI LO INTENTAS.
-ASÍ QUE ÚSALO EN UN MODO DE 120Hz, Y EN "VIDEO->SYNCHRONIZATION":
-PON "VSYNC" a "ON", VSYNC_SWAP_INTERVAL A "2" O "AUTO" Y "SYNC TO EXACT CONTENT FRAME" A "OFF".
+PARA FRAMERATE ESTABLE CON VRR/AdaptiveSync:
+"VSYNC ON", "SYNC TO EXACT ON", y quitada la sincronización de audio y el "MAX TIMING SKEW" puesto a cero.
 Además, para evitar el micro-stuttering causado por el propio core, en las opciones del core:
 Desactiva "Buffer Graphis Commands"
 Activa "Duplicate Frames in 30Hz games"
