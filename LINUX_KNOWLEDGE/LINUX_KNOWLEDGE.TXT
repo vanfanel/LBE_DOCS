@@ -369,10 +369,10 @@ grep CONFIG_DRM_LOAD_EDID_FIRMWARE /boot/config-6.12.12
 --Obtenemos el EDID de la pantalla:
 cp /sys/class/drm/card0-HDMI-A-1/edid ./edid_custom
 
---Nos llevamos el EDID a una máquina con escritorio completo donde podamos instalar "wxedit" que es con lo que lo vamos a editar.
-El "wxedit" se instala en Debian y derivados así: apt-get install wxedit
+--Nos llevamos el EDID a una máquina con escritorio completo donde podamos instalar "wxedid" que es con lo que lo vamos a editar.
+El "wxedid" se instala en Debian y derivados así: apt-get install wxedid
 
---En "wxedit", buscamos "CEA-861" y dentro de esa rama buscamos "VSD" que es el "Vendor Specific Data Block".
+--En "wxedid", buscamos "CEA-861" y dentro de esa rama buscamos "VSD" que es el "Vendor Specific Data Block".
   Ahí activamos el bit 6 (cuyo nombre aparece como "Reserved"), es decir, lo ponemos a 1. 
   Una vez hecho esto, le damos a FILE->SAVE EDID BINARY.
 
