@@ -360,28 +360,38 @@ no puede generar audio en formato IEC958_SUBFRAME_LE. De hecho, ningún programa
 Se puede volcar y ver con:
 cat /sys/class/drm/card1-HDMI-A-0/edid | edid-decode
 
-******Forzar VRR en una pantalla hackeando el EDID (NO FUNCIONA)*************************************************************
+******Hackeando el EDID para cambiar el rango de VRR (VRR range)*************************************************************
+INFO EN GRAN PARTE SACADA DE:
+https://wiki.archlinux.org/title/Variable_refresh_rate#Change_VRR_range_of_a_FreeSync_monitor
 
 --Lo primero, necesitamos un kernel con "CONFIG_DRM_LOAD_EDID_FIRMWARE" activado.
 Lo comprobamos con:
 grep CONFIG_DRM_LOAD_EDID_FIRMWARE /boot/config-6.12.12
 
 --Obtenemos el EDID de la pantalla:
-cp /sys/class/drm/card0-HDMI-A-1/edid ./edid_custom
+cp /sys/class/drm/card0-DP-1/edid ./edid_custom.bin
 
---Nos llevamos el EDID a una máquina con escritorio completo donde podamos instalar "wxedid" que es con lo que lo vamos a editar.
-El "wxedid" se instala en Debian y derivados así: apt-get install wxedid
+--Vemos que parámetros trae ese EDID para ver si realmente queremos cambiar algo:
+sudo apt-get install edid-decode
+edid-decode edid_custom.bin
 
---En "wxedid", buscamos "CEA-861" y dentro de esa rama buscamos "VSD" que es el "Vendor Specific Data Block".
+--Nos llevamos el EDID a una máquina con escritorio completo donde podamos editarlo con un programa gráfico (para consola no hay ninguno).
+
+--OPCIÓN 1: Instalamos "AW EDID Editor" que es con lo que lo vamos a editar. Es un programa de Windows pero funciona en WINE.
+Una ver abierto el EDID en el AW, nos vamos a:
+"EDID Base > Detailed Descriptor > Block Descriptor > Block 2", y allí a "Block Descriptor Type > Display > Range Limits". 
+
+--OPCIÓN 2: Alternativamente se podría usar "wxedid", nativo de Linux pero con una usabilidad peor. Se instala en Debian y derivados así: apt-get install wxedid
+  En "wxedid", buscamos "CEA-861" y dentro de esa rama buscamos "VSD" que es el "Vendor Specific Data Block".
   Ahí activamos el bit 6 (cuyo nombre aparece como "Reserved"), es decir, lo ponemos a 1. 
   Una vez hecho esto, le damos a FILE->SAVE EDID BINARY.
 
 --Metemos el EDID alterado en un lugar donde lo podamos cargar desde el arranque:
 mkdir -p /usr/lib/firmware/edid
-cp edid_custom /usr/lib/firmware/edid/
+cp edid_custom.bin /usr/lib/firmware/edid/
 
 --Cargamos el EDID alterado añadiendo esto a los parámetros del kernel:
-drm.edid_firmware=HDMI-A-1:edid/edid_custom
+drm.edid_firmware=DP-1:edid/edid_custom.bin
 
 --No te olvides de ejecutar "update-grub" antes de reiniciar!
 
