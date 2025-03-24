@@ -364,7 +364,7 @@ cat /sys/class/drm/card1-HDMI-A-0/edid | edid-decode
 
 --Lo primero, necesitamos un kernel con "CONFIG_DRM_LOAD_EDID_FIRMWARE" activado.
 Lo comprobamos con:
-grep CONFIG_DRM_LOAD_EDID_FIRMWARE /boot/config-6.11.2
+grep CONFIG_DRM_LOAD_EDID_FIRMWARE /boot/config-6.12.12
 
 --Obtenemos el EDID de la pantalla:
 cp /sys/class/drm/card0-HDMI-A-1/edid ./edid_custom
