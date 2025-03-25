@@ -10,6 +10,12 @@ sudo apt-get instal sddm
 --Habilitamos el gestor de sesiones de KDE:
 sudo systemctl enable sddm
 
+--Editamos vim /etc/sddm.conf.d/autologin.conf y ponemos la sesión así:
+# autologin
+[Autologin]
+User=manuel
+Session=plasmax11.desktop
+
 CONFIGURAR FUENTES EN KONSOLE
 =============================
 
