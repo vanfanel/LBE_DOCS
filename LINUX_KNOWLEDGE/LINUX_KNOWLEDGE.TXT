@@ -371,15 +371,25 @@ grep CONFIG_DRM_LOAD_EDID_FIRMWARE /boot/config-6.12.12
 --Obtenemos el EDID de la pantalla:
 cp /sys/class/drm/card0-DP-1/edid ./edid_custom.bin
 
+--Nos llevamos el EDID a una máquina con escritorio completo donde podamos editarlo con un programa gráfico (para consola no hay ninguno).
+
 --Vemos que parámetros trae ese EDID para ver si realmente queremos cambiar algo:
 sudo apt-get install edid-decode
 edid-decode edid_custom.bin
+Ejecutamos "edid-decode edid_custom.bin" y miramos qué Range Limits trae el EDID originalmente. Será algo como:
 
---Nos llevamos el EDID a una máquina con escritorio completo donde podamos editarlo con un programa gráfico (para consola no hay ninguno).
+Display Range Limits:
+      Monitor ranges (Bare Limits): 48-146 Hz V, 180-180 kHz H, max dotclock 340 MHz
+      
+Esos valores nos van a hacer falta para cambiar el EDID a nuestro gusto.
 
 --OPCIÓN 1: Instalamos "AW EDID Editor" que es con lo que lo vamos a editar. Es un programa de Windows pero funciona en WINE.
 Una ver abierto el EDID en el AW, nos vamos a:
 "EDID Base > Detailed Descriptor > Block Descriptor > Block 2", y allí a "Block Descriptor Type > Display > Range Limits". 
+Ahí usamos los valores de los "Display Range Limits" que tenemos para rellenar los campos:
+Siguiendo el ejemplo, ponemos "Min H. Rate" a 180, "Max H. Rate" a 180, y "Max Pixel Clk" a 340.
+Y ahora ya podemos ajustar el VRR Range como queramos rellenando los campos "Min V.Rate" y "Max V.Rate".
+Yo los he puesto a 30 y 140 respectivamente.  
 
 --OPCIÓN 2: Alternativamente se podría usar "wxedid", nativo de Linux pero con una usabilidad peor. Se instala en Debian y derivados así: apt-get install wxedid
   En "wxedid", buscamos "CEA-861" y dentro de esa rama buscamos "VSD" que es el "Vendor Specific Data Block".
