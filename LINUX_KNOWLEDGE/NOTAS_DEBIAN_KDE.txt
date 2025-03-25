@@ -11,13 +11,15 @@ sudo apt-get instal sddm
 sudo systemctl enable sddm
 
 --Vemos las sesiones que tenemos instaladas:
-ls /usr/share/xsessions/
+ls ls /usr/share/wayland-sessions/
 
 --Editamos vim /etc/sddm.conf.d/autologin.conf y ponemos la sesión así:
 # autologin
 [Autologin]
 User=manuel
-Session=plasmax11.desktop
+Session=plasma.desktop
+
+--Reninciamos y ya está.
 
 CONFIGURAR FUENTES EN KONSOLE
 =============================
