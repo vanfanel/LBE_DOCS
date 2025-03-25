@@ -371,7 +371,6 @@ grep CONFIG_DRM_LOAD_EDID_FIRMWARE /boot/config-6.12.12
 --Obtenemos el EDID de la pantalla:
 cp /sys/class/drm/card0-DP-1/edid ./edid_custom.bin
 
---Nos llevamos el EDID a una máquina con escritorio completo donde podamos editarlo con un programa gráfico (para consola no hay ninguno).
 
 --Vemos que parámetros trae ese EDID para ver si realmente queremos cambiar algo:
 sudo apt-get install edid-decode
@@ -383,18 +382,35 @@ Display Range Limits:
       
 Esos valores nos van a hacer falta para cambiar el EDID a nuestro gusto.
 
---OPCIÓN 1: Instalamos "AW EDID Editor" que es con lo que lo vamos a editar. Es un programa de Windows pero funciona en WINE.
+EDITAR EL EDID CON PROGRAMAS DE CONSOLA (THIS IS THE WAY)
+
+--Abrimos el edid con el hexedit, buscamos la cadena en hexadecimal "FD" que es como comienza la sección de los Display Range Limits
+  (para ello pulsamos la barra del siete y metemos la cadena)
+  y los siguientes bytes son "FD 00 30". Pues ese 30 en hex es 48 en decimal.
+  Lo cambiamos por 1E, que es 30 en decimal, salvamos y salimos (Crtl+x).
+
+--Comprobamos con edid-decode que ahora tenemos:
+
+    Display Range Limits:
+      Monitor ranges (Bare Limits): 30-146 Hz V, 180-180 kHz H, max dotclock 340 MHz
+
+EDITAR EL EDID CON PROGRAMAS DE ESCRITORIO (NO RECOMENDADO)
+
+--OPCIÓN 2: Instalamos "AW EDID Editor" que es con lo que lo vamos a editar. Es un programa de Windows pero funciona en WINE.
 Una ver abierto el EDID en el AW, nos vamos a:
 "EDID Base > Detailed Descriptor > Block Descriptor > Block 2", y allí a "Block Descriptor Type > Display > Range Limits". 
 Ahí usamos los valores de los "Display Range Limits" que tenemos para rellenar los campos:
 Siguiendo el ejemplo, ponemos "Min H. Rate" a 180, "Max H. Rate" a 180, y "Max Pixel Clk" a 340.
 Y ahora ya podemos ajustar el VRR Range como queramos rellenando los campos "Min V.Rate" y "Max V.Rate".
 Yo los he puesto a 30 y 140 respectivamente.  
+LO MALO DE ESTE MÉTODO es que nos salen dos "Display Range Limits" (habría que eliminar la primera con el Hexedit,
+buscando la cadena hexadecimal "FD" y borrando eso y los siguientes N bytes, así que para eso... pues mejor usa el hexedit directamente).
 
---OPCIÓN 2: Alternativamente se podría usar "wxedid", nativo de Linux pero con una usabilidad peor. Se instala en Debian y derivados así: apt-get install wxedid
-  En "wxedid", buscamos "CEA-861" y dentro de esa rama buscamos "VSD" que es el "Vendor Specific Data Block".
-  Ahí activamos el bit 6 (cuyo nombre aparece como "Reserved"), es decir, lo ponemos a 1. 
-  Una vez hecho esto, le damos a FILE->SAVE EDID BINARY.
+--OPCIÓN 3 (NO LO HAGAS, ESTE PROGRAMA ES UNA REPUTA MIERDA)
+  Alternativamente se podría usar "wxedid", nativo de Linux pero con una usabilidad peor.
+  Se instala en Debian y derivados así: apt-get install wxedid
+
+USAR EL EDID ALTERADO EN LINUX
 
 --Metemos el EDID alterado en un lugar donde lo podamos cargar desde el arranque:
 mkdir -p /usr/lib/firmware/edid
@@ -404,15 +420,6 @@ cp edid_custom.bin /usr/lib/firmware/edid/
 drm.edid_firmware=DP-1:edid/edid_custom.bin
 
 --No te olvides de ejecutar "update-grub" antes de reiniciar!
-
-NOTAS EXPLORATORIAS (No han dado ningún resultado funcional)
---En el kernel Linux:
-Buscamos “vrr_capable", "VRR_ENABLED"
-En drm_object_attach_property() de de drivers/gpu/drm/drm_connector.c, el último valor puede ser puesto a 1 para que la propiedad
-"vrr_capable" sea puesta a 1 cuando es creada.
-En drm_connector_set_vrr_capable_property() de drivers/gpu/drm/drm_connector.c es donde se especifica si un conector es VRR capable o no.
-Usa drm_object_property_set_value() de drivers/gpu/drm/drm_mode_object.c para establecer ese valor.
-En intel_vrr_is_capable() y intel_vrr_is_in_range() de drivers/gpu/drm/i915/display/intel_vrr.c se especifica si es vrr capable.
 
 ******Sangre roja en el Metal Slug de Neo Geo*********************************************************************************
 
