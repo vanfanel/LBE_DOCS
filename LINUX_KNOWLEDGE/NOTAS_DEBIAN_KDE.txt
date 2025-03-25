@@ -1,3 +1,11 @@
+INSTALAR KDE PLASMA EN DEBIAN
+=============================
+
+"sudo tasksel" y ahí seleccionas el enotorno que quieras y lo instalas.
+
+Ahora instala el gestor de sesiones de KDE:
+sudo apt-get instal sddm
+
 CONFIGURAR FUENTES EN KONSOLE
 =============================
 
