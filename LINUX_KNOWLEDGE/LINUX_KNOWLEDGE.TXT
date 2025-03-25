@@ -371,7 +371,6 @@ grep CONFIG_DRM_LOAD_EDID_FIRMWARE /boot/config-6.12.12
 --Obtenemos el EDID de la pantalla:
 cp /sys/class/drm/card0-DP-1/edid ./edid_custom.bin
 
-
 --Vemos que parámetros trae ese EDID para ver si realmente queremos cambiar algo:
 sudo apt-get install edid-decode
 edid-decode edid_custom.bin
@@ -418,8 +417,10 @@ cp edid_custom.bin /usr/lib/firmware/edid/
 
 --Cargamos el EDID alterado añadiendo esto a los parámetros del kernel:
 drm.edid_firmware=DP-1:edid/edid_custom.bin
+(OJO!!! No te olvides de ejecutar "update-grub" antes de reiniciar!!!)
 
---No te olvides de ejecutar "update-grub" antes de reiniciar!
+--Comprobamos que tenemos los valores que queremos:
+edid-decode /sys/class/drm/card0-DP-1/edid
 
 ******Sangre roja en el Metal Slug de Neo Geo*********************************************************************************
 
