@@ -369,12 +369,12 @@ Lo comprobamos con:
 grep CONFIG_DRM_LOAD_EDID_FIRMWARE /boot/config-6.12.12
 
 --Obtenemos el EDID de la pantalla:
-cp /sys/class/drm/card0-DP-1/edid ./edid_custom.bin
+cp /sys/class/drm/card0-DP-1/edid ./edid2.bin
 
 --Vemos que parámetros trae ese EDID para ver si realmente queremos cambiar algo:
 sudo apt-get install edid-decode
-edid-decode edid_custom.bin
-Ejecutamos "edid-decode edid_custom.bin" y miramos qué Range Limits trae el EDID originalmente. Será algo como:
+edid-decode edid2.bin
+Ejecutamos "edid-decode edid2.bin" y miramos qué Range Limits trae el EDID originalmente. Será algo como:
 
 Display Range Limits:
       Monitor ranges (Bare Limits): 48-146 Hz V, 180-180 kHz H, max dotclock 340 MHz
@@ -387,6 +387,23 @@ EDITAR EL EDID CON PROGRAMAS DE CONSOLA (THIS IS THE WAY)
   (para ello pulsamos la barra del siete y metemos la cadena)
   y los siguientes bytes son "FD 00 30". Pues ese 30 en hex es 48 en decimal.
   Lo cambiamos por 1E, que es 30 en decimal, salvamos y salimos (Crtl+x).
+
+--Corregimos el checksum del EDID, ya que hemos hecho un cambio:
+
+EXTRAEMOS EL BLOQUE 0 Y CORREGIMOS SU CHECKSUM:
+head -c 127 edid2.bin > block0.bin
+checksum=$(xxd -p block0.bin | tr -d '\n' | sed 's/\(..\)/0x\1 /g' | awk '{s=0; for (i=1; i<=127; i++) s+=strtonum($i);} END {print (256 - (s % 256)) % 256}')
+printf "$(xxd -p block0.bin)%02x" $checksum | xxd -r -p > block0_fixed.bin
+
+EXTRAEMOS EL BLOQUE 1 Y CORREGIMOS SU CHECKSUM:
+tail -c +129 edid2.bin > block1.bin
+checksum=$(xxd -p block1.bin | tr -d '\n' | sed 's/\(..\)/0x\1 /g' | awk '{s=0; for (i=1; i<=127; i++) s+=strtonum($i);} END {print (256 - (s % 256)) % 256}')
+printf "$(xxd -p block1.bin)%02x" $checksum | xxd -r -p > block1_fixed.bin
+
+JUNTAMOS LOS DOS BLOQUES Y CORREGIMOS SU TAMAÑO:
+cat block0_fixed.bin block1_fixed.bin > edid_fixed.bin
+mv edid_fixed.bin edid2.bin
+truncate -s 256 edid2.bin
 
 --Comprobamos con edid-decode que ahora tenemos:
 
@@ -413,10 +430,10 @@ USAR EL EDID ALTERADO EN LINUX
 
 --Metemos el EDID alterado en un lugar donde lo podamos cargar desde el arranque:
 mkdir -p /usr/lib/firmware/edid
-cp edid_custom.bin /usr/lib/firmware/edid/
+cp edid2.bin /usr/lib/firmware/edid/
 
 --Cargamos el EDID alterado añadiendo esto a los parámetros del kernel:
-drm.edid_firmware=DP-1:edid/edid_custom.bin
+drm.edid_firmware=DP-1:edid/edid2.bin
 (OJO!!! No te olvides de ejecutar "update-grub" antes de reiniciar!!!)
 
 --Comprobamos que tenemos los valores que queremos:
