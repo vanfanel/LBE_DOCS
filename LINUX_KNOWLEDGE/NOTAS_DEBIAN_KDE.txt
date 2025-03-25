@@ -10,6 +10,9 @@ sudo apt-get instal sddm
 --Habilitamos el gestor de sesiones de KDE:
 sudo systemctl enable sddm
 
+--Vemos las sesiones que tenemos instaladas:
+ls /usr/share/xsessions/
+
 --Editamos vim /etc/sddm.conf.d/autologin.conf y ponemos la sesión así:
 # autologin
 [Autologin]
