@@ -19,7 +19,8 @@ ls ls /usr/share/wayland-sessions/
 User=manuel
 Session=plasma.desktop
 
---Reninciamos y ya está.
+--Reninciamos y comprobamos el tipo de sesión que se está ejecutando con:
+echo $XDG_SESSION_TYPE
 
 CONFIGURAR FUENTES EN KONSOLE
 =============================
