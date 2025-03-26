@@ -381,7 +381,17 @@ Display Range Limits:
       
 Esos valores nos van a hacer falta para cambiar el EDID a nuestro gusto.
 
-EDITAR EL EDID CON PROGRAMAS DE CONSOLA (THIS IS THE WAY)
+ALTERNATIVA 1: EDITAR EL EDID CON EL CRU DE WINDOWS (WINE) (Es la forma más sencilla de hacerlo)
+
+--Nos bajamos el CRU de: https://www.monitortests.com/forum/Thread-Custom-Resolution-Utility-CRU
+--Lo ejecutamos con WINE. Va sin ningún problema.
+--Abrimos el EDID dándole a "IMPORT"
+--Cambiamos los RANGE LIMITS dándole a "EDIT" arriba a la derecha
+(OJO!!! ARRIBA A LA DERECHA, HAY OTROS BOTONES "EDIT" MÁS ABAJO, PERO USAMOS ESE PARA CAMBIAR LOS RANGE LIMITS!!!)
+--Salvamos el EDID modificado dándole a "EXPORT".
+--Ya está!! Ahora ve a la sección de cómo cargarlo en Linux.
+
+ALTERNATIVA 2: EDITAR EL EDID CON PROGRAMAS DE CONSOLA
 
 --Abrimos el edid con el hexedit, buscamos la cadena en hexadecimal "FD" que es como comienza la sección de los Display Range Limits
   (para ello pulsamos la barra del siete y metemos la cadena)
@@ -410,7 +420,7 @@ truncate -s 256 edid2.bin
     Display Range Limits:
       Monitor ranges (Bare Limits): 30-146 Hz V, 180-180 kHz H, max dotclock 340 MHz
 
-EDITAR EL EDID CON PROGRAMAS DE ESCRITORIO (NO RECOMENDADO)
+ALTERNATIVA 3: EDITAR EL EDID CON OTROS PROGRAMAS DE ESCRITORIO MÁS CUTRES (NO RECOMENDADO)
 
 --OPCIÓN 2: Instalamos "AW EDID Editor" que es con lo que lo vamos a editar. Es un programa de Windows pero funciona en WINE.
 Una ver abierto el EDID en el AW, nos vamos a:
