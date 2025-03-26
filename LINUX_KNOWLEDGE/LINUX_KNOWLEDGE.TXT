@@ -484,6 +484,10 @@ wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d 
 
 ...Y ya debería ir WINE sobre Wayland puro y con programas de 32bits usando el modo WoW64. Prueba a hacer "winecfg" o bien "wine notepad"
 
+******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
+
+Ejecutamos "winecfg", vamos a la pestaña "Graphics" y allí ponemos "Screen Resolution" a un valor de unos 168.
+
 ******DIRECTX SOBRE VULKAN USANDO WINE**************************************************************************************
 
 OPCIÓN 1 (RECOMENDADO): USANDO DXVK
