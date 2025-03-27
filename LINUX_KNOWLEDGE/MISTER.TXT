@@ -849,3 +849,10 @@ filter = [MiSTer] !console
 "direct_video=1"
 "composite_sync=1"
 --El conversor que yo tengo, y que funciona más o menos, lleva un chip EP94Z1E.
+
+**********MODO DE VÍDEO ESPECÍFICO PARA EL CORE MACPLUS***********************************
+
+Añadimos al final de MiSTer.ini:
+
+[MacPlus]
+video_mode=1536,1026,60
