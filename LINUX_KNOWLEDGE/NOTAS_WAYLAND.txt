@@ -721,6 +721,7 @@ INSTALAR RIO, UN EMULADOR DE TERMINAL PARA WAYLAND ESCRITO EN RUST
 
 --Primero instalamos Rust. Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+(Para desinstalar es "rustup self uninstall")
 
 --Si ya tenemos Rust instalado, lo actualizamos a la última versión:
 rustup update

@@ -83,6 +83,8 @@ NOTAS ESPECÍFICAS DEL HARDWARE EN GNU/LINUX
 apt-get install firmware-amd-graphics
 
 --Dejamos /etc/asound.conf así:
+
+----OPCIÓN 1: Sonido por DisplayPort/HDMI
 (NOTA: Esto es para usar la salida de vídeo DisplayPort, si usas HDMI donde pone 8 pon un 3).
 (NOTA: Lo de pcm.dmixed y lo de @hooks es para luego poder activar y desactivar dmix a demanda, para los juegos FNA.
 Si no vas a usar juegos FNA, no hacen falta esas secciones).
@@ -106,4 +108,27 @@ ctl.!default {
         card Generic                                                                                                                   
 }                                                                                                                                      
                                                                                                                                        
+@hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
+
+----Opción 2: Sonido por jack delantero
+
+pcm.dmixed {
+	type dmix
+	ipc_key 1234
+	slave {
+		pcm "hw:Generic_1,0"
+	}
+}
+
+pcm.!default {
+	type hw
+	card Generic_1
+	device 0
+}
+
+ctl.!default {
+	type hw
+	card Generic
+}
+
 @hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
