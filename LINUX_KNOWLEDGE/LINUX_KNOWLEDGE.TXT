@@ -8345,10 +8345,6 @@ Así que hacemos esto:
 -En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
 -En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
 
-PARA EL CORE FBNEO CON VRR/AdaptiveSync (importante porque los arcades van a frecuencias exóticas de 55~60Hz):
-Activamos "Sync to Exact", desactivamos "Vsync".
-Desactivamos "Sound->Synchronization->Synchronization" y ponemos "Sound->Synchronization->Maximum Timing Skew" a un valor elevado como "0.300".
-
 PARA EL CORE SWANSTATION, ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)...
 Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER")
 Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
