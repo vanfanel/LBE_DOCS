@@ -1053,9 +1053,6 @@ dos_rate = host
 *******Compilar el core DOSBOX-CORE**********************************
 
 Este sí sincroniza el vídeo bien (al fin).
-(OJO! ¡¡Si estás haciendo experimentos en una TTY con RetroArch en KMS/DRM, mientras tienes las X11 corriendo en otra TTY,
-haz de vez en cuando un EXIT en la TTY en la que corres RetroArch, o empezará a ir todo a tirones al cabo de unas cuantas
-ejecuciones del RetroArch, y TE VOLVERÁS LOCO BUSCANDO LA EXPLICACIÓN!!)
 
 Clonamos su repo:
 
@@ -1079,18 +1076,31 @@ WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WIT
 En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
 
 -PARA TENER VÍDEO PERFECTO SI TIENES VRR/AdaptiveSync:
-----Juegos de 60Hz (la GRAN mayoría!):
-	En las opciones de RetroArch activa el VSYNC y desactiva "SYNC TO EXACT" (en este core NO funciona bien).
-	Además, van mejor poniéndole en las opciones del core "Timmings->Override emulated video refresh rate" a "59"
-	(previene dropouts de audio al cambiar el modo de vídeo en el PF, por ejemplo).
-----Juegos de 70Hz (Lemmings, Lemmings 2, Lotus 3, Pinball Dreams):
-	En las opciones de RetroArch activa el VSYNC y el "SYNC TO EXACT".
-	Además, en las opciones del core, pon "Timmings->Override emulated video refresh rate" a "OFF"
+--Juegos de 60Hz (la GRAN mayoría!):
+  En las opciones de RetroArch activa el VSYNC y desactiva "SYNC TO EXACT" (en este core NO funciona bien).
+  Además, van mejor poniéndole en las opciones del core "Timmings->Override emulated video refresh rate" a "59"
+  (previene dropouts de audio al cambiar el modo de vídeo en el PF, por ejemplo).
+--Juegos de 70Hz (Lemmings, Lemmings 2, Lotus 3, Pinball Dreams):
+----Crea el archivo ~/.config/retroarch/config/70hz.cfg con el contenido:
+####CONFIG DE RETROARCH PARA JUEGOS DE 70Hz####
+video_refresh_rate = "140.000000"
+config_save_on_exit = "false"
+####FIN CONFIG DE RETROARCH PARA JUEGOS DE 70Hz####
+y se lo pasas a RetroArch con "--appendconfig ~/.config/retroarch/config/70hz.cfg",
+y estableces un modo de 140Hz antes de lanzarlos.
+Por ejemplo, para lanzar Lemmings, lo hago así:
+####SCRIPT PARA LANZAR JUEGOS DE 70Hz####
+wlr-randr --output DP-1 --custom-mode 1920x1080@140
+retroarch -L ~/.config/retroarch/cores/dosbox_core_libretro.so --appendconfig ~/.config/retroarch/config/70hz.cfg confs/lemmings.conf
+wlr-randr --output DP-1 --preferred
+####FIN SCRIPT PARA LANZAR JUEGOS DE 70Hz####
+
 LÓGICAMENTE, trata siempre de tratar los juegos como si fuesen compatibles con 60Hz. Para saber si un juego es compatible con 60Hz,
 ponle "Timmings->Override emulated video refresh rate" a "59" y comprueba que no hace nada raro (músicas lentas). Si suena bien,
 es compatible con 60Hz.
 
--SÓLO SI NO TIENES VRR: Para evitar el input lag causado por tener el VSYNC activado (es necesario si no tienes VRR),
+-SÓLO SI NO TIENES VRR Y NO TIENES UN MODO DE 120HZ PUESTO POR DEFECTO (DEBERÍAS TENERLO!):
+Para evitar el input lag causado por tener el VSYNC activado (es necesario si no tienes VRR),
 puedes poner un modo de vídeo de 120Hz y además tener "VSYNC SWAP INTERVAL" en "AUTO".
 A tal efecto, lo más cómodo es que crees /usr/local/bin/dos con este contenido:
 ########
@@ -1102,22 +1112,6 @@ wlr-randr --output HDMI-A-1 --mode 1920x1080@60
 #########
 dos confs/juego.conf
 #########
-
--SÓLO SI NO TIENES VRR: Para los "juegos de 70Hz" vayan bien (son juegos como Lemmings, Lotus 3... que tienen música lenta a 60 hagas lo que hagas),
-crea el archivo ~/.config/retroarch/config/70hz.cfg con el contenido:
-####CONFIG DE RETROARCH PARA JUEGOS DE 70Hz####
-video_refresh_rate = "69.920288"                                                                                                       
-config_save_on_exit = "false"
-####FIN CONFIG DE RETROARCH PARA JUEGOS DE 70Hz####
-y se lo pasas a RetroArch con "--appendconfig ~/.config/retroarch/config/70hz.cfg",
-y estableces un modo de 70Hz antes de lanzarlos,
-y pon "CORE OPTIONS->TIMING->OVERRIDE EMULATED VIDEO REFRESH RATE" a "OFF". De ese modo van perfectos también.
-Por ejemplo, para lanzar Lemmings, lo hago así:
-####SCRIPT PARA LANZAR JUEGOS DE 70Hz####
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@70                                                                                 
-sleep 1                                                                                                                                
-retroarch -L ~/.config/retroarch/cores/dosbox_core_libretro.so --appendconfig ~/.config/retroarch/config/70hz.cfg confs/lemmings.conf
-####FIN SCRIPT PARA LANZAR JUEGOS DE 70Hz####
 
 -La configuración general (ciclos, emulación de la CPU usada, tarjetas de vídeo y audio, etc) se hace desde las OPTIONS del core.
 Y luego, para que en el inicio monte un directorio y se meta en él, debes pasarle un .conf que sólo haga eso, así:
