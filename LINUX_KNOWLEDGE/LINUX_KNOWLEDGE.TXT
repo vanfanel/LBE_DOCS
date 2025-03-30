@@ -1083,14 +1083,14 @@ En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
 --Juegos de 70Hz (Lemmings, Lemmings 2, Lotus 3, Pinball Dreams):
 ----Crea el archivo ~/.config/retroarch/config/70hz.cfg con el contenido:
 ####CONFIG DE RETROARCH PARA JUEGOS DE 70Hz####
-video_refresh_rate = "140.000000"
+video_refresh_rate = "143.595642"
 config_save_on_exit = "false"
 ####FIN CONFIG DE RETROARCH PARA JUEGOS DE 70Hz####
 y se lo pasas a RetroArch con "--appendconfig ~/.config/retroarch/config/70hz.cfg",
 y estableces un modo de 140Hz antes de lanzarlos.
 Por ejemplo, para lanzar Lemmings, lo hago así:
 ####SCRIPT PARA LANZAR JUEGOS DE 70Hz####
-wlr-randr --output DP-1 --custom-mode 1920x1080@140
+wlr-randr --output DP-1 --mode 1920x1080@143.854996
 retroarch -L ~/.config/retroarch/cores/dosbox_core_libretro.so --appendconfig ~/.config/retroarch/config/70hz.cfg confs/lemmings.conf
 wlr-randr --output DP-1 --preferred
 ####FIN SCRIPT PARA LANZAR JUEGOS DE 70Hz####
