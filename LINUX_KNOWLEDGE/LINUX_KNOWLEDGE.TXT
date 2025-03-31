@@ -3071,7 +3071,8 @@ PUEDES AHORRAR RAM Y TIEMPO DE ARRANQUE si, en los juegos instalados sin WHDLoad
 "WHDLoad Support" a "OFF". Además, debes copiar el comando "Assign" al directorio raíz del juego, porque casi todos lo usan.
 (NO hace falta que esté en C/, con que esté en el raíz del juego ahí tirado vale).
 
-PARA CARGAR JUEGOS PAL A 100Hz:
+PARA CARGAR JUEGOS PAL A 100Hz (no necesario si tienes un monitor con VRR/AdaptiveSync/FreeSync, ya que el VRR sí que va
+perfecto con los juegos PAL, no da microtirones como en contenido ~60Hz-70Hz):
 -Añade "PAL" al nombre del juego. Por ejemplo, "ShadowOfTheBeast" pasaría a ser "ShadowOfTheBeastPAL", lo mismo con su .info
 -Crea un script /usr/local/bin/amiga como este, que en caso de ser PAL el juego, ponga el monitor a 100Hz si el juego es PAL y además cargue
 las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
@@ -3087,8 +3088,7 @@ else
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
-el RetroArch se quede a 100Hz...¡Los 100Hz son sólo una excepcionalidad para juegos PAL! Y si la pantalla no soportase 100Hz
-y tuviésemos que ponerlos a 50Hz, tendríamos que añadir también audio_latency = "42"):
+el RetroArch se quede a 100Hz).
 video_refresh_rate = "100.000000"
 config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Amiga que usamos para ejecutarlo
@@ -8298,15 +8298,15 @@ y para volver, obviamente, start.
 
 **********Configuración óptima de RetroArch (En Wayland)************
 
--VÍDEO CON VRR/AdaptiveSync:
+-VÍDEO
+NOTA PREVIA: Aunque tengamos un monitor con AdaptiveSync/FreeSync/VRR,
+no vamos a usar nunca "SYNC TO EXACT CONTENT FRAME" porque nunca va a ser tan suave como usar sólo VSYNC,
+así que lo que hacemos es poner por defecto un modo de vídeo de 120Hz en el compositor, y usar VSYNC,
+lo que nos va a permitir tener VSYNC de juegos de sistemas de ~60Hz sobe un modo de 120Hz con un refresco perfectamente suave
+y sin el input lag inducido por el VSYNC al estar en 120Hz.
 EN SETTINGS->VIDEO, ACTIVA "VSYNC" y DESACTIVA "SYNC TO EXACT CONTENT FRAME" Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO".
 EN SETTINGS->VIDEO->OUTPUT, DEJA QUE SE DETECTE LA FRECUENCIA CORRECTA Y ESTABLÉCELA.
 EN SETTINGS->AUDIO->SYNCHRONIZATION, PON "MAXIMUM TIMING SKEW" A UN VALOR ELEVADO COMO "0.300".
-
--VÍDEO SIN VRR/AdaptiveSync
-Activamos VSYNC y ponemos modos "de refresco doble" antes de entrar a RetroArch
-(es decir, normalmente 120Hz, 100Hz para Amiga, modos de entre 100Hz y 120Hz para arcade, etc).
-Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "2"
 
 -AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal.
 (IMPORTANTE!!! Si tienes VRR/AdaptiveSync, recuerda desactivar "Synchronization"!!!)
@@ -8391,13 +8391,17 @@ Para el escalado, si usas integer scaling en modo "smart", debes poner el "Viewp
 para que se vea el marcador de créditos del Puzzle Bobble, etc.
 
 PARA EL CORE DE AMIGA, deja siempre que puedas el sistema por defecto (Amiga 1200, 8MB FAST) ya que es para lo que viene configurada
-la exactitud de ciclo del emulador y con un A600+FAST te salen errores en los juegos a no ser que pongas la exactitud de ciclo a FULL,
-y recuerda que los juegos PAL necesitan más buffer de audio por lo que creamos ~/.config/retroarch/config/PAL.cfg
-con este contenido (la última línea es porque NO queremos que al quitar el juego el RetroArch se quede a 100Hz...
-¡Los 100Hz son sólo una excepcionalidad para juegos PAL! y si la pantalla no soportase 100Hz y tuviésemos que usar 50Hz,
-también tendríamos que añadir audio_latency = "42") y se lo pasaremos con "--appenconfig":
+la exactitud de ciclo del emulador y con un A600+FAST te salen errores en los juegos a no ser que pongas la exactitud de ciclo a FULL.
+IMPORTANTE: "SYNC TO EXACT" funciona correctamente para los juegos PAL, así que:
+----Si tienes un monitor con VRR/AdaptiveSync, para los juegos PAL activa "SYNC TO EXACT" además de VSYNC.
+----Si no tienes un monitor con VRR/AdaptiveSync, para los juegos PAL pon un modo de 100Hz antes de entrar
+y crea un fichero ~/.config/retroarch/config/PAL.cfg con este contenido: 
 video_refresh_rate = "100.000000"
 config_save_on_exit = "false"
+...Y luego lo cargas así:
+wlr-randr --output HDMI-A-1 --mode 1920x1080@100
+retroarch -L ~/.config/retroarch/cores/puae_libretro.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
+wlr-randr --output HDMI-A-1 --mode 1920x1080@120
 
 NO USES EL CORE BSNES: tendrías que desactivar el Runahead de RetroArch y activar el Runahead interno de BSNES,
 o se quedará en una pantalla en negro.

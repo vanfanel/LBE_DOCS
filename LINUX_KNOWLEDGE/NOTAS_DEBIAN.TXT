@@ -750,16 +750,15 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 		CONFIGURACIÓN ÓPTIMA DE RETROARCH EN WAYLAND
 
--VÍDEO CON VRR/AdaptiveSync:
+-VÍDEO
+NOTA PREVIA: Aunque tengamos un monitor con AdaptiveSync/FreeSync/VRR,
+no vamos a usar nunca "SYNC TO EXACT CONTENT FRAME" porque nunca va a ser tan suave como usar sólo VSYNC,
+así que lo que hacemos es poner por defecto un modo de vídeo de 120Hz en el compositor, y usar VSYNC,
+lo que nos va a permitir tener VSYNC de juegos de sistemas de ~60Hz sobe un modo de 120Hz con un refresco perfectamente suave
+y sin el input lag inducido por el VSYNC al estar en 120Hz.
 EN SETTINGS->VIDEO, ACTIVA "VSYNC" y DESACTIVA "SYNC TO EXACT CONTENT FRAME" Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO".
 EN SETTINGS->VIDEO->OUTPUT, DEJA QUE SE DETECTE LA FRECUENCIA CORRECTA Y ESTABLÉCELA.
 EN SETTINGS->AUDIO->SYNCHRONIZATION, PON "MAXIMUM TIMING SKEW" A UN VALOR ELEVADO COMO "0.300".
-
--VÍDEO SIN VRR/AdaptiveSync
-Activamos VSYNC y "Settings->Audio->Synchronization->Synchronization"
-y ponemos modos "de refresco doble" antes de entrar a RetroArch
-(es decir, normalmente 120Hz, 100Hz para Amiga, modos de entre 100Hz y 120Hz para arcade, etc).
-Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO" o "2"
 
 AUDIO: driver ALSATHREAD, 48000 Hz, 32ms, resampler quality normal
 (IMPORTANTE!!! Si tienes VRR/AdaptiveSync, recuerda desactivar "Synchronization"!!!)
