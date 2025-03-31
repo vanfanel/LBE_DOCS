@@ -1795,8 +1795,8 @@ git clone -b mame0276 --depth 1 https://github.com/mamedev/mame.git mame0276
 
 y cambiamos lo que hay ahí dentro por esto:
 
-typedef struct gbm_device  *EGLNativeDisplayType;                                                              
-typedef struct gbm_bo      *EGLNativePixmapType;                                                               
+typedef struct gbm_device  *EGLNativeDisplayType;
+typedef struct gbm_bo      *EGLNativePixmapType;
 typedef void               *EGLNativeWindowType;
 
 --Editamos scripts/src/osd/modules.lua, y allí:
