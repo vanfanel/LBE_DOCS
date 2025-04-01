@@ -8304,8 +8304,7 @@ no vamos a usar nunca "SYNC TO EXACT CONTENT FRAME" porque nunca va a ser tan su
 así que lo que hacemos es poner por defecto un modo de vídeo de 120Hz en el compositor, y usar VSYNC,
 lo que nos va a permitir tener VSYNC de juegos de sistemas de ~60Hz sobe un modo de 120Hz con un refresco perfectamente suave
 y sin el input lag inducido por el VSYNC al estar en 120Hz.
-EN SETTINGS->VIDEO, ACTIVA "VSYNC" y DESACTIVA "SYNC TO EXACT CONTENT FRAME" Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "2"
-(Si en lugar de 120Hz usas 240Hz, pon "SWAP INTERVAL" a 4, etc).
+EN SETTINGS->VIDEO, ACTIVA "VSYNC" y DESACTIVA "SYNC TO EXACT CONTENT FRAME" Y PON "VIDEO->SYNCHRONIZATION->VSYNC SWAP INTERVAL" a "AUTO"
 EN SETTINGS->VIDEO->OUTPUT, DEJA QUE SE DETECTE LA FRECUENCIA CORRECTA Y ESTABLÉCELA.
 EN SETTINGS->AUDIO->SYNCHRONIZATION, PON "MAXIMUM TIMING SKEW" A UN VALOR ELEVADO COMO "0.300".
 
