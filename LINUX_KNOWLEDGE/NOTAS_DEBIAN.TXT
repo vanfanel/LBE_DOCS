@@ -872,6 +872,37 @@ Kernel hacking  --->
 --Nos vamos a "Device Drivers->X86 Platform Specific Device Drivers" y desactivamos todo lo que veamos de marcas (DELL, HP, etc)
 y sobre todo desactivamos "Intel Platform Monitoring Technology (PMT) Telemetry Driver".
 
+--En "General Setup" desactivamos:
+----Todo en "BPF Subsystem"
+----"Memory placement aware NUMA scheduler"
+(Las máquinas NUMA son servidores en los que cada CPU tiene una memoria distinta, ni tienes ni vas a tener nada así en la vida).
+----"Checkpoint/restore support" (Pa ké kieres saber eso? jaja salu2)
+----"Profiling support"
+--En "Processor type and features" desactivamos:
+----"Enable MPS table"
+----"Intel Low Power Subsystem Support"
+----"Linux guest support"
+----"Old AMD GART IOMMU support"
+----"Enable Maximum number of SMP Processors and NUMA Nodes"
+----"Cluster scheduler support"
+----"Reroute for broken boot IRQs"
+----"Intel MCE features" (si estás en AMD) o "AMD MCE features" (si estás en Intel)
+----"IOPERM and IOPL Emulation"
+----"Enable 5-level page tables support"
+----"AMD Secure Memory Encryption (SME) support"
+----"NUMA Memory Allocation and Scheduler Support"
+----"Software Guard eXtensions (SGX)"
+----"X86 userspace shadow stack"
+----"Kernel Live Patching"
+
+--En "General architecture-dependent options" desactivamos:
+----"Stack Protector buffer overflow detection"
+----"Kprobes"
+
+--En "Memory Management options" desactivamos:
+----"Memory hotplug"
+----"Transparent Hugepage Support"
+
 --MUY IMPORTANTE PARA JUEGOS:
 General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop)
 ...Y desactivamos "Preemption behaviour defined on boot"
