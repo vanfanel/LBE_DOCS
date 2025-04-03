@@ -865,6 +865,8 @@ cp /boot/config-$(uname -r) .config
 "Device Drivers->SCSI device support->SCSI disk support"
 "Device Drivers->USB support->USB Mass Storage support"
 "Device Drivers->USB support->USB Mass Storage support->USB Attached SCSI"
+---En "Processor type and features" activamos esto (ayuda luego a gestionar la velocidad de la CPU):
+"/dev/cpu/*/msr - Model-specific register support"
 ---Para evitar depender de la herramienta "pahole", deshabilitamos:
 Kernel hacking  --->
     Compile-time checks and compiler options  --->
