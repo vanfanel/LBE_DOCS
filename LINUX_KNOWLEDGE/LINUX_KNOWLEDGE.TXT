@@ -85,6 +85,8 @@ font_scale=3.0
 --Para que se tomen muestras más frecuentes (por defecto es cada 500ms):
 fps_sampling_period=32
 
+--Tienes el resto de opciones disponibles documentadas en: https://github.com/flightlessmango/MangoHud
+
 ******IMPRIMIR DESDE UN MAKEFILE*****************************************************************************************
 
 Se hace simplemente con:
