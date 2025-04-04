@@ -79,6 +79,9 @@ ninja install
 
 --Para usarlo es simplemente con: mangohud <programa>
 
+--Para que se vea más grande, creamos el fichero ".config/MangoHud/MangoHud.conf" con el contenido:
+font_size=42
+
 ******IMPRIMIR DESDE UN MAKEFILE*****************************************************************************************
 
 Se hace simplemente con:
