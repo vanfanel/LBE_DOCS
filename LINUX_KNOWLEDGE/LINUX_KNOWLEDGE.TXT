@@ -63,6 +63,21 @@ xrandr --newmode "1366x768_50.00" 69.92 1368 1424 1568 1768 768 769 772 791  -HS
 xrandr --addmode eDP "1366x768_50.00"
 xrandr --output eDP --mode "1366x768_50.00"
 
+******Usar MANGOHUD******************************************************************************************************
+
+--Clonamos su repo: git clone --depth 1 --recurse-submodules https://github.com/flightlessmango/MangoHud.git
+--Compilamos con:
+mkdir b4
+cd b4
+
+CFLAGS="-O2 -march=native -mtune=native -O2" \
+CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+meson setup .. -Dbuildtype=release -Dwith_x11=disabled -Dwith_dbus=disabled
+
+ninja -j10
+ninja install
+
+
 ******IMPRIMIR DESDE UN MAKEFILE*****************************************************************************************
 
 Se hace simplemente con:
