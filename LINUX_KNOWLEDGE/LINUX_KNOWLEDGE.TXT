@@ -82,6 +82,9 @@ ninja install
 --Para que se vea más grande, creamos el fichero ".config/MangoHud/MangoHud.conf" con el contenido:
 font_scale=3.0
 
+--Para que se tomen muestras más frecuentes (por defecto es cada 500ms):
+fps_sampling_period=32
+
 ******IMPRIMIR DESDE UN MAKEFILE*****************************************************************************************
 
 Se hace simplemente con:
