@@ -9380,6 +9380,8 @@ cp soh/*.otr ~/zelda64/
 
 --NOTAS ADICIONALES--
 
+PARA QUE NO DE TIRONCILLOS EN WAYLAND+AdaptiveSync, limita la tasa de frames del juego a 60 y activa el VSYNC.
+
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
 PARA USAR MODS, creamos el directorio ~/zelda64/mods y los metemos ahí.
@@ -9440,6 +9442,8 @@ ninja -j10
 mkdir ~/majora
 cp mm/2s2h.elf ~/majora/
 
+PARA QUE NO DE TIRONCILLOS EN WAYLAND+AdaptiveSync, limita la tasa de frames del juego a 60 y activa el VSYNC.
+
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
 	----EXTRACCIÓN DE LOS DATOS----
@@ -9484,6 +9488,8 @@ que se crea solo en el directorio donde tienes el ejecutable.
   cmake --build . --target ExtractAssets
   cmake --build . --target GeneratePortO2R -j10
   ...Y copiamos el archivo resultante "sf64.o2r" al mismo directorio que el ejecutable (yo lo meto todo en "~/starfox64").
+
+PARA QUE NO DE TIRONCILLOS EN WAYLAND+AdaptiveSync, limita la tasa de frames del juego a 60 y activa el VSYNC.
 
 GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
 ============================================================
