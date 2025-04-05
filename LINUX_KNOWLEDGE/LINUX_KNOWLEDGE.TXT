@@ -8918,7 +8918,14 @@ COMPILAR EMULADOR DE 3DS PARA GNU/LINUX
 
 --Clonamos su repo: git clone --depth 1 --recursive https://github.com/azahar-emu/azahar
 
---Editamos
+--Editamos "src/video_core/renderer_vulkan/vk_platform.cpp" y allí buscamos "VK_USE_PLATFORM_XLIB_KHR"
+y vamos quitando lo relacionado con eso:
+----Borramos el "#define VK_USE_PLATFORM_XLIB_KHR"
+----En el primer "#elif defined(VK_USE_PLATFORM_XLIB_KHR) || defined(VK_USE_PLATFORM_WAYLAND_KHR)",
+quitamos la parte de "defined(VK_USE_PLATFORM_XLIB_KHR)"
+y el bloque entero de "if (window_info.type == Frontend::WindowSystemType::X11) {"
+----En el segundo "#elif defined(VK_USE_PLATFORM_XLIB_KHR) || defined(VK_USE_PLATFORM_WAYLAND_KHR)",
+quitamos todo el bloque de "case Frontend::WindowSystemType::X11:"
 
 --Compilamos con:
 mkdir b4
