@@ -8917,11 +8917,14 @@ COMPILAR EMULADOR DE 3DS PARA GNU/LINUX
 =======================================
 
 --Clonamos su repo: git clone --depth 1 --recursive https://github.com/azahar-emu/azahar
+
+--Editamos
+
 --Compilamos con:
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_QT=OFF \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_QT=OFF -DENABLE_TESTS=OFF -DENABLE_WEB_SERVICE=OFF -DENABLE_SCRIPTING=OFF \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 
