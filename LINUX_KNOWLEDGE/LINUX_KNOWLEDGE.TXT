@@ -8913,6 +8913,18 @@ ss.stretch aspect
 
 --Para configurar el mando, pulsamos ALT + SHIFT + 1.
 
+COMPILAR EMULADOR DE 3DS PARA GNU/LINUX
+=======================================
+
+--Clonamos su repo: git clone --depth 1 --recursive https://github.com/azahar-emu/azahar
+--Compilamos con:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_QT=OFF \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
+
 CONFIGURAR BASH PARA TENER UN SALUDO Y LA IP AL INICIO
 =======================================================
 
