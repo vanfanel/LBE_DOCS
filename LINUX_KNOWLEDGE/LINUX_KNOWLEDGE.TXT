@@ -8567,6 +8567,9 @@ para que no tenga que acceder a nada en la unidad Z que es el raiz de Linux.
 NOTA: Debería ser posible flashear el firmware sin usar nada de 8BitDo, usando el protocolo DFU.
 Para ello, primero instalaríamos "dfu-util": sudo apt-get install dfu-util
 Y ahora tendría que aparecer nuestro hardware al hacer "dfu-util --list"
+Flashealo sería algo como:
+dfu-util -d 2dc8:5200 -a 0 -s 0x08000000:leave -D RetroKeyboard177.bin
+(El 0x08000000 es la dirección de memoria más común para microcontroladores ARM)
 EL PROBLEMA POR AHORA ES QUE NO APARECE, ASÍ QUE NO LO PODEMOS FLASHEAR DESDE DFU-UTIL, QUE SERÍA LO IDEAL.
 
 ****************************Milkytracker en Linux****************************
