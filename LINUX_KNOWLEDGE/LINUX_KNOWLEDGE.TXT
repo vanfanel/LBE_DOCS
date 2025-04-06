@@ -1875,9 +1875,6 @@ USAR MAME STANDALONE
 --Copiamos los directorios "bgfx" y "artwork" que vienen en la raiz de los sources a "~/mame/bgfx":
 cp -R bgfx artwork ~/mame/
 
---Creamos un .ini en el directorio actual:
-mame -createconfig
-
 --Ejecutamos "mame" sin ningún juego, y en el menú nos vamos a "General Settings->Video Options",
 y ponemos "Video Mode" a "bgfx", "GLSL" a "On", "Window Mode" a "off",
 "Synchronized Refresh" a "On" y "Wait Vertical Sync" a "On". 
@@ -1887,9 +1884,8 @@ nos vamos a "General Settings->Miscelaneous Options" y ponemos
 "Skip imperfect emulation warnings" a "On"
 "Skip system information screen" a "On"
 
---Editamos "mame.ini" y ponemos estos valores así:
+--Editamos "~/.mame/mame.ini" y nos aseguramos de que esto está así:
 bgfx_backend	vulkan
-lowlatency		1
 
 --Lanzamos MAME, entramos en el menú TAB, nos vamos a "Slider Controls", allí a "Window 0, Screen 0 Effect"
 y con el cursor situado ahí, usamos los cursores a derecha/izquierda para seleccionar el efecto deseado. Se queda guardado para cada juego. 
