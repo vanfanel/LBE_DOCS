@@ -8564,6 +8564,11 @@ para que no tenga que acceder a nada en la unidad Z que es el raiz de Linux.
 --Usamos el flasheador: wine 8Bitdo_Update.exe
   ...Seleccionamos el firmware (.BIN) y esperamos. Se hace aunque no nos diga nada.  
 
+NOTA: Debería ser posible flashear el firmware sin usar nada de 8BitDo, usando el protocolo DFU.
+Para ello, primero instalaríamos "dfu-util": sudo apt-get install dfu-util
+Y ahora tendría que aparecer nuestro hardware al hacer "dfu-util --list"
+EL PROBLEMA POR AHORA ES QUE NO APARECE, ASÍ QUE NO LO PODEMOS FLASHEAR DESDE DFU-UTIL, QUE SERÍA LO IDEAL.
+
 ****************************Milkytracker en Linux****************************
 
 Para evitar undefined symbols en tiempo de linkado, hacemos:
