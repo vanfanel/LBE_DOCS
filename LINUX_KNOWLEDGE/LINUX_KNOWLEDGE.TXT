@@ -8527,6 +8527,43 @@ VIEWMODE: Standard
 BLACK STABILIZATION: 5
 ADVANCED DCR: 0
 
+****************************Actualizar firmware 8bitdo en GNU/Linux**********
+INFO SACADA DE: 
+
+--Miramos el productID y el vendorID con "lusb".
+  Si vemos "2dc8:5200", entonces 2dc8 es el vendorID y 5200 es el productID
+
+--Editamos el registro de WINE con "wine regedit" y allí nos vamos a "HKLM\System\CurrentControlSet\Services\winebus"
+  y añadimos un DWORD llamado "Enable SDL" con valor "0".
+  Esto es MUY IMPORTANTE para que WINE permita acceder a los USBs para flashear.
+
+--Creamos /etc/udev/rules.d/71-8bitdo-boot.rules con el contenido (adaptando el vendorID y el productID, naturalmente):
+SUBSYSTEM=="hidraw", ATTRS{idProduct}=="5200", ATTRS{idVendor}=="2dc8", TAG+="uaccess"
+
+--Instalamos la fuente de mierda de Windows que usan esta basura de programas cerrados:
+git clone --depth 1 https://github.com/mrbvrz/segoe-ui-linux
+cp segoe-ui-linux/font/* $HOME/.wine/drive_c/windows/Fonts/  
+(ALTERNATIVAMENTE se puede instalar usando el script de instalación que hay en https://github.com/mrbvrz/segoe-ui-linux)
+
+--Instalamos el runtime de VisualC que necesita esta basura:
+winetricks vcrun2015
+
+--(NO NECESARIO PARA EL RETROKEYBOARD, YA QUE EL FLASHEADOR TRAE SU PROPIO FIRMWARE)
+   Nos bajamos la versión del firmare que queramos con este script: https://github.com/fwupd/8bitdo-firmware
+----Para ver la lista de productos: ./8bitdo-firmware.py -l
+----Para ver la lista de firmwares de un producto, en este caso el 80: ./8bitdo-firmware.py -l 80
+----Para descargar una versión del firmware del producto 80, en este caso el 1.04: ./8bitdo-firmware.py -f 80 1.04
+----Cambia la extensión de del firmware descargado de .DAT a .BIN
+
+--Nos descargamos el flasheador manual, que es un archivo llamado "RetroKeyboard177.zip" de https://tempfiles.8bitdo.com/HOT/
+  Lleva incluidos un par de firmwares y podemos flashear la versión más reciente.
+
+--Creamos el directorio ~/.wine/drive_c/8bitdo y mandamos el flasheador y el firmware allí (si es que hemos descargado un firmware a parte),
+para que no tenga que acceder a nada en la unidad Z que es el raiz de Linux.
+
+--Usamos el flasheador: wine 8Bitdo_Update.exe
+  ...Seleccionamos el firmware (.BIN) y esperamos. Se hace aunque no nos diga nada.  
+
 ****************************Milkytracker en Linux****************************
 
 Para evitar undefined symbols en tiempo de linkado, hacemos:
