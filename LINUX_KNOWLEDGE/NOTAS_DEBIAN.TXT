@@ -873,6 +873,7 @@ Kernel hacking  --->
         [*] Provide BPF Type Format (BTF) debug info
 --Nos vamos a "Device Drivers->X86 Platform Specific Device Drivers" y desactivamos todo lo que veamos de marcas (DELL, HP, etc)
 y sobre todo desactivamos "Intel Platform Monitoring Technology (PMT) Telemetry Driver".
+--Para poder montar imágenes de disco (ISOs, etc), nos aseguramos de tener activado Device Drivers->Block devices->Loopback device support
 
 --En "General Setup" desactivamos:
 ----Todo en "BPF Subsystem"
