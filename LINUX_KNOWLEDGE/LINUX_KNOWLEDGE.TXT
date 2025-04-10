@@ -3062,10 +3062,11 @@ https://gamesnostalgia.com/whdownload
 ya que el VRR sí que da microtirones tanto en PAL como en contenido ~60Hz-70Hz):
 -Crea un script /usr/local/bin/amiga como este que normalmente lanza los juegos como PAL pero que unos pocos los lanza como NTSC:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
-if [[  
+if [[ 
 "$1" == DefenderOfTheCrown || "$1" == *RocketRanger* ||
-"$1" == *ItCameFromTheDesert* || "$1" == *FuryOfTheFurries* ||  
-"$1" == *Might\&Magic2* || "$1" == *MoonStone* || "$1" == *Turrican2AGA*  
+"$1" == *ItCameFromTheDesert* || "$1" == *FuryOfTheFurries* ||
+"$1" == *Might\&Magic2* || "$1" == *MoonStone* || "$1" == *Turrican2AGA* ||
+"$1" == *Lemmings* || "$1" == *OhNoMoreLemmingsNTSC* 
 ]]; then
   retroarch -L ~/.config/retroarch/cores/puae_libretro.so "$1"
 else
@@ -3093,15 +3094,15 @@ es sólo para pasárselo al core.
 Por ejemplo, para jugar al Lemmings de CDTV, tendríamos:
 lemmings
 lemmings/s/startup-sequence
-lemmings.info <--Esto es lo que le pasamos al core para lanzar el juego.
+lemmings/c/assign <--Esto lo sacamos del disco de WB correspondiente a la Kickstart que estemos usando. Con tener este archivo nos vale.
 Y en el caso del Lemmings, en el startup-sequence hacemos los Assigns necesarios y lanzamos el juego así:
 #####INICIO STARTUP-SEQUENCE#####
-assign LemSamples: dh0:LemSamples                                                                                                                
-assign LemMusic: dh0:LemMusic                                                                                                                    
-assign LemGraphics: dh0:LemGraphics                                                                                                              
-assign LemLevels: dh0:LemLevels                                                                                                                  
-assign LemMisc1: dh0:LemMisc1                                                                                                                    
-assign LemMisc2: dh0:LemMisc2                                                                                                                    
+assign LemSamples: dh0:LemSamples
+assign LemMusic: dh0:LemMusic
+assign LemGraphics: dh0:LemGraphics
+assign LemLevels: dh0:LemLevels
+assign LemMisc1: dh0:LemMisc1
+assign LemMisc2: dh0:LemMisc2
 Lemmings
 #####FIN STARTUP-SEQUENCE#####
 Para el "It Came from the Desert", tenemos que hacer Assign de los volúmenes desert1, desert2, desert3, des4 y dsave
