@@ -3088,20 +3088,20 @@ PUEDES AHORRAR RAM Y TIEMPO DE ARRANQUE si, en los juegos instalados sin WHDLoad
 "WHDLoad Support" a "OFF". Además, debes copiar el comando "Assign" al directorio raíz del juego, porque casi todos lo usan.
 (NO hace falta que esté en C/, con que esté en el raíz del juego ahí tirado vale).
 
-PARA CARGAR JUEGOS PAL A 100Hz (necesario tanyo si tienes un monitor con VRR/AdaptiveSync/FreeSync como si no,
+PARA CARGAR JUEGOS PAL A 100Hz (necesario tanto si tienes un monitor con VRR/AdaptiveSync/FreeSync como si no,
 ya que el VRR sí que da microtirones tanto en PAL como en contenido ~60Hz-70Hz):
--Añade "PAL" al nombre del juego. Por ejemplo, "ShadowOfTheBeast" pasaría a ser "ShadowOfTheBeastPAL", lo mismo con su .info
--Crea un script /usr/local/bin/amiga como este, que en caso de ser PAL el juego, ponga el monitor a 100Hz si el juego es PAL y además cargue
-las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
+-Crea un script /usr/local/bin/amiga como este que normalmente lanza los juegos como PAL pero que unos pocos los lanza como NTSC:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
-if [[ "$1" == *"PAL"* ]]; then
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@100
-  retroarch -L ~/.config/retroarch/cores/puae_libretro.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@60
-else
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@120
+if [[  
+"$1" == DefenderOfTheCrown || "$1" == *RocketRanger* ||
+"$1" == *ItCameFromTheDesert* || "$1" == *FuryOfTheFurries* ||  
+"$1" == *Might\&Magic2* || "$1" == *MoonStone* || "$1" == *Turrican2AGA*  
+]]; then
   retroarch -L ~/.config/retroarch/cores/puae_libretro.so "$1"
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@60
+else
+  wlr-randr --output DP-1 --mode 1920x1080@100
+  retroarch -L ~/.config/retroarch/cores/puae_libretro.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
+  wlr-randr --output DP-1 --preferred
 fi
 ############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 -Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
@@ -3149,9 +3149,12 @@ el disco duro desde el que se arrancará el sistema ahora.
 	Tanto Ishar como Ishar 2 necesitan video PAL, pero con pixel ratio NTSC si quieres círculos redondos.
 	El Ishar 1 puedes acelerarlo sin coste alguno poniendo "Immediate/Waiting Blits" a "Immediate Blitter".
 
+-En el Turrican2AGA lo más sencillo para tener los controles perfectos es poner en las opciones del menú del juego
+ "INPUT TYPE" a "JOYSTICK CUSTIMISED", y "FIRE 2" a "JUMP" (el rayo se saca manteniendo pulsado el botón de disparo).
+
 -En los juegos que necesitan integer scaling porque tienen secuencias en alta resolución que se ven mal sin ello si usas shaders
-(Agony, Pinball Dreams, Pinball Fantasies...) pon el CROP a "Minimum" para que se vean más grandes: si lo pones a Maximum se verán,
-de hecho, mucho más pequeños.
+ (Agony, Pinball Dreams, Pinball Fantasies...) pon el CROP a "Minimum" para que se vean más grandes: si lo pones a Maximum se verán,
+ de hecho, mucho más pequeños.
 
 NOTAS PARA INSTALAR ROCKET RANGER SIN WHDLOAD (OJO: NO FUNCIONA EN MODO AMIGA 1200, DA GURÚS CASI SIEMPRE QUE SE INICIA)
 -El Rocket Ranger se puede instalar a mano en una máquina A500/600 sin ampliación de memoria, sin WHDLoad.
