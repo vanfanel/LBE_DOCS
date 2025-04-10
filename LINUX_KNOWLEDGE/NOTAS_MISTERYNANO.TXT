@@ -186,3 +186,25 @@ CUBASE 2
 Cubase 2 funciona en TOS 1.6 pero no en TOS 2.06 (da el error "MROS not found"). Usa siempre versiones sin crackear porque tanto la MiSTeryNano
 como la MiSTer implementan el dongle del CUBASE 2 y 3, y así te ahorras problemas.
 COMO CURIOSIDAD: la versión 2.01 crackeada por MCA dicen que es estable y va sin el dongle. 
+
+COMPILAR EL FIRMWARE DEL M0S
+============================
+
+--Creamos un directorio ~/src/bouffalo, y nos vamos allí:
+mkdir ~/src/bouffalo
+cd ~/src/bouffalo
+
+--Clonamos los repos del TOOLCHAIN y del SDK del microcontrolador:
+git clone --depth 1 https://github.com/bouffalolab/toolchain_gcc_t-head_linux.git
+git clone --recurse-submodules --depth 1 https://github.com/harbaum/bouffalo_sdk.git
+
+--Clonamos el repo del firmware que vamos a compilar en sí:
+git clone --recurse-submodules https://github.com/harbaum/FPGA-Companion.git
+
+--Entramos en el directorio del firmware específico del BL616:
+cd FPGA-Companion/src/bl616/
+
+--Compilamos pasándole las rutas del TOOLCHAIN y el SDK:
+CROSS_COMPILE=~/src/bouffalo/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf- BL_SDK_BASE=~/src/bouffalo/bouffalo_sdk/ make -j10
+
+--El resultado queda en build/build_out/mfg_bl616*.bin
