@@ -3058,37 +3058,7 @@ o los .slave de los juegos WHDLinstall, o directamente los .lha que contengan ju
 Tienes todos los juegos instalados con los últimos slaves de WHDLoad listos para usar en:
 https://gamesnostalgia.com/whdownload
 
-Para pasarle parámetros CUSTOM de WHDLoad:
-Pulsa repetidamente los botones RED y BLUE del mando de CD32 (que normalmente son el A y el B de un mando de SNES)
-y te aparecerá el README del WHDInstall del juego y a continuación podrás meter los CUSTOM que quieras y se quedarán guardados.
-(Para el segundo botón del Toki hay que pasarle "CUSTOM2=1", y para el Shadow of the Beast "CUSTOM4=2" para el segundo botón
-y "CUSTOM1=1" para saltar la intro).
-
-Para jugar a juegos NO instalados con WHDLoad, simplemente en el directorio del juego crea un directorio "s" y dentro un fichero startup-sequence,
-y además un fichero .info que se llame igual que el directorio del juego. Este .info no necesita tener nada, lo puedes crear con "touch",
-es sólo para pasárselo al core.
-Por ejemplo, para jugar al Lemmings de CDTV, tendríamos:
-lemmings
-lemmings/s/startup-sequence
-lemmings.info <--Esto es lo que le pasamos al core para lanzar el juego.
-Y en el caso del Lemmings, en el startup-sequence hacemos los Assigns necesarios y lanzamos el juego así:
-#####INICIO STARTUP-SEQUENCE#####
-assign LemSamples: dh0:LemSamples                                                                                                                
-assign LemMusic: dh0:LemMusic                                                                                                                    
-assign LemGraphics: dh0:LemGraphics                                                                                                              
-assign LemLevels: dh0:LemLevels                                                                                                                  
-assign LemMisc1: dh0:LemMisc1                                                                                                                    
-assign LemMisc2: dh0:LemMisc2                                                                                                                    
-Lemmings
-#####FIN STARTUP-SEQUENCE#####
-Para el "It Came from the Desert", tenemos que hacer Assign de los volúmenes desert1, desert2, desert3, des4 y dsave
-al directorio donde están los datos del juego. El ejecutable se llama "dshell".
-
-PUEDES AHORRAR RAM Y TIEMPO DE ARRANQUE si, en los juegos instalados sin WHDLoad, vas a "Core Options->Media" y pones
-"WHDLoad Support" a "OFF". Además, debes copiar el comando "Assign" al directorio raíz del juego, porque casi todos lo usan.
-(NO hace falta que esté en C/, con que esté en el raíz del juego ahí tirado vale).
-
-PARA CARGAR JUEGOS PAL A 100Hz (necesario tanto si tienes un monitor con VRR/AdaptiveSync/FreeSync como si no,
+--PARA CARGAR JUEGOS PAL A 100Hz (necesario tanto si tienes un monitor con VRR/AdaptiveSync/FreeSync como si no,
 ya que el VRR sí que da microtirones tanto en PAL como en contenido ~60Hz-70Hz):
 -Crea un script /usr/local/bin/amiga como este que normalmente lanza los juegos como PAL pero que unos pocos los lanza como NTSC:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
@@ -3111,14 +3081,44 @@ config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Amiga que usamos para ejecutarlo
 (en principio deja el modelo por defecto que es un 1200 con 8MB de FAST), las opciones de pixel ratio y de cropping que mejor le sientan, etc.
 
-PARA INSTALAR JUEGOS DESDE ADFs A DISCO DURO USANDO ESTE CORE:
+--Para pasarle parámetros CUSTOM de WHDLoad:
+Pulsa repetidamente los botones RED y BLUE del mando de CD32 (que normalmente son el A y el B de un mando de SNES)
+y te aparecerá el README del WHDInstall del juego y a continuación podrás meter los CUSTOM que quieras y se quedarán guardados.
+(Para el segundo botón del Toki hay que pasarle "CUSTOM2=1", y para el Shadow of the Beast "CUSTOM4=2" para el segundo botón
+y "CUSTOM1=1" para saltar la intro).
+
+--Para jugar a juegos NO instalados con WHDLoad, simplemente en el directorio del juego crea un directorio "s" y dentro un fichero startup-sequence,
+y además un fichero .info que se llame igual que el directorio del juego. Este .info no necesita tener nada, lo puedes crear con "touch",
+es sólo para pasárselo al core.
+Por ejemplo, para jugar al Lemmings de CDTV, tendríamos:
+lemmings
+lemmings/s/startup-sequence
+lemmings.info <--Esto es lo que le pasamos al core para lanzar el juego.
+Y en el caso del Lemmings, en el startup-sequence hacemos los Assigns necesarios y lanzamos el juego así:
+#####INICIO STARTUP-SEQUENCE#####
+assign LemSamples: dh0:LemSamples                                                                                                                
+assign LemMusic: dh0:LemMusic                                                                                                                    
+assign LemGraphics: dh0:LemGraphics                                                                                                              
+assign LemLevels: dh0:LemLevels                                                                                                                  
+assign LemMisc1: dh0:LemMisc1                                                                                                                    
+assign LemMisc2: dh0:LemMisc2                                                                                                                    
+Lemmings
+#####FIN STARTUP-SEQUENCE#####
+Para el "It Came from the Desert", tenemos que hacer Assign de los volúmenes desert1, desert2, desert3, des4 y dsave
+al directorio donde están los datos del juego. El ejecutable se llama "dshell".
+
+--PUEDES AHORRAR RAM Y TIEMPO DE ARRANQUE si, en los juegos instalados sin WHDLoad, vas a "Core Options->Media" y pones
+"WHDLoad Support" a "OFF". Además, debes copiar el comando "Assign" al directorio raíz del juego, porque casi todos lo usan.
+(NO hace falta que esté en C/, con que esté en el raíz del juego ahí tirado vale).
+
+--PARA INSTALAR JUEGOS DESDE ADFs A DISCO DURO USANDO ESTE CORE:
 -Pon "Core Options->Media->Global Boot HD" a "Files". Esto creará el directorio ~/.config/retroarch/saves/PUAE/BootHD, que es
 el disco duro desde el que se arrancará el sistema ahora.
 -Arranca el core, dejando que arranque desde ese disco duro vacío.
 -Usando "Disk Control->Load New Disk" + "Disk Control->Insert Disk", con cada disco, ya podemos ir cargando los ADF del juego
 e instalándolo (una vez cargado un ADF, nos permite ir a DF0: sin problemas para ejecutar el instalador o copiar los archivos a mano al disco duro).
 
-PARA ACCEDER AL DISCO DURO DEL CORE MINIMIG, QUE ESTÁ EN PSF3 POR LO QUE NO SE PUEDE MONTAR DESDE LINUX:
+--PARA ACCEDER AL DISCO DURO DEL CORE MINIMIG, QUE ESTÁ EN PSF3 POR LO QUE NO SE PUEDE MONTAR DESDE LINUX:
 Lo mismo:
 -Pon "Core Options->Media->Global Boot HD" a "Files". Esto creará el directorio ~/.config/retroarch/saves/PUAE/BootHD, que es
 el disco duro desde el que se arrancará el sistema ahora.
