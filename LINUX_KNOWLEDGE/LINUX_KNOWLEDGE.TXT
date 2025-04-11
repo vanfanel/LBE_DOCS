@@ -6911,7 +6911,7 @@ de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
 
 -Instalamos otra dependencia previa: LIBTHEROA, que si la instalamos desde APT nos instala CAIRO, que a su vez depende de
 las mierdas de X11. (Nosotros instalamos un CAIRO sin X11 a mano porque el metacompositor WLROOTS usa CAIRO).
-	--Nos bajamos la última estable: wget https://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.xz
+	--Nos bajamos la última estable: wget https://downloads.xiph.org/releases/theora/libtheora-1.2.0.tar.xz
 	--Configuramos, compilamos e instalamos:
 	CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
 	./configure --build=aarch64-unknown-linux-gnu --disable-examples --disable-encode --disable-sdltest
