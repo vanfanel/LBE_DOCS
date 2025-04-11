@@ -158,7 +158,7 @@ FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI
 RECUERDA que si usas el interno de la TANG NANO 20K, tendrás que volver a meterle su firmware original de fábrica para poder volver a flashearlo.
 
 -Nos bajamos el Bouffalo Lab Dev Cube de aquí: https://dev.bouffalolab.com/download
--Manteniendo pulsado el botón BOOT, conectamos el cable USB-C al M0S.
+-Manteniendo pulsado el botón BOOT, conectamos el cable USB-C al M0S. Una vez conectado, lo podemos soltar.
 -Abrimos el Bouffalo Lab Dev Cube, nos vamos a la pestaña MCU, en PORT/SN seleccionamos "/dev/ttyACM0", y le damos a OPEN UART.
 -Seleccionamos el .bin que queramos flashear, y le damos a "CREATE AND DOWNLOAD".
 
