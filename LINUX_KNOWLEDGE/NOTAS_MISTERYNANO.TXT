@@ -199,7 +199,7 @@ git clone --depth 1 https://github.com/bouffalolab/toolchain_gcc_t-head_linux.gi
 git clone --recurse-submodules --depth 1 https://github.com/harbaum/bouffalo_sdk.git
 
 --Clonamos el repo del firmware que vamos a compilar en sí:
-git clone --recurse-submodules https://github.com/harbaum/FPGA-Companion.git
+git clone --recurse-submodules --depth 1 https://github.com/harbaum/FPGA-Companion.git
 
 --Entramos en el directorio del firmware específico del BL616:
 cd FPGA-Companion/src/bl616/
