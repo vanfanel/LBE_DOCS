@@ -187,6 +187,22 @@ Cubase 2 funciona en TOS 1.6 pero no en TOS 2.06 (da el error "MROS not found").
 como la MiSTer implementan el dongle del CUBASE 2 y 3, y así te ahorras problemas.
 COMO CURIOSIDAD: la versión 2.01 crackeada por MCA dicen que es estable y va sin el dongle. 
 
+COMPILAR EL CORE DE C64
+=======================
+
+--Creamos un directorio ~/src/bouffalo, y nos vamos allí:
+mkdir ~/src/bouffalo
+cd ~/src/bouffalo
+
+--Nos bajamos el GOWIN IDE de aquí: https://www.gowinsemi.com/en/support/download_eda/
+  (El pass es Manuel22)
+
+--Clonamos el repo del core en sí:
+git clone --recurse-submodules --depth 1 https://github.com/vossstef/tang_nano_20k_c64.git
+
+--Compilamos con:
+gw_sh.exe / gw_sh.sh build_tn20k.tcl
+
 COMPILAR EL FIRMWARE DEL M0S
 ============================
 
