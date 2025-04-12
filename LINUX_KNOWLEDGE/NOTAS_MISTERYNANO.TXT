@@ -201,6 +201,12 @@ cd ~/src/bouffalo
 git clone --recurse-submodules --depth 1 https://github.com/vossstef/tang_nano_20k_c64.git
 
 --Compilamos con:
+----NOTA: Para ver más info de los errores de QT:
+export QT_DEBUG_PLUGINS=1
+----Sobreescribimos la versión de QT que viene con el Gowin IDE con la nuestra, ya que la que viene está compilada para una versión de GLIB muy antigua
+----Exportamos esto:
+export QT_QPA_PLATFORM=xcb
+----Compilamos:
 gw_sh.exe / gw_sh.sh build_tn20k.tcl
 
 COMPILAR EL FIRMWARE DEL M0S
