@@ -62,7 +62,22 @@ Los tornillos necesarios son M3x12.
 FLASHEAR EL CORE DE ATARI ST Y LAS TOS
 ======================================
 
-	--USANDO EL GOWIN PROGRAMMER (YA QUE EL OPENFPGA LOADER HA DEJADO DE FUNCIONAR--
+	--RECOMENDADO: USANDO OPENFPGA LOADER--
+
+-Flasheamos el core:
+
+openFPGALoader -f ~/Downloads/atarist.fs
+
+-Flasheamos las TOS
+(La mejor página para descargarlas es esta: https://avtandil.narod.ru/tose.html)
+(El orden de flasheo de las TOS es: TOS de ST primaria, TOS de STE primaria, TOS de ST secundaria, TOS de STE secundaria)
+
+openFPGALoader --external-flash -o 0x100000 tos104us.img
+openFPGALoader --external-flash -o 0x140000 tos206us.img
+openFPGALoader --external-flash -o 0x180000 tos104es.img
+openFPGALoader --external-flash -o 0x1c0000 tos206es.img
+
+	--USANDO EL GOWIN PROGRAMMER (POR SI EL OPENFPGA LOADER DEJA DE FUNCIONAR--
 
 --Usamos el Gowin Programmer versión 1.9.10.03, disponible en:
 https://www.gowinsemi.com/en/document/main/database/14/?support_search=&type=version&order=ASC&page=1
@@ -80,20 +95,6 @@ Makefile
 --Falta flashear las ROMS de sistema que se hace igual pero en diferentes "Start Address". Para hacerlo, mira en:
 https://github.com/harbaum/MiSTeryNano/blob/main/INSTALLATION_WINDOWS.md
 
-	--PARA CUANDO VUELVA A FUNCIONAR EL OPENFPGA LOADER--
-
--Flasheamos el core:
-
-openFPGALoader -f ~/Downloads/atarist.fs
-
--Flasheamos las TOS
-(La mejor página para descargarlas es esta: https://avtandil.narod.ru/tose.html)
-(El orden de flasheo de las TOS es: TOS de ST primaria, TOS de STE primaria, TOS de ST secundaria, TOS de STE secundaria)
-
-openFPGALoader --external-flash -o 0x100000 tos104us.img
-openFPGALoader --external-flash -o 0x140000 tos206us.img
-openFPGALoader --external-flash -o 0x180000 tos104es.img
-openFPGALoader --external-flash -o 0x1c0000 tos206es.img
 
 -¡¡¡OJO!!! Las imágenes de disco duro deben tener extensión .HD
 
@@ -107,7 +108,16 @@ el MT32 u otro sinte. Le das a "INSTALL GAME" y así queda guardada la configura
 FLASHEAR EL CORE DE C64 Y LAS ROMS DE SISTEMA
 =============================================
 
-	--USANDO EL GOWIN PROGRAMMER (YA QUE EL OPENFPGA LOADER HA DEJADO DE FUNCIONAR--
+	--RECOMENDADO: USANDO OPENFPGA LOADER--
+
+openFPGALoader -f tang_nano_20k_c64.fs
+
+openFPGALoader --external-flash -o 0x200000 "c1541 DOS Dolphin 2.rom"
+openFPGALoader --external-flash -o 0x20C000 "c1541 DOS CBM.rom"
+openFPGALoader --external-flash -o 0x214000 "c1541 DOS Speeddos Plus.rom"
+openFPGALoader --external-flash -o 0x21C000 "c1541 DOS Jiffy.rom"
+
+	--USANDO EL GOWIN PROGRAMMER (POR SI OPENFPGA LOADER DEJA DE FUNCIONAR--
 
 --Usamos el Gowin Programmer versión 1.9.10.03, disponible en:
 https://www.gowinsemi.com/en/document/main/database/14/?support_search=&type=version&order=ASC&page=1
@@ -124,15 +134,6 @@ Makefile
 --Volvemos al menú principal y le damos al icono de "Program/Configure" (flecha verde), y ya debería ir. 
 --Falta flashear las ROMS de sistema que se hace igual pero en diferentes "Start Address". Para hacerlo, mira en:
 https://github.com/vossstef/tang_nano_20k_c64/blob/main/INSTALLATION_WINDOWS.md
-
-	--PARA CUANDO VUELVA A FUNCIONAR EL OPENFPGA LOADER--
-
-openFPGALoader -f tang_nano_20k_c64.fs
-
-openFPGALoader --external-flash -o 0x200000 "c1541 DOS Dolphin 2.rom"
-openFPGALoader --external-flash -o 0x20C000 "c1541 DOS CBM.rom"
-openFPGALoader --external-flash -o 0x214000 "c1541 DOS Speeddos Plus.rom"
-openFPGALoader --external-flash -o 0x21C000 "c1541 DOS Jiffy.rom"
 
 AHORA necesitas: 
 -El kernal original de C64, que puedes descargar de aquí: http://www.zimmers.net/anonftp/pub/cbm/firmware/computers/c64/
