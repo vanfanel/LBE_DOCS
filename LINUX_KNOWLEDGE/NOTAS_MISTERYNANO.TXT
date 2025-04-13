@@ -203,7 +203,8 @@ https://www.gowinsemi.com/en/support/download_eda/
 
 --Instalamos el GOWIN IDE con WINE, que es con lo que lo vamos a usar: no hace falta instalar el "Programmer, sólo el IDE.
 
---Para compilar, en el GOWIN IDE, abrimos el fichero "tang_nano_20k_c64.gprj" y le damos a "Run All"
+--Para compilar, en el GOWIN IDE, lanzamos el IDE con "wine gw_ide.exe"
+y abrimos el fichero "tang_nano_20k_c64.gprj" y le damos a "Run All"
 que es el icono con las dos flechas verdes formando un círculo: el icono más a la derecha de la barra.
 
 --El resultado es un fichero .fs que queda, a partir de la raíz de los sources, en ./impl/pnr/tang_nano_20k_c64.fs 
