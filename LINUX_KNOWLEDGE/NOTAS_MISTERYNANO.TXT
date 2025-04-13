@@ -194,20 +194,19 @@ COMPILAR EL CORE DE C64
 mkdir ~/src/bouffalo
 cd ~/src/bouffalo
 
---Nos bajamos el GOWIN IDE de aquí: https://www.gowinsemi.com/en/support/download_eda/
-  (El pass es Manuel22)
-
 --Clonamos el repo del core en sí:
 git clone --recurse-submodules --depth 1 https://github.com/vossstef/tang_nano_20k_c64.git
 
---Compilamos con:
-----NOTA: Para ver más info de los errores de QT:
-export QT_DEBUG_PLUGINS=1
-----Sobreescribimos la versión de QT que viene con el Gowin IDE con la nuestra, ya que la que viene está compilada para una versión de GLIB muy antigua
-----Exportamos esto:
-export QT_QPA_PLATFORM=xcb
-----Compilamos:
-gw_sh.exe / gw_sh.sh build_tn20k.tcl
+--Nos bajamos el GOWIN IDE para Windows (no pierdas tiempo con la versión Linux, está rotísima) de aquí:
+https://www.gowinsemi.com/en/support/download_eda/
+  (El pass es Manuel22)
+
+--Instalamos el GOWIN IDE con WINE, que es con lo que lo vamos a usar: no hace falta instalar el "Programmer, sólo el IDE.
+
+--Para compilar, en el GOWIN IDE, abrimos el fichero "tang_nano_20k_c64.gprj" y le damos a "Run All"
+que es el icono con las dos flechas verdes formando un círculo: el icono más a la derecha de la barra.
+
+--El resultado es un fichero .fs que queda, a partir de la raíz de los sources, en ./impl/pnr/tang_nano_20k_c64.fs 
 
 COMPILAR EL FIRMWARE DEL M0S
 ============================
