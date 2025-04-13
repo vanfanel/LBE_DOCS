@@ -1876,13 +1876,16 @@ USAR MAME STANDALONE
 cp -R bgfx artwork ~/mame/
 
 --Ejecutamos "mame" sin ningún juego, y en el menú nos vamos a "General Settings->Video Options",
-y ponemos "Video Mode" a "bgfx", "GLSL" a "On", "Window Mode" a "off",
-"Synchronized Refresh" a "On" y "Wait Vertical Sync" a "On". 
+y ponemos "Video Mode" a "bgfx", "GLSL" a "On", "Window Mode" a "off", "Wait Vertical Sync" a "On". 
+El "Low Latency" no tiene ningún efecto si se tiene VRR: https://docs.mamedev.org/usingmame/commonissues.html#gsync-freesync
 Los demás valores los dejamos como están por defecto.
 Ahora, para que no nos salga la info de cada juego ni nos salgan los warnings con los juegos imperfectos,
 nos vamos a "General Settings->Miscelaneous Options" y ponemos
 "Skip imperfect emulation warnings" a "On"
 "Skip system information screen" a "On"
+
+--Ponemos un modo de 123Hz antes de entrar: eso nos permite que el VRR vaya bien con juegos ~55-60Hz
+al darle 3Hz de sobra para que VRR "respire". Lo típico.
 
 --Editamos "~/.mame/mame.ini" y nos aseguramos de que esto está así:
 bgfx_backend	vulkan
