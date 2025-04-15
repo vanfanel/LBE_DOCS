@@ -9734,7 +9734,9 @@ set(LOVE_LINK_LIBRARIES ${LOVE_LINK_LIBRARIES} OpenGL)
 cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 
---Para instalarlo, copia el ejecutable "love" donde quieras.
+--Para instalarlo, copia el ejecutable "love" junto con la librería "libliblove.so" donde quieras.
+
+--Los juegos se lanzan con nombre de directorio! No lances un .love directamente, porque así no funciona.
 
 INSTALAR JACKD2 GNU/LINUX
 =========================
