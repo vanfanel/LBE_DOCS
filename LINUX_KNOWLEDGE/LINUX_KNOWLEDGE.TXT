@@ -1071,15 +1071,15 @@ Está en ~/.config/dosbox/dosbox.conf
 --Para tener scroll perfecto en monitor VRR la única manera es poner un modo de 60Hz para la mayoría de los juegos
 y uno de 70 para las excepciones como Lemmings, Lemmings 2, Lotus 3...
 Así que lo primero es poner un modo a 60Hz o de 70Hz en el monitor (dependiendo del juego)
-y para no tener input lag aunque pongamos un modo de 60/70Hz, usar AdativeSync en vez de VSYNC normal:
+y para no tener input lag aunque pongamos un modo de 60/70Hz, usar AdativeSync en vez de VSYNC normal, para lo cual ponemos en el dosbox.conf:
 
 vsync = adaptive
 
-Si vamos a cargar un juego de 60Hz hacemos:
+Y ahora, si vamos a cargar un juego de 60Hz hacemos:
 wlr-randr --output DP-1 --custom-mode 1920x1080@60
 dosbox --set host_rate=60 --set dos_rate=host SF.EXE
 
-Si vamos a cargar un juego de 70Hz hacemos:
+Y si vamos a cargar un juego de 70Hz hacemos:
 wlr-randr --output DP-1 --custom-mode 1920x1080@70
 dosbox --set host_rate=70 --set dos_rate=host lemmings.bat
 
