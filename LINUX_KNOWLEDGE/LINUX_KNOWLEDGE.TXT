@@ -9721,16 +9721,21 @@ LOVE2D en GNU/Linux (love)
 Bajamos los últimos source estables de:
 https://github.com/love2d/love/releases
 
-Satisfacemos algunas dependencias.
+--Instalamos dependencias previas
 sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libtheora-dev libmpg123-dev libluajit-5.1-dev luajit
 
-La otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarlas).
+--La otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarlas).
 
-Configuramos love con:
+--Editamos CMakeFiles.txt y encima de la línea:
+find_package(OpenGL)
+..ponemos:
+set(OPENGL_USE_OPENGL ON)
+
+--Configuramos love con:
 cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" ..
 
-Instala copiando el ejecutable love donde quieras.
+--Para instalarlo, copia el ejecutable "love" donde quieras.
 
 INSTALAR JACKD2 GNU/LINUX
 =========================
