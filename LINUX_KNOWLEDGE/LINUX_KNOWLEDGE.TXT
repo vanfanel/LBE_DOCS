@@ -9726,10 +9726,9 @@ sudo apt-get install --no-install-recommends libmodplug-dev libphysfs-dev libthe
 
 --La otra dependencia es OpenAL (tienes instrucciones para compilarlas e instalarlas).
 
---Editamos CMakeFiles.txt y encima de la línea:
-find_package(OpenGL)
-..ponemos:
-set(OPENGL_USE_OPENGL ON)
+--Editamos CMakeFiles.txt, buscamos "OpenGL" y borramos las dos llamadas a "find_package()" donde aparece,
+y añadimos esto fuera de cualquier condición:
+set(LOVE_LINK_LIBRARIES ${LOVE_LINK_LIBRARIES} OpenGL)
 
 --Configuramos love con:
 cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
