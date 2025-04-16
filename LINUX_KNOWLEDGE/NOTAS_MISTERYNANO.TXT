@@ -231,3 +231,90 @@ cd FPGA-Companion/src/bl616/
 CROSS_COMPILE=~/src/bouffalo/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf- BL_SDK_BASE=~/src/bouffalo/bouffalo_sdk/ make -j10
 
 --El resultado queda en build/build_out/mfg_bl616*.bin
+
+ARREGLAR EL TECLADO DEL THEC64 PARA EL CORE
+===========================================
+
+El único problema es que unas pocas teclas están mal al conectar el teclado,
+y que queremos tener el menú en la tecla "Pound" (Libra) en lugar de usar la tecla F12 ya que no tenemos esa tecla en este teclado.
+
+Hilo del issue en github:
+https://github.com/vossstef/tang_nano_20k_c64/issues/135
+
+Matriz del teclado sacada de:
+https://www.c64-wiki.com/wiki/Keyboard
+
+VAMOS CON LOS ARREGLOS QUE HAY QUE HACER....
+
+	### BLOQUE 1: ARREGLOS EN EL CORE ###
+
+--Editamos src/misc/c64_keymap.v y allí dejamos así estas líneas (las puedes buscar por el código hexadecimal al principio de cada una):
+
+  (code == 7'h2d)?{ 3'd0,3'd6}: // 2d: Pound
+  (code == 7'h2e)?{ 3'd5,3'd6}: // 2e: =
+  (code == 7'h2f)?{ 3'd5,3'd5}: // 2f: :
+  (code == 7'h30)?{ 3'd2,3'd6}: // 30: ;
+  (code == 7'h31)?{ 3'd6,3'd5}: // 31: @
+
+  (code == 7'h33)?{ 3'd1,3'd6}: // 33: *                                                    
+
+  (code == 7'h34)?{ 3'd6,3'd6}: // 34: ^
+
+  (code == 7'h39)?{ 3'd7,3'd1}: // 39: caps lock
+
+  (code == 7'h49)?{ 3'd3,3'd6}: // 49: Insert
+
+  (code == 7'h56)?{ 3'd3,3'd5}: // 56: KP -
+  (code == 7'h57)?{ 3'd0,3'd5}: // 57: KP +
+
+  (code == 7'h6b)?{ 3'd5,3'd7}: // 6b: Commodore
+
+	### BLOQUE 2: ARREGLOS EN EL FIRMWARE ###
+
+--Editamos src/bl616/hid.c, y allí:
+----Para tener el menú en la tecla "Pound", cambiamos la línea:
+if(buffer[2+i] == 0x45 || (osd_is_visible() && buffer[2+i] == 0x29) )
+por:
+if(buffer[2+i] == 0x2d || (osd_is_visible() && buffer[2+i] == 0x29) )
+----Para que la tecla RESTORE se use como RESTORE, cambiamos la línea:
+if(code == 0x44) kbd_joy_state |= 0x40;
+por:
+if(code == 0x2b) kbd_joy_state |= 0x40;
+----Para que la tecla RESTORE no se envíe como una tecla normal (no es una tecla normal en el C64, no está en la matriz del teclado,
+simplemente desencadena una NMI así que va a parte), cambiamos la línea:
+if(!osd_is_visible())
+por:
+if(!osd_is_visible() && (buffer[2+i] != 0x2b)) /* Don't send the RESTORE key to the core */
+
+	### (NO NECESARIO PARA ARREGLAR EL CORE) INFO ADICIONAL POR SI LA TIENES QUE CONSULTAR, YA QUE COSTÓ MUCHO OBTENERLA POR PRUEBA Y ERROR ###
+
+Estas son las teclas que están mal. Aquí expongo:
+<Código enviado por el teclado del TheC64> <Lo que hay escrito en la tecla del TheC64> <Código que se envía a la matriz de teclado del C64 emulado>
+Estos son los valores correctos, de los que hemos sacado las líneas que hay que corregir en el fichero c64_keymap.v del core.
+
+2D  Pound		0-6
+2E	=			5-6
+2F	:			5-5
+30	;			2-6
+31  @			6-5
+33  *			1-6
+34  Arrow Up 	6-6
+39  Caps Lock   7-1
+
+4A	HOME		3-6
+
+56 -			3-5
+57 +			0-5
+
+6B C=			5-7
+
+ESTA NO HACE FALTA TOCARLA
+2B  RESTORE		NO ENVÍA CÓDIGO DE TECLA,
+				YA QUE NO ESTÁ EN LA MATRIZ DEL TECLADO.
+				MANDA UNA NMI A PARTE.
+
+ESTAS ESTÁN CORRECTAS, NO HACE FALTA CAMBIARLAS, ES SÓLO POR TENER MÁS INFORMACIÓN
+2A  DEL/INST
+2C  SPACE
+69  LSHIFT	7-1 (Sí, el LSHIFT y el SHIFT LOCK van a la misma línea según la documentación de la matriz de teclado del C64,
+				 así que enviamos 7-1 en ambas).
