@@ -12530,7 +12530,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson setup -Dbuildtype=release ..
+meson setup -Dbuildtype=release -Dlua=disabled ..
 
 -Creamos ~/.config/mpv/mpv.conf con el contenido:
 fs=yes
