@@ -1930,6 +1930,12 @@ CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 make REGENIE=1 -f Makefile.libretro -j4
 
+******DAYTONA USA EN MAME*********************************************************************
+
+Para poner el juego en inglés y en "single":
+Pulsamos F2 para entrar en modo "service", y allí nos movemos con el 9 y aceptamos con el 1.
+Entramos en "Game System" y allí ponemos "LINK ID" a "SINGLE" y "COUNTRY" a "EXPORT" o a "USA".
+
 ******USAR MAME LIBRETRO PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
 OJO!!! OJO!! OJO!! El core MAME de RetroArch NO soporta Runahead al emular Mac , si lo tienes fallará el arranque con un error del sistema Mac,
 y habrá un sonido popping de fondo muy desagradable. 
