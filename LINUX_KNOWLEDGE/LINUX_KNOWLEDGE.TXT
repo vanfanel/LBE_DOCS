@@ -10562,50 +10562,45 @@ Cargamos el juego usando su propio shader CRT en vez de usar ZINK+VKBASALT. El s
 EMULADOR MODEL 3 (SUPERMODEL) EN GNU/LINUX
 ==========================================
 
-Clonamos su repo:
+--Clonamos su repo:
 git clone --depth 1 https://github.com/trzy/Supermodel.git 
 
-Editamos Makefiles/Rules.inc y quitamos glew.cpp, y todos los ficheros de Legacy3D.
-Editamos Makefiles/Makefile.UNIX y cambiamos -lGL por -lOpenGL, y añadimos -lGLEW 
-
-Editamos Src/OSD/SDL/Main.cpp, y buscamos las líneas que empiezan con "Render3D =", hay dos.
-Dejamos así la primera:
+--Editamos Makefiles/Rules.inc y quitamos glew.cpp, y todos los ficheros de Legacy3D.
+--Editamos Makefiles/Makefile.UNIX y cambiamos -lGL por -lOpenGL, quitamos -lGLU y añadimos -lGLEW 
+--Editamos Src/OSD/SDL/Main.cpp, buscamos la línea que empieza con "IRender3D" y la dejamos así:
 IRender3D *Render3D = ((IRender3D *) new New3D::CNew3D(s_runtime_config, Model3->GetGame().name));
-Y así la segunda:
-Render3D = ((IRender3D *) new New3D::CNew3D(s_runtime_config, Model3->GetGame().name));
+--Editamos Src/Pkgs/GL/glew.h y eliminamos toda la sección GLU.
 
-Editamos Src/Pkgs/GL/glew.h y eliminamos toda la sección GLU.
-
-Compilamos con:
+--Compilamos con:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 make -f Makefiles/Makefile.UNIX -j10
 
-Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
+--Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
 Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
 
 ./supermodel -fullscreen -res=1920,1080 -channels=2 -true-hz daytona2.zip
 
-Le podríamos dar un modo de vídeo de 57.524Hz y pasarle "-true-hz", para que vaya a los frames originales si notas la emulación
+--Le podríamos dar un modo de vídeo de 57.524Hz y pasarle "-true-hz", para que vaya a los frames originales si notas la emulación
 muy justa con algún juego.
 Pero NO intentes correrlo a 120Hz ni a 57.524Hz x2, porque aunque parece ir suave, luego se desincroniza (ver scroll
 del banner "Rolling Start" del Daytona USA 2). No se nota ningún input lag a 60Hz, así que no te compliques.
 
-PARA CONFIGURAR LOS CONTROLES: Ejecuta simplemente "supermodel -config-inputs", y puedes usar las flechas ARRIBA Y ABAJO del teclado
+--PARA CONFIGURAR LOS CONTROLES: Ejecuta simplemente "supermodel -config-inputs", y puedes usar las flechas ARRIBA Y ABAJO del teclado
 para saltarte los controles que no te intererese configurar. Para configurar una tecla, dale a INTRO, y ya al botón o eje que sea.
 
-NOTA: Si no le pasas "-channels=2", no se oirá porque por defecto Supermodel intenta abrir un sistema de audio de 4 canales,
+--NOTA: Si no le pasas "-channels=2", no se oirá porque por defecto Supermodel intenta abrir un sistema de audio de 4 canales,
 que no tenemos.
 
-NOTA: Cuando al iniciar un juego nos de el error "Network board not present", le damos al 6 para entrar en modo Test,
+--NOTA: Cuando al iniciar un juego nos de el error "Network board not present", le damos al 6 para entrar en modo Test,
 navegamos usando el 5 hasta "Game Assignments", usamos el 6 para seleccionarlo, y cambiamos la opción "Link ID" de "Master" a "Single".
 
-NOTA: Para poner el Daytona 2 en inglés, presiona TestA para entrar en el menú,
+--NOTA: Para poner el Daytona 2 en inglés, presiona TestA para entrar en el menú,
 ahora presiona a la vez ServiceA + ServiceB, y con ellos dos presionados presiona TestB, y ya estás en el menú de elegir el país.
 Y prefiero usar "Export", porque en USA sale un aviso que no nos interesa.
 
-NOTA: Para que el Magical Truck no se ralentize, pásale -ppc-frequency=100
+--NOTA: Para que el Magical Truck no se ralentize, pásale -ppc-frequency=100
 
 AUDIO POR I2C: EL PI TOP SPEAKER
 ================================
