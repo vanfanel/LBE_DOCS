@@ -5,6 +5,8 @@ https://github.com/eivindbohler/tinyllama2#installing-dos
 PARA INSTALAR UN MS-DOS PROPIO, simplemente coge la instalación que tienes guardada en el disco de backup, cópiala tal cual
 a la SD, arranca en el Virtual Floppy ese del core, y escribe "SYS C:", y ya tiene que arrancar.
 
+PARA SOLUCIONAR LOS PROBLEMAS DE EMS DEL VORTEX86 EX, el truco es cargar SMARTDRV en el CONFIG.SYS:
+DEVICE=C:\DOS\SMARTDRV.EXE /DOUBLE_BUFFER
 
 CONCEPTOS PREVIOS
 =================
@@ -231,9 +233,8 @@ Desactivar la CACHE LEVEL 1 (Se puede desactivar una vez arrancado el sistema co
 
 ***ELDER SCROLLS: ARENA***
 
-Necesita EMS.
-
-En la Tinyllama sólo funciona con el QEMM, imposible hacerlo funcionar con el EMM386 o con el JEMMEX.
+Necesita EMS. Y en Tinyllama (Vortex86 EX) necesita tenerla "arreglada" con el truco del SMARTDRM que consiste en cargarlo así en el CONFIG.SYS:
+DEVICE=C:\DOS\SMARTDRV.EXE /DOUBLE_BUFFER
 
 Si aun dándole EMS nos dice que no tiene, mira si al lanzar el JEMMEX tienes el mensaje:
 "Warning: no suitable page frame found, EMS functions limited."
@@ -259,7 +260,8 @@ exit
 
 ***ULTIMA UNDERWORLD***
 
-También necesita EMS y sólo funciona con correctamente con QEMM (con JEMMEX y EMM386 suena la música pero el juego no se ve).
+Necesita EMS. Y en Tinyllama (Vortex86 EX) necesita tenerla "arreglada" con el truco del SMARTDRM que consiste en cargarlo así en el CONFIG.SYS:
+DEVICE=C:\DOS\SMARTDRV.EXE /DOUBLE_BUFFER
 
 ***ALADDIN***
 Necesita EMS, y no funciona con más de 32MB de RAM.
