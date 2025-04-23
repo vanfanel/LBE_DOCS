@@ -5,7 +5,9 @@ https://github.com/eivindbohler/tinyllama2#installing-dos
 PARA INSTALAR UN MS-DOS PROPIO, simplemente coge la instalación que tienes guardada en el disco de backup, cópiala tal cual
 a la SD, arranca en el Virtual Floppy ese del core, y escribe "SYS C:", y ya tiene que arrancar.
 
-PARA SOLUCIONAR LOS PROBLEMAS DE EMS DEL VORTEX86 EX, el truco es cargar SMARTDRV en el CONFIG.SYS (ENTRE el HIMEM.SYS y el EMM386.EXE).
+PARA SOLUCIONAR LOS PROBLEMAS DE EMS DEL VORTEX86 EX,
+(para saber más --> https://jeffpar.github.io/kbarchive/kb/083/Q83141/)
+el truco es cargar SMARTDRV en el CONFIG.SYS (ENTRE el HIMEM.SYS y el EMM386.EXE).
 ASÍ QUE NUESTRO CONFIG.SYS BÁSICO QUEDA ASÍ:
 
 DEVICE=C:\DOS\SETVER.EXE
@@ -44,12 +46,12 @@ Ahora ya es cuestión de ajustar el FDCONFIG.SYS y el FDAUTO.BAT a nuestro gusto
 
 https://www.linuxandubuntu.com/home/dosbox-part-3-installing-dos-onto-a-virtual-hard-drive
 
--Creamos la imágen desde Linux. Por ejemplo, vamos a crear una imágen de 2048MB (=2GB que es el máximo que admite FAT16,
-ya que no se puede cambiar luego de tamaño):
-dd if=/dev/zero of=hdd.img bs=1M count=2048
+-Creamos la imágen desde Linux. Por ejemplo, vamos a crear una imágen de 1024MB (2GB que es el máximo que admite FAT16,
+y no se puede cambiar luego de tamaño):
+dd if=/dev/zero of=hdd.img bs=1M count=1024
 
 -Calculamos el número de cilindros. Se hace multiplicando los MB por 2.03125, así que:
-2048 * 2.03125 = 4160
+1024 * 2.03125 = 2080
 
 -Lanzamos el configurador de teclado con CTRL+Fn+F1, y abajo a la derecha pulsa en "Swap Image",
 dale a "Del" para borrar la combinación de teclas actual que es CTRL+F4 pero que no funciona,
@@ -57,7 +59,7 @@ y luego a "Add" y pulsa la tecla "AltGr" en el teclado real. Sal del configurado
 
 -Añadimos estas cosas a ~/.dosbox/dosbox.conf para montar la imágen de disco donde vamos a instalar el MS-DOS
 y luego arrancar desde los diskettes:
-imgmount 2 hdd.img -size 512,63,16,4160 -t hdd -fs none
+imgmount 2 hdd.img -size 512,63,16,2080 -t hdd -fs none
 (...donde 244 es el número de cilindros que hemos calculado y lo demás siempre es igual.)
 boot Disk1.img Disk2.img Disk3.img Disk4.img -l a
 
