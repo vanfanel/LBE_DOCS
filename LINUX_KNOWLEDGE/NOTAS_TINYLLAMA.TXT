@@ -50,9 +50,10 @@ https://www.linuxandubuntu.com/home/dosbox-part-3-installing-dos-onto-a-virtual-
 PERO Dosbox sólo maneja imágenes de hasta 512MB por compatibilidad con las BIOS antiguas que sólo admitían 1024 cilindros como máximo):
 dd if=/dev/zero of=hdd.img bs=1M count=512
 
--Calculamos el número de cilindros. Se hace multiplicando los MB por 2.03125, así que:
+-Calculamos el número de cilindros. Se hace multiplicando los MB por 2.03125, que viene de:
 Cilindros=Tamaño del Disco / (Sectores por pista * Cabezas * Tamaño por sector)​
-536,870,912​ (63 * 16 * 512) = 1024 Cilindros
+Así que:
+512 * 2.03125 = 1040 Cilindros
 
 -Lanzamos el configurador de teclado con CTRL+Fn+F1, y abajo a la derecha pulsa en "Swap Image",
 dale a "Del" para borrar la combinación de teclas actual que es CTRL+F4 pero que no funciona,
@@ -60,7 +61,7 @@ y luego a "Add" y pulsa la tecla "AltGr" en el teclado real. Sal del configurado
 
 -Añadimos estas cosas a ~/.dosbox/dosbox.conf para montar la imágen de disco donde vamos a instalar el MS-DOS
 y luego arrancar desde los diskettes:
-imgmount 2 hdd.img -size 512,63,16,1024 -t hdd -fs none
+imgmount 2 hdd.img -size 512,63,16,1040 -t hdd -fs none
 (...donde 244 es el número de cilindros que hemos calculado y lo demás siempre es igual.)
 boot Disk1.img Disk2.img Disk3.img Disk4.img -l a
 
