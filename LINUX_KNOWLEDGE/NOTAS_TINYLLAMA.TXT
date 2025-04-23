@@ -17,94 +17,6 @@ DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF
 DEVICE=C:\DOS\SMARTDRV.EXE /DOUBLE_BUFFER
 DEVICE=C:\DOS\EMM386.EXE RAM
 
-CONCEPTOS PREVIOS
-=================
-
-PARA SUMAR Y RESTAR DIRECCIONES EN HEXADECIMAL "A OJO":
-Un incremento unitario en la última cifra es una unidad en decimal.
-Un incremento unitario en la penútima cifra son 16 unidades en decimal.
-Un incremento unitario en la antepenútima cifra son 16 * 16 = 256 unidades en decimal.
-..Etc. Y Ya con esto, en cuanto veas un área tipo A000-A100 sabes intuitivamente cuánta memoria es.
-
-LAS ÁREAS QUE SE USAN EN LA GESTIÓN DE MEMORIA DE MSDOS, COMO "A000H - A040H" ESTÁN MEDIDAS EN BLOQUES DE 16KB CADA UNO.
-Así que si restamos A000H-A040H = 40H, que 40H es 64 en decimal, con lo que son 64 * 16 = 1024 KB.
-Si en MSD o en CHEKIT vemos un área que es algo así como 9F80 - 9FC0, vemos que es una diferencia de 4 unidades en la penúltima cifra
-(al ser la penúltima cifra, son 16 por cada unidad de incremento)
-con lo que son 16 * 4 = 64 bloques, y cada bloque son 16 K, así que 64 * 16 = 1024 KB.
-
-CONCEPTOS
-=========
-
-MEMORIA CONVENCIONAL: Los primeros 640KB. Sólo los juegos más antiguos necesitan mucha memoria convencional (con 615 o así funciona cualquier cosa).
-La idea es mandar todo lo que se pueda a la MEMORIA ALTA (el espacio entre los 640KB y el primer 1MB) para así tener libre
-la mayor cantidad posible de convencional.
-Para ello, en MSDOS se carga el HIMEM.SYS (O HIMEMX, o JEMMEX) el CONFIG.SYS, y MSDOS intenta cargar todos los TSR que metamos en AUTOEXEC.BAT
-en la memoria alta.
-A no ser que en la línea DOS=HIGH,UMB añadamos NOAUTO, claro.
-Por tanto NO hace falta por tanto andar poniendo LH ni LOADHIGH en AUTOEXEC.BAT,
-MSDOS lo hace solo si tiene un gestor de memoria alta.
-Puedes comprobar qué cosas están ocupando la memoria convencional y cuáles están en memoria alta con "mem /c/p"
-Si algo está ocupando convencional, normalmente es que no hay espacio en la alta y por eso MSDOS no lo metió ahí.
-Un truco increíble para tener más memoria alta es pasarle al EMM386 o al JEMMEX, que gastan mucha memoria alta con el frame de la EMS,
-el parámetro I=B000-B7FF I=E000-EFFF, con lo que las zonas de memoria alta dedicadas a los gráficos HERCULES y PS/2 pasan a estar disponibles.
-PERO OJO: Con esto, juegos como Lemmings o Ishar fallan porque intentan tocar esa memoria al comprobar los modos gráficos.
-
-UMBs (=UMA): Upper Memory Blocks, o Upper Memory Area. Espacio de memoria entre los 640KBs y 1MB en modo real.
-EMM386 habilita el acceso a los UMBs, y nos permite especificar a qué bloques van a poder acceder los programas y a cuáles no,
-usando los parámetros X=xxx-xxxx y I=...
-El acceso a los UMBs/UMA permite que los TRS se guarden allí (y MSDOS si usamos DOS=HIGH,UMB),
-lo que se llama "LOADHIGH", ahorrando así memoria convencional.
-Además, EMM386 pone la CPU en modo protegido, por lo que todo es más lento y por eso algunos juegos se quejan (Another World...)
-(El "modo Virtual 8086" AKA "V86 mode" es un submodo del modo protegido: sirve para que los programas en modo real funcionen en modo protegido,
-emulando para ello una CPU de 16bits en modo real).
-
-EXTENDED MEMORY (XMS) (Necesita HIMEM.SYS)
-Memoria por encima del primer 1 MB (ya que originalamente el PC sólo podía direccionar 1MB).
-Los programas en MODO REAL en principio no pueden accelder a esta memoria, eso es precisamente lo que hace HIMEM.SYS
-
-EXPANDED MEMORY (EMS) (Necesita EMM386)
-Una tecnología más antigua que XMS para expandir la memoria de los PCs más allá de los 640KBs usando una tarjeta de expansión con bank-switching.
-Como esta tecnología se hizo muy famosa y muchos juegos usan EMS, lo que se hace es emular EMS usando XMS.
-EMM386 hace dos cosas:
-1 - Emular EMS usando XMS
-2 - Para ello, habilita el acceso a la UMA (=UMBs) para poder emular el bank-switing, ya que para emular el bank-swithcing usa el PAGE FRAME,
-que EMM386 coloca en la UMA (=UMBs). EMM386 Necesita encontrar 64KB seguidos en la UMA o nos dará el error "Unable to Set Page Frame Base Address".
-
-(+) PROBLEMA: El DMA (de la tarjeta de sonido por ejemplo) sólo puede acceder a los 16MB de memoria inferiores.
-Ver la respuesta de elianda en este hilo: https://www.vogons.org/viewtopic.php?f=7&t=35747&start=20
-Así que tenemos que dejar el sistema con 16MB y que esos 16MB sean los 16MB inferiores.
-Para ello podemos, pasarle a JEMMEX el parámetro X2MAX=32767 MAX=32767, o bien usar el HIMEM.SYS de MS-DOS 5.0 que sólo reconoce 16MB,
-o bien usar XMSDSK (http://www.uwe-sieber.de/files/xmsdsk.zip) con el parámetro /t para que ocupe la memoria de arriba a abajo,
-dejando así libres los 16MB inferiores que son los que puede usar el DMA.
-
-MEJOR PÁGINA PARA OPTIMIZACIÓN DE MEMORIA CONVENCIONAL EN DOS:
-https://jeffpar.github.io/kbarchive/kb/077/Q77083/
-
-OTROS PARÁMERETROS DE EMM386 (Ver esta página completa: https://hwiegman.home.xs4all.nl/msdos/98768.htm)
-(Y esta otra: http://manmrk.net/tutorials/DOS/msdos7/emm386.htm)
-========================================================================================================
-
-RAM: Le dice a EMM386 que queremos EMS (es el comportamiento por defecto), para lo cual se usa XMS para simular EMS.
-Si no queremos EMS, le pasamos NOEMS.
-
-MEMORY (en KB): Cantidad máxima de memoria EMS que queremos.
-
-NOTR - No inicializar no sé qué mierdas de un adaptador de red.
-
-NOMOVEXBDA - Algunas máquinas usan el último KB de memoria convencional para una área extendida de datos de la BIOS.
-Por defecto, EMM386 mapea esa área en la UMA para dejar libre esa memoria convencional, pero eso puede causar problemas así que
-pasándole este parámetro le decimos que la deje en la memoria convencional.
-
-NOHI - Por defecto, EMM386 carga parte de sí mismo en la UMA, pero puede que la dirección donde se carga esté ocupada con cosas de la BIOS,
-así que con NOHI le decimos que no se cargue en UMA, sino en memoria convencional.  
-
-I=B000-B7FF --> Usar el área UMA de gráficos monocromo (Hércules) que es ese segmento B000-B7FF.
-Si tienes VGA, es seguro usarlo.
-
-X=A000-F7FF --> Excluye todo el área de UMA (es decir desde los 640KB al primer 1MB), y si así se resuelve el problema significa que estamos
-machacando algo de la BIOS que está en el UMA.
-
-
 PARA CONTROLAR LA VELOCIDAD
 ===========================
 
@@ -119,6 +31,34 @@ Esta vez, continuamos el programa de instalación, que ya nos dejará formatear 
 aparece como C: al reiniciar).
 
 Ahora ya es cuestión de ajustar el FDCONFIG.SYS y el FDAUTO.BAT a nuestro gusto.
+
+********INSTALAR MS-DOS CON DOSBOX A UNA IMÁGEN DE DISCO*********
+
+https://www.linuxandubuntu.com/home/dosbox-part-3-installing-dos-onto-a-virtual-hard-drive
+
+-Creamos la imágen desde Linux. Por ejemplo, vamos a crear una imágen de 2048MB (=2GB que es el máximo que admite FAT16,
+ya que no se puede cambiar luego de tamaño):
+dd if=/dev/zero of=hdd.img bs=1M count=2048
+
+-Calculamos el número de cilindros. Se hace multiplicando los MB por 2.03125, así que:
+2048 * 2.03125 = 4160
+
+-Lanzamos el configurador de teclado con CTRL+Fn+F1, y abajo a la derecha pulsa en "Swap Image",
+dale a "Del" para borrar la combinación de teclas actual que es CTRL+F4 pero que no funciona,
+y luego a "Add" y pulsa la tecla "AltGr" en el teclado real. Sal del configurador de teclado para que se salve.
+
+-Añadimos estas cosas a ~/.dosbox/dosbox.conf para montar la imágen de disco donde vamos a instalar el MS-DOS
+y luego arrancar desde los diskettes:
+imgmount 2 hdd.img -size 512,63,16,4160 -t hdd -fs none
+(...donde 244 es el número de cilindros que hemos calculado y lo demás siempre es igual.)
+boot Disk1.img Disk2.img Disk3.img Disk4.img -l a
+
+(Para ir cambiando de un diskette a otro durante la instalación de las a AltGr tal como lo hemos configurado, 
+y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
+
+Ya está. La imágen resultante se puede flashear y arranca en TinyLlama sin problemas. 
+
+####################################################
 
 *****INSTALAR DOS7 DESDE VIRTUALBOX A UN DISCO FÍSICO REAL*************************************
 
@@ -139,28 +79,6 @@ También añadimos la imágen ISO del DOS7 en la lista discos de la máquina, pa
 mientras la máquina está arrancada) y reiniciamos la máquina DOS con el CD dentro. Y ya nos salta el instalador!
 
 --La instalación hazla COMPLETA (si no, no tienes ni el EDIT.COM) y SIN ADDONS.
-
-********(CURIOSIDAD) INSTALAR DOS CON DOSBOX A UNA IMÁGEN DE DISCO (NO MUY ÚTIL PORQUE NO PODRÁS LUEGO TRANSFERIR EL SECTOR
- DE ARRANQUE, PERO AHÍ LO DEJO)*********
-
-https://www.linuxandubuntu.com/home/dosbox-part-3-installing-dos-onto-a-virtual-hard-drive
-
--Creamos la imágen desde Linux. Por ejemplo, vamos a crear una imágen de 120MB:
-dd if=/dev/zero of=hdd.img bs=1M count=120
-
--Calculamos el número de cilindros. Se hace multiplicando los MB por 2.03125, así que:
-120 * 2.03125 = 244
-
--Montamos la imágen en DOSBOX con:
-imgmount 2 hdd.img -size 512,63,16,244 -t hdd -fs none
-...donde 244 es el número de cilindros que hemos calculado y lo demás siempre es igual.
-
--Arrancamos desde los diskettes desde dentro de DOSBOX:
-boot disk1.img disk2.img -l a
-(Para ir cambiando de un diskette a otro durante la instalación, es con CTRL+FN+F4, 
-y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
-
-####################################################
 
 ------------------------INSTALACIÓN DEL SONIDO----------------------------------
 
