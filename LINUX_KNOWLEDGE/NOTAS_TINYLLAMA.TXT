@@ -5,7 +5,7 @@ https://github.com/eivindbohler/tinyllama2#installing-dos
 PARA INSTALAR UN MS-DOS PROPIO, simplemente coge la instalación que tienes guardada en el disco de backup, cópiala tal cual
 a la SD, arranca en el Virtual Floppy ese del core, y escribe "SYS C:", y ya tiene que arrancar.
 
-PARA SOLUCIONAR LOS PROBLEMAS DE EMS DEL VORTEX86 EX, el truco es cargar SMARTDRV en el CONFIG.SYS (ANTES de HIMEM.SYS y de EMM386.EXE):
+PARA SOLUCIONAR LOS PROBLEMAS DE EMS DEL VORTEX86 EX, el truco es cargar SMARTDRV en el CONFIG.SYS (ENTRE el HIMEM.SYS y el EMM386.EXE):
 
 DOS=HIGH,UMB
 FILES=40
@@ -221,38 +221,4 @@ En la versión que tienes guardada en el disco duro de backup, están apuntando 
 **********NOTAS SBEMU*************
 
 Se puede cargar SBEMU sin JEMMEX, pero para ello tienes que cargar SBEMU sin soporte para modo real (pasándole /RMo),
-con lo que basta con cargar HIMEM.SYS y no te hace falta JEMMEX PARA NADA. 
-
-**********COMPILAR LA BIOS DEL TINYLLAMA**********
-
---Instalamos dependencias previas
-sudo apt-get install git build-essential m4 bison flex python texinfo gnat
-
---Instalamos más dependencias previas
-sudo apt-get install libcurl4-openssl-dev
-
---Editamos coreboot/util/crossgcc/buildgcc y cabiamos:
-GMP_VERSION=5.1.2
-por:
-GMP_VERSION=6.3.0
-Y:
-por:
-LIBELF_ARCHIVE="https://sourceware.org/elfutils/ftp/0.191/elfutils-0.191.tar.bz2"
-Y:
-por:
-LIBELF_VERSION=0.191
-Y:
-LIBELF_DIR="libelf-${LIBELF_VERSION}"                                                                                                
-por:
-LIBELF_DIR="elfutils-${LIBELF_VERSION}"
-Y:
-../${LIBELF_DIR}/configure --disable-shared --prefix=$TARGETDIR \
-por:
-../${LIBELF_DIR}/configure --disable-shared --prefix=$TARGETDIR --disable-debuginfod --disable-libdebuginfod --disable-nls \
-
-
-+++COMPILAR LIBELF 0.191
-./configure --disable-debuginfod --disable-libdebuginfod --disable-nls
-
---Ejecutamos:
-./build-xgcc.sh
+con lo que basta con cargar HIMEM.SYS y no te hace falta JEMMEX PARA NADA.
