@@ -27,6 +27,10 @@ LH C:\DOS\KEYB.COM SP
 LH C:\DOS\CTMOUSE.EXE
 LH C:\DOS\DOSKEY.COM
 
+SI QUIERES GANAR 7KB MÁS DE MEMORIA CONVENCIONAL, USA MKEYB.EXE (https://github.com/davidebreso/mkeyb/releases) EN VEZ DE KEYB.COM.
+Para ello, lo metes en C:\DOS y dejas así la línea del teclado del AUTOEXEC:
+LH C:\DOS\MKEYB.EXE SP
+
 PARA CONTROLAR LA VELOCIDAD
 ===========================
 
