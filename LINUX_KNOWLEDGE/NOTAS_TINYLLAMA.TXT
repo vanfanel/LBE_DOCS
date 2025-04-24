@@ -75,7 +75,7 @@ Ya está. La imágen resultante se puede flashear y arranca en TinyLlama sin pro
 *****INSTALAR DOS7 DESDE VIRTUALBOX A UN DISCO FÍSICO REAL*************************************
 
 Se puede descargar desde aquí:
-https://archive.org/details/ms-dos-7.1-cd
+https://winworldpc.com/product/ms-dos/7x
 Nos bajamos la ISO de CD, es más útil que andar con las imágenes de diskette y VirtualBOX arranca la ISO inmediatamente sin problemas.
 
 --Re-creamos la tabla de particiones de la MicroSD desde GPARTED: No debe tener ninguna partición, nos las hará el instalador de DOS7.
