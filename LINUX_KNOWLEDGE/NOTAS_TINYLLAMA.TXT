@@ -50,14 +50,25 @@ Ahora ya es cuestión de ajustar el FDCONFIG.SYS y el FDAUTO.BAT a nuestro gusto
 
 https://www.linuxandubuntu.com/home/dosbox-part-3-installing-dos-onto-a-virtual-hard-drive
 
--Creamos la imágen desde Linux. Por ejemplo, vamos a crear una imágen de 512MB (2GB que es el máximo que admite FAT16,
-PERO Dosbox sólo maneja imágenes de hasta 512MB por compatibilidad con las BIOS antiguas que sólo admitían 1024 cilindros como máximo):
-dd if=/dev/zero of=hdd.img bs=1M count=512
+-Creamos la imágen desde Linux con el tamaño correcto, para lo cual debemos entender el sistema CHS (=Cilindros, Cabezas, Sectores),
+donde para empezar dejamos fijos la mayoría de los valores:
+--- (C) Cilindros puede ser hasta 1024. Es un límite histórico de las BIOS que necesita MS-DOS.
+--- (H) Cabezas. La convención histórica es 16, pero como tenemos el límite de 1024 cilindros, subimos las cabezas a 128.
+		Es un poco "hacky", pero funciona.
+--- (S) Sectores por pista siempre es 63. Es una convención histórica.
++++ Tamaño de cada sector es siempre 512 bytes. Es una convención histórica. 
 
--Calculamos el número de cilindros. Se hace multiplicando los MB por 2.03125, que viene de:
-Cilindros=Tamaño del Disco / (Sectores por pista * Cabezas * Tamaño por sector)​
-Así que:
-512 * 2.03125 = 1040 Cilindros
+Tamaño del disco = Cilindros * Cabezas * Sectores * Tamaño de cada sector. 
+
+Así que por ejemplo para un disco de 2GB con el tamaño correcto, 
+Si sabemos que:
+Tamaño del Disco = Cilindros * Cabezas * Sectores * Tamaño de cada sector
+..Y si tenemos fijo que: Cabezas = 128, Sectores = 63, Tamaño de cada sector = 512, y tamaño 
+
+
+
+dd if=/dev/zero of=hdd.img count= bs=512
+
 
 -Lanzamos el configurador de teclado con CTRL+Fn+F1, y abajo a la derecha pulsa en "Swap Image",
 dale a "Del" para borrar la combinación de teclas actual que es CTRL+F4 pero que no funciona,
