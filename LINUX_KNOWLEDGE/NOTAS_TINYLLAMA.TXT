@@ -72,6 +72,19 @@ Ya está. La imágen resultante se puede flashear y arranca en TinyLlama sin pro
 
 ####################################################
 
+*****INSTALAR DOS7 DESDE QEMU A UNA IMÁGEN DE DISCO********************************************
+
+--Instalamos el QEMU que emula sistemas i386 y x64:
+sudo apt-get install qemu-system-x86
+
+--Creamos la imágen de disco, de 1GB en este caso:
+dd if=/dev/zero of=hdd.img bs=1M count=1024
+
+--Arrancamos desde el CD con la imágen de disco montada en QEMU:
+qemu-system-i386 -m 16M -hda disk.img -cdrom msdos-71.iso -boot d
+
+--La instalación hazla COMPLETA (si no, no tienes ni el EDIT.COM) y SIN ADDONS.
+
 *****INSTALAR DOS7 DESDE VIRTUALBOX A UN DISCO FÍSICO REAL*************************************
 
 Se puede descargar desde aquí:
