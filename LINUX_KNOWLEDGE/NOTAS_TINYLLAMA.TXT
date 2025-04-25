@@ -100,26 +100,6 @@ qemu-system-i386 -m 16M -hda disk.img -cdrom msdos-71.iso -boot d
 
 --La instalación hazla COMPLETA (si no, no tienes ni el EDIT.COM) y SIN ADDONS.
 
-*****INSTALAR DOS7 DESDE VIRTUALBOX A UN DISCO FÍSICO REAL*************************************
-
-Se puede descargar desde aquí:
-https://winworldpc.com/product/ms-dos/7x
-Nos bajamos la ISO de CD, es más útil que andar con las imágenes de diskette y VirtualBOX arranca la ISO inmediatamente sin problemas.
-
---Re-creamos la tabla de particiones de la MicroSD desde GPARTED: No debe tener ninguna partición, nos las hará el instalador de DOS7.
-
---Creamos el disco virtual de VirtualBOX que apunta al disco físico:
-sudo VBoxManage internalcommands createrawvmdk -filename "mi_disco.vmdk" -rawdisk /dev/sdb
-
---Arrancamos VB COMO ROOT con "sudo VirtualBox" (ya que como usuario normal no podemos usar los VMDK que apuntan a cosas en /dev...),
-y creamos una máquina DOS, y le añadimos el disco VMDK a esta máquina DOS:
-También añadimos la imágen ISO del DOS7 en la lista discos de la máquina, para poder seleccionarla luego cuando arranquemos la máquina.
-
---Arrancamos la máquina, insertamos la ISO de DOS7 (pinchando en el icono del CD en la parte de abajo de la ventana
-mientras la máquina está arrancada) y reiniciamos la máquina DOS con el CD dentro. Y ya nos salta el instalador!
-
---La instalación hazla COMPLETA (si no, no tienes ni el EDIT.COM) y SIN ADDONS.
-
 ------------------------INSTALACIÓN DEL SONIDO----------------------------------
 
 Las instrucciones están aquí:
