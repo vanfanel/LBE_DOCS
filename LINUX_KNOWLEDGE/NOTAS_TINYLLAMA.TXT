@@ -217,6 +217,12 @@ Si te da un error de que no encuentra un archivo, edita CONFIG.INI y pon "Source
 al directorio donde tengas el juego instalado.
 En la versión que tienes guardada en el disco duro de backup, están apuntando a C:\juegos\roth
 
+***SPACE QUEST 4******************
+
+Si no lo parcheas, no puede inicializar el sonido de Sound Blaster en máquinas rápidas.
+Para ello, bájate el GOSIERRA.EXE (https://spacequest.net/downloads/gosierrav3.zip), cópialo al directorio del juego y haz:
+GOSIERRA SNDBLAST.DRV
+
 **********NOTAS SBEMU*************
 
 Se puede cargar SBEMU sin JEMMEX, pero para ello tienes que cargar SBEMU sin soporte para modo real (pasándole /RMo),
