@@ -112,7 +112,8 @@ CILINDROS = TAMAÑO / (CABEZAS * SECTORES * TAMAÑO DE SECTOR)
 
 La geometría del disco para DOSBOX será: 520 cilindros, 128 cabezas, 63 sectores por pista, 512 bytes por sector.
 
-Ahora, creamos la imágen con DD con el tamaño correcto (consideramos 128 cabezas porque nos da la gana, está dentro de los límites):
+Ahora, creamos la imágen con DD con el tamaño correcto (consideramos 128 cabezas porque nos da la gana, está dentro de los límites,
+de esa manera podremos obtener 2GB sin tener que pasarnos de los límites en el número de cilindros... ¿lo pillas ya?):
 
 dd if=/dev/zero of=hdd.img bs=512 count=[C*H*S]
 ...es decir:
