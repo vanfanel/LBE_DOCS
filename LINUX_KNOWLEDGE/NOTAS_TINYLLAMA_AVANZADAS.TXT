@@ -86,7 +86,9 @@ X=A000-F7FF --> Excluye todo el área de UMA (es decir desde los 640KB al primer
 machacando algo de la BIOS que está en el UMA.
 
 ********(NO RECOMENDADO, USA QEMU) INSTALAR MS-DOS CON DOSBOX A UNA IMÁGEN DE DISCO*********
-
+Ver los últimos posts del hilo:
+https://www.vogons.org/viewtopic.php?p=1347041#p1347041
+Info orginal bastante incompleta:
 https://www.linuxandubuntu.com/home/dosbox-part-3-installing-dos-onto-a-virtual-hard-drive
 
 -Creamos la imágen desde Linux con el tamaño correcto, para lo cual debemos entender el sistema CHS (=Cilindros, Cabezas, Sectores),
@@ -110,7 +112,7 @@ CILINDROS = TAMAÑO / (CABEZAS * SECTORES * TAMAÑO DE SECTOR)
 
 La geometría del disco para DOSBOX será: 520 cilindros, 128 cabezas, 63 sectores por pista, 512 bytes por sector.
 
-Ahora, creamos la imágen con DD con el tamaño correcto:
+Ahora, creamos la imágen con DD con el tamaño correcto (consideramos 128 cabezas porque nos da la gana, está dentro de los límites):
 
 dd if=/dev/zero of=hdd.img bs=512 count=[C*H*S]
 ...es decir:
