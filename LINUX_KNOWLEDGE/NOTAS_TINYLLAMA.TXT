@@ -63,9 +63,8 @@ qemu-system-i386 -m 16M -hda hdd.img -fda Disk1.img -boot a
 --Durante la instalación, cuando nos pida el disco 2, el 3, etc...
 Pulsamos CTRL + ALT + 2, y en la consola de control de QEMU escribimos:
 change floppy0 Disk2.img
-Y cuando nos pida el siguiente:
-change floppy0 Disk3.img
-...Y así sucesivamente.
+...Y luego CTRL + ALT + 1 para volver a la consola principal de QEMU y continuar con la instalación.
+...Y así sucesivamente con los demás diskettes.
 
 *****INSTALAR DOS7 DESDE QEMU A UNA IMÁGEN DE DISCO********************************************
 
