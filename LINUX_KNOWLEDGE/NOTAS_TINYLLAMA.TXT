@@ -96,7 +96,7 @@ sudo apt-get install qemu-system-x86
 dd if=/dev/zero of=hdd.img bs=1M count=1024
 
 --Arrancamos desde el CD con la imágen de disco montada en QEMU:
-qemu-system-i386 -m 16M -hda disk.img -cdrom msdos-71.iso -boot d
+qemu-system-i386 -m 16M -hda hdd.img -cdrom msdos-71.iso -boot d
 
 --La instalación hazla COMPLETA (si no, no tienes ni el EDIT.COM) y SIN ADDONS.
 
