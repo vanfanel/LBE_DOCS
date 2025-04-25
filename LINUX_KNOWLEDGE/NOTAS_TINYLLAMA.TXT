@@ -46,46 +46,26 @@ aparece como C: al reiniciar).
 
 Ahora ya es cuestión de ajustar el FDCONFIG.SYS y el FDAUTO.BAT a nuestro gusto.
 
-********INSTALAR MS-DOS CON DOSBOX A UNA IMÁGEN DE DISCO*********
+*****INSTALAR DOS6.22 DESDE QEMU A UNA IMÁGEN DE DISCO********************************************
 
-https://www.linuxandubuntu.com/home/dosbox-part-3-installing-dos-onto-a-virtual-hard-drive
+--Se supone que tenemos los diskettes de MS-DOS 6.22 en el directorio actual como:
+Disk1.img, Disk2.img, Disk3.img, Disk4.img
 
--Creamos la imágen desde Linux con el tamaño correcto, para lo cual debemos entender el sistema CHS (=Cilindros, Cabezas, Sectores),
-donde para empezar dejamos fijos la mayoría de los valores:
---- (C) Cilindros puede ser hasta 1024. Es un límite histórico de las BIOS que necesita MS-DOS.
---- (H) Cabezas. La convención histórica es 16, pero como tenemos el límite de 1024 cilindros, subimos las cabezas a 128.
-		Es un poco "hacky", pero funciona.
---- (S) Sectores por pista siempre es 63. Es una convención histórica.
-+++ Tamaño de cada sector es siempre 512 bytes. Es una convención histórica. 
+--Instalamos el QEMU que emula sistemas i386 y x64:
+sudo apt-get install qemu-system-x86
 
-Tamaño del disco = Cilindros * Cabezas * Sectores * Tamaño de cada sector. 
+--Creamos la imágen de disco, de 2GB en este caso que es el máximo para FAT16:
+dd if=/dev/zero of=hdd.img bs=1M count=2048
 
-Así que por ejemplo para un disco de 2GB con el tamaño correcto, 
-Si sabemos que:
-Tamaño del Disco = Cilindros * Cabezas * Sectores * Tamaño de cada sector
-..Y si tenemos fijo que: Cabezas = 128, Sectores = 63, Tamaño de cada sector = 512, y tamaño 
+--Arrancamos desde el CD con la imágen del primer diskette montada en QEMU:
+qemu-system-i386 -m 16M -hda hdd.img -fda Disk1.img -boot a
 
-
-
-dd if=/dev/zero of=hdd.img count= bs=512
-
-
--Lanzamos el configurador de teclado con CTRL+Fn+F1, y abajo a la derecha pulsa en "Swap Image",
-dale a "Del" para borrar la combinación de teclas actual que es CTRL+F4 pero que no funciona,
-y luego a "Add" y pulsa la tecla "AltGr" en el teclado real. Sal del configurador de teclado para que se salve.
-
--Añadimos estas cosas a ~/.dosbox/dosbox.conf para montar la imágen de disco donde vamos a instalar el MS-DOS
-y luego arrancar desde los diskettes:
-imgmount 2 hdd.img -size 512,63,16,1040 -t hdd -fs none
-(...donde 244 es el número de cilindros que hemos calculado y lo demás siempre es igual.)
-boot Disk1.img Disk2.img Disk3.img Disk4.img -l a
-
-(Para ir cambiando de un diskette a otro durante la instalación de las a AltGr tal como lo hemos configurado, 
-y vamos viendo cómo cambian en la consola desde la que hayamos lanzado DOSBOX).
-
-Ya está. La imágen resultante se puede flashear y arranca en TinyLlama sin problemas. 
-
-####################################################
+--Durante la instalación, cuando nos pida el disco 2, el 3, etc...
+Pulsamos CTRL + ALT + 2, y en la consola de control de QEMU escribimos:
+change floppy0 Disk2.img
+Y cuando nos pida el siguiente:
+change floppy0 Disk3.img
+...Y así sucesivamente.
 
 *****INSTALAR DOS7 DESDE QEMU A UNA IMÁGEN DE DISCO********************************************
 
