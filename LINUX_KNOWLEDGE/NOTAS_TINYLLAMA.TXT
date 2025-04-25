@@ -48,11 +48,11 @@ Ahora ya es cuestión de ajustar el FDCONFIG.SYS y el FDAUTO.BAT a nuestro gusto
 
 *****INSTALAR DOS6.22 DESDE QEMU A UNA IMÁGEN DE DISCO********************************************
 
---Se supone que tenemos los diskettes de MS-DOS 6.22 en el directorio actual como:
-Disk1.img, Disk2.img, Disk3.img, Disk4.img
-
 --Instalamos el QEMU que emula sistemas i386 y x64:
 sudo apt-get install qemu-system-x86
+
+--Se supone que tenemos los diskettes de MS-DOS 6.22 en el directorio actual como:
+Disk1.img, Disk2.img, Disk3.img, Disk4.img
 
 --Creamos la imágen de disco, de 2GB en este caso que es el máximo para FAT16:
 dd if=/dev/zero of=hdd.img bs=1M count=2048
