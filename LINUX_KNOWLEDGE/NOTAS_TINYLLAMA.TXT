@@ -195,6 +195,14 @@ Para ello, o bien usamos HIMEMX (https://github.com/Baron-von-Riedesel/HimemX/re
 o bien usamos el memeater (https://github.com/kklis/memeater) con 112000
 o bien le pasamos al JEMMEX el parámetro X2MAX=32767
 
+***MONKEY ISLAND************************
+
+El sonido ADLIB tiene problemas con la velocidad de la CPU, sólo va bien si la pones a 60MHz.
+Hay un parche para la versión EGA pero sólo para la versión en inglés. No merece la pena porque la música ADLIB no me apasiona.
+Para que funcione sin más con música y sonido por el Speaker, lánzalo como:
+monkey v i
+(Para música adlib, es "monkey v a").
+
 ***PINBALL DREAMS y PINBALL FANTASIES***
 Lo mismo que el Aladdin.
 
