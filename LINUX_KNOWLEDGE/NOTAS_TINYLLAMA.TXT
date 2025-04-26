@@ -8,8 +8,8 @@ EMM386 es un gestor de memoria EMS: usa memoria XMS para "emular" memoria EMS.
 También habilita el uso de Upper Memory Blocks (UMBs) para poder hacer: LH <nombre_driver>
 EMM386 → Cargar drivers en UMBs → más memoria convencional libre.
 
-NOTAS BÁSICAS
-=============
+NOTAS DE PUESTA EN MARCHA
+=========================
 
 --Lo primero, flasheamos la BIOS al SOC, particionamos/formateamos la MicroSD a FAT32, y le instalamos MSDOS 6.22, para todo lo cual seguimos estas instrucciones:
 https://github.com/eivindbohler/tinyllama2#programming-the-bios
