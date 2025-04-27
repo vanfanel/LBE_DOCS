@@ -199,7 +199,8 @@ exit
 
 ***ULTIMA UNDERWORLD***
 
-Necesita EMS. Y en Tinyllama (Vortex86 EX) necesita tenerla "arreglada" con el truco del SMARTDRM que consiste en cargarlo así en el CONFIG.SYS:
+Necesita EMS. Y en Tinyllama (Vortex86 EX) necesita tenerla "arreglada" con el truco del SMARTDRM que consiste en cargarlo así en el CONFIG.SYS
+antes de cargar EMM386:
 DEVICE=C:\DOS\SMARTDRV.EXE /DOUBLE_BUFFER
 
 ***ALADDIN***
