@@ -134,7 +134,7 @@ Y puedes desactivar la caché antes de lanzarlo, con "CPUSPD CD"
 
 ***ISHAR***
 
-Hay que comentar el EMM386 por completo, y elegir como tarjeta una ADLIB (La soundblaster suena pero muy mal).
+Hay que arrancar sin EMM386, y elegir como tarjeta una ADLIB (La soundblaster suena pero muy mal).
 
 ***LOTUS 3***
 
@@ -222,15 +222,16 @@ Lo mismo que el Aladdin.
 
 ***REALMS OF ARKANIA 2: STARTRAIL***
 
-Necesita EMS y no soporta más de 16MB. Para ello podemos usar HIMEMX + EMM386, o bien JEMMEX.
+Necesita EMS y no soporta más de 32MB. Para ello podemos usar HIMEMX + EMM386, o bien JEMMEX.
 Además sólo va en MS-DOS: en FreeDOS peta en el templo del principio hagamos lo que hagamos.
 
 En MS-DOS, con JEMMEX:
-DEVICE=C:\DOS\JEMMEX.EXE X2MAX=16384 I=B000-B7FF I=TEST X=EC00-EFFF
+DEVICE=C:\DOS\JEMMEX.EXE X2MAX=32767 I=B000-B7FF I=TEST X=EC00-EFFF
 
-En MS-DOS, con HIMEMX (que nos permite limitar la RAM porque con más de 16megas peta) + EMM386,
+(NO recomendado porque no es compatible con Lemmings 2, que sólo funciona con HIMEM.SYS o con JEMMEX)
+Con HIMEMX (que nos permite limitar la RAM porque con más de 16megas peta) + EMM386,
 la configuración de memoria la tengo así para que el juego vaya perfecto:
-DEVICE=C:\DOS\HIMEMX.EXE /MAX=16384                                                                                                    
+DEVICE=C:\DOS\HIMEMX.EXE /MAX=32767                                                                                                    
 DEVICE=C:\DOS\EMM386.EXE HIGHSCAN X=EC00-EFFF                                                                                          
 FILES=30
 

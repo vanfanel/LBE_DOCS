@@ -19,3 +19,14 @@ SET BLASTER=A220 I5 D1 T4 P330
 
 ..Y ya el UNISOUND usará esos valores siempre (la mayoría de los juegos no usan la variable BLASTER de todos modos,
 así que si no la estableces, UNISOUND usará el IRQ 5 que es el que tiene asignado la CRYSTAL en la EEPROM).
+
+DREAMBLASTER S2
+===============
+
+Para ponerla en modo MT32, necesitamos el archivo GMGSMT32.zip de este hilo:
+https://www.vogons.org/viewtopic.php?p=773606#p773606
+Y el banco GMBK5X128_203.zip de aquí:
+http://serdaco.com/downloads/X2/X2_SoundbankPack/?m&dir=GM/Dream/
+Entonces:
+First, make sure you download the latest 2.03 Dream bank referred by dreamblaster and upload it to your X2.
+Then for switching your X2 to MT-32 mode use 'MT32.BAT'. To switch back to GM/GS mode use 'GM.BAT'/'GS.BAT' correspondingly.
