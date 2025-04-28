@@ -217,8 +217,13 @@ Para que funcione sin más con música y sonido por el Speaker, lánzalo como:
 monkey v i
 (Para música adlib, es "monkey v a").
 
-***PINBALL DREAMS y PINBALL FANTASIES***
-Lo mismo que el Aladdin.
+***PINBALL DREAMS (Y FANTASIES)***
+
+Lo primero es que SETSOUND.EXE, que es la utilidad que traen para configurar el sonido, NO te resetee el ordenador.
+Para ello, necesita EMM386 pero sin EMS, y sólo ~4MB de RAM libres (eso se apaña con "memeater 60000")
+Una vez bien configurado el audio mediante SETSOUND (tarjeta con IRQ correcto...) el juego tira de cualquier manera,
+pero para tener sonido limpio necesitas también correrlo con EMM386 pero sin EMS, y sólo ~4MB de RAM libres.
+Es bien cabrón, este juego.
 
 ***REALMS OF ARKANIA 2: STARTRAIL***
 
