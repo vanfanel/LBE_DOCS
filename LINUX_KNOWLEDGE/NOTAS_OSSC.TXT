@@ -1,0 +1,28 @@
+CONFIGURACIÓN ÓPTIMA PARA PC VGA
+================================
+
+IMÁGEN SUAVE
+--Botón LINEMULT.MODE -> 1
+
+MS-DOS A 4:3 EN MONITOR 16:9
+--Botón MENU ON/OFF -> ARRIBA hasta que nos salga SAMPLNG OPT. -> OK -> ARRIBA/ABAJO hasta que nos salga ADV. TIMING
+-> DERECHA/IZQ hasta que nos salga 640x400 -> OK -> DERECHA/IZQ hasta que nos salga H.ACTIVE, y lo ponemos a 639.
+
+QUITAR "RUIDO" DE LA IMÁGEN
+--Botón SAMP.PHASE +/- hasta que se quite.
+Y cuando se quite para el modo texto, luego lo vamos ajustando en los juegos.
+
+SCANLINES
+--Botón MENU ON/OFF -> ARRIBA/ABAJO hasta que nos salga SCANLINE OPT. -> OK
+-> Con ARRIBA/ABAJO vamos pasando de una opción a otra, y las dejamos así usando DERECHA/IZQUIERDA:
+SCANLINES ON
+SL. STRENGTH: 12%
+SL. TYPE: Horizontal
+SL. TYPE: Substraction
+
+SALVAR LOS SETTINGS
+--Botón MENU ON/OFF -> ARRIBA/ABAJO hasta que nos salga SETTINGS OPT. -> ARRIBA/ABAJO hasta que nos salga SAVE PROFILE
+->DERECHA/IZQ hasta que nos salga el perfil que queremos salvar -> OK
+
+QUE SE PONGA EN LA ENTRADA VGA NADA MÁS ENCENDERLO
+En SETTINGS OPT., ponemos INITIAL INPUT a AV3.
