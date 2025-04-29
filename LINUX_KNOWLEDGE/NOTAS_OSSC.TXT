@@ -10,9 +10,6 @@ MS-DOS A 4:3 EN MONITOR 16:9
 
 Aprovecha y ajusta H.SAMPLERATE que las letras se vean más "regulares".
 
-HILO CON MÁS INFO:
-https://videogameperfection.com/forums/topic/ossc-pentium-233-mmx/
-
 QUITAR "RUIDO" DE LA IMÁGEN
 --Botón SAMP.PHASE +/- hasta que se quite.
 Y cuando se quite para el modo texto, luego lo vamos ajustando en los juegos.
@@ -31,3 +28,22 @@ SALVAR LOS SETTINGS
 
 QUE SE PONGA EN LA ENTRADA VGA NADA MÁS ENCENDERLO
 En SETTINGS OPT., ponemos INITIAL INPUT a AV3.
+
+HILO CON MÁS INFO:
+https://videogameperfection.com/forums/topic/ossc-pentium-233-mmx/
+Estos son los settings que usa el tio del hilo, lo pone en uno de los posts:
+480p in sampler: VESA 640×480@60
+Allow upsample2x: On
+384p proc: Line2x
+480p/576p proc: Line2x
+TX mode: DVI
+
+640×400 (PC mode)
+—————–
+H. Samplerate : 700
+H. Synclength : 64
+H. Backporch : 52
+H. Active : 570
+V. Synclength : 2
+V. Backporch : 34
+V. Active : 400
