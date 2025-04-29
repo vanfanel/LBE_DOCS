@@ -1,26 +1,10 @@
 CONFIGURACIÓN ÓPTIMA PARA PC VGA
 ================================
 
-IMÁGEN SUAVE
---Botón LINEMULT.MODE -> 1
-
-MS-DOS A 4:3 EN MONITOR 16:9
---Botón MENU ON/OFF -> ARRIBA hasta que nos salga SAMPLNG OPT. -> OK -> ARRIBA/ABAJO hasta que nos salga ADV. TIMING
--> DERECHA/IZQ hasta que nos salga 640x400 -> OK -> DERECHA/IZQ hasta que nos salga H.ACTIVE, y lo ponemos a 639.
-
-Aprovecha y ajusta H.SAMPLERATE que las letras se vean más "regulares".
-
-QUITAR "RUIDO" DE LA IMÁGEN
---Botón SAMP.PHASE +/- hasta que se quite.
-Y cuando se quite para el modo texto, luego lo vamos ajustando en los juegos.
-
-SCANLINES
---Botón MENU ON/OFF -> ARRIBA/ABAJO hasta que nos salga SCANLINE OPT. -> OK
--> Con ARRIBA/ABAJO vamos pasando de una opción a otra, y las dejamos así usando DERECHA/IZQUIERDA:
-SCANLINES ON
-SL. STRENGTH: 12%
-SL. TYPE: Horizontal
-SL. TYPE: Substraction
+MOVERSE POR EL MENÚ DE SETTINGS
+Con el botón MENU ON/OFF activamos el menú. Una vez allí, con ARRIBA/ABAJO elegimos la categoría,
+una vez elegida la categoría le damos a OK, y cambiamos los valores con DERECHA/IZQ.
+Para volver atrás desde una categoría le damos al botón BACK.
 
 SALVAR LOS SETTINGS
 --Botón MENU ON/OFF -> ARRIBA/ABAJO hasta que nos salga SETTINGS OPT. -> ARRIBA/ABAJO hasta que nos salga SAVE PROFILE
@@ -31,7 +15,9 @@ En SETTINGS OPT., ponemos INITIAL INPUT a AV3.
 
 HILO CON MÁS INFO:
 https://videogameperfection.com/forums/topic/ossc-pentium-233-mmx/
+
 Estos son los settings que usa el tio del hilo, lo pone en uno de los posts:
+
 480p in sampler: VESA 640×480@60
 Allow upsample2x: On
 384p proc: Line2x
@@ -47,3 +33,6 @@ H. Active : 570
 V. Synclength : 2
 V. Backporch : 34
 V. Active : 400
+
+Si además quieres scanlines, ve al menú de SCANLINES (MENU ON/OFF -> ARRIBA/ABAJO hasta que salga SCANLINE OPT. -> OK)
+y allí activa SL. ALT INTERVAL, pon SL. METHOD a MULTIPLICATION, pon SL. HYBRID SRT a 100%, pon SL. STRENGTH a 25%
