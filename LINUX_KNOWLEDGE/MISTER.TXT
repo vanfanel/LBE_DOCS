@@ -856,3 +856,22 @@ Añadimos al final de MiSTer.ini:
 
 [MacPlus]
 video_mode=1536,1026,60
+
+**********SOLUCIÓN A SINCRONÍA PERDIDA EN "SPLATTER HOUSE" Y "VULCAN VENTURE"*************
+
+Se solucionó en este hilo:
+https://misterfpga.org/viewtopic.php?p=97633#p97633
+
+Simplemente, añadimos estas líneas al final del MiSTer.ini:
+
+[jtshouse]
+video_mode=9
+vsync_adjust=2
+
+[jttwin16]
+video_mode=9
+vsync_adjust=2
+
+Lo que hace es que los modos de vídeo precisos se calculan tomando como base el modo 9 que es 1080p a 50Hz.
+Esto es necesario por un error de cálculo al usar vsync_adjust=2 con estos cores: se calcula mal el modo de vídeo preciso de los cores
+si se toma como base 1080p a 60Hz.
