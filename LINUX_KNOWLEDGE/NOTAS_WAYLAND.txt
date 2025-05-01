@@ -1310,6 +1310,10 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 
 </labwc_config>
 
+--Para que MAME vaya perfecto con VRR en pantallas de 120Hz, tenemos que darle unos Hz extra para que el VRR "respire".
+Para ello, añadimos a ~/.config/labwc/autostart:
+wlr-randr --output DP-1 --custom-mode 1920x1080@124
+
 --La opción "allowTearing" no es necesaria usarla: lo que nos hace es poner el presentation mode de Vulkan a IMMEDIATE,
 en vez de MAILBOX que es el valor por defecto, pero luego tendríamos que ir poniéndolo a MAILBOX o FIFO para cada juego
 (export MESA_VK_WSI_PRESENT_MODE=mailbox) con lo que no me aporta nada realmente.
