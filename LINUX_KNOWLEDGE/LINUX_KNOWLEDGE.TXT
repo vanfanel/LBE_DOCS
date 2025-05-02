@@ -10837,10 +10837,12 @@ Podemos descargarlos ya preparados desde: https://github.com/Pyrdacor/Ambermoon/
 COMPILAR LA VERSIÓN MODERNA DEL EMULADOR DE LASERDISC HYPSEUS (HYPSEUS-SINGE)
 =============================================================================
 
-Clonamos el repo (usando el branch RetroPie, esto es importante para que se use el libmpeg2 del sistema!):
-
+Si queremos compilar para PC:
 Nos bajamos los últimos sources estables de:
 https://github.com/DirtBagXon/hypseus-singe/releases
+
+Si queremos compilar para Pi anterior a Pi5 (ya que usaba unas libmpeg2 especiales):
+Clonamos el repo (usando el branch RetroPie, esto es importante para que se use el libmpeg2 del sistema!):
 
 Ahora, configuramos pasándole a CMAKE el directorio src desde nuestro directorio de compilación (OJO que esto es
 distinto a como se suele hacer!!!):
