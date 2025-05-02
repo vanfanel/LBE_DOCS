@@ -649,33 +649,6 @@ https://phoboslab.org/files/wipeout-data-v01.zip
 Creamos el directorio ~/wipeout, y ahí metemos el ejecutable "wipegame" y creamos el subdirectorio "wipeout" donde metemos
 los datos del juego.
 
-******Blood y Exhumed nativos en Linux***************************************************************************************
-
-(OJO!!! NO FUNCIONA CON OPENGL, PARECE NECESITAR OPENGL 3 O ALGO ASÍ, NO SOPORTA GLES TAMPOCO).
-
-Clonamos su repo:
-
-git clone --depth 1 https://github.com/nukeykt/NBlood.git
-
-Compilamos con:
-make rednukem -j8 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=1 USE_LIBVPX=0 LTO=1 OPTOPT="-march=native -mtune=native -O3"
-
-Podríamos compilar sólo el blood, o sólo el exxhumed, etc.. así:
-make blood
-make pcexhumed
-make rednukem
-
-Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
-
-PARA TENER FILTRADO BILINEAL, editamos .config/rednukem/settings.cfg, ponemos "r_texfilter" a "1"
-y luego dentro del juego elegimos el renderer "POLYMER".
-NOTA: El "POLYMOST" es más rápido, pero toda la iluminación se quita al disparar si activamos el filtrado bilineal,
-por eso usamos el "POLYMER" de momento. 
-
-SI QUEREMOS USAR UN SHADER DE VKBASALT DISTINTO AL QUE TENEMOS PUESTO POR DEFECTO EN ~/.config/vkBasalt/vkBasalt.conf,
-debemos añadir a la línea de comandos:
-VKBASALT_CONFIG_FILE=/root/duke3d/vkBasalt.conf
-
 ******Compilar core PCSX2 para LIBRETRO**************************************************************************************
 NOTA: EL RENDERER SOFTWARE SÓLO FUNCIONA CON OPENGL. Necesitas activar OpenGL tanto cuando compiles RetroArch
 como cuando compiles el core.
@@ -3340,6 +3313,37 @@ cp CatacombGL ~/catacomb/
 --Metemos los datos de cada juego soportado en subdirectorios de ~/catacomb.
 Es posible lanzar cada juego directamente con "--descent", "--abyss", "--armageddon", "--apocalypse", etc...
 
+***********NBLOOD: Duke Nukem 3D en GNU/Linux*********************************************************************************************
+
+Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
+
+--Preferentemente, usa este fork, que inclue soporte para BLOOD y EXHUMED también (OJO: el soporte de OpenGL no va):
+git clone --depth 1 https://github.com/nukeykt/NBlood.git
+
+Si quieres usar el eduke32 original, clona su repo de aquí:
+git clone --depth 1 https://voidpoint.io/terminx/eduke32.git
+
+--Compilamos con:
+
+make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=1 USE_LIBVPX=0 HAVE_FLAC=0 \
+OPTOPT="-march=native -mtune=native -O2"
+
+--Mete el duke3d.grp en el mismo directorio que el ejecutable.
+Para tener música con .ogg: Mete un zip con la música en el mismo directorio donde tengas el duke3d.grp.
+Y lanzaríamos el juego con:
+./duke3d -g<nombre_archivo_zip_música>
+RECUERDA: entre el -g y el nombre de archivo NO hay ningún espacio. Va todo seguido. 
+Por ahora, usamos este: https://sc55.duke4.net/
+
+--Para tener filtrado lineal de texturas, creamos el archivo ~/duke3d/autoexec.cfg con el contenido:
+r_texfilter 1
+
+--Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
+
+--SI QUEREMOS USAR UN SHADER DE VKBASALT DISTINTO AL QUE TENEMOS PUESTO POR DEFECTO EN ~/.config/vkBasalt/vkBasalt.conf,
+debemos añadir a la línea de comandos:
+VKBASALT_CONFIG_FILE=/root/duke3d/vkBasalt.conf
+
 *******jfduke3d, el port güeno del duke3d para GNU/Linux**************************
 OJO!! ESTE PORT NO SOPORTA ARMAS CORREGIDAS PARA WIDESCREEN, ASÍ QUE SE VERÁN CORTADAS EN 16:9.
 USA NBLOOD EN SU LUGAR SI BUSCAS UN PORT VANILLA-ACURATE!!
@@ -5497,33 +5501,6 @@ make -j10
 
 Para que vaya a 60FPS sólidos, puedes desactivar TODO el antialiasing, activar el VSYNC, poner FPS a UNLIMITED,
 y sobre todo lanzarlo con "taskset -c 0,1 raze" si estás en un sistema con procesadores asimétricos.
-
-***********NBLOOD: Duke Nukem 3D en GNU/Linux*********************************************************************************************
-
-Va sobre SDL2 + SDL2 Mixer. Se supone que tenemos ambas instaladas y listas!
-
---Preferentemente, usa este fork, que inclue soporte para BLOOD y EXHUMED también (OJO: el soporte de OpenGL no va):
-git clone --depth 1 https://github.com/nukeykt/NBlood.git
-
-Si quieres usar el eduke32 original, clona su repo de aquí:
-git clone --depth 1 https://voidpoint.io/terminx/eduke32.git
-
---Compilamos con:
-
-make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=1 USE_LIBVPX=0 HAVE_FLAC=0 \
-OPTOPT="-march=native -mtune=native -O2"
-
---Mete el duke3d.grp en el mismo directorio que el ejecutable.
-Para tener música con .ogg: Mete un zip con la música en el mismo directorio donde tengas el duke3d.grp.
-Y lanzaríamos el juego con:
-./duke3d -g<nombre_archivo_zip_música>
-RECUERDA: entre el -g y el nombre de archivo NO hay ningún espacio. Va todo seguido. 
-Por ahora, usamos este: https://sc55.duke4.net/
-
---Para tener filtrado lineal de texturas, creamos el archivo ~/duke3d/autoexec.cfg con el contenido:
-r_texfilter 1
-
---Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
 ************ProTracker en GNU/Linux**********************************************************************
 
