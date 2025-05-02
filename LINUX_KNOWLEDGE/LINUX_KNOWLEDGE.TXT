@@ -3335,8 +3335,8 @@ Y lanzaríamos el juego con:
 RECUERDA: entre el -g y el nombre de archivo NO hay ningún espacio. Va todo seguido. 
 Por ahora, usamos este: https://sc55.duke4.net/
 
---Para tener filtrado lineal de texturas, creamos el archivo ~/duke3d/autoexec.cfg con el contenido:
-r_texfilter 1
+--Para tener filtrado lineal de texturas, tecleamos en la consola "r_texfilter 1" y le damos al intro, salimos de la consola y del juego,
+o bien creamos el archivo ~/duke3d/autoexec.cfg con el contenido: "r_texfilter 1"
 
 --Para quitar el autorun es con BLOQ. MAYUS, y para quitar la mirilla es con "i".
 
