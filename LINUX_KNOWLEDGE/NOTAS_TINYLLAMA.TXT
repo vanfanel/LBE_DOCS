@@ -170,6 +170,11 @@ Desactivar la CACHE LEVEL 1 (Se puede desactivar una vez arrancado el sistema co
 ***PREHISTORIK 2***
 Desactivar la CACHE LEVEL 1 (Se puede desactivar una vez arrancado el sistema con "cpuspd cd")
 
+RECUERDA que la única versión con scroll correcto es la de "The Fox Collection", que en principio sólo permitía cargar
+desde CDROM pero que podemos cargar desde disco duro usando el cargador HDRUN.COM disponible aquí:
+https://www.vogons.org/viewtopic.php?t=36061
+y que se usa así: "HDRUN.COM PRE2.SQZ"
+
 ***ELDER SCROLLS: ARENA***
 
 Necesita EMS. Y en Tinyllama (Vortex86 EX) necesita tenerla "arreglada" con el truco del SMARTDRM que consiste en cargarlo así en el CONFIG.SYS:
