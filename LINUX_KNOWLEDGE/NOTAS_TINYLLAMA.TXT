@@ -205,7 +205,11 @@ DEVICE=C:\DOS\SMARTDRV.EXE /DOUBLE_BUFFER
 
 ***ALADDIN***
 Necesita EMS, y no funciona con más de 32MB de RAM.
-Para ello, o bien usamos HIMEMX (https://github.com/Baron-von-Riedesel/HimemX/releases) en vez del HIMEM.SYS así: HIMEMX.EXE /MAX=16M 
+Para ello, lo más compatible en general es usar HIMEM.SYS + EMM386 con LIMITMEM.SYS
+(http://lonecrusader.x10host.com/rloew/limitmem.html) que se debe cargar así antes de HIMEM.SYS:
+DEVICE=LIMITMEM.SYS 32
+
+...o bien usamos HIMEMX (https://github.com/Baron-von-Riedesel/HimemX/releases) en vez del HIMEM.SYS así: HIMEMX.EXE /MAX=16M 
 o bien usamos el memeater (https://github.com/kklis/memeater) con 112000
 o bien le pasamos al JEMMEX el parámetro X2MAX=32767
 
@@ -227,7 +231,12 @@ Es bien cabrón, este juego.
 
 ***REALMS OF ARKANIA 2: STARTRAIL***
 
-Necesita EMS y no soporta más de 32MB. Para ello podemos usar HIMEMX + EMM386, o bien JEMMEX.
+Necesita EMS y no soporta más de 32MB.
+Para ello, lo más compatible en general es usar HIMEM.SYS + EMM386 con LIMITMEM.SYS
+(http://lonecrusader.x10host.com/rloew/limitmem.html) que se debe cargar así antes de HIMEM.SYS:
+DEVICE=LIMITMEM.SYS 32
+
+...O bien podemos usar HIMEMX + EMM386, o bien JEMMEX.
 Además sólo va en MS-DOS: en FreeDOS peta en el templo del principio hagamos lo que hagamos.
 
 En MS-DOS, con JEMMEX:
