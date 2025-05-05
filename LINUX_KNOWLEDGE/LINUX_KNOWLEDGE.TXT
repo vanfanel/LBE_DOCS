@@ -2046,9 +2046,16 @@ que quieras deshabilitar.
 
 ******USAR MAME PARA EMULAR UN 486 CON EL DRIVER CT486******************************************
 
-Se necesita la BIOS "ct486.zip"
+--Se necesitan las BIOS:
+at_keybc.zip
+ct486.zip
+et4kw32i.zip
+kb_ms_natural.zip
 
-mame ct486 -harddisk dos622.img -isa1 svga_s3 -isa2 sb16 -ram 16M
+--Creamos el directorio ~/mame/ct486 donde metemos las BIOS y la imágen de disco de MS-DOS
+
+--Lanzamos el sistema con:
+mame ct486 -rompath ct486 -harddisk dos622.img -isa1 svga_s3 -isa2 sb16 -ram 16M
 
 ******USAR MAME LIBRETRO PARA EMULAR UN APPLE2GS************************************************
 NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
