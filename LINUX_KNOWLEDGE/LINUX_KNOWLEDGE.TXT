@@ -2060,8 +2060,10 @@ https://wiki.mamedev.org/index.php/Driver:CT486#Stage_1:_ct486_PC_driver_setup_f
 Las descomprimimos, nos quedamos con la de 2GB que la renombramos a "dos622.chd" y la metemos en el directorio ct486
 junto con las BIOS. 
 
+--Metemos el set de discos de MS-DOS (Disk1.img, Disk2.img, Disk3.img, Disk4.img) en en directorio ct486. 
+
 --Lanzamos el sistema con:
-mame ct486 -rompath ct486 -harddisk ct486/dos622.img
+mame ct486 -rompath ct486 -hard1 ct486/dos622.img
 
 --Le damos a F1 para continuar cuando nos dé el error, y le damos a DEL para entrar en la BIOS.
 
@@ -2071,6 +2073,14 @@ mame ct486 -rompath ct486 -harddisk ct486/dos622.img
 		"CYLN" a 4161, "Head" a 16, "WPCom" y "LZone" a 0, "Sect" a 63, y nos tiene que salir "Size" puesto a 2048 MB.
 --------En "Floppy Drive A:" ponemos "1.44 MB 3 1/2"
 ----Nos vamos a "ADVANCED CMOS SETUP" y ponemos "System Boot Up Sequence" a "A:, C:"
+
+VAMOS CON LA INSTALACIÓN DE MS-DOS
+
+--Lanzamos el sistema otra vez con:
+mame ct486 -rompath ct486 -hard1 ct486/dos622.img -flop1 ct486/Disk1.img
+
+--Aporreamos teclas (las que queramos) justo antes de que aparezca lo de "Iniciando MS-DOS..." para evitar que se cuelgue.
+(Ni idea, pero funciona).
 
 ******USAR MAME LIBRETRO PARA EMULAR UN APPLE2GS************************************************
 NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
