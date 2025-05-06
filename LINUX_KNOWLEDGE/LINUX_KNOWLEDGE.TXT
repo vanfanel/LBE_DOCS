@@ -2099,6 +2099,10 @@ y así sucesivamente.
 sudo mount dos622.img -o rw,offset=32256 /mnt
 Le metemos lo que queramos y lo desmontamos.
 
+--Con VRR, para que el scroll vaya perfecto tanto en juegos de ~70Hz como de ~60Hz,
+ponemos el máximo refresco del monitor antes de entrar:
+wlr-randr --output DP-1 --mode 1920x1080@143.854996
+
 ******USAR MAME LIBRETRO PARA EMULAR UN APPLE2GS************************************************
 NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
 Si lo dejas activado, los programas se comportan de manera muy extraña: no tienen sonido, se resetean al pulsar teclas o botones, etc.
