@@ -2055,10 +2055,8 @@ kb_ms_natural.zip
 
 --Creamos el directorio ~/mame/ct486 donde metemos las BIOS.
 
---Nos bajamos las imágenes de disco duro en blanco de:
-https://wiki.mamedev.org/index.php/Driver:CT486#Stage_1:_ct486_PC_driver_setup_for_all_OSes
-Las descomprimimos, nos quedamos con la de 2GB que la renombramos a "dos622.chd" y la metemos en el directorio ct486
-junto con las BIOS. 
+--Creamos una imágen de disco de 512MB con:
+dd if=/dev/zero of=ct486/dos622.img bs=1M count=512
 
 --Metemos el set de discos de MS-DOS (Disk1.img, Disk2.img, Disk3.img, Disk4.img) en en directorio ct486. 
 
@@ -2070,7 +2068,9 @@ mame ct486 -rompath ct486 -hard1 ct486/dos622.img
 --En la BIOS:
 ----Nos vamos a "STANDARD CMOS SETUP":
 --------En "HARD DISK C: Type" ponemos
-		"CYLN" a 4161, "Head" a 16, "WPCom" y "LZone" a 0, "Sect" a 63, y nos tiene que salir "Size" puesto a 2048 MB.
+		"CYLN" a 1041, "Head" a 16, "WPCom" y "LZone" a 0, "Sect" a 63, y nos tiene que salir "Size" puesto a 2048 MB.
+(NOTA: Si la imágen de disco que hemos creado fuese más grande, simplemente ajustaríamos el número de CYLN
+y los demás parámetros los dejaríamos como están. O sea que 1041 es para 512MB, para 2GB serían 4161, etc).
 --------En "Floppy Drive A:" ponemos "1.44 MB 3 1/2"
 ----Nos vamos a "ADVANCED CMOS SETUP" y ponemos "System Boot Up Sequence" a "A:, C:"
 
@@ -2082,16 +2082,15 @@ mame ct486 -rompath ct486 -hard1 ct486/dos622.img -flop1 ct486/Disk1.img
 --Aporreamos teclas (las que queramos) justo antes de que aparezca lo de "Iniciando MS-DOS..." para evitar que se cuelgue.
 (Ni idea, pero funciona).
 
---Cuando nos pida otro diskette, pulsamos SCREEN LOCK (=BLOQ.DESP) para que se nos permita usar la GUI de MAME
-y a continuación pulsamos TAB para entrar en dicha GUI, entramos en FILE MANAGER y elegimos el siguiente diskette, y así sucesivamente.
+--Salimos de la instalación con F3. Particionamos el disco con FDISK, reiniciamos, volvemos a salir de la instalación,
+formateamos con "format c:", y reiniciamos.
+Esta vez procedemos con la instalación. Cuando nos pida otro diskette, pulsamos SCREEN LOCK (=BLOQ.DESP) para que se nos permita
+usar la GUI de MAME y a continuación pulsamos TAB para entrar en dicha GUI, entramos en FILE MANAGER y elegimos el siguiente diskette,
+y así sucesivamente.
 
---Para meter más juegos, lo más fácil es llevarnos el dos622.chd al portátil, así comprimido como CHD que no ocupa nada.
-Allí lo descomprimimos con:
-chdman extracthd -i dos622.chd -o dos622.img
-Lo montamos con:
-sudo mount dos622.img -o rw,offset=65536 /mnt
-Le metemos lo que queramos, lo desmontamos, y lo volvemos a comprimir con:
-chdman createhd -i dos622.img -o dos622.chd
+--Para meter más juegos, simplemente montamos la imágen con:
+sudo mount dos622.img -o rw,offset=32256 /mnt
+Le metemos lo que queramos y lo desmontamos.
 
 ******USAR MAME LIBRETRO PARA EMULAR UN APPLE2GS************************************************
 NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
