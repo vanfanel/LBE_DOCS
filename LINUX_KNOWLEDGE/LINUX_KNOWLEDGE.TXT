@@ -2085,6 +2085,14 @@ mame ct486 -rompath ct486 -hard1 ct486/dos622.img -flop1 ct486/Disk1.img
 --Cuando nos pida otro diskette, pulsamos SCREEN LOCK (=BLOQ.DESP) para que se nos permita usar la GUI de MAME
 y a continuación pulsamos TAB para entrar en dicha GUI, entramos en FILE MANAGER y elegimos el siguiente diskette, y así sucesivamente.
 
+--Para meter más juegos, lo más fácil es llevarnos el dos622.chd al portátil, así comprimido como CHD que no ocupa nada.
+Allí lo descomprimimos con:
+chdman extracthd -i dos622.chd -o dos622.img
+Lo montamos con:
+sudo mount dos622.img -o rw,offset=65536 /mnt
+Le metemos lo que queramos, lo desmontamos, y lo volvemos a comprimir con:
+chdman createhd -i dos622.img -o dos622.chd
+
 ******USAR MAME LIBRETRO PARA EMULAR UN APPLE2GS************************************************
 NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
 Si lo dejas activado, los programas se comportan de manera muy extraña: no tienen sonido, se resetean al pulsar teclas o botones, etc.
