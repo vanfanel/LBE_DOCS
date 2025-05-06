@@ -2053,6 +2053,7 @@ que quieras deshabilitar.
 at_keybc.zip
 ct486.zip
 et4kw32i.zip
+s3_764.zip
 kb_ms_natural.zip
 
 --Creamos el directorio ~/mame/ct486 donde metemos las BIOS.
@@ -2098,6 +2099,12 @@ y así sucesivamente.
 --Para meter más juegos, simplemente montamos la imágen con:
 sudo mount dos622.img -o rw,offset=32256 /mnt
 Le metemos lo que queramos y lo desmontamos.
+
+--Para tener 16MB de RAM, Sound Blaster 16 y una tarjeta VGA mejor, lanzamos el sistema así:
+mame ct486 -rompath ct486 -hard1 ct486/dos622.img -ramsize 16M -isa1 svga_s3 -isa2 sblaster_16
+
+--Para que vaya el sonido con Sound Blaster 16 en los juegos que necesitan la variable BLASTER, ponla así en AUTOEXEC.BAT:
+SET BLASTER=A220 I5 D1 T6 P330
 
 --Con VRR, para que el scroll vaya perfecto tanto en juegos de ~70Hz como de ~60Hz,
 ponemos el máximo refresco del monitor antes de entrar:
