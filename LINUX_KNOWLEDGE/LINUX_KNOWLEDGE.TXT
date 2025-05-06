@@ -2047,6 +2047,8 @@ que quieras deshabilitar.
 ******USAR MAME PARA EMULAR UN 486 CON EL DRIVER CT486******************************************
 (INFORMACIÓN ORIGINAL SOBRE LA CONFIGURACIÓN DEL DRIVER: https://wiki.mamedev.org/index.php/Driver:CT486)
 
+	PARTE 1: ARRANQUE Y CONFIGURACIÓN PREVIA DEL SISTEMA
+
 --Se necesitan las BIOS:
 at_keybc.zip
 ct486.zip
@@ -2074,7 +2076,7 @@ y los demás parámetros los dejaríamos como están. O sea que 1041 es para 512
 --------En "Floppy Drive A:" ponemos "1.44 MB 3 1/2"
 ----Nos vamos a "ADVANCED CMOS SETUP" y ponemos "System Boot Up Sequence" a "A:, C:"
 
-VAMOS CON LA INSTALACIÓN DE MS-DOS
+	PARTE 2: INSTALACIÓN DE MS-DOS
 
 --Lanzamos el sistema otra vez con:
 mame ct486 -rompath ct486 -hard1 ct486/dos622.img -flop1 ct486/Disk1.img
@@ -2085,8 +2087,13 @@ mame ct486 -rompath ct486 -hard1 ct486/dos622.img -flop1 ct486/Disk1.img
 --Salimos de la instalación con F3. Particionamos el disco con FDISK, reiniciamos, volvemos a salir de la instalación,
 formateamos con "format c:", y reiniciamos.
 Esta vez procedemos con la instalación. Cuando nos pida otro diskette, pulsamos SCREEN LOCK (=BLOQ.DESP) para que se nos permita
-usar la GUI de MAME y a continuación pulsamos TAB para entrar en dicha GUI, entramos en FILE MANAGER y elegimos el siguiente diskette,
+usar la GUI de MAME.
+(Si el teclado no tiene SCREEN LOCK, asignamos la tecla que queramos en:
+"General Settings -> Input Assignments -> User Interface -> Toggle UI Controls". Yo en el portátil uso el 0 del keypad). 
+Ahora pulsamos TAB para entrar en dicha GUI, entramos en FILE MANAGER y elegimos el siguiente diskette,
 y así sucesivamente.
+
+	PARTE 3: AÑADIR JUEGOS Y PROGRAMAS
 
 --Para meter más juegos, simplemente montamos la imágen con:
 sudo mount dos622.img -o rw,offset=32256 /mnt
