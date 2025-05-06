@@ -2100,7 +2100,7 @@ y así sucesivamente.
 sudo mount dos622.img -o rw,offset=32256 /mnt
 Le metemos lo que queramos y lo desmontamos.
 
---Para tener 16MB de RAM y Sound Blaster 16 (poner otra tarjeta VGA aparentemente mejor como la S3 no produce ninguna diferencia),
+--Para tener 16MB de RAM y Sound Blaster 16 (poner otra tarjeta VGA aparentemente mejor como la S3 en el slot "isa1" no produce ninguna diferencia),
 lanzamos el sistema así:
 mame ct486 -rompath ct486 -hard1 ct486/dos622.img -ramsize 16M -isa1 svga_s3 -isa2 sblaster_16
 (RECUERDA QUE PUEDES VER LAS OPCIONES DE SLOTS DISPONIBLES CON "-listslots")
