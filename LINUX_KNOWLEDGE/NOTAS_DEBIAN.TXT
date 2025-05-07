@@ -710,6 +710,7 @@ apt-get install libasound-dev glslang-dev glslang-tools spirv-tools
 
 Y para tener audio con Pipewire:
 apt-get install pipewire libpipewire-0.3-dev wireplumber --no-install-recommends
+(Para comprobar que el servicio pipewire está funcionando, hacemos "systemctl --user status pipewire.service")
 
 SI ESTÁS EN RASPBERRY PI, LO PRIMERO HAZ ESTO O EL CONFIGURE FALLARÁ:
 apt-get purge libraspberrypi*
