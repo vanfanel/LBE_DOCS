@@ -708,14 +708,6 @@ INSTALAR RETROARCH
 Instalamos dependencias previas:
 apt-get install libasound-dev glslang-dev glslang-tools spirv-tools
 
-Y para tener audio con Pipewire:
-apt-get install pipewire libpipewire-0.3-dev wireplumber --no-install-recommends
-Editamos el servicio y el socket de pipewire y comentamos en cada uno de ellos la línea "ConditionUser=!root"
-systemctl --user --full edit pipewire.service 
-systemctl --user --full edit pipewire.socket
-
-(Para comprobar que el servicio pipewire está funcionando, hacemos "systemctl --user status pipewire.service")
-
 SI ESTÁS EN RASPBERRY PI, LO PRIMERO HAZ ESTO O EL CONFIGURE FALLARÁ:
 apt-get purge libraspberrypi*
 
@@ -728,7 +720,7 @@ editamos qb/config.libs.sh, y cambiamos "-lGL" por "-lOpenGL".
  en Wayland sólo puedes configurar max_swapchain si usas el backend Vulkan).
 TODO ESTO INNECESARIO porque el driver GLCORE va sobre GL3 o GLES3 y ya soporta HARD SYNC directamente.
 
-Ahora, para configurar RetroArch con soporte de OPENGL, VULKAN y audio ALSA y PIPEWIRE, como lo venimos haciendo:
+Ahora, para configurar RetroArch con soporte de OPENGL, VULKAN y audio ALSA, como lo venimos haciendo:
 
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
@@ -737,7 +729,7 @@ CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
 --disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra --disable-discord \
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
---enable-egl --disable-glx --enable-opengl_core --enable-vulkan --enable-pipewire
+--enable-egl --disable-glx --enable-opengl_core --enable-vulkan
 
 (NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
 (NO le pases --disable-builtinglslang, porque entonces fallará la compilación de shaders al cargar un segundo juego sin salir de RetroArch)
@@ -1100,6 +1092,24 @@ User=manuel
 Session=lxqt.desktop
 
 Y ya. Reiniciar y listo.
+
+INSTALAR PIPEWIRE EN DEBIAN
+===========================
+
+--Instalamos los paquetes necesarios:
+apt-get install pipewire libpipewire-0.3-dev wireplumber --no-install-recommends
+
+--Para que funcione como root, editamos los fichreos del servicio y el socket de pipewire
+y comentamos en cada uno de ellos la línea "ConditionUser=!root":
+vim /usr/lib/systemd/user/pipewire.service
+vim /usr/lib/systemd/user/pipewire.socket
+(NOTA: En realidad, deberíamos usar overrides para esto, pero no se puede porque por política los overrides no pueden modificar
+una "Condition" del fichero base de un servicio... Así que de momento hacemos esto, aunque en teoría se perderán las modificaciones
+con cada actualización).
+
+--Para comprobar que el servicio pipewire está funcionando, hacemos "systemctl --user status pipewire.service"
+Si nos sale que sí está rulando, los programas que hayamos compilado con soporte de pipewire (RetroArch lo soporta, debemos elegirlo
+como audio output) deberían ya sonar sin problemas.
 
 KERNEL REALTIME EN DEBIAN
 =========================
