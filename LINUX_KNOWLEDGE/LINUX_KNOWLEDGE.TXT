@@ -1170,8 +1170,10 @@ PARA EVITAR el error de que no encuentra /dev/snd/seq, pues cargar el módulo "s
 
 PARA PONER EL ISHAR 1 EN INGLÉS SIN TENER TECLADO NUMÉRICO, dale a la tecla END. 
 
-PARA QUE NO HAYA "DISTORSIONES" DE AUDIO AL CARGAR EL MAPA Y LOS NIVELES DE "LEMMINGS 2", usa el driver de audio ALSA en vez de ALSATHREAD
-(También he estado experimentando con dejar ALSATHREAD y meterle 30.000 ciclos a este juego, parece algo del scheduler...)
+PARA QUE NO HAYA "DISTORSIONES" DE AUDIO AL CARGAR EL MAPA Y LOS NIVELES DE "LEMMINGS 2", que hace algo raro al cargar de disco,
+manda los ficheros a la caché de disco así antes de empezar:
+find games/lem2 -type f -exec cat {} >> /dev/null \;
+...o bien usa el driver de audio ALSA en vez de ALSATHREAD
 
 PARA LOS JUEGOS QUE SE VEN MAL EN "ALTA" DEBIDO A LAS SCANLINES:
 -Los hay que se soluciona activando el INTEGER SCALING, ya que incluso con escalado a enteros se ven casi casi casi a pantalla completa,
