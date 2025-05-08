@@ -167,6 +167,14 @@ Si pretendes usar SB16, el DMA que debes elegir es el HDMA, no el DMA normal. As
 ***WIZARDRY VI: BANE OF THE COSMIC FORGE***
 Desactivar la CACHE LEVEL 1 (Se puede desactivar una vez arrancado el sistema con "cpuspd cd")
 
+***SUPAPLEX***
+
+Para tener scroll perfecto, debes usar la versión "speed fix version", cuya homepage es:
+https://www.elmerproductions.com/sp/software.html#speedfix
+pero que el link está caido así que descárgala de: https://dosgames.com/game/supaplex/
+...Y debes ejecutarlo como "SPFIX63.EXE H"
+...Lo del parámetro H es imprescindible para que el scroll vaya bien.
+
 ***PREHISTORIK 2***
 Desactivar la CACHE LEVEL 1 (Se puede desactivar una vez arrancado el sistema con "cpuspd cd")
 
