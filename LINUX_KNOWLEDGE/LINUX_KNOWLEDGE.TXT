@@ -1003,6 +1003,20 @@ taskset -c 0-1 retroarch -L ~/.config/retroarch/cores/mednafen_saturn_libretro.s
 Esto es así porque el core oscila muy rápido en el uso de la CPU: cuando usa poca es asignado a una CPU de tipo EFFICIENCY y luego
 cuando de repente usa mucha se ralentiza porque el scheduler no llega a tiempo de pasarlo a una CPU de tipo PERFORMANCE.
 
+*******Compilar 86Box************************************************
+
+--Se necesita FluidSynth y OpenAL, que ya las deberías tener instaladas.
+--Instalamos otras dependencias previas:
+apt-get install libsndfile1-dev libslirp-dev librtmidi-dev 
+
+--Clonamos su repo:
+git clone --depth 1 git clone https://github.com/86Box/86Box.git
+
+--Configuramos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DQT=OFF
+
 *******Compilar DOSBOX-STAGING***************************************
  
 --Instalamos dependencias previas:
