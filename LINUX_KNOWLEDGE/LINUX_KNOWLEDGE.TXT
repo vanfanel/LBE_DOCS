@@ -1018,6 +1018,10 @@ mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DQT=OFF
 
+--PARA INSTALAR LAS ROMS:
+Clonamos su repo (Sí, sí, ¡las ROMs están en un repo!):
+git clone --depth 1 https://github.com/86Box/roms.git
+
 *******Compilar DOSBOX-STAGING***************************************
  
 --Instalamos dependencias previas:
