@@ -1004,6 +1004,7 @@ Esto es así porque el core oscila muy rápido en el uso de la CPU: cuando usa p
 cuando de repente usa mucha se ralentiza porque el scheduler no llega a tiempo de pasarlo a una CPU de tipo PERFORMANCE.
 
 *******Compilar 86Box************************************************
+INFORMACIÓN ORIGINAL PROCEDENTE DE: https://86box.readthedocs.io/en/latest/dev/buildguide.html
 
 --Se necesita FluidSynth y OpenAL, que ya las deberías tener instaladas.
 --Instalamos otras dependencias previas:
