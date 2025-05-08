@@ -134,7 +134,8 @@ Y puedes desactivar la caché antes de lanzarlo, con "CPUSPD CD"
 
 ***ISHAR***
 
-Hay que arrancar sin EMM386, y elegir como tarjeta una ADLIB (La soundblaster suena pero muy mal).
+Con EMM386+EMS (obviamente con SMARTDRV en el CONFIG.SYS antes de EMM386),
+y elegir como tarjeta una ADLIB (La soundblaster suena pero muy mal).
 
 ***LOTUS 3***
 
