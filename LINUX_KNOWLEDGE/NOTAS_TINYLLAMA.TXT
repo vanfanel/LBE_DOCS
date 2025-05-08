@@ -241,7 +241,11 @@ Lo primero es que SETSOUND.EXE, que es la utilidad que traen para configurar el 
 Para ello, necesita EMM386 pero sin EMS, y sólo ~4MB de RAM libres (eso se apaña con "memeater 60000")
 Una vez bien configurado el audio mediante SETSOUND (tarjeta con IRQ correcto...) el juego tira de cualquier manera,
 pero para tener sonido limpio necesitas también correrlo con EMM386 pero sin EMS, y sólo ~4MB de RAM libres.
-Es bien cabrón, este juego.
+
+El Pinball Dreams sólo funciona bien con sonido ADLIB (puedes poner la máxima calidad) y SPEAKER.
+Con Sound Blaster, se va a pantalla en negro con la música sonando al llegar a la pantalla de selección de mesa. Vamos, que no llega,
+se queda en negro con la música sonando.
+Es bien cabrón este juego.
 
 ***REALMS OF ARKANIA 2: STARTRAIL***
 
