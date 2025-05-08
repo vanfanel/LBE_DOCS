@@ -1024,6 +1024,11 @@ git clone --depth 1 https://github.com/86Box/roms.git
 ----Las metemos en su sitio:
 cp roms/* -R ~/.local/share/86Box/roms/
 
+--CONFIGURACIÓN
+Por defecto nos crea ~/86box.cfg
+Le podemos pasar la configuración que queramos con:
+86Box -C <fichero_de_configuración>
+
 *******Compilar DOSBOX-STAGING***************************************
  
 --Instalamos dependencias previas:
