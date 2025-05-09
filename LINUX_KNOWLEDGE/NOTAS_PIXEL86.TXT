@@ -1,10 +1,14 @@
 NOTAS PREVIAS
 =============
 
+--Para dumpear y flashear la BIOS del Vortex86 DX, se usa un programa llamado BIOSMP.EXE, que es del fabricante
+pero lo tienes en el primero de los hilos mencionados.
 --La gráfica del Vortex86 DX que lleva el Pixel86 es una "VOLARI Z29S".
 --Tienes un hilo donde se investigan las particularidades del Vortex86 DX para juegos en estos hilos:
 https://www.vogons.org/viewtopic.php?f=46&t=85448
 https://www.vogons.org/viewtopic.php?t=86603
+--Para dumpear y flashear la BIOS del Vortex86 DX, se usa un programa llamado BIOSMP.EXE, que es del fabricante
+pero lo tienes en hilo: https://www.vogons.org/viewtopic.php?f=46&t=85448
 
 ARRANQUE DEL SISTEMA
 ====================
