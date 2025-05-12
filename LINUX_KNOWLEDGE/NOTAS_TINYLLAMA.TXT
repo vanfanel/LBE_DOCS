@@ -8,6 +8,13 @@ EMM386 es un gestor de memoria EMS: usa memoria XMS para "emular" memoria EMS.
 También habilita el uso de Upper Memory Blocks (UMBs) para poder hacer: LH <nombre_driver>
 EMM386 → Cargar drivers en UMBs → más memoria convencional libre.
 
+NOTAS PREVIAS SOBRE EL SONIDO
+=============================
+
+Debido a limitaciones en el I/O del Vertex86 EX SOM, tanto el DMA1 como el IRQ7 son FIJOS en la TinyLlama.
+Si algún programa falla por usar DMA1 o IRQ7, lo tienes que arreglar en el programa, no lo vas a poder arreglar en el TinyLlama,
+es físicamente imposible.
+
 NOTAS DE PUESTA EN MARCHA
 =========================
 

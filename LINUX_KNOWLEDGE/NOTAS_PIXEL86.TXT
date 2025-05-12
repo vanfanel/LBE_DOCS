@@ -9,6 +9,8 @@ https://www.vogons.org/viewtopic.php?f=46&t=85448
 https://www.vogons.org/viewtopic.php?t=86603
 --Para dumpear y flashear la BIOS del Vortex86 DX, se usa un programa llamado BIOSMP.EXE, que es del fabricante
 pero lo tienes en hilo: https://www.vogons.org/viewtopic.php?f=46&t=85448
+--Se puede extraer sólo la VIDEO CARD ROM de la BIOS dumpeada con AMI MMTOOL, y se le puede inyectar otra VIDEO CADR ROM distinta.
+  Viene hacia la mitad de https://www.vogons.org/viewtopic.php?t=86603
 
 ARRANQUE DEL SISTEMA
 ====================
