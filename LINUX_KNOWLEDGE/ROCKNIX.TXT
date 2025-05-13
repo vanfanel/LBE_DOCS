@@ -4,6 +4,16 @@ CANAL Y PERSONA A PREGUNTAR POR PROBLEMAS DE REFRESCO DE PANTALLA
 Servidor Discord: ROCKNIX
 Canal: rk3566, y preguntar a Stolen.
 
+PANTALLA A 60HZ EN RG353P
+=========================
+
+Desde hace algunas versiones, ROCKNIX se pone al modo por defecto de la pantalla, que son 120Hz pero NO va bien.
+Así que para ponerlo a 60Hz, añadimos "video=DSI-1:640x480@60" a la línea del kernel en /ROCKNIX/extlinux/extlinux.conf,
+y deshabilitamos Wayland (usamos KMS/DRM) ya que Wayland vuelve a meter los 120Hz...
+La manera de deshabilitar Wayland la tienes más abajo en este mismo documento.
+
+Está pendiente que implementen una opción para cambiar esto desde el menú, pero aún tardará un tiempo (preguntar a Sydarn).
+
 CONFIGURACIÓN PARA SCROLL SIN JITTERING/JUDDERING
 =================================================
 
