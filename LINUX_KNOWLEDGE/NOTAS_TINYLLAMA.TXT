@@ -310,4 +310,5 @@ con lo que basta con cargar HIMEM.SYS y no te hace falta JEMMEX PARA NADA.
 --Editamos scripts/kconfig/Makefile y allí buscamos "dochecklxdialog" y borramos todo ese bloque de comprobación
   (no detecta libncurses correctamente)
 --Ejecutamos "make menuconfig" y activamos las opciones de VGA.
---Compilamos con "make -j10"
+--Compilamos con "make -j10".
+--El resultado queda en out/vgabios.bin, y debe ocupar exactamente 32K (32768 bytes).
