@@ -312,3 +312,6 @@ con lo que basta con cargar HIMEM.SYS y no te hace falta JEMMEX PARA NADA.
 --Ejecutamos "make menuconfig" y activamos las opciones de VGA.
 --Compilamos con "make -j10".
 --El resultado queda en out/vgabios.bin, y debe ocupar exactamente 32K (32768 bytes).
+--Queda pendiente saber en qué dirección "inyectar" la VideoROM en la BIOS. Para ello,
+podemos buscar en la BIOS la cadena inicial en hexadecimal de la VideoROM,
+e inyectarla con DD justo donde empieza esa cadena.
