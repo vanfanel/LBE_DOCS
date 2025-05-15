@@ -309,7 +309,10 @@ con lo que basta con cargar HIMEM.SYS y no te hace falta JEMMEX PARA NADA.
 --Clonamos su repo: git clone --depth 1 --recursive https://gitlab.com/qemu-project/seabios.git
 --Editamos scripts/kconfig/Makefile y allí buscamos "dochecklxdialog" y borramos todo ese bloque de comprobación
   (no detecta libncurses correctamente)
---Ejecutamos "make menuconfig" y activamos las opciones de VGA.
+--Ejecutamos "make menuconfig" y allí:
+----Desactivamos todas las opciones menos las de "VGA ROM".
+    Dentro de "VGA ROM" activamos todo, en "VGA Hardware Type" ponemos "QEMU/Bochs Original IBM 256K VGA",
+    y en los valores de "PCI Vendor ID" ponemos "17f3" y "2200".
 --Compilamos con "make -j10".
 --El resultado queda en out/vgabios.bin, y debe ocupar exactamente 32K (32768 bytes).
 --Queda pendiente saber en qué dirección "inyectar" la VideoROM en la BIOS. Para ello,
