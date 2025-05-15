@@ -22,6 +22,13 @@ Session=plasma.desktop
 --Reninciamos y comprobamos el tipo de sesión que se está ejecutando con:
 echo $XDG_SESSION_TYPE
 
+EL SONIDO NO FUNCIONA AUNQUE HE INSTALADO PIPEWIRE!
+===================================================
+
+Mira a ver qué proceso está lockeando el hardware de audio para él:
+fuser -fv /dev/snd/*
+...Y a partir de ahí, ya decide si desinstalar, deshabilitar o qué hacer.
+
 CONFIGURAR FUENTES EN KONSOLE
 =============================
 
