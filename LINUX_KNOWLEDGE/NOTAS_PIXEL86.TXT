@@ -47,3 +47,15 @@ http://serdaco.com/downloads/X2/X2_SoundbankPack/?m&dir=GM/Dream/
 Entonces:
 First, make sure you download the latest 2.03 Dream bank referred by dreamblaster and upload it to your X2 (no sé cómo se hace lo de subirlo).
 Then for switching your X2 to MT-32 mode use 'MT32.BAT'. To switch back to GM/GS mode use 'GM.BAT'/'GS.BAT' correspondingly.
+
+FLASHEAR HIDMAN
+===============
+
+--Nos bajamos el programa de flashead en Pyhton:
+wget https://raw.githubusercontent.com/ishiyakazuo/ch55x-tool/refs/heads/master/ch55xtool.py
+
+--Nos bajamos el firmware de:
+https://github.com/rasteri/HIDman/releases
+
+--Flasheamos con:
+sudo python3 ch55xtool.py -f hidman_axp_v1.1.bin 
