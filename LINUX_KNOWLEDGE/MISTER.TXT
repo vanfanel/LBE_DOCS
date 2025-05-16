@@ -865,13 +865,12 @@ https://misterfpga.org/viewtopic.php?p=97633#p97633
 Simplemente, añadimos estas líneas al final del MiSTer.ini:
 
 [jtshouse]
-video_mode=9
+video_mode=1920,1080,60
 vsync_adjust=2
 
 [jttwin16]
-video_mode=9
+video_mode=1920,1080,60
 vsync_adjust=2
 
-Lo que hace es que los modos de vídeo precisos se calculan tomando como base el modo 9 que es 1080p a 50Hz.
-Esto es necesario por un error de cálculo al usar vsync_adjust=2 con estos cores: se calcula mal el modo de vídeo preciso de los cores
-si se toma como base 1080p a 60Hz.
+Lo que hace es que los modos de vídeo precisos se calculan tomando como base el modo 1080p a 60Hz.
+Esto es necesario por un error de cálculo al usar vsync_adjust=2 con estos cores: se calcula mal sin especificar este modo base.
