@@ -75,8 +75,8 @@ meson setup -Dbuildtype=release -Dtests=false ..
 ninja -j4
 sudo ninja install
 
-PARTE 3: INSTALAR WLROOTS (NO NECESARIO PARA WESTON!!)
-------------------------------------------------------
+PARTE 3: INSTALAR WLROOTS (NO NECESARIO PARA WESTON, NI PARA LABWC O SWAY QUE CLONAN LA VERSIÓN QUE NECESITAN AL CONFIGURAR LOS SOURCES)
+----------------------------------------------------------------------------------------------------------------------------------------
 -Previamente necesitamos KMS/DRM funcionando. Así que deberías ser capaz de ejecutar los tests de SDL2 sobre KMSDRM.
 
 -Instalamos dependencias previas:
