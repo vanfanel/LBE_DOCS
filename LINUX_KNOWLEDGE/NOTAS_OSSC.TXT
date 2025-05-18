@@ -11,7 +11,11 @@ SALVAR LOS SETTINGS
 ->DERECHA/IZQ hasta que nos salga el perfil que queremos salvar -> OK
 
 QUE SE PONGA EN LA ENTRADA VGA NADA MÁS ENCENDERLO
-En SETTINGS OPT., ponemos INITIAL INPUT a AV3.
+En SETTINGS OPT., ponemos INITIAL INPUT a AV3:RGBHV, y AUTODETECT INPUT a "All Inputs".
+
+PARA QUE SE ESCUCHE EL AUDIO POR LA SALIDA HDMI CUANDO CONECTAMOS UN ORDENADOR POR VGA:
+Tenemos que tener "Output Opt. -> TX mode" puesto a uno de los modos HDMI,
+y meter el audio por el jack que hay a la derecha de la salida HDMI del OSSC.
 
 HILO CON MÁS INFO:
 https://videogameperfection.com/forums/topic/ossc-pentium-233-mmx/
@@ -22,7 +26,6 @@ Estos son los settings que usa el tio del hilo, lo pone en uno de los posts:
 Allow upsample2x: On
 384p proc: Line2x
 480p/576p proc: Line2x
-TX mode: DVI
 
 640×400 (PC mode)
 —————–
