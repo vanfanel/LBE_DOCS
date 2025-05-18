@@ -1,14 +1,19 @@
 NOTAS PREVIAS
 =============
 
+--Aunque en el Vortex86 EX (Tinyllama) se solucionan los problemas de EMS cargando SMARTDRV desde el CONFIG.SYS,
+  en el Vortex86 DX NO DEBES CARGARLO, ya que afecta a la compatibilidad: por ejemplo, el "Arkania 2: Startrail"
+  NO FUNCIONA con el SMARTDRV cargado.
+  
+NOTAS AVANZADAS (NO TIENEN UTILIDAD REAL DE MOMENTO)
+====================================================
+
 --Para dumpear y flashear la BIOS del Vortex86 DX, se usa un programa llamado BIOSMP.EXE, que es del fabricante
-pero lo tienes en el primero de los hilos mencionados.
+pero lo tienes en hilo: https://www.vogons.org/viewtopic.php?f=46&t=85448
 --La gráfica del Vortex86 DX que lleva el Pixel86 es una "VOLARI Z29S".
 --Tienes un hilo donde se investigan las particularidades del Vortex86 DX para juegos en estos hilos:
 https://www.vogons.org/viewtopic.php?f=46&t=85448
 https://www.vogons.org/viewtopic.php?t=86603
---Para dumpear y flashear la BIOS del Vortex86 DX, se usa un programa llamado BIOSMP.EXE, que es del fabricante
-pero lo tienes en hilo: https://www.vogons.org/viewtopic.php?f=46&t=85448
 --Se puede extraer sólo la VIDEO CARD ROM de la BIOS dumpeada con AMI MMTOOL, y se le puede inyectar otra VIDEO CADR ROM distinta.
   Viene hacia la mitad de https://www.vogons.org/viewtopic.php?t=86603
 
