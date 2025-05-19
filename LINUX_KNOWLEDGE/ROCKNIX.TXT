@@ -53,13 +53,20 @@ Deshabilitar Settings->Input "Auxiliary Sensor Input".
 
 Puedes borrar los SAVESTATES que hayas hecho en /storage/roms/savestates.
 
+(NO NECESARIO PORQUE YA TRAE LOS SHADERS SLANG QUE NECESITAMOS)
 PARA USAR LOS SHADERS EXTERNOS QUE NOS DE LA GANA: Copiamos los shaders SLANG que queramos (GLCORE usa SLANG, no GLSL) en /STORAGE/shaders/slang,
 cargamos RetroArch 64bits desde TOOLS, ponemos Settings->Directory->Video Shaders apuntando a /STORAGE/shaders/slang,
 cargamos un juego del sistema que queramos usando LOAD CONTENT, cargamos shader que queramos de los que hemos metido en /STORAGE/shaders/slang,
 lo salvamos como GLOBAL PRESET, en el menú ES ponemos "Shader Set" a "Default" y ya está.
 
-EL MEJOR SHADER PARA CONSOLAS DE SOBREMESA (SOLUCIONA TAMBIÉN LO DEL DITHERING EN MEGADRIVE) ES ZFAST-COMPOSITE,
-con CONVERGENCE X-AXIS al máximo, SATURATION a 1.05, FLICKERING a 0, CURVATURE a 0, y los parámetros de scanline a 10 y 5 respectivamente.
+EL MEJOR SHADER EN GENERAL PARA LA MÁQUINA ES EL Z-FAST NORMAL, 
+con INTEGER SCALING deshabilitado y con los parámetros de scanlines del shader puestos a 0.
+
+PARA EL CORE DE MEGADRIVE, usamos una combinación de dos shaders:
+-En el #0 ponemos el GDAPT-PASS1.SLANG, que está en los shaders de DITHERING.
+-En el #1 ponemos el ZFAST "normal" con los parámetros de scanlines puestos a 0.
+NO USAMOS ZFAST-COMPOSITE porque al desactivar el INTEGER SCALING produce shimmering en juegos con scroll vertical
+(se ve muy claro en el test de scroll vertical del 240p Test Suite).
 
 PARA QUE EL CORE DE PC-ENGINE (BEETLE PCE) VAYA A 100% DE VELOCIDAD, ve a "CORE OPTIONS->OWL RESAMPLE QUALITY" y ponlo a "0",
 ya que eso ahorra un 20-25% de CPU y según Tetsuya79 en Github, no se nota nada en absoluto.
