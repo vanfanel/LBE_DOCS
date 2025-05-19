@@ -286,6 +286,12 @@ Si no lo parcheas, no puede inicializar el sonido de Sound Blaster en máquinas 
 Para ello, bájate el GOSIERRA.EXE (https://spacequest.net/downloads/gosierrav3.zip), cópialo al directorio del juego y haz:
 GOSIERRA SNDBLAST.DRV
 
+**********Commander Keen 1-4****************
+
+Si usas el OSSC y se te ve rojizo, hay que poner en el menú del OSSC, CLAMP/ALC OFFSET a -8
+(info sacada de este hilo: https://www.vogons.org/viewtopic.php?t=105944)
+Se supone que no tiene efectos sobre otros juegos.
+
 **********NOTAS SciTech Display Doctor******
 OJO: No funciona con el Vortex86 VGA ni con el SM750.
 Sólo lo pongo aquí como curiosidad.
@@ -301,7 +307,6 @@ SERIAL NUMBER: 00000-173D626E-02002
 
 Se puede cargar SBEMU sin JEMMEX, pero para ello tienes que cargar SBEMU sin soporte para modo real (pasándole /RMo),
 con lo que basta con cargar HIMEM.SYS y no te hace falta JEMMEX PARA NADA.
-
 
 ********COMPILAR VIDEOROM*********
 
