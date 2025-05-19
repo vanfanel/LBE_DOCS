@@ -17,6 +17,15 @@ PARA QUE SE ESCUCHE EL AUDIO POR LA SALIDA HDMI CUANDO CONECTAMOS UN ORDENADOR P
 Tenemos que tener "Output Opt. -> TX mode" puesto a uno de los modos HDMI,
 y meter el audio por el jack que hay a la derecha de la salida HDMI del OSSC.
 
+ACTUALIZAR EL FIRMWARE (FW)
+El FW se baja de aquí: http://www.infocult.com/m/ossc/fw/release_audio/
+Es simplemente grabar con DD el .BIN en una MicroSD (RECUERDA!! CON DD!! NO ES COPIAR EL ARCHIVO A UNA FAT32!!),
+insertar la MicroSD en la ranura de MicroSD que hay a la izquierda de la pantallita en una hendidura,
+y seleccionar "Settings Op -> <FW Update>", y cuando termine saldrá en la pantalla que reiniciemos el OSSC (=apagar y encender).
+NOTA: Hay unas versiones superiores (1.x) que para funcionar necesitan hacerle una modificación a mi OSSC (que es HW v1.6),
+mira aquí para más información (https://videogameperfection.com/forums/topic/ossc-v1-xx-series-beta-firmware/)
+pero no es necesario porque la versión del FW 0.9 hace todo lo que necesito de momento.
+
 HILO CON MÁS INFO:
 https://videogameperfection.com/forums/topic/ossc-pentium-233-mmx/
 

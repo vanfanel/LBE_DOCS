@@ -288,9 +288,14 @@ GOSIERRA SNDBLAST.DRV
 
 **********Commander Keen 1-4****************
 
-Si usas el OSSC y se te ve rojizo, hay que poner en el menú del OSSC, CLAMP/ALC OFFSET a -8
+Si usas el OSSC y se te ve rojizo, hay que poner en el menú del OSSC, "Video in Proc -> CLAMP/ALC OFFSET" a -8
 (info sacada de este hilo: https://www.vogons.org/viewtopic.php?t=105944)
 Se supone que no tiene efectos sobre otros juegos.
+NOTA: Para tener la opción "Video in Proc -> CLAMP/ALC OFFSET" se necesita la versión de FW 0.9,
+que se saca de aquí: http://www.infocult.com/m/ossc/fw/release_audio/
+Es simplemente grabar con DD el .BIN en una MicroSD (RECUERDA!! CON DD!! NO ES COPIAR EL ARCHIVO A UNA FAT32!!),
+insertar la MicroSD en la ranura de MicroSD que hay a la izquierda de la pantallita en una hendidura,
+y seleccionar "Settings Op -> <FW Update>", y cuando termine saldrá en la pantalla que reiniciemos el OSSC (=apagar y encender).
 
 También hay otro programa llamado KEENFIX.COM (de este hilo de las "VGA TSR GOODIES" en Vogons: https://www.vogons.org/viewtopic.php?t=86219)
 que nos permite quitarle el borde ese azul cutre con "KEENFIX /B-"
