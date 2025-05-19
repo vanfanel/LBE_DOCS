@@ -53,12 +53,6 @@ Deshabilitar Settings->Input "Auxiliary Sensor Input".
 
 Puedes borrar los SAVESTATES que hayas hecho en /storage/roms/savestates.
 
-(NO NECESARIO PORQUE YA TRAE LOS SHADERS SLANG QUE NECESITAMOS)
-PARA USAR LOS SHADERS EXTERNOS QUE NOS DE LA GANA: Copiamos los shaders SLANG que queramos (GLCORE usa SLANG, no GLSL) en /STORAGE/shaders/slang,
-cargamos RetroArch 64bits desde TOOLS, ponemos Settings->Directory->Video Shaders apuntando a /STORAGE/shaders/slang,
-cargamos un juego del sistema que queramos usando LOAD CONTENT, cargamos shader que queramos de los que hemos metido en /STORAGE/shaders/slang,
-lo salvamos como GLOBAL PRESET, en el menú ES ponemos "Shader Set" a "Default" y ya está.
-
 EL MEJOR SHADER EN GENERAL PARA LA MÁQUINA ES EL Z-FAST NORMAL, 
 con INTEGER SCALING deshabilitado y con los parámetros de scanlines del shader puestos a 0.
 
@@ -97,6 +91,12 @@ PARA TENER LAS CARÁTULAS CUANDO HAGAS EL SCRAPPING:
 -En user/pass, vanfanel/Manuel22
 Si has escrapeado sin hacer esto, te bajará screenshots de cada juego: te toca borrar el directorio "images" de cada sistema en /STORAGE/roms
 y volver a scrapear con estas cosas puestas como acabo de indicar.
+
+(NO NECESARIO PORQUE YA TRAE LOS SHADERS SLANG QUE NECESITAMOS)
+PARA USAR LOS SHADERS EXTERNOS QUE NOS DE LA GANA: Copiamos los shaders SLANG que queramos (GLCORE usa SLANG, no GLSL) en /STORAGE/shaders/slang,
+cargamos RetroArch 64bits desde TOOLS, ponemos Settings->Directory->Video Shaders apuntando a /STORAGE/shaders/slang,
+cargamos un juego del sistema que queramos usando LOAD CONTENT, cargamos shader que queramos de los que hemos metido en /STORAGE/shaders/slang,
+lo salvamos como GLOBAL PRESET, en el menú ES ponemos "Shader Set" a "Default" y ya está.
 
 PARA ARRANCAR ROCKNIX EN MODO KMS/DRM EN VEZ DE MODO WAYLAND
 ============================================================
