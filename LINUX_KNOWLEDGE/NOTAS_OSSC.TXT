@@ -45,6 +45,8 @@ H. Active : 570
 V. Synclength : 2
 V. Backporch : 34
 V. Active : 400
+Sampling Phase: 146 deg <---ESTE es el setting que hace que veamos todos los píxels iguales en los juegos que usan dithering,
+							como el Monkey 1 EGA, el Prince o el CK4.
 
 Si además quieres scanlines, ve al menú de SCANLINES (MENU ON/OFF -> ARRIBA/ABAJO hasta que salga SCANLINE OPT. -> OK)
 y allí activa SL. ALT INTERVAL, pon SL. METHOD a MULTIPLICATION, pon SL. HYBRID SRT a 100%, pon SL. STRENGTH a 25%
