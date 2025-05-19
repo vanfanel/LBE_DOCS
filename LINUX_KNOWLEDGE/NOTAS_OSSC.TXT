@@ -33,10 +33,12 @@ Estos son los settings que usa el tio del hilo, lo pone en uno de los posts:
 
 480p in sampler: VESA 640×480@60
 Allow upsample2x: On
-384p proc: Line2x
+
+En Output Proc.:
+384x400p proc -> Line2x 240x360 <---ESTO es para que los juegos EGA no se vean TAN pixelados y así el scroll no provoque "distorsión".
 480p/576p proc: Line2x
 
-640×400 (PC mode)
+Advanced Timmings para 640×400:
 —————–
 H. Samplerate : 700
 H. Synclength : 64
@@ -50,3 +52,5 @@ Sampling Phase: 146 deg <---ESTE es el setting que hace que veamos todos los pí
 
 Si además quieres scanlines, ve al menú de SCANLINES (MENU ON/OFF -> ARRIBA/ABAJO hasta que salga SCANLINE OPT. -> OK)
 y allí activa SL. ALT INTERVAL, pon SL. METHOD a MULTIPLICATION, pon SL. HYBRID SRT a 100%, pon SL. STRENGTH a 25%
+
+Si se te ven los juegos EGA como Keen1-4 rojizos, "Video in Proc -> CLAMP/ALC OFFSET" a -21
