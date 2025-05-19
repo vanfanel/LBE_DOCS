@@ -55,7 +55,7 @@ Puedes borrar los SAVESTATES que hayas hecho en /storage/roms/savestates.
 
 EL MEJOR SHADER EN GENERAL PARA LA MÁQUINA ES EL Z-FAST NORMAL, 
 con INTEGER SCALING deshabilitado, con los parámetros de scanlines del shader puestos a 0,
-con DARK PIXEL BRIGHTNESS BOOST bajado a 1.00 y con MASK EFFECT AMOUNT subido a 50.
+con DARK PIXEL BRIGHTNESS BOOST bajado a 1.10 y con MASK EFFECT AMOUNT subido a 50.
 
 PARA EL CORE DE MEGADRIVE, usamos una combinación de dos shaders:
 -En el #0 ponemos el GDAPT-PASS1.SLANG, que está en los shaders de DITHERING.
