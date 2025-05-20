@@ -38,7 +38,7 @@ En Output Proc.:
 384x400p proc -> Line2x 240x360 <---ESTO es para que los juegos EGA no se vean TAN pixelados y así el scroll no provoque "distorsión".
 480p/576p proc: Line2x
 
-Advanced Timmings para 640×400:
+Sampling opt. -> Advanced Timmings para 640×400:
 —————–
 H. Samplerate : 700
 H. Synclength : 64
@@ -49,6 +49,17 @@ V. Backporch : 34
 V. Active : 400
 Sampling Phase: 146 deg <---ESTE es el setting que hace que veamos todos los píxels iguales en los juegos que usan dithering,
 							como el Monkey 1 EGA, el Prince o el CK4.
+
+Sampling opt. -> Advanced Timmings para 640×480 (También influye en los KEEN1-4, etc):
+—————–
+H. Samplerate : 800
+H. Synclength : 80
+H. Backporch : 48
+H. Active : 656
+V. Synclength : 2
+V. Backporch : 26
+V. Active : 480
+Sampling Phase: 180 deg.
 
 Si además quieres scanlines, ve al menú de SCANLINES (MENU ON/OFF -> ARRIBA/ABAJO hasta que salga SCANLINE OPT. -> OK)
 y allí activa SL. ALT INTERVAL, pon SL. METHOD a MULTIPLICATION, pon SL. HYBRID SRT a 100%, pon SL. STRENGTH a 25%
