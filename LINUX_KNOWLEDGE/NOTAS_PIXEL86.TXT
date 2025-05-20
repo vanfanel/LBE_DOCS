@@ -71,6 +71,10 @@ python3 -mpip install ch55xtool
 --Nos bajamos el firmware de:
 https://github.com/rasteri/HIDman/releases
 
+--Antes de intentar flashear, nos tiene que salir en "lsusb" como:
+Bus 001 Device 009: ID 4348:55e0 WinChipHead
+Si no te sale así en "lsusb", es que no lo has hecho bien y fallará el flasheo. 
+
 --Flasheamos así:
 sudo ch55xtool -f hidman_v1.1.5j.bin
 (Sí, en teoría en Linux se usa el .BIN en vez del .HEX como en Windows).
