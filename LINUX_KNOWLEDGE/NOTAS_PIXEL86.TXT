@@ -62,14 +62,36 @@ NOTAS HIDMAN
 
 --Para que funcione el teclado 8BitDo, en el menú del HIDMAN activa "Advanced Keyboard" en la sección "KEYBOARD".
 
+FLASHEAR HIDMAN DESDE WINDOWS (RECOMENDADO)
+===========================================
+
+--Nos bajamos el programa de flasheo: 
+
+--Nos bajamos el firmware de aquí (OJO: SE USA EL .HEX):
+https://github.com/rasteri/HIDman/releases
+
+--En el programa de flasheo:
+En "DOWNLOAD FILE -> OBJECT FILE 1", seleccionamos el archivo ".HEX"
+En "DOWNLOAD CONFIG" marcamos "CLEAR DATA FLASH"
+Le damos al botón "DOWNLOAD". Nos tiene que decir que "Succeeded!"
+
 FLASHEAR HIDMAN DESDE GNU/LINUX (NO LO HAGAS: HAZLO DESDE WINDOWS O ACABARÁS CON UN BRICKEO!!!)
 ===============================================================================================
 
 --Nos bajamos el programa de flashead en Pyhton:
 wget https://raw.githubusercontent.com/ishiyakazuo/ch55x-tool/refs/heads/master/ch55xtool.py
 
+--Le damos permisos de ejecución:
+chmod +x ch55xtool.py
+
 --Nos bajamos el firmware de:
 https://github.com/rasteri/HIDman/releases
 
 --Flasheamos con:
-sudo python3 ch55xtool.py -f hidman_axp_v1.1.bin 
+sudo ./ch55xtool.py -f hidman_v1.1.5j.bin
+
+RECOVERY DE UN MAL FLASHEO DEL HIDMAN
+=====================================
+
+Simplemente con puentear la resistencia marcada como C5 mientras conectamos el USB ya se pone en modo flasheo
+aunque haya ido mal el flasheo anterior.
