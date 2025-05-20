@@ -92,7 +92,9 @@ RECOVERY DE UN MAL FLASHEO DEL HIDMAN
 =====================================
 
 Simplemente con puentear el condensador marcado como C5 mientras conectamos el USB ya se pone en modo flasheo
-aunque haya ido mal el flasheo anterior.
-Nos tiene que salir en "lsusb" como:
+aunque haya ido mal el flasheo anterior. Lo más fácil es coger un destornillador pequeño y poner en contacto los dos bornes del condensador.
+Una vez conectado el USB, ya podemos soltar el destornillador o lo que usemos.
+
+Antes de intentar flashear, nos tiene que salir en "lsusb" como:
 Bus 001 Device 009: ID 4348:55e0 WinChipHead
 Si no te sale así en "lsusb", es que no lo has hecho bien y fallará el flasheo. 
