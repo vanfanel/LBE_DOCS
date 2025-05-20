@@ -89,6 +89,7 @@ https://github.com/rasteri/HIDman/releases
 
 --Flasheamos con:
 sudo ./ch55xtool.py -f hidman_v1.1.5j.bin
+(Sí, en teoría en Linux se usa el .BIN en vez del .HEX como en Windows).
 
 RECOVERY DE UN MAL FLASHEO DEL HIDMAN
 =====================================
