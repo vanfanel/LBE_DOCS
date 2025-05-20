@@ -62,8 +62,21 @@ NOTAS HIDMAN
 
 --Para que funcione el teclado 8BitDo, en el menú del HIDMAN activa "Advanced Keyboard" en la sección "KEYBOARD".
 
-FLASHEAR HIDMAN DESDE WINDOWS (RECOMENDADO)
-===========================================
+FLASHEAR HIDMAN DESDE GNU/LINUX (Es seguro siguiendo estas instrucciones EXACTAS, pero si acaba en brickeo lo puedes recuperar fácil, mira más abajo)
+=====================================================================================================================================================
+
+--Instalamos el programa de flasheo (hazlo así, NO lo hagas bajando el .py a mano ni nada raro o acabará la cosa en brickeo):
+python3 -mpip install ch55xtool
+
+--Nos bajamos el firmware de:
+https://github.com/rasteri/HIDman/releases
+
+--Flasheamos así:
+sudo ch55xtool -f hidman_v1.1.5j.bin
+(Sí, en teoría en Linux se usa el .BIN en vez del .HEX como en Windows).
+
+FLASHEAR HIDMAN DESDE WINDOWS (No hace falta, desde Linux va bien si sigues las instrucciones)
+==============================================================================================
 
 --Nos bajamos el programa de flasheo: 
 
@@ -75,24 +88,11 @@ En "DOWNLOAD FILE -> OBJECT FILE 1", seleccionamos el archivo ".HEX"
 En "DOWNLOAD CONFIG" marcamos "CLEAR DATA FLASH"
 Le damos al botón "DOWNLOAD". Nos tiene que decir que "Succeeded!"
 
-FLASHEAR HIDMAN DESDE GNU/LINUX (NO LO HAGAS: HAZLO DESDE WINDOWS O ACABARÁS CON UN BRICKEO!!!)
-===============================================================================================
-
---Nos bajamos el programa de flashead en Pyhton:
-wget https://raw.githubusercontent.com/ishiyakazuo/ch55x-tool/refs/heads/master/ch55xtool.py
-
---Le damos permisos de ejecución:
-chmod +x ch55xtool.py
-
---Nos bajamos el firmware de:
-https://github.com/rasteri/HIDman/releases
-
---Flasheamos con:
-sudo ./ch55xtool.py -f hidman_v1.1.5j.bin
-(Sí, en teoría en Linux se usa el .BIN en vez del .HEX como en Windows).
-
 RECOVERY DE UN MAL FLASHEO DEL HIDMAN
 =====================================
 
 Simplemente con puentear el condensador marcado como C5 mientras conectamos el USB ya se pone en modo flasheo
 aunque haya ido mal el flasheo anterior.
+Nos tiene que salir en "lsusb" como:
+Bus 001 Device 009: ID 4348:55e0 WinChipHead
+Si no te sale así en "lsusb", es que no lo has hecho bien y fallará el flasheo. 
