@@ -94,5 +94,5 @@ sudo ./ch55xtool.py -f hidman_v1.1.5j.bin
 RECOVERY DE UN MAL FLASHEO DEL HIDMAN
 =====================================
 
-Simplemente con puentear la resistencia marcada como C5 mientras conectamos el USB ya se pone en modo flasheo
+Simplemente con puentear el condensador marcado como C5 mientras conectamos el USB ya se pone en modo flasheo
 aunque haya ido mal el flasheo anterior.
