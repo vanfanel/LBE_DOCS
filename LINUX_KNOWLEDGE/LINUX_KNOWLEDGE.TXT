@@ -1483,6 +1483,49 @@ Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
 Y EL "USE OLD MDEC ROUTINES" a "OFF" (las OLD MDEC ROUTUNES son para sustituir texturas en los juegos, nada más).
 A PARTE, EN "SETTINGS->AUDIO->OUTPUT" PON "ALSA" CON UN "AUDIO LATENCY" DE 32.
 
+CROSSCOMPILAR DOSBOX-CORE PARA ARM64
+====================================
+NOTA PREVIA: En Debian, el sistema es "ARM64", pero el compilador sigue siendo "AARCH64", ojo.
+
+-Instalamos el cross-compilador:
+sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+-Instalamos otra herramienta que nos hace falta en el host:
+apt-get install libtool-bin
+
+-Instalamos el debootstrap
+sudo apt-get install debootstrap
+
+-Instalamos los componentes que nos permitan ejecutar binarios arm64 en x86_64:
+sudo apt install qemu-user-static biplatform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
+WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0nfmt-support
+
+-Creamos el directorio para el rootfs:
+mkdir ~/root_arm64
+
+-Creamos el rootfs para AARCH64, usando como base Debian Trixie (Debian 13) que es la última estable:
+sudo debootstrap --arch=arm64 --no-check-gpg --variant=minbase bookworm ~/root_arm64 http://deb.debian.org/debian
+
+-Nos chhrooteamos en el nuevo sistema e instalamos algunas cosas que necesitamos:
+sudo mount -t proc /proc ~/root_arm64/proc
+sudo mount -t sysfs /sys ~/root_arm64/sys
+sudo mount --bind /dev ~/root_arm64/dev
+sudo chroot ~/root_arm64
+
+--IMPORTANTE: Tras salir del chroot, desmontamos los pseudo-filesystems que montamos antes de entrar:
+sudo umount ~/root_arm64/dev
+sudo umount ~/root_arm64/sys
+sudo umount ~/root_arm64/proc
+
+-Clonamos el repo de dosbox-core:
+git clone --depth 1 https://github.com/libretro/dosbox-core.git
+
+-Crosscompilamos con:
+cd libretro
+make CC="aarch64-linux-gnu-gcc --sysroot=$HOME/rootfs_arm64" \
+platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
+WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0
+
 ********CROSSCOMPILAR el core libretro Swanstation(Duckstation)************
 
 La idea es crosscompilar en X86_64 para aarch64 (arm64).
