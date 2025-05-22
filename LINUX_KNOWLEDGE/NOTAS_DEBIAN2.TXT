@@ -4,13 +4,14 @@ La información de cómo instalar GRUB2 en sistemas UEFI se sacó de aquí:
 https://willhaley.com/blog/custom-debian-live-environment/
 También tiene info de cómo instalar GRUB2 de tal manera que arranque en sistemas BIOS antiguos.
 
- -Instalamos el debootstrap
+-Instalamos el debootstrap
 sudo apt-get install debootstrap
 
 -Creamos el directorio que contendrá el rootfs que vamos a crear:
 mkdir -p $HOME/LIVE_BOOT
 
--Creamos el rootfs para AMD64 y usando Debian Buster (Debian 10) que es la última estable. NO uses el servidor de espania que es basura y se cuelga todo el rato:
+-Creamos el rootfs para AMD64 y usando Debian Buster (Debian 10) que es la última estable.
+NO uses el servidor de espania que es basura y se cuelga todo el rato:
 sudo debootstrap \
     --arch=amd64 \
     --variant=minbase \

@@ -4538,11 +4538,6 @@ deb-src http://security.debian.org/ jessie/updates main contrib non-free
 
 Ahora hacemos sudo apt-get update, apt-get --download-only dist-upgrade, apt-get dist-upgrade. Y cruza los dedos ^_^"
 
-********Crear nuestro propio rootfs de Debian ARM********************************************************************************************
-
-Se usa para ello debootstrap. Tenemos una guía aquí: http://linux-sunxi.org/Bootable_SD_card#Using_debootstrap_-_Debian.2FUbuntu_based_distributions
-Y nos hace falta tener instalado qemu-user-static en el sistema que usemos para prepararlo todo.
-
 ********Instalar DOTNET 472 en WINE***********************************************************************************************************
 
 Creamos un WINEPREFIX de 32bits:
