@@ -1598,6 +1598,18 @@ NOTAS ADICIONALES para el core:
 
 SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
+******Sonic Robo Blast 2 en GNU/Linux****************************************************************************************
+
+--Instalamos dependencias previas:
+apt-get install libgme-dev libminiupnpc-dev
+
+--Nos bajamos la última estable de: https://github.com/STJr/SRB2/archive/refs/tags/SRB2_release_2.2.15.tar.gz
+
+--Compilamos con:
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+make -j10
+
 ******Doom 64 EX en GNU/Linux************************************************************************************************
 
 Clonamos su repo:
