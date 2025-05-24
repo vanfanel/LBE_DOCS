@@ -1522,6 +1522,11 @@ sudo umount ~/root_arm64/proc
 -Clonamos el repo de dosbox-core:
 git clone --depth 1 https://github.com/libretro/dosbox-core.git
 
+-Editamos libretro/Makefile.libretro y cambiamos la línea:
+PKGCONFIG=$(cross_prefix)pkg-config
+por:
+PKGCONFIG=pkg-config
+
 -Crosscompilamos con:
 
 cd libretro
