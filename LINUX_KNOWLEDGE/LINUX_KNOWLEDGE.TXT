@@ -1522,10 +1522,15 @@ sudo umount ~/root_arm64/proc
 -Clonamos el repo de dosbox-core:
 git clone --depth 1 https://github.com/libretro/dosbox-core.git
 
--Editamos libretro/Makefile.libretro y cambiamos la línea:
+-Editamos libretro/Makefile.libretro y cambiamos las líneas:
+CMAKE=$(cross_prefix)cmake
 PKGCONFIG=$(cross_prefix)pkg-config
 por:
+CMAKE=cmake
 PKGCONFIG=pkg-config
+(Esto es porque tanto CMAKE como PKGCONFIG son herramientas que NO se deben coger del rootfs de destino, 
+sino que deben ser los del sistema donde estamos cross-compilando, a poco que lo pienses lo entiendes;
+ni siquiera existen "aarch64-linux-gnu-pkg-config" o similares... no tiene sentido).
 
 -Crosscompilamos con:
 
