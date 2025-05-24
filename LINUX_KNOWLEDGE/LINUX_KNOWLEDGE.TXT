@@ -1610,6 +1610,13 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 make -j10
 
+--Creamos el directorio ~/srb2 y metemos ahí el ejecutable resultante de la compilación, que queda en: bin/lsdl2srb2
+
+--Nos bajamos la última versión en ZIP de aquí:
+https://www.srb2.org/download/
+
+--Descromprimimos el ZIP y metemos todos los .PK3 que trae en ~/srb2 junto con el ejecutable.
+
 ******Doom 64 EX en GNU/Linux************************************************************************************************
 
 Clonamos su repo:
