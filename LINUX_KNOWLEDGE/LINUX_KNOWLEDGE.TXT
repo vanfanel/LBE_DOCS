@@ -1512,6 +1512,8 @@ sudo mount -t sysfs /sys ~/root_arm64/sys
 sudo mount --bind /dev ~/root_arm64/dev
 sudo chroot ~/root_arm64
 
+apt-get install libasound2-dev
+
 --IMPORTANTE: Tras salir del chroot, desmontamos los pseudo-filesystems que montamos antes de entrar:
 sudo umount ~/root_arm64/dev
 sudo umount ~/root_arm64/sys
@@ -1528,6 +1530,7 @@ make \
 TARGET_TRIPLET=aarch64-linux-gnu \
 CC="aarch64-linux-gnu-gcc --sysroot=$HOME/rootfs_arm64" \
 CXX="aarch64-linux-gnu-g++ --sysroot=$HOME/rootfs_arm64" \
+CMAKE=cmake \
 platform=unix \
 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0
