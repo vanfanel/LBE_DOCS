@@ -11864,10 +11864,11 @@ Los datos del Cannon Fodder 2 irían en ~/cf/Data/Amiga2 y simplemente hay que m
 en este mismo archivo) y sacarlos de ahí. Puede que te el OpenFoder te diga que el MD5 un fichero llamado MAPM1.SPT es incorrecto. En ese caso,
 puedes sacar el MAPM1.SPT correcto del ADF marcado como [a]. 
 
-PARA TENER FRAMERATE CORRECTO CON VRR (SI NO, EL JUEGO VA DEMASIADO RÁPIDO), PONEMOS UN MODO DE 60Hz Y RESTAURAMOS EL MODO PREFERRED AL SALIR:
-wlr-randr --output DP-1 --mode 1920x1080@60
-ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./hcl
-wlr-randr --output DP-1 --preferred
+PARA LANZAR DIRECTAMENTE EL CANNON FODDER ORIGINAL:
+./cf -c "Cannon Fodder"
+
+LA RESOLUCIÓN QUE MEJOR LE QUEDA PARA LOS SHADERS (=no hay shimmering durante la pantalla de las medallas) es 320x240.
+O sea que usa el CRTFakelottes_320x240.fx
 
 ABUSE en GNU/Linux
 ==================
