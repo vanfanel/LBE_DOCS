@@ -9694,7 +9694,11 @@ cd b4
 cmake .. -GNinja
 ninja -j10
 
-NOTA MUY IMPORTANTE: Si oyes "clicks" cuando empiezan y terminan las conversaciones por radio, baja el "Master Volume" a ~80%
+PARA QUE EMPIEZE A PANTALLA COMPLETA:
+Activa la opción de "Windowed Fullscreen" o añade en "starship.cfg.json" esto a capón:
+"Fullscreen": {"Enabled": true},
+
+PARA EVITAR LOS "CLICKS" CUANDO EMPIEZAN Y TERMINAN LAS CONVERSACIONES DE RADIO: baja el "Master Volume" a ~80%
 en el menú del configuración del engine.
 Si no se salva al volver a entrar (hay un bug con esto, ya lo he reportado), ponlo a capón editando "starship.cfg.json"
 que se crea solo en el directorio donde tienes el ejecutable.
