@@ -5693,19 +5693,18 @@ cp release/other/pt2-clone release/other/protracker.ini ~/pt
 
 ************Schismtracker en GNU/Linux*******************************************************************
 
-Bajamos la última estable de:
+-Bajamos la última estable de:
 https://github.com/schismtracker/schismtracker/releases
 
-Instalamos dependencias previas:
+-Instalamos dependencias previas:
 apt-get install libutf8proc-dev
 
-Configuramos con:
+-Configuramos con:
 
+autoreconf -i
 CFLAGS="-O2 -march=native -mtune=native" ./configure --without-flac
 
-En la Raspberry Pi, ejecutamos con:
-AUDIODEV="sysdefault" ./schismtracker
-El el PC AMD64, ejecutamos con:
+-En PC, ejecutamos con:
 AUDIODEV="default" ./schismtracker
 (Puedes probar con "sysdefault" si "default" no funciona).
 (En otros sistemas, lo suyo es pasar también AUDIODEV="hw:lo_que_sea" y asi se consiguen tamaños de buffer menores, pero en la Raspberry Pi
@@ -5713,9 +5712,12 @@ si usas la CARD vc4hdmi0, no se puede usar directamente el DEVICE llamado "hw" p
 y por eso falla con un "unsopported audio format" si lo intentas).
 (Ya sabes que puedes ver los dispositivos con "aplay -L" y probarlos con "speaker-test -D<dispositivo>").
 
-Para configurar el vídeo, editamos ~/.schism/config, y:
--Ponemos fullscreen a 1 e interpolation a linear.
--Añadimos la línea "want_fixed=1" (para tener aspect ratio corregido)
+-En la Raspberry Pi, ejecutamos con:
+AUDIODEV="sysdefault" ./schismtracker
+
+-Para configurar el vídeo, editamos ~/.schism/config, y:
+----Ponemos fullscreen a 1 e interpolation a linear.
+----Añadimos la línea "want_fixed=1" (para tener aspect ratio corregido)
 También podemos poner classic_mode a 1 para que las pantallas sean las del Impulse Tracker original.
 
 ////BLOQUE OPCIONAL (innecesario): Si no queremos tener que lanzar el Schismtracker con la variable de entorno AUDIODEV:
