@@ -5686,7 +5686,7 @@ y sobre todo lanzarlo con "taskset -c 0,1 raze" si estás en un sistema con proc
 ************ProTracker en GNU/Linux**********************************************************************
 
 --Bajamos la última estable de: https://github.com/8bitbubsy/pt2-clone/releases
---Le damos permisos de ejecución a "make-linux.sh", lo ejecutamos, y se compilará con los flags correctos. 
+--Le damos permisos de ejecución a "make-linux-noflac.sh", lo ejecutamos, y se compilará con los flags correctos. 
 --Creamos nuestro directorio ~/pt, y allí copiamos el ejecutable y el .ini que se nos han generado:
 cp release/other/pt2-clone release/other/protracker.ini ~/pt
 --Editamos ~/pt/protracker.ini y ponemos "FULLSCREEN" a "TRUE"
@@ -9680,9 +9680,10 @@ NOTAS PREVIAS:
 porque entonces el ejecutable resultante nos da errores.
 
 --Clonamos su repo:
-git clone --depth 1 https://github.com/HarbourMasters/Starship.git
-git submodule init
-git submodule update
+git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Starship.git
+--Si queremos una versión estable (en este caso la 2.0.0,
+podemos sacar el número de las versiones estables mirando https://github.com/HarbourMasters/Starship/tags):
+git clone https://github.com/HarbourMasters/Starship.git --depth 1 --recurse-submodules -b 2.0.0
 
 --Editamos "CMakeLists.txt", buscamos "find_package(OpenGL REQUIRED)", y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
