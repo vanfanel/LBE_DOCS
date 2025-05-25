@@ -9683,7 +9683,7 @@ porque entonces el ejecutable resultante nos da errores.
 git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Starship.git
 --Si queremos una versión estable (en este caso la 2.0.0,
 podemos sacar el número de las versiones estables mirando https://github.com/HarbourMasters/Starship/tags):
-git clone https://github.com/HarbourMasters/Starship.git --depth 1 --recurse-submodules -b 2.0.0
+git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Starship.git -b 2.0.0
 
 --Editamos "CMakeLists.txt", buscamos "find_package(OpenGL REQUIRED)", y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
