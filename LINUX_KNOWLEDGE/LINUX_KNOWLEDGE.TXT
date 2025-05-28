@@ -2861,25 +2861,22 @@ Lanzamos con:
 
 NOTA: El juego corre internamente a 256x224, por si lo quieres tener en cuenta para los sahders externos.
 
-********Supaplex en la Pi con OpenSupaplex********************************************************************
+********Supaplex en GNU/Linux con OpenSupaplex********************************************************************
 
-Clonamos su repo:
+--Clonamos su repo: git clone --depth 1 https://github.com/sergiou87/open-supaplex.git
 
-git clone --depth 1 https://github.com/sergiou87/open-supaplex.git
-
-Editamos src/sdl2/video.c y:
--Dejamos SDL_WINDOW_FULLSCREEN como SDL_WINDOW_FULLSCREEN_DESKTOP, y quitamos el #ifdef donde está contenido,
- de manera que se aplique ese flag a TODAS las plataformas.
+--Editamos src/sdl2/video.c y:
 -Cambiamos todas las demás ocurrencias de SDL_WINDOW_FULLSCREEN por SDL_WINDOW_FULLSCREEN_DESKTOP. 
 -Añadimos antes de la llamada a SDL_CreateRenderer(): SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
-Entramos en el directorio linux, editamos Makefile y añadimos a los CFLAGS:
-
+--Entramos en el directorio linux, editamos Makefile y añadimos a los CFLAGS:
 -O2 -march=native -mtune=native
 
-Compilamos con make -j4
+--Compilamos simplemente con "make"
 
-Copiamos el contenido del directorio "resources", tal cual, a ~/supaplex, junto con el ejecutable.
+--Copiamos el contenido del directorio "resources", tal cual, a ~/supaplex, junto con el ejecutable.
+
+--Para ponerlo a pantalla completa, usamos ALT+ENTER. Y al salir ya se queda guardado.
 
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)***************************************************
 
