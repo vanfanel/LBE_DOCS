@@ -76,7 +76,7 @@ Bus 001 Device 009: ID 4348:55e0 WinChipHead
 Si no te sale así en "lsusb", es que no lo has hecho bien y fallará el flasheo. 
 
 --Flasheamos así:
-sudo ch55xtool -f hidman_v1.1.5j.bin
+sudo ch55xtool -f hidman_v1.1.6.bin
 (Sí, en teoría en Linux se usa el .BIN en vez del .HEX como en Windows).
 
 FLASHEAR HIDMAN DESDE WINDOWS (No hace falta, desde Linux va bien si sigues las instrucciones)
