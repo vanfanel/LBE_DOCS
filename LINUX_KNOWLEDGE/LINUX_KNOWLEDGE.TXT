@@ -2879,8 +2879,7 @@ Entramos en el directorio linux, editamos Makefile y añadimos a los CFLAGS:
 
 Compilamos con make -j4
 
-Copiamos el contenido del directorio resources, tal cual, a ~/supaplex, junto con el ejecutable.
-
+Copiamos el contenido del directorio "resources", tal cual, a ~/supaplex, junto con el ejecutable.
 
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)***************************************************
 
