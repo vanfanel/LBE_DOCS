@@ -2875,7 +2875,7 @@ Editamos src/sdl2/video.c y:
 
 Entramos en el directorio linux, editamos Makefile y añadimos a los CFLAGS:
 
--O2 -march=native -mtune=native -O2
+-O2 -march=native -mtune=native
 
 Compilamos con make -j4
 
