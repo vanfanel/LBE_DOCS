@@ -304,6 +304,17 @@ y seleccionar "Settings Op -> <FW Update>", y cuando termine saldrá en la panta
 También hay otro programa llamado KEENFIX.COM (de este hilo de las "VGA TSR GOODIES" en Vogons: https://www.vogons.org/viewtopic.php?t=86219)
 que nos permite quitarle el borde ese azul cutre con "KEENFIX /B-"
 
+**********CRYSTAL DREAMS II (DEMO DE TRITON)**********
+
+Deberíamos poder parchearla con CTBPPAT o similar como en otros programas que dan el "RUNTIME ERROR 200",
+PERO no se puede porque es un EXE comprimido.
+
+Así que cargamos este TSR que deshabilita el error y nos permite ejecutarla:
+
+https://github.com/lallousx86/TurboPascal/blob/master/TP7P5FIX/TP7P5FIX.COM
+
+...Eso sí, vuelve loco al OSSC y no se ve.
+
 **********NOTAS SciTech Display Doctor******
 OJO: No funciona con el Vortex86 VGA ni con el SM750.
 Sólo lo pongo aquí como curiosidad.
