@@ -4548,6 +4548,7 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -Para instalar Mac OS 9.2 (ISO descargada desde https://winworldpc.com/product/mac-os-9/92):
 -Creamos la imágen de disco duro donde vamos a instalar el sistema:
 qemu-img create -f raw system92.img -o preallocation=full 2G
+
 -Arrancamos el sistema para instalar con el CD metido así:
 qemu-system-ppc \
 -L pc-bios \
@@ -4556,6 +4557,8 @@ qemu-system-ppc \
 -boot d \
 -drive file=macos_921_ppc.iso,format=raw,media=cdrom \
 -drive file=system92.img,format=raw,media=disk 
+
+-Una vez arrancado el sistema, abrimos la carpeta "Utilities” e inicializamos el disco duro con “Drive Setup”. 
 
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS
 
