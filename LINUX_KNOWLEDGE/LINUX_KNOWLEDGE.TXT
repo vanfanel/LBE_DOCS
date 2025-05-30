@@ -4566,7 +4566,8 @@ qemu-system-ppc \
 -M mac99,via=pmu \
 -m 512 \
 -boot c \
--drive file=system92.img,format=raw,media=disk
+-drive file=system92.img,format=raw,media=disk \
+-display sdl,gl=on -full-screen
 
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS
 
