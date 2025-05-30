@@ -356,10 +356,12 @@ mkdir b4
 cd b4
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson .. -Dbuildtype=release \
--Dwayland-backend=true -Dx11-backend=false -Dmedia-ffmpeg=disabled -Dmedia-gstreamer=disabled -Dprint-cups=disabled \
--Dprint-cloudprint=disabled -Dvulkan=enabled -Dxinerama=disabled -Dintrospection=disabled -Ddemos=false \
--Dbuild-examples=false -Dbuild-tests=false
+meson setup .. -Dbuildtype=release \
+-Dwayland_backend=true -Dx11_backend=false \
+-Dxinerama=no -Dcloudproviders=false -Dtracker3=false \
+-Dprint_backends=file -Dcolord=no \
+-Dgtk_doc=false -Dintrospection=false -Dman=false \
+-Ddemos=false -Dexamples=false -Dtests=false
 ninja -j4
 sudo ninja install
 
@@ -369,9 +371,12 @@ mkdir b4
 cd b4
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson .. -Dbuildtype=release \
--Dwayland-backend=true -Dx11-backend=false -Dmedia-ffmpeg=disabled -Dmedia-gstreamer=disabled -Dprint-cups=disabled \
--Dvulkan=enabled -Dintrospection=disabled -Ddemos=false -Dbuild-examples=false -Dbuild-tests=false 
+meson setup .. -Dbuildtype=release \
+-Dwayland_backend=true -Dx11_backend=false \
+-Dxinerama=no -Dcloudproviders=false -Dtracker3=false \
+-Dprint_backends=file -Dcolord=no \
+-Dgtk_doc=false -Dintrospection=false -Dman=false \
+-Ddemos=false -Dexamples=false -Dtests=false
 ninja -j4
 sudo ninja install
 
