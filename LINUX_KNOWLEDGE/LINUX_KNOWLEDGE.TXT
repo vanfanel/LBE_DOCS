@@ -4542,6 +4542,21 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -drive file=system81.img,media=disk,format=raw,if=none,id=hd0 \
 -display sdl,gl=on -full-screen
 
+	ALTERNATIVA 3: INSTALAR SYSTEM 9.2 (ESTO YA ES CON POWERPC, Y POWERPC NO SOPORTA 7.x/8.x)
+	(INSTRUCCIONES DE: https://www.emaculation.com/doku.php/ppc-osx-on-qemu-for-osx)
+
+-Para instalar Mac OS 9.2 (ISO descargada desde https://winworldpc.com/product/mac-os-9/92):
+-Creamos la imágen de disco duro donde vamos a instalar el sistema:
+qemu-img create -f raw system92.img -o preallocation=full 2G
+-Arrancamos el sistema para instalar con el CD metido así:
+./qemu-system-ppc \
+-L pc-bios \
+-M mac99,via=pmu \
+-m 512 \
+-boot d \
+-drive file=macos_921_ppc.iso,format=raw,media=cdrom \
+-drive file=system92.img,format=raw,media=disk 
+
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS
 
 -Instalamos: Si no nos funciona "apt-get install hfsutils" (no parece haber hfsutils en Debian 13),
