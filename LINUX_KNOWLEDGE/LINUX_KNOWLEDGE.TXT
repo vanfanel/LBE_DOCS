@@ -4549,7 +4549,7 @@ qemu-system-m68k -M q800 -m 32 -bios q800.rom \
 -Creamos la imágen de disco duro donde vamos a instalar el sistema:
 qemu-img create -f raw system92.img -o preallocation=full 2G
 -Arrancamos el sistema para instalar con el CD metido así:
-./qemu-system-ppc \
+qemu-system-ppc \
 -L pc-bios \
 -M mac99,via=pmu \
 -m 512 \
