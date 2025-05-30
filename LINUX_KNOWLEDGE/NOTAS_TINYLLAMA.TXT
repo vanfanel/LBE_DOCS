@@ -304,6 +304,19 @@ y seleccionar "Settings Op -> <FW Update>", y cuando termine saldrá en la panta
 También hay otro programa llamado KEENFIX.COM (de este hilo de las "VGA TSR GOODIES" en Vogons: https://www.vogons.org/viewtopic.php?t=86219)
 que nos permite quitarle el borde ese azul cutre con "KEENFIX /B-"
 
+**********WARCRAFT II*********************************
+
+Usamos el DOS32A.EXE, un sustituto del DOS4GW.EXE
+
+Se descarga de aquí: https://github.com/amindlost/dos32a/tree/main/binw
+
+Metes el DOS32A.EXE en el directorio del Warcraft II y haces:
+DOS32A WAR.EXE
+
+...Y ya funciona.
+
+Hay otro ejecutable llamado WAR2.EXE: no lo intentes ejecutar porque no funciona. 
+
 **********CRYSTAL DREAMS II (DEMO DE TRITON)**********
 
 Deberíamos poder parchearla con CTBPPAT o similar como en otros programas que dan el "RUNTIME ERROR 200",
