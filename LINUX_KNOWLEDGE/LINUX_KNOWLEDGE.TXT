@@ -4560,6 +4560,14 @@ qemu-system-ppc \
 
 -Una vez arrancado el sistema, abrimos la carpeta "Utilities” e inicializamos el disco duro con “Drive Setup”. 
 
+-Una vez instalado el sistema, arrancamos desde el disco duro sin ningún otro medio insertado con:
+qemu-system-ppc \
+-L pc-bios \
+-M mac99,via=pmu \
+-m 512 \
+-boot c \
+-drive file=system92.img,format=raw,media=disk
+
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS
 
 -Instalamos: Si no nos funciona "apt-get install hfsutils" (no parece haber hfsutils en Debian 13),
