@@ -4569,7 +4569,14 @@ qemu-system-ppc \
 -drive file=system92.img,format=raw,media=disk \
 -display sdl,gl=on -full-screen
 
-	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS
+	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS 8.x / 9.x
+
+Estos sistemas ya no usan HFS sino HFS+, que no se puede escribir con seguridad desde Linux.
+Así que necesitamos usar un disco intermedio.
+Es tan tremendamente engorroso (ya que no es tan simple como crear un sistema HFS y que lo pille el Mac OS 9.x)
+que te sale mejor hacerlo por red.
+
+	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS 7.x
 
 -Instalamos: Si no nos funciona "apt-get install hfsutils" (no parece haber hfsutils en Debian 13),
  nos bajamos la última versión del paquete .deb desde https://debian.stanford.edu/debian/pool/main/h/hfsutils/ y la instalamos a mano con dpkg.
