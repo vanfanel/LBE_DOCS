@@ -4572,9 +4572,24 @@ qemu-system-ppc \
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS 8.x / 9.x
 
 Estos sistemas ya no usan HFS sino HFS+, que no se puede escribir con seguridad desde Linux.
-Así que necesitamos usar un disco intermedio.
-Es tan tremendamente engorroso (ya que no es tan simple como crear un sistema HFS y que lo pille el Mac OS 9.x)
-que te sale mejor hacerlo por red.
+Así que necesitamos usar una imágen de CD-ROM ISO 9660 intermedia.
+Usamos una imágen de CD porque no parece posible crear un sistema HFS+ y que lo pille el Mac OS 9.x.
+
+--Creamos un directorio donde metemos los archivos que queramos, yo lo he llamado "upload",
+  y luego generamos la ISO así:
+mkisofs -o upload.iso upload
+
+--Arrancamos en QEMU con el disco de sistema y la ISO:
+qemu-system-ppc \
+-L pc-bios \
+-M mac99,via=pmu \
+-m 512 \
+-boot c \ 
+-drive file=system92.img,format=raw,media=disk \
+-drive file=upload.iso,format=raw,media=cdrom \
+-display sdl,gl=on -full-screen
+
+...Y ya deberíamos ver los contenidos de la ISO desde Mac OS 9.x.
 
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS 7.x
 
