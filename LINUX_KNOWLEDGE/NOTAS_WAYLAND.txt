@@ -1542,7 +1542,7 @@ ninja -j4
 ninja install
 
 Y en ~/.config/labwc/autostart:
-wlclock --border-size 4 --position top-left --size 150 --layer bottom --background-colour "#22373f" --border-colour "#152126" >/dev/null 2>&1 &
+wlclock --border-size 12 --position top-right --size 200 --layer bottom --background-colour "#22373f" --border-colour "#152126" >/dev/null 2>&1 &
 
 INSTALAR GAMESCOPE, EL MICROCOMPOSITOR DE STEAM
 ===============================================
