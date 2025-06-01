@@ -4591,6 +4591,9 @@ qemu-system-ppc \
 
 ...Y ya deberíamos ver los contenidos de la ISO desde Mac OS 9.x.
 
+--Para instalar Stuffit Expander 55 y empezar a descomprimir .SIT y .ZIPs, simplemente hacemos lo mismo pero con la ISO de Stuffit 55 de aquí:
+https://www.macintoshrepository.org/2475-stuffit-expander-and-dropstuff-w-ee-5-5
+
 	TRANSFERIR ARCHIVOS AL DISCO DE MAC OS 7.x
 
 -Instalamos: Si no nos funciona "apt-get install hfsutils" (no parece haber hfsutils en Debian 13),
