@@ -1211,7 +1211,7 @@ meson setup -Dbuildtype=release -Dgdk-pixbuf=disabled -Dman-pages=disabled ..
 
 Y en ~/.config/labwc/autostart:
 
-exec swaymsg "workspace 1; exec swaybg -i atari.png &;"
+exec swaymsg "workspace 1; exec swaybg -i tron.png &;"
 
 (NOTA: Acepta sólo PNG a no ser que lo compiles con gdk-pixbuf habilitado, así que con PNG nos vale).
 
