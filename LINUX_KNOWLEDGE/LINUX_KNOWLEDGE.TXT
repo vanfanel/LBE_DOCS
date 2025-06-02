@@ -2869,7 +2869,7 @@ NOTA: El juego corre internamente a 256x224, por si lo quieres tener en cuenta p
 -Cambiamos todas las demás ocurrencias de SDL_WINDOW_FULLSCREEN por SDL_WINDOW_FULLSCREEN_DESKTOP. 
 -Añadimos antes de la llamada a SDL_CreateRenderer(): SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
---Entramos en el directorio linux, editamos Makefile y añadimos a los CFLAGS:
+--Entramos en el directorio "linux", editamos Makefile y añadimos a los CFLAGS:
 -O2 -march=native -mtune=native
 
 --Compilamos simplemente con "make"
