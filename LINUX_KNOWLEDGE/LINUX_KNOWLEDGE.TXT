@@ -9761,6 +9761,12 @@ que se crea solo en el directorio donde tienes el ejecutable.
   cmake --build . --target GeneratePortO2R -j10
   ...Y copiamos el archivo resultante "sf64.o2r" al mismo directorio que el ejecutable (yo lo meto todo en "~/starfox64").
 
+	VOCES EN JAPONÉS
+
+--Utiliza la AppImage para extraer los datos. Es un proceso automático, simplemente primero te pide la ROM USA y luego
+  la ROM japonesa. El fichero de voces en japonés se llamará "sf64jp.o2r", lo metes en mods/ y ya está, irá sin hacer nada
+  con las voces en japonés. 
+
 PARA QUE NO DE TIRONCILLOS EN WAYLAND+AdaptiveSync, limita la tasa de frames del juego a 60 y activa el VSYNC.
 
 GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
