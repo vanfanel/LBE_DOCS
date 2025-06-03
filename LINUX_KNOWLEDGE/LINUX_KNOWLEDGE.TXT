@@ -2878,6 +2878,9 @@ NOTA: El juego corre internamente a 256x224, por si lo quieres tener en cuenta p
 
 --Para ponerlo a pantalla completa, usamos ALT+ENTER. Y al salir ya se queda guardado.
 
+--Para que vaya a la velocidad correcta (35FPS) y suave, entramos en el menú con ESC, y ponemos "GAME SPEED" a 5. 
+  Con AdaptiveSync/VRR, al igual que con MAME, establecer un modo de 125Hz antes de entrar puede ser necesario para no tener micro-stuttering.
+
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)***************************************************
 
 Los archivos que necesitamos están en este hilo:
