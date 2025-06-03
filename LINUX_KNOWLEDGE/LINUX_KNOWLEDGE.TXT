@@ -491,7 +491,7 @@ apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-
 (Si usas el gstreamer del sistema, hay que instalar libgstreamer-plugins-base1.0-dev).
 
 INSTALAMOS OTRA DEPENDENCIA PREVIA: libgstreamer (no podemos instalar la de Debian porque nos mete la porquería de X11 y MESA viejo)
---Clonamos su repo: git clone --depth 1 https://github.com/GStreamer/gstreamer.git
+--Bajalos los sources de la última estable de: https://gitlab.freedesktop.org/gstreamer/gstreamer/-/tags
 --Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
@@ -6291,6 +6291,9 @@ CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 cmake .. -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
 
+PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
+for f in $(cat install_manifest.txt) ; do rm "$f"; done
+
 *************MIDI remoto con fluidsynth o timidity (MIDI over LAN)*************************************************************
 
 SERVIDOR 
@@ -10116,6 +10119,9 @@ cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_REQUIRE_PIPEW
 -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_BACKEND_PORTAUDIO=OFF -DALSOFT_EXAMPLES=OFF \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
+
+PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
+for f in $(cat install_manifest.txt) ; do rm "$f"; done
 
 STUNT CAR RACER EN GNU/LINUX
 ============================
