@@ -74,6 +74,19 @@ Básicamente es porque el ZIP tiene un script de instalación que checkea el mod
 Nosotros lo queremos instalar y que se joda.
 Abrimos el ZIP, nos vamos a ANDROID en META_INF – COM – GOOGLE, y eliminamos las líneas del ASSERT que comprueba el nombre del movil. Y ya.
 
+LIDIAR CON NOTIFICACIONES DE LA APLICACIÓN "TELÉFONO" TRAS DESHABILITAR LOS SERVICIOS DE "GOOGLE PLAY SERVICES"
+===============================================================================================================
+
+El problema es que la app de "Teléfono" no deja deshabilitar estas notificaciones tan pesadas.
+Por ello, deshabilitamos la app "Teléfono" (que no se llama así under the hood):
+
+adb shell pm disable-user --user 0 com.google.android.dialer
+
+...Y nos instalamos "Simple Dialer" que está en F-Droid, y la establecemos como app de marcaje telefónico predeterminada.
+
+Con G-Board nos pasará lo mismo, así que primero instalamos "Simple Keyboard" y a continuación deshabilitamos G-Board,
+que en este caso sí es posible hacerlo desde la gestión de aplicaciones del propio Android sin tener que recurrir a ADB.
+
 DESINSTALAR COSAS CON ADB (NO HACE FALTA ROOT)
 ==============================================
 
