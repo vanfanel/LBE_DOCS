@@ -7303,13 +7303,19 @@ ffmpeg -i Opening.ogv -q:v 9 -vf scale=1024:512 -an Opening.ogv
 
 --Clonamos su repo: git clone --recursive --depth 1 https://github.com/RSDKModding/RSDKv4-Decompilation.git
 
+--Editamos "RSDKv4/Audio.cpp" y cambiamos:
+#define AUDIO_SAMPLES   (0x800)                                                                                                   
+por:
+#define AUDIO_SAMPLES   (0x200)
+
 --Configuramos y compilamos asi:
 mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
---Para jugar, necesitamos "data.rsdk" y "data2.rsdk" de "Sonic Origins". Los tienes en el disco duro de backup,
+--Creamos el directorio "~/sonic" y allí copiamos el ejecutable resultante llamado "RSDKv4"
+junto con los ficheros "data.rsdk" y "data2.rsdk" de "Sonic Origins". Los tienes en el disco duro de backup,
 pero también están en: https://archive.org/details/data.rsdk
 
 *************Sonic 3 AIR en GNU/Linux*********************************************************************************************
