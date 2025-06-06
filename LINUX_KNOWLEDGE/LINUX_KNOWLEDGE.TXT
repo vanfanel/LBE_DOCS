@@ -7299,6 +7299,19 @@ Extraer sólo el vídeo de la versión de PC, escalándolo a 1024x512 que es lo 
 (Pongo la calidad de vídeo a 9 porque a 10 sale un frame corrupto al principio)
 ffmpeg -i Opening.ogv -q:v 9 -vf scale=1024:512 -an Opening.ogv
 
+*************Sonic 1 & 2 en GNU/Linux*********************************************************************************************
+
+--Clonamos su repo: git clone --recursive --depth 1 https://github.com/RSDKModding/RSDKv4-Decompilation.git
+
+--Configuramos y compilamos asi:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+
+--Para jugar, necesitamos "data.rsdk" y "data2.rsdk" de "Sonic Origins". Los tienes en el disco duro de backup,
+pero también están en: https://archive.org/details/data.rsdk
+
 *************Sonic 3 AIR en GNU/Linux*********************************************************************************************
 (PENDIENTE: Que librmx compile contra libglew del sistema en vez de contra la mierda de libglew reducido que lleva)
 
