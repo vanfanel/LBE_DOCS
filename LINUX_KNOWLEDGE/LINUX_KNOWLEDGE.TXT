@@ -7132,6 +7132,9 @@ Editamos ese conquer.ini y ponemos Scaler a "linear", el ratio a 4:3, etc.
 NOTA: Si tienes algún problema en GNU/Linux con este engine, entra en discord y cita a Mephiles, que es un dev y usuario
 de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
 
+-Instalamos dependencias previas:
+apt-get install glslc
+
 -Instalamos otra dependencia previa: GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
 	---Dependencia previa: apt-get install --no-install-recommends extra-cmake-modules
 	---Nos bajamos la última estable de GLFW de: https://www.glfw.org/
@@ -7163,7 +7166,7 @@ como:
 --Configuramos y compilamos asi:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DRETRO_SUBSYSTEM=VK \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 Copiamos RSDKv5 a ~/sonicmania:
@@ -7182,24 +7185,30 @@ creamos en ~/sonicmania el fichero "gamecontrollerdb.txt" con el contenido:
 RECUERDA que estas cadenas de los mandos para el "gamecontrollerdb.txt" se sacan de la utilidad "controllermap" que viene
 en el directorio "tests" de los sources de SDL2.
 
--Para tener shaders(las instrucciones originales son de https://github.com/Rubberduckycooly/RSDKv5-Decompilation/blob/master/dependencies/ogl/README.md#shaders):
-	---Creamos el directorio mods/GLShaders/Data
-	mkdir -p ~/sonicmania/mods/GLShaders/Data
-	---Creamos mods/modconfig.ini con este contenido:
-	[Mods]
-	GLShaders=y
-	---Dentro de mods/GLShaders creamos mod.ini con este contenido:
-	Name=GLShaders
-	Description=GL3 shaders to enable filters and stuff
-	Author=Ducky
-	Version=1.0.0
-	TargetVersion=5
-	---Clonamos este repo: git clone --depth 1 https://github.com/Rubberduckycooly/RSDKv5-Decompilation.git
-	---Copiamos el directorio de Shaders del repo que acabamos de clonar al directorio Data del mod:
-	cp -R ~/src/RSDKv5-Decompilation/RSDKv5/Shaders ~/sonicmania/mods/GLShaders/Data/
-	---NOTA: Si el mod no carga, podemos activar el dev menu añadiendo "devMenu=1" en Settings.ini, en la sección [Game],
-	y desde ahí nos deja activar los mods que tengamos instalados. Esto lo que hace en realidad es crearnos el fichero
-	mods/modconfig.ini que hemos creado a mano antes, pero por si acaso pues aquí queda anotado.
+				#### BLOQUE SHADERS VULKAN #####
+
+--Entramos en "RSDKv5/Shaders/Vulkan" y hacemos:
+python compile.py
+
+--Creamos el los directorios "~/sonicmania/mods/VKShaders/Data" y ahí metemos los shaders compilados,
+que han quedado en "RSDKv5/Shaders/CSO-Vulkan":
+
+mkdir -p ~/sonicmania/mods/VKShaders/Data/Shaders/
+cp -R ../CSO-Vulkan ~/sonicmania/mods/VKShaders/Data/Shaders/
+
+--Creamos el archivo "~/sonicmania/mods/VKShaders/mod.ini" con el contenido:
+
+Name=VKShaders
+Description=Vulkan shaders to enable filters and stuff
+Author=Ducky
+Version=1.0.0
+TargetVersion=5
+
+--En el DevMenu (pulsando ESC durante el juego, actívalo en el Settings.ini si lo tienes quitado)
+activamos el MOD "VKShaders" y desactivamos el "GLShader" si lo teníamos de antes,
+y en las opciones del juego elegimos el shader que queramos.
+
+				#### FIN BLOQUE SHADERS VULKAN #####
 
 Ajustes del juego:
 
@@ -7227,6 +7236,13 @@ NOTAS ADICIONALES SOBRE EL ENGINE:
          -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 *************SONICCD EN EL ENGINE RSDK5*******************************************************************************************
+CUIDADO!!! CUIDADO!!! CUIDADO!!!
+EN EL "mod.ini" DE LOS SHADERS QUE VAYAS A USAR CON EL SONIC CD DEBES TENER PUESTO:
+"TargetVersion=3"
+EN VEZ DE:
+"TargetVersion=5"
+EL 5 ES PARA LOS MODS DE SONICMANIA!!! AUNQUE SEAN LOS MISMOS MODS (COMO EN EL CASO DE LOS SHADERS), DEBES AJUSTAR ESE NÚMERO
+O NO FUNCIONARÁ EL MOD Y NO SABRÁS POR QUÉ!!!  
 
 -Cogemos el ejecutable RSDKv5U y lo copiamos en ~/soniccd
 
