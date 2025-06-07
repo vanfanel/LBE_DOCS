@@ -7245,6 +7245,9 @@ EL 5 ES PARA LOS MODS DE SONICMANIA!!! AUNQUE SEAN LOS MISMOS MODS (COMO EN EL C
 O NO FUNCIONARÁ EL MOD Y NO SABRÁS POR QUÉ!!!  
 
 -Cogemos el ejecutable RSDKv5U y lo copiamos en ~/soniccd
+(Puedes usar el que se haya compilado como dependencia de SonicMania,
+o puedes clonar su repo (https://github.com/RSDKModding/RSDKv5-Decompilation) y compilarlo tú
+usando los mismos flags que para compilar el SonicMania).
 
 -Cogemos el fichero "SonicCDu.rsdk" del Sonic Origins y lo copiamos en ~/soniccd con el nombre "Data.rsdk" 
 
