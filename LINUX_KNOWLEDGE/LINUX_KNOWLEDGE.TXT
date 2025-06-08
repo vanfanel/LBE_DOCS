@@ -7335,12 +7335,11 @@ https://gamebanana.com/tuts/16686
 https://github.com/RSDKModding/RSDKv4-Script-Decompilation
 
 --Creamos el directorio ~/sonic y metemos ahí el ejecutable de RSDKv5 y el "Data.rsdk" de Sonic 1 de Sonic Origins.
-(Recuerda que lo tienes en el disco duro de backup o en https://archive.org/details/data.rsdk)
+(OJO!!! No es el Data.rsdk que se usa con https://github.com/RSDKModding/RSDKv4-Decompilation.git)
 
 --Instalamos el script decompilado del Sonic 1 de Sonic Origins. Para ello, clonamos su repo:
 git clone --depth 1 https://github.com/RSDKModding/RSDKv4-Script-Decompilation 
-Y copiamos el directorio "Scripts" a ~/sonic/
-
+Y copiamos el directorio "Sonic 1/Scripts" a ~/sonic/Scripts
 
 *************Sonic 1 & 2 en GNU/Linux*********************************************************************************************
 
