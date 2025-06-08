@@ -7254,7 +7254,8 @@ usando los mismos flags que para compilar el SonicMania).
 -Clonamos este repo: git clone --depth 1 https://github.com/Rubberduckycooly/Sonic-CD-2011-Script-Decompilation.git
  Y copiamos el directorio "Scripts" a ~/soniccd/
 
--En Settings.ini ponemos "datafile=SonicCDu.rsdk" y ponemos "gameType=1", porque estamos usando los datos de la versión ORIGINS.
+-En Settings.ini, en la sección "[Game]"
+ponemos "datafile=SonicCDu.rsdk" y ponemos "gameType=1", porque estamos usando los datos de la versión ORIGINS.
 
 -Metemos los mods que queramos en ~/soniccd/mods, y los cargamos desde el "dev menu" (tienes que tener "devMenu=y"
  en Settings.ini y darle a ESC para acceder a él)
