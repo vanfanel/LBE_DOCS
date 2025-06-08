@@ -7259,9 +7259,16 @@ usando los mismos flags que para compilar el SonicMania).
 -Metemos los mods que queramos en ~/soniccd/mods, y los cargamos desde el "dev menu" (tienes que tener "devMenu=y"
 en Settings.ini y darle a ESC para acceder a él)
 Tienes el mod de audio y vídeo del Sonic CD para RSDKv5U en el disco duro de backup, ya preparado.
-Con el mod de shaders cargado, para elegir el shader simplemente entra en el DEV MENU, selecciona el shader que quieras,
-ponte en "Confirm" y dale a ALT, y así se queda salvado.
 
+-Para poder cargar partidas salvadas, instalamos este mod: https://gamebanana.com/mods/50093
+ Es simplemente descomprimirlo en ~/soniccd/mods y activarlo en el "dev menu".
+ Pero tiene el efecto colateral de que nos muestra el logo de "The Taxman" mal escalado,
+ así que, para que no nos salga el logo, editamos "mods/MegAmisAdditions/Data/Scripts/Title/Sega.txt"
+ Y cambiamos:
+ ResetObjectEntity(Object.EntityNo, TypeName[CWLogo], 0, Object.XPos, Object.YPos)
+ Por:
+ ResetObjectEntity(Object.EntityNo, TypeName[Sonic], 0, Object.XPos, Object.YPos)
+ 
 		***SOLO NECESARIO PARA VOLVER A CREAR EL MOD DE AUDIO Y VIDEO: SECCIÓN PARA RECREAR EL MOD DE AUDIO Y VÍDEO DEL SONIC CD EN RSDKv5U***
 
 Vamos a crear un MOD que nos permite que suenen los efectos de sonido, las músicas y se vean los vídeos del juego.
@@ -7336,6 +7343,13 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 --Creamos el directorio "~/sonic" y allí copiamos el ejecutable resultante llamado "RSDKv4"
 junto con los ficheros "data.rsdk" y "data2.rsdk" de "Sonic Origins". Los tienes en el disco duro de backup,
 pero también están en: https://archive.org/details/data.rsdk
+
+--En "settings.ini", para que vaya directo al juego sin pasar por los menús 3D ridículos esos, pon "SkipStartMenu" a "true".
+
+--Para que los controles vayan bien (sin que el botón A sea para abrir el menú), pon A=1, B=2, START=6 y lo demás a 99.
+
+--Para tener shaders, olvídate de usar MODs porque no hay manera de cargar shaders así con RSDKv4, eso es sólo para RSDKv5.
+Así que uso vkBasalt con el shader CRT-Yee64, pero puesto a 424x240 que es la resolución interna del juego.
 
 *************Sonic 3 AIR en GNU/Linux*********************************************************************************************
 (PENDIENTE: Que librmx compile contra libglew del sistema en vez de contra la mierda de libglew reducido que lleva)
