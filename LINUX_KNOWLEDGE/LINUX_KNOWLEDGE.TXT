@@ -7257,8 +7257,11 @@ usando los mismos flags que para compilar el SonicMania).
 -En Settings.ini ponemos "datafile=SonicCDu.rsdk" y ponemos "gameType=1", porque estamos usando los datos de la versión ORIGINS.
 
 -Metemos los mods que queramos en ~/soniccd/mods, y los cargamos desde el "dev menu" (tienes que tener "devMenu=y"
-en Settings.ini y darle a ESC para acceder a él)
-Tienes el mod de audio y vídeo del Sonic CD para RSDKv5U en el disco duro de backup, ya preparado.
+ en Settings.ini y darle a ESC para acceder a él)
+ Tienes el mod de audio y vídeo del Sonic CD para RSDKv5U en el disco duro de backup, ya preparado.
+
+-Para que no nos salga una columna de píxels erróneos en el lado derecho de la pantalla, en Settings.ini ponemos
+ "maxPixWidth" a 416.
 
 -Para poder cargar partidas salvadas, instalamos este mod: https://gamebanana.com/mods/50093
  Es simplemente descomprimirlo en ~/soniccd/mods y activarlo en el "dev menu".
