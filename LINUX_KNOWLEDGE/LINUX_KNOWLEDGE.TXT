@@ -7204,7 +7204,7 @@ Author=Ducky
 Version=1.0.0
 TargetVersion=5
 
---En el DevMenu (pulsando ESC durante el juego, actívalo en el Settings.ini si lo tienes quitado)
+--En el DevMenu (pulsando ESC durante el juego, actívalo poniendo "devMenu=y" en el Settings.ini)
 activamos el MOD "VKShaders" y desactivamos el "GLShader" si lo teníamos de antes,
 y en las opciones del juego elegimos el shader que queramos.
 
@@ -7348,6 +7348,7 @@ dataFile=Sonic1u.rsdk
 language=0
 gameType=1
 txtScripts=n
+devMenu=y
 
 *************Sonic 1 & 2 en GNU/Linux*********************************************************************************************
 
