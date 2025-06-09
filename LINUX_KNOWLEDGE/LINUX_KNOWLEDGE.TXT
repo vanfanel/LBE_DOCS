@@ -7334,12 +7334,9 @@ INSTRUCCIONES PROCEDENTES DE:
 https://gamebanana.com/tuts/16686
 https://github.com/RSDKModding/RSDKv4-Script-Decompilation
 
---Creamos el directorio ~/sonic y metemos ahí el ejecutable de RSDKv5 y el "Sonic1u.rsdk" de Sonic 1 de Sonic Origins.
+--Creamos el directorio ~/sonic y metemos ahí el ejecutable de RSDKv5 y el archivo "Sonic1u.rsdk" que es el archivo de datos
+de Sonic 1 del "Sonic Origins".
 Lo tienes en el disco duro de backup y también en https://archive.org/download/data.rsdk
-
---Instalamos el script decompilado del Sonic 1 de Sonic Origins. Para ello, clonamos su repo:
-git clone --depth 1 https://github.com/RSDKModding/RSDKv4-Script-Decompilation 
-Y copiamos el directorio "Sonic 1/Scripts" a ~/sonic/Scripts
 
 --En Settings.ini, añadimos estas cosas:
 
@@ -7349,6 +7346,31 @@ language=0
 gameType=1
 txtScripts=n
 devMenu=y
+
+						#### SECCIÓN DE CREACIÓN DEL MOD DE MÚSICA Y FX ####
+		NOTA: Tienes copia de este MOD en el disco duro de backup, esto es por si lo pierdes y tienes que recrearlo.
+
+--Ahora, para tener música y fx, nos creamos un MOD que vamos a llamar "S1Audio".
+----Creamos los directorios y subdirecturios del MOD: 
+mkdir -p ~/sonic/mods/S1Audio/Data
+----Creamos el archivo ~/sonic/mods/S1Audio/mod.ini con este contenido:
+Name=S1Audio
+Description= Mod to have music and SFX in Sonic 1 from Sonic Origins on RSDKv5U
+Author=Vanfanel
+Version=1.1
+TargetVersion=4
+TxtScripts=0
+----Ahora tenemos que extraer las músicas y efectos de sonido.
+Para ello necesitamos el archivo "Data.rsdk" del Sonic 1 de alguna de las reediciones antiguas (Android, Steam...)
+basadas en RetroEngineV4 (lo tienes en el disco duro de backup o en https://archive.org/download/data.rsdk).
+Usamos el RetroED para extraer los archivos del "Data.rsdk".
+Para ello, nos bajamos el RetroED de aquí: https://github.com/RSDKModding/RetroED/releases
+Nos bajamos el .AppImage, le damos permisos de ejecución, lo ejecutamos, y una vez abierto le damos a "Tools -> RDSK Unpacker -> Select Data Pack",
+seleccionamos el "Data.rsdk", luego seleccionamos "RDSKv4FileList.txt", le damos a "Export Data Pack" y seleccionamos el directorio de destino.
+Ahora, de los datos extraidos, copiamos los directorios "Music" y "SoundFX" a ~/sonic/mods/S1Audio/Data/
+----Activamos el MOD en el devMenu (presionando ESC desde dentro del juego, para lo cual tenemos que tener "devMenu=y" en Settings.ini).
+
+						#### FIN SECCIÓN DE CREACIÓN DEL MOD DE MÚSICA Y FX ####
 
 *************Sonic 1 & 2 en GNU/Linux*********************************************************************************************
 
