@@ -7331,7 +7331,6 @@ ffmpeg -i Opening.ogv -q:v 9 -vf scale=1024:512 -an Opening.ogv
 
 *************Sonic 1 de Sonic Origins en el RSDKv5 (el engine de Sonic Mania)*****************************************************
 INSTRUCCIONES PROCEDENTES DE:
-https://rsdkmodding.com/Guides/RSDKv5/Decompilation/Setup/
 https://gamebanana.com/tuts/16686
 https://github.com/RSDKModding/RSDKv4-Script-Decompilation
 
