@@ -7368,6 +7368,16 @@ Para ello, nos bajamos el RetroED de aquí: https://github.com/RSDKModding/Retro
 Nos bajamos el .AppImage, le damos permisos de ejecución, lo ejecutamos, y una vez abierto le damos a "Tools -> RDSK Unpacker -> Select Data Pack",
 seleccionamos el "Data.rsdk", luego seleccionamos "RDSKv4FileList.txt", le damos a "Export Data Pack" y seleccionamos el directorio de destino.
 Ahora, de los datos extraidos, copiamos los directorios "Music" y "SoundFX" a ~/sonic/mods/S1Audio/Data/
+
+----Aún nos faltan 4 archivos WAV que contienen unos efectos que no vienen en el "Data.rdsk" y que el juego puede necesitar.
+Los tienes listos para usar en "https://gamebanana.com/tuts/16686#H1_2":
+busca la cadena "There are some sound effects new to Origins that are still missing right now", y tienes ahí un link con los archivos necesarios
+que se llaman:
+DropDash.wav
+HammerDash.wav
+HammerHit.wav
+HammerJump.wav
+Los metes en ~/sonic/mods/S1Audio/Data/SoundFX/Global/ y listo.
 ----Activamos el MOD en el devMenu (presionando ESC desde dentro del juego, para lo cual tenemos que tener "devMenu=y" en Settings.ini).
 
 						#### FIN SECCIÓN DE CREACIÓN DEL MOD DE MÚSICA Y FX ####
