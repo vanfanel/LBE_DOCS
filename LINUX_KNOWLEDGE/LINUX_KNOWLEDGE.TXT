@@ -8697,10 +8697,12 @@ Y ADEMÁS, DEBES USAR LOS SIGUIENTES OVERRIDES:
 
 PARA EL CORE DE NINTENDO DS, ten en cuenta que no hay CPU para hacer Runahead.
 
-PARA EL CORE "GENESIS PLUS GX", si usas RunAhead NO USES "SECOND INSTANCE MODE", o algunos juegos (Comix Zone, por ejemplo)
+PARA EL CORE "GENESIS PLUS GX"
+--El escalado a enteros le queda PERFECTO a este core, no se pierde casi nada.
+--El mejor shader para el tema del dithering de MegaDrive es el ZFAST-COMPOSITE con curvatura quitada, "CONVERGENCE X-AXIS" al máximo,
+"SCANLINE LOW" a 20, "SCANLINE HIGH" a 05, "MASK TYPE" a 1, "MASK EFFECT AMOUNT" a 0.50 y "FLICKER" a 0.
+--Si usas RunAhead NO USES "SECOND INSTANCE MODE", o algunos juegos (Comix Zone, por ejemplo)
 irán a tirones laaaargos y se quedará parada la imágen a veces.
-El mejor shader para el tema del dithering de MegaDrive es el ZFAST-COMPOSITE con curvatura quitada, "CONVERGENCE X-AXIS" al máximo,
-"SCANLINE LOW" a 20, "SCANLINE HIGH" a 05, "MASK TYPE" a 1, "MASK EFFECT AMOUNT" a 1.0 y "FLICKER" a 0.
 
 PARA EMULAR GAMEGEAR Y LYNX, el mejor shader es "handheld/sameboy-lcd" combinado con INTEGER SCALING.
 
