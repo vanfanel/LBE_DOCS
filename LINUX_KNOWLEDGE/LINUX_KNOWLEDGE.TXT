@@ -7370,7 +7370,7 @@ seleccionamos el "Data.rsdk", luego seleccionamos "RDSKv4FileList.txt", le damos
 Ahora, de los datos extraidos, copiamos los directorios "Music" y "SoundFX" a ~/sonic/mods/S1Audio/Data/
 
 ----Aún nos faltan 4 archivos WAV que contienen unos efectos que no vienen en el "Data.rdsk" y que el juego puede necesitar.
-Los tienes listos para usar en "https://gamebanana.com/tuts/16686#H1_2":
+Los tienes listos para usar en "https://gamebanana.com/tuts/16686":
 busca la cadena "There are some sound effects new to Origins that are still missing right now", y tienes ahí un link con los archivos necesarios
 que se llaman:
 DropDash.wav
@@ -7382,7 +7382,28 @@ Los metes en ~/sonic/mods/S1Audio/Data/SoundFX/Global/ y listo.
 
 						#### FIN SECCIÓN DE CREACIÓN DEL MOD DE MÚSICA Y FX ####
 
-*************Sonic 1 & 2 en GNU/Linux*********************************************************************************************
+*************Sonic 2 de Sonic Origins en el RSDKv5 (el engine de Sonic Mania)*****************************************************
+
+Es lo mismo que con Sonic 1, pero:
+--Se usa el archivo "Sonic2U.rdsk" como archivo principal de datos.
+							####SECCIÓN PARA RECREAR EL MOD DE AUDIO SI LO HAS PERDIDO####
+--Al hacer el MOD de audio, al extraer los archivos de música y fx de "Data 2.rsdk", veremos que los efectos del directorio "Global" vienen en OGG.
+El problema es que el engine RSDKv5U no reproduce OGG, así que tenemos que convertirlos a WAV
+o bajarnos el pack ya listo de WAVs de https://gamebanana.com/tuts/16686
+(busca la sección "Some Sound Effects Still Aren't Playing Even After Copying the Mobile Files" y lo tienes por ahí listo para descargar),
+luego extraer los datos de "Sonic2U.rdsk" con el RetroED, coger el fichero "GameConfig.bin" y con el editor hexadecimal HxD
+cambiar todas las ocurrencias de ".ogg" por ".wav" (CTRL+R) y mandarlo a ~/sonic2/mods/S2Audio/Data/Game/GameConfig.bin
+Recuerda también meter los ficheros WAV que faltan:
+busca la cadena "There are some sound effects new to Origins that are still missing right now", y tienes ahí un link con los archivos necesarios
+que se llaman:
+DropDash.wav
+HammerDash.wav
+HammerHit.wav
+HammerJump.wav
+Los metes en ~/sonic/mods/S2Audio/Data/SoundFX/Global/ y listo.
+							####FIN SECCIÓN PARA RECREAR EL MOD DE AUDIO SI LO HAS PERDIDO####
+
+*************Sonic 1 & 2 en GNU/Linux usando RDSKv4*********************************************************************************************
 
 --Clonamos su repo: git clone --recursive --depth 1 https://github.com/RSDKModding/RSDKv4-Decompilation.git
 
