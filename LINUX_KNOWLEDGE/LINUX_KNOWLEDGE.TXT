@@ -7347,6 +7347,11 @@ gameType=1
 txtScripts=n
 devMenu=y
 
+--Para tener scanlines, usamos el MOD "VKShaders" que te creaste para el Sonic CD.
+Lo puedes usar tal cual PERO en el "mod.ini" del MOD debes tener "TargetVersion=4" (para el Sonic CD es "TargetVersion=3")
+y luego, tras activarlo en el DevMenu, como el juego no tiene una opción para elegir shader,
+debes poner a capón "screenShader=3" en Settings.ini 
+	
 						#### SECCIÓN DE CREACIÓN DEL MOD DE MÚSICA Y FX ####
 		NOTA: Tienes copia de este MOD en el disco duro de backup, esto es por si lo pierdes y tienes que recrearlo.
 
