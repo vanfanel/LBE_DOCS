@@ -7409,6 +7409,8 @@ Los metes en ~/sonic/mods/S2Audio/Data/SoundFX/Global/ y listo.
 							####FIN SECCIÓN PARA RECREAR EL MOD DE AUDIO SI LO HAS PERDIDO####
 
 *************Sonic 1 & 2 en GNU/Linux usando RDSKv4*********************************************************************************************
+(NO USAR: Es mejor usar el Sonic 1 en el RSDKv5U, que tiene soporte para shaders
+y los mandos van bien sin tener que tocar los botones en el settings.ini)
 
 --Clonamos su repo: git clone --recursive --depth 1 https://github.com/RSDKModding/RSDKv4-Decompilation.git
 
