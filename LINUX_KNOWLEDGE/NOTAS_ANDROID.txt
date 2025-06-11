@@ -83,6 +83,7 @@ Por ello, deshabilitamos la app "Teléfono" (que no se llama así under the hood
 adb shell pm disable-user --user 0 com.google.android.dialer
 
 ...Y nos instalamos "Simple Dialer" que está en F-Droid, y la establecemos como app de marcaje telefónico predeterminada.
+(OJO: Puede ser necesario darle al botón de bloqueo de pantalla del móvil dos veces si no nos sale la notificación de llamada en pantalla).
 
 Con G-Board nos pasará lo mismo, así que primero instalamos "Simple Keyboard" y a continuación deshabilitamos G-Board,
 que en este caso sí es posible hacerlo desde la gestión de aplicaciones del propio Android sin tener que recurrir a ADB.
