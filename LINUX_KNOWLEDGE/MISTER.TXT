@@ -858,6 +858,14 @@ Añadimos al final de MiSTer.ini:
 [MacPlus]
 video_mode=1536,1026,60
 
+**********NOTAS CORE PHILIPS CD-I (CDI)*********************************************************
+
+Para convertir de CUE/BIN a CHDMAN, se hace como siempre con:
+for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd"; done
+
+...PERO si te da error, mira que en el .CUE no tengas "CDI/2352", porque esa es la causa.
+Simplemente cámbialo por "MODE2/2352".
+
 **********SOLUCIÓN A SINCRONÍA PERDIDA EN "SPLATTER HOUSE" Y "VULCAN VENTURE"*************
 
 Se solucionó en este hilo:
