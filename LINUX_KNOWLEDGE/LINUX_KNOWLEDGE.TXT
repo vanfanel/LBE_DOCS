@@ -8769,6 +8769,8 @@ PARA EL CORE "GENESIS PLUS GX"
 --El escalado a enteros le queda PERFECTO a este core, no se pierde casi nada.
 --El mejor shader para el tema del dithering de MegaDrive es el ZFAST-COMPOSITE con curvatura quitada, "CONVERGENCE X-AXIS" al máximo,
 "SCANLINE LOW" a 20, "SCANLINE HIGH" a 05, "MASK TYPE" a 1, "MASK EFFECT AMOUNT" a 0.50 y "FLICKER" a 0.
+--Para que funcionen los juegos de CORE para MegaCD (BC Racers, Soulstar, etc), desactiva "Core Options->Emulation Hacks->CD Access Time".
+  Si no lo haces, se colgarán en el logo de SEGA. Es un bug reportado y conocido upstream.
 --Si usas RunAhead NO USES "SECOND INSTANCE MODE", o algunos juegos (Comix Zone, por ejemplo)
 irán a tirones laaaargos y se quedará parada la imágen a veces.
 
