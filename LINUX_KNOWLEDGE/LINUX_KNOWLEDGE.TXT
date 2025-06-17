@@ -10235,7 +10235,7 @@ Compilamos con:
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j4
+WITHOUT_AUDIOCD=1 WITHOUT_XML=1 make -j10
 
 SI TIENES MOVIMIENTO ERRÁTICO DEL RATÓN: Desconecta el mando USB.
 
