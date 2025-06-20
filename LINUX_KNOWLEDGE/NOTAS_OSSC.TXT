@@ -2,13 +2,10 @@ CONFIGURACIÓN ÓPTIMA PARA PC VGA
 ================================
 
 MOVERSE POR EL MENÚ DE SETTINGS
-Con el botón MENU ON/OFF activamos el menú. Una vez allí, con ARRIBA/ABAJO elegimos la categoría,
-una vez elegida la categoría le damos a OK, y cambiamos los valores con DERECHA/IZQ.
-Para volver atrás desde una categoría le damos al botón BACK.
+Con el botón MENU ON/OFF activamos el menú.
 
 SALVAR LOS SETTINGS
---Botón MENU ON/OFF -> ARRIBA/ABAJO hasta que nos salga SETTINGS OPT. -> ARRIBA/ABAJO hasta que nos salga SAVE PROFILE
-->DERECHA/IZQ hasta que nos salga el perfil que queremos salvar -> OK
+--Botón MENU ON/OFF -> SETTINGS OPT. -> SAVE PROFILE
 
 QUE SE PONGA EN LA ENTRADA VGA NADA MÁS ENCENDERLO
 En SETTINGS OPT., ponemos INITIAL INPUT a AV3:RGBHV, y AUTODETECT INPUT a "All Inputs".
@@ -31,14 +28,15 @@ https://videogameperfection.com/forums/topic/ossc-pentium-233-mmx/
 
 Estos son los settings que usa el tio del hilo, lo pone en uno de los posts:
 
-480p in sampler: VESA 640×480@60
-Allow upsample2x: On
+Sampling opt. -> 480p in sampler: VESA 640×480@60
+Sampling opt. -> Allow upsample2x: On
 
-En Output Proc.:
-384x400p proc -> Line2x 240x360 <---ESTO es para que los juegos EGA no se vean TAN pixelados y así el scroll no provoque "distorsión".
+En Output Opt.:
+384x400p proc -> Line2x 240x360 (O "Line3x Generic")<---ESTO es para que los juegos EGA
+														no se vean TAN pixelados y así el scroll no provoque "distorsión".
 480p/576p proc: Line2x
 
-Sampling opt. -> Advanced Timmings para 640×400:
+Sampling opt. -> Advanced Timmings para 640×400_70:
 —————–
 H. Samplerate : 700
 H. Synclength : 64
@@ -50,7 +48,7 @@ V. Active : 400
 Sampling Phase: 146 deg <---ESTE es el setting que hace que veamos todos los píxels iguales en los juegos que usan dithering,
 							como el Monkey 1 EGA, el Prince o el CK4.
 
-Sampling opt. -> Advanced Timmings para 640×480 (También influye en los KEEN1-4, etc):
+Sampling opt. -> Advanced Timmings para 640×480_60 (También influye en los KEEN1-4, etc):
 —————–
 H. Samplerate : 800
 H. Synclength : 80
@@ -61,7 +59,11 @@ V. Backporch : 26
 V. Active : 480
 Sampling Phase: 180 deg.
 
-Si además quieres scanlines, ve al menú de SCANLINES (MENU ON/OFF -> ARRIBA/ABAJO hasta que salga SCANLINE OPT. -> OK)
-y allí activa SL. ALT INTERVAL, pon SL. METHOD a MULTIPLICATION, pon SL. HYBRID SRT a 100%, pon SL. STRENGTH a 25%
+Si además quieres scanlines, SCANLINE OPT. y allí:
+Scanlines -> ON
+SL. STRENGTH -> 25%
+SL. HYBRID SRT -> 100%
+SL. ALTERNATING -> ON
+SL. METHOD -> MULTIPLICATION
 
 Si se te ven los juegos EGA como Keen1-4 rojizos, "Video in Proc -> CLAMP/ALC OFFSET" a -21

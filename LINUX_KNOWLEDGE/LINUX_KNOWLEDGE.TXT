@@ -10242,7 +10242,7 @@ SI TIENES MOVIMIENTO ERRÁTICO DEL RATÓN: Desconecta el mando USB.
 PARA INSTALAR EL JUEGO CON SUS DATOS POR PRIMERA VEZ:
 Creamos ~/heroes2
 Copiamos el ejecutable a ~/heroes2
-Copiamos el directorio files que viene con los sources a ~/heroes2, quedando ~/heroes2/files
+Copiamos el directorio "files" que viene con los sources a ~/heroes2, quedando ~/heroes2/files
 Copiamos el archivo heroes2.key que viene con los sources a ~/heroes2
 Copiamos los directorios DATA, MAPS, y ANIM de una instalación del Heroes 2 a ~/heroes2
 (Los nombres de los directorios pueden estar en mayusculas o en minusculas, da igual eso).
