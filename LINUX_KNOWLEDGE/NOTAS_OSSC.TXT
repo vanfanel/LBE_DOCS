@@ -39,13 +39,12 @@ Sampling opt. -> Advanced Timmings para 640×400_70:
 —————–
 H. Samplerate : 700
 H. Synclength : 64
-H. Backporch : 52
+H. Backporch : 50
 H. Active : 570
 V. Synclength : 2
-V. Backporch : 34
-V. Active : 400
-Sampling Phase: 146 deg <---ESTE es el setting que hace que veamos todos los píxels iguales en los juegos que usan dithering,
-							como el Monkey 1 EGA, el Prince o el CK4.
+V. Backporch : 29
+V. Active : 410
+Sampling Phase: 0 deg
 
 Sampling opt. -> Advanced Timmings para 640×480_60 (También influye en los KEEN1-4, etc):
 —————–
@@ -62,7 +61,12 @@ Si además quieres scanlines, SCANLINE OPT. y allí:
 Scanlines -> ON
 SL. STRENGTH -> 25%
 SL. HYBRID SRT -> 100%
-SL. ALTERNATING -> ON
 SL. METHOD -> MULTIPLICATION
+SL. ALTERNATING -> ON
+SL. TYPE -> CUSTOM
+	CUSTOM SL.
+		->V.INTERVAL: 3
+		->SUB-LINE 1 SRT: 25%
+		->SUB-LINE 2 SRT: 25%
 
 Si se te ven los juegos EGA como Keen1-4 rojizos, "Video in Proc -> CLAMP/ALC OFFSET" a -21
