@@ -32,9 +32,8 @@ Sampling opt. -> 480p in sampler: VESA 640×480@60
 Sampling opt. -> Allow upsample2x: On
 
 En Output Opt.:
-384x400p proc -> Line2x 240x360 (O "Line3x Generic")<---ESTO es para que los juegos EGA
-														no se vean TAN pixelados y así el scroll no provoque "distorsión".
-480p/576p proc: Line2x
+384x400p proc -> Line2x
+480p/576p proc -> Line2x
 
 Sampling opt. -> Advanced Timmings para 640×400_70:
 —————–
