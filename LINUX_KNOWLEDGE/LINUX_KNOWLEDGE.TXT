@@ -12410,6 +12410,8 @@ cd b4
 cmake .. -DLIBLCF_WITH_ICU=0 \
 -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+----PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
+for f in $(cat install_manifest.txt) ; do rm "$f"; done
 
 --Ahora vamos a por EASYRPG en sí mismo:
 ----Clonamos los últimos sources estables (ver en "Branches" cuál es el último, ahora mismo es el 0.8.1):
