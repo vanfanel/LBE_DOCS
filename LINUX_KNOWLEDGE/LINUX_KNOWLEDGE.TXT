@@ -12391,8 +12391,9 @@ sudo apt-get install libstdc++6:armhf
 
 NO CONFUNDAS libstd con libc, son cosas distintas.
 
-EASYRPG, EL MOTOR DE RPGMAKER EN LINUX
-======================================
+EASYRPG, EL MOTOR DE RPGMAKER 2000/2003 EN LINUX
+================================================
+OJO: Para juegos de RPGMaker XP, se usa "mkxp" que es otro motor opensource distinto.
 
 LO COMPILAMOS COMO UN CORE PARA LIBRETRO
 
@@ -12411,10 +12412,12 @@ cmake .. -DLIBLCF_WITH_ICU=0 \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 --Ahora vamos a por EASYRPG en sí mismo:
-git clone --depth 1 --recurse-submodules -j8 https://github.com/EasyRPG/Player.git
+----Clonamos los últimos sources estables (ver en "Branches" cuál es el último, ahora mismo es el 0.8.1):
+git clone --depth 1 --recurse-submodules https://github.com/EasyRPG/Player.git -b 0-8-1-stable
+----Configuramos y compilamos con:
 mkdir b4
 cd b4
-cmake -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON .. \ 
+cmake .. -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON \
 -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
