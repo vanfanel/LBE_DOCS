@@ -12396,22 +12396,28 @@ EASYRPG, EL MOTOR DE RPGMAKER EN LINUX
 
 LO COMPILAMOS COMO UN CORE PARA LIBRETRO
 
-Empezamos instalando libclf, que es parte del proyecto EASYRPG, así que hay que instalarla a mano:
+--Instalamos dependencias previas:
+apt-get install libexpat1-dev libpixman-1-dev libfmt-dev libsndfile1-dev --no-install-recommends
 
-Dependencias previas:
-sudo apt-get install libexpat1-dev libpixman-1-dev libfmt-dev libsndfile1-dev --no-install-recommends
-
-Ahora vamos a por libclf:
-git clone --depth 1 https://github.com/EasyRPG/liblcf.git
+--Instalamos liblcf, que es parte del proyecto EASYRPG, así que hay que instalarla a mano:
+----Instalamos dependencias previas:
+apt-get install libinih-dev
+----Bajamos la última versión estable de: https://github.com/EasyRPG/liblcf/releases
+----Configuramos con:
 mkdir b4
 cd b4
-cmake -DDISABLE_ICU=ON ..
+cmake .. -DLIBLCF_WITH_ICU=0 \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
-Ahora vamos a por EASYRPG:
+--Ahora vamos a por EASYRPG en sí mismo:
 git clone --depth 1 --recurse-submodules -j8 https://github.com/EasyRPG/Player.git
 mkdir b4
 cd b4
-cmake -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON ..
+cmake -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON .. \ 
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 Ahora lo lanzaríamos con:
 retroarch -L core <.exe del juego hecho con RPG Maker>
