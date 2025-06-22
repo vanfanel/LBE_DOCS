@@ -9918,6 +9918,27 @@ que se crea solo en el directorio donde tienes el ejecutable.
 
 PARA QUE NO DE TIRONCILLOS EN WAYLAND+AdaptiveSync, limita la tasa de frames del juego a 60 y activa el VSYNC.
 
+MARIO KART 64 EN GNU/LINUX
+==========================
+
+--Clonamos la última versión estable (podemos ver cuál es el número de versión en https://github.com/HarbourMasters/SpaghettiKart/tags)
+git clone --recurse-submodules https://github.com/HarbourMasters/SpaghettiKart.git -b Latest2
+
+--Editamos "CMakeLists.txt", buscamos "find_package(OpenGL REQUIRED)", y justo encima ponemos:
+set(OPENGL_USE_OPENGL ON)
+
+--Copiamos la ROM "Mario Kart 64 (USA).z64" a la raiz de los sources.
+
+--Configuramos y compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -GNinja \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_BUILD_TYPE=Release
+
 GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
 ============================================================
 NOTA: La documentación original está aquí --> https://github.com/klorfmorf/Goemon64Recomp/blob/modding/BUILDING.md
