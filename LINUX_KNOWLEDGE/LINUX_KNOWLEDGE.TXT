@@ -9927,8 +9927,6 @@ git clone --recurse-submodules https://github.com/HarbourMasters/SpaghettiKart.g
 --Editamos "CMakeLists.txt", buscamos "find_package(OpenGL REQUIRED)", y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
 
---Copiamos la ROM "Mario Kart 64 (USA).z64" a la raiz de los sources.
-
 --Configuramos y compilamos con:
 
 mkdir b4
@@ -9938,6 +9936,16 @@ cmake .. -GNinja \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_BUILD_TYPE=Release
+
+cp Spaghettify ~/mk64/
+
+	BLOQUE EXTRACCIÓN DE DATOS
+
+--Guardamos la ROM USA "Mario Kart 64 (USA).z64" como "baserom.us.z64" en el raiz de los sources.
+--En el directorio donde acabamos de compilar el engine hacemos:
+cmake --build . --target ExtractAssets
+...Y copiamos los archivos resultantes "mk64.o2r" y "spaghetti.o2r" al mismo directorio que el ejecutable (yo lo meto todo en "~/mk64"):
+cp *.o2r ~/mk64/
 
 GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
 ============================================================
