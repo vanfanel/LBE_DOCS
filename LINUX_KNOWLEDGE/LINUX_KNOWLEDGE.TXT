@@ -9921,7 +9921,7 @@ PARA QUE NO DE TIRONCILLOS EN WAYLAND+AdaptiveSync, limita la tasa de frames del
 MARIO KART 64 EN GNU/LINUX
 ==========================
 
---Clonamos la última versión estable (podemos ver cuál es el número de versión en https://github.com/HarbourMasters/SpaghettiKart/tags)
+--Clonamos la última versión estable (podemos ver cuál es el nombre de la última versión en https://github.com/HarbourMasters/SpaghettiKart/tags)
 git clone --recurse-submodules https://github.com/HarbourMasters/SpaghettiKart.git -b Latest2
 
 --Editamos "CMakeLists.txt", buscamos "find_package(OpenGL REQUIRED)", y justo encima ponemos:
