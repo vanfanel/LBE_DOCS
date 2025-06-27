@@ -5964,7 +5964,7 @@ Configuramos y compilamos así (usa un buildsystem raro llamado WAF que viene in
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-./waf configure -T release --64bits --disable-vgui
+./waf configure -T release --64bits
 
 ./waf build
 
