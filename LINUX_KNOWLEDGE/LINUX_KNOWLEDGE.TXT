@@ -529,13 +529,13 @@ OPCIÓN 1 (RECOMENDADO): USANDO DXVK
 --Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/doitsujin/dxvk.git
 
---Compilamos las versions de 32 bits:
+--Compilamos las versions de 32 bits (no podemos pasar "-march=native" debido a este commit: https://github.com/doitsujin/dxvk/commit/d2c8e54d04b970342293e565377b8431b0bbe3fa):
 
 mkdir build32
 cd build32
 
-CFLAGS="-O2 -march=native -mtune=native -O2" \
-CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+CFLAGS="-O2 -march=x86-64-v2 -mtune=native -O2" \
+CXXFLAGS="-O2 -march=x86-64-v2 -mtune=native -O2" \
 meson setup .. -Dbuildtype=release --cross-file ../build-win32.txt
 
 ninja -j10
@@ -543,13 +543,13 @@ ninja -j10
 --Las metemos en el profile de Wine que estemos usando:
 find ./ -name "*.dll" -exec cp {} ~/.wine/drive_c/windows/syswow64 \;
 
---Compilamos las versions de 64 bits:
+--Compilamos las versions de 64 bits (no podemos pasar "-march=native" debido a este commit: https://github.com/doitsujin/dxvk/commit/d2c8e54d04b970342293e565377b8431b0bbe3fa):
 
 mkdir build64
 cd build64
 
-CFLAGS="-O2 -march=native -mtune=native -O2" \
-CXXFLAGS="-O2 -march=native -mtune=native -O2" \
+CFLAGS="-O2 -march=x86-64-v2 -mtune=native -O2" \
+CXXFLAGS="-O2 -march=x86-64-v2 -mtune=native -O2" \
 meson setup .. -Dbuildtype=release --cross-file ../build-win64.txt
 
 ninja -j10
