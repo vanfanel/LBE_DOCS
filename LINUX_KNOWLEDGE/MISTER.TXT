@@ -866,12 +866,19 @@ for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd"; done
 ...PERO si te da error, mira que en el .CUE no tengas "CDI/2352", porque esa es la causa.
 Simplemente cámbialo por "MODE2/2352".
 
-**********SOLUCIÓN A SINCRONÍA PERDIDA EN "SPLATTER HOUSE" Y "VULCAN VENTURE"*************
+**********SOLUCIÓN A SINCRONÍA PERDIDA EN CIERTOS ARCADES*************
 
+El problema es con algunos cores arcade de Jotego, como SplatterHouse, Vulcan Venture y otros.
 Se solucionó en este hilo:
 https://misterfpga.org/viewtopic.php?p=97633#p97633
 
 Simplemente, añadimos estas líneas al final del MiSTer.ini:
+
+[arcade]
+video_mode=1920,1080,60
+vsync_adjust=2
+
+O podríamos hacerlo por separado, pero es más rollo:
 
 [jtshouse]
 video_mode=1920,1080,60
