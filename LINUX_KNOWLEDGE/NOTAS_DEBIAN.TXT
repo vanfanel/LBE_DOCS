@@ -908,6 +908,9 @@ File systems->CD-ROM/DVD Filesystems->ISO 9660 CDROM file system support
 ----"Memory hotplug"
 ----"Transparent Hugepage Support"
 
+--En "Enable the block layer" desactivamos todos los "IO Schedulers",
+ya que para discos sólidos el "noop" o "none" es lo mejor.
+
 --MUY IMPORTANTE PARA JUEGOS:
 General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop)
 ...Y desactivamos "Preemption behaviour defined on boot"
