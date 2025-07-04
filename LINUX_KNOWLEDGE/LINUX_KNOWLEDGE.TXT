@@ -9877,8 +9877,8 @@ NOTAS PREVIAS:
 ---Por ahora no podemos pasarle ni "CMAKE_C_FLAGS", ni "CMAKE_CXX_FLAGS" ni "-DCMAKE_BUILD_TYPE=Release",
 porque entonces el ejecutable resultante nos da errores.
 
---Clonamos los sources de la última versión estable (en este caso la 2.0.0,
-podemos sacar el número de las versiones estables mirando https://github.com/HarbourMasters/Starship/tags):
+--Clonamos los sources de la última versión estable, en este caso la 2.0.0.
+Podemos sacar el número de las versiones estables mirando https://github.com/HarbourMasters/Starship/tags:
 git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/Starship.git -b v2.0.0
 
 --Editamos "CMakeLists.txt", buscamos "find_package(OpenGL REQUIRED)", y justo encima ponemos:
