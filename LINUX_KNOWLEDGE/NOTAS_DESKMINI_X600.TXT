@@ -1,4 +1,4 @@
-NOTAS DE MONTAJE
+NOTAS DE MONTAJE (SPECS: Motherboard X600TM-ITX, RAM Kingston FURY Impact 32GB (2x16GB) 6400MT/s CL38, ventilador Noctua NH-L9a-AM5)
 ================
 
 --La CPU simplemente se "coloca" haciendo coincidir el triangulito que trae dibujado la CPU con el triangulito que trae dibujado la placa.
@@ -41,6 +41,31 @@ NOTAS DE USO
 --Para resetear la CMOS, apaga el sistema y desconéctado de la corriente y CON EL SISTEMA APAGADO pon en contacto (con el destornillador o algo así)
   los pines CLEAR CMOS de la placa, mantenlos durante unos 20 segundos y reconecta el sistema.
   Si eso no funciona, enciende el sistema y líate a darle a CTRL+ALT+SUP como un mono y creo que eso funcionó.
+
+ACTUALIZAR EL MICROCODE EN LINUX
+================================
+
+--Para saber si tu CPU tiene actualizaciones de microcódigo por parte de AMD, averigua su familia/modelo/stepping con:
+lscpu | awk -F: '$1 ~ /^(CPU family|Model|Stepping)$/ {printf("%s: 0x%.2x\n", $1, $2)}'
+
+El Ryzen 7 8700G es:
+CPU family: 0x19
+Model: 0x75
+Stepping: 0x02
+
+Comprobamos si tiene actualizaciones de microcódigo mirando aquí:
+https://gitlab.com/kernel-firmware/linux-firmware/-/tree/main/amd-ucode
+
+--Si las tiene, instala los últimos microcódigos de AMD así:
+apt install amd64-microcode
+
+--Reinicia, y mira a ver qué dice el ordenador:
+dmesg | grep microcode
+
+En mi caso, me dice:
+[    0.614764] microcode: Current revision: 0x0a70520a
+...Que es más o menos la misma versión que aparece en el gitlab de AMD para esa familia/modelo/stepping
+(la de Debian parece ser más alta, de hecho).
 
 ACTUALIZAR LA BIOS
 ==================
