@@ -1963,8 +1963,8 @@ https://docs.mamedev.org/initialsetup/compilingmame.html
 
 Quote:
 
-    You can do driver specific builds by using SOURCES=<driver> in your make statement. For instance, building Pac-Man by itself would be:
-    "make SOURCES=src/mame/pacmac/pacman.cpp REGENIE=1"
+    You can do driver specific builds by using SOURCES=<driver> in your make statement. For instance, building Asteroids by itself would be:
+    "make SOURCES=src/mame/atari/asteroid.cpp REGENIE=1"
     including the necessary REGENIE for rebuilding the settings
 
 USAR MAME STANDALONE
@@ -11852,7 +11852,7 @@ Para evitar dependencias absurdas de X11 y demás.
 el compresor adecuado para imágenes de disco de PSX, Saturn, PCE-CD, MegaCD, etc):
 git clone --depth 1 https://github.com/mamedev/mame.git 
 
---Compilamos sólo las tools de MAME, con:
+--Compilamos sólo las tools de MAME (y un juego que es lo mínimo), con:
 make SOURCES=src/mame/atari/asteroid.cpp TOOLS=1 EMULATOR=0 REGENIE=1 -j10
 
 --Lo instalamos:
