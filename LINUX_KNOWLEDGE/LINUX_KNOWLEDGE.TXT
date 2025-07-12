@@ -201,13 +201,13 @@ Instalamos chdman:
 sudo apt-get install mame-tools --no-install-recommends
 
 Y para comprimir de CUE/BIN a CHD:
-chdman createcd -i image.cue -o image.chd
+chdman createcd -i image.cue -o image.chd -c cdzs,cdfl -hs 9792
 
 Y para comprimir todos los CUE/BIN de un directorio a CHD:
-for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd"; done
+for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd" -c cdzs,cdfl -hs 9792; done
 
 Y para extraer todos los CHD de un directorio a CUE/BIN:
-for i in *.chd; do chdman extractcd -i "$i" -o "${i%.*}.cue"; done
+for i in *.chd; do chdman extractcd -i "$i" -o "${i%.*}.cue" -c cdzs,cdfl -hs 9792; done
 
 Y para extraer de CHD a CUE/BIN:
 chdman extractcd -i image.chd -o image.cue -ob image.bin
@@ -11848,23 +11848,21 @@ INSTALAR CHDMAN A MANO
 
 Para evitar dependencias absurdas de X11 y demás.
 
-Clonamos su repo:
-git clone --depth 1 https://github.com/CharlesThobe/chdman.git
+--Clonamos el repo de MAME (hay un repo propio de CHDMAN pero no tiene la última versión y te faltaría el soporte para CDZS que es
+el compresor adecuado para imágenes de disco de PSX, Saturn, PCE-CD, MegaCD, etc):
+git clone --depth 1 https://github.com/mamedev/mame.git 
 
-Compilamos:
-mkdir b4
-cd b4
-cmake -B build -G Ninja ..
-cmake --build build
+--Compilamos sólo las tools de MAME, con:
+make TOOLS=1 TOOLS_ONLY=1 -j10
+
+--Lo instalamos:
+cp chdman /usr/local/bin/
 
 COMPRIMR CUE/BIN A CHD
 ======================
 
-Necesitamos las mame-tools:
-sudo apt-get install mame-tools p7zip-full
-
-Y se comprime pasándole el CUE:
-chdman createcd -i BC\ Racers.cue -o BC\ Racers.chd
+Instalamos CHDMAN a mano (tienes instrucciones más arriba) y se comprime pasándole el CUE:
+chdman createcd -i BC\ Racers.cue -o BC\ Racers.chd -c cdzs,cdfl -hs 9792
 
 Si tienes un directorio con varios 7z (cada uno de los cuales conteniendo un cue/bin), puedes convertir todos los 7z
 de ese directorio usando este sencillo script:
@@ -11879,7 +11877,7 @@ de ese directorio usando este sencillo script:
                 7z x "${x7zFile}" -o./"${gameName}-tmp"
 
                 echo "!!!!!!!!!!Converting ${gameName}..."
-                chdman createcd -i "./${gameName}-tmp/${gameName}.cue" -o ./"${gameName}.chd"
+                chdman createcd -i "./${gameName}-tmp/${gameName}.cue" -o ./"${gameName}.chd" -c cdzs,cdfl -hs 9792
 #rm temporary directory
                 rm -R ./"${gameName}-tmp"
 ### uncomment below to rm the original 7z archive
@@ -11892,7 +11890,7 @@ echo "All done."
 		-------
 
 Y para convertir todos los cue/bin de un directorio, usa este script:
-for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd"; done
+for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd" -c cdzs,cdfl -hs 9792; done
 
 MÚSICA GRAVIS ULTRASOUND Y EFECTOS DE SONIDO EN DUNGEON MASTER 2 EN DOSBOX
 ==========================================================================

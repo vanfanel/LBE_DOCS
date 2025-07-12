@@ -1,0 +1,17 @@
+ENCARGAR LAS PLACAS BASE DEL WEECEE REDUX EN PCBWAY
+===================================================
+
+--Clonamos el repo del proyecto:
+  git clone --depth 1 https://github.com/snipeexpress/WeeCee_Redux.git
+
+--Entramos y nos logueamos en PCBWAY.
+
+--Nos vamos a "PCB INSTANT QUOTE", y en el primer apartado llamado "PCB SPECIFICATION SELECTION", le damos a "UPLOAD GERBER FILES",
+  le damos a "+ ADD GERBER FILE", navegamos en el selector hasta PCB.C/pcbway_production/2025-07-09... y le subimos el único archivo que nos deja 
+  seleccionar.
+
+--En "SURFACE FINISH" seleccionamos "HASHL LEAD FREE"
+
+--En "SHIPPING COSTS" seleccionamos "SPAIN" y "DHL IOSS", para que nos cobren los impuestos al hacer hacer la órden.
+
+--Le damos a "SAVE TO CART" y en el siguiente paso ya es donde tendremos que subir el BOM y el POSITION MAP.
