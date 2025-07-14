@@ -42,37 +42,6 @@ NOTAS DE USO
   los pines CLEAR CMOS de la placa, mantenlos durante unos 20 segundos y reconecta el sistema.
   Si eso no funciona, enciende el sistema y líate a darle a CTRL+ALT+SUP como un mono y creo que eso funcionó.
 
-ACTUALIZAR EL MICROCODE EN LINUX (NO ES NECESARIO SI TIENES LA BIOS ACTUALIZADA)
-================================================================================
-
-LO PRIMERO es entender que si el microcode de la BIOS está más actualizado que el del paquete que vamos a instalar, Linux no hará nada.
-Así que normalmente esto no cambia nada y no necesitas hacerlo. 
-
---Para saber si tu CPU tiene actualizaciones de microcódigo por parte de AMD, averigua su familia/modelo/stepping con:
-lscpu | awk -F: '$1 ~ /^(CPU family|Model|Stepping)$/ {printf("%s: 0x%.2x\n", $1, $2)}'
-
-El Ryzen 7 8700G es:
-CPU family: 0x19
-Model: 0x75
-Stepping: 0x02
-
-Comprobamos si tiene actualizaciones de microcódigo mirando aquí:
-https://gitlab.com/kernel-firmware/linux-firmware/-/tree/main/amd-ucode
-
---Si las tiene, instala los últimos microcódigos de AMD así:
-apt install amd64-microcode
-
---Reinicia, y mira a ver qué dice el ordenador:
-dmesg | grep microcode
-
-En mi caso, me dice:
-[    0.614764] microcode: Current revision: 0x0a70520a
-...Lo que significa que se está usando el microcode de la BIOS.
-Si se estuviera usando una versión superior del microcode inyectada por Linux en el arranque, veríamos algo como:
-[    0.245678] microcode: updating early microcode to 0x0a70520a, date = 2024-03-10
-...Pero no es el caso, así que no hemos hecho nada realmente al instalar el paquete "amd64-microcode"
-porque el microcode de la BIOS ya está actualizado.
-
 ACTUALIZAR LA BIOS
 ==================
 Las actualizaciones están todas aquí: https://www.asrock.com/nettop/AMD/DeskMini%20X600%20Series/index.asp#BIOS
@@ -163,3 +132,34 @@ ctl.!default {
 }
 
 @hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
+
+ACTUALIZAR EL MICROCODE EN LINUX (NO ES NECESARIO SI TIENES LA BIOS ACTUALIZADA)
+================================================================================
+
+LO PRIMERO es entender que si el microcode de la BIOS está más actualizado que el del paquete que vamos a instalar, Linux no hará nada.
+Así que normalmente esto no cambia nada y no necesitas hacerlo. 
+
+--Para saber si tu CPU tiene actualizaciones de microcódigo por parte de AMD, averigua su familia/modelo/stepping con:
+lscpu | awk -F: '$1 ~ /^(CPU family|Model|Stepping)$/ {printf("%s: 0x%.2x\n", $1, $2)}'
+
+El Ryzen 7 8700G es:
+CPU family: 0x19
+Model: 0x75
+Stepping: 0x02
+
+Comprobamos si tiene actualizaciones de microcódigo mirando aquí:
+https://gitlab.com/kernel-firmware/linux-firmware/-/tree/main/amd-ucode
+
+--Si las tiene, instala los últimos microcódigos de AMD así:
+apt install amd64-microcode
+
+--Reinicia, y mira a ver qué dice el ordenador:
+dmesg | grep microcode
+
+En mi caso, me dice:
+[    0.614764] microcode: Current revision: 0x0a70520a
+...Lo que significa que se está usando el microcode de la BIOS.
+Si se estuviera usando una versión superior del microcode inyectada por Linux en el arranque, veríamos algo como:
+[    0.245678] microcode: updating early microcode to 0x0a70520a, date = 2024-03-10
+...Pero no es el caso, así que no hemos hecho nada realmente al instalar el paquete "amd64-microcode"
+porque el microcode de la BIOS ya está actualizado.

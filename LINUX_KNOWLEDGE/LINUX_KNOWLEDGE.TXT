@@ -567,6 +567,13 @@ y dentro de ella añadimos un nuevo valor string llamado "renderer" al que darem
 
 Alternativamente, podríamos hacer "winetricks renderer=vulkan", pero para eso hay que tener instalado winetricks.
 
+******PRUEBAS DE ESTABILIDAD DE LA CPU EN GNU/LINUX**************************************************************************
+
+--Usamos stress-ng. Bajamos los últimos sources estables de: https://github.com/ColinIanKing/stress-ng/releases
+--Compilamos simplemente con "make -j10"
+--Instalamos a mano con "cp stress-ng /usr/local/bin"
+--Ejecutamos con "stress-ng --matrix -1"
+
 ******APOTRIS (clon de Tetris) en GNU/Linux**********************************************************************************
 (OJO: POR AHORA no tiene soporte de pantalla completa ni de joystick, asi que espera a la version 4.1 de los sources).
 
