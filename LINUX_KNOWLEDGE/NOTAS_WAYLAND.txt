@@ -350,6 +350,10 @@ https://github.com/tarvi-verro/weston-binder
 Básicamente elegimos entre GTK y QT. GTK es más ligero y sencillo de compilar (QT son varios paquetes).
 
 Para compilar GTK3 (la versión más compatible con programas actualmente y que a la vez tiene soporte WAYLAND es GTK3)
+-Instalamos dependencias previas:
+apt-get install libgdk-pixbuf-2.0-dev shared-mime-info gobject-introspection --no-install-recommends
+(OJO: libgdk-pixbuf-2.0-dev viene incluido como un submódulo, pero si dejamos que lo compile así, necesita a su vez libglycin-2 que
+ tira de toda la basura de X11, MESA vieja, etc. Instalando nosotros la librería evitamos los problemas).
 -Bajamos los últimos sources estables de: https://download.gnome.org/sources/gtk/
 -Configuramos como:
 mkdir b4
@@ -529,7 +533,8 @@ apt-get install libglm-dev nlohmann-json3-dev
 --Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson setup -Dbuildtype=release -Dzlib=disabled -Dtests=disabled -Ddwrite=disabled ..
+meson setup -Dbuildtype=release -Dtests=disabled -Ddwrite=disabled ..
+(OJO! No deshabilites ZLib o se compilará sin soporte para PDF y luego GTK no compilará por falta de "cairo-pdf.h").
 
 -Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
 --Instalamos dependencias previas: apt-get install libglib2.0-dev libfontconfig-dev
