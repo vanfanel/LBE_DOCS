@@ -923,25 +923,30 @@ y las BIOS van en /media/manuel/<nombre_partición_grande>/media/0/RetroArch/sys
 
 ******PPSSPP, el emulador de PSP en GNU/LINUX***************************************************************************
 
-Bajamos la última versión estable:
-git clone --depth 1 --recurse-submodules -b <NOMBRE_TAG> -j8 https://github.com/hrydgard/ppsspp.git
-
 	COMPILAR VERSIÓN LIBRETRO:
+
+--Clonamos los sources de la última release estable:
+git clone --depth 1 --recurse-submodules -b <NOMBRE_TAG> https://github.com/hrydgard/ppsspp.git
+
+--Editamos CMakeLists.txt, buscamos "find_package(OpenGL REQUIRED)" y justo antes ponemos "set(OPENGL_USE_OPENGL ON)"
+
+--Compilamos con:
 
 mkdir b4
 cd b4
+
 cmake .. -DLIBRETRO=ON -DUSE_VULKAN_DISPLAY_KHR=ON -DUSE_WAYLAND_WSI=OFF -DUSING_X11_VULKAN=OFF \
--DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF
+-DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=OFF -DUSE_DISCORD=OFF
 
 OJO!! Por ahora no le pasamos optimizaciones porque la versión resultante se cuelga con el Ridge Racers,
  pero en un futuro se las pasaremos así:
 -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
 -DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
 
-¡¡¡OJO!!! Tenemos que copiar el contenido del directorio "assets" que viene con los sources a ~/.config/retroarch/system/PPSSPP/
+--¡¡¡OJO!!! Tenemos que copiar el contenido del directorio "assets" que viene con los sources a ~/.config/retroarch/system/PPSSPP/
 o si no, el Ridge Racers se nos quedará en una pantalla en gris después del menú principal."
 
-Es un core con sonido 44100Hz, así que configura los settings de audio así y guarda los core overrides.
+--Es un core con sonido 44100Hz, así que configura los settings de audio así y guarda los core overrides.
 
 PARA FRAMERATE ESTABLE:
 Desactiva "Buffer Graphis Commands"
