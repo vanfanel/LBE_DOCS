@@ -80,10 +80,10 @@ NOTAS DE LA CONFIGURACIÓN DE LA BIOS
 y ajustar la velocidad de la RAM (ya que por defecto se pone a JEDEC, que es la velocidad por defecto para DDR5 con socket AM5 y son 4800MHz)
 vamos a "Advanced->OC Tweaker" y allí:
 -Elegimos la velocidad que queramos en "DRAM Frequency", como por ejemplo DDR5-5600.
--Ponemos SOC/Uncore OC Voltage (VDD_SOC) a 1.05 
-NO CARGAMOS PERFILES XMP, ESO ES PARA INTEL, LA TECNOLOGÍA PARA AMD ES "EXPO", PERO LA RAM QUE TENGO AHORA NO TIENE PERFILES EXPO
-POR MI DESCONOCIMIENTO AL COMPRARLA (Hay muy pocas margas que tengan memoria DDR5 SODIMM con EXPO...
-En Amazon sólo he visto una Crucial 5600 que sería la ideal).
+-Ponemos SOC/Uncore OC Voltage (VDD_SOC) a 1.000v <---MUY IMPORTANTE HACER ESTO PARA EVITAR LOS PUNTOS BLANCOS AL PONER LA CPU BAJO ESTRÉS. 
+¡¡¡OJO!!! NO CARGAMOS PERFILES XMP, ESOS PERFILES LOS TRAE LA RAM DDR5 PARA INTEL, LA TECNOLOGÍA PARA AMD ES "EXPO",
+PERO LA RAM QUE TENGO AHORA NO TRAE PERFILES EXPO POR MI DESCONOCIMIENTO AL COMPRARLA.
+(Hay muy pocas margas que tengan memoria DDR5 SODIMM con EXPO... En Amazon sólo he visto una Crucial 5600 que sería la ideal).
 
 --Para desactivar el Hyperthreading (en AMD se llama "SMT") nos vamos a "ADVANCED->CPU CONFIGURATION->SMT MODE" y lo ponemos a "DISABLED",
 y nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement" y ponemos "SMT Control" a "DISABLED".
