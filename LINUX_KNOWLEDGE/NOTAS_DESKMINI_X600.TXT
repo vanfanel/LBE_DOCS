@@ -76,10 +76,14 @@ Cuando acabe del todo, reiniciará normal al sistema operativo que tengas instal
 NOTAS DE LA CONFIGURACIÓN DE LA BIOS
 ====================================
 
---Para ajustar la velocidad de la RAM (ya que por defecto se pone a JEDEC, que es la velocidad por defecto para DDR5 con socket AM5 y son 4800MHz,
-pero la memoria que tengo soporta 6400), vamos a "Advanced->OC Tweaker->DRAM Profile Setting" y allí elegimos el perfil XMP que queramos.
-NO AJUSTES LA VELOCIDAD A MANO DE FORMA AISLADA, ya que cada velocidad necesita otros ajustes como el voltaje, etc., si lo haces a mano,
-el sistema será inestable, con errores gráficos, etc.
+--Para que no salgan "white dots" al cargar la CPU a tope (compilar MAME con -j8, por ejemplo)
+y ajustar la velocidad de la RAM (ya que por defecto se pone a JEDEC, que es la velocidad por defecto para DDR5 con socket AM5 y son 4800MHz)
+vamos a "Advanced->OC Tweaker" y allí:
+-Elegimos la velocidad que queramos en "DRAM Frequency", como por ejemplo DDR5-5600.
+-Ponemos SOC/Uncore OC Voltage (VDD_SOC) a 1.05 
+NO CARGAMOS PERFILES XMP, ESO ES PARA INTEL, LA TECNOLOGÍA PARA AMD ES "EXPO", PERO LA RAM QUE TENGO AHORA NO TIENE PERFILES EXPO
+POR MI DESCONOCIMIENTO AL COMPRARLA (Hay muy pocas margas que tengan memoria DDR5 SODIMM con EXPO...
+En Amazon sólo he visto una Crucial 5600 que sería la ideal).
 
 --Para desactivar el Hyperthreading (en AMD se llama "SMT") nos vamos a "ADVANCED->CPU CONFIGURATION->SMT MODE" y lo ponemos a "DISABLED",
 y nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement" y ponemos "SMT Control" a "DISABLED".
