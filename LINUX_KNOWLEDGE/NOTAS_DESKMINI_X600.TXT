@@ -1,4 +1,14 @@
-NOTAS DE MONTAJE (SPECS: Motherboard X600TM-ITX, RAM Kingston FURY Impact 32GB (2x16GB) 6400MT/s CL38, ventilador Noctua NH-L9a-AM5)
+SPECS
+=====
+
+Motherboard: X600TM-ITX
+RAM: SODIMM DDR5 Kingston FURY Impact 32GB (2x16GB) 6400MT/s CL38 <--MAL: Sólo tiene perfiles XMP que son para INTEL,
+     no tiene perfiles EXPO que es lo que se usa en AMD. Puedes cargar perfiles XMP en la BIOS pero dan inestabilidad
+     (puntos blancos/rojos/verdes en pantalla cuando se carga la CPU).
+     PARA CPUs AMD, SIEMPRE COMPRA MEMORIAS QUE TENGAN "EXPO". 
+Ventilador: Noctua NH-L9a-AM5
+
+NOTAS DE MONTAJE
 ================
 
 --La CPU simplemente se "coloca" haciendo coincidir el triangulito que trae dibujado la CPU con el triangulito que trae dibujado la placa.
