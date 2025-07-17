@@ -53,6 +53,24 @@ NOTAS DE USO
   los pines CLEAR CMOS de la placa, mantenlos durante unos 20 segundos y reconecta el sistema.
   Si eso no funciona, enciende el sistema y líate a darle a CTRL+ALT+SUP como un mono y creo que eso funcionó.
 
+IMPORTANTE NOTAS DE LA CONFIGURACIÓN DE LA BIOS PARA CONSEGUIR ESTABILIDAD
+==========================================================================
+
+--Para que no salgan "white dots" al cargar la CPU a tope (compilar MAME con -j8, por ejemplo)
+y ajustar la velocidad de la RAM (ya que por defecto se pone a JEDEC, que es la velocidad por defecto para DDR5 con socket AM5 y son 4800MHz)
+vamos a "Advanced->OC Tweaker" y allí:
+-Elegimos la velocidad que queramos en "DRAM Frequency", como por ejemplo DDR5-5600.
+-Ponemos SOC/Uncore OC Voltage (VDD_SOC) a 1.000v <---MUY IMPORTANTE HACER ESTO PARA EVITAR LOS PUNTOS BLANCOS AL PONER LA CPU BAJO ESTRÉS. 
+ Si subimos "DRAM Frequency" y empezamos a ver los puntos blancos al poner la CPU a tope (compilar MAME con -j8 es un buen test),
+ podemos probar a subir VDD_SOC a 1.05v o como muchísimo 1.10v. No subas más allá de eso. Ya 1.05v da unos 4 grados más a tope de carga.
+
+¡¡¡OJO!!! NO CARGAMOS PERFILES XMP, ESOS PERFILES LOS TRAE LA RAM DDR5 PARA INTEL, LA TECNOLOGÍA PARA AMD ES "EXPO",
+PERO LA RAM QUE TENGO AHORA NO TRAE PERFILES EXPO POR MI DESCONOCIMIENTO AL COMPRARLA.
+(Hay muy pocas margas que tengan memoria DDR5 SODIMM con EXPO... En Amazon sólo he visto una Crucial 5600 que sería la ideal).
+
+--Para desactivar el Hyperthreading (en AMD se llama "SMT") nos vamos a "ADVANCED->CPU CONFIGURATION->SMT MODE" y lo ponemos a "DISABLED",
+y nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement" y ponemos "SMT Control" a "DISABLED".
+
 ACTUALIZAR LA BIOS
 ==================
 Las actualizaciones están todas aquí: https://www.asrock.com/nettop/AMD/DeskMini%20X600%20Series/index.asp#BIOS
@@ -73,21 +91,6 @@ del pen o donde quieras, porque el sistema de actualización lo va a buscar, per
 Ahora reinicia y entra en la BIOS (pulsando SUP/DELETE como un mono) y vete a "TOOLS->INSTANT FLASH" y te localizará el fichero .ROM,
 dale a flashear y déjalo tranquilo un rato que acabe (durante el proceso volverá a entrar en la BIOS y tal él solo, déjalo a su rollo).
 Cuando acabe del todo, reiniciará normal al sistema operativo que tengas instalado.
-
-NOTAS DE LA CONFIGURACIÓN DE LA BIOS
-====================================
-
---Para que no salgan "white dots" al cargar la CPU a tope (compilar MAME con -j8, por ejemplo)
-y ajustar la velocidad de la RAM (ya que por defecto se pone a JEDEC, que es la velocidad por defecto para DDR5 con socket AM5 y son 4800MHz)
-vamos a "Advanced->OC Tweaker" y allí:
--Elegimos la velocidad que queramos en "DRAM Frequency", como por ejemplo DDR5-5600.
--Ponemos SOC/Uncore OC Voltage (VDD_SOC) a 1.000v <---MUY IMPORTANTE HACER ESTO PARA EVITAR LOS PUNTOS BLANCOS AL PONER LA CPU BAJO ESTRÉS. 
-¡¡¡OJO!!! NO CARGAMOS PERFILES XMP, ESOS PERFILES LOS TRAE LA RAM DDR5 PARA INTEL, LA TECNOLOGÍA PARA AMD ES "EXPO",
-PERO LA RAM QUE TENGO AHORA NO TRAE PERFILES EXPO POR MI DESCONOCIMIENTO AL COMPRARLA.
-(Hay muy pocas margas que tengan memoria DDR5 SODIMM con EXPO... En Amazon sólo he visto una Crucial 5600 que sería la ideal).
-
---Para desactivar el Hyperthreading (en AMD se llama "SMT") nos vamos a "ADVANCED->CPU CONFIGURATION->SMT MODE" y lo ponemos a "DISABLED",
-y nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement" y ponemos "SMT Control" a "DISABLED".
 
 NOTAS ESPECÍFICAS DEL HARDWARE EN GNU/LINUX
 ===========================================
