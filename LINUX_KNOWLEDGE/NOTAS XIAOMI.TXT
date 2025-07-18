@@ -1,3 +1,50 @@
+ALIGERAR EL SISTEMA QUE TRAE
+============================
+
+Por ahora es la opción más sencilla porque no consigo que TWRP funcione, se cuelga en la pantalla del título.
+
+--Elimimanos todas las Apps que nos deja eliminar de una tacada (seleccionándolas todas) en .
+--Ahora, para poder usar ADB, habilitamos el modo desarrollador pinchando a lo loco en "Sobre el Teléfono->Versión de MIUI" (7 veces)
+y luego en "Ajustes Adicionales -> Opciones de Desarrollador -> Depuración USB".
+Y ya podemos usar ADB conectándolo por USB (para usar ADB simplemente el sistema estará corriendo normal).
+--Con "adb" eliminamos todas estas del tirón:
+
+adb shell pm uninstall --user 0 com.facebook.services
+adb shell pm uninstall --user 0 com.facebook.system
+adb shell pm uninstall --user 0 com.facebook.appmanager
+
+adb shell pm uninstall --user 0 com.google.android.gms
+adb shell pm uninstall --user 0 com.google.android.gsf
+adb shell pm uninstall --user 0 com.android.vending
+adb shell pm uninstall --user 0 com.google.android.apps.maps
+adb shell pm uninstall --user 0 com.google.android.apps.walletnfcrel
+adb shell pm uninstall --user 0 com.google.android.calendar
+adb shell pm uninstall --user 0 com.google.android.googlequicksearchbox
+adb shell pm uninstall --user 0 com.google.android.gm
+adb shell pm uninstall --user 0 com.google.android.youtube
+adb shell pm uninstall --user 0 com.google.android.apps.subscriptions.red
+adb shell pm uninstall --user 0 com.google.android.contacts
+adb shell pm uninstall --user 0 com.google.android.apps.googleassistant
+
+adb shell pm uninstall --user 0 com.miui.player
+adb shell pm uninstall --user 0 com.miui.videoplayer
+adb shell pm uninstall --user 0 com.xiaomi.scanner
+adb shell pm uninstall --user 0 com.xiaomi.midrop
+adb shell pm uninstall --user 0 com.xiaomi.mipicks
+adb shell pm uninstall --user 0 com.miui.miservice
+adb shell pm uninstall --user 0 com.xiaomi.finddevice
+
+--Al acabar, instálate desde F-DROID (ya que las apps de google fallan):
+---WELEFON para hacer llamadas
+---FOSSIFY CONTACTS para gestionar los contactos (o sea, agenda)
+---FOSSIFY MESSAGES para SMS
+
+--SI NO SABES CÓMO SE LLAMA UNA APP PARA ELIMINARLA, ÁBRELA, Y MIENTRAS ESTÉ EN PANTALLA HACES:
+adb shell dumpsys activity activities | grep "ResumedActivity"
+...Y AHÍ LO VES.
+
+--NO DESINSTALES NADA DE WEATHER O NO ARRANCARÁ.
+
 ACTIVAR DEVELOPER MODE
 ======================
 
@@ -86,42 +133,6 @@ https://forum.xda-developers.com/t/rom-unofficial-11-0-lineageos-18-1-unified-fo
 
 INSTALAR LINEAGE OS
 -Arrancamos en TWRP (power + subir volúmen + bajar volúmen) con el ZIP copiado a una microSD, y lo instalamos desde TWRP como siempre.
-
-ALIGERAR EL SISTEMA QUE TRAE
-============================
-
---Elimimanos todas las Apps que nos deja eliminar.
---Con "adb" eliminamos todas estas del tirón:
-
-adb shell pm uninstall --user 0 com.facebook.services
-adb shell pm uninstall --user 0 com.facebook.system
-adb shell pm uninstall --user 0 com.facebook.appmanager
-
-adb shell pm uninstall --user 0 com.google.android.gms
-adb shell pm uninstall --user 0 com.google.android.gsf
-adb shell pm uninstall --user 0 com.android.vending
-adb shell pm uninstall --user 0 com.google.android.apps.maps
-adb shell pm uninstall --user 0 com.google.android.apps.walletnfcrel
-adb shell pm uninstall --user 0 com.google.android.calendar
-adb shell pm uninstall --user 0 com.google.android.googlequicksearchbox
-adb shell pm uninstall --user 0 com.google.android.gm
-adb shell pm uninstall --user 0 com.google.android.youtube
-adb shell pm uninstall --user 0 com.google.android.apps.subscriptions.red
-adb shell pm uninstall --user 0 com.google.android.contacts
-adb shell pm uninstall --user 0 com.google.android.apps.googleassistant
-
-adb shell pm uninstall --user 0 com.miui.weather2
-adb shell pm uninstall --user 0 com.miui.player
-adb shell pm uninstall --user 0 com.miui.videoplayer
-adb shell pm uninstall --user 0 com.xiaomi.scanner
-adb shell pm uninstall --user 0 com.xiaomi.midrop
-adb shell pm uninstall --user 0 com.xiaomi.mipicks
-adb shell pm uninstall --user 0 com.miui.miservice
-adb shell pm uninstall --user 0 com.xiaomi.finddevice
-
---SI NO SABES CÓMO SE LLAMA UNA APP PARA ELIMINARLA, ÁBRELA, Y MIENTRAS ESTÉ EN PANTALLA HACES:
-adb shell dumpsys activity activities | grep "ResumedActivity"
-...Y AHÍ LO VES.
 
 RESTAURAR DE FÁBRICA
 ====================
