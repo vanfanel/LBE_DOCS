@@ -58,8 +58,8 @@ En ese momento, el teléfono será reconocido por el MiUsbDriver.exe, y se insta
 
 -Ya podemos hacer click en Miflash_unlock.exe, loguearnos en la cuenta MI, y desbloquear el bootloader.
 
-INSTALAR TWRP Y LINEAE OS
-=========================
+INSTALAR TWRP Y LINEAGE OS
+==========================
 
 Para el REDMI 9A, buscamos todo por el codename, que es DANDELION.
 
@@ -86,3 +86,18 @@ https://forum.xda-developers.com/t/rom-unofficial-11-0-lineageos-18-1-unified-fo
 
 INSTALAR LINEAGE OS
 -Arrancamos en TWRP (power + subir volúmen + bajar volúmen) con el ZIP copiado a una microSD, y lo instalamos desde TWRP como siempre.
+
+RESTAURAR DE FÁBRICA
+====================
+
+--Si algo sale mal, pero aún puedes entrar en FASTBOOT (power + vol_down), puedes dejar el teléfono de fábrica.
+Para ello:
+---Bájate el "Fastboot ROM (Flash File)" que suele estar aquí: https://miuirom.org/phones/redmi-9a#Global
+(El fichero se llama dandelion_global_images_V12.5.7.0.RCDMIXM_20221107.0000.00_11.0_global_3319fae180.tgz,
+ y lo deberías tener en el disco duro de backup).
+---Instala esto en Linux: sudo apt install android-tools-fastboot
+---Comprueba que se detecta el teléfono en modo fastboot: fastboot devices
+---Descomprime el .tgz ese enorme y ahí dentro hay un fichero llamado "flash_all.sh", lo ejecutas y flasheará todo correctamente.
+   Al acabar se reinicia el teléfono y tardará un huevo en arrancar pero arranca al sistema por defecto.
+
+--Si algo sale MUY MAL, puedes entrar en modo BROM y usar mtkclient para flashear a mano particiones y tal, y poder al menos entrar en FASTBOOT.

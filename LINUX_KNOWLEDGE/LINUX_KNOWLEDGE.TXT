@@ -2848,7 +2848,7 @@ Instalamos dependencias previas:
 apt-get install libmodplug-dev --no-install-recommends
 
 Clonamos su repo:
-git clone --depth 1 https://github.com/chermenin/REminiscence.git
+git clone --depth 1 https://github.com/cyxx/REminiscence.git
 
 Editamos systemstub_sdl.cpp y cambiamos:
 desired.samples = 4096;
