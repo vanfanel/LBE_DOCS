@@ -2823,12 +2823,12 @@ Y ya puedes hacer "./OpenBOR Paks/bor.pak" y te lanzará el juego desempaquetado
 
 Clonamos su repo: git clone --depth 1 https://github.com/cyxx/rawgl.git
 
--En el Makefile:
+-Editamos mixer.cpp, script.cpp y Makefile, y eliminamos todas las partes del código relacionadas con MT32.
+ Si al intentar compilar te da error, edita de nuevo y sigue eliminando, etc. No cuesta nada, se ve enseguida.
+
+-Editamos el el Makefile y allí:
 	-Cambiamos -lGL por -lOpenGL en la línea de SDL_LIBS, 
 	-Añadimos los CXXFLAGS que son: -O2 -march=native -mtune=native
-Y añade la línea de optimiación agresiva debajo de la original de CFLAGS:
-CXXFLAGS += -flto
-(NO se puede mezclar -fwhole-program con -flto: una o la otra. Y como tenemos más de una unidad de compilación, -fwhole-program no va aquí).
 
 -En mixer.cpp, ajusta el tamaño del buffer de 4096 a 1024
 -En systemstub_sdl.cpp:

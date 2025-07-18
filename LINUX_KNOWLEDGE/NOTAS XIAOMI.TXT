@@ -78,11 +78,11 @@ EL ARCHIVO DE RECOVERY QUE HAY QUE FLASEAR SE LLAMA: TWRP-3.4.2B-CN-dandelion.im
 
 Lo flasheamos (sin miedo) con:
 sudo fastboot flash recovery TWRP-3.4.2B-CN-dandelion.img
-Ya podemos arrancar en modo 
+Ya podemos arrancar en modo recovery.
 
 -La ROM de LINEAGE OS para DANDELION (vale para 9A y 9C) está en:
 https://forum.xda-developers.com/t/rom-unofficial-11-0-lineageos-18-1-unified-for-redmi-9a-9c-9-activ-garden.4362597/
 (El volúmen de las llamadas suena bajo, pero por lo demás va perfecto).
 
 INSTALAR LINEAGE OS
--Arrancamos en TWRP (power + subil volúmen + bajar volúmen) con el ZIP copiado a una microSD, y lo instalamos desde TWRP como siempre.
+-Arrancamos en TWRP (power + subir volúmen + bajar volúmen) con el ZIP copiado a una microSD, y lo instalamos desde TWRP como siempre.
