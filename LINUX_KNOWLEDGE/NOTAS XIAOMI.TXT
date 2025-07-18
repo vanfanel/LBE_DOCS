@@ -35,8 +35,9 @@ adb shell pm uninstall --user 0 com.xiaomi.mipicks
 adb shell pm uninstall --user 0 com.miui.miservice
 adb shell pm uninstall --user 0 com.xiaomi.finddevice
 
---Al acabar, instálate desde F-DROID (ya que las apps de google fallan):
----FOSSIFY PHONE para hacer llamadas y gestionar SMS
+--Al acabar, instálate desde F-DROID (ya que las apps de google fallan: es importante
+que hayas desinstalado "com.google.android.dialer"):
+---FOSSIFY PHONE para llamadas
 ---FOSSIFY CONTACTS para gestionar los contactos (o sea, agenda)
 ---FOSSIFY MESSAGES para SMS
 
@@ -45,6 +46,12 @@ adb shell dumpsys activity activities | grep "ResumedActivity"
 ...Y AHÍ LO VES.
 
 --NO DESINSTALES NADA DE WEATHER O NO ARRANCARÁ.
+
+--BANCA: Para poder registrar la app de ING, debes tener activados temporalmente los servicios de Google así
+porque si no, no te llega el SMS con la clave:
+adb shell cmd package install-existing com.google.android.gms
+adb shell cmd package install-existing com.google.android.gfs
+....Una vez registrada, los puedes volver a desinstalar.
 
 ACTIVAR DEVELOPER MODE
 ======================
