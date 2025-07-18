@@ -25,6 +25,7 @@ adb shell pm uninstall --user 0 com.google.android.youtube
 adb shell pm uninstall --user 0 com.google.android.apps.subscriptions.red
 adb shell pm uninstall --user 0 com.google.android.contacts
 adb shell pm uninstall --user 0 com.google.android.apps.googleassistant
+adb shell pm uninstall --user 0 com.google.android.dialer
 
 adb shell pm uninstall --user 0 com.miui.player
 adb shell pm uninstall --user 0 com.miui.videoplayer
@@ -35,7 +36,7 @@ adb shell pm uninstall --user 0 com.miui.miservice
 adb shell pm uninstall --user 0 com.xiaomi.finddevice
 
 --Al acabar, instálate desde F-DROID (ya que las apps de google fallan):
----WELEFON para hacer llamadas
+---FOSSIFY PHONE para hacer llamadas y gestionar SMS
 ---FOSSIFY CONTACTS para gestionar los contactos (o sea, agenda)
 ---FOSSIFY MESSAGES para SMS
 
