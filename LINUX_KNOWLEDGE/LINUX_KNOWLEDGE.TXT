@@ -1300,7 +1300,8 @@ PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
 --En "Settings->Graphics" activamos "Spin GPU during readbacks" y "Spin CPU during readbacks"
   (Evita bajones de FPS durante transiciones).
 --En "Settings->Emulation", activamos "Enable Thread Pinning" (aunque ponga que es para sistemas con CPUs asimétricas,
-  evita droputs de audio en cualquier CPU al evitarse los fallos de caché por cambio de contexto).
+  evita droputs de audio en cualquier CPU al evitarse los fallos de caché por cambio de contexto)
+  y activamos "Enable CDVD Precaching", que no tarda nada aunque creas que las ISOs son grandes y también evita dropouts.
 --En "Settings->Emulation", en la parte de abajo:
   ----SI TENEMOS VRR: DESACTIVAMOS TODO. ABSOLUTAMENTE TODO.
   ----SI NO TENEMOS VRR:
