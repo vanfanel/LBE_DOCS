@@ -9962,7 +9962,14 @@ GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
 ============================================================
 NOTA: La documentación original está aquí --> https://github.com/klorfmorf/Goemon64Recomp/blob/modding/BUILDING.md
 
---Instalamos dependencias previas: sudo apt-get install cmake ninja-build libsdl2-dev libgtk-3-dev lld llvm clang
+--Instalamos las librerías de desarrollo de GTK3:
+----Si estás en tu sistema personal, ve a la documentación de Wayland que tienes documentado allí cómo compilarlas
+    sin las dependencias de X11, etc. 
+----Si estás en un escritorio "prefabricado": apt-get install libsdl2-dev cmake ninja-build libgtk-3-dev 
+
+--Instalamos llvm y clang:
+apt-get install lld llvm clang
+
 --Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/Goemon64Recomp.git
 
 NOTA: Ahora mismo falla la compilación final con CLANG 19, que es la versión de CLANG que se nos instala con DEBIAN
