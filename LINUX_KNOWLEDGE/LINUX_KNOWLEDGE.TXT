@@ -9962,8 +9962,8 @@ GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
 ============================================================
 NOTA: La documentación original está aquí --> https://github.com/klorfmorf/Goemon64Recomp/blob/modding/BUILDING.md
 
---Instalamos las librerías de desarrollo de GTK3:
-----Si estás en tu sistema personal, ve a la documentación de Wayland que tienes documentado allí cómo compilarlas
+--Instalamos GTK3:
+----Si estás en tu sistema personal, ve a la documentación de Wayland que tienes documentado allí cómo compilar GTK3
     sin las dependencias de X11, etc. 
 ----Si estás en un escritorio "prefabricado": apt-get install libsdl2-dev cmake ninja-build libgtk-3-dev 
 
@@ -9979,6 +9979,7 @@ ESTO DENTRO DE UN TIEMPO NO DEBERÍA SER NECESARIO (lo tienen que arreglar desde
 --Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/Goemon64Recomp.git
 
 BLOQUE DE DESCOMPRESIÓN DE LA ROM
+(NO ES NECESARIO A NO SER QUE PIERDAS LA ROM DESCOMPRIMIDA QUE TIENES EN EL DISCO DURO DE BACKUP).
 
 --Instalamos dependencias previas: sudo apt install build-essential python3 git binutils-mips-linux-gnu
 --Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/mnsg.git
@@ -10011,15 +10012,6 @@ BLOQUE DE RECOMPILACIÓN
 ./N64Recomp mnsg.us.toml
 ./RSPRecomp aspMain.us.toml
 
---Aplicamos unos parches:
-cp N64ModernRuntime.patch lib/N64ModernRuntime
-cd lib/N64ModernRuntime
-git apply N64ModernRuntime.patch
-
-cp rt64.patch lib/rt64
-cd lib/rt64
-git apply rt64.patch
-
 --Compilamos para nuestra arquitectura al fin:
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-cmake --target Goemon64Recompiled -j$(nproc) --config Release
@@ -10027,7 +10019,7 @@ cmake --build build-cmake --target Goemon64Recompiled -j$(nproc) --config Releas
 BLOQUE DE EJECUCIÓN
 
 Creamos el directorio ~/goemon64, y allí copiamos:
--El ejecutable "Goemon64Recompiled"
+-El ejecutable "./build-cmake/Goemon64Recompiled"
 -El directorio "assets" que viene con los sources
 -La ROM original USA del Goemon64.
 Y ya deberíamos poder ejecutar "Goemon64Recompiled", y en el menú que nos sale seleccionar la ROM y jugar.
