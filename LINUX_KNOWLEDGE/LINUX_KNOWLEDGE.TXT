@@ -9962,19 +9962,15 @@ GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
 ============================================================
 NOTA: La documentación original está aquí --> https://github.com/klorfmorf/Goemon64Recomp/blob/modding/BUILDING.md
 
+BLOQUE DEPENDENCIAS PREVIAS
+
 --Instalamos GTK3:
 ----Si estás en tu sistema personal, ve a la documentación de Wayland que tienes documentado allí cómo compilar GTK3
     sin las dependencias de X11, etc. 
 ----Si estás en un escritorio "prefabricado": apt-get install libsdl2-dev cmake ninja-build libgtk-3-dev 
 
 --Instalamos llvm y clang:
-apt-get install lld llvm clang-18
-update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
-update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
-
-NOTA: Ahora mismo falla la compilación final con CLANG 19, que es la versión de CLANG que se nos instala con DEBIAN 13
-al instalar el paquete "clang", por eso instalamos CLANG 18.
-ESTO DENTRO DE UN TIEMPO NO DEBERÍA SER NECESARIO (lo tienen que arreglar desde el recomp).
+apt-get install lld llvm clang
 
 --Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/Goemon64Recomp.git
 
@@ -10014,7 +10010,7 @@ BLOQUE DE RECOMPILACIÓN
 
 --Compilamos para nuestra arquitectura al fin:
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build-cmake --target Goemon64Recompiled -j$(nproc) --config Release
+cmake --build build-cmake --target Goemon64Recompiled -j4 --config Release
 
 BLOQUE DE EJECUCIÓN
 
