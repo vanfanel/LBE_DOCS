@@ -10018,6 +10018,9 @@ Creamos el directorio ~/goemon64, y allí copiamos:
 -La ROM original USA del Goemon64.
 Y ya deberíamos poder ejecutar "Goemon64Recompiled", y en el menú que nos sale seleccionar la ROM y jugar.
 
+NOTA: El mensaje de error "Failed to preload executable!" es porque la función preload_executable()
+en src/main/main.cpp de Goemon64Recomp sólo está implementada para Windows, hay un TODO para que alguien la implemente para GNU/Linux.
+
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
 
@@ -11288,8 +11291,8 @@ KEY_COIN1 = SDLK_5 0 7
 KEY_COIN2 = SDLK_6 0 0
 KEY_START1 = SDLK_1 0 8
 KEY_START2 = SDLK_2 0 0
-KEY_BUTTON1 = SDLK_LCTRL 0 1
-KEY_BUTTON2 = SDLK_LALT 0 2
+KEY_BUTTON1 = SDLK_LCTRL 0 2
+KEY_BUTTON2 = SDLK_LALT 0 1
 KEY_BUTTON3 = SDLK_SPACE 0 3
 
 OJO! No dejes ningún botón configurado como KEY_QUIT, pon en esa línea "KEY_QUIT = SDLK_ESCAPE 0 0",
@@ -11298,6 +11301,8 @@ para evitar salidas accidentales.
 Los detalles sobre los dip switches están en dle21.txt, que acompaña a las roms del Dragon's Lair Enhanced 2.1
 Recuerda que ahí se cuentan los switches del 0 al 7. Se empieza de derecha a izquierda a contar.
 Por lo demás, el banco A es el 0, y el B es el 1.
+Yo lo tengo así (cinco vidas, etc):
+-bank 0 11011100 -bank 1 01110111
 
 Para lanzar juegos de SINGE (es decir, conversiones nativas), tenemos que meter el directorio del juego que sea dentro del directorio singe,
 y luego pasarle como parámetros el framefile del juego (como en cualquier juego de daphne) y el script del juego singe.
