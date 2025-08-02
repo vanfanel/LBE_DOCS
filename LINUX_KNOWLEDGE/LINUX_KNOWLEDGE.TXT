@@ -3830,6 +3830,20 @@ sudo make install -j8
 
 Y listo. Con el nuevo gdb ya podemos debugear cosas compiladas con el distcc, ya que encuentra los debug simbols sin problemas y podemos ir línea a línea y todo eso.
 
+*******Saltarse el bloqueo por DNS en GNU/Linux (en sistema de escritorio, es decir, usando NetworkManager)*********
+
+--Miramos qué conexiones tenemos:
+nmcli connection show
+
+--Modificamos las DNS de la conexión que estamos usando, en mi caso "UltimaCabra":
+nmcli connection modify "UltimaCabra" ipv4.dns "1.1.1.1 8.8.8.8"
+nmcli connection modify "UltimaCabra" ipv4.ignore-auto-dns yes
+nmcli connection down "UltimaCabra" && nmcli connection up "UltimaCabra" 
+
+--Comprobamos que tenemos las DNS que queremos:
+nmcli connection show "UltimaCabra" | grep ipv4.dns
+...o bien: cat /etc/resolv.conf
+
 *******Saltarse temporalmente los límites de tethering******
 
 for N in $(sudo sysctl --all 2>/dev/null |grep -Eo "^net\.ipv6\.conf\.[^\.]+\.hop_limit"); do

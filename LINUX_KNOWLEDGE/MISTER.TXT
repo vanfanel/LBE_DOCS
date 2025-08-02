@@ -456,7 +456,8 @@ python3 createMSXpack.py
 
 Ahora copiamos el directorio MSX con todo lo que tiene dentro a la SD de la MiSTer. Lo metemos en /media/fat/games/MSX1.
 
-Ahora, en el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos.
+Ahora, en el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos
+(un buen modelo MSX2 PAL muy popular en Europa es el Philips VG 2835).
 Y en "Load FW PACK" cargamos el .MSX del pack de firmware que queramos (tenemos dos: CART_FW y CART_FW_EN). Ahí es donde va
 el firmware del FM PACK y todo es.
 En "SLOT A:" ponemos "FM-PACK" o "SCC" o lo que queramos, y en "SLOT B:" cargamos el juego que queramos, eligiendo el mapper
