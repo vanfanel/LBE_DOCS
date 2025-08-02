@@ -1317,6 +1317,35 @@ sync
 I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2.AppImage "$1" >> /dev/null 2>&1
 sed -i "s/ hide-cursor//g" ~/.config/wayfire.ini
 
+******XEMU, emulador de XBOX original en GNU/Linux********************************************************************************
+
+--Instalamos dependencias previas:
+apt-get install 
+
+--Clonamos el repo y sus submódulos:
+git clone --depth 1 --recurse-submodules https://github.com/xemu-project/xemu.git
+
+--Editamos "meson.build" y cambiamos "GL" por "OpenGL".
+
+--Editamos "build.sh", buscamos la función "package_linux" y allí comentamos todo lo de la generación de la licencia.
+
+--Compilamos con:
+CFLAGS="-march=native" CXXFLAGS="-march=native" ./build.sh
+(OJO, NOS FALLARÁ, TRAS FALLARNOS EDITAMOS "subprojects/imgui/meson.build"
+ buscamos la línea que empieza por "libgl_dep = dependency('gl'" y cambiamos "gl" por "opengl").
+
+--El ejecutable queda en dist/xemu , así que lo copiamos a ~/xbox/
+cp dist/xemu ~/xbox/
+
+--Necesitamos los ficheros del boot y la BIOS "bios_debug_4627.bin  bios_retail_4627.bin  mcpx_1.0.bin"
+  Busca por nombre en google si los necesitas, pero deberías tener copia en el disco duro de backup.
+  También necesitamos una imágen de disco duro llamada "xbox_hdd.qcow2" que se baja desde la propia página del emulador.
+  En los settings del emulador vamos selecionando cada una de estas tres cosas, es sencillo. Usa la BIOS _debug.
+
+--Ejecutamos con:
+SDL_VIDEODRIVER=wayland ./xemu
+(Por defecto el código especifica que en GNU/Linux se usa X11...)
+
 ******Compilar e instalar QT6 en GNU/Linux****************************************************************************************
 
 Las instrucciones básicas las he sacado de: https://wiki.qt.io/Building_Qt_6_from_Git
@@ -1922,7 +1951,7 @@ Instalamos dependencias previas:
 apt-get install libfontconfig-dev
 
 Clonamos su repo:
-git clone -b mame0277 --depth 1 https://github.com/mamedev/mame.git mame0277
+git clone -b mame0279 --depth 1 https://github.com/mamedev/mame.git mame0277
 
 --Editamos 3rdparty/bgfx/3rdparty/khronos/EGL/eglplatform.h, buscamos la línea:
 
