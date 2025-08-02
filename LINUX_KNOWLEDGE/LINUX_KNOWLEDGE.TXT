@@ -10023,6 +10023,7 @@ BLOQUE DE RECOMPILACIÓN
 --Compilamos para nuestra arquitectura al fin:
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-cmake --target Goemon64Recompiled -j4 --config Release
+(Tras instalarlo. limpiamos con: cmake --build build-cmake --target clean)
 
 BLOQUE DE EJECUCIÓN
 
