@@ -1318,6 +1318,7 @@ I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2.AppImage "$1" >> /dev/
 sed -i "s/ hide-cursor//g" ~/.config/wayfire.ini
 
 ******XEMU, emulador de XBOX original en GNU/Linux********************************************************************************
+INFORMACIÓN ORIGINAL DE: https://xemu.app/docs/dev/building-from-source/
 
 --Instalamos dependencias previas:
 apt-get install libslirp-dev libpcap-dev
