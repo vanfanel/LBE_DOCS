@@ -1320,7 +1320,7 @@ sed -i "s/ hide-cursor//g" ~/.config/wayfire.ini
 ******XEMU, emulador de XBOX original en GNU/Linux********************************************************************************
 
 --Instalamos dependencias previas:
-apt-get install 
+apt-get install libslirp-dev libpcap-dev
 
 --Clonamos el repo y sus submódulos:
 git clone --depth 1 --recurse-submodules https://github.com/xemu-project/xemu.git
