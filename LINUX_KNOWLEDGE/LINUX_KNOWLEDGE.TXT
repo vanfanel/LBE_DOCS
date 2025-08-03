@@ -1787,24 +1787,27 @@ La BIOS va en ~/.local/share/duckstation/bios/
 PARA LANZAR LOS JUEGOS tienes que pasarle la ruta COMPLETA del .cue, no vale que le pases una ruta relativa a donde estás,
 ni que empiezes la ruta en home con ~/, etc. RUTA COMPLETA.
 
-******Compilar el core SameBoy (GB/GBC) para Raspberry Pi 4**********
+******Compilar el core SameBoy (GB/GBC) para GNU/Linux**********
 
-Lo primero, clona este repo PERO usa la versión 0.5.2 porque la actual no funciona:
+--Bajamos los últimos sources estables de SameBoy de aquí:
+https://github.com/LIJI32/SameBoy/releases
 
-git clone https://github.com/gbdev/rgbds.git
-git fetch --tags
-git checkout v0.5.2
+--Descomprimimos los sources de SameBoy.
+
+--Clonamos el repo de herramientas:
+
+git clone --depth 1 https://github.com/gbdev/rgbds.git
 make -j4
 
-Ahora copia a mano a /usr/local/bin los ejecutables generados: rgbasm, rgbgfx y rgblink.
+--Copiamos los ejecutables del repo de herramientas (rgb*) al raiz de los sources de SameBoy:
+cp rgb* ../SameBoy-1.0.2/
 
-Ahora clona el repo del SameBoy upstream:
+--Desde el directorio raiz de los sources de SameBoy compilamos así:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make libretro -j10
 
-git clone --depth 1 https://github.com/LIJI32/SameBoy.git
-
-Y entramos en el directorio "libretro" y compilamos con:
-
-make platform=rpi4_64 -j4
+--Copiamos el core a su sitio:
+cp build/bin/sameboy_libretro.so ~/.config/retroarch/cores/
 
 ******Compilar el core FLYCAST LIBRETRO en GNU/Linux********
 
