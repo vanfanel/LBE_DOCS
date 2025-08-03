@@ -1347,6 +1347,11 @@ cp dist/xemu ~/xbox/
 SDL_VIDEODRIVER=wayland ./xemu
 (Por defecto el código especifica que en GNU/Linux se usa X11...)
 
+--PARA COMPRIMIR LOS JUEGOS DE ISO A XISO (OCUPAN LA MITAD):
+----Nos bajamos la última release de: https://github.com/XboxDev/extract-xiso/releases
+----Hacemos: extract-iso -r juego.iso
+----Nos genera otro fichero juego.iso optimizado y nos mueve el original a juego.iso.old
+
 ******Compilar e instalar QT6 en GNU/Linux****************************************************************************************
 
 Las instrucciones básicas las he sacado de: https://wiki.qt.io/Building_Qt_6_from_Git
