@@ -1350,7 +1350,9 @@ SDL_VIDEODRIVER=wayland ./xemu
 --PARA COMPRIMIR LOS JUEGOS DE ISO A XISO (OCUPAN LA MITAD):
 ----Nos bajamos la última release de: https://github.com/XboxDev/extract-xiso/releases
 ----Hacemos: extract-iso -r juego.iso
-----Nos genera otro fichero juego.iso optimizado y nos mueve el original a juego.iso.old
+----Nos genera otro fichero juego.iso optimizado y nos mueve el original a juego.iso.old.
+    Puedes cambiar la extensión a mano de .iso a .xiso si quieres, ambas extensiones las coge el emulador sin problema
+    y le da igual que sea una .xiso optimizada o una .iso normal.
 
 ******Compilar e instalar QT6 en GNU/Linux****************************************************************************************
 
