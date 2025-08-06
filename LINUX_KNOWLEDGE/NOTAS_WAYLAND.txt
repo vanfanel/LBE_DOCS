@@ -1637,8 +1637,8 @@ en retroach.cfg, y en los overrides del core (en este caso .config/retroarch/con
 video_refresh_rate = "50.005001". Esa frecuencia se ha detectado poniendo el modo de vídeo a 50Hz con wlr-ranrd y entrando en RA.
 Y al cargar una ROM de ese core, debería cambiarnos el modo de vídeo a 50Hz. (OJO: En Wayland de momento no funciona, sólo en KMS/DRM).
 
-MANIPULAR EL CURSOR EN WAYLAND/WLROOTS
-======================================
+MOVER EL CURSOR EN WAYLAND/WLROOTS
+==================================
 
 --Bajamos la última estable de https://git.sr.ht/~brocellous/wlrctl
 --Compilamos con:
@@ -1652,7 +1652,18 @@ ninja -j10
 ninja install
 
 --Para mover el cursor:
+wlrctl pointer move -1000 -1000
 
+--Para listar las ventanas:
+wlrctl toplevel list
+
+--Para ver qué ventana tiene el foco:
+wlrctl toplevel list state:focused
+
+--Para darle el foco a la ventana "foot":
+wlrctl window focus foot
+
+..etc
 
 CÓMO SABER SI UN PROGRAMA ESTÁ CORRIENDO EN MODO DIRECT SCANOUT ON WAYLAND
 ==========================================================================
