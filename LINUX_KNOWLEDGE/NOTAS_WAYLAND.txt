@@ -1689,6 +1689,17 @@ wtype -M Ctrl -M Alt -k t
 --Para pulsar ALT+F12:
 wtype -M Alt -k F12
 
+OCULTAR EL CURSOR EN LABWC
+==========================
+
+--En .config/labwc/rc.xml, en las acciones de teclado tendremos esta (junto con las demás que ya tienes):
+<keybind key="A-F12"><action name="HideCursor" /></keybind>
+
+--Ahora podemos usar "wtype" para ocultarlo así:
+wtype -M Alt -k F12
+
+...Esto puedes usarlo en .config/labwc/autostart, o al lanzar el PCSX2, o donde quieras.
+
 CÓMO SABER SI UN PROGRAMA ESTÁ CORRIENDO EN MODO DIRECT SCANOUT ON WAYLAND
 ==========================================================================
 
