@@ -1667,6 +1667,8 @@ wlrctl window focus foot
 
 PULSAR UNA COMBINACIÓN DE TECLAS EN WAYLAND/WLROOTS
 ===================================================
+NOTA: En el futuro se puede usar "ydotool" (https://github.com/ReimuNotMoe/ydotool)
+      que permite hacer más cosas y no está abandonada, pero de momento "wtype" nos vale.
 
 --Clonamos el repo:
 git clone --depth 1 https://github.com/atx/wtype.git
