@@ -1665,6 +1665,28 @@ wlrctl window focus foot
 
 ..etc
 
+PULSAR UNA COMBINACIÓN DE TECLAS EN WAYLAND/WLROOTS
+===================================================
+
+--Clonamos el repo:
+git clone --depth 1 https://github.com/atx/wtype.git
+
+--Compilamos:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release ..
+
+ninja -j10
+ninja install
+
+--Para pulsar Control+Alt+T (que normalmente lo configuramos en Labwc para que lance Foot):
+wtype -M Ctrl -M Alt -k t
+
+--Para pulsar ALT+F12:
+wtype -M Alt -k F12
+
 CÓMO SABER SI UN PROGRAMA ESTÁ CORRIENDO EN MODO DIRECT SCANOUT ON WAYLAND
 ==========================================================================
 
