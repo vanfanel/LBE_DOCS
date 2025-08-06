@@ -1609,12 +1609,10 @@ gamescope -e -f -- foot
 CAMBIAR LA RESOLUCIÓN AL VUELO EN WAYLAND
 =========================================
 
-Usamos wlr-randr para ello. Instalar wlr-randr:
-
-Clonamos su repo:
+--Clonamos el repo:
 git clone --depth 1 https://git.sr.ht/~emersion/wlr-randr
 
-Configuramos, compilamos e instalamos con:
+--Configuramos, compilamos e instalamos con:
 
 mkdir b4
 cd b4
@@ -1622,22 +1620,39 @@ cd b4
 CFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release ..
 
-ninja -j4
+ninja -j10
 ninja install
 
-Se usa igual que xrandr.
+--Se usa igual que xrandr.
 
 Para poner 720p:
-wlr-randr --output HDMI-A-1 --mode 1280x720@60
+wlr-randr --output DP-1 --mode 1280x720@60
 
 Para poner un modo de 50Hz:
-wlr-randr --output HDMI-A-1 --mode 1920x1080@50
+wlr-randr --output DP-1 --mode 1920x1080@50
 
-Para RetroArch, de todos modos, no debería hacerse así.
+--Para RetroArch, de todos modos, no debería hacerse así.
 Por ejemplo para que RA nos ponga un modo de 50Hz al lanzar el core de Virtual Boy, activamos la opción video_autoswitch_refresh_rate = "1"
 en retroach.cfg, y en los overrides del core (en este caso .config/retroarch/config/Beetle VB/Beetle VB.cfg) ponemos
 video_refresh_rate = "50.005001". Esa frecuencia se ha detectado poniendo el modo de vídeo a 50Hz con wlr-ranrd y entrando en RA.
 Y al cargar una ROM de ese core, debería cambiarnos el modo de vídeo a 50Hz. (OJO: En Wayland de momento no funciona, sólo en KMS/DRM).
+
+MANIPULAR EL CURSOR EN WAYLAND/WLROOTS
+======================================
+
+--Bajamos la última estable de https://git.sr.ht/~brocellous/wlrctl
+--Compilamos con:
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release ..
+
+ninja -j10
+ninja install
+
+--Para mover el cursor:
+
 
 CÓMO SABER SI UN PROGRAMA ESTÁ CORRIENDO EN MODO DIRECT SCANOUT ON WAYLAND
 ==========================================================================
