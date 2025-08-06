@@ -1297,6 +1297,7 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 		<keybind key="C-A-BackSpace"><action name="Exit" /></keybind>
 		<keybind key="A-Tab"><action name="NextWindow" /></keybind>
 		<keybind key="A-F4"><action name="Close" /></keybind>
+		<keybind key="A-F12"><action name="HideCursor" /></keybind>
 	</keyboard>
 
 	<placement>
