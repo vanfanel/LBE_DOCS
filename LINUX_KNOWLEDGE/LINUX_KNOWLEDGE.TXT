@@ -38,6 +38,38 @@ export SDL_VIDEO_DOUBLE_BUFFER=1
 Luego puedes comprobarlo con echo $<nombre_variable>, en plan:
 echo $SDL_VIDEO_DOUBLE_BUFFER
 
+*******Debugear programas de OpenGL con Apitrace*************************************************************************
+
+OPCIÓN 1: USAR LOS BINARIOS
+
+--Nos descargamos los binarios de https://apitrace.github.io/#download
+
+--Entramos en el directorio que queramos (como ~/mame) y hacemos:
+~/src/apitrace/apitrace trace -a egl -o mame.trace mame cninja
+
+--Salimos enseguida y así generamos una traza breve.
+
+OPCIÓN 2: COMPILAR DESDE LOS SOURCES (NO FUNCIONA PORQUE NO COMPILA egltrace.so Y NO DA ERROR)
+
+--Clonamos su repo:
+git clone --recursive --depth 1 https://github.com/apitrace/apitrace.git
+
+--Configuramos, compilamos e instalamos con:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_X11=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+make -j10 && make install
+
+PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
+for f in $(cat install_manifest.txt) ; do rm "$f"; done
+
+--Ejecutamos un programa así para tracear todas sus llamadas a OpenGL:
+apitrace trace -o mame.trace mame cninja
+
 *******Teclado en español y con la tilde (~) en la Ñ sin tener que darle dos veces***************************************
 
 Editamos /etc/default/keyboard, y lo dejamos así:
