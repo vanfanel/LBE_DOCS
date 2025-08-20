@@ -19,6 +19,7 @@ Vamos con VKBasalt:
 apt-get install spirv-headers
 
 --Clonamos su repo: git clone --depth 1 https://github.com/Redemp/vkBasalt.git
+(OTRA ALTERNATIVA MÁS AVANZADA Y MANTENIDA ES ESTA, PERO DEPENDE DE "Shader FX" Y NO SÉ CÓMO COMPILARLO EN LINUX: https://github.com/pchome/VulkanFX)
 (NOTA: El repo original es --> https://github.com/DadSchoorse/vkBasalt.git pero está abandonado desde hace años)
 (OJO!! Nos va a tocar eliminar cosas de X11 del meson.build y de otros ficheros, es fácil, lo que te vaya dando problemas lo quitas
 y compila y funciona igualmente).
