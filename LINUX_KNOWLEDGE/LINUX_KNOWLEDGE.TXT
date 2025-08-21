@@ -46,6 +46,8 @@ OPCIÓN 1: USAR LOS BINARIOS
 
 --Entramos en el directorio que queramos (como ~/mame) y hacemos:
 ~/src/apitrace/apitrace trace -a egl -o mame.trace mame cninja
+(NOTA: Lo de "-a egl" sólo hace falta porque en la última release intenta usar GLX por defecto.
+ En las siguientes releases o si consiguieses compilar desde los últimos sources, ya no hace falta).
 
 --Salimos enseguida y así generamos una traza breve.
 
