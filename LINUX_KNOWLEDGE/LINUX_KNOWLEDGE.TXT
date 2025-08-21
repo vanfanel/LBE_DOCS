@@ -552,7 +552,13 @@ wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d 
 
 ...Y ya debería ir WINE sobre Wayland puro y con programas de 32bits usando el modo WoW64. Prueba a hacer "winecfg" o bien "wine notepad"
 
-PARA NO VER LOS ERRORES "fixme" EN LA CONSOLA, añade esto en ~/.bashrc:
+PARA NO VER EL ERROR:
+00b0:err:ntoskrnl:ZwLoadDriver failed to create driver L"\\Registry\\Machine\\System\\CurrentControlSet\\Services\\winebth": c00000e5
+(FÍJATE QUE ES UN ERROR DEL SERVICIO "winebth")
+Ejecutamos "winecfg", nos vamos a la pestaña "Libraries", en el campo "New override for library" ponemos "winebth" y le damos al intro,
+luego le damos a "Edit" y marcamos "Disabled".
+
+PARA NO VER LOS MENSAJES "fixme" EN LA CONSOLA, añade esto en ~/.bashrc:
 export WINEDEBUG=fixme-all
 Te saldrán sólo los errores y los warning, pero no los "fixme" que simplemente son funciones de WINE no implementadas.
 
