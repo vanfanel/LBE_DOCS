@@ -552,8 +552,8 @@ wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d 
 
 ...Y ya debería ir WINE sobre Wayland puro y con programas de 32bits usando el modo WoW64. Prueba a hacer "winecfg" o bien "wine notepad"
 
-PARA NO VER LOS ERRORES "fixme" EN LA CONSOLA, añade a /etc/profile.d/custom.sh esto:
-export WINEDEBUG=-fixme-all
+PARA NO VER LOS ERRORES "fixme" EN LA CONSOLA, añade esto en ~/.bashrc:
+export WINEDEBUG=fixme-all
 Te saldrán sólo los errores y los warning, pero no los "fixme" que simplemente son funciones de WINE no implementadas.
 
 NOTAS ESPECÍFICAS SOBRE JUEGOS EN WINE
