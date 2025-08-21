@@ -552,6 +552,10 @@ wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d 
 
 ...Y ya debería ir WINE sobre Wayland puro y con programas de 32bits usando el modo WoW64. Prueba a hacer "winecfg" o bien "wine notepad"
 
+PARA NO VER LOS ERRORES "fixme" EN LA CONSOLA, añade a /etc/profile.d/custom.sh esto:
+export WINEDEBUG=-fixme-all
+Te saldrán sólo los errores y los warning, pero no los "fixme" que simplemente son funciones de WINE no implementadas.
+
 NOTAS ESPECÍFICAS SOBRE JUEGOS EN WINE
 --MDK:
 Se usa la versión de GOG, que viene con NGLIDE. Ejecuta MKD3DFX.EXE. El MDK95 no se ve, y el MDKD3D peta al empezar. 
@@ -12867,6 +12871,26 @@ meson -Dbuildtype=release -Dwayland=enabled -Dvideolan_manager=false -Drun_as_ro
 NOTA: Si usamos el antiguo configure && make, configuramos con:
 ./configure --without-x --disable-xcb --enable-wayland --disable-qt --disable-ncurses --enable-v4l2 --disable-mmal \
 --enable-gles2 --disable-lua --disable-a52 --disable-freerdp --disable-vnc
+
+AM2R NATIVO EN LINUX
+====================
+(NOTA: NO se puede usar MONO porque MONO sólo cubre hasta .NET 4.0 y esto necesita 6.0 mínimo).
+
+--Instalamos .NET (cualquier versión > 6.0 vale). Para ello:
+---Instalamos el repo de Microsoft (luego lo podemos desinstalar con "dpkg -r packages-microsoft-prod.deb", no necesitamos el .deb para ello):
+wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+---Instalamos .NET así (el número de versión puede variar, mira con apt-get cuáles tienes disponibles):
+sudo apt-get update && sudo apt-get install -y dotnet-runtime-9.0
+
+--Instalamos otras dependencias:
+sudo apt-get install libayatana-appindicator3-dev libwebkit2gtk-4.1-dev
+
+--Descargamos el instalador/parcheador "AM2RLauncher" de:
+https://github.com/AM2R-Community-Developers/AM2RLauncher/releases
+
+..Y hasta aqui llegamos porque necesita una versión muy antigua de libwebkit2gtk que no está en Debian 13.
 
 ARREGLAR ROMS CON ROMVAULT
 ==========================
