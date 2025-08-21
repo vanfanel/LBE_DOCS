@@ -555,8 +555,9 @@ wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d 
 PARA NO VER EL ERROR:
 00b0:err:ntoskrnl:ZwLoadDriver failed to create driver L"\\Registry\\Machine\\System\\CurrentControlSet\\Services\\winebth": c00000e5
 (FÍJATE QUE ES UN ERROR DEL SERVICIO "winebth")
-Ejecutamos "winecfg", nos vamos a la pestaña "Libraries", en el campo "New override for library" ponemos "winebth" y le damos al intro,
-luego le damos a "Edit" y marcamos "Disabled".
+Ejecutamos:
+wine reg delete "HKLM\System\CurrentControlSet\Services\winebth" /f
+...esto deshabilita el BT completamente y nos libra del error.
 
 PARA NO VER LOS MENSAJES "fixme" EN LA CONSOLA, añade esto en ~/.bashrc:
 export WINEDEBUG=fixme-all
