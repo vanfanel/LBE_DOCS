@@ -643,11 +643,11 @@ https://github.com/libsdl-org/SDL/releases
 
 Ahora, para configurar:
 
-CON GLES, GLES2, OPENGL COMPLETO y VULKAN, COMO LO HACEMOS AHORA:
+CON GLES, GLES2, OPENGL COMPLETO, VULKAN Y AUDIO SOBRE PIPEWIRE SOLAMENTE, COMO LO HACEMOS AHORA:
 
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
-./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-offscreen --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx
+./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-offscreen --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-alsa --enable-pipewire
 
 (PARA SISTEMAS EMBEDIDOS O CON MUY POCA POTENCIA, PODEMOS PASARLE --diable-libsamplerate, QUE HACE QUE SDL2 RESAMPLEE USANDO SUS ALGORITMOS INTERNOS
  QUE SON DE MENOR CALIDAD Y METEN MÁS RUIDO PERO SON MUCHO MÁS RÁPIDOS).
@@ -720,9 +720,6 @@ INSTALAR RETROARCH
 Instalamos dependencias previas:
 apt-get install libasound-dev glslang-dev glslang-tools spirv-tools
 
-SI ESTÁS EN RASPBERRY PI, LO PRIMERO HAZ ESTO O EL CONFIGURE FALLARÁ:
-apt-get purge libraspberrypi*
-
 INNECESARIO (ya que usamos el driver "GLCORE"): Si queremos que el driver "GL" use OpenGL de escritorio en lugar de GLES,
 editamos qb/config.libs.sh, y cambiamos "-lGL" por "-lOpenGL".
 (Esto es para que el driver GL use OpenGL en lugar de GLES2, cosa que es necesaria para que HARD SYNC funcione con el driver GL,
@@ -732,12 +729,12 @@ editamos qb/config.libs.sh, y cambiamos "-lGL" por "-lOpenGL".
  en Wayland sólo puedes configurar max_swapchain si usas el backend Vulkan).
 TODO ESTO INNECESARIO porque el driver GLCORE va sobre GL3 o GLES3 y ya soporta HARD SYNC directamente.
 
-Ahora, para configurar RetroArch con soporte de OPENGL, VULKAN y audio ALSA, como lo venimos haciendo:
+Ahora, para configurar RetroArch con soporte de OPENGL, VULKAN y audio PIPEWIRE, como lo venimos haciendo:
 
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 ./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg \
---disable-netplaydiscovery --enable-udev --disable-sdl --disable-pulse --disable-oss \
+--disable-netplaydiscovery --enable-udev --enable-pipewire --disable-sdl --disable-pulse --disable-oss \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
 --disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra --disable-discord \
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
@@ -1126,8 +1123,12 @@ con cada actualización).
 systemctl --user start pipewire.service
 
 --Para comprobar que el servicio pipewire está funcionando, hacemos "systemctl --user status pipewire.service"
-Si nos sale que sí está rulando, los programas que hayamos compilado con soporte de pipewire (RetroArch lo soporta, debemos elegirlo
-como audio output) deberían ya sonar sin problemas.
+Si nos sale que sí está rulando, los programas que hayamos compilado con soporte de pipewire (SDL2 y RetroArch lo soportan,
+en RetroArch debemos elegirlo como audio output y en SDL2 como SDL_AUDIODRIVER o compilar sin soporte ALSA para que lo use por defecto)
+deberían ya sonar sin problemas.
+
+--Para subir y bajar el volúmen de forma relativa (se queda guardado solo sin hacer nada):
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
 KERNEL REALTIME EN DEBIAN
 =========================
