@@ -567,6 +567,9 @@ NOTAS ESPECÍFICAS SOBRE JUEGOS EN WINE
 --MDK:
 Se usa la versión de GOG, que viene con NGLIDE. Ejecuta MKD3DFX.EXE. El MDK95 no se ve, y el MDKD3D peta al empezar. 
 Edita MDK.CFG y pon "hduse" a 6 para mejorar los tiempos de carga.
+--AM2R:
+Usa un modo de 426x240 en 16:9, por si quieres ajustar los shaders.
+Como mejor se ve es a 4x en fullscreen, en stretch hay más shimmering.
 
 ******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
 
