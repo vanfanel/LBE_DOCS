@@ -1122,6 +1122,9 @@ vim /usr/lib/systemd/user/pipewire.socket
 una "Condition" del fichero base de un servicio... Así que de momento hacemos esto, aunque en teoría se perderán las modificaciones
 con cada actualización).
 
+--Lanzamos el servicio sin reiniciar así:
+systemctl --user start pipewire.service
+
 --Para comprobar que el servicio pipewire está funcionando, hacemos "systemctl --user status pipewire.service"
 Si nos sale que sí está rulando, los programas que hayamos compilado con soporte de pipewire (RetroArch lo soporta, debemos elegirlo
 como audio output) deberían ya sonar sin problemas.
