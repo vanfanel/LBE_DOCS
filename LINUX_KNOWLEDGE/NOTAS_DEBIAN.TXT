@@ -1111,6 +1111,14 @@ INSTALAR PIPEWIRE EN DEBIAN
 --Instalamos los paquetes necesarios:
 apt-get install pipewire libpipewire-0.3-dev wireplumber pipewire-alsa --no-install-recommends
 
+NOTA: Al instalar "pipewire-alsa", ya no nececesitas un /etc/asound.conf:
+todo el sonido de ALSA ya sale por Pipewire porque automáticamente el dispositivo ALSA por defecto pasa a ser Pipewire,
+y para conformarlo puedes ver que en "aplay -L" tienes:
+pipewire
+    PipeWire Sound Server
+default
+    Default ALSA Output (currently PipeWire Media Server)
+
 --Para que funcione como root, editamos los fichreos del servicio y el socket de pipewire
 y comentamos en cada uno de ellos la línea "ConditionUser=!root":
 vim /usr/lib/systemd/user/pipewire.service
