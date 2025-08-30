@@ -1109,7 +1109,7 @@ INSTALAR PIPEWIRE EN DEBIAN
 ===========================
 
 --Instalamos los paquetes necesarios:
-apt-get install pipewire libpipewire-0.3-dev wireplumber --no-install-recommends
+apt-get install pipewire libpipewire-0.3-dev wireplumber pipewire-alsa --no-install-recommends
 
 --Para que funcione como root, editamos los fichreos del servicio y el socket de pipewire
 y comentamos en cada uno de ellos la línea "ConditionUser=!root":
