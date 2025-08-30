@@ -1135,6 +1135,11 @@ Si nos sale que sí está rulando, los programas que hayamos compilado con sopor
 en RetroArch debemos elegirlo como audio output y en SDL2 como SDL_AUDIODRIVER o compilar sin soporte ALSA para que lo use por defecto)
 deberían ya sonar sin problemas.
 
+--Para evitar problemas de audio durante los primeros segundos de RetroArch sobre Pipewire (distorsión en el core Nestopia),
+creamos el fichero /etc/modprobe.d/audio_disable_powersave.conf con el contenido:
+options snd_hda_intel power_save=0
+options snd_hda_intel power_save_controller=N
+
 --Para subir y bajar el volúmen de forma relativa (se queda guardado solo sin hacer nada):
 wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
