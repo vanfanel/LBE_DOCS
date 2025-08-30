@@ -568,8 +568,17 @@ NOTAS ESPECÍFICAS SOBRE JUEGOS EN WINE
 Se usa la versión de GOG, que viene con NGLIDE. Ejecuta MKD3DFX.EXE. El MDK95 no se ve, y el MDKD3D peta al empezar. 
 Edita MDK.CFG y pon "hduse" a 6 para mejorar los tiempos de carga.
 --AM2R:
+La última versión es la 1.5.5. Usa la versión de Windows, que está para descargar en Archive. Lo tienes en el disco duro de backup.
+La de Linux se instala con una cosa que se llama AMR2Laucher que no funciona porque está compilada contra versiones de librerías viejas. 
 Usa un modo de 426x240 en 16:9, por si quieres ajustar los shaders.
 Como mejor se ve es a 4x en fullscreen, en stretch hay más shimmering.
+--UNREAL
+Tienes el juego de Windows ya listo en el disco duro de backup, pero por si acaso, se hace así:
+Bájate el Unreal original de Archive, y luego copias encima los contenidos del ZIP del último parche de OldUnreal
+que está aquí: https://github.com/OldUnreal/Unreal-testing/releases, simplemente dejando que sobreescriba lo que quiera.
+Y con el vídeo puesto a OpenGL, va perfectamente en WINE.
+Hay una versión de OldUnreal nativa para Linux ahí también pero no se ve nada, pantallazo negro, hay una issue abierta.
+De momento con el de Windows en WINE vamos bien.
 
 ******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
 
