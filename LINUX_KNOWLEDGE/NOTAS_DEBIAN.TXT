@@ -1164,7 +1164,7 @@ monitor.alsa.rules = [
   {
     matches = [
       {
-        device.name = "alsa_card.pci-0000_6e_00.1"
+        device.name = "~alsa_card.*"
       }
     ]
     actions = {
@@ -1179,10 +1179,15 @@ monitor.alsa.rules = [
 ]
 
 NOTAS:
---Para obteber el "device.name":
----Con el comando "wpctl status" sacamos el número del dispositivo en Audio->Devices.
----Con el comando "wpctl inspect <número_de_dispositivo>" sacamos el nombre del dispositivo mirando el campo "device.name".
+
 --El "period-size" y el "rate" vienen de los valores del quantum que hemos puesto en Pipewire.
+
+--Para que se aplique a todos los dispositivos de audio, usamos como ves: device.name = "~alsa_card.*"
+  Pero para obtener el "device.name" exacto si quisiéramos especificar una tarjeta de sonido concreta:
+-----Con el comando "wpctl status" sacamos el número del dispositivo en Audio->Devices.
+-----Con el comando "wpctl inspect <número_de_dispositivo>" sacamos el nombre del dispositivo mirando el campo "device.name".
+     Por ejemplo, en mi caso con la salida de audio del DP-1 en el X600 sería:
+     device.name = "alsa_card.pci-0000_6e_00.1"
 
 KERNEL REALTIME EN DEBIAN
 =========================
