@@ -1152,10 +1152,12 @@ context.properties = {
     default.clock.allowed-rates = [ 32000 44100 48000 ]
     default.clock.quantum       = 128
     default.clock.min-quantum   = 64
-    default.clock.max-quantum   = 128
-    default.clock.quantum-limit = 128
+    default.clock.max-quantum   = 2048
+    default.clock.quantum-limit = 2048
     loop.rt-prio = -1
 }
+NOTA: No nos interesa que los tamaños más grandes (max-quantum y quantum-limit) estén limitados,
+porque entonces juegos como SDLPop, que requieren buffer de audio grande, irán mal.
 
 --Activamos el modo Pro-Audio (esto se hace en WirePlumber).
 Para ello, creamos el fichero /usr/share/wireplumber/wireplumber.conf.d/proaudio.conf con el contenido:
@@ -1164,7 +1166,7 @@ monitor.alsa.rules = [
   {
     matches = [
       {
-        device.name = "~alsa_card.*"
+        device.name = "alsa_card.pci-0000_6e_00.1"
       }
     ]
     actions = {
@@ -1180,14 +1182,22 @@ monitor.alsa.rules = [
 
 NOTAS:
 
+--El device.name ("alsa_card.pci-0000_6e_00.1") lo hemos sacado así:
+-----Con el comando "wpctl status" sacamos el número del dispositivo en Audio->Devices.
+-----Con el comando "wpctl inspect <número_de_dispositivo>" sacamos el nombre del dispositivo mirando el campo "device.name".
+
+--El nombre del nodo ("alsa_card.pci-0000_6e_00.1.pro-output-8") lo hemos sacado de hacer "pw-top"
+  una vez que hemos activado el perfil pro-audio en el proaudio.conf y reiniciado el servicio.
+  Una vez hecho en perfil pro-audio, ya nos aparecen los nodos de Pipewire en sí.
+
 --El "period-size" y el "rate" vienen de los valores del quantum que hemos puesto en Pipewire.
+
+--Para comprobar que tiene Pipewire tiene prioridad RT, hacemos:
+ps -eLo pid,rtprio,cmd | grep pipewire
+...Y aunque el máximo es 95, nos saldrá con 88 o así ya que 95 se lo reserva para situciones críticas.
 
 --Para que se aplique a todos los dispositivos de audio, usamos como ves: device.name = "~alsa_card.*"
   Pero para obtener el "device.name" exacto si quisiéramos especificar una tarjeta de sonido concreta:
------Con el comando "wpctl status" sacamos el número del dispositivo en Audio->Devices.
------Con el comando "wpctl inspect <número_de_dispositivo>" sacamos el nombre del dispositivo mirando el campo "device.name".
-     Por ejemplo, en mi caso con la salida de audio del DP-1 en el X600 sería:
-     device.name = "alsa_card.pci-0000_6e_00.1"
 
 KERNEL REALTIME EN DEBIAN
 =========================
