@@ -1180,26 +1180,47 @@ monitor.alsa.rules = [
   }
 ]
 
-NOTAS:
-
 --El device.name ("alsa_card.pci-0000_6e_00.1") lo hemos sacado así:
 -----Con el comando "wpctl status" sacamos el número del dispositivo en Audio->Devices.
 -----Con el comando "wpctl inspect <número_de_dispositivo>" sacamos el nombre del dispositivo mirando el campo "device.name".
 
---El nombre del nodo ("alsa_card.pci-0000_6e_00.1.pro-output-8") lo hemos sacado de hacer "pw-top"
-  una vez que hemos activado el perfil pro-audio en el proaudio.conf y reiniciado el servicio.
-  Una vez hecho en perfil pro-audio, ya nos aparecen los nodos de Pipewire en sí.
-  Para saber cuál es el que nos interesa (porque llevará el nombre del monitor en el campo "mode.nick")
-  ejecutamos "pw-cli ls Node" y nos aparece más info de cada nodo.
-
 --El "period-size" y el "rate" vienen de los valores del quantum que hemos puesto en Pipewire.
 
---Para comprobar que tiene Pipewire tiene prioridad RT, hacemos:
+--Ahora en los programas tenemos que seleccionar el nodo de Pipewire concreto: en modo pro-audio es necesario
+seleccionar el nodo concreto mientras que sin modo pro-audio no hace falta.
+Listamos los nodos reales, que sólo aparecen en modo pro-audio, con "pw-top". Nos saldrán nodos del estilo:
+  alsa_output.pci-0000_6e_00.1.pro-output-3
+  alsa_output.pci-0000_6e_00.1.pro-output-7
+  alsa_output.pci-0000_6e_00.1.pro-output-8
+  alsa_output.pci-0000_6e_00.1.pro-output-9
+  ...que sólo salen en modo pro-audio.
+Para saber cuál es el que nos interesa (porque llevará el nombre del monitor en el campo "mode.nick")
+ejecutamos "pw-cli ls Node" y nos aparece más info de cada nodo.
+En RetroArch se puede seleccionar el nodo como un Device tras seleccionar el driver Pipewire.
+Para el resto de programas, la solución por ahora es crear /usr/share/wireplumber/wireplumber.conf.d/disable.conf con el contenido:
+
+monitor.alsa.rules = [ 
+  {
+    matches = [ 
+      { node.name = "~alsa_output.pci-0000_6e_00.1.pro-output-(3|7|9)" }
+    ]   
+    actions = { 
+      update-props = { 
+        node.disabled = true
+      }   
+    }   
+  }
+]
+
+...PERO QUEDA PENDIENTE SABER CÓMO SELECCIONAR UN NODO POR DEFECTO EN LUGAR DE DESACTIVAR LOS DEMÁS NODOS.
+
+NOTAS:
+
+--Para comprobar que Pipewire tiene prioridad RT, hacemos:
 ps -eLo pid,rtprio,cmd | grep pipewire
 ...Y aunque el máximo es 95, nos saldrá con 88 o así ya que 95 se lo reserva para situciones críticas.
 
---Para que se aplique a todos los dispositivos de audio, usamos como ves: device.name = "~alsa_card.*"
-  Pero para obtener el "device.name" exacto si quisiéramos especificar una tarjeta de sonido concreta:
+--Para que se aplique a todos los dispositivos de audio, usaríamos: device.name = "~alsa_card.*"
 
 KERNEL REALTIME EN DEBIAN
 =========================
