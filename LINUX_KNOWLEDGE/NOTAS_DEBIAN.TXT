@@ -1189,6 +1189,8 @@ NOTAS:
 --El nombre del nodo ("alsa_card.pci-0000_6e_00.1.pro-output-8") lo hemos sacado de hacer "pw-top"
   una vez que hemos activado el perfil pro-audio en el proaudio.conf y reiniciado el servicio.
   Una vez hecho en perfil pro-audio, ya nos aparecen los nodos de Pipewire en sí.
+  Para saber cuál es el que nos interesa (porque llevará el nombre del monitor en el campo "mode.nick")
+  ejecutamos "pw-cli ls Node" y nos aparece más info de cada nodo.
 
 --El "period-size" y el "rate" vienen de los valores del quantum que hemos puesto en Pipewire.
 
