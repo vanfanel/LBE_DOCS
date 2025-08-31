@@ -64,54 +64,7 @@ Settings->Additional settings->Developer options
 DESBLOQUEAR EL BOOTLOADER
 =========================
 
-Vamos a las opciones de desarrollo, que están en:
-Settings->Additional settings->Developer Options
-
-Y ahí activamos:
-OEM UNLOCKING (para poder instalar el bootloader que nos salga de los cojones) 
-USB Debugging
-
-Y ahora DESBLOQUEAMOS EL BOOTLOADER DE VERDAD:
--Nos registramos en XIAOMI con una cuenta aquí: https://account.xiaomi.com/pass/serviceLogin
- Nos vamos a Settings->Additional settings->Developer options->"MI unlocking status" y ahí dale a "add account and device",
- de manera que emparejemos el teléfono con la cuenta MI.
-
--Bajamos el "Miflash Unlock Tool" para Windows, versión v5.5.224.55 de https://xiaomitools.com/mi-unlock-tool/
-(Incluye o debe incluir el driver llamado )
-
--Tenemos que irnos a una máquina VirtualBox que reconozca los dispositivos USB del host, para lo cual:
-
- ############################################################
- ############# SECCIÓN USB EN VIRTUALBOX#####################
- ############################################################
- 
- -Añadir al usuario al grupo vboxusers:
-sudo usermod -a -G vboxusers manuel
-
--Instalar, en el VirtualBox, las "Oracle VM Virtual Box Extension Pack", correspondiente a la versión de VirtualBox que tengas instalada
-y que puedes descargar aquí:
-https://download.virtualbox.org/virtualbox
-
--Instalar, en la máquina virtual, las "Virtual Box Guess Additions", que vienen en una ISO llamada "VBoxGuestAdditions.iso"
-correspondiente a la versión de VirtualBox que tengamos instalada, y que puedes descargar aquí:
-https://download.virtualbox.org/virtualbox/
-Tienes que montar la ISO desde la barra superior cuando estés ejecutando la máquina, en DEVICES->OPTICAL DRIVES.
-
--OJO: Usa USB 2.0 en los dispositivos USB del VirtualBox (en Settings->USB), si usas USB 3.0 probablemente no funcione.
-
- ############################################################
- ############# FIN SECCIÓN USB EN VIRTUALBOX#################
- ############################################################
-
--Reiniciamos el teléfono en modo fastboot (pulsar "bajar volúmen" durante el reinicio)
-(PARA SALIR DE MODO FASTBOOT: Mantener pulsado el botón de encendido y "bajar volúmen" durante 20 segundos hasta que el móvil se reinicie).
-
--En el Windows virtualizado, hacemos doble click en el archivo MiUsbDriver.exe: Te pedirá que conectes el teléfono de nuevo.
-Lo que hay que hacer es desconectarlo y volver a conectarlo en el VirtualBox (haciendo click en el dispositivo en Devices->USB para desactivarlo,
-y luego click otra vez para activarlo de nuevo).
-En ese momento, el teléfono será reconocido por el MiUsbDriver.exe, y se instalará el driver USB automáticamente.
-
--Ya podemos hacer click en Miflash_unlock.exe, loguearnos en la cuenta MI, y desbloquear el bootloader.
+Usa algo de esto: https://github.com/topminipie/awesome-xiaomi-bootloader-unlock
 
 INSTALAR TWRP Y LINEAGE OS
 ==========================
