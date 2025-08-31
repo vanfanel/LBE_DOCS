@@ -1143,6 +1143,45 @@ options snd_hda_intel power_save_controller=N
 --Para subir y bajar el volúmen de forma relativa (se queda guardado solo sin hacer nada):
 wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
+--NOTAS AUDIO DE BAJA LATENCIA CON PIPEWIRE--
+
+--Creamos el archivo /usr/share/pipewire/pipewire.conf.d/lowlatency.conf con este contenido:
+
+context.properties = { 
+    default.clock.rate          = 48000
+    default.clock.allowed-rates = [ 32000 44100 48000 ]
+    default.clock.quantum       = 128
+    default.clock.min-quantum   = 64
+    default.clock.max-quantum   = 128
+    default.clock.quantum-limit = 128
+    loop.rt-prio = -1
+}
+
+--Activamos el modo Pro-Audio (esto se hace en WirePlumber).
+Para ello, creamos el fichero /usr/share/wireplumber/wireplumber.conf.d/proaudio.conf con el contenido:
+
+monitor.alsa.rules = [
+  {
+    matches = [
+      {
+        device.name = "Rembrandt Radeon High Definition Audio Controller*
+      }
+    ]
+    actions = {
+      update-props = {
+        device.profile = "pro-audio"
+        api.alsa.period-size = 128,
+        api.alsa.period-num = 3,
+        audio.rate = 48000,
+      }
+    }
+  }
+]
+
+NOTAS:
+--El "period-size" y el "rate" vienen de los valores del quantum que hemos puesto en Pipewire.
+--El "device.name" lo sacamos de la sección "Devices" del comando "wpctl status"
+
 KERNEL REALTIME EN DEBIAN
 =========================
 
