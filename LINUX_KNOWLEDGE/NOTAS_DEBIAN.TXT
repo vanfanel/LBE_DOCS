@@ -1186,8 +1186,13 @@ monitor.alsa.rules = [
 
 --El "period-size" y el "rate" vienen de los valores del quantum que hemos puesto en Pipewire.
 
---Ahora en los programas tenemos que seleccionar el nodo de Pipewire concreto: en modo pro-audio es necesario
-seleccionar el nodo concreto mientras que sin modo pro-audio no hace falta.
+--Ahora establecemos el dispositivo por defecto (importante en modo pro-audio, o no se oirá nada):
+----Listamos los números de nodo con "wpctl status"
+----Establecemos el nodo por defecto con "wpctl set-default <NÚMERO_DE_ID>". Por ejemplo, en el X600 es con "wpctl set-default 47"
+----Esto podemos añadirlo a ~/.config/labwc/autostart (o al autostart del compositor que usemos).
+Si lo pones en /etc/profile.d/ no funcionará ya que al ejecutarse tiene que estar todo lo de Pipewire listo y si lo pones ahí no lo estará.
+
+--En algunos programas podríamos elegir el nodo manualmente, como en RetroArch.
 Listamos los nodos reales, que sólo aparecen en modo pro-audio, con "pw-top". Nos saldrán nodos del estilo:
   alsa_output.pci-0000_6e_00.1.pro-output-3
   alsa_output.pci-0000_6e_00.1.pro-output-7
@@ -1196,8 +1201,9 @@ Listamos los nodos reales, que sólo aparecen en modo pro-audio, con "pw-top". N
   ...que sólo salen en modo pro-audio.
 Para saber cuál es el que nos interesa (porque llevará el nombre del monitor en el campo "mode.nick")
 ejecutamos "pw-cli ls Node" y nos aparece más info de cada nodo.
-En RetroArch se puede seleccionar el nodo como un Device tras seleccionar el driver Pipewire.
-Para el resto de programas, la solución por ahora es crear /usr/share/wireplumber/wireplumber.conf.d/disable.conf con el contenido:
+
+--(ALTERNATIVA) Otra alternativa para que el nodo por defecto sea el que nosotros queramos, sería deshabilitar el resto de nodos.
+Para ello creamos /usr/share/wireplumber/wireplumber.conf.d/disable.conf:
 
 monitor.alsa.rules = [ 
   {
@@ -1212,8 +1218,6 @@ monitor.alsa.rules = [
   }
 ]
 
-...PERO QUEDA PENDIENTE SABER CÓMO SELECCIONAR UN NODO POR DEFECTO EN LUGAR DE DESACTIVAR LOS DEMÁS NODOS.
-
 NOTAS:
 
 --Para comprobar el sonido de pipewire, hacemos:
@@ -1221,8 +1225,9 @@ pw-play /usr/share/sounds/alsa/Front_Center.wav
 Y si queremos especificar el nodo (recuerda que los nodos se sacan de "pw-top" y que salen más nodos si estás en modo pro-audio):
 pw-play /usr/share/sounds/alsa/Front_Center.wav --target alsa_output.pci-0000_6e_00.1.pro-output-8
 
---Para establecer el dispositivo por defecto desde un fichero de configuración
-(importante en modo pro-audio, o no se oirá nada), creamos el fichero /usr/share/wireplumber/wireplumber.conf.d/priority.conf:
+--Para establecer la prioridad de un nodo desde un fichero de configuración (NO es lo mismo que establecer la prioridad, los programas
+seguirán usando el dispositivo por defecto que es el que lleva el * en "wpctl status")
+creamos el fichero /usr/share/wireplumber/wireplumber.conf.d/priority.conf:
 
 monitor.alsa.rules = [ 
   {
@@ -1243,15 +1248,11 @@ se ha aplicado la prioridad que hemos pedido.
 Podemos comprobar la prioridad del nodo deseado con:
 pw-cli info <ID_NODO> | grep priority
 
---Para establecer el dispositivo por defecto desde la línea de comandos (importante en modo pro-audio, o no se oirá nada):
-----Listamos los números de nodo con "wpctl status"
-----Establecemos el nodo por defecto con "wpctl set-default <NÚMERO_DE_ID>". Por ejemplo, en el X600 es con "wpctl set-default 47"
-
 --Para comprobar que Pipewire tiene prioridad RT, hacemos:
 ps -eLo pid,rtprio,cmd | grep pipewire
 ...Y aunque el máximo es 95, nos saldrá con 88 o así ya que 95 se lo reserva para situciones críticas.
 
---Para que se aplique a todos los dispositivos de audio, usaríamos: device.name = "~alsa_card.*"
+--Para que una regla en un .conf se aplique a todos los dispositivos de audio, usaríamos: device.name = "~alsa_card.*"
 
 KERNEL REALTIME EN DEBIAN
 =========================
