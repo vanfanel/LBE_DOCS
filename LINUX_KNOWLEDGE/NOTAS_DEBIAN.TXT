@@ -1221,6 +1221,10 @@ pw-play /usr/share/sounds/alsa/Front_Center.wav
 Y si queremos especificar el nodo (recuerda que los nodos se sacan de "pw-top" y que salen más nodos si estás en modo pro-audio):
 pw-play /usr/share/sounds/alsa/Front_Center.wav --target alsa_output.pci-0000_6e_00.1.pro-output-8
 
+--Para establecer el dispositivo por defecto desde la línea de comandos (importante en modo pro-audio, o no se oirá nada):
+----Listamos los números de nodo con "wpctl status"
+----Establecemos el nodo por defecto con "wpctl set-default <NÚMERO_DE_ID>". Por ejemplo, en el X600 es con "wpctl set-default 47"
+
 --Para comprobar que Pipewire tiene prioridad RT, hacemos:
 ps -eLo pid,rtprio,cmd | grep pipewire
 ...Y aunque el máximo es 95, nos saldrá con 88 o así ya que 95 se lo reserva para situciones críticas.
