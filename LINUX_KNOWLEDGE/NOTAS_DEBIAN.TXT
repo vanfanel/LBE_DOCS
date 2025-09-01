@@ -1216,6 +1216,11 @@ monitor.alsa.rules = [
 
 NOTAS:
 
+--Para comprobar el sonido de pipewire, hacemos:
+pw-play /usr/share/sounds/alsa/Front_Center.wav
+Y si queremos especificar el nodo (recuerda que los nodos se sacan de "pw-top" y que salen más nodos si estás en modo pro-audio):
+pw-play /usr/share/sounds/alsa/Front_Center.wav --target alsa_output.pci-0000_6e_00.1.pro-output-8
+
 --Para comprobar que Pipewire tiene prioridad RT, hacemos:
 ps -eLo pid,rtprio,cmd | grep pipewire
 ...Y aunque el máximo es 95, nos saldrá con 88 o así ya que 95 se lo reserva para situciones críticas.
