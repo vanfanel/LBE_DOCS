@@ -1221,6 +1221,28 @@ pw-play /usr/share/sounds/alsa/Front_Center.wav
 Y si queremos especificar el nodo (recuerda que los nodos se sacan de "pw-top" y que salen más nodos si estás en modo pro-audio):
 pw-play /usr/share/sounds/alsa/Front_Center.wav --target alsa_output.pci-0000_6e_00.1.pro-output-8
 
+--Para establecer el dispositivo por defecto desde un fichero de configuración
+(importante en modo pro-audio, o no se oirá nada), creamos el fichero /usr/share/wireplumber/wireplumber.conf.d/priority.conf:
+
+monitor.alsa.rules = [ 
+  {
+    matches = [ 
+      { node.name = "alsa_output.pci-0000_6e_00.1.pro-output-8" }
+    ]   
+    actions = { 
+      update-props = { 
+        priority.session = 2000
+        priority.driver  = 2000
+      }   
+    }   
+  }
+]
+
+El nombre del nodo lo sacamos de "pw-top". El número de nodo lo podemos sacar de "wpctl status" si queremos comprobar que
+se ha aplicado la prioridad que hemos pedido.
+Podemos comprobar la prioridad del nodo deseado con:
+pw-cli info <ID_NODO> | grep priority
+
 --Para establecer el dispositivo por defecto desde la línea de comandos (importante en modo pro-audio, o no se oirá nada):
 ----Listamos los números de nodo con "wpctl status"
 ----Establecemos el nodo por defecto con "wpctl set-default <NÚMERO_DE_ID>". Por ejemplo, en el X600 es con "wpctl set-default 47"
