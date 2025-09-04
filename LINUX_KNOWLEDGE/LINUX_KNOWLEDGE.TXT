@@ -2050,9 +2050,6 @@ lo cambiamos por "OpenGL".
 --Editamos src/osd/modules/lib/osdobj_common.cpp y borramos la línea:
 REGISTER_MODULE(m_mod_man, LIGHTGUN_X11)
 
---Si alguna vez necesitas editar un shader, están en src/osd/modules/render/bgfx/shaders.
-Por ejemplo, el código de crt-geom está en src/osd/modules/render/bgfx/shaders/chains/crt-geom/crt-geom_common.sc
-
 --Compilamos así:
 CFLAGS="-march=znver3 -mtune=znver3" \
 CXXFLAGS="-march=znver3 -mtune=znver3" \
@@ -2060,6 +2057,11 @@ make USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j
 
 NOTA: No le pasamos los parámetros de optimización "native" típicos porque entonces VR sale con los gráficos mal,
 así que le pasamos estos específicos de AMD.
+
+--Si alguna vez necesitas editar un shader, están en src/osd/modules/render/bgfx/shaders.
+Por ejemplo, el código de crt-geom está en src/osd/modules/render/bgfx/shaders/chains/crt-geom/crt-geom_common.sc
+Y para recompilar los shaders sería con "make shaders"
+Luego se sobreescribe el directorio "bgfx" de ~/mame y ya estarías con los shaders alterados.
 
 	##### COMPILAR SÓLO CON DRIVERS SELECTOS #####
 
