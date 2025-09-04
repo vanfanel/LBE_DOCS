@@ -1915,8 +1915,7 @@ RECUERDA: Este es un core de 44100 Hz, se nota mucho, usa esa frecuencia de audi
 
 RECUERDA, SI NO USAS WAYLAND: Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 
-SI NO TIENES VRR: Ejecuta el emulador a 120Hz para evitar el input lag:
-
+SI NO TIENES VRR: Ejecuta el emulador a 120Hz para evitar el input lag, así:
 wlr-randr --output HDMI-A-1 --mode 1920x1080@120
 taskset -c 0,1 retroarch -L .config/retroarch/cores/flycast_libretro.so "$1"
 wlr-randr --output HDMI-A-1 --mode 1920x1080@60
