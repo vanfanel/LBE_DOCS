@@ -1900,15 +1900,14 @@ Y NO LO HACE AL REVÉS. O SEA, LAS DEJAMOS ASÍ:
 -ACTIVAMOS "VSYNC" Y DESACTIVAMOS "SYNC TO EXACT CONTENT FRAME",
 -ACTIVAMOS EN LAS OPCIONES DEL CORE "FULL FRAMEBUFFER EMULATION".
  (NO ACTIVES "DETECT FRAME RATE CHANGES", ESO JODE LA SINCRONIZACIÓN, HAZLO JUSTO COMO TE HE DICHO).
+-PODEMOS ACTIVAR "Emulation Hacks -> GD-ROM Fast Loading" JUNTO CON "System -> HLE BIOS" Y NO HAY PROBLEMA.
+ SE RECOMIENDA ESPECIALMENTE HLE BIOS PORQUE ES COMO DESARROLLA EL AUTOR DEL EMULADOR.
 
 RECUERDA: Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador). Deja la segunda demo del Daytona USA 2001
 y si hay errores de clipping en los edificios del lado izquierdo, lo activas.
 
 RECUERDA: Este es un core de 44100 Hz, se nota mucho, usa esa frecuencia de audio y guárdalo como un override para este core.
-
-RECUERDA: NO ACTIVES "Emulation Hacks -> GD-ROM Fast Loading", porque aunque evita los crujidos de la intro del Soul Calibur,
-introduce microcortes en el audio de la intro/demo del DOA2. No es solución. No lo uses.
 
 RECUERDA, SI NO USAS WAYLAND: Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 
