@@ -10280,7 +10280,8 @@ cmake -DCMAKE_C_FLAGS="-march=native -mtune=native -O2" \
 --Para instalarlo, copia el ejecutable "love" a ~/usr/bin y la librería "libliblove.so" a /usr/local/lib/.
   (No hay "make install", así que luego es sólo borrarlos de donde los has copiado y ya)
 
---Los juegos se suelen lanzar con nombre de directorio que los contiene, pero algunos como el msxp-classic (minesweeper o buscaminas)
+--Los juegos se suelen lanzar con nombre de directorio que los contiene, pero algunos como el msxp-classic
+  (minesweeper o buscaminas: https://github.com/Kurtsley/XP-Minesweeper-Classic)
   se lanzan directamente con "love <juego.love>"
 
 INSTALAR JACKD2 GNU/LINUX
