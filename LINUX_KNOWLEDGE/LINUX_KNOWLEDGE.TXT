@@ -718,6 +718,16 @@ https://phoboslab.org/files/wipeout-data-v01.zip
 Creamos el directorio ~/wipeout, y ahí metemos el ejecutable "wipegame" y creamos el subdirectorio "wipeout" donde metemos
 los datos del juego.
 
+******Compilar el core DOLPHIN para LIBRETRO*********************************************************************************
+
+--Compilamos su repo así:
+git clone --recursive --depth 1 https://github.com/jonian/libretro-dolphin.git -b testing
+
+--Compilamos con:
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=TRUE \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
+
 ******Compilar core PCSX2 para LIBRETRO**************************************************************************************
 NOTA: EL RENDERER SOFTWARE SÓLO FUNCIONA CON OPENGL. Necesitas activar OpenGL tanto cuando compiles RetroArch
 como cuando compiles el core.
