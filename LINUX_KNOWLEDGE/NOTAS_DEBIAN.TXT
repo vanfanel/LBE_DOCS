@@ -1148,8 +1148,6 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 --Creamos el archivo /usr/share/pipewire/pipewire.conf.d/lowlatency.conf con este contenido:
 
 context.properties = { 
-    default.clock.rate          = 48000
-    default.clock.allowed-rates = [ 32000 44100 48000 ]
     default.clock.quantum       = 128 
     default.clock.min-quantum   = 64
     default.clock.max-quantum   = 512 
@@ -1171,9 +1169,6 @@ monitor.alsa.rules = [
     actions = {
       update-props = {
         device.profile = "pro-audio"
-        api.alsa.period-size = 128,
-        api.alsa.period-num = 3,
-        audio.rate = 48000,
       }
     }
   }
