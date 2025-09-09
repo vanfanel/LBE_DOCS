@@ -1169,6 +1169,8 @@ monitor.alsa.rules = [
     actions = {
       update-props = {
         device.profile = "pro-audio"
+        #api.alsa.period-size = 128,
+        #api.alsa.period-num = 3,
       }
     }
   }
@@ -1177,7 +1179,7 @@ monitor.alsa.rules = [
 --El device.name ("alsa_card.pci-0000_6e_00.1") lo hemos sacado así:
 -----Con el comando "wpctl status" sacamos el número del dispositivo en Audio->Devices.
 -----Con el comando "wpctl inspect <número_de_dispositivo>" sacamos el nombre del dispositivo mirando el campo "device.name".
------El "period-size" y el "rate" vienen de los valores del quantum que hemos puesto en Pipewire.
+-----El "period-size" viene de los valores del quantum que hemos puesto en Pipewire, pero no parece hacer falta.
 
 --Al usar el perfil pro-audio, ahora establecemos el dispositivo por defecto (importante en modo pro-audio, o no se oirá nada):
 ----Listamos los números de nodo con "wpctl status"
