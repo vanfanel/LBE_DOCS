@@ -533,8 +533,8 @@ meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled -Dgst-example
 -Dtests=disabled -Dtools=disabled -Dexamples=disabled -Dbenchmarks=disabled -Dorc=disabled -Ddevtools=disabled -Dintrospection=disabled
 
 VAMOS CON WINE EN SÍ:
---Bajamos los sources de la última estable de:
-https://gitlab.winehq.org/wine/wine/-/releases
+--Clonamos los sources de la última estable con:
+git clone --depth 1 -b wine-10.15 https://gitlab.winehq.org/wine/wine.git
 --Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
