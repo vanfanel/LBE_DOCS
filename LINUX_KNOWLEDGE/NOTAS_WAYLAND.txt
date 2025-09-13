@@ -123,13 +123,8 @@ PARTE 4: INSTALAR WESTON (EL COMPOSITOR DE REFERENCIA DE WAYLAND)
 -Instalamos dependencias previas, libinput-dev:
 sudo apt-get install libinput-dev libseat-dev --no-install-recommends
 
--Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
---Instalamos dependencias previas de CAIRO: apt-get install libfontconfig-dev
---Bajamos los últimos sources estables de: https://gitlab.freedesktop.org/cairo/cairo/-/releases
---Configuramos con:
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson -Dbuildtype=release -Dzlib=disabled -Dtests=disabled -Ddwrite=disabled ..
+-Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11.
+ Ver instrucciones en la sección de instalación de Labwc.
 
 -Instalar WESTON en sí:
 Bajamos los últimos sources estables de:
@@ -349,6 +344,8 @@ https://github.com/tarvi-verro/weston-binder
 -Compilamos un toolkit que soporte Wayland.
 Básicamente elegimos entre GTK y QT. GTK es más ligero y sencillo de compilar (QT son varios paquetes).
 
+	INSTALAR GTK
+
 Para compilar GTK3 (la versión más compatible con programas actualmente y que a la vez tiene soporte WAYLAND es GTK3)
 -Instalamos dependencias previas:
 apt-get install libgdk-pixbuf-2.0-dev shared-mime-info gobject-introspection --no-install-recommends
@@ -364,7 +361,7 @@ CXXFLAGS="-march=native -mtune=native" \
 meson setup .. -Dbuildtype=release \
 -Dwayland_backend=true -Dx11_backend=false \
 -Dxinerama=no -Dcloudproviders=false -Dtracker3=false \
--Dprint_backends=file -Dcolord=no \
+-Dprint_backends=auto -Dcolord=no \
 -Dgtk_doc=false -Dintrospection=false -Dman=false \
 -Ddemos=false -Dexamples=false -Dtests=false
 
@@ -535,13 +532,7 @@ INSTALAR WAYFIRE, EL COMPOSITOR DE WAYLAND POR DEFECTO DE RASPBERRY PI OS
 apt-get install libglm-dev nlohmann-json3-dev
 
 -Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
---Instalamos dependencias previas de CAIRO: apt-get install libfontconfig-dev
---Bajamos los últimos sources estables de: https://gitlab.freedesktop.org/cairo/cairo/-/releases
---Configuramos con:
-CFLAGS="-march=native -mtune=native" \
-CXXFLAGS="-march=native -mtune=native" \
-meson setup -Dbuildtype=release -Dtests=disabled -Ddwrite=disabled ..
-(OJO! No deshabilites ZLib o se compilará sin soporte para PDF y luego GTK no compilará por falta de "cairo-pdf.h").
+ Ver instrucciones en la sección de instalación de Labwc.
 
 -Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
 --Instalamos dependencias previas: apt-get install libglib2.0-dev libfontconfig-dev
@@ -1228,7 +1219,8 @@ apt-get install libxml2-dev libglib2.0-dev --no-install-recommends
 --Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson setup -Dbuildtype=release -Dzlib=disabled -Dtests=disabled -Ddwrite=disabled ..
+meson setup -Dbuildtype=release -Dtests=disabled -Ddwrite=disabled ..
+(OJO! No deshabilites ZLib o se compilará sin soporte para PDF y luego GTK no compilará por falta de "cairo-pdf.h").
 
 Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
 -Instalamos dependencias previas: apt-get install libfribidi-dev libharfbuzz-dev libglib2.0-dev libfontconfig-dev --no-install-recommends
