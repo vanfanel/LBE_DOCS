@@ -1113,7 +1113,7 @@ apt-get install pipewire libpipewire-0.3-dev wireplumber pipewire-alsa --no-inst
 
 NOTA: Al instalar "pipewire-alsa", ya no nececesitas un /etc/asound.conf:
 todo el sonido de ALSA ya sale por Pipewire porque automáticamente el dispositivo ALSA por defecto pasa a ser Pipewire,
-y para conformarlo puedes ver que en "aplay -L" tienes:
+y para confirmarlo, puedes ver que en "aplay -L" tienes:
 pipewire
     PipeWire Sound Server
 default
