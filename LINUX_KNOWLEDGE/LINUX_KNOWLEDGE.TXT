@@ -588,8 +588,8 @@ Ejecutamos "winecfg", vamos a la pestaña "Graphics" y allí ponemos "Screen Res
 
 OPCIÓN 1 (RECOMENDADO): USANDO DXVK
 
---Clonamos su repo:
-git clone --depth 1 --recurse-submodules https://github.com/doitsujin/dxvk.git
+--Clonamos la última versión (podemos mirar el número de versión en https://github.com/doitsujin/dxvk/tags):
+git clone --depth 1 --recurse-submodules -b v2.7.1 https://github.com/doitsujin/dxvk.git
 
 --Compilamos las versions de 32 bits (no podemos pasar "-march=native" debido a este commit: https://github.com/doitsujin/dxvk/commit/d2c8e54d04b970342293e565377b8431b0bbe3fa):
 
