@@ -5611,6 +5611,15 @@ Convertimos:
 
 for i in *.wav; do sox "$i" "${i%.*}.flac"; done
 
+***********Super Mario Bros. REMASTER, un Mario en GODOT*******************************************************************************
+
+--Bajamos los últimos binarios de:
+https://github.com/JHDev2006/Super-Mario-Bros.-Remastered-Public/releases
+
+--Nos pide la ROM normal (World) del Super Mario Bros., se la damos arrastrándola a la ventana del juego.
+  Esto sólo hay que hacerlo una vez: los assets, quedan en ~/.local/share/SMB1R/resource_packs, por lo que aunque te bajes nuevas versiones
+  del juego, no hará falta volver a arrastrar la ROM a la ventana.
+
 ***********OpenLara, versión opensource del Tomb Raider********************************************************************************
 
 PUEDES BAJARTE LOS DATOS DEL JUEGO SIMPLEMENTE DE:
