@@ -5622,6 +5622,8 @@ O te puedes complicar la vida con los siguientes consejos:
 -Copia los directorios PSXDATA, DELDATA y FMV al directorio donde tengas el ejecutable.
 -Las pistas de audio van en audio/1/_track*.ogg
 
+NOTA: Si la CPU está constantemente a un 100% de uso, es porque tienes desactivado el VSYNC. Actívalo: a 120Hz o más no hay input lag.
+
 ***********ERROR: DISTCC no distribuye la compilación y no sé por qué, con otros proyectos sí lo hace****************************************
 
 Posiblemente el Makefile está poniendo como compilador el cc.
