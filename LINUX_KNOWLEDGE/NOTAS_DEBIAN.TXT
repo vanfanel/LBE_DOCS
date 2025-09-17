@@ -1148,21 +1148,23 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 --Creamos el archivo /usr/share/pipewire/pipewire.conf.d/lowlatency.conf con este contenido, que es una configuración especial para juegos:
 
 context.properties = {
-    # Reloj del sistema
-    default.clock.rate = 48000             # frecuencia fija 48 kHz
-    default.clock.allowed-rates = [48000]  # evita resampling
-    default.clock.quantum = 128            # tamaño del bloque ≈ 2.6 ms
-    default.clock.min-quantum = 64
-    default.clock.max-quantum = 256
-    default.clock.quantum-limit = 1024     # máximo permitido por cliente
+    # Frecuencia fija para evitar resampling
+    default.clock.rate = 48000
+    default.clock.allowed-rates = [48000]
 
-    # Prioridad y RT
-    default.clock.prio = 95                 # prioridad del hilo de audio
-    default.clock.realtime = true           # activar hilos en tiempo real
+    # Quantum pequeños para baja latencia
+    default.clock.quantum = 64          # ≈1.3 ms por bloque
+    default.clock.min-quantum = 64
+    default.clock.max-quantum = 128
+    default.clock.quantum-limit = 1024  # máximo permitido por cliente
+
+    # Prioridad y tiempo real
+    default.clock.prio = 95
+    default.clock.realtime = true
 }
 
-# Opcional: buffers para clients ALSA/Wine
-alsa.period-size = 128
+# ALSA backend optimizado para baja latencia
+alsa.period-size = 64
 alsa.periods = 2
 
 	BLOQUE OPCIONAL (NO SE NOTA LA DIFERENCIA Y PIERDES EL SOFTWARE MIXING CON LO QUE SÓLO PUEDE REPRODUCIR UN STREAM A LA VEZ...)
