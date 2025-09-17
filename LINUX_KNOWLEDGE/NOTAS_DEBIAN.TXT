@@ -1147,13 +1147,25 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
 --Creamos el archivo /usr/share/pipewire/pipewire.conf.d/lowlatency.conf con este contenido:
 
-context.properties = { 
-	default.clock.min-quantum   = 64
-	default.clock.max-quantum   = 256
-	default.clock.quantum       = 128
-	default.clock.quantum-limit = 1024
+context.properties = {
+    # Reloj del sistema
+    default.clock.rate = 48000             # frecuencia fija 48 kHz
+    default.clock.allowed-rates = [48000]  # evita resampling
+    default.clock.quantum = 128            # tamaño del bloque ≈ 2.6 ms
+    default.clock.min-quantum = 64
+    default.clock.max-quantum = 256
+    default.clock.quantum-limit = 1024     # máximo permitido por cliente
+
+    # Prioridad y RT
+    default.clock.prio = 95                 # prioridad del hilo de audio
+    default.clock.realtime = true           # activar hilos en tiempo real
 }
-NOTA: Esto deja unos valores por defecto más parecidos a los que esperan los clientes ALSA.
+
+# Opcional: buffers para clients ALSA/Wine
+alsa.period-size = 128
+alsa.periods = 2
+
+	BLOQUE OPCIONAL (NO SE NOTA LA DIFERENCIA Y PIERDES EL SOFTWARE MIXING CON LO QUE SÓLO PUEDE REPRODUCIR UN STREAM A LA VEZ...)
 
 --Activamos el modo Pro-Audio (esto se hace en WirePlumber).
 Para ello, creamos el fichero /usr/share/wireplumber/wireplumber.conf.d/proaudio.conf con el contenido:
