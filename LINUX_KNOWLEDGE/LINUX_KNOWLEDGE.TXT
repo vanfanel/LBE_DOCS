@@ -579,6 +579,8 @@ que está aquí: https://github.com/OldUnreal/Unreal-testing/releases, simplemen
 Y con el vídeo puesto a OpenGL, va perfectamente en WINE.
 Hay una versión de OldUnreal nativa para Linux ahí también pero no se ve nada, pantallazo negro, hay una issue abierta.
 De momento con el de Windows en WINE vamos bien.
+Para evitar el "tirón" al atravesar la niebla durante la demo, usa el renderer DX9 y ten configurado e instalado DXVK
+para que así DX9 vaya sobre Vulkan.
 
 ******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
 
