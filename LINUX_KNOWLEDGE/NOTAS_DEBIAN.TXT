@@ -1148,13 +1148,12 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 --Creamos el archivo /usr/share/pipewire/pipewire.conf.d/lowlatency.conf con este contenido:
 
 context.properties = { 
-	default.clock.min-quantum   = 128
-    default.clock.max-quantum   = 512
-    default.clock.quantum       = 512
-    default.clock.quantum-limit = 1024
+	default.clock.min-quantum   = 64
+	default.clock.max-quantum   = 256
+	default.clock.quantum       = 128
+	default.clock.quantum-limit = 1024
 }
-NOTA: No nos interesa que los tamaños más grandes (max-quantum y quantum-limit) estén limitados,
-porque entonces los juegos de SDL, que requieren a menudo buffers de audio más grandes, irán mal.
+NOTA: Esto deja unos valores por defecto más parecidos a los que esperan los clientes ALSA.
 
 --Activamos el modo Pro-Audio (esto se hace en WirePlumber).
 Para ello, creamos el fichero /usr/share/wireplumber/wireplumber.conf.d/proaudio.conf con el contenido:
