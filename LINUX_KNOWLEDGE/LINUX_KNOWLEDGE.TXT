@@ -581,6 +581,7 @@ Hay una versión de OldUnreal nativa para Linux ahí también pero no se ve nada
 De momento con el de Windows en WINE vamos bien.
 Para evitar el "tirón" al atravesar la niebla durante la demo, usa el renderer DX9 y ten configurado e instalado DXVK
 para que así DX9 vaya sobre Vulkan.
+NO actives "Precache Content", no sólo no mejora los tirones sino que los empeora. Ni idea.
 
 ******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
 
