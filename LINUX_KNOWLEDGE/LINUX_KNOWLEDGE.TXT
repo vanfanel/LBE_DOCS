@@ -3645,7 +3645,7 @@ git clone --depth 1 https://voidpoint.io/terminx/eduke32.git
 
 --Compilamos con:
 
-make -j4 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=1 USE_LIBVPX=0 HAVE_FLAC=0 \
+make -j10 RELEASE=1 WITHOUT_GTK=1 USE_OPENGL=1 USE_LIBVPX=0 HAVE_FLAC=0 \
 OPTOPT="-march=native -mtune=native -O2"
 
 --Mete el duke3d.grp en el mismo directorio que el ejecutable.
@@ -7277,7 +7277,7 @@ cd b4
 
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 
-make -j4
+make -j10
 
 Creamos el directorio ~/cconquer, y metemos ahí los datos del juego.
 
@@ -12270,12 +12270,15 @@ ABUSE en GNU/Linux
 ==================
 
 --Clonamos su repo:
-git clone --depth 1 https://github.com/Xenoveritas/abuse.git
+git clone --depth 1 https://github.com/metinc/abuse
 
 --ANTES DE CONFIGURAR Y COMPILAR LOS SOURCES, DEBEMOS TENER LOS DATOS DE MÚSICA Y FX EN EL DIRECTORIO "data"
 O AL NO DETECTARLOS NO NOS COMPILARÁ SOPORTE DE MÚSICA Y FX!!! Para ello:
 Nos bajamos la versión de Wii ya preparada de: https://oscwii.org/library/app/abuse
 La descomprimimos y copiamos el contenido de "data" al directorio "data" que viene con los sources.
+
+--Editamos CMakeLists.txt, buscamos la línea "find_package(OpenGL REQUIRED)" y justo encima ponemos:
+set(OPENGL_USE_OPENGL ON)
 
 --Configuramos y compilamos con:
 mkdir b4
