@@ -317,6 +317,25 @@ http://d-bug.mooo.com/klaz/
  SI NO, DAN ERRORES RAROS, COMO SALIRSE SIN MÁS AL CARGAR, O DECIRTE QUE TIENES QUE TENER UN DRIVER DE DISCO DURO INSTALADO
  QUE YA TIENES INSTALADO, ETC.
 
+-CONFIGURACIÓN RECOMENDADA EN EL FORO OFICIAL DE MISTER:
+ST files config:
+Memory: 1MB
+TOS: TOS v1.02 (1987)
+Chipset:ST
+Blitter:Off
+Viking: Off
+Screen: Color
+Border: Visible
+
+STE files config:
+Memory: 4MB
+TOS: TOS v1.62 (1990)
+Chipset:STE
+Blitter:On
+Viking: Off
+Screen: Color
+Border: Visibile
+
 -Para descomprimir archivos .ARC en Linux, usa nomarch, que se puede instalar con apt-get.
 -Para que un ejecutable se autoejecute en el inicio, simplemente mételo en AUTO. Tiene que tener extensión .PRG,
 los .TOS sólo hay que renombrarlos y ya.
