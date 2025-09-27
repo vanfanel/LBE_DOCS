@@ -1145,6 +1145,7 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
 --NOTAS AUDIO DE BAJA LATENCIA CON PIPEWIRE--
 
+
 --Creamos el archivo /usr/share/pipewire/pipewire.conf.d/lowlatency.conf con este contenido, que es una configuración especial para juegos:
 
 context.properties = {
