@@ -1189,7 +1189,7 @@ Si decidimos hacer esto, luego es posible ajustar el ratio de ciertos juegos com
 Entramos en el directorio "libretro" y compilamos así:
 
 COMMONFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make -j6 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
+make -j10 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0
 
 (Desactivo FLUIDSYNTH porque compila un montón de mierdas como libsndfile y demás que consumen CPU,
@@ -2041,7 +2041,7 @@ Instalamos dependencias previas:
 apt-get install libfontconfig-dev
 
 Clonamos su repo:
-git clone -b mame0280 --depth 1 https://github.com/mamedev/mame.git mame0280
+git clone -b mame0281 --depth 1 https://github.com/mamedev/mame.git mame0281
 
 --Editamos 3rdparty/bgfx/3rdparty/khronos/EGL/eglplatform.h, buscamos la línea:
 
