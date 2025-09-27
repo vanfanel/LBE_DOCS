@@ -107,24 +107,24 @@ apt-get install firmware-amd-graphics
 (NOTA: Lo de pcm.dmixed y lo de @hooks es para luego poder activar y desactivar dmix a demanda, para los juegos FNA.
 Si no vas a usar juegos FNA, no hacen falta esas secciones).
 
-pcm.dmixed {                                                                                                                           
-        type dmix                                                                                                                      
-        ipc_key 1234                                                                                                                   
-        slave {                                                                                                                        
-                pcm "hw:Generic,8"                                                                                                     
-        }                                                                                                                              
-}                                                                                                                                      
-                                                                                                                                       
-pcm.!default {                                                                                                                         
-        type hw                                                                                                                        
-        card Generic                                                                                                                   
-        device 8                                                                                                                       
-}                                                                                                                                      
-                                                                                                                                       
-ctl.!default {                                                                                                                         
-        type hw                                                                                                                        
-        card Generic                                                                                                                   
-}                                                                                                                                      
+pcm.dmixed {
+        type dmix
+        ipc_key 1234
+        slave {
+                pcm "hw:Generic,8"
+        }
+}                                                                                                                              
+
+pcm.!default {
+        type hw
+        card Generic
+        device 8
+}
+
+ctl.!default {
+        type hw
+        card Generic
+}
                                                                                                                                        
 @hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
 

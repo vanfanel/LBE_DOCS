@@ -1153,10 +1153,10 @@ context.properties = {
     default.clock.allowed-rates = [48000]
 
     # Quantum pequeños para baja latencia
-    default.clock.quantum = 64          # ≈1.3 ms por bloque
-    default.clock.min-quantum = 64
+    default.clock.quantum = 512
+    default.clock.min-quantum = 512
     default.clock.max-quantum = 512
-    default.clock.quantum-limit = 1024  # máximo permitido por cliente
+    default.clock.quantum-limit = 2048  # máximo permitido por cliente
 }
 
 	BLOQUE OPCIONAL (NO SE NOTA LA DIFERENCIA Y PIERDES EL SOFTWARE MIXING CON LO QUE SÓLO PUEDE REPRODUCIR UN STREAM A LA VEZ...)
