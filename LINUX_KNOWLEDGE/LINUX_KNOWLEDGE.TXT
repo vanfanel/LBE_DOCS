@@ -1119,7 +1119,7 @@ de disco duro que queramos usar, entramos en él y hacemos:
 De esta manera nos crea una configuración para la máquina en el directorio actual.
 Ahora, con la versión que incluye QT, generamos la configuración que queramos y la usamos con la versión SDL2.
 Una vez tenemos la configuración lista, podemos pasarle "-F" para que arranque en modo de pantalla completa,
-ya que no hay una opción en el cfg para ello).
+ya que no hay una opción en el cfg para ello.
 
 *******Compilar DOSBOX-STAGING***************************************
  
