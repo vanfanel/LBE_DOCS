@@ -7948,7 +7948,7 @@ flite -voice slt -t "hello pal"
 **************Rise of the Triad en GNU/Linux************************************************************************************
 
 Usamos el sourceport "taradino".
--Clonamos su repo: git clone --depth 1 https://github.com/fabiangreffrath/taradino.git
+-Bajamos los últimos sources estables de: https://github.com/fabiangreffrath/taradino/releases
 -Compilamos con:
 
 mkdir b4
