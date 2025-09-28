@@ -1160,6 +1160,25 @@ context.properties = {
     default.clock.quantum-limit = 2048  # máximo permitido por cliente
 }
 
+	EXPLICACIÓN TÉCNICA DE LOS VALORES
+	
+Un quantum de 512 significa que "el audio se ejecuta cada 512 samples". Es decir, que pipewire recoje el audio del cliente cada 512 samples.
+Una frecuencia de 48000 Hz significa que el audio se reproduce a 48000. Es decir, que haya lo que haya en el buffer de audio
+se reproduce a 48000 samples por segundo.
+
+O sea, tenemos 512 "samples / ejecución", y tenemos 48000 "samples / segundo".
+Para saber cada cuánto se está ejecutando pipewire, nos interesa conocer "segundos / ejecución".
+Como queremos "segundos" arriba y "ejecución" abajo, multiplicamos en cruz (que es como se dividen fracciones):
+
+ samples     samples     samples * segundo
+--------- X --------- = ---------------------
+ejecución    segundo     samples * ejecución
+
+Samples con samples se van, y nos queda: "segundos / ejecución", que es lo que queremos.
+
+Para no tener que ponerlo como fracciones, nos basta con invertir la segunda fracción (samples/segundo) para que sea como multiplicar en cruz,
+con lo que nos queda que en el ejemplo concreto, (512) * (1/48000) = 512 / 48000 = 0.010666 = 10.666 ms de retardo de audio. 
+
 	BLOQUE OPCIONAL (NO SE NOTA LA DIFERENCIA Y PIERDES EL SOFTWARE MIXING CON LO QUE SÓLO PUEDE REPRODUCIR UN STREAM A LA VEZ...)
 
 --Activamos el modo Pro-Audio (esto se hace en WirePlumber).
