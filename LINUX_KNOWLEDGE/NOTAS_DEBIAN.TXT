@@ -1155,7 +1155,7 @@ context.properties = {
 
     # Quantum pequeños para baja latencia
     default.clock.quantum = 512
-    default.clock.min-quantum = 512
+    default.clock.min-quantum = 32
     default.clock.max-quantum = 512
     default.clock.quantum-limit = 2048  # máximo permitido por cliente
 }
