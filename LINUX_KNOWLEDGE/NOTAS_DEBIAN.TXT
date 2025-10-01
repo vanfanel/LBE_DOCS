@@ -1143,10 +1143,10 @@ options snd_hda_intel power_save_controller=N
 --Para subir y bajar el volúmen de forma relativa (se queda guardado solo sin hacer nada):
 wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
---NOTAS AUDIO DE BAJA LATENCIA CON PIPEWIRE--
-
+			NOTAS AUDIO DE BAJA LATENCIA CON PIPEWIRE
 
 --Creamos el archivo /usr/share/pipewire/pipewire.conf.d/lowlatency.conf con este contenido, que es una configuración especial para juegos:
+(NOTA: La explicación de cada valor viene en https://docs.pipewire.org/page_man_pipewire_conf_5.html)
 
 context.properties = {
     # Frecuencia fija para evitar resampling
@@ -1160,7 +1160,7 @@ context.properties = {
     default.clock.quantum-limit = 2048  # máximo permitido por cliente
 }
 
-	EXPLICACIÓN TÉCNICA DE LOS VALORES
+			EXPLICACIÓN TÉCNICA DE LOS VALORES
 	
 Un quantum de 512 significa que "el audio se ejecuta cada 512 samples". Es decir, que pipewire recoje el audio del cliente cada 512 samples.
 Una frecuencia de 48000 Hz significa que el audio se reproduce a 48000. Es decir, que haya lo que haya en el buffer de audio
