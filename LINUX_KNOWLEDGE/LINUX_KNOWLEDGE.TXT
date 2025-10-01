@@ -1058,7 +1058,7 @@ o si no, el Ridge Racers se nos quedará en una pantalla en gris después del me
 --Es un core con sonido 44100Hz, así que configura los settings de audio así y guarda los core overrides.
 
 PARA FRAMERATE ESTABLE:
-Desactiva "Buffer Graphis Commands"
+Deja "Buffer Graphis Commands" a 1 o desactívalo
 Activa "Duplicate Frames in 30Hz games"
 
 	COMPILAR VERSIÓN STANDALONE:
