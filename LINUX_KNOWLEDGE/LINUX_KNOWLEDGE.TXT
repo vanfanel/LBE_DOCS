@@ -1055,11 +1055,12 @@ OJO!! Por ahora no le pasamos optimizaciones porque la versión resultante se cu
 --¡¡¡OJO!!! Tenemos que copiar el contenido del directorio "assets" que viene con los sources a ~/.config/retroarch/system/PPSSPP/
 o si no, el Ridge Racers se nos quedará en una pantalla en gris después del menú principal."
 
---Es un core con sonido 44100Hz, así que configura los settings de audio así y guarda los core overrides.
+--Es un core con sonido 44100Hz y además necesita 64ms de latencia, así que configura los settings de audio así y guarda los core overrides.
 
 PARA FRAMERATE ESTABLE:
-Deja "Buffer Graphis Commands" a 1 o desactívalo
-Activa "Duplicate Frames in 30Hz games"
+--Deja "Buffer Graphis Commands" a 1, no lo desactives porque entonces la CPU y la GPU no pueden trabajar en paralelo.
+  Los 120Hz compensan el input lag debido a esto, y de todos modos seguramente la máquina real también tiene un buffer de comandos de la GPU.
+--Activa "Duplicate Frames in 30Hz games"
 
 	COMPILAR VERSIÓN STANDALONE:
 
