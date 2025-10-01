@@ -1149,15 +1149,17 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 (NOTA: La explicación de cada valor viene en https://docs.pipewire.org/page_man_pipewire_conf_5.html)
 
 context.properties = {
-    # Frecuencia fija para evitar resampling
+    # En principio, todo se resamplea a 48000. Pero si un programa pide 44100 y sólo está sonando ese programa, se resamplea a 44100.
+    # El resto de frecuencias que no estén en "allowed-rates" se reproducirá pero resampleadas siempre,
+    # que una frecuencia esté en "allowed-rates" sólo significa que el reloj maestro de Pipewire se puede poner a esa frecuencia.
     default.clock.rate = 48000
-    default.clock.allowed-rates = [48000]
+    default.clock.allowed-rates = [44100 48000]
 
     # Quantum pequeños para baja latencia
-    default.clock.quantum = 512
-    default.clock.min-quantum = 32
-    default.clock.max-quantum = 512
-    default.clock.quantum-limit = 2048  # máximo permitido por cliente
+    default.clock.quantum = 512			# Por defecto cuando el programa no especifica.
+    default.clock.min-quantum = 32		# Mínimo que un programa puede obtener.
+    default.clock.max-quantum = 512		# Máximo que un programa puede obtener.
+    default.clock.quantum-limit = 2048  # Máximo permitido para condiciones anómalas.
 }
 
 			EXPLICACIÓN TÉCNICA DE LOS VALORES
