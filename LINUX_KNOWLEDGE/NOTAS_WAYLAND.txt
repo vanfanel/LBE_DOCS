@@ -1403,10 +1403,69 @@ NOTA: Esos cuadrados son códigos hexadecimales correspondientes a glifos. Por e
 así que si tuvieses que escribirlo a mano en VIM, te pondrías en modo inserción, pulsarías CTLR+V, y luego escribirías "uf133",
 sí, con esa "u" de UNICODE al principio ya que es el caracter UNICODE con código f133.
 
-LANZAR WAYLAND COMO SERVICIO DE SYSTEMD
-=======================================
 
-Creamos /usr/local/bin/launch-wayfire (o el compositor que sea) con el contenido:
+LANZAR WAYLAND COMO SERVICIO DE SYSTEMD (MODO USUARIO NORMAL, RECOMENDADO)
+==========================================================================
+
+--Creamos el archivo de servicio "/etc/systemd/system/wayland.service" con el contenido:
+ 
+[Unit]
+Description=LabWC Wayland compositor
+After=systemd-user-sessions.service
+Wants=systemd-user-sessions.service
+
+[Service]
+Type=simple
+User=manuel
+Group=manuel
+WorkingDirectory=/home/manuel
+
+# Ejecutar LabWC
+ExecStart=/usr/local/bin/launch-labwc
+Restart=always
+
+# Variables de entorno
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=WAYLAND_DISPLAY=wayland-0
+
+# Forzar TTY real para libseat / DRM
+StandardInput=tty
+TTYPath=/dev/tty3
+TTYReset=yes
+TTYVHangup=yes
+KillMode=process
+
+# Logs en journal
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+
+--Creamos el script de lanzamiento de labwc "/usr/local/bin/launch-labwc" con el contenido:
+
+#!/bin/bash
+
+# Usar el runtime del usuario actual
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+# Opcional: especificar display de Wayland
+# export WAYLAND_DISPLAY=wayland-0
+
+# Ejecutar LabWC
+/usr/local/bin/labwc
+
+--Lanzamos el script y comprobamos:
+
+systemctl daemon-reload
+systemctl enable wayland.service
+systemctl start wayland.service
+systemctl status wayland.service
+
+LANZAR WAYLAND COMO SERVICIO DE SYSTEMD (PELIGRO!!!! MODO ROOT!!!! HAZLO COMO USUARIO NORMAL!!!!)
+=================================================================================================
+
+Creamos /usr/local/bin/launch-labwc (o el compositor que sea) con el contenido:
 
 #############
 
@@ -1417,15 +1476,15 @@ if [[ ! -e $rundir ]]; then
 fi
 export XDG_RUNTIME_DIR=/run/user/0
 source /etc/profile
-/usr/local/bin/wayfire
+/usr/local/bin/labwc
 
 #############
 
 (Lo de "source /etc/profile" es porque eso normalmente lo carga el login manager, y nosotros no usamos ninguno,
 estamos ejecutando directamente el compositor desde este script de lanzamiento).
 
-HACEMOS EJECUTABLE /usr/local/bin/launch-wayfire:
-chmod +x /usr/local/bin/launch-wayfire
+HACEMOS EJECUTABLE /usr/local/bin/launch-labwc
+chmod +x /usr/local/bin/launch-labwc
 
 Creamos /etc/systemd/system/wayland.service con el contenido:
 
@@ -1435,12 +1494,12 @@ Creamos /etc/systemd/system/wayland.service con el contenido:
 Description=Wayland compositor
 
 [Service]
-User=manuel
-Group=manuel
+User=root
+Group=root
 PAMName=login
 WorkingDirectory=/home/manuel
 ExecStart=
-ExecStart=-/usr/local/bin/launch-wayfire
+ExecStart=-/usr/local/bin/launch-labwc
 Restart=always
 
 [Install]
