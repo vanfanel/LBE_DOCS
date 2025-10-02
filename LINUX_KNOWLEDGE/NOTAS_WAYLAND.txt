@@ -1422,17 +1422,6 @@ Type=simple
 ExecStart=/usr/local/bin/launch-labwc
 Restart=always
 
-# Forzar TTY real si lo quieres usar
-# StandardInput=tty
-# TTYPath=/dev/tty3
-# TTYReset=yes
-# TTYVHangup=yes
-# KillMode=process
-
-# Logs en journal
-StandardOutput=journal
-StandardError=journal
-
 [Install]
 WantedBy=default.target
 
