@@ -55,8 +55,7 @@ git clone --depth 1 https://github.com/Matsilagi/RSRetroArch.git
 --Copiamos los directorios "Shaders" y "Textures" a ~/reshader-shaders, de manera que queden mezclados con
 los del primer repo que hemos clonado. 
 
---Ahora creamos el fichero de configuración en ~/.config/vkBasalt/vkBasalt.conf,
-de manera que quede en ~/.config/vkBasalt/vkBasalt.conf, con este contenido:
+--Ahora creamos el fichero de configuración "~/.config/vkBasalt/vkBasalt.conf" con este contenido:
 
 enableOnLaunch = True  
 toggleKey = Home                                                                                                                          
