@@ -60,9 +60,9 @@ los del primer repo que hemos clonado.
 enableOnLaunch = True  
 toggleKey = Home                                                                                                                          
 effects = crt                                                                                                                                                                                                                                                                                    
-crt = /root/reshade-shaders/Shaders/CRTFakeLottes.fx                                                                                             
-reshadeTexturePath = /root/reshade-shaders/Textures                                                                                              
-reshadeIncludePath = /root/reshade-shaders/Shaders 
+crt = /home/manuel/reshade-shaders/Shaders/CRTFakeLottes.fx                                                                                             
+reshadeTexturePath = /home/manuel/reshade-shaders/Textures                                                                                              
+reshadeIncludePath = /home/manuel/reshade-shaders/Shaders 
 
 (Alternativamente, si un juego necesita una configuración especial,
 podríamos crear un archivo llamado "vkBasalt.conf" en el directorio del juego.
