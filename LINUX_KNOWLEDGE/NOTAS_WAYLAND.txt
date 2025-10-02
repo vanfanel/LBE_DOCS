@@ -1435,10 +1435,10 @@ Creamos /etc/systemd/system/wayland.service con el contenido:
 Description=Wayland compositor
 
 [Service]
-User=root
-Group=root
+User=manuel
+Group=manuel
 PAMName=login
-WorkingDirectory=%h
+WorkingDirectory=/home/manuel
 ExecStart=
 ExecStart=-/usr/local/bin/launch-wayfire
 Restart=always
