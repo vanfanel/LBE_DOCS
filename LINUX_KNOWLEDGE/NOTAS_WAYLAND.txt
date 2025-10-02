@@ -1453,7 +1453,8 @@ systemctl --user enable wayland.service
 systemctl --user start wayland.service
 systemctl --user status wayland.service
 
---Ahora el problema es que esto sólo funciona si el usuario "manuel" tiene sesión iniciada en una TTY.
+--Ahora el problema es que esto sólo funciona si el usuario "manuel" tiene sesión iniciada en una TTY,
+o sea que si hacemos "sudo systemctl disable getty@tty1.service" ya no arranca Wayland.
 
 LANZAR WAYLAND COMO SERVICIO DE SYSTEMD (PELIGRO!!!! MODO ROOT!!!! HAZLO COMO USUARIO NORMAL!!!!)
 =================================================================================================
