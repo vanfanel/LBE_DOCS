@@ -1407,40 +1407,34 @@ sí, con esa "u" de UNICODE al principio ya que es el caracter UNICODE con códi
 LANZAR WAYLAND COMO SERVICIO DE SYSTEMD (MODO USUARIO NORMAL, RECOMENDADO)
 ==========================================================================
 
---Creamos el archivo de servicio "/etc/systemd/system/wayland.service" con el contenido:
- 
+--Creamos el directorio de servicios de usuario:
+mkdir -p ~/.config/systemd/user/
+
+--Creamos el archivo de servicio de usuario "/etc/systemd/system/wayland.service" con el contenido:
+
 [Unit]
-Description=LabWC Wayland compositor
-After=systemd-user-sessions.service
-Wants=systemd-user-sessions.service
+Description=Wayland compositor (LabWC)
+After=graphical-session.target
+Wants=graphical-session.target
 
 [Service]
 Type=simple
-User=manuel
-Group=manuel
-WorkingDirectory=/home/manuel
-
-# Ejecutar LabWC
 ExecStart=/usr/local/bin/launch-labwc
 Restart=always
 
-# Variables de entorno
-Environment=XDG_RUNTIME_DIR=/run/user/1000
-Environment=WAYLAND_DISPLAY=wayland-0
-
-# Forzar TTY real para libseat / DRM
-StandardInput=tty
-TTYPath=/dev/tty3
-TTYReset=yes
-TTYVHangup=yes
-KillMode=process
+# Forzar TTY real si lo quieres usar
+# StandardInput=tty
+# TTYPath=/dev/tty3
+# TTYReset=yes
+# TTYVHangup=yes
+# KillMode=process
 
 # Logs en journal
 StandardOutput=journal
 StandardError=journal
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
 
 --Creamos el script de lanzamiento de labwc "/usr/local/bin/launch-labwc" con el contenido:
 
@@ -1449,18 +1443,15 @@ WantedBy=multi-user.target
 # Usar el runtime del usuario actual
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
-# Opcional: especificar display de Wayland
-# export WAYLAND_DISPLAY=wayland-0
-
 # Ejecutar LabWC
 /usr/local/bin/labwc
 
 --Lanzamos el script y comprobamos:
 
-systemctl daemon-reload
-systemctl enable wayland.service
-systemctl start wayland.service
-systemctl status wayland.service
+systemctl --user daemon-reload
+systemctl --user enable wayland.service
+systemctl --user start wayland.service
+systemctl --user status wayland.service
 
 LANZAR WAYLAND COMO SERVICIO DE SYSTEMD (PELIGRO!!!! MODO ROOT!!!! HAZLO COMO USUARIO NORMAL!!!!)
 =================================================================================================
