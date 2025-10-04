@@ -16,7 +16,7 @@ export XDG_RUNTIME_DIR=$rundir
 Si no queremos tener que establecer XDG_RUNTIME_DIR así a mano, podemos activar el servicio SYSTEMD-LOGIND,
 pero claro, eso ya depende de DBUS, etc...
 
-Actualmente, para lanzar labwc sin necesidad de tener SYSTEMD-LOGIND funcionando, lo que hago es que desde mi labwc.service
+Actualmente, para lanzar labwc sin necesidad de tener SYSTEMD-LOGIND funcionando, lo que hago es que desde mi wayland.service
 llamo a un script de lanzamiento que he creado como "/usr/local/bin/launch-labwc" donde se establece XDG_RUNTIME_DIR antes de ejecutar labwc.
 Míralo en la sección correspondiente a cómo lanzar labwc como servicio.
 
@@ -1449,12 +1449,16 @@ Esto es así porque, para acceder al vídeo, audio, etc... si te fijas nuestro u
 ya que lo normal es que hubiese que ser root para acceder directamente a ellos. Y al estar nuestro usuario en esos grupos
 y tener una sesión abierta, se puede acceder, pero al no tener sesión abierta pues no se puede sin ser root.
 La solución es usar un seat manager: los seat manager lo que hacen es dar a un usuario normal el acceso al hardware de vídeo, audio, etc,
-Están seatd, logind o elogind (elogind es una versión de logind que busca romper con las dependencias de systemd). 
-En teoría, se puede configurar seatd (hay que instalarlo antes con APT) para que no se necesite una sesión TTY activa, pero aún no sé cómo.  
-
-Otras alternativas son dejar en autologin en TTY, o instalar un display manager (DM) también llamado login manager, los más típicos son lightDM,
-GDM que es el de GNOME, y otros más viejos.
-Al final, si lo piensas, lo del autologin en TTY1 casi es lo mejor.
+Están logind (llamado "systemd-logind" que viene con systemd en Debian),
+elogind (una versión de logind que busca romper con las dependencias de systemd),
+y seatd (un seat manager independiente ligero que rompe con systemd también pero no parte de la base de logind).
+PERO hacen falta dos cosas: el seat manager, y PARA QUE EL SEAT MANAGER PUEDA DAR ACCESO AL HARDWARE AL USUARIO, EL USUARIO DEBE ESTAR LOGUEADO
+DE ALGUNA MANERA. 
+Para seat manager te vale el que viene en Debian ("systemd-logind").
+Y para hacer el login (IMPEPINABLE, NO TE MATES A INTENTAR QUE FUNCIONE UN SEAT MANAGER SIN UN LOGIN ACTIVO),
+las alternativas son dejar en autologin en TTY, o instalar un display manager (DM) también llamado login manager.
+Los más típicos son lightDM, GDM que es el de GNOME, y otros más viejos.
+Al final, si lo piensas, lo del autologin en TTY1 casi es lo mejor para un sistema ligero.
 
 LANZAR WAYLAND COMO SERVICIO DE SYSTEMD (PELIGRO!!!! MODO ROOT!!!! HAZLO COMO USUARIO NORMAL!!!!)
 =================================================================================================
