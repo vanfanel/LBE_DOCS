@@ -1443,7 +1443,8 @@ systemctl --user start wayland.service
 systemctl --user status wayland.service
 
 --Ahora el problema es que esto sólo funciona si el usuario "manuel" tiene sesión iniciada en una TTY,
-o sea que si hacemos "sudo systemctl disable getty@tty1.service" ya no arranca Wayland porque no tiene una TTY con una sesión del usuario abierta.
+o sea que si deshabilitamos el autologin en la TTY1 por ejemplo (sudo systemctl disable getty@tty1.service)
+ya no arranca Wayland porque no tiene una TTY con una sesión del usuario abierta a la que pueda engancharse.
 Esto es así porque, para acceder al vídeo, audio, etc... si te fijas nuestro usuario tiene que estar los grupos video, audio, etc..
 ya que lo normal es que hubiese que ser root para acceder directamente a ellos. Y al estar nuestro usuario en esos grupos
 y tener una sesión abierta, se puede acceder, pero al no tener sesión abierta pues no se puede sin ser root.
