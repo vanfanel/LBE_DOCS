@@ -1455,7 +1455,8 @@ y seatd (un seat manager independiente ligero que rompe con systemd también per
 PERO hacen falta dos cosas: el seat manager, y PARA QUE EL SEAT MANAGER PUEDA DAR ACCESO AL HARDWARE AL USUARIO, EL USUARIO DEBE ESTAR LOGUEADO
 DE ALGUNA MANERA. 
 Para seat manager te vale el que viene en Debian ("systemd-logind").
-Y para hacer el login (IMPEPINABLE, NO TE MATES A INTENTAR QUE FUNCIONE UN SEAT MANAGER SIN UN LOGIN ACTIVO),
+Y para hacer el login (IMPEPINABLE, NO TE MATES A INTENTAR QUE FUNCIONE UN SEAT MANAGER SIN UN LOGIN ACTIVO,
+ESO SÓLO ES POSIBLE EJECUTANDO WAYLAND COMO ROOT QUE ES ALGO QUE NO NOS INTERESA),
 las alternativas son dejar en autologin en TTY, o instalar un display manager (DM) también llamado login manager.
 Los más típicos son lightDM, GDM que es el de GNOME, y otros más viejos.
 Al final, si lo piensas, lo del autologin en TTY1 casi es lo mejor para un sistema ligero.
