@@ -1442,24 +1442,31 @@ systemctl --user enable wayland.service
 systemctl --user start wayland.service
 systemctl --user status wayland.service
 
---Ahora el problema es que esto sólo funciona si el usuario "manuel" tiene sesión iniciada en una TTY,
-o sea que si deshabilitamos el autologin en la TTY1 por ejemplo (sudo systemctl disable getty@tty1.service)
-ya no arranca Wayland porque no tiene una TTY con una sesión del usuario abierta a la que pueda engancharse.
-Esto es así porque, para acceder al vídeo, audio, etc... si te fijas nuestro usuario tiene que estar los grupos video, audio, etc..
+--Mantenemos el autologin en TTY1 (IMPRESCINDIBLE para poder lanzar Wayland como servicio de usuario!!!) 
+y le pasamos al kernel "fbcon=map:99" si no queremos que se vea el login previo a Wayland o al reiniciar/apagar.
+EXPLICACIÓN:
+Esto es así porque, para acceder al vídeo, audio, etc... nuestro usuario tiene que estar los grupos video, audio, etc..
 ya que lo normal es que hubiese que ser root para acceder directamente a ellos. Y al estar nuestro usuario en esos grupos
-y tener una sesión abierta, se puede acceder, pero al no tener sesión abierta pues no se puede sin ser root.
-La solución es usar un seat manager: los seat manager lo que hacen es dar a un usuario normal el acceso al hardware de vídeo, audio, etc,
-Están logind (llamado "systemd-logind" que viene con systemd en Debian),
+y tener una sesión abierta, se puede acceder, pero eso, se necesita una sesión de ese usuario abierta.
+Lo que nos da acceso al hardware es un seat manager: un seat manager lo que hace es dar a un usuario normal
+el acceso al hardware de vídeo, audio, etc.
+Tenemos varios seat manager: logind (llamado "systemd-logind" que viene con systemd en Debian),
 elogind (una versión de logind que busca romper con las dependencias de systemd),
 y seatd (un seat manager independiente ligero que rompe con systemd también pero no parte de la base de logind).
-PERO hacen falta dos cosas: el seat manager, y PARA QUE EL SEAT MANAGER PUEDA DAR ACCESO AL HARDWARE AL USUARIO, EL USUARIO DEBE ESTAR LOGUEADO
-DE ALGUNA MANERA. 
+PERO HACEN FALTA LAS DOS COSAS: EL SEAT MANAGER, y PARA QUE EL SEAT MANAGER PUEDA DAR ACCESO AL HARDWARE AL USUARIO,
+EL USUARIO DEBE ESTAR LOGUEADO EN EL SISTEMA DE ALGUNA MANERA. 
 Para seat manager te vale el que viene en Debian ("systemd-logind").
-Y para hacer el login (IMPEPINABLE, NO TE MATES A INTENTAR QUE FUNCIONE UN SEAT MANAGER SIN UN LOGIN ACTIVO,
-ESO SÓLO ES POSIBLE EJECUTANDO WAYLAND COMO ROOT QUE ES ALGO QUE NO NOS INTERESA),
-las alternativas son dejar en autologin en TTY, o instalar un display manager (DM) también llamado login manager.
+NO TE MATES A INTENTAR QUE FUNCIONE UN SEAT MANAGER SIN UN LOGIN ACTIVO, ESO SÓLO ES POSIBLE EJECUTANDO WAYLAND COMO ROOT
+QUE ES ALGO QUE NO NOS INTERESA.
+Para el autologin en el sistema, las alternativas son dejar el autologin en TTY,
+o instalar un display manager (DM) también llamado login manager.
 Los más típicos son lightDM, GDM que es el de GNOME, y otros más viejos.
-Al final, si lo piensas, lo del autologin en TTY1 casi es lo mejor para un sistema ligero.
+Al final, si lo piensas, lo del autologin en TTY1 casi es lo mejor para un sistema ligero: EL AUTOLOGIN EN TTY1 HACE LAS VECES DE UN DM.
+Si tienes autologin en TTY1 pero no quieres que se vea nada de ese login en la consola porque luego lanzas Wayland,
+puedes añadir a los parámetros del kernel "fbcon=map:99", ya que eso manda FBCON a la TTY 99 que no existe, o compilar un kernel sin FBCON.
+El resto de técnicas para que no se vea el login (pasar cosas como "console=null", o "video=...") no funcionan,
+el framebuffer que usas es "amdgpudrmfb" (lo ponemos ver con "cat /proc/fb") y forma parte del sistema DRM del driver AMD del kernel
+y no se puede deshabilitar por separado.
 
 LANZAR WAYLAND COMO SERVICIO DE SYSTEMD (PELIGRO!!!! MODO ROOT!!!! HAZLO COMO USUARIO NORMAL!!!!)
 =================================================================================================
