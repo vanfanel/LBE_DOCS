@@ -1119,13 +1119,15 @@ pipewire
 default
     Default ALSA Output (currently PipeWire Media Server)
 
---Para que funcione como root, editamos los fichreos del servicio y el socket de pipewire
+		BLOQUE NO RECOMENDADO, PIPEWIRE ESTÁ PENSADO PARA FUNCIONAR COMO USUARIO NORMAL.
+Para que funcione como root, editamos los fichreos del servicio y el socket de pipewire
 y comentamos en cada uno de ellos la línea "ConditionUser=!root":
 vim /usr/lib/systemd/user/pipewire.service
 vim /usr/lib/systemd/user/pipewire.socket
 (NOTA: En realidad, deberíamos usar overrides para esto, pero no se puede porque por política los overrides no pueden modificar
 una "Condition" del fichero base de un servicio... Así que de momento hacemos esto, aunque en teoría se perderán las modificaciones
 con cada actualización).
+		FIN BLOQUE NO RECOMENDADO
 
 --Lanzamos el servicio sin reiniciar así:
 systemctl --user start pipewire.service
@@ -1164,6 +1166,25 @@ context.properties = {
     default.clock.max-quantum = 512		# Máximo que un programa puede obtener.
     default.clock.quantum-limit = 2048  # Máximo permitido para condiciones anómalas.
 }
+
+			PIPEWIRE CON PRIORIDAD REALTIME
+			
+--Nos aseguramos de que nuestro usuario esté en el grupo "audio" con "groups <usuario>"
+  Si no lo está, le añadimos con "sudo usermod -aG audio <usuario>"
+
+--Comprobamos que rtkit está funcionando porque es lo que le va a dar prioridad realtime a pipewire, con "systemctl status rtkit-daemon".
+
+--Comprobamos que PIPEWIRE está con prioridad realtime con "ps -eLo pid,cls,rtprio,ni,cmd | grep pipewire"
+que nos debería mostrar "FF" o "RR" en la segunda columna (es la columna "CLS" si te fijas en lo que le estás pidiendo a "ps").
+Si nos muestra "TS", es que NO está en modo realtime sino en "NORMAL TIME SHARING".	
+En la columna "RTPRIO", que es la tercera, veremos un número que debería ser lo más alto posible,
+pero que al parecer lo normal es que sea 20 como máximo para usuarios normales.
+
+--NOTA: La lógica sería que había que modificar los RLIMITS creando un /etc/security/limits.d/audio.conf con el contenido:
+@audio - rtprio 95
+@audio - memlock unlimited
+...Y además crear algo como /usr/share/pipewire/pipewire.conf.d/99-rtkit.conf donde se le pida un "rt.prio" mayor aún que 20,
+pero hacer estas dos cosas no surte ningún efecto. No está claro que se necesite un RTPRIO mayor que 20 tampoco.
 
 			EXPLICACIÓN TÉCNICA DE LOS VALORES
 	
