@@ -1198,6 +1198,26 @@ MUY IMPORTANTE: REINICIAMOS SESIÓN DE USUARIO Y COMPROBAMOS QUE HA SIDO AÑADID
 @realtime - nice -11
 MUY IMPORTANTE: REINICIAMOS SESIÓN de USUARIO (MUY IMPORTANTE!!) y comprobamos que los rlimits se han aplicado con "ulimit -a"
 
+--Vamos a cargar el módulo libpipewire-rtkit. Para ello, creamos /usr/share/pipewire/pipewire.conf.d/10-rtkit.conf con el contenido:
+context.modules = [
+    {   name = libpipewire-module-rtkit
+        args = {
+            nice.level    = -11
+            rt.prio      = 88
+            rt.time.soft = 2000000
+            rt.time.hard = 2000000
+        }
+        flags = [ ifexists nofail ]
+    }
+]
+MUY IMPORTANTE: REINICIAMOS PIPEWIRE CON "" Y CONFIRMAMOS QUE EL MÓDULO ESTÁ CARGADO CON "pw-cli list-objects |grep rtkit"
+NOS TIENE QUE SALIR: module.name = "libpipewire-module-rtkit"
+
+--Deshabilitamos la cadena de filtros que trae pipewire por defecto:
+sudo mv /usr/share/pipewire/filter-chain.conf /usr/share/pipewire/filter-chain.conf.bak
+
+--Comprobamos que PIPEWIRE tiene al fin prioriad realtime, con "ps -eo pid,user,comm,rtprio,ni | grep pipewire".
+
 			EXPLICACIÓN TÉCNICA DE LOS VALORES
 	
 Un quantum de 512 significa que "el audio se ejecuta cada 512 samples". Es decir, que pipewire recoje el audio del cliente cada 512 samples.
