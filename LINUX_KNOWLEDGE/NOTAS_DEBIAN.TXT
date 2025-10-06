@@ -1180,11 +1180,23 @@ Si nos muestra "TS", es que NO está en modo realtime sino en "NORMAL TIME SHARI
 En la columna "RTPRIO", que es la tercera, veremos un número que debería ser lo más alto posible,
 pero que al parecer lo normal es que sea 20 como máximo para usuarios normales.
 
---NOTA: La lógica sería que había que modificar los RLIMITS creando un /etc/security/limits.d/audio.conf con el contenido:
-@audio - rtprio 95
+--Metemos a nuestro usuario en el grupo "realtime" (creamos el grupo antes)
+# Verificar si el grupo existe
+getent group realtime
+# Si no existe, crearlo
+sudo groupadd -r realtime
+# Añadimos al usuario al grupo:
+sudo usermod -a -G realtime $USER
+MUY IMPORTANTE: REINICIAMOS SESIÓN DE USUARIO Y COMPROBAMOS QUE HA SIDO AÑADIDO AL GRUPO "realtime" CON EL COMANDO "groups".
+
+--Creamos /etc/security/limits.d/99-realtime.conf con el contenido:
+@audio - rtprio 99
+@realtime - rtprio 99
 @audio - memlock unlimited
-...Y además crear algo como /usr/share/pipewire/pipewire.conf.d/99-rtkit.conf donde se le pida un "rt.prio" mayor aún que 20,
-pero hacer estas dos cosas no surte ningún efecto. No está claro que se necesite un RTPRIO mayor que 20 tampoco.
+@realtime - memlock unlimited
+@audio - nice -11
+@realtime - nice -11
+MUY IMPORTANTE: REINICIAMOS SESIÓN de USUARIO (MUY IMPORTANTE!!) y comprobamos que los rlimits se han aplicado con "ulimit -a"
 
 			EXPLICACIÓN TÉCNICA DE LOS VALORES
 	
