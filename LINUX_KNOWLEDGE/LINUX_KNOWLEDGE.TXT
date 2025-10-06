@@ -1384,7 +1384,7 @@ Alsathread) con 32ms de latencia.
 
 ******Usar PCSX2 STANDALONE en GNU/Linux*************
 
-Si lo vamos a ejecutar como usuario normal (lo más normal), tenemos que instalar fuse antes:
+Si lo vamos a ejecutar como usuario normal (lo más normal), tenemos que instalar fuse antes o no funcionan las appimages:
 sudo apt-get install fuse
 
 Nos bajamos el último AppImage de: https://github.com/PCSX2/pcsx2/releases
