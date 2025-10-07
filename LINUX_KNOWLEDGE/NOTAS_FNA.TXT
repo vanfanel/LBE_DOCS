@@ -159,7 +159,7 @@ Configuramos y compilamos con meson así:
 CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 meson setup -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
--Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled -Draop=disabled -Dopus=disabled ..
+-Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled -Draop=disabled -Dopus=disabled -Dalsa=enabled ..
 
 ninja -j4
 sudo ninja install
@@ -172,7 +172,7 @@ Ahora editamos "/usr/local/share/pipewire/minimal.conf", y:
 -En el dispositivo "sink", que está justo debajo (los sink son los dispositivos que "consumen" audio) hacemos los siguientes cambios:
 	-Ponemos el valor "device" a "hdmi:vc4hdmi0"
 	-Ponemos a false los valores "resample.disable" y "channelmix.disable"
-	-Descomentamos la sección "node.param.Props", donde como ves se espedifica el formato del audio a S16 y esto es necesario.
+	-Descomentamos la sección "node.param.Props", donde como ves se especifica el formato del audio a S16 y esto es necesario.
 	-Ponemos "support.dbus" a "false"
 
 ====SUB-BLOQUE INSTALAR WIREPLUMBER=====
