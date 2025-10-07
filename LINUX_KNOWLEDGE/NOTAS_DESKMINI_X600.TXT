@@ -104,6 +104,19 @@ apt-get install firmware-amd-graphics
 
 ----OPCIÓN 1: Sonido por DisplayPort/HDMI
 (NOTA: Esto es para usar la salida de vídeo DisplayPort, si usas HDMI donde pone 8 pon un 3).
+
+pcm.!default {
+        type hw
+        card Generic
+        device 8
+}
+
+ctl.!default {
+        type hw
+        card Generic
+}
+
+...O SI QUIERES SONIDO CON DMIX A DEMANDA:
 (NOTA: Lo de pcm.dmixed y lo de @hooks es para luego poder activar y desactivar dmix a demanda, para los juegos FNA.
 Si no vas a usar juegos FNA, no hacen falta esas secciones).
 
@@ -127,6 +140,18 @@ ctl.!default {
 }
                                                                                                                                        
 @hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
+
+...O SI SIMPLEMENTE QUIERES SONIDO CON DMIX:
+pcm.!default {
+        type dmix
+        ipc_key 1234
+        slave {
+                pcm "hw:Generic,8"
+                period_time 0       # desactiva autoajuste
+        		period_size 1024    # tamaño de cada periodo (en frames)
+        		buffer_size 8192    # tamaño total del buffer
+        }
+}
 
 ----Opción 2: Sonido por jack delantero
 

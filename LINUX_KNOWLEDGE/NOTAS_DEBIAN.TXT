@@ -647,7 +647,9 @@ CON GLES, GLES2, OPENGL COMPLETO, VULKAN Y AUDIO SOBRE PIPEWIRE SOLAMENTE, COMO 
 
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
-./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio --disable-video-rpi --disable-dummyaudio --disable-video-dummy --enable-video-offscreen --enable-video-opengles --enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-alsa --enable-pipewire
+./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio \
+--disable-video-rpi --disable-dummyaudio --disable-video-dummy --disable-video-offscreen --enable-video-opengles \
+--enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-alsa --enable-pipewire
 
 (PARA SISTEMAS EMBEDIDOS O CON MUY POCA POTENCIA, PODEMOS PASARLE --diable-libsamplerate, QUE HACE QUE SDL2 RESAMPLEE USANDO SUS ALGORITMOS INTERNOS
  QUE SON DE MENOR CALIDAD Y METEN MÁS RUIDO PERO SON MUCHO MÁS RÁPIDOS).
@@ -1118,16 +1120,6 @@ pipewire
     PipeWire Sound Server
 default
     Default ALSA Output (currently PipeWire Media Server)
-
-		BLOQUE NO RECOMENDADO, PIPEWIRE ESTÁ PENSADO PARA FUNCIONAR COMO USUARIO NORMAL.
-Para que funcione como root, editamos los fichreos del servicio y el socket de pipewire
-y comentamos en cada uno de ellos la línea "ConditionUser=!root":
-vim /usr/lib/systemd/user/pipewire.service
-vim /usr/lib/systemd/user/pipewire.socket
-(NOTA: En realidad, deberíamos usar overrides para esto, pero no se puede porque por política los overrides no pueden modificar
-una "Condition" del fichero base de un servicio... Así que de momento hacemos esto, aunque en teoría se perderán las modificaciones
-con cada actualización).
-		FIN BLOQUE NO RECOMENDADO
 
 --Lanzamos el servicio sin reiniciar así:
 systemctl --user start pipewire.service

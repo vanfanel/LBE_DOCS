@@ -168,7 +168,7 @@ Configuramos y compilamos con meson así:
 
 CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
-meson -Dsession-managers='' -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
+meson setup -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
 -Dv4l2=disabled -Dpipewire-v4l2=disabled -Dudev=disabled -Ddbus=disabled -Dman=disabled ..
 
 ninja -j4
@@ -186,27 +186,6 @@ Ahora editamos "/usr/local/share/pipewire/minimal.conf", y:
 	-Ponemos "support.dbus" a "false"
 
 ====SUB-BLOQUE INSTALAR WIREPLUMBER=====
-
-Ahora instalamos WIREPLUMBER, que conecta cada programa SDL2 con PIPEWIRE.
-(WIREPLUMBER es un session manager para programas que usan PIPEWIRE, y "/usr/local/share/pipewire/minimal.conf"
-es una configuración especial que vale PRECISAMENTE para cuando queremos usar PIPEWIRE sin un session manager en el sistema,
-y queremos que WIREPLUMBER sea el session manager para los programas que usan PIPEWIRE.
-Si tuviéramos un session manager en el sistema, usaríamos el pipewire.conf "normal", no el minimal, pero no es nuestro caso).
-
-Nos bajamos la última estable de:
-https://gitlab.freedesktop.org/pipewire/wireplumber/-/releases
-
-Configuramos y compilamos así:
-
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
-meson ..
-
-ninja -j4
-ninja install
 
 Ahora tenemos que configurar wireplumber para que funcione sin DBUS, sin LOGIND y sin V4L2.
 Para ello, tenemos que editar una serie de ficheros en /usr/local/share/wireplumber, que pasamos a detallar:
