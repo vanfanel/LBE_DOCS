@@ -1196,6 +1196,12 @@ MUY IMPORTANTE: REINICIAMOS SESIÓN DE USUARIO Y COMPROBAMOS QUE HA SIDO AÑADID
 @audio - nice -11
 MUY IMPORTANTE: REINICIAMOS SESIÓN de USUARIO (MUY IMPORTANTE!!) y comprobamos que los rlimits se han aplicado con "ulimit -a"
 
+--Comprobamos que el proceso pipewire realmente podría, si quisiera, tener prioridad realtime:
+systemctl --user show pipewire.service |grep RTPRIO
+...Nos tiene que salir algo como:
+LimitRTPRIO=99
+LimitRTPRIOSoft=99
+
 --Comprobamos que PIPEWIRE tiene al fin prioriad realtime, con "ps -eo pid,user,comm,rtprio,ni | grep pipewire".
   Nos tiene que salir que tiene FF o RR, pero NO TS porque eso es SCHED_OTHER.
 
