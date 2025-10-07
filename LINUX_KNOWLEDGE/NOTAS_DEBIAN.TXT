@@ -1200,6 +1200,9 @@ MUY IMPORTANTE: REINICIAMOS SESIÓN de USUARIO (MUY IMPORTANTE!!) y comprobamos 
 --Comprobamos que PIPEWIRE tiene al fin prioriad realtime, con "ps -eo pid,user,comm,rtprio,ni | grep pipewire".
   Nos tiene que salir que tiene FF o RR, pero NO TS porque eso es SCHED_OTHER.
 
+--También podemos ver la prioridad de los hilos que se crean mientras ejecutamos cosas con audio, usando:
+watch -n 0.5 'ps -eLo pid,tid,comm,policy,rtprio,ni | grep pipewire'
+
 			EXPLICACIÓN TÉCNICA DE LOS VALORES
 	
 Un quantum de 512 significa que "el audio se ejecuta cada 512 samples". Es decir, que pipewire recoje el audio del cliente cada 512 samples.
