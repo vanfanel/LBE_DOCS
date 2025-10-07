@@ -147,19 +147,9 @@ borrar el siguiente bloque).
 ADEMÁS, necesitamos un session manager que conecte los programas con el PIPEWIRE. Ese session manager es el WIREPLUMBER,
 que lo vamos a instalar también. Veamos....
 
-========================================================================================
-==BLOQUE PARA COMPILAR E INSTALAR PIPEWIRE + WIREPLUMBER A MANO EN DEBIAN 11 BULLSEYE ==
-========================================================================================
-
-Lo primero es instalar los últimos MESON y NINJA, porque los que trae DEBIAN 11 BULLSEYE son viejos y las versiones
-actuales de pipewire necesitan versiones actuales para compilar:
-sudo apt-get purge ninja meson
-sudo apt install python3-pip --no-install-recommends
-python3 -m pip install ninja
-python3 -m pip install meson
-PATH="/usr/local/bin:$PATH"
-
-VAMOS CON PIPEWIRE EN SÍ:
+============================================================================
+==BLOQUE PARA COMPILAR E INSTALAR PIPEWIRE + WIREPLUMBER A MANO EN DEBIAN ==
+============================================================================
 
 Nos bajamos la última release de aquí:
 https://gitlab.freedesktop.org/pipewire/pipewire/-/releases
@@ -169,7 +159,7 @@ Configuramos y compilamos con meson así:
 CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 meson setup -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
--Dv4l2=disabled -Dpipewire-v4l2=disabled -Dudev=disabled -Ddbus=disabled -Dman=disabled -Draop=disabled -Dopus=disabled ..
+-Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled -Draop=disabled -Dopus=disabled ..
 
 ninja -j4
 sudo ninja install
@@ -218,9 +208,9 @@ Si queremos debuguear, podemos pasarle a pipewire: "-v", y luego permanecer aten
 lancemos algo que use PIPEWIRE.
 También deberíamos pasarle a la línea del juego: "PIPEWIRE_DEBUG=3", para ver errores y/o warnings del backend PIPEWIRE de las SDL2.
 
-==================================================================================
-==FIN BLOQUE PARA COMPILAR E INSTALAR PIPEWIRE + WIREPLUMBER A MANO EN DEBIAN 11==
-==================================================================================
+===============================================================================
+==FIN BLOQUE PARA COMPILAR E INSTALAR PIPEWIRE + WIREPLUMBER A MANO EN DEBIAN==
+===============================================================================
 
 PARA LANZAR UN JUEGO FNA USANDO SDL2 QUE A SU VEZ USE EL BACKEND PIPEWIRE DE SDL2, HACEMOS:
 
