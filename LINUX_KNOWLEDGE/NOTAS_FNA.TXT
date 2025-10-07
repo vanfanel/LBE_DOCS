@@ -166,19 +166,13 @@ sudo ninja install
 sudo ldconfig
 (OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
 
-====SUB-BLOQUE CONFIGURAR WIREPLUMBER=====
-
-Wireplumber se compila e instala al compilar e instalar pipewire (a no ser que le dijésemos que no lo haga, cosa que NO hemos hecho).
-Así que ahora sólo tenemos que configurarlo.
-
---Para que no nos de errores de BLUEZ y V4L2, editamos /usr/local/share/wireplumber/wireplumber.conf
+--Wireplumber se compila e instala al compilar e instalar pipewire (a no ser que le dijésemos que no lo haga, cosa que NO hemos hecho).
+Para que no nos de errores de BLUEZ y V4L2, editamos /usr/local/share/wireplumber/wireplumber.conf
 y buscamos estas líneas y las ponemos a "disabled":
 hardware.bluetooth = required
 hardware.video-capture = required
 
-====FIN SUB-BLOQUE INSTALAR WIREPLUMBER====
-
-Y YA PODEMOS LANZAR UN PROGRAMA SDL2 SOBRE PIPEWIRE CON UN SCRIPT DE ESTE ESTILO:
+--YA PODEMOS LANZAR UN PROGRAMA SDL2 SOBRE PIPEWIRE CON UN SCRIPT DE ESTE ESTILO:
 
 #Get things ready...
 pipewire &
