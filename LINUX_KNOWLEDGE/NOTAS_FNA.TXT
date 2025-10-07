@@ -172,16 +172,13 @@ y buscamos estas líneas y las ponemos a "disabled":
 hardware.bluetooth = required
 hardware.video-capture = required
 
---PROBAMOS A LANZAR UN PROGRAMA SDL2 SOBRE PIPEWIRE:
+--PROBAMOS A LANZAR UN PROGRAMA SDL2 SOBRE PIPEWIRE ASÍ:
 
-#Get things ready...
 pipewire &
 wireplumber &
 
-#Run something SDL2 using PIPEWIRE
 SDL_AUDIODRIVER=pipewire ./prince.bin
 
-#Kill PIPEWIRE and WIREPLUMBER
 pkill wireplumber
 pkill pipewire
 
@@ -190,6 +187,7 @@ pkill pipewire
     se instalan en /usr/local/lib/x86_64-linux-gnu/alsa-lib en vez de en /usr/lib/x86_64-linux-gnu/alsa-lib que es donde ALSA
     los busca normalmente. Así que le decimos a ALSA dónde buscar los plugins con:
     export ALSA_PLUGIN_DIR=/usr/local/lib/x86_64-linux-gnu/alsa-lib
+    NOTA: LA IDEA es que este export se haga en el nuestro script de lanzamiento de pipewire + wireplumber.
 ----Y para que cargue los .so que son los plugins
     (al decirle "type pipewire" ALSA buscará los plugins llamados "libasound_module_ctl_pipewire.so" y "libasound_module_pcm_pipewire.so",
      si le dijésemos "type pepito" buscaría "libasound_module_ctl_pepito.so" y "libasound_module_pcm_pepito.so")
