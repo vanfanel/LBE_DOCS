@@ -159,43 +159,30 @@ Configuramos y compilamos con meson así:
 CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 meson setup -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
--Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled -Draop=disabled -Dopus=disabled -Dalsa=enabled ..
+-Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled -Draop=disabled -Dopus=disabled ..
 
 ninja -j4
 sudo ninja install
-sudo rm /etc/ld.so.cache
 sudo ldconfig
 (OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
 
-Ahora editamos "/usr/local/share/pipewire/minimal.conf", y:
--Comentamos el dispositivo "source" (porque la Pi no tiene dispositivo de grabación, y si no lo comentamos da error).
--En el dispositivo "sink", que está justo debajo (los sink son los dispositivos que "consumen" audio) hacemos los siguientes cambios:
-	-Ponemos el valor "device" a "hdmi:vc4hdmi0"
-	-Ponemos a false los valores "resample.disable" y "channelmix.disable"
-	-Descomentamos la sección "node.param.Props", donde como ves se especifica el formato del audio a S16 y esto es necesario.
-	-Ponemos "support.dbus" a "false"
+====SUB-BLOQUE CONFIGURAR WIREPLUMBER=====
 
-====SUB-BLOQUE INSTALAR WIREPLUMBER=====
+Wireplumber se compila e instala al compilar e instalar pipewire (a no ser que le dijésemos que no lo haga, cosa que NO hemos hecho).
+Así que ahora sólo tenemos que configurarlo.
 
-Ahora tenemos que configurar wireplumber para que funcione sin DBUS, sin LOGIND y sin V4L2.
-Para ello, tenemos que editar una serie de ficheros en /usr/local/share/wireplumber, que pasamos a detallar:
--En "/usr/local/share/wireplumber/main.lua.d/50-alsa-config.lua" ponemos "alsa.reserve" a "false"
--En "/usr/local/share/wireplumber/main.lua.d/50-default-access-config.lua" ponemos "enable-flatpak-portal" a "false"
--En "/usr/local/share/wireplumber/main.lua.d/50-v4l2-config.lua" ponemos "v4l2_monitor.enabled" a "false"
--En "/usr/local/share/wireplumber/bluetooth.lua.d/50-bluez-config.lua" ponemos "bluez_monitor.enabled" a "false"
--En los ficheros: 
-	"/usr/local/share/wireplumber/policy.conf"
-	"/usr/local/share/wireplumber/main.conf"	
-	"/usr/local/share/wireplumber/wireplumber.conf"
-	...ponemos en todos ellos "support.dbus" a "false"
+--Para que no nos de errores de BLUEZ y V4L2, editamos /usr/local/share/wireplumber/wireplumber.conf
+y buscamos estas líneas y las ponemos a "disabled":
+hardware.bluetooth = required
+hardware.video-capture = required
 
 ====FIN SUB-BLOQUE INSTALAR WIREPLUMBER====
 
 Y YA PODEMOS LANZAR UN PROGRAMA SDL2 SOBRE PIPEWIRE CON UN SCRIPT DE ESTE ESTILO:
 
 #Get things ready...
-XDG_RUNTIME_DIR=/tmp pipewire -c /usr/local/share/pipewire/minimal.conf &
-XDG_RUNTIME_DIR=/tmp wireplumber &
+pipewire &
+wireplumber &
 
 #Run something SDL2 using PIPEWIRE
 XDG_RUNTIME_DIR=/tmp PIPEWIRE_LOG_SYSTEMD=false SDL_AUDIODRIVER=pipewire ./prince.bin
