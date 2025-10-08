@@ -261,8 +261,32 @@ ListenStream=%t/pipewire-0-manager
 [Install]
 WantedBy=sockets.target
 
-----Activamos el servicio, lo lanzamos y comprobamos que se está ejecutando correctamente:
+----Creamos ".config/systemd/user/wireplumber.service" con el contenido:
+[Unit]
+Description=Multimedia Service Session Manager
+After=pipewire.service
+BindsTo=pipewire.service
+Conflicts=pipewire-media-session.service
+
+[Service]
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+Type=simple
+ExecStart=/usr/local/bin/wireplumber
+Restart=on-failure
+Slice=session.slice
+Environment=GIO_USE_VFS=local
+
+[Install]
+WantedBy=pipewire.service
+
+----Activamos ambos servicios, lanzamos el servicio de pipewire (ya se encargará la unit de pipewire de lanzar la de wireplumber)
+y comprobamos que se está ejecutando correctamente:
 systemctl --user enable pipewire
+systemctl --user enable wireplumber
 systemctl --user start pipewire
 systemctl --user status pipewire
 
