@@ -295,6 +295,13 @@ systemctl --user status pipewire
 
 --FIN BLOQUE Para que Pipewire se inicie automáticamente como servicio.
 
+--RECUERDA: Podemos ver la prioridad de los hilos creados por Pipewire con:
+ps -eLo pid,tid,comm,policy,rtprio,ni | grep $(pidof pipewire)
+OJO!!!! El hilo principal "pipewire" NO tendrá prioridad RT ni tiene por qué tenerla,
+pero los hilos de audio que crea, SÍ que nos saldrán con FF y 88!!!!
+(O el valor de RTPrio que tengamos en el argumento "rt.prio" del módulo "libpipewire-module-rt"
+ en /usr/local/share/pipewire/pipewire.conf)
+
 ===============================================================================
 ==FIN BLOQUE PARA COMPILAR E INSTALAR PIPEWIRE + WIREPLUMBER A MANO EN DEBIAN==
 ===============================================================================
