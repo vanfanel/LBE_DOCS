@@ -220,7 +220,8 @@ pkill wireplumber
 pkill pipeqire
     ...Y debería sonar.
 
---Para que Pipewire se inicie automáticamente como servicio:
+--BLOQUE Para que Pipewire se inicie automáticamente como servicio:
+
 ----Creamos ".config/systemd/user/pipewire.service" con el contenido:
 [Unit]
 Description=PipeWire Multimedia Service
@@ -246,6 +247,7 @@ Slice=session.slice
 [Install]
 Also=pipewire.socket
 WantedBy=default.target
+
 ----Creamos ".config/systemd/user/pipewire.socket" con el contenido:
 [Unit]
 Description=PipeWire Multimedia System Sockets
@@ -258,6 +260,13 @@ ListenStream=%t/pipewire-0-manager
 
 [Install]
 WantedBy=sockets.target
+
+----Activamos el servicio, lo lanzamos y comprobamos que se está ejecutando correctamente:
+systemctl --user enable pipewire
+systemctl --user start pipewire
+systemctl --user status pipewire
+
+--FIN BLOQUE Para que Pipewire se inicie automáticamente como servicio.
 
 Si queremos debuguear, podemos pasarle a pipewire: "-v", y luego permanecer atentos a los errores y/o warnings cuando
 lancemos algo que use PIPEWIRE.
