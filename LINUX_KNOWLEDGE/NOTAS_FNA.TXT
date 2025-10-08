@@ -212,8 +212,52 @@ pcm.!default {
 ctl.!default {
     type pipewire
 }
-----Probamos pipewire-alsa con: speaker-test -D pipewire
+----Probamos pipewire-alsa con:
+pipewire &
+wireplumber &
+speaker-test -D pipewire
+pkill wireplumber
+pkill pipeqire
     ...Y debería sonar.
+
+--Para que Pipewire se inicie automáticamente como servicio:
+----Creamos ".config/systemd/user/pipewire.service" con el contenido:
+[Unit]
+Description=PipeWire Multimedia Service
+# Un socket en el contexto de systemd es lo que usan los programas
+# para comunicarse con un servicio del sistema.
+# Nos interesa que Pipewire se lance mediante socket porque así sólo corre
+# cuando un programa usa el audio, no está corriendo todo el rato.
+Requires=pipewire.socket dbus.service 
+ConditionUser=!root
+
+[Service]
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+RestrictNamespaces=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+Type=simple
+ExecStart=/usr/local/bin/pipewire
+Restart=on-failure
+Slice=session.slice
+
+[Install]
+Also=pipewire.socket
+WantedBy=default.target
+----Creamos ".config/systemd/user/pipewire.socket" con el contenido:
+[Unit]
+Description=PipeWire Multimedia System Sockets
+ConditionUser=!root
+
+[Socket]
+Priority=6
+ListenStream=%t/pipewire-0
+ListenStream=%t/pipewire-0-manager
+
+[Install]
+WantedBy=sockets.target
 
 Si queremos debuguear, podemos pasarle a pipewire: "-v", y luego permanecer atentos a los errores y/o warnings cuando
 lancemos algo que use PIPEWIRE.
