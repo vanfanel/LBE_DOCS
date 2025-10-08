@@ -167,10 +167,14 @@ sudo ldconfig
 (OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
 
 --Wireplumber se compila e instala al compilar e instalar pipewire (a no ser que le dijésemos que no lo haga, cosa que NO hemos hecho).
-Para que no nos de errores de BLUEZ y V4L2, editamos /usr/local/share/wireplumber/wireplumber.conf
+Pero de entrada da unos errores que queremos quitar:
+----Para que no nos de errores de BLUEZ y V4L2, editamos /usr/local/share/wireplumber/wireplumber.conf
 y buscamos estas líneas y las ponemos a "disabled":
 hardware.bluetooth = required
 hardware.video-capture = required
+----Para que no nos de errores tipo "assertion 'already_registered_dispatcher == self' failed"
+editamos /usr/local/share/wireplumber/wireplumber.conf, buscamos "automute-alsa-routes" y comentamos esa sección incluida las llaves,
+y justo debajo en la sección "policy.device.routes" quitamos de los wants el "hooks.device.routes.automute-alsa".
 
 --PROBAMOS A LANZAR UN PROGRAMA SDL2 SOBRE PIPEWIRE ASÍ:
 
