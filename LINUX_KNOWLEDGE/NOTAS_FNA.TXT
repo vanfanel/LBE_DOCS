@@ -189,14 +189,15 @@ pkill pipewire
 --Ahora ponemos a punto pipewire-alsa, la capa de emulación de ALSA sobre PIPEWIRE.
 ----Al ser una compilación nuestra de PIPEWIRE, los plugins que PIPEWIRE le mete a ALSA para que ALSA corra sobre PIPEWIRE
     se instalan en /usr/local/lib/x86_64-linux-gnu/alsa-lib en vez de en /usr/lib/x86_64-linux-gnu/alsa-lib que es donde ALSA
-    los busca normalmente. Así que le decimos a ALSA dónde buscar los plugins con:
-    export ALSA_PLUGIN_DIR=/usr/local/lib/x86_64-linux-gnu/alsa-lib
-    NOTA: LA IDEA es que este export se haga en el nuestro script de lanzamiento de pipewire + wireplumber.
-----Y para que cargue los .so que son los plugins
-    (al decirle "type pipewire" ALSA buscará los plugins llamados "libasound_module_ctl_pipewire.so" y "libasound_module_pcm_pipewire.so",
-     si le dijésemos "type pepito" buscaría "libasound_module_ctl_pepito.so" y "libasound_module_pcm_pepito.so")
-    creamos /etc/asound.conf con el contenido:
-    
+    los busca normalmente. Así que le decimos a ALSA dónde buscar los plugins.
+    Para que lo vean los programas gráficos lanzados desde Wayland, creamos "~/.config/environment.d/pipewire.conf" con el contenido: 
+	ALSA_PLUGIN_DIR=/usr/local/lib/x86_64-linux-gnu/alsa-lib
+	Para que lo vean los programas lanzados desde la terminal o desde SSH, añadimos a .bashrc:
+	export ALSA_PLUGIN_DIR=/usr/local/lib/x86_64-linux-gnu/alsa-lib
+----Y para que cargue los plugins, que físicamente son unas librerías .so, creamos /etc/asound.conf con el contenido:    
+
+# Al decirle "type pipewire" ALSA buscará los plugins llamados "libasound_module_ctl_pipewire.so" y "libasound_module_pcm_pipewire.so".
+# Si le dijésemos "type pepito" buscaría "libasound_module_ctl_pepito.so" y "libasound_module_pcm_pepito.so")
 pcm.pipewire {
     type pipewire
 }
@@ -291,10 +292,6 @@ systemctl --user start pipewire
 systemctl --user status pipewire
 
 --FIN BLOQUE Para que Pipewire se inicie automáticamente como servicio.
-
-Si queremos debuguear, podemos pasarle a pipewire: "-v", y luego permanecer atentos a los errores y/o warnings cuando
-lancemos algo que use PIPEWIRE.
-También deberíamos pasarle a la línea del juego: "PIPEWIRE_DEBUG=3", para ver errores y/o warnings del backend PIPEWIRE de las SDL2.
 
 ===============================================================================
 ==FIN BLOQUE PARA COMPILAR E INSTALAR PIPEWIRE + WIREPLUMBER A MANO EN DEBIAN==
