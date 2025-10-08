@@ -46,17 +46,16 @@ wireless-power off
 -Ponemos el governor a PERFORMANCE.
 
 OPCIÓN 1 (RECOMENDADO): Lo más sencillo es añadir a la línea de comandos del kernel: cpufreq.default_governor=performance
-Y si estás en la raspberry Pi (en Debian normal de X86 no hace falta), deshabilita el servicio raspi-config,
+Si estás en la raspberry Pi (en Debian normal de X86 no hace falta), deshabilita el servicio raspi-config,
 por si establece otro valor contradictorio.
-OPCIÓN 2 (EN LA RASPBERRY PI Y NO RECOMENDADO): Edita /etc/init.d/raspi-config y en la línea de CPU_DEFAULT_GOVERNOR cambiar "ondemand" por "performance". Luego obviamente NO deshabilites el servicio "raspi-config.service" porque es el que aplica el governor.
-EN AMBOS CASOS, PUEDES COMPROBARLO CON:
+PUEDES COMPROBARLO CON DESPUÉS DE ARRANCAR CON:
 cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
--Crear el usuario pi:
-sudo adduser pi
-sudo adduser pi sudo
-sudo adduser pi audio
-sudo adduser pi video
+-Crear el usuario:
+sudo adduser manuel
+sudo adduser manuel sudo
+sudo adduser manuel audio
+sudo adduser manuel video
 (Esto último es importante, porque has estado dando vueltas y el kernel sí reconocía el audio interno y la hifiberry (cat /proc/asound/cards)
 pero aplay -L no listaba los dispositivos...¡porque no estabas en el grupo audio!)
 
@@ -156,30 +155,14 @@ Editamos /etc/bash.bashrc y descomentamos la sección correspondiente (busca "co
 ***BLOQUE ALSA****
 -PARA INSTALAR ALSA:
 Instalamos alsa-utils, pero NO desde el entorno chrooted sino nativamente.
-Si no tienes red en la Pi, puedes descargar los paquetes en el entorno chrooted, y luego instalarlos en nativo, o sea, en dos pasos, mira:
+Si no tienes red, puedes descargar los paquetes en el entorno chrooted, y luego instalarlos en nativo, o sea, en dos pasos, mira:
 1) En el entorno chrooted:
 sudo apt-get clean (para que no haya lios con otros paquetes en /var/cache/apt/archives)
 sudo apt-get install --download-only alsa-utils
-2) En el entorno nativo, es decir, en la Pi sin red:
+2) En el entorno nativo, es decir, sin red:
 cd /var/cache/apt/archives
 sudo dpkg -i *
-AHORA PASA A CREAR /etc/asound.conf, cuyo contenido varía si usas la HIFIBERRY o si no la usas:
-
--Si usas la hifiberry, acuérdate que en config.txt tienes que tener para que funcione:
-dtoverlay=hifiberry-dacplus
-Y la línea del audio interno comentada, para que el kernel sólo cargue la hifiberry:
-#dtparam=audio=on
-
-ESTO ES IMPORTANTE: Para que siempre se elija la hifiberry como tarjeta por defecto, crea este /etc/asound.conf:
-pcm.!default {
-    type hw
-    card sndrpihifiberry
-}
-
-ctl.!default {
-    type hw    
-    card sndrpihifiberry
-}
+AHORA PASA A CREAR /etc/asound.conf, cuyo contenido varía según el hardware concreto.
 
 -Ahora ajusta los niveles en ALSAMIXER, que se van a quedar como los dejes porque vamos a quitar los servicios que los guardan y los restauran
 
@@ -265,11 +248,8 @@ Para ello, editamos /etc/security/limits.conf, añadiendo unas cosillas para qui
 @audio   -  rtprio     99
 @audio   -  memlock    unlimited
 @audio   -  nice    -20
-pi   -  rtprio     99
-pi   -  memlock    unlimited
-pi   -  nice       -20
 
-De este modo, no hay límites para el usuario Pi ni para nadie del grupo audio, como jackd.
+De este modo, no hay límites para nadie del grupo audio, como jackd.
 Comprobamos que tenemos quitados esos límites con:
 ulimit -r -l
 Nos tiene que salir algo como:
@@ -277,7 +257,8 @@ real-time priority (-r) 99
 max locked memory (kbytes, -l) unlimited
 ¡¡¡CUIDADO!!!! COMPRUEBA ESTO EN LOCAL Y NO POR SSH, porque POR SSH PUEDE NO FUNCIONAR Y SÍ EN LOCAL.
 
--Para configurar el audio con el driver de audio HDMI del lado de ARM (que es como lo venimos haciendo ahora):
+-(SÓLO RASPBERRY PI)
+    Para configurar el audio con el driver de audio HDMI del lado de ARM (que es como lo venimos haciendo ahora):
 	PREVIO: En el momento en que usamos el sistema KMS (dtoverlay=vc4-kms-v3d) obtenemos el dispositivo ALSA de audio llamado vc4hdmi,
 	que mete los frames de audio en los periodos de blanking del vídeo.
 	Al usar KMS, el kernel se encarga del vídeo y de meter esos frames de audio en el blanking de vídeo, así que el audio del lado del
@@ -333,30 +314,6 @@ ExecStart=-/usr/bin/amixer set PCM 230 -q
 		sudo alsactl restore -f /etc/asound.state
 		Si todo va bien, ALSA va a restaurar esos valores en cada arranque, leyéndolos de /etc/asound.state, sin que hagas nada y sin ningún servicio.
 		Si quieres, puedes aniadir lo de alsactl restore al .profile		
-
-	-CÓMO USAR LA HIFIBERRY: Se supone que funciona siempre porque aunque el ordering de las tarjetas puede cambiar entre arranques,
-		estamos espeficicando la tarjeta por defecto en /etc/asound.conf con el contenido:
-	    	pcm.!default {
-    			type hw
-    			card sndrpihifiberry
-			}
-			
-			ctl.!default {
-    			type hw    
-    			card sndrpihifiberry
-			}					
-		Deshabilita el servicio alsa-restore.service, y pon en .profile:
-		amixer set Digital 85% -q
-		Esto lo que hace es que te pone el control llamado Digital a 55 (no a 85 como podría parecer).
-		Puedes ver los controles con "amixer scontrols".
-		Vamos, que esto lo que hace es que pongas a mano el valor que quieras para cada control de la tarjeta por defecto
-		(también se puede elegir tarjeta y tal, mira "man amixer" si ves que te hace falta).
-
-	-EXPERIMENTAL, NO FUNCIONA: Sería la más recomemdada: soluciona los problemas de ordering, porque tienes dos tarjetas. Para ello, crea /etc/modprobe.d/alsa-base.conf con:
-		options snd_soc_hifiberry_dacplus index=0
-		options vc4 index=1
-	 De esta manera, el servicio de restauración de ALSA (alsa-restore.service) no debería fallar nunca, porque la primera tarjeta es siempre la hifiberry y aplicaría los
-	 valores guardados correctos para cada tarjeta en el arranque, ya que el ordering de las tarjetas no cambiaría nunca.
             
 Recuerda mirar las mierdas que lanza systemd en el arranque antes de ocultarlo, y mira los targets con
 sudo systemctl | grep <loquesea>
@@ -470,10 +427,6 @@ Si algún programa linka contra -lGLU, elimínalo y ya. No se necesita nada de a
 Si MESA te da un error de que no encuentra GL/glxproto.h, reinstala el paquete x11proto-dev
 
 FIN NOCIONES PREVIAS
-
-¡¡¡OJO!!! LO PRIMERO EN DEBIAN SI ESTÁS CON UN USUARIO NORMAL, AÑADE AL USUARIO "pi" AL GRUPO RENDER,
-O TE VOLVERÁS LOCO PORQUE GLES NO IRÁ PERO DRM SÍ (o sea, modetest funciona pero MESA no puede cargar GLES). PARA ELLO, HAZ:
-sudo usermod -a -G render pi
 
 Empezamos con libDRM:
 
