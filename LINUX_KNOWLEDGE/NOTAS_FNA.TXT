@@ -89,7 +89,7 @@ para el BASTION funciona así)
 ###########################################################################################################################################
 ########BLOQUE DE PREPARACIÓN DEL SISTEMA DE AUDIO PARA USAR DMIX, YA QUE LOS JUEGOS FNA ABREN VARIAS VECES EL DISPOSITIVO DE AUDIO########
 ###########################################################################################################################################
-OJO!!! INNECESARIO SI INSTALAS PIPEWIRE!!!
+OJO!!! INNECESARIO SI TIENES INSTALADO PIPEWIRE!!!
 CON PIPEWIRE, LOS JUEGOS YA PUEDEN ABRIR EL SISTEMA DE AUDIO VARIAS VECES, QUE ES LO QUE SE REQUIERE.
 
 Lo primemo es definir el dispositivo "dmixed" (lo podemos llamar como queramos), para lo cual añadimos en /etc/asound.conf
