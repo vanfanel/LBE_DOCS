@@ -1167,9 +1167,6 @@ context.properties = {
 --Comprobamos que el módulo "libpipewire-module-rt" está cargado con:
 pw-cli list-objects | grep module.name | grep module-rt
 
---Nos aseguramos de que nuestro usuario esté en el grupo "audio" con "groups <usuario>"
-  Si no lo está, le añadimos con "sudo usermod -aG audio <usuario>"
-
 --Comprobamos que rtkit está funcionando porque es lo que le va a dar prioridad realtime a pipewire, con "systemctl status rtkit-daemon".
 
 --Comprobamos que PIPEWIRE está con prioridad realtime con "ps -eLo pid,cls,rtprio,ni,cmd | grep pipewire"
@@ -1182,7 +1179,8 @@ pero que al parecer lo normal es que sea 20 como máximo para usuarios normales.
 sudo usermod -a -G audio $USER
 MUY IMPORTANTE: REINICIAMOS SESIÓN DE USUARIO Y COMPROBAMOS QUE HA SIDO AÑADIDO AL GRUPO "audio" CON EL COMANDO "groups".
 
---Creamos /etc/security/limits.d/99-audio.conf con el contenido:
+--Damos permisos de realtime a todos los usuarios que estén en el grupo "audio".
+Para ello, creamos /etc/security/limits.d/99-audio.conf con el contenido:
 @audio - rtprio 99
 @audio - memlock unlimited
 @audio - nice -11
@@ -1194,11 +1192,12 @@ systemctl --user show pipewire.service |grep RTPRIO
 LimitRTPRIO=99
 LimitRTPRIOSoft=99
 
---Comprobamos que PIPEWIRE tiene al fin prioriad realtime, con "ps -eo pid,user,comm,rtprio,ni | grep pipewire".
-  Nos tiene que salir que tiene FF o RR, pero NO TS porque eso es SCHED_OTHER.
-
---También podemos ver la prioridad de los hilos que se crean mientras ejecutamos cosas con audio, usando:
-watch -n 0.5 'ps -eLo pid,tid,comm,policy,rtprio,ni | grep pipewire'
+--Podemos ver la prioridad de los hilos creados por Pipewire con:
+ps -eLo pid,tid,comm,policy,rtprio,ni | grep $(pidof pipewire)
+OJO!!!! El hilo principal "pipewire" NO tendrá prioridad RT ni tiene por qué tenerla,
+pero los hilos de audio que crea, SÍ que nos saldrán con FF y 88!!!!
+(O el valor de RTPrio que tengamos en el argumento "rt.prio" del módulo "libpipewire-module-rt"
+ en /usr/local/share/pipewire/pipewire.conf)
 
 			EXPLICACIÓN TÉCNICA DE LOS VALORES
 	
