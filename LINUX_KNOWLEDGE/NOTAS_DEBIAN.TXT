@@ -1102,11 +1102,11 @@ context.properties = {
     # que una frecuencia esté en "allowed-rates" sólo significa que el reloj maestro de Pipewire
     # se puede poner a esa frecuencia si un programa la pide.
     # Pero si hay varios programas sonando a la vez, el reloj maestro estará a la frecuencia del 1er programa que entró.
-    # default.clock.allowed-rates = [48000 44100]
+    default.clock.allowed-rates = [48000 44100]
     # Quantum para baja latencia
-    default.clock.quantum =		1024	# Por defecto cuando el programa no especifica.
-    default.clock.min-quantum = 1024	# Mínimo que un programa puede obtener.
-    default.clock.max-quantum = 1024	# Máximo que un programa puede obtener.
+    default.clock.quantum =		512		# Por defecto cuando el programa no especifica.
+    default.clock.min-quantum = 256		# Mínimo que un programa puede obtener.
+    default.clock.max-quantum = 512		# Máximo que un programa puede obtener.
 }
 
 			PIPEWIRE CON PRIORIDAD REALTIME
