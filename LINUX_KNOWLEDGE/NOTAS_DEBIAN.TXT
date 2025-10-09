@@ -1064,7 +1064,7 @@ INSTALAR PIPEWIRE EN DEBIAN
 ===========================
 
 --Instalamos los paquetes necesarios:
-apt-get install pipewire libpipewire-0.3-dev wireplumber pipewire-alsa --no-install-recommends
+sudo apt-get install pipewire libpipewire-0.3-dev wireplumber pipewire-alsa --no-install-recommends
 
 NOTA: Al instalar el paquete "pipewire-alsa", ya no nececesitas un /etc/asound.conf:
 todo el sonido de ALSA ya sale por Pipewire porque automáticamente el dispositivo ALSA por defecto pasa a ser Pipewire,
@@ -1111,7 +1111,8 @@ context.properties = {
 
 			PIPEWIRE CON PRIORIDAD REALTIME
 
---NOTA INICIAL PARA ENTENDER LO QUE VAMOS A HACER: La prioridad RT la da el módulo "libpipewire-module-rt".
+--NOTA TÉCNICA (NO HACE FALTA ENTENDERLO SI NO FALLA NADA):
+  La prioridad RT la da el módulo "libpipewire-module-rt", QUE CON LA CONFIGURACIÓN POR DEFECTO DE PIPEWIRE, SE CARGA.
   Este módulo sólo aplica política real si los permisos del sistema (RLIMIT_RTPRIO) lo permiten.
   NO ES NECESARIO USAR EL MÓDULO "libpipewire-module-rtkit", NO ES EL MODO CORRECTO DE HACERLO Y EVITA TODA EXPLICACIÓN QUE USE ESE MÓDULO.
 
