@@ -1090,6 +1090,30 @@ options snd_hda_intel power_save_controller=N
 --Para subir y bajar el volúmen de forma relativa (se queda guardado solo sin hacer nada):
 wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
+			PIPEWIRE CON PRIORIDAD REALTIME
+
+--Metemos a nuestro usuario en el grupo "audio" (creamos el grupo antes)
+sudo usermod -a -G audio $USER
+MUY IMPORTANTE: REINICIAMOS SESIÓN DE USUARIO Y COMPROBAMOS QUE HA SIDO AÑADIDO AL GRUPO "audio" CON EL COMANDO "groups".
+
+--Damos permisos de realtime a todos los usuarios que estén en el grupo "audio".
+Para ello, creamos /etc/security/limits.d/99-audio.conf con el contenido:
+@audio - rtprio 99
+@audio - memlock unlimited
+@audio - nice -11
+MUY IMPORTANTE: REINICIAMOS SESIÓN de USUARIO (MUY IMPORTANTE!!)
+y comprobamos que los rlimits se han aplicado con "ulimit -a"
+
+--Y ahora ya podemos ver la prioridad de los hilos creados por Pipewire con:
+ps -eLo pid,tid,comm,policy,rtprio,ni | grep $(pidof pipewire)
+OJO!!!! El hilo principal "pipewire" NO tendrá prioridad RT ni tiene por qué tenerla,
+pero los hilos de audio que crea, SÍ que nos saldrán con FF y 88!!!!
+(O el valor de RTPrio que tengamos en el argumento "rt.prio" del módulo "libpipewire-module-rt"
+ en /usr/local/share/pipewire/pipewire.conf)
+
+--POR SI FALLA: Comprueba que el módulo "libpipewire-module-rt" está cargado:
+pw-cli list-objects | grep module.name | grep module-rt
+
 			NOTAS AUDIO DE BAJA LATENCIA CON PIPEWIRE
 
 --Creamos el archivo "~/.config/pipewire/pipewire.conf.d/lowlatency.conf" con este contenido, que es una configuración especial para juegos:
@@ -1108,49 +1132,8 @@ context.properties = {
     default.clock.min-quantum = 256		# Mínimo que un programa puede obtener.
     default.clock.max-quantum = 512		# Máximo que un programa puede obtener.
 }
-			PIPEWIRE CON PRIORIDAD REALTIME
 
---NOTA TÉCNICA (NO HACE FALTA ENTENDERLO SI NO FALLA NADA):
-  La prioridad RT la da el módulo "libpipewire-module-rt", QUE CON LA CONFIGURACIÓN POR DEFECTO DE PIPEWIRE, SE CARGA.
-  Este módulo sólo aplica política real si los permisos del sistema (RLIMIT_RTPRIO) lo permiten.
-  NO ES NECESARIO USAR EL MÓDULO "libpipewire-module-rtkit", NO ES EL MODO CORRECTO DE HACERLO Y EVITA TODA EXPLICACIÓN QUE USE ESE MÓDULO.
-
---Comprobamos que el módulo "libpipewire-module-rt" está cargado con:
-pw-cli list-objects | grep module.name | grep module-rt
-
---Comprobamos que rtkit está funcionando porque es lo que le va a dar prioridad realtime a pipewire, con "systemctl status rtkit-daemon".
-
---Comprobamos que PIPEWIRE está con prioridad realtime con "ps -eLo pid,cls,rtprio,ni,cmd | grep pipewire"
-que nos debería mostrar "FF" o "RR" en la segunda columna (es la columna "CLS" si te fijas en lo que le estás pidiendo a "ps").
-Si nos muestra "TS", es que NO está en modo realtime sino en "NORMAL TIME SHARING".	
-En la columna "RTPRIO", que es la tercera, veremos un número que debería ser lo más alto posible,
-pero que al parecer lo normal es que sea 20 como máximo para usuarios normales.
-
---Metemos a nuestro usuario en el grupo "audio" (creamos el grupo antes)
-sudo usermod -a -G audio $USER
-MUY IMPORTANTE: REINICIAMOS SESIÓN DE USUARIO Y COMPROBAMOS QUE HA SIDO AÑADIDO AL GRUPO "audio" CON EL COMANDO "groups".
-
---Damos permisos de realtime a todos los usuarios que estén en el grupo "audio".
-Para ello, creamos /etc/security/limits.d/99-audio.conf con el contenido:
-@audio - rtprio 99
-@audio - memlock unlimited
-@audio - nice -11
-MUY IMPORTANTE: REINICIAMOS SESIÓN de USUARIO (MUY IMPORTANTE!!) y comprobamos que los rlimits se han aplicado con "ulimit -a"
-
---Comprobamos que el proceso pipewire realmente podría, si quisiera, tener prioridad realtime:
-systemctl --user show pipewire.service |grep RTPRIO
-...Nos tiene que salir algo como:
-LimitRTPRIO=99
-LimitRTPRIOSoft=99
-
---Podemos ver la prioridad de los hilos creados por Pipewire con:
-ps -eLo pid,tid,comm,policy,rtprio,ni | grep $(pidof pipewire)
-OJO!!!! El hilo principal "pipewire" NO tendrá prioridad RT ni tiene por qué tenerla,
-pero los hilos de audio que crea, SÍ que nos saldrán con FF y 88!!!!
-(O el valor de RTPrio que tengamos en el argumento "rt.prio" del módulo "libpipewire-module-rt"
- en /usr/local/share/pipewire/pipewire.conf)
-
-	BLOQUE OPCIONAL (NO SE NOTA LA DIFERENCIA Y PIERDES EL SOFTWARE MIXING CON LO QUE SÓLO PUEDE REPRODUCIR UN STREAM A LA VEZ...)
+		BLOQUE OPCIONAL (NO SE NOTA LA DIFERENCIA Y PIERDES EL SOFTWARE MIXING CON LO QUE SÓLO PUEDE REPRODUCIR UN STREAM A LA VEZ...)
 
 --Activamos el modo Pro-Audio (esto se hace en WirePlumber).
 Para ello, creamos el fichero "~/.config/wireplumber/wireplumber.conf.d/proaudio.conf" con el contenido:
