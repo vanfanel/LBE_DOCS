@@ -1066,7 +1066,7 @@ INSTALAR PIPEWIRE EN DEBIAN
 --Instalamos los paquetes necesarios:
 apt-get install pipewire libpipewire-0.3-dev wireplumber pipewire-alsa --no-install-recommends
 
-NOTA: Al instalar "pipewire-alsa", ya no nececesitas un /etc/asound.conf:
+NOTA: Al instalar el paquete "pipewire-alsa", ya no nececesitas un /etc/asound.conf:
 todo el sonido de ALSA ya sale por Pipewire porque automáticamente el dispositivo ALSA por defecto pasa a ser Pipewire,
 y para confirmarlo, puedes ver que en "aplay -L" tienes:
 pipewire
@@ -1092,7 +1092,7 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
 			NOTAS AUDIO DE BAJA LATENCIA CON PIPEWIRE
 
---Creamos el archivo /usr/share/pipewire/pipewire.conf.d/lowlatency.conf con este contenido, que es una configuración especial para juegos:
+--Creamos el archivo "~/.config/pipewire/pipewire.conf.d/lowlatency.conf" con este contenido, que es una configuración especial para juegos:
 (NOTA: La explicación de cada valor viene en https://docs.pipewire.org/page_man_pipewire_conf_5.html)
 
 context.properties = {
@@ -1174,7 +1174,7 @@ con lo que nos queda que en el ejemplo concreto, (512) * (1/48000) = 512 / 48000
 	BLOQUE OPCIONAL (NO SE NOTA LA DIFERENCIA Y PIERDES EL SOFTWARE MIXING CON LO QUE SÓLO PUEDE REPRODUCIR UN STREAM A LA VEZ...)
 
 --Activamos el modo Pro-Audio (esto se hace en WirePlumber).
-Para ello, creamos el fichero /usr/share/wireplumber/wireplumber.conf.d/proaudio.conf con el contenido:
+Para ello, creamos el fichero "~/.config/wireplumber/wireplumber.conf.d/proaudio.conf" con el contenido:
 
 monitor.alsa.rules = [
   {
