@@ -1360,6 +1360,15 @@ swaybg -i atari.png >/dev/null 2>&1 &
 
 (NOTA: Acepta sólo PNG a no ser que lo compiles con gdk-pixbuf habilitado, así que con PNG nos vale).
 
+--Para configurar un tema de cursor:
+----Instalamos un tema, por ejemplo:
+sudo apt install bibata-cursor-theme
+----Añadimos a ~/.config/labwc/environment el tema y el tamaño del cursor, algo como:
+XCURSOR_THEME=Bibata-Modern-Ice
+XCURSOR_SIZE=24
+----Para saber qué valor tenemos que darle a XCURSOR_THEME para un tema concreto,
+mira el nombre de su directorio en /usr/share/icons y usa exactamente ese nombre.
+
 INSTALAR YAMBAR, UNA BARRA DE TAREAS PARA WAYLAND QUE NO DEPENDE DE GTK/QT
 ==========================================================================
 
