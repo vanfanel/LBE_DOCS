@@ -595,7 +595,10 @@ cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Releas
 --Bajamos la última versión estable de SDL2-COMPAT de:
 https://github.com/libsdl-org/sdl2-compat/releases
 
----Editamos src/sdl2_compat.h y comentamos el #include <X11/Xlib.h> y todo el bloque donde se declara "XEvent event;"
+---Editamos src/sdl2_compat.h y comentamos:
+   -El bloque del #include <X11/Xlib.h>
+   -El bloque donde se declara "XEvent event;"
+
 ---Editamos src/sdl2_compat.c y comentamos todo el bloque donde se hace "#define SDL2COMPAT_HAVE_X11"
 
 --Compilamos con:
