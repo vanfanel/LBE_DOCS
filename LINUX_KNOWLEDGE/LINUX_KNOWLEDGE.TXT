@@ -10106,6 +10106,10 @@ cmake .. -GNinja \
 
 cp Spaghettify ~/mk64/
 
+--Para que no muestre la intro de HarbourMasters, añade esto en "spaghettify.cfg.json",
+dentro de la categoría "CVars;" principal :
+"gBetterResultPortraits": 1,
+
 	BLOQUE EXTRACCIÓN DE DATOS
 
 --Guardamos la ROM USA "Mario Kart 64 (USA).z64" como "baserom.us.z64" en el raiz de los sources.
