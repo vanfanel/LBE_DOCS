@@ -2504,6 +2504,20 @@ SDL_SOUNDFONTS=TimGM6mb.sf2 ./SpaceCadetPinball
 
 Puedes ajustar la configuración (fullscreen, uncapped framerate, etc..) en el menú, o editando ~/.local/share/SpaceCadetPinball/imgui_pb.ini
 
+******Emulador ARES en GNU/Linux************************************************************************************
+
+Usa SDL3. Dicho esto:
+
+--Clonamos los sources:
+git clone --depth 1 https://github.com/ares-emulator/ares.git
+
+--Editamos CMakeLists.txt y comentamos estas líneas, ya que pertenecen a módulos que necesitan X11:
+#add_subdirectory(ruby)
+#add_subdirectory(hiro)
+#add_subdirectory(desktop-ui)
+
+(TO BE CONTINUED...)
+
 ******Juegos JAVA que usan GL/GLES en GNU/Linux*********************************************************************
 
 Lo primero sería compilar esta librería:
