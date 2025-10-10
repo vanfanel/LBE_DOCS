@@ -581,6 +581,27 @@ COPIAR ARCHIVOS DESDE UN SISTEMA ANTIGUO
 Lo puedes hacer con rsync -av <origen> <destino>
 Ambos sistemos deben tener instalado rsync, y se puede usar por red como scp.
 
+INSTALAR SDL3
+=============
+
+--Bajamos la última versión estable de:
+https://github.com/libsdl-org/SDL/releases
+
+--Compilamos CON GLES, GLES2, OPENGL COMPLETO, VULKAN Y AUDIO SOBRE PIPEWIRE Y ALSA:
+
+cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release \
+-DSDL_X11=OFF -DSDL_CAMERA=OFF -DSDL_VIRTUAL_JOYSTICK=OFF -DSDL_DBUS=OFF -DSDL_DISKAUDIO=OFF -DSDL_DUMMYVIDEO=OFF -DSDL_DUMMYAUDIO=OFF
+
+--Bajamos la última versión estable de SDL2-COMPAT de:
+https://github.com/libsdl-org/sdl2-compat/releases
+
+---Editamos src/sdl2_compat.c y comentamos todo el bloque donde se hace "#define SDL2COMPAT_HAVE_X11"
+   y el bloque de #if defined(SDL_PLATFORM_UNIX) && !defined(SDL_PLATFORM_ANDROID)
+---Editamos src/sdl2_compat.h y comentamos el #include <X11/Xlib.h>
+
+--Compilamos con:
+cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release -DSDL2COMPAT_TESTS=OFF
+
 INSTALAR SDL2
 =============
 
