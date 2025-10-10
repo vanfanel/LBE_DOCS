@@ -1361,11 +1361,13 @@ swaybg -i atari.png >/dev/null 2>&1 &
 (NOTA: Acepta sólo PNG a no ser que lo compiles con gdk-pixbuf habilitado, así que con PNG nos vale).
 
 --Para configurar un tema de cursor:
-----Instalamos un tema, por ejemplo:
-sudo apt install bibata-cursor-theme
-----Añadimos a ~/.config/labwc/environment el tema y el tamaño del cursor, algo como:
-XCURSOR_THEME=Bibata-Modern-Ice
-XCURSOR_SIZE=24
+----Instalamos un tema, por ejemplo yo uso uno de estos:
+sudo apt install xcursor-themes
+----Añadimos a ~/.config/labwc/environment el tema y el tamaño del cursor (xcursors trae varios, yo uso el "redglass"):
+XCURSOR_THEME=redglass
+# XCURSOR_SIZE=24 <-- Opcional, en la mayoría de temas es mejor dejarlo sin especificar.
+----Para saber qué temas o paquetes de temas hay disponibles para instalar, haz:
+sudo apt list *cursor-theme*
 ----Para saber qué valor tenemos que darle a XCURSOR_THEME para un tema concreto,
 mira el nombre de su directorio en /usr/share/icons y usa exactamente ese nombre.
 
