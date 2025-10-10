@@ -15,7 +15,7 @@ CXXFLAGS="-march=native -mtune=native -O2" \
 --enable-mt32emu --disable-timidity --disable-flac --disable-alsa \
 --enable-vorbis --disable-tremor --disable-theoradec \
 --disable-taskbar --disable-sdlnet --disable-libcurl \
---disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,hypno,hadesch,private,stark,sludge,ags,asylum,chewy,pink,mtropolis,glk,freescape,nancy,efh,kingdom,vcruise,qdengine,m4,crab,bagel,dgds,got,awe,lastexpress,wage
+--disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,hypno,hadesch,private,stark,sludge,ags,asylum,chewy,pink,mtropolis,glk,freescape,nancy,efh,kingdom,vcruise,qdengine,m4,crab,bagel,dgds,got,awe,lastexpress,wage,tot,alcachofa,tetraedge,hpl1
 
 LO PRIMERO, PARA QUE LAS FUENTES VAYAN BIEN EN EL MENÚ PRINCIPAL (SIN ESTO SE VEN CON ESCALADO IRREGULAR...),
 copia el archivo "fonts.dat" que viene con los sources en ~/scummvm/data, que es el directorio que usarás como "EXTRA PATH"
