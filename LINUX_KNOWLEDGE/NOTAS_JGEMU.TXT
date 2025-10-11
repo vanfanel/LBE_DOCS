@@ -5,7 +5,7 @@
 --Clonamos las JG headers:
 git clone --depth 1 https://gitlab.com/jgemu/jg.git
 --Instalamos las JG headers:
-make install
+sudo make install
 
 
 			PARTE 2: EL FRONTEND JGRF
@@ -16,12 +16,17 @@ apt-get install libspeexdsp-dev
 --Clonamos JGRF:
 git clone --depth 1 https://gitlab.com/jgemu/jgrf.git
 
+--Editamos src/audio.c y cambiamos la línea:
+out_rate += (4 - (rbuf_out.cursize / spf)) * screenfps;
+por:
+out_rate += (1 - (rbuf_out.cursize / spf)) * screenfps;
+
 --Compilamos e instalamos con:
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j10
 
-make install
+sudo make install
 
 			PARTE 3: LOS CORES
 
@@ -40,7 +45,7 @@ cd jollygood
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j10
 
-make install
+sudo make install
 
 --Metemos las BIOS (para Saturn: "mpr-17933.bin", para PSX: "scph*.bin", para PC-FX "pcfx.rom") en ~/.local/share/jollygood/bios/
 

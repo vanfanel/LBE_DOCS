@@ -2512,9 +2512,9 @@ Usa SDL3. Dicho esto:
 git clone --depth 1 https://github.com/ares-emulator/ares.git
 
 --Editamos CMakeLists.txt y comentamos estas líneas, ya que pertenecen a módulos que necesitan X11:
-#add_subdirectory(ruby)
-#add_subdirectory(hiro)
-#add_subdirectory(desktop-ui)
+add_subdirectory(ruby)
+add_subdirectory(hiro)
+add_subdirectory(desktop-ui)
 
 (TO BE CONTINUED...)
 
