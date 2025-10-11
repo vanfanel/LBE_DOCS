@@ -16,11 +16,6 @@ apt-get install libspeexdsp-dev
 --Clonamos JGRF:
 git clone --depth 1 https://gitlab.com/jgemu/jgrf.git
 
---Editamos src/audio.c y cambiamos la línea:
-out_rate += (4 - (rbuf_out.cursize / spf)) * screenfps;
-por:
-out_rate += (1 - (rbuf_out.cursize / spf)) * screenfps;
-
 --Compilamos e instalamos con:
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
