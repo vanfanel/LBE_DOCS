@@ -739,33 +739,19 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=TRUE \
 Dependencias previas:
 sudo apt-get install libevdev-dev
 
-git clone --depth 1 --recurse-submodules -j8 https://github.com/dolphin-emu/dolphin.git
+--Clonamos su repo:
+git clone --depth 1 --recurse-submodules https://github.com/dolphin-emu/dolphin.git
 
-cmake .. -DCMAKE_BUILD_TYPE=Release \
--DENABLE_QT=OFF -DENABLE_PULSEAUDIO=OFF -DENABLE_LLVM=OFF -DENABLE_TESTS=OFF -DUSE_DISCORD_PRESENCE=OFF \
--DUSE_MGBA=OFF -DENABLE_AUTOUPDATE=OFF -DUSE_UPNP=OFF -DENABLE_ANALYTICS=OFF -DENCODE_FRAMEDUMPS=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_C_FLAGS="-march=native -mtune=native"
-
-*******Compilar DOLPHIN standalone NOGUI en GNU/Linux***********************************
-OJO!! LA VERSIÓN NOGUI NO SOPORTA MÁS QUE X11 Y FBDEV, Y LA VERSIÓN NORMAL AUNQUE FUNCIONA SOBRE QT6 NO SOPORTA WAYLAND,
-ASÍ QUE DALE UN AÑO O DOS PARA MEJORAR, NO PIERDAS EL TIEMPO.
-
-git clone --depth 1 --recurse-submodules -j8 https://github.com/dolphin-emu/dolphin.git dolphin-emu
+--Compilamos con:
 
 mkdir b4
 cd b4
 
-Para compilar sólo la versión NOGUI:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_QT=OFF -DENABLE_X11=OFF -DENABLE_NOGUI=ON -DUSE_MGBA=OFF -DUSE_DISCORD_PRESENCE=OFF \
--DENABLE_SDL2_VIDEO=ON
-
-Para compilar contra QT6 (PUAJ!!!)
-cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_X11=OFF -DUSE_MGBA=OFF -DUSE_DISCORD_PRESENCE=OFF \
--DCMAKE_PREFIX_PATH="/usr/local/Qt-6.6.0/lib/cmake" -DQt6Svg_DIR=/usr/local/lib/cmake/Qt6Svg
-
-Para seleccionar el platform plugin al lanzar el emu:
-QT_QPA_PLATFORM=eglfs Binaries/dolphin-emu
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_NOGUI=ON -DENABLE_QT=OFF -DENCODE_FRAMEDUMPS=OFF -DUSE_SYSTEM_GLSLANG=OFF \
+-DENABLE_PULSEAUDIO=OFF -DENABLE_LLVM=OFF -DENABLE_TESTS=OFF -DUSE_DISCORD_PRESENCE=OFF \
+-DUSE_MGBA=OFF -DENABLE_AUTOUPDATE=OFF -DUSE_UPNP=OFF -DENABLE_ANALYTICS=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 ******Compilar core PCSX2 para LIBRETRO**************************************************************************************
 NOTA: EL RENDERER SOFTWARE SÓLO FUNCIONA CON OPENGL. Necesitas activar OpenGL tanto cuando compiles RetroArch
