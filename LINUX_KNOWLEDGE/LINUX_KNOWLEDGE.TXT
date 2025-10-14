@@ -1586,6 +1586,17 @@ NOTAS DE CONFIGURACIÓN:
 --En la pestaña "OSD" desactiva "Show OSD Messages" y pon el "OSD Scale" al 200%, por si activas "Show Speed Percentages"
 --En la pestaña "Post Processing" pon el "TV Shader" a "Scanline Filter"
 
+*******Compilar DuckStation standalone*******************************
+
+--Clonamos su repo:
+
+--Compilamos (sin QT6, sólo con el frontend "interno") con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_QT_FRONTEND=OFF -DBUILD_MINI_FRONTEND=ON
+
 *******Compilar el core libretro Swanstation (Duckstation)***********
 
 (OJO: en el repo oficial de ducktstation tienes cores ya compilados, pero NO funcionan cuando Retrorch funciona sobre KMSDRM.
