@@ -726,6 +726,9 @@ los datos del juego.
 --Compilamos su repo así:
 git clone --recursive --depth 1 https://github.com/libretro/dolphin.git
 
+--(POR AHORA) Aplicamos este parche al CMakeList.txt principal:
+https://github.com/dolphin-emu/dolphin/pull/14007/commits/37d6fe61baec2f17e6ac03dca67aea9832844063
+
 --Compilamos con:
 
 mkdir b4
