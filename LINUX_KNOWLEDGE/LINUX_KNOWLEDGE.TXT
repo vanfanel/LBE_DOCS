@@ -739,8 +739,11 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=TRUE \
 Dependencias previas:
 sudo apt-get install libevdev-dev
 
---Clonamos su repo:
-git clone --depth 1 --recurse-submodules https://github.com/dolphin-emu/dolphin.git
+--Clonamos el fork que tiene el platform SDL:
+git clone --recurse-submodules --depth 1 -b PlatformSDL https://github.com/Hibyehello/dolphin.git
+(OJO: Cuando el platform SDL sea mergeado upstream, se usará el repo principal:
+ git clone --recurse-submodules --depth 1 --recurse-submodules https://github.com/dolphin-emu/dolphin.git
+ ...Por ahora usa el fork).
 
 --Compilamos con:
 
@@ -1607,7 +1610,8 @@ mkdir b4
 cd b4
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_QT_FRONTEND=OFF -DBUILD_MINI_FRONTEND=ON -DENABLE_X11=OFF -DENABLE_WAYLAND=ON \
--DCMAKE_PREFIX_PATH="~/src/duckstation/deps"
+-DCMAKE_PREFIX_PATH="~/src/duckstation/deps" \
+-DCMAKE_CXX_FLAGS="-fpermissive"
 
 *******Compilar el core libretro Swanstation (Duckstation)***********
 
