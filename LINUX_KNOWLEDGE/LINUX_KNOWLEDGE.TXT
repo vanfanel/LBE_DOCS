@@ -1599,12 +1599,15 @@ sudo apt install extra-cmake-modules
 
 --Clonamos su repo: git clone --depth 1 https://github.com/stenzek/duckstation.git
 
+--Editamos scripts/deps/build-dependencies-linux.sh y borramos todas las líneas que contengan "qt"
+  (No nos hacen falta las dependencias de QT porque lo vamos a compilar sin QT, y son las que más problemas dan).
+
 --Preparamos las dependencias internas. Tardará un rato. Para ello, desde el raíz de los sources hacemos:
 mkdir deps
 cd deps
 ../scripts/deps/build-dependencies-linux.sh ./
 
---Compilamos (sin QT6, sólo con el frontend "interno", y pasándole las dependencias "internas" que hemos compilado) con:
+--Compilamos (sin QT6, sólo con el frontend "interno", y pasándole la ruta de las dependencias "internas" que hemos compilado) con:
 
 mkdir b4
 cd b4
@@ -1612,6 +1615,10 @@ cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_QT_FRONTEND=OFF -DBUILD_MINI_FRONTEND=ON -DENABLE_X11=OFF -DENABLE_WAYLAND=ON \
 -DCMAKE_PREFIX_PATH="~/src/duckstation/deps" \
 -DCMAKE_CXX_FLAGS="-fpermissive"
+
+--Copiamos bin/duckstation-mini y el directorio "resources" que se habrá creado también en la carpeta de compilación a ~/psx
+
+--Para ponerlo en FULLSCREEN, es en "Interface Settings -> Start Fullscreen".
 
 *******Compilar el core libretro Swanstation (Duckstation)***********
 
