@@ -1620,6 +1620,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_QT_FRONTEND=OFF -DBUILD_MINI_FRONTEN
 
 --Para ponerlo en FULLSCREEN, es en "Interface Settings -> Start Fullscreen".
 
+--Para seleccionar el directorio de las BIOS, es en la categoría "BIOS Selection"
+
 *******Compilar el core libretro Swanstation (Duckstation)***********
 
 (OJO: en el repo oficial de ducktstation tienes cores ya compilados, pero NO funcionan cuando Retrorch funciona sobre KMSDRM.
