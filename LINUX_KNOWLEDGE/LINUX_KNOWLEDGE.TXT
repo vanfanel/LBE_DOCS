@@ -753,6 +753,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_NOGUI=ON -DENABLE_WAYLAND=ON -DENAB
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
 -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
+--Ejecutamos con:
+SDL_VIDEODRIVER=wayland ./dolphin-emu-nogui -p sdl -v Vulkan <ruta_juego>
+
 ******Compilar core PCSX2 para LIBRETRO**************************************************************************************
 NOTA: EL RENDERER SOFTWARE SÓLO FUNCIONA CON OPENGL. Necesitas activar OpenGL tanto cuando compiles RetroArch
 como cuando compiles el core.
@@ -1588,14 +1591,23 @@ NOTAS DE CONFIGURACIÓN:
 
 *******Compilar DuckStation standalone*******************************
 
---Clonamos su repo:
+--Instalamos dependencias previas:
+sudo apt install extra-cmake-modules
 
---Compilamos (sin QT6, sólo con el frontend "interno") con:
+--Clonamos su repo: git clone --depth 1 https://github.com/stenzek/duckstation.git
+
+--Preparamos las dependencias internas. Tardará un rato. Para ello, desde el raíz de los sources hacemos:
+mkdir deps
+cd deps
+../scripts/deps/build-dependencies-linux.sh ./
+
+--Compilamos (sin QT6, sólo con el frontend "interno", y pasándole las dependencias "internas" que hemos compilado) con:
 
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_QT_FRONTEND=OFF -DBUILD_MINI_FRONTEND=ON
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_QT_FRONTEND=OFF -DBUILD_MINI_FRONTEND=ON -DENABLE_X11=OFF -DENABLE_WAYLAND=ON \
+-DCMAKE_PREFIX_PATH="~/src/duckstation/deps"
 
 *******Compilar el core libretro Swanstation (Duckstation)***********
 
