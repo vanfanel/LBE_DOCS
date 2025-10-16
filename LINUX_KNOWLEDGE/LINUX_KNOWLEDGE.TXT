@@ -721,17 +721,18 @@ https://phoboslab.org/files/wipeout-data-v01.zip
 Creamos el directorio ~/wipeout, y ahí metemos el ejecutable "wipegame" y creamos el subdirectorio "wipeout" donde metemos
 los datos del juego.
 
-******Compilar el core DOLPHIN para LIBRETRO*********************************************************************************
+******Compilar el core DOLPHIN LIBRETRO*********************************************************************************
 
 --Compilamos su repo así:
-git clone --recursive --depth 1 https://github.com/jonian/libretro-dolphin.git -b testing
+git clone --recursive --depth 1 https://github.com/libretro/dolphin.git
 
 --Compilamos con:
 
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=TRUE \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_MGBA=OFF -DENABLE_AUTOUPDATE=OFF \
+-DUSE_DISCORD_PRESENCE=OFF -DENABLE_TESTS=OFF -DENABLE_TESTS=OFF \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 ******Compilar DOLPHIN standalone en GNU/Linux****************
