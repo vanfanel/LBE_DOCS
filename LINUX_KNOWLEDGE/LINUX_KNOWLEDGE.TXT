@@ -744,6 +744,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_MGBA=OFF -DENABLE_AUTOUP
 ----"Wait for Shaders before starting" ON
 ----"Speed Up Disc Transfer Rate"	   ON
 ----"Shader Compilation Mode"		   A-SYNC UberShaders
+----"Emulation Speed"				   100%
 ----"Skip Presenting Duplicate Frames" OFF
      (Es esto desactivado o activar "Settings->Video->Synchronization->Sync to Exact Content Framerate"
 	  para que el frame pacing sea correcto si estás a 120Hz o más).
