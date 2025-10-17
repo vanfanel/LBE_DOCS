@@ -740,13 +740,13 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_MGBA=OFF -DENABLE_AUTOUP
 
 		--OPCIONES DE CONFIGURACIÓN--
 
---Activa "Settings->Video->Synchronization->Sync to Exact Content Framerate" y guárdalo como un override,
-porque es la única manera de que el frame pacing sea correcto y es el único core en el que parece pasar esto.
-
 --En las opciones del core:
 ----"Wait for Shaders before starting" ON
-----"Skip Presenting Duplicate Frames" OFF
 ----"Speed Up Disc Transfer Rate"	   ON
+----"Shader Compilation Mode"		   A-SYNC UberShaders
+----"Skip Presenting Duplicate Frames" OFF
+     (Es esto desactivado o activar "Settings->Video->Synchronization->Sync to Exact Content Framerate"
+	  para que el frame pacing sea correcto si estás a 120Hz o más).
 
 ******Compilar DOLPHIN standalone en GNU/Linux****************
 
