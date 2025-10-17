@@ -544,7 +544,7 @@ https://mesa.freedesktop.org/archive/
 PARA X86_64 CON GRÁFICOS AMD (No necesita LLVM, usa el compilador ACO, por eso no hemos instalado LLVM y lo desactivamos aquí):
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland \
+meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dvulkan-layers=anti-lag \
 -Dvulkan-drivers=amd -Dgallium-drivers=radeonsi,zink -Dglvnd=enabled -Dllvm=disabled -Damd-use-llvm=false \
 -Dgallium-va=enabled -Dvideo-codecs=h264dec,h265dec,vc1dec ..
 
