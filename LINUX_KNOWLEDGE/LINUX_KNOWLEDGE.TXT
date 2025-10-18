@@ -1502,7 +1502,7 @@ wget https://download.qt.io/official_releases/qt/6.8/6.8.0/submodules/qtbase-eve
 
 ALTERNATIVA: BAJANDO DE GITHUB LA VERSIÓN ESTABLE Y LOS SUBMÓDULOS (NO RECOMENDADO):
 Clonamos su repo:
-git clone https://code.qt.io/qt/qt5.git qt6
+git clone https://code.qt.io/qt/qt6.git qt6
 Nos vamos a la versión tagged LTS actual:
 git switch 6.6.0
 Inicializamos los módulos que vamos a usar
