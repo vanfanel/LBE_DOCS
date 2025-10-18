@@ -832,6 +832,19 @@ Ahora, cargamos el juego con:
 DETHRACE_ROOT_DIR=./data
 dethrace
 
+******Compilar CLK / Clock Signal, el emulador multiordenador para GNU/Linux*************************************************
+
+--Clonamos su repo:
+git clone --depth 1 https://github.com/TomHarte/CLK.git
+
+--Compilamos con:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
 ******Cargar juegos de GameMaker (GM) de Android en GNU/Linux****************************************************************
 
 OJO!!! Se tiene que hacer con un Linux de 32bits (armhf).
