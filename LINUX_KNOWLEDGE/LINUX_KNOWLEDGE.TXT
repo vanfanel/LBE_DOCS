@@ -1155,7 +1155,7 @@ INFORMACIÓN ORIGINAL PROCEDENTE DE: https://86box.readthedocs.io/en/latest/dev/
 
 --Se necesita FluidSynth y OpenAL, que ya las deberías tener instaladas.
 --Instalamos otras dependencias previas:
-apt-get install libsndfile1-dev libslirp-dev librtmidi-dev 
+apt-get install libsndfile1-dev libslirp-dev
 
 --Clonamos su repo:
 git clone --depth 1 git clone https://github.com/86Box/86Box.git
@@ -1163,7 +1163,7 @@ git clone --depth 1 git clone https://github.com/86Box/86Box.git
 --Configuramos con:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake .. -DCMAKE_BUILD_TYPE=Release -DRELEASE=ON -DRTMIDI=OFF -DDISCORD=OFF -DFLUIDSYNTH=OFF
 
 --Para generar una versión para SDL2 sin QT (no tiene soporte para shaders...):
 cmake .. -DCMAKE_BUILD_TYPE=Release -DQT=OFF
