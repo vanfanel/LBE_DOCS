@@ -844,6 +844,12 @@ cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
+--Creamos el dicretorio ~/cll, copiamos allí el ejecutable "clksignal" y creamos el directorio ~/clk/roms.
+Para el Amiga, creamos ~/clk/roms/Amiga, y metemos allí la ROM 1.3 rev 34.5
+renombrada como "Kickstart-v1.3-rev34.5-1987-Commodore-A500-A1000-A2000-CDTV.rom"
+y ejecutamos con:
+./clksignal --rompath=roms <juego>
+
 ******Cargar juegos de GameMaker (GM) de Android en GNU/Linux****************************************************************
 
 OJO!!! Se tiene que hacer con un Linux de 32bits (armhf).
