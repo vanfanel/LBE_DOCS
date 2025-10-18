@@ -1165,8 +1165,7 @@ mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DRELEASE=ON -DRTMIDI=OFF -DDISCORD=OFF -DFLUIDSYNTH=OFF
 
---Para generar una versión para SDL2 sin QT (no tiene soporte para shaders...):
-cmake .. -DCMAKE_BUILD_TYPE=Release -DQT=OFF
+--Para generar una versión para SDL2 sin QT (no tiene soporte para shaders...), añade "-DQT=OFF"
 
 --PARA INSTALAR LAS ROMS:
 ----Clonamos su repo (Sí, sí, ¡las ROMs están en un repo!):
