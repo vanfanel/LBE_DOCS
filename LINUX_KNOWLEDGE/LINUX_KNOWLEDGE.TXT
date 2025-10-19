@@ -534,7 +534,7 @@ meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled -Dgst-example
 
 VAMOS CON WINE EN SÍ:
 --Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
-git clone --depth 1 -b wine-10.16 https://gitlab.winehq.org/wine/wine.git
+git clone --depth 1 -b wine-10.17 https://gitlab.winehq.org/wine/wine.git
 --Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
@@ -1201,7 +1201,7 @@ cd b4
 
 CFLAGS="-O2 -march=native -mtune=native" \
 CXXFLAGS="-O2 -march=native -mtune=native" \
-meson setup -Dbuildtype=release -Ddefault_library=static -Duse_zlib_ng=false ..
+meson setup -Dbuildtype=release -Ddefault_library=static -Duse_zlib_ng=false -Duse_sdl2_net=false ..
 
 ninja -j10
 
