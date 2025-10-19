@@ -592,17 +592,16 @@ https://github.com/libsdl-org/SDL/releases
 cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release \
 -DSDL_X11=OFF -DSDL_CAMERA=OFF -DSDL_VIRTUAL_JOYSTICK=OFF -DSDL_DBUS=OFF -DSDL_DISKAUDIO=OFF -DSDL_DUMMYVIDEO=OFF -DSDL_DUMMYAUDIO=OFF
 
---Bajamos la última versión estable de SDL2-COMPAT de:
-https://github.com/libsdl-org/sdl2-compat/releases
+		--INSTALACIÓN DE SDL2-COMPAT--
 
----Editamos src/sdl2_compat.h y comentamos:
-   -El bloque del #include <X11/Xlib.h>
-   -El bloque donde se declara "XEvent event;"
-
----Editamos src/sdl2_compat.c y comentamos todo el bloque donde se hace "#define SDL2COMPAT_HAVE_X11"
+--Clonamos el repo de SDL2-COMPAT:
+git clone --depth 1 https://github.com/libsdl-org/sdl2-compat.git
 
 --Compilamos con:
-cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release -DSDL2COMPAT_TESTS=OFF
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release -DSDL2COMPAT_DISABLE_X11=ON -DSDL2COMPAT_TESTS=OFF
 
 INSTALAR SDL2
 =============
