@@ -1829,6 +1829,9 @@ on-graphics-initialized = [
     { type = "exec", exec = "foot" },
 ]
 
+--Para comprobar la configuración de vídeo, cambiar modo de vídeo, etc, es con:
+jay ranrd
+
 INVESTIGACIÓN DE SUAVIDAD TOTAL CON VRR EN WAYLAND
 ==================================================
 
