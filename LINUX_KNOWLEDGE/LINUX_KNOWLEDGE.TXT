@@ -1220,8 +1220,10 @@ cp -R resources/mapping-unicode.org ~/.config/dosbox/
 Está en ~/.config/dosbox/dosbox-staging.conf
 --Ponemos "integer_scaling" a "off"
 --Ponemos "cpu_cycles" a "10000" (los "cpu_protected_cycles" a "60000" están bien si no encuentras ningún juego que vaya lento con eso).
---PARA TENER SCROLL PERFECTO EN UN MONITOR CON VRR, la única manera es poner un modo de 60Hz para la mayoría de los juegos
-y uno de 72Hz para las excepciones como Lemmings, Lemmings 2, Lotus 3...
+--PARA TENER SCROLL PERFECTO EN UN MONITOR CON VRR:
+Para la mayoría de los juegos, pon dos_rate a 60.0000 y un modo de vídeo custom a 61Hz.
+Para los "especialitos" que sincronizan la velocidad de la música con el vídeo (Lemmings 1/2, Lotus III)
+deja el dos_rate en "default" y pon un modo de vídeo custom de 72Hz.
 NO NOS HACE FALTA VSYNC, así que no hay input lag asociado al VSYNC aunque estemos en modos de 60/72Hz!
 ES RECOMENDABLE tener puesto el allowTearing a "always" en el compositor para que el compositor no meta VSYNC.
 Los valores que influyen en esto los dejamos tal como vienen por defecto:
