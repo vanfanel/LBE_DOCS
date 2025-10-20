@@ -1249,6 +1249,10 @@ rustflags = [
   "-L", "/usr/local/lib"
 ]
 
+...ESTO SUCEDE porque mientras que LD sí que lee /etc/ld.so.conf.d, el linkador de RUST (rust-lld) no lo hace.
+Puedes comprobar que a nivel de sistema sí que se buscan las librerías en /usr/local haciendo:
+grep -R /usr/local /etc/ld.so.conf.d
+
 --Para desinstalar:
 rustup self uninstall
 
