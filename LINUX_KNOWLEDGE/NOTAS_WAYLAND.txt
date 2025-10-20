@@ -1769,7 +1769,7 @@ wtype -M Alt -k F12
 
 ...Esto puedes usarlo en .config/labwc/autostart, o al lanzar el PCSX2, o donde quieras.
 
-CÓMO SABER SI UN PROGRAMA ESTÁ CORRIENDO EN MODO DIRECT SCANOUT ON WAYLAND
+CÓMO SABER SI UN PROGRAMA ESTÁ CORRIENDO EN MODO DIRECT SCANOUT EN WAYLAND
 ==========================================================================
 
 Lanza el compositor en modo verbose, por SSH, y enseguida lo ves.
