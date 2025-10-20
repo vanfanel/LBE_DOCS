@@ -1835,6 +1835,7 @@ alt-q = "quit
 
 --Para comprobar la configuración de vídeo, cambiar modo de vídeo, etc, es con:
 jay ranrd
+----Para activar el VRR para una salida: jay randr output DP-1 vrr set-mode always
 
 --Para poder lanzar programas gráficos por SSH, añadimos a ~/.bashrc:
 export WAYLAND_DISPLAY=$(ls /run/user/$UID | grep -m1 '^wayland-')
@@ -1843,6 +1844,6 @@ export WAYLAND_DISPLAY=$(ls /run/user/$UID | grep -m1 '^wayland-')
 INVESTIGACIÓN DE SUAVIDAD TOTAL CON VRR EN WAYLAND
 ==================================================
 
---Se necesita que el compositor Wayland que usemos tenga implementado el protocolo commit_timimg_v1.
-  Para saber qué protocolo soporta cada compositor, mira https://absurdlysuspicious.github.io/wayland-protocols-table 
+--Se necesita que el compositor Wayland que usemos tenga implementado el protocolo "commit_timing_v1".
+  Para saber qué protocolos tiene implementados cada compositor, mira https://absurdlysuspicious.github.io/wayland-protocols-table 
   O directamente en la parte inferior de: https://wayland.app/protocols/commit-timing-v1
