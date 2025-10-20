@@ -1823,6 +1823,12 @@ INSTALAR JAY, COMPOSITOR WAYLAND EN RUST
 cargo install --locked jay-compositor
 ...Esto nos deja Jay instalado en: $HOME/.cargo/bin/jay
 
+--Configuramos creando un fichero ~/.config/jay/config.toml con el contenido:
+# An action that will be executed when the GPU has been initialized.
+on-graphics-initialized = [
+    { type = "exec", exec = "foot" },
+]
+
 INVESTIGACIÓN DE SUAVIDAD TOTAL CON VRR EN WAYLAND
 ==================================================
 
