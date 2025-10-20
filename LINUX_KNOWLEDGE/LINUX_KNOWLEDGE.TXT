@@ -1226,7 +1226,7 @@ NO NOS HACE FALTA VSYNC, así que no hay input lag asociado al VSYNC aunque este
 ES RECOMENDABLE tener puesto el allowTearing a "always" en el compositor para que el compositor no meta VSYNC.
 Los valores que influyen en esto los dejamos tal como vienen por defecto:
 vsync = off
-presentation_mode = default
+presentation_mode = auto
 
 Para que el JazzJackrabbit vaya perfecto (ya que cambia entre ~70Hz y ~60Hz entre los menús y el juego en sí),
 ponemos dos_rate a 60.00 Hz y un modo de 61Hz.
