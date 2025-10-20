@@ -1847,3 +1847,8 @@ INVESTIGACIÓN DE SUAVIDAD TOTAL CON VRR EN WAYLAND
 --Se necesita que el compositor Wayland que usemos tenga implementado el protocolo "commit_timing_v1".
   Para saber qué protocolos tiene implementados cada compositor, mira https://absurdlysuspicious.github.io/wayland-protocols-table 
   O directamente en la parte inferior de: https://wayland.app/protocols/commit-timing-v1
+
+--Los clientes (programas o librerías que usen Wayland directamente, como SDL2) deben usar "commit_timing_v1",
+  no es algo mágico que por usar VRR ya nos beneficie "commit_timing_v1".
+  En teoría, SDL3 ya usa "commit_timing_v1" pero no sé si los programas tienen que hacer algo especial.
+  Preguntar ambas cosas a la gente de SDL.
