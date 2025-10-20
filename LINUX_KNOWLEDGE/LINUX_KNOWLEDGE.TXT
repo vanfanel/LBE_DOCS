@@ -1223,6 +1223,7 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 --PARA TENER SCROLL PERFECTO EN UN MONITOR CON VRR, la única manera es poner un modo de 60Hz para la mayoría de los juegos
 y uno de 72Hz para las excepciones como Lemmings, Lemmings 2, Lotus 3...
 NO NOS HACE FALTA VSYNC, así que no hay input lag asociado al VSYNC aunque estemos en modos de 60/72Hz!
+ES RECOMENDABLE tener puesto el allowTearing a "always" en el compositor para que el compositor no meta VSYNC.
 Los valores que influyen en esto los dejamos tal como vienen por defecto:
 vsync = off
 presentation_mode = default
