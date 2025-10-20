@@ -11841,6 +11841,7 @@ Nos quedamos con el nombre del dispositivo en /dev, deberíamos ver algo como:
 --Primero instalamos el buildsystem que necesita.
 Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+(Para desinstalar Rust: rustup self uninstall)
 --Clonamos su repo: git clone --depth 1 https://github.com/KarsMulder/evsieve.git
 --Compilamos: cargo build --release
 --Instalamos: install -m 755 -t /usr/local/bin target/release/evsieve
