@@ -1797,3 +1797,18 @@ nos dice: "Failed to connect to display"
 
 Se debe simplemente a que para ese compositor tienes que exportar la variable de entorno WAYLAND_DISPLAY con otro valor,
 si le tienes puesto "wayland-0" ponle "wayland-1" y viceversa. Lo sueles exportar en ~/.bashrc, así que ajústalo allí.
+
+FORZAR MÁXIMO RENDIMIENTO EN LA GPU
+===================================
+
+Vemos las frecuencias disponibles:
+cat /sys/class/drm/card0/device/pp_od_clk_voltage
+
+Ponemos el rendimiento a alto:
+echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
+
+Verificamos con:
+cat /sys/class/drm/card0/device/power_dpm_force_performance_level
+
+Y con esto vemos la frecuencia a la que está corriendo la GPU en este momento, que debería ser la máxima:
+cat /sys/class/drm/card0/device/hwmon/hwmon*/freq1_input
