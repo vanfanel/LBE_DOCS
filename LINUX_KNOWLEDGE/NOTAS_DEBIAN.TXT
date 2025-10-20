@@ -1240,6 +1240,15 @@ INSTALAR RUST
 --Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+--IMPORTANTE: Para que encuentre librerías que hayamos instalado nosotros (sin esto, sólo encuentra las instaladas desde APT)
+  creamos ~/.cargo/config.toml con el contenido:
+
+[build]
+rustflags = [
+  "-L", "/usr/local/lib/x86_64-linux-gnu",
+  "-L", "/usr/local/lib"
+]
+
 --Para desinstalar:
 rustup self uninstall
 
