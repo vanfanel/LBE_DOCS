@@ -1836,6 +1836,10 @@ alt-q = "quit
 --Para comprobar la configuración de vídeo, cambiar modo de vídeo, etc, es con:
 jay ranrd
 
+--Para poder lanzar programas gráficos por SSH, añadimos a ~/.bashrc:
+export WAYLAND_DISPLAY=$(ls /run/user/$UID | grep -m1 '^wayland-')
+...DE ESE MODO, se exporta el valor correcto siempre, ya que en algunos compositores es "wayland-0" en otrs es "wayland-1", etc
+
 INVESTIGACIÓN DE SUAVIDAD TOTAL CON VRR EN WAYLAND
 ==================================================
 
