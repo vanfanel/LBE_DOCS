@@ -1830,7 +1830,8 @@ on-graphics-initialized = [
 ]
 
 [shortcuts]
-alt-q = "quit"
+ctrl-alt-t = { type = "exec", exec = "foot" }
+alt-q = "quit
 
 --Para comprobar la configuración de vídeo, cambiar modo de vídeo, etc, es con:
 jay ranrd
