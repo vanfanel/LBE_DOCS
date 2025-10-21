@@ -1227,7 +1227,8 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 
 		SCROLL PERFECTO EN UN MONITOR CON VRR:
 
---Para la mayoría de los juegos de DOS, al ser a ~70Hz (son pocos los que sincronizan la velocidad de la música con el vídeo,
+--CATEGORÍA 1: Para la mayoría de los juegos de DOS.
+Al ir la mayoría de los juegos de DOS a ~70Hz (son pocos los que sincronizan la velocidad de la música con el vídeo,
 como Lemmings 1/2, Lotus III.. pero aún así casi todos los juegos están pensados para ir a sus ~70Hz)
 deja el dos_rate en "default" y pon un modo de vídeo custom de 72Hz, así:
 
@@ -1236,10 +1237,11 @@ dosbox <juego>
 wlr-randr --output DP-1 --preferred
 
 --Para los juegos de modo-x como el SuperFrog, Pinball Fantasies, (no incluyo aquí el Jazz, que va a parte) etc..
-ponemos un modo de 60Hz y ponemos el dos_rate a 60.00Hz para tener los frametimes constantes, así:
+ponemos un modo de 60Hz y no tocamos el dos_rate (el modo-x va exactamente a 59.713 Hz, por lo que si notas micro-stuttering
+puedes probar a añadir "--set dos_rate=59.713"):
 
-wlr-randr --output DP-1 --custom-mode 1920x1080@60
-dosbox --set dos_rate=60.00 <juego>
+wlr-randr --output DP-1 --custom-mode 1920x1080@60.00
+dosbox <juego>
 wlr-randr --output DP-1 --preferred
   		
 		NOTAS SOBRE JUEGOS ESPECÍFICOS
