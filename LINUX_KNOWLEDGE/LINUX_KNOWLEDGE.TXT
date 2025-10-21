@@ -1230,9 +1230,9 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 --CATEGORÍA 1: Para la mayoría de los juegos de DOS.
 Al ir la mayoría de los juegos de DOS a ~70Hz (son pocos los que sincronizan la velocidad de la música con el vídeo,
 como Lemmings 1/2, Lotus III.. pero aún así casi todos los juegos están pensados para ir a sus ~70Hz)
-deja el dos_rate en "default" y pon un modo de vídeo custom de 72Hz, así:
+deja el dos_rate en "default" y pon un modo de vídeo custom de 71Hz, así:
 
-wlr-randr --output DP-1 --custom-mode 1920x1080@72
+wlr-randr --output DP-1 --custom-mode 1920x1080@71
 dosbox <juego>
 wlr-randr --output DP-1 --preferred
 
