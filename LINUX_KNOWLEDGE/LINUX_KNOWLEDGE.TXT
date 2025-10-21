@@ -1236,24 +1236,13 @@ wlr-randr --output DP-1 --custom-mode 1920x1080@72
 dosbox <juego>
 wlr-randr --output DP-1 --preferred
 
---Para los juegos de modo-x como el SuperFrog, Pinball Fantasies, (no incluyo aquí el Jazz, que va a parte) etc..
-ponemos un modo de 60Hz y no tocamos el dos_rate (el modo-x va exactamente a 59.713 Hz, por lo que si notas micro-stuttering
-puedes probar a añadir "--set dos_rate=59.713"):
+--Para los juegos de modo-x como el SuperFrog, Jazz Jackrabbit, Pinball Fantasies, etc..
+ponemos un modo de 60Hz y no tocamos el dos_rate (el modo-x va exactamente a 59.713 Hz,
+por lo que si notas micro-stuttering puedes probar a añadir "--set dos_rate=59.713"):
 
 wlr-randr --output DP-1 --custom-mode 1920x1080@60.00
 dosbox <juego>
 wlr-randr --output DP-1 --preferred
-  		
-		NOTAS SOBRE JUEGOS ESPECÍFICOS
-		
---Para que el JazzJackrabbit vaya perfecto (ya que cambia entre ~70Hz y ~60Hz entre los menús y el juego en sí),
-ponemos dos_rate a su frecuencia rara in-game de 59.713Hz, y un modo de 61Hz, así:
-
-wlr-randr --output DP-1 --custom-mode 1920x1080@60
-dosbox --set dos_rate=59.713 games/jazz/JAZZ.EXE
-wlr-randr --output DP-1 --preferred
-
-Es el único juego en el que tenemos que forzar el dos_rate.
 
 *******Compilar el core DOSBOX-CORE**********************************
 
