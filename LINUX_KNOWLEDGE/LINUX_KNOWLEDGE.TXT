@@ -1201,7 +1201,8 @@ cd b4
 
 CFLAGS="-O2 -march=native -mtune=native" \
 CXXFLAGS="-O2 -march=native -mtune=native" \
-meson setup -Dbuildtype=release -Duse_zlib_ng=false -Duse_sdl2_net=false -Duse_slirp=false -Duse_alsa=false ..
+meson setup -Dbuildtype=release -Ddefault_library=static \
+-Duse_zlib_ng=false -Duse_sdl2_net=false -Duse_fluidsynth=false -Duse_slirp=false -Duse_alsa=false ..
 
 ninja -j10
 
