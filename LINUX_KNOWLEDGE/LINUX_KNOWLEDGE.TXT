@@ -1221,20 +1221,37 @@ cp -R resources/mapping-unicode.org ~/.config/dosbox/
 Está en ~/.config/dosbox/dosbox-staging.conf
 --Ponemos "integer_scaling" a "off"
 --Ponemos "cpu_cycles" a "10000" (los "cpu_protected_cycles" a "60000" están bien si no encuentras ningún juego que vaya lento con eso).
---PARA TENER SCROLL PERFECTO EN UN MONITOR CON VRR:
-Para la mayoría de los juegos, pon dos_rate a 60.0000 y un modo de vídeo custom a 61Hz.
-Para los "especialitos" que sincronizan la velocidad de la música con el vídeo (Lemmings 1/2, Lotus III)
-deja el dos_rate en "default" y pon un modo de vídeo custom de 72Hz.
-NO NOS HACE FALTA VSYNC, así que no hay input lag asociado al VSYNC aunque estemos en modos de 60/72Hz!
-ES RECOMENDABLE tener puesto el allowTearing a "always" en el compositor para que el compositor no meta VSYNC.
-Los valores que influyen en esto los dejamos tal como vienen por defecto:
-vsync = off
-presentation_mode = auto
+--Dejamos vsync = off y presentation_mode = auto que es como viene por defecto.
+  NO NOS HACE FALTA VSYNC, así que no hay input lag asociado al VSYNC aunque estemos en modos de 60/72Hz!
+  ES RECOMENDABLE tener puesto el allowTearing a "always" en el compositor para que el compositor no meta VSYNC.		
 
-Para que el JazzJackrabbit vaya perfecto (ya que cambia entre ~70Hz y ~60Hz entre los menús y el juego en sí),
-ponemos dos_rate a 60.00 Hz y un modo de 61Hz.
-Es el único juego en el que tenemos que forzar el dos_rate, y es sólo para que los menús vayan suaves,
-poque in-game va perfecto sin hace nada especial.
+		SCROLL PERFECTO EN UN MONITOR CON VRR:
+
+--Para la mayoría de los juegos de DOS, al ser a ~70Hz (son pocos los que sincronizan la velocidad de la música con el vídeo,
+como Lemmings 1/2, Lotus III.. pero aún así casi todos los juegos están pensados para ir a sus ~70Hz)
+deja el dos_rate en "default" y pon un modo de vídeo custom de 72Hz, así:
+
+wlr-randr --output DP-1 --custom-mode 1920x1080@72
+dosbox <juego>
+wlr-randr --output DP-1 --preferred
+
+--Para los juegos de modo-x como el SuperFrog, Pinball Fantasies, (no incluyo aquí el Jazz, que va a parte) etc..
+ponemos un modo de 60Hz y ponemos el dos_rate a 60.00Hz para tener los frametimes constantes, así:
+
+wlr-randr --output DP-1 --custom-mode 1920x1080@60
+dosbox --set dos_rate=60.00 <juego>
+wlr-randr --output DP-1 --preferred
+  		
+		NOTAS SOBRE JUEGOS ESPECÍFICOS
+		
+--Para que el JazzJackrabbit vaya perfecto (ya que cambia entre ~70Hz y ~60Hz entre los menús y el juego en sí),
+ponemos dos_rate a su frecuencia rara in-game de 59.713Hz, y un modo de 61Hz, así:
+
+wlr-randr --output DP-1 --custom-mode 1920x1080@60
+dosbox --set dos_rate=59.713 games/jazz/JAZZ.EXE
+wlr-randr --output DP-1 --preferred
+
+Es el único juego en el que tenemos que forzar el dos_rate.
 
 *******Compilar el core DOSBOX-CORE**********************************
 
