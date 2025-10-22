@@ -1249,6 +1249,10 @@ wlr-randr --output DP-1 --preferred
 		
 --Ishar 1 y 2: Pásale al dosbox "--set sbtype=sb1" para evitar los chirridos antes del logo.
 
+--Lemmings 1: Pásale "--set cycles=3000" para tenerlo como un 386 a 20Mhz y que no salga la línea glicheada
+  de la parte inferior de la pantalla cuando lanzas el juego con "lemvga.com /v /o" que permite
+  ejecutarlo en modo VGA + "High Performance PC" directamente sin pasar por el menú.
+
 --Juegos con música MT32: pásale al dosbox "--set mididevice=mt32", y ten las ROMs del MT32 en ~/.config/dosbox/mt32_roms
   (Bueno, esa es la ruta por defecto, si quieres tenerlas en otra ruta hay un setting en el fichero de configuración).
 
