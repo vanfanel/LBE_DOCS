@@ -1245,6 +1245,10 @@ wlr-randr --output DP-1 --custom-mode 1920x1080@60.00
 dosbox <juego>
 wlr-randr --output DP-1 --preferred
 
+		NOTAS SOBRE JUEGOS ESPECÍFICOS
+		
+--Ishar 1 y 2: Pásale al dosbox "--set sbtype=sb1" para evitar los chirridos antes del logo.
+
 *******Compilar el core DOSBOX-CORE**********************************
 
 Este sí sincroniza el vídeo bien (al fin).
