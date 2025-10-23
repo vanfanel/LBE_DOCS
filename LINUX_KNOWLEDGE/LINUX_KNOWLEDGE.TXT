@@ -1266,6 +1266,11 @@ wlr-randr --output DP-1 --preferred
 porque la sbpro1 no va y sbmixer hace que, con una SBPro, los efectos suenen muy bajos.
 ...Y ejecutamos LOADPATS.EXE (de ULTRASND) antes de cargar el dm2. Debería funcionar si tienes una GUS activada y el ULTRASND en C:\
 
+--Psycho Pinball: tiene que estar en C:\PSYCHO, así que no vale con lanzar C:\PSYCHO\PSYCHO.BAT directamente,
+  tienes que crear ~/dos/juegos/psycho/play.bat que haga:
+  cd psycho
+  psycho.bat
+
 *******Compilar el core DOSBOX-CORE**********************************
 
 Este sí sincroniza el vídeo bien (al fin).
