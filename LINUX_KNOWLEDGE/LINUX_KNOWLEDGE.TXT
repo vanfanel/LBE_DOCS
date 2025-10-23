@@ -1256,8 +1256,11 @@ wlr-randr --output DP-1 --preferred
 --Juegos con música MT32: pásale al dosbox "--set mididevice=mt32", y ten las ROMs del MT32 en ~/.config/dosbox/mt32_roms
   (Bueno, esa es la ruta por defecto, si quieres tenerlas en otra ruta hay un setting en el fichero de configuración).
 
---Dungeon Master 2 (dm2) con música GUS: pásale al dosbox "--set sbbase=240 --set sbirq=5 --sbdma=1 --set gusbase=220  --set gusirq=7 --set gusdma=3"
-  Hay que usar esas direcciones concretas, si no, no va de ninguna manera.
+--Dungeon Master 2 (dm2) con música GUS, pásale al dosbox:
+"--set sbbase=240 --set irq=5 --set dma=1 --set gusbase=220  --set gusirq=7 --set gusdma=3"
+...Y en SETUP.EXE del juego, selecciona para los efectos de sonido una SoundBlaster normal
+(si seleccionas una SBPro, luego le tienes que pasar a dosbox "--set sbtype=sbpro2 --sbmixer=off",
+porque la sbpro1 no va y sbmixer hace que, con una SBPro, los efectos suenen muy bajos.
 
 *******Compilar el core DOSBOX-CORE**********************************
 
