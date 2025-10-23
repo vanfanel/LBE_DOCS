@@ -1253,8 +1253,11 @@ wlr-randr --output DP-1 --preferred
   de la parte inferior de la pantalla cuando lanzas el juego con "lemvga.com /v /o" que permite
   ejecutarlo en modo VGA + "High Performance PC" directamente sin pasar por el menú.
 
---Juegos con música MT32: pásale al dosbox "--set mididevice=mt32", y ten las ROMs del MT32 en ~/.config/dosbox/mt32_roms
-  (Bueno, esa es la ruta por defecto, si quieres tenerlas en otra ruta hay un setting en el fichero de configuración).
+--Juegos con música MT32 (The Immortal, etc): pásale al dosbox "--set mididevice=mt32".
+  Las ROMs del MT32 deben estar en ~/.config/dosbox/mt32_roms, si quieres tenerlas en otra ruta pásale "--set romdir=<RUTA>".
+
+--Juegos que usen GENERAL MIDI (Arkania 2, etc): pásale al dosbox "--set mididevice=fluidsynth --set soundfont=UHD3.sf2"
+  Las fuentes debe estar en ~/.config/dosbox/soundfonts, si quieres tenerlas en otra ruta pásale "--set soundfont_dir=<RUTA>"
 
 --Dungeon Master 2 (dm2) con música GUS, pásale al dosbox:
 "--set sbbase=240 --set irq=5 --set dma=1 --set gusbase=220  --set gusirq=7 --set gusdma=3"
