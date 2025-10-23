@@ -1261,6 +1261,7 @@ wlr-randr --output DP-1 --preferred
 ...Y en SETUP.EXE del juego, selecciona para los efectos de sonido una SoundBlaster normal
 (si seleccionas una SBPro, luego le tienes que pasar a dosbox "--set sbtype=sbpro2 --sbmixer=off",
 porque la sbpro1 no va y sbmixer hace que, con una SBPro, los efectos suenen muy bajos.
+...Y ejecutamos LOADPATS.EXE (de ULTRASND) antes de cargar el dm2. Debería funcionar si tienes una GUS activada y el ULTRASND en C:\
 
 *******Compilar el core DOSBOX-CORE**********************************
 
