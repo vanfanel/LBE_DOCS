@@ -1224,10 +1224,12 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 
 		SCROLL PERFECTO EN UN MONITOR CON VRR:
 
-Siempre dejamos "vsync = off", que es como viene por defecto, y ponemos "presentation_mode = host-rate" (OJO!! ES CON GUIÓN NORMAL!!).
+Siempre dejamos "vsync = off" y "presentation_mode = auto", que es como vienen por defecto.
 El truco" es poner un modo de vídeo cercano al refresh rate de los juegos (un poquito más alto para dejar "respirar" al VRR).
 NO NOS HACE FALTA VSYNC, así que no hay input lag asociado al VSYNC aunque estemos en modos de 60/71Hz!
 ES RECOMENDABLE tener puesto el allowTearing a "always" en el compositor para que el compositor no meta VSYNC.
+QUEDA PENDIENTE conseguir que funcione con "presentation_mode = host-rate" porque así podríamos dejar
+la frecuencia del monitor a 120Hz y aún así tener frame pacing perfecto, pero de momento detecta un refresco de 0Hz con esto. 
 
 --CATEGORÍA 1: Para la mayoría de los juegos de DOS.
 Al ir la mayoría de los juegos de DOS a ~70Hz (son pocos los que sincronizan la velocidad de la música con el vídeo,
@@ -1257,7 +1259,7 @@ wlr-randr --output DP-1 --preferred
 --Juegos con música MT32 (The Immortal, etc): pásale al dosbox "--set mididevice=mt32".
   Las ROMs del MT32 deben estar en ~/.config/dosbox/mt32_roms, si quieres tenerlas en otra ruta pásale "--set romdir=<RUTA>".
 
---Juegos que usen GUS (Superfrog, Raptor, etc), pásale al dosbox "--set gus=on"
+--Juegos que usen GUS (Superfrog, Pinball Dreams / Fantasies, Psycho Pinball, Raptor, etc), pásale al dosbox "--set gus=on"
 
 --Juegos que usen GENERAL MIDI (Arkania 2, etc): pásale al dosbox "--set mididevice=fluidsynth --set soundfont=UHD3.sf2"
   Las fuentes debe estar en ~/.config/dosbox/soundfonts, si quieres tenerlas en otra ruta pásale "--set soundfont_dir=<RUTA>"
