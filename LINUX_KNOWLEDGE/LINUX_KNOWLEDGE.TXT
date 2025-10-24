@@ -1224,8 +1224,9 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 
 		SCROLL PERFECTO EN UN MONITOR CON VRR:
 
-Siempre dejamos "vsync = off" y "presentation_mode = auto", que es como viene por defecto.
-NO NOS HACE FALTA VSYNC, así que no hay input lag asociado al VSYNC aunque estemos en modos de 60/72Hz!
+Siempre dejamos "vsync = off", que es como viene por defecto, y ponemos "presentation_mode = host_rate".
+El "truco" es poner un modo de vídeo cercano al refresh rate de los juegos (un poquito más alto para dejar "respirar" al VRR).
+NO NOS HACE FALTA VSYNC, así que no hay input lag asociado al VSYNC aunque estemos en modos de 60/71Hz!
 ES RECOMENDABLE tener puesto el allowTearing a "always" en el compositor para que el compositor no meta VSYNC.
 
 --CATEGORÍA 1: Para la mayoría de los juegos de DOS.
