@@ -1272,9 +1272,11 @@ porque la sbpro1 no va y sbmixer hace que, con una SBPro, los efectos suenen muy
   cd psycho
   psycho.bat
 
---Wizardry 6: Lo mismo que el Pyscho Pinball.
+--Wizardry 6: Lo mismo que el Pyscho Pinball con los directorios.
+  Además, le puedes pasar "--set opl_remove_dc_bias=on" para que no haga clicks todo el rato
+  con los efectos de sonido si usas SoundBlaster, y "--set cpu_cycles=3000" para una velocidad correcta.
   
---Magic Carpet: lo mismo que el Psycho Pinball.
+--Magic Carpet: lo mismo que el Psycho Pinball con los directorios.
   Además, le puedes pasar a dosbox "--set cputype=pentium" para que active los reflejos del agua por defecto. 
 
 --Juegos que usan pistas de audio en CD (Alone in the Dark, BC Racers, etc)
