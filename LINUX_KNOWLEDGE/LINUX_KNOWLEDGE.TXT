@@ -2268,6 +2268,7 @@ Y en "General Settings->Advanced Options":
 
 El "Low Latency" no tiene ningún efecto si se tiene VRR: https://docs.mamedev.org/usingmame/commonissues.html#gsync-freesync
 Los demás valores los dejamos como están por defecto.
+
 Ahora, para que no nos salga la info de cada juego ni nos salgan los warnings con los juegos imperfectos,
 nos vamos a "General Settings->Miscelaneous Options" y ponemos
 "Skip imperfect emulation warnings" a "On"
