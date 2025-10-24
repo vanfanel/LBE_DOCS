@@ -2256,6 +2256,8 @@ USAR MAME STANDALONE
 --Copiamos los directorios "bgfx" y "artwork" que vienen en la raiz de los sources a "~/mame/bgfx":
 cp -R bgfx artwork ~/mame/
 
+		SECCIÓN SCROLLES PERFECTOS EN TODOS LOS JUEGOS (INCLUÍDO MK) CON VRR
+
 --Ejecutamos "mame" sin ningún juego, y en "General Settings->Video Options":
 "Video Mode" a "bgfx"
 "Window Mode" a "Off"
@@ -2274,8 +2276,10 @@ nos vamos a "General Settings->Miscelaneous Options" y ponemos
 "Skip imperfect emulation warnings" a "On"
 "Skip system information screen" a "On"
 
---Ponemos un modo de 125Hz antes de entrar: eso nos permite que el VRR vaya bien con juegos ~55-60Hz
-al darle 4Hz de sobra para que VRR "respire". Lo típico. Y sí, para que vaya perfecto son 125Hz, NO 123Hz.
+NO HACE FALTA PONER NINGÚN MODO DE VÍDEO ANTES DE ENTRAR A MAME SI LO TIENES BIEN CONFIGURADO TODO,
+EL VRR FUNCIONA PERFECTAMENTE CON EL MODO "PREFERRED" DEL MONITOR.
+
+		FIN SECCIÓN SCROLLES PERFECTOS EN TODOS LOS JUEGOS CON VRR
 
 --Editamos "~/.mame/mame.ini" y nos aseguramos de que esto está así:
 bgfx_backend	vulkan
