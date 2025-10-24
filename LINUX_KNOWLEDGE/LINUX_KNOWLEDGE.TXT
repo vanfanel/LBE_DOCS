@@ -1289,6 +1289,8 @@ y además hay que deshabilitar el sbmixer para que los efectos no se oigan muy b
 
 --Shadowlands: Pásale a dosbox "--set cpu_cycles=1500"
 
+--Realms of Arkania 2: Pásale a dosbox "--set cpu_cycles_protected=12000"
+
 --Juegos que usan pistas de audio en CD (Alone in the Dark, BC Racers, etc)
   Creamos un .conf con un contenido de este estilo:
 
