@@ -1285,6 +1285,8 @@ porque la sbpro1 no va y sbmixer hace que, con una SBPro, los efectos suenen muy
   "--set core=normal --set cpu_cycles=4000 --set sbtype=none --set mididevice=mt32"
   (OJO: Si no guarda la configuración de audio, es que no lo estás ejecutando desde C:\WC en vez de C:\)
 
+--Shadowlands: Pásale a dosbox "--set cpu_cycles=1500"
+
 --Juegos que usan pistas de audio en CD (Alone in the Dark, BC Racers, etc)
   Creamos un .conf con un contenido de este estilo:
 
