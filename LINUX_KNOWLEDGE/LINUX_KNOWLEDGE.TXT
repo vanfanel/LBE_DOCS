@@ -1271,6 +1271,8 @@ porque la sbpro1 no va y sbmixer hace que, con una SBPro, los efectos suenen muy
   tienes que crear ~/dos/juegos/psycho/play.bat que haga:
   cd psycho
   psycho.bat
+
+--Wizardry 6: Lo mismo que el Pyscho Pinball.
   
 --Magic Carpet: lo mismo que el Psycho Pinball.
   Además, le puedes pasar a dosbox "--set cputype=pentium" para que active los reflejos del agua por defecto. 
