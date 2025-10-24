@@ -10063,7 +10063,7 @@ libtinyxml2-dev nlohmann-json3-dev libspdlog-dev
 
 --Clonamos su repo:
 git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules
-Si quisié la última versión estable del repo, haríamos algo como:
+Si quisiéramos la última versión estable del repo, haríamos algo como:
 git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules -b 9.1.0 
 
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
@@ -10146,8 +10146,8 @@ ZELDA MAJORA'S MASK en GNU/Linux
 --Instalamos dependencias previas:
 apt-get install lsb-release
 
---Clonamos su repo:
-git clone --depth 1 --recurse-submodules https://github.com/HarbourMasters/2ship2harkinian
+--Clonamos la última versión estable con:
+git clone https://github.com/HarbourMasters/2ship2harkinian.git --depth 1 --recurse-submodules -b 2.0.1 
 
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
