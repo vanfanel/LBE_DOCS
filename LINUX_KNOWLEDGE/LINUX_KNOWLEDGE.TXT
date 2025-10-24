@@ -2256,8 +2256,16 @@ USAR MAME STANDALONE
 --Copiamos los directorios "bgfx" y "artwork" que vienen en la raiz de los sources a "~/mame/bgfx":
 cp -R bgfx artwork ~/mame/
 
---Ejecutamos "mame" sin ningún juego, y en el menú nos vamos a "General Settings->Video Options",
-y ponemos "Video Mode" a "bgfx", "GLSL" a "On", "Window Mode" a "off", "Wait Vertical Sync" a "On". 
+--Ejecutamos "mame" sin ningún juego, y en "General Settings->Video Options":
+"Video Mode" a "bgfx"
+"Window Mode" a "Off"
+"Synchronized Refresh" a "Off"
+"Wait Vertical Sync" a "Off"
+Y en "General Settings->Advanced Options":
+"Throttle" a "On"
+"Adjust speed to match refresh rate" a "Off"
+"Low latency" a "Off"
+
 El "Low Latency" no tiene ningún efecto si se tiene VRR: https://docs.mamedev.org/usingmame/commonissues.html#gsync-freesync
 Los demás valores los dejamos como están por defecto.
 Ahora, para que no nos salga la info de cada juego ni nos salgan los warnings con los juegos imperfectos,
