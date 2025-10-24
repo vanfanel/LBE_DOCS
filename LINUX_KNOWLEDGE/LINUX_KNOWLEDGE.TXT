@@ -2276,6 +2276,9 @@ nos vamos a "General Settings->Miscelaneous Options" y ponemos
 "Skip imperfect emulation warnings" a "On"
 "Skip system information screen" a "On"
 
+ES RECOMENDABLE ACTIVAR EL allowTearing EN EL COMPOSITOR DE WAYLAND.
+En Labwc es con "<allowTearing>always</allowTearing>" en la sección "<core>" del fichero ".config/labwc/rc.xml"
+
 NO HACE FALTA PONER NINGÚN MODO DE VÍDEO ANTES DE ENTRAR A MAME SI LO TIENES BIEN CONFIGURADO TODO,
 EL VRR FUNCIONA PERFECTAMENTE CON EL MODO "PREFERRED" DEL MONITOR.
 
@@ -5784,8 +5787,8 @@ https://github.com/JHDev2006/Super-Mario-Bros.-Remastered-Public/releases
   del juego, no hará falta volver a arrastrar la ROM a la ventana.
 
 --Para tener scroll perfecto con VRR, desactiva el VSYNC, y recuerda que en los settings del compositor tienes que tener
-  el allowTearing activado. En Labwc es con "<allowTearing>always</allowTearing>" en la sección "<core>"
-  del fichero ".config/labwc/rc.xml"
+  el allowTearing activado.
+  En Labwc es con "<allowTearing>always</allowTearing>" en la sección "<core>" del fichero ".config/labwc/rc.xml"
 
 ***********OpenLara, versión opensource del Tomb Raider********************************************************************************
 
