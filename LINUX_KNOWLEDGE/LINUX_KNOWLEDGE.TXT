@@ -1257,6 +1257,8 @@ wlr-randr --output DP-1 --preferred
 --Juegos con música MT32 (The Immortal, etc): pásale al dosbox "--set mididevice=mt32".
   Las ROMs del MT32 deben estar en ~/.config/dosbox/mt32_roms, si quieres tenerlas en otra ruta pásale "--set romdir=<RUTA>".
 
+--Juegos que usen GUS (Superfrog, Raptor, etc), pásale al dosbox "--set gus=on"
+
 --Juegos que usen GENERAL MIDI (Arkania 2, etc): pásale al dosbox "--set mididevice=fluidsynth --set soundfont=UHD3.sf2"
   Las fuentes debe estar en ~/.config/dosbox/soundfonts, si quieres tenerlas en otra ruta pásale "--set soundfont_dir=<RUTA>"
 
