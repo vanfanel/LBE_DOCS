@@ -1260,11 +1260,11 @@ wlr-randr --output DP-1 --preferred
 --Juegos que usen GENERAL MIDI (Arkania 2, etc): pásale al dosbox "--set mididevice=fluidsynth --set soundfont=UHD3.sf2"
   Las fuentes debe estar en ~/.config/dosbox/soundfonts, si quieres tenerlas en otra ruta pásale "--set soundfont_dir=<RUTA>"
 
---Dungeon Master 2 (dm2) con música GUS, pásale al dosbox:
-"--set sbbase=240 --set irq=5 --set dma=1 --set gusbase=220  --set gusirq=7 --set gusdma=3"
+--Dungeon Master 2 (dm2) con música GUS y velocidad adecuada, pásale al dosbox:
+"--set gus=on --set sbbase=240 --set irq=5 --set dma=1 --set gusbase=220  --set gusirq=7 --set gusdma=3 --set cpu_cycles=10000"
 ...Y en SETUP.EXE del juego, selecciona para los efectos de sonido una SoundBlaster normal
-(si seleccionas una SBPro, luego le tienes que pasar a dosbox "--set sbtype=sbpro2 --sbmixer=off",
-porque la sbpro1 no va y sbmixer hace que, con una SBPro, los efectos suenen muy bajos.
+(si quieres usar SBPro, luego le tienes que pasar a dosbox "--set sbtype=sbpro2 --sbmixer=off" ya que la sbpro1 no va,
+y además hay que deshabilitar el sbmixer para que los efectos no se oigan muy bajos).
 ...Y ejecutamos LOADPATS.EXE (de ULTRASND) antes de cargar el dm2. Debería funcionar si tienes una GUS activada y el ULTRASND en C:\
 
 --Psycho Pinball: tiene que estar en C:\PSYCHO, así que no vale pasarle a dosbox el C:\PSYCHO\PSYCHO.BAT directamente,
