@@ -5783,6 +5783,10 @@ https://github.com/JHDev2006/Super-Mario-Bros.-Remastered-Public/releases
   Esto sólo hay que hacerlo una vez: los assets, quedan en ~/.local/share/SMB1R/resource_packs, por lo que aunque te bajes nuevas versiones
   del juego, no hará falta volver a arrastrar la ROM a la ventana.
 
+--Para tener scroll perfecto con VRR, desactiva el VSYNC, y recuerda que en los settings del compositor tienes que tener
+  el allowTearing activado. En Labwc es con "<allowTearing>always</allowTearing>" en la sección "<core>"
+  del fichero ".config/labwc/rc.xml"
+
 ***********OpenLara, versión opensource del Tomb Raider********************************************************************************
 
 PUEDES BAJARTE LOS DATOS DEL JUEGO SIMPLEMENTE DE:
