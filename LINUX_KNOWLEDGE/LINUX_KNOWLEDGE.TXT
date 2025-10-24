@@ -1272,7 +1272,21 @@ porque la sbpro1 no va y sbmixer hace que, con una SBPro, los efectos suenen muy
   psycho.bat
   
 --Magic Carpet: lo mismo que el Psycho Pinball.
-Además, le puedes pasar a dosbox "--set cputype=pentium" para que active los reflejos del agua por defecto. 
+  Además, le puedes pasar a dosbox "--set cputype=pentium" para que active los reflejos del agua por defecto. 
+
+--Juegos que usan pistas de audio en CD (Alone in the Dark, BC Racers, etc)
+  Creamos un .conf con un contenido de este estilo:
+
+[autoexec]
+mount c: ~/dos/games
+c:
+imgmount d alonecd/alonecd.cue -t iso
+cd indark
+drv_sbd.com
+indark
+exit
+
+  Y se lo pasamos al dosbox con: --conf confs/alone.conf"
 
 *******Compilar el core DOSBOX-CORE**********************************
 
@@ -10030,8 +10044,8 @@ libtinyxml2-dev nlohmann-json3-dev libspdlog-dev
 
 --Clonamos su repo:
 git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules
-Si quisié la última versión estable del repo, y si por ejemplo fuese la 9.0.2, haríamos:
-git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules -b 9.0.2 
+Si quisié la última versión estable del repo, haríamos algo como:
+git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules -b 9.1.0 
 
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
@@ -10057,7 +10071,7 @@ y la copiamos a "OTRExporter/baserom.z64"
 --En el mismo directorio donde acabamos de compilar el juego, hacemos:
 cmake --build . --target ExtractAssets -j4
 --Copiamos los archivos "oot.otr" y "soh.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
-cp soh/*.otr ~/zelda64/
+cp soh/*.o2r ~/zelda64/
 
 ALTERNATIVA PARA EXTRAER LOS DATOS DEL JUEGO SIN COMPILAR EL JUEGO:
 --Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
