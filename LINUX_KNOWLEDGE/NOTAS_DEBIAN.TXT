@@ -541,7 +541,7 @@ https://mesa.freedesktop.org/archive/
 
 --CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
 
-PARA X86_64 CON GRÁFICOS AMD (No necesita LLVM, usa el compilador ACO, por eso no hemos instalado LLVM y lo desactivamos aquí):
+PARA X86_64 CON GRÁFICOS AMD (No necesita LLVM, usa el compilador ACO, por eso no hemos instalado LLVM y desactivamos el soporte LLVM aquí):
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 meson setup -Dbuildtype=release -Dglx=disabled -Dplatforms=wayland -Dvulkan-layers=anti-lag \
