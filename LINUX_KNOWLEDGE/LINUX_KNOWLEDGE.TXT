@@ -746,12 +746,6 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_MGBA=OFF -DENABLE_AUTOUP
      (Es esto desactivado o activar "Settings->Video->Synchronization->Sync to Exact Content Framerate"
 	  para que el frame pacing sea correcto si estás a 120Hz o más).
 
-POR AHORA, la única manera de tener un frame pacing totalmente suave (ver 240p Test Suite para GameCube, o test de mirar alrededor en
-cámara de primera persona en el Zelda WW) es con VSYNC ON y 60Hz.
-Como es una consola "moderna" con framebuffer, alta resolución, etc. eso nos debería dar el mismo input lag que el hardware original
-ya que en el hardware original si se quería tener VSYNC con framebuffer y a 60Hz se obtendría input lag derivado del VSYNC de todos modos,
-pero es deseable que sea posible el mismo frame pacing perfecto en 120Hz en el futuro.
-
 ******Compilar DOLPHIN standalone en GNU/Linux****************
 
 Dependencias previas:
@@ -5789,7 +5783,7 @@ https://github.com/JHDev2006/Super-Mario-Bros.-Remastered-Public/releases
   Esto sólo hay que hacerlo una vez: los assets, quedan en ~/.local/share/SMB1R/resource_packs, por lo que aunque te bajes nuevas versiones
   del juego, no hará falta volver a arrastrar la ROM a la ventana.
 
---Para tener scroll perfecto con VRR, desactiva el VSYNC, pon el FRAME LIMIT a 60,
+--Para tener scroll perfecto con VRR, desactiva el VSYNC, pon el FRAME LIMIT a 120,
   y recuerda que en los settings del compositor tienes que tener el allowTearing activado.
   En Labwc es con "<allowTearing>always</allowTearing>" en la sección "<core>" del fichero ".config/labwc/rc.xml"
 
