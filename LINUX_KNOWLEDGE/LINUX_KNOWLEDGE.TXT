@@ -724,10 +724,7 @@ los datos del juego.
 ******Compilar el core DOLPHIN LIBRETRO*********************************************************************************
 
 --Compilamos su repo así:
-git clone --recursive --depth 1 https://github.com/libretro/dolphin.git
-
---(POR AHORA) Aplicamos este parche al CMakeList.txt principal:
-https://github.com/dolphin-emu/dolphin/pull/14007/commits/37d6fe61baec2f17e6ac03dca67aea9832844063
+git clone --recursive --depth 1 https://github.com/cscd98/dolphin.git -b more-fix
 
 --Compilamos con:
 
@@ -748,6 +745,12 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_MGBA=OFF -DENABLE_AUTOUP
 ----"Skip Presenting Duplicate Frames" OFF
      (Es esto desactivado o activar "Settings->Video->Synchronization->Sync to Exact Content Framerate"
 	  para que el frame pacing sea correcto si estás a 120Hz o más).
+
+POR AHORA, la única manera de tener un frame pacing totalmente suave (ver 240p Test Suite para GameCube, o test de mirar alrededor en
+cámara de primera persona en el Zelda WW) es con VSYNC ON y 60Hz.
+Como es una consola "moderna" con framebuffer, alta resolución, etc. eso nos debería dar el mismo input lag que el hardware original
+ya que en el hardware original si se quería tener VSYNC con framebuffer y a 60Hz se obtendría input lag derivado del VSYNC de todos modos,
+pero es deseable que sea posible el mismo frame pacing perfecto en 120Hz en el futuro.
 
 ******Compilar DOLPHIN standalone en GNU/Linux****************
 
