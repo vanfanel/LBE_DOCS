@@ -601,7 +601,7 @@ git clone --depth 1 https://github.com/libsdl-org/sdl2-compat.git
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release -DSDL2COMPAT_DISABLE_X11=ON -DSDL2COMPAT_TESTS=OFF
+cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release -DSDL2COMPAT_X11=OFF -DSDL2COMPAT_TESTS=OFF
 
 --Tras instalar, editamos /usr/local/include/SDL2/SDL_config_unix.h y comentamos la línea:
 #define SDL_VIDEO_DRIVER_X11 1
