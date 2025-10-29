@@ -7479,11 +7479,17 @@ las mierdas de X11. (Nosotros instalamos un CAIRO sin X11 a mano porque el metac
 	make -j4
 	make install
 
---VAMOS A POR EL JUEGO EN SI:
+--VAMOS A POR EL ENGINE Y EL JUEGO EN SI:
+(NOTA: el repo del juego tiene el repo del engine como un submódulo, PERO la versión del engine a la que punta
+es más antigua y tiene un bug de "claridad excesiva", así que instalamos el engine desde su propio repo)
 
---Clonamos el repo (incluye tanto el juego como el engine):
-git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-Decompilation.git
---Editamos dependencies/RSDKv5/RSDKv5/RSDK/Audio/Audio.hpp y dejamos la línea:
+--Clonamos el repo del engine:
+git clone --recursive --depth 1 https://github.com/RSDKModding/RSDKv5-Decompilation.git 
+
+--Copiamos el ejecutable del engine RSDKv5 a nuestro directorio de sonicmania:
+cp dependencies/RSDKv5/RSDKv5U ~/sonicmania/
+
+--Editamos RSDKv5/RSDK/Audio/Audio.hpp y dejamos la línea:
 #define MIX_BUFFER_SIZE (0x800)
 como:
 #define MIX_BUFFER_SIZE (0x200)
@@ -7494,13 +7500,21 @@ cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DRETRO_SUBSYSTEM=VK \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
-Copiamos RSDKv5 a ~/sonicmania:
-cp dependencies/RSDKv5/RSDKv5U ~/sonicmania/
+--Clonamos el repo del juego:
+git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-Decompilation.git
 
-Copiamos libGame.so a ~/sonicmania/Game.so:
+--Configuramos y compilamos asi:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DRETRO_SUBSYSTEM=VK \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+
+--Copiamos el archivo resultante "libGame.so" a nuestro directorio de sonicmania:
 cp libGame.so ~/sonicmania/Game.so
 
-Metemos Data.rsdk también en ~/sonicmania
+--Metemos Data.rsdk también en ~/sonicmania
+
+	NOTAS SOBRE LOS CONTROLES
 
 Como el juego sólo soporta gamepads y no joysticks en general,
 para que reconozca el Khensu 2.4G, el mando de N64 (Saffun) en modo XBOX360 y el adaptador de SNES,
@@ -11511,7 +11525,7 @@ Y compilamos e instalamos con un solo comando, así:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-make SYSTEM=linux-egl-glvnd -j4 install
+sudo make SYSTEM=linux-egl-glvnd -j10 install
 
 AHORA EDITA /usr/local/include/GL/glew.h y, o bien añade:
 #define GLEW_NO_GLU 1
