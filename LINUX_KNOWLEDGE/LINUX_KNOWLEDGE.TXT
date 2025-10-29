@@ -6616,7 +6616,8 @@ cd b4
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
-cmake .. -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-ipv6=0 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl2=0 ..
+cmake .. -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-systemd=0 -Denable-ipv6=0 \
+-Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl3=0 ..
 
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
 for f in $(cat install_manifest.txt) ; do rm "$f"; done
