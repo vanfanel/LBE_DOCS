@@ -106,7 +106,7 @@ cd b4
 
 CFLAGS="-O2 -march=native -mtune=native -O2" \
 CXXFLAGS="-O2 -march=native -mtune=native -O2" \
-meson setup .. -Dbuildtype=release -Dwith_x11=disabled -Dwith_dbus=disabled -Dwith_xnvctrl=disabled -Dwith_nvml=disabled
+meson setup .. -Dbuildtype=release -Dwith_wayland=enabled -Dwith_x11=disabled -Dwith_dbus=disabled -Dwith_xnvctrl=disabled -Dwith_nvml=disabled
 
 ninja -j10
 sudo ninja install
