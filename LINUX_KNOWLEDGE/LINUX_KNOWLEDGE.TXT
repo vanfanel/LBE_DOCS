@@ -113,7 +113,7 @@ sudo ninja install
 
 --Para usarlo es simplemente con: mangohud <programa>
 
---Para que se vea más grande, creamos el fichero ".config/MangoHud/MangoHud.conf" con el contenido:
+--Para que se vea más grande, creamos el fichero "~/.config/MangoHud/MangoHud.conf" con el contenido:
 font_scale=3.0
 
 --Para que se tomen muestras más frecuentes (por defecto es cada 500ms):
