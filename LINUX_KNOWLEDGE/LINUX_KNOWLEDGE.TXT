@@ -593,6 +593,8 @@ Ejecutamos "winecfg", vamos a la pestaña "Graphics" y allí ponemos "Screen Res
 ******DIRECTX SOBRE VULKAN USANDO WINE**************************************************************************************
 
 OPCIÓN 1 (RECOMENDADO): USANDO DXVK
+(NOTA: Para instalarlo, DXVK trae un script llamado "dxvk-setup" que deberíamos ejecutar como "dxvk-setup i"
+ para instalarlo con sencillez, pero yo lo hago a mano y es lo que tengo en estas instrucciones. En teoría es lo mismo). 
 
 --Clonamos la última versión (podemos mirar el número de versión en https://github.com/doitsujin/dxvk/tags):
 git clone --depth 1 --recurse-submodules -b v2.7.1 https://github.com/doitsujin/dxvk.git
