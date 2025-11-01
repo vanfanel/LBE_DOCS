@@ -591,11 +591,16 @@ Todo lo necesario (incluyendo el juego comercial) lo tienes en el mirror de "REF
 --Instala la versión "RETAIL" original. Te pedirá un código de producto, usa este: mcxmm-y29c6-dr36c-b6w4t-t9p73
 --Instala el parche de actualización de la versión 1.0.10.
 --¡¡CUIDADO!! NO INSTALES el parche halo_laa_fix que es para que pueda usar más de 2GB de RAM o algo así: el juego deja de funcionar en WINE!!
---Instala la última versión de "CHIMERA", que se baja de aquí: https://github.com/SnowyMouse/chimera/releases
-  es simplemente mover "Strings.dll" a "strings_old.dll", traernos el "strings.dll", chimera.ini y el directorio "fonts".
---Instala la última versión estable de "REFINED" (ahora mismo estoy usando la V2 que está en https://www.proxeninc.net/Halo/Refined/Refined%20V2%20Download/), es simplemente sobreescribir todo lo del directorio "MAPS".
-Si los sobreescribes con las versiones en castellano pues el juego estará en castellano.
---RECUERDA activar el VSYNC en el menú, porque si no el juego va tan rápido como puede y te pondrá la CPU a mil grados.
+--Instala la última versión de "CHIMERA", es lo que permite que tengamos 1080p, 16:9 y demás QOL,
+  y se baja de aquí: https://github.com/SnowyMouse/chimera/releases
+  Es simplemente renombrar "Strings.dll" a "strings_old.dll", traernos el "strings.dll", chimera.ini y el directorio "fonts".
+--Instala la última versión estable de "REFINED", que son los mapas arreglados para que sean como los de XBOX originales
+  Por ahora, uso Revined V2 "estable" que está en https://www.proxeninc.net/Halo/Refined/Refined%20V2%20Download/
+  Para instalarlo es simplemente sobreescribir todo lo del directorio "MAPS".
+  Si los sobreescribes con las versiones en castellano pues el juego estará en castellano.
+--PARA JUGAR PERFECTO CON VRR (y sin que se nos caliente la CPU a saco) edita "chimera.ini" y deja así estos settings:
+  vsync=1
+  chimera_throttle_fps=117 <--Suponiendo que tengas puesto un modo de vídeo de ~120Hz. Siempre es el refresco -3.
 
 ******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
 
