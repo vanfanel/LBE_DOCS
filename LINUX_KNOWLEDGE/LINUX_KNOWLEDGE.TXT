@@ -590,7 +590,7 @@ Tienes el juego de Windows ya listo en el disco duro de backup, pero por si acas
 Todo lo necesario (incluyendo el juego comercial) lo tienes en el mirror de "REFINED" aquí: https://www.proxeninc.net/Halo/Refined/
 --Instala la versión "RETAIL" original. Te pedirá un código de producto, usa este: mcxmm-y29c6-dr36c-b6w4t-t9p73
 --Instala el parche de actualización de la versión 1.0.10.
---Instala el parche halo_laa_fix que es para que pueda usar más de 2GB de RAM o algo así.
+--¡¡CUIDADO!! NO INSTALES el parche halo_laa_fix que es para que pueda usar más de 2GB de RAM o algo así: el juego deja de funcionar en WINE!!
 --Instala la última versión de "CHIMERA", que se baja de aquí: https://github.com/SnowyMouse/chimera/releases
   es simplemente mover "Strings.dll" a "strings_old.dll", traernos el "strings.dll", chimera.ini y el directorio "fonts".
 --Instala la última versión estable de "REFINED" (ahora mismo estoy usando la V2 que está en https://www.proxeninc.net/Halo/Refined/Refined%20V2%20Download/), es simplemente sobreescribir todo lo del directorio "MAPS".
