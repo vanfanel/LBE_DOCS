@@ -597,11 +597,15 @@ Todo lo necesario (incluyendo el juego comercial) lo tienes en el mirror de "REF
   Es simplemente renombrar "Strings.dll" a "strings_old.dll", traernos el "strings.dll", chimera.ini y el directorio "fonts".
 --Instala la última versión estable de "REFINED", que son los mapas arreglados para que sean como los de XBOX originales
   Por ahora, uso Revined V2 "estable" que está en https://www.proxeninc.net/Halo/Refined/Refined%20V2%20Download/
-  Para instalarlo es simplemente sobreescribir todo lo del directorio "MAPS".
-  Si los sobreescribes con las versiones en castellano pues el juego estará en castellano.
+  El fichero que nos bajaremos es "halo_refined_retail_en.7z"
+  Para instalarlo es simplemente sobreescribir todo lo del directorio "MAPS" con lo que trae el .7z que te has bajado.
 --PARA JUGAR PERFECTO CON VRR (y sin que se nos caliente la CPU a saco) edita "chimera.ini" y deja así estos settings:
   vsync=1
   chimera_throttle_fps=117 <--Suponiendo que tengas puesto un modo de vídeo de ~120Hz. Siempre es el refresco -3.
+--PARA JUGAR CON EL DOBLAJE EN CASTELLANO, bájate "halo_refined_retail_es.7z" en vez del "halo_refined_retail_en.7z",
+  sobreescribe lo de MAPS con sus contenidos, y a parte mete la fuente "InterstateCondensed-Bold.otf" en "fonts"
+  y cambia todas las ocurrencias de "Interstate-Bold" por "InterstateCondensed-Bold" en chimera.ini, ya que en castellano
+  se necesita una fuente más estrecha para que entren bien todas las cadenas de texto de los menús.
 
 ******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
 
