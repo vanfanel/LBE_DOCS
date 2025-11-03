@@ -102,7 +102,7 @@ apt-get install firmware-amd-graphics
 
 --Dejamos /etc/asound.conf así:
 
-----OPCIÓN 1: Sonido por DisplayPort/HDMI con dmix:
+----OPCIÓN 1, COMO LO VENIMOS HACIENDO AHORA: SONIDO POR DP-1 CON DMIX (SIN DMIX HAY MÁS CORTES DE AUDIO EN LOS JUEGOS!!)
 (NOTA: Esto es para usar la salida de vídeo DisplayPort, si usas HDMI donde pone 8 pon un 3).
 
 pcm.!default {
