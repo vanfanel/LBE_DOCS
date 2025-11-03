@@ -587,7 +587,9 @@ INSTALAR SDL3
 --Bajamos la última versión estable de:
 https://github.com/libsdl-org/SDL/releases
 
---Compilamos CON GLES, GLES2, OPENGL COMPLETO, VULKAN Y AUDIO SOBRE PIPEWIRE Y ALSA:
+--Compilamos CON GLES, GLES2, OPENGL COMPLETO, VULKAN Y AUDIO SOBRE ALSA (Y PIPEWIRE SI LO DETECTA INSTALADO):
+mkdir b4
+cd b4
 
 cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release \
 -DSDL_X11=OFF -DSDL_CAMERA=OFF -DSDL_VIRTUAL_JOYSTICK=OFF -DSDL_DBUS=OFF -DSDL_DISKAUDIO=OFF -DSDL_DUMMYVIDEO=OFF -DSDL_DUMMYAUDIO=OFF
@@ -618,13 +620,13 @@ https://github.com/libsdl-org/SDL/releases
 
 Ahora, para configurar:
 
-CON GLES, GLES2, OPENGL COMPLETO, VULKAN Y AUDIO SOBRE PIPEWIRE SOLAMENTE, COMO LO HACEMOS AHORA:
+CON GLES, GLES2, OPENGL COMPLETO, VULKAN Y AUDIO SOBRE ALSA (Y PIPEWIRE SI LO DETECTA INSTALADO), COMO LO HACEMOS AHORA:
 
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 ./configure --enable-video-kmsdrm --disable-video-x11 --disable-dbus --disable-diskaudio --disable-oss --disable-pulseaudio \
 --disable-video-rpi --disable-dummyaudio --disable-video-dummy --disable-video-offscreen --enable-video-opengles \
---enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx --disable-alsa --enable-pipewire
+--enable-video-opengl --enable-video-vulkan --enable-libudev --disable-esd --disable-ime --disable-fcitx
 
 (PARA SISTEMAS EMBEDIDOS O CON MUY POCA POTENCIA, PODEMOS PASARLE --diable-libsamplerate, QUE HACE QUE SDL2 RESAMPLEE USANDO SUS ALGORITMOS INTERNOS
  QUE SON DE MENOR CALIDAD Y METEN MÁS RUIDO PERO SON MUCHO MÁS RÁPIDOS).
@@ -706,12 +708,12 @@ editamos qb/config.libs.sh, y cambiamos "-lGL" por "-lOpenGL".
  en Wayland sólo puedes configurar max_swapchain si usas el backend Vulkan).
 TODO ESTO INNECESARIO porque el driver GLCORE va sobre GL3 o GLES3 y ya soporta HARD SYNC directamente.
 
-Ahora, para configurar RetroArch con soporte de OPENGL, VULKAN y audio PIPEWIRE, como lo venimos haciendo:
+Ahora, para configurar RetroArch con soporte de OPENGL, VULKAN y audio ALSA (y PIPEWIRE si lo detecta instalado), como lo venimos haciendo:
 
 CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
 ./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg \
---disable-netplaydiscovery --enable-udev --enable-pipewire --disable-sdl --disable-pulse --disable-oss \
+--disable-netplaydiscovery --enable-udev --disable-sdl --disable-pulse --disable-oss \
 --disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
 --disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra --disable-discord \
 --disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
