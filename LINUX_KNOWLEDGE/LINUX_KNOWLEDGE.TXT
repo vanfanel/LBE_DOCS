@@ -648,8 +648,8 @@ ninja -j10
 --Las metemos en el profile de Wine que estemos usando:
 find ./ -name "*.dll" -exec cp {} ~/.wine/drive_c/windows/system32 \;
 
---Ejecutamos "winecfg", y allí vamos a la pestaña LIBRARIES, y vamos añadiendo overrides para "d3d8", "d3d9" y "d3d10",
-poniéndolos a "NATIVE" solamente, y ya está, ya todo lo de DirectX 8, 9 y 10 te irá sobre Vulkan.
+--Ejecutamos "winecfg", y allí vamos a la pestaña LIBRARIES, y vamos añadiendo overrides para "d3d8", "d3d9", "d3d10" y "d3d11",
+poniéndolos a "NATIVE" solamente, y ya está, ya todo lo de DirectX 8, 9, 10 y 11 te irá sobre Vulkan.
 
 OPCIÓN 2: USANDO EL SOPORTE D3D->VULKAN QUE INCLUYE WINE DE SERIE
 
