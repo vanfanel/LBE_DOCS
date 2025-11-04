@@ -830,6 +830,10 @@ sudo ldconfig
 Si quieres filtros por software, entra en gfx/video_filters y haz make, y copias los .so y los .filt a ~/.config/retroarch/filters/video/
 y luego los seleccionas en retroarch.
 
+NOTA: Para que vayan los controles (teclado/ratón) sobre KMSDRM, añade a tu usuario al grupo "input":
+sudo usermod -aG input $USER
+...Luego cierra la sesión y vuelve a abrirla, y ya debería ir.
+
 INSTRUCCIONES GENERALES PARA COMPILAR EL KERNEL DEBIAN
 ======================================================
 
