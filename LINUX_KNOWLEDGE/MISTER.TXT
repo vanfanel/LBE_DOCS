@@ -818,6 +818,13 @@ CRTL+S: activar y desactivar sonido.
 CTRL+A: Reiniciar nivel.
 CTRL+V: Mostrar la versión del juego.
 
+*********Notas core Macplus**************************************************************
+
+Para tener imágen con escalado perfecto en 1080p, añadimos a MiSTer.ini:
+
+[macplus]
+video_mode=1920,1026,60
+
 *********COMPILAR CORES DE MISTER********************************************************
 
 Se compilan con el Quartus Lite. 
@@ -850,7 +857,7 @@ https://github.com/MiSTer-devel/Distribution_MiSTer#list-of-tags-that-you-may-us
 COMO LO VENIMOS HACIENDO AHORA MISMO:
 
 [mister]
-filter = !cheats !acornatom !acornelectron !adam !adventurevision !alicemc10 !altair8800 !amstrad-pcw !apogee !apple-i !aquarius !arduboy !atari2600 !atari7800 !atarilynx !ay-3-8500 !bbcmicro !bk0011m !c16 !channelf !arcadia !archie !astrocade !bbcbridgecompanion !c16 !casio_pv-1000 !casio_pv-2000 !chess !chip8 !coco2 !coco3 !coleco !colecoadam !colecovision !creativision !edsac !eg2000 !epochgalaxyii !flappybird !galaksija !gamate !gamenwatch !genesis-core !gnw !gameoflife !handheld2p !homelab !intellivision !interact !jupiter !laser !laser310 !lynx48 !macplus !megacd !megaduck !msx !multicomp !myvision !n64 !odyssey2 !ondra_spo186 !orao !oric !other-cores !pc88 !pc8801 !pdp1 !pet2001 !pmd85 !pocketchallengev2 !pokemonmini !ql !rx78 !s32x !samcoupe !scv !segacd !sgb !sharpmz !slugcross !sms !sordm5 !specialist !supervision !supervision8000 !super_vision_8000 !svi328 !tatungeinstein !ti994a !tomyscramble !tomytutor !trs-80 !tsconf !uk101 !vc4000 !vector-06c !vectrex !vic20 !vt52 !wonderswan !wonderswancolor !x68000 !zx48 !zx81 !zxnext
+filter = !cheats !acornatom !acornelectron !adam !adventurevision !alicemc10 !altair8800 !amstrad-pcw !apogee !apple-i !aquarius !arduboy !atari2600 !atari7800 !atarilynx !ay-3-8500 !bbcmicro !bk0011m !c16 !channelf !arcadia !archie !astrocade !bbcbridgecompanion !c16 !casio_pv-1000 !casio_pv-2000 !chess !chip8 !coco2 !coco3 !coleco !colecoadam !colecovision !creativision !edsac !eg2000 !epochgalaxyii !flappybird !galaksija !gamate !gamenwatch !genesis-core !gnw !gameoflife !handheld2p !homelab !intellivision !interact !jupiter !laser !laser310 !lynx48 !megacd !megaduck !msx !multicomp !myvision !n64 !odyssey2 !ondra_spo186 !orao !oric !other-cores !pc88 !pc8801 !pdp1 !pet2001 !pmd85 !pocketchallengev2 !pokemonmini !ql !rx78 !s32x !samcoupe !scv !segacd !sgb !sharpmz !slugcross !sms !sordm5 !specialist !supervision !supervision8000 !super_vision_8000 !svi328 !tatungeinstein !ti994a !tomyscramble !tomytutor !trs-80 !tsconf !uk101 !vc4000 !vector-06c !vectrex !vic20 !vt52 !wonderswan !wonderswancolor !x68000 !zx48 !zx81 !zxnext
 
 Y para que no nos instale el core de NeoGeo Pocket, añadimos en "[jtcores]" el filtro "!console":
 
