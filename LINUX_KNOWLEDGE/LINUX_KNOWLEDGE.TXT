@@ -2323,6 +2323,23 @@ y así se carga sola.
 Nos podemos bajar fuentes en BDF ya listas de https://mrdo.mameworld.info/mame_artwork_supp.php
 A mi me gusta la llamada "Nostalgia Four", que es estilo AtariST.
 
+******SOLUCIÓN TEMPORAL PARA SHADERS MIENTRAS ARREGLAN BGFX***********************
+
+El problema de BGFX es: https://github.com/mamedev/mame/issues/14022
+
+Mientras no lo arreglen, usamos simplemente el viejo renderer OpenGL de MAME (en vez de BGFX) y un shader GLSL.
+
+Para ello:
+--Nos descargamos el shader CRT-geom en formato ".vsh" de https://www.mameau.com/notes/emulation/mame/mame-glsl-shaders-setup/mame_glsl_osd.tar.gz
+--Creamos ~/mame/shaders y mandamos ahí el contenido del directorio "osd", es decir, los ficheros .vsh y .fsh los metemos en ~/mame/shaders
+--Ponemos al final de ~/.mame/mame.ini:
+#
+# Settings temporales hasta que arreglen BGFX
+#
+video                   opengl
+gl_glsl                 1
+glsl_shader_mame0       shaders/CRT-geom
+
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
 Lo más fácil es mirar en su fichero de código si tiene algún flag como MACHINE_IMPERFECT_SOUND, MACHINE_IMPERFECT_GRAPHICS, etc.
