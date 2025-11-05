@@ -2330,20 +2330,18 @@ El problema de BGFX es: https://github.com/mamedev/mame/issues/14022
 Mientras no lo arreglen, usamos simplemente el viejo renderer OpenGL de MAME (en vez de BGFX) y un shader GLSL.
 
 Para ello:
---Clonamos este repo: git clone --depth 1 https://github.com/douglaslassance/mame-setup.git
---Creamos ~/mame/shaders y mandamos ahí los ficheros glsl_crt*.*
-  mkdir ~/mame/shaders
-  cd mame-setup
-  cp glsl/glsl_crt*.* ~/mame/shaders/ 
+--Nos descargamos el shader CRT-geom en formato ".vsh" de https://www.mameau.com/notes/emulation/mame/mame-glsl-shaders-setup/mame_glsl_osd.tar.gz
+--Creamos ~/mame/shaders y mandamos ahí el contenido del directorio "osd", es decir, los ficheros .vsh y .fsh los metemos en ~/mame/shaders
 --Ponemos al final de ~/.mame/mame.ini:
 #
 # Settings temporales hasta que arreglen BGFX
 #
 video                   opengl
 gl_glsl                 1
-glsl_shader_mame0       shaders/glsl_crt
+glsl_shader_mame0       shaders/CRT-geom
 
---Podemos editar ~/mame/shaders/glsl_crt.vsh para configurar el shader.
+--Podemos editar ~/mame/shaders/CRT-geom.vsh para configurar el shader, porque viene con un efecto "tilt" inclinado raro puesto,
+  es mejor quitarle algo de curvatura (he dejado "R = 2.0" de momento), etc.
 
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
