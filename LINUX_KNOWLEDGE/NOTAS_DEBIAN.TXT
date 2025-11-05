@@ -61,24 +61,10 @@ pero aplay -L no listaba los dispositivos...¡porque no estabas en el grupo audi
 
 -DESINSTALAMOS loggers y cosas raras, que se llevan por delante servicios que no usamos:
 apt-get purge triggerhappy rsyslog cron dphys-swapfile bluetooth avahi-* fake-hwclock
-(NOTA: fake-hwclock no se usa porque en su lugar uso systemd-timesyncd que sincroniza la hora al conectarase a la red
- y guarda la hora en disco al reiniciar, con lo que fake-hwclock es redundante.)
-
--EN RASPBIAN: Deshabilitamos estos servicios:
-systemctl mask e2scrub_all.timer
-systemctl mask e2scrub_reap.service
-systemctl mask man-db.service
-systemctl mask man-db.timer
-systemctl mask rc-local.service
-systemctl mask rpcbind.service
-systemctl mask rpcbind.socket
-systemctl mask rpi-eeprom-update.service
-systemctl mask run-rpc_pipefs.mount
-systemctl mask sys-fs-fuse-connections.mount
-systemctl mask sys-kernel-debug.mount
-systemctl mask sys-kernel-tracing.mount
-systemctl mask systemd-rfkill.service
-systemctl mask systemd-rfkill.socket
+(NOTA: en una Raspberry Pi, fake-hwclock ya no lo uso porque en su lugar dejo systemd-timesyncd,
+ que sincroniza la hora al conectarase a la red y guarda la hora en disco al reiniciar,
+ pero en un ordenador "normal" con RTC+pila, puedes deshabilitar systemd-timesyncd tranquilamente,
+ incluso desinstalarlo porque está como paquete)
 
 -EN DEBIAN: Deshabilitamos estos servicios:
 systemctl mask apparmor.service
@@ -107,20 +93,39 @@ systemctl mask remote-fs.target
 systemctl mask swap.target
 systemctl mask dev-sda3.swap  
 
+-EN RASPBIAN: Deshabilitamos estos servicios:
+systemctl mask e2scrub_all.timer
+systemctl mask e2scrub_reap.service
+systemctl mask man-db.service
+systemctl mask man-db.timer
+systemctl mask rc-local.service
+systemctl mask rpcbind.service
+systemctl mask rpcbind.socket
+systemctl mask rpi-eeprom-update.service
+systemctl mask run-rpc_pipefs.mount
+systemctl mask sys-fs-fuse-connections.mount
+systemctl mask sys-kernel-debug.mount
+systemctl mask sys-kernel-tracing.mount
+systemctl mask systemd-rfkill.service
+systemctl mask systemd-rfkill.socket
+
 (OJO: Servicios que NO DEBES DESHABILITAR:
 	-NetworkManager, que se usa para conectarse a la Wifi usando raspi-config y que deja las redes conocidas
 	 en /etc/NetworkManager/system-connections, en lugar de en /etc/wpa_supplicant/wpa_supplicant.conf
-	-systemd-journald, que lo usaremos para ver los mensajes de inicio del kernel y los servicios con el comando "journalctl"
-	-systemd-logind, que lo usaremos para que libseat sepa que estamos logueados sin tener que usar el servicio seatd
+	-systemd-logind, que lo usamos para que libseat sepa que estamos logueados sin tener que usar el servicio seatd
 	 (seatd lo usaremos en sistemas embedidos sin systemd). Esto sirve para poder levantar Wayland compositors.
-	-El servicio raspi-config.service, porque aplica los settings del governor de la CPU que configuramos en /etc/init.d/raspi-config
 	-Los servicios que preparan o limpian las tmpfiles, aunque mandes todo eso a RAM
+    -systemd-journald, que lo usaremos para ver los mensajes de inicio del kernel y los servicios con el comando "journalctl"
+	 Lo que sí puedes hacer es editar /etc/systemd/journald.conf y poner "Storage" a "volatile"
+	 para que guarde los logs únicamente en RAM y "RuntimeMaxUse=50M" para que guarde 50MB de logs como máximo.
 	-El servicio system-getty.slice, que sirve para gestionar los recursos de GETTY en las TTYs,
 	aunque nos spawnee una getty por cada TTY del 1 al 6.
 	Si lo deshabilitas, el autologin en la TTY funciona, pero el servicio no respawnea al hacer un logout escribiendo "exit".
 	El truco es dejar system-getty.slice vivo, editar /etc/systemd/logind.conf y poner NAutoVTs a 1 o 2,
 	dependiendo si quieres autologin en una TTY o en dos, o vamos, en las que vayas a usar concretamente.
 	De ese modo nos funciona el autologin en las TTYs que queramos, y ademas funciona el respawn al escribir "exit".
+    -(SI ESTÁS EN UNA RASPBERRYY PI) El servicio raspi-config.service,
+	porque aplica los settings del governor de la CPU que configuramos en /etc/init.d/raspi-config
 )
 
 -Para eliminar el error de "automount point not supported", simplemente haz:
