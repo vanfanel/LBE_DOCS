@@ -5832,6 +5832,7 @@ https://github.com/JHDev2006/Super-Mario-Bros.-Remastered-Public/releases
   del juego, no hará falta volver a arrastrar la ROM a la ventana.
 
 --Para tener scroll perfecto con VRR, desactiva el VSYNC, pon el FRAME LIMIT a 120,
+  pon un modo de vídeo de 123 Hz antes de entrar para dar tiempo al VRR a "respirar",
   y recuerda que en los settings del compositor tienes que tener el allowTearing activado.
   En Labwc es con "<allowTearing>always</allowTearing>" en la sección "<core>" del fichero ".config/labwc/rc.xml"
 
