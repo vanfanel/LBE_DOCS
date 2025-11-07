@@ -9307,7 +9307,7 @@ INFO SACADA DE:
 SUBSYSTEM=="hidraw", ATTRS{idProduct}=="5200", ATTRS{idVendor}=="2dc8", TAG+="uaccess"
 
 --Recargamos las reglas de UDEV para no tener que reiniciar:
-sudo udevadm control --reload-rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
 
 --Instalamos la fuente de mierda de Windows que usan esta basura de programas cerrados:
 git clone --depth 1 https://github.com/mrbvrz/segoe-ui-linux
