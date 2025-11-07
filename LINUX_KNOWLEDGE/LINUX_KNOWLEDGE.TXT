@@ -9306,6 +9306,9 @@ INFO SACADA DE:
 --Creamos /etc/udev/rules.d/71-8bitdo-boot.rules con el contenido (adaptando el vendorID y el productID, naturalmente):
 SUBSYSTEM=="hidraw", ATTRS{idProduct}=="5200", ATTRS{idVendor}=="2dc8", TAG+="uaccess"
 
+--Recargamos las reglas de UDEV para no tener que reiniciar:
+sudo udevadm control --reload-rules
+
 --Instalamos la fuente de mierda de Windows que usan esta basura de programas cerrados:
 git clone --depth 1 https://github.com/mrbvrz/segoe-ui-linux
 cp segoe-ui-linux/font/* $HOME/.wine/drive_c/windows/Fonts/  
