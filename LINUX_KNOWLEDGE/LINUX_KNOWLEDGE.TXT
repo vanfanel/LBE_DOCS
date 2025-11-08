@@ -131,6 +131,10 @@ Se hace simplemente con:
 
 PERO OJO: Si te da un error de "missing separator" métele un tabulador delante.
 
+******Evitar que el mando 8BitDo Ultimate Pro 3 se desconecte solo todo el rato****************************************
+INFORMACIÓN PROCEDENTE DE: https://github.com/pastaq/evdev-keepalive
+ISSUE AL RESPECTO: https://github.com/paroj/xpad/issues/256
+
 ******Actualizar el firmware de un dispositivo 8bitdo usando Windows sin instalarlo************************************
 
 --Bajamos VENTOY (el archivo ventoy-xxx-linux.tar.gz) de: https://www.ventoy.net/en/download.html
