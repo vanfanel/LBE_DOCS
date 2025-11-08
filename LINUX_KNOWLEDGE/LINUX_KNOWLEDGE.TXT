@@ -141,6 +141,12 @@ sudo ./Ventoy2Disk.sh -i /dev/sda
 --Bajamos el live CD de Windows (Hirens Boot CD) de: https://www.hirensbootcd.org/download/
 
 --Copiamos la ISO al pen donde hemos instalado VENTOY y reiniciamos.
+  Con ESC, F9 o lo que sea, seleccionamos el USB para arrancar desde él.
+  
+--Conectamos tanto el mando como el receptor 2.4 al ordenador,
+  si estamos con el Ultimate Pro 3 ponemos el interruptor del mando en la posición más a la izquierda,
+  y ejecuramos el "8BitDo Ultimate Software V2". No hace falta instalar nada más especial y debería ir sin más.
+  Nos detectará el mando y el receptor y ya podemos actualizar las dos cosas. 
 
 ******Actualizar el firmware de un dispositivo 8bitdo (y de dispositivos en general) en GNU/Linux**********************
 
