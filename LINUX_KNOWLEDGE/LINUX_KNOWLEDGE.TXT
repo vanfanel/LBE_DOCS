@@ -135,6 +135,34 @@ PERO OJO: Si te da un error de "missing separator" métele un tabulador delante.
 INFORMACIÓN PROCEDENTE DE: https://github.com/pastaq/evdev-keepalive
 ISSUE AL RESPECTO: https://github.com/paroj/xpad/issues/256
 
+--Clonamos el repo: git clone --depth 1 https://github.com/pastaq/evdev-keepalive.git
+
+--Compilamos el ejecutable y lo instalamos:
+gcc evdev_keepalive.c -o evdev_keepalive
+cp evdev_keepalive /usr/local/bin
+
+--Creamos "/etc/udev/rules.d/10-evdev-keepalive.rules" con el contenido:
+
+# Don't perform MTP probing on the integrated Xbox360 controller.
+SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="3109", ENV{MTP_NO_PROBE}="1"
+
+# Setup event device of 8BitDo controller.
+ACTION=="add", KERNEL=="event[0-9]*", SUBSYSTEM=="input", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", TAG+="systemd", ENV{SYSTEMD_WANTS}="evdev-keepalive@$kernel.service"
+
+--Creamos "/etc/systemd/system/evdev-keepalive@.service" con el contenido:
+
+[Unit]
+Description=8BitDo controller configuration on %I
+StopWhenUnneeded=true
+
+[Service]
+# Keep the event device open, so that the controller firmware does not
+# reset the USB device.
+ExecStart=/usr/local/bin/evdev_keepalive %i
+
+--Recargamos las reglas de udev:
+udevadm control --reload-rules && udevadm trigger
+
 ******Actualizar el firmware de un dispositivo 8bitdo usando Windows sin instalarlo************************************
 
 --Bajamos VENTOY (el archivo ventoy-xxx-linux.tar.gz) de: https://www.ventoy.net/en/download.html
