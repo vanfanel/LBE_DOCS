@@ -139,7 +139,7 @@ ISSUE AL RESPECTO: https://github.com/paroj/xpad/issues/256
 
 --Compilamos el ejecutable y lo instalamos:
 gcc evdev_keepalive.c -o evdev_keepalive
-cp evdev_keepalive /usr/local/bin
+sudo cp evdev_keepalive /usr/local/bin
 
 --Creamos "/etc/udev/rules.d/10-evdev-keepalive.rules" con el contenido:
 
