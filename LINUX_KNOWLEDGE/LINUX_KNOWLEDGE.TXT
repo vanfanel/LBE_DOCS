@@ -152,7 +152,9 @@ ACTION=="add", KERNEL=="event[0-9]*", SUBSYSTEM=="input", ATTRS{idVendor}=="2dc8
 OJO!!!! AUNQUE EN lsusb VEAS QUE EL PRODUCTID ES "3109", ESE ES EL DEL DONGLE USB 2.4G, NO EL DEL MANDO!!
 EL DEL MANDO SÓLO APARECE MIENTRAS DURA LA CONEXIÓN Y ES "310b" QUE ES EL QUE TIENES QUE USAR!!
 
---Creamos "/etc/systemd/system/evdev-keepalive@.service" con el contenido:
+--Creamos una plantilla de servicio (es decir, para que se cree automáticamente el servicio evdev-keepalive@event16.service
+  si el mando aparece en /dev/event16, etc.., por eso lleva la "@" en el nombre, porque es un servicio plantilla).
+  Para ello, creamos el fichero "/etc/systemd/system/evdev-keepalive@.service" con el contenido:
 
 [Unit]
 Description=Keep 8BitDo controller alive on %I
