@@ -143,7 +143,7 @@ cp evdev_keepalive /usr/local/bin
 
 --Creamos "/etc/udev/rules.d/10-evdev-keepalive.rules" con el contenido:
 
-# Don't perform MTP probing on the integrated Xbox360 controller.
+# Don't perform MTP probing.
 SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="3109", ENV{MTP_NO_PROBE}="1"
 
 # Setup event device of 8BitDo controller.
@@ -152,7 +152,7 @@ ACTION=="add", KERNEL=="event[0-9]*", SUBSYSTEM=="input", ATTRS{idVendor}=="2dc8
 --Creamos "/etc/systemd/system/evdev-keepalive@.service" con el contenido:
 
 [Unit]
-Description=8BitDo controller configuration on %I
+Description=Keep 8BitDo controller alive on %I
 StopWhenUnneeded=true
 
 [Service]
@@ -161,7 +161,7 @@ StopWhenUnneeded=true
 ExecStart=/usr/local/bin/evdev_keepalive %i
 
 --Recargamos las reglas de udev:
-udevadm control --reload-rules && udevadm trigger
+sudo udevadm control --reload-rules && sudo udevadm trigger
 
 ******Actualizar el firmware de un dispositivo 8bitdo usando Windows sin instalarlo************************************
 
