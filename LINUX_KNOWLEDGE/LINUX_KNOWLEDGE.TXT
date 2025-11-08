@@ -144,10 +144,10 @@ cp evdev_keepalive /usr/local/bin
 --Creamos "/etc/udev/rules.d/10-evdev-keepalive.rules" con el contenido:
 
 # Don't perform MTP probing.
-SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="3109", ENV{MTP_NO_PROBE}="1"
+SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="310b", ENV{MTP_NO_PROBE}="1"
 
 # Setup event device of 8BitDo controller.
-ACTION=="add", KERNEL=="event[0-9]*", SUBSYSTEM=="input", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3109", TAG+="systemd", ENV{SYSTEMD_WANTS}="evdev-keepalive@$kernel.service"
+ACTION=="add", KERNEL=="event[0-9]*", SUBSYSTEM=="input", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="310b", TAG+="systemd", ENV{SYSTEMD_WANTS}="evdev-keepalive@$kernel.service"
 
 --Creamos "/etc/systemd/system/evdev-keepalive@.service" con el contenido:
 
