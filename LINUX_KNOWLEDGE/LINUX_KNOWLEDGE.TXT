@@ -149,6 +149,9 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="310b", ENV{MTP_NO_PR
 # Setup event device of 8BitDo controller.
 ACTION=="add", KERNEL=="event[0-9]*", SUBSYSTEM=="input", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="310b", TAG+="systemd", ENV{SYSTEMD_WANTS}="evdev-keepalive@$kernel.service"
 
+OJO!!!! AUNQUE EN lsusb VEAS QUE EL PRODUCTID ES "3109", ESE ES EL DEL DONGLE USB 2.4G, NO EL DEL MANDO!!
+EL DEL MANDO SÓLO APARECE MIENTRAS DURA LA CONEXIÓN Y ES "310b" QUE ES EL QUE TIENES QUE USAR!!
+
 --Creamos "/etc/systemd/system/evdev-keepalive@.service" con el contenido:
 
 [Unit]
