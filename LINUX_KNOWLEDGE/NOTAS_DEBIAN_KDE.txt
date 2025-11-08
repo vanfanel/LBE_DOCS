@@ -11,7 +11,7 @@ sudo apt-get instal sddm
 sudo systemctl enable sddm
 
 --Vemos las sesiones que tenemos instaladas:
-ls ls /usr/share/wayland-sessions/
+ls /usr/share/wayland-sessions/
 
 --Editamos vim /etc/sddm.conf.d/autologin.conf y ponemos la sesión así:
 # autologin
