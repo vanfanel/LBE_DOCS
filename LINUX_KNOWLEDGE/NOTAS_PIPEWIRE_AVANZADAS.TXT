@@ -13,7 +13,7 @@ cd b4
 
 CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
-meson setup .. -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
+meson setup .. -Dsystemd-user-service=enabled -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
 -Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled -Draop=disabled -Dopus=disabled \
 -Dlibusb=disabled -Ddbus=disabled -Dsndfile=disabled -Davb=disabled
 
