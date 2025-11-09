@@ -22,10 +22,18 @@ meson setup .. -Dsystemd-user-service=enabled -Dgstreamer=disabled -Dbluez5=disa
 
 ninja -j10
 sudo ninja install
-sudo ldconfig
-(OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
+
 (NOTA: Wireplumber se compila e instala al compilar e instalar pipewire, a no ser que le digamos que no lo haga
  o deshabilitemos algo que Wireplumber necesita).
+
+--Regeneramos la caché de librerías:
+sudo ldconfig
+(OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
+
+--Activamos el pipewire.socket y wireplumber.service (el servicio pipewire.service NO hace falta habilitarlo porque
+  lo activará pipewire.socket cuando algo intente producir audio):
+systemctl --user enable pipewire.socket
+systemctl --user enable wireplumber.service
 
 --Recargamos todos los servicios:
 systemctl --user daemon-reload
