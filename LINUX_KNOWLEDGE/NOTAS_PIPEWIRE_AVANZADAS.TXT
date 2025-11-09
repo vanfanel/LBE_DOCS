@@ -29,6 +29,7 @@ sudo ldconfig
 
 --Recargamos todos los servicios:
 systemctl --user daemon-reload
+systemctl --user restart pipewire wireplumber
 
 -Comprobamos que los tres servicios importantes de Pipewire están funcionando:
 (Los tres deben salir como "active (running)")
