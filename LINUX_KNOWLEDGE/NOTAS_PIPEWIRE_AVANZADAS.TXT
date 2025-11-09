@@ -30,12 +30,19 @@ sudo ninja install
 sudo ldconfig
 (OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
 
---Activamos el pipewire.socket y wireplumber.service (el servicio pipewire.service NO hace falta habilitarlo porque
-  lo activará pipewire.socket cuando algo intente producir audio):
-systemctl --user enable pipewire.socket
+--Activamos los servicios:
+systemctl --user enable pipewire.service
 systemctl --user enable wireplumber.service
 
---Recargamos todos los servicios:
+(NOTA CURIOSA: otra opción sería activar pipewire.socket en vez de pipewire.service, para que el pipeqire.socket
+  inicie pipewire.service "a demanda" cuando un programa intente emitir audio, pero el problema de eso es
+  que al activar wireplumber este no acaba en ~/.config/systemd/user/default.target.wants/ sino en
+  /home/manuel/.config/systemd/user/pipewire.service.wants/ que no es leido cuando se activa pipewire por socket,
+  /home/manuel/.config/systemd/user/pipewire.service.wants/ sólo es leido cuando se activa "manual".
+  Vamos, que no te compliques, activa ambos servicios y olvídate de lo de lanzar pipewire.service bajo demanda
+  mediante un socket).
+
+--Recargamos los servicios:
 systemctl --user daemon-reload
 systemctl --user restart pipewire wireplumber
 
