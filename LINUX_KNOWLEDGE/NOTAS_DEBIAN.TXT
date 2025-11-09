@@ -1095,6 +1095,9 @@ Y ya. Reiniciar y listo.
 
 INSTALAR PIPEWIRE EN DEBIAN
 ===========================
+OJO: LA VERSIÓN DE PIPEWIRE DE DEBIAN 13 ES MUY ANTIGUA, LA ACTUAL TIENE MENOS PROBLEMAS DE AUDIO.
+ASÍ QUE RECOMIENDO MIRAR EN "NOTAS_PIPEWIRE_AVANZADAS.TXT" CÓMO INSTALAR LA VERSIÓN ESTABLE ACTUAL.
+NO SE TARDA NADA CON ESAS NOTAS.
 
 --Instalamos los paquetes necesarios:
 sudo apt-get install pipewire libpipewire-0.3-dev wireplumber pipewire-alsa --no-install-recommends

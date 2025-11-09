@@ -1,7 +1,6 @@
 =================================================================
 == COMPILAR E INSTALAR PIPEWIRE + WIREPLUMBER A MANO EN DEBIAN ==
 =================================================================
-(OJO!!! NO ES NECESARIO PARA NADA, NO APORTA NINGUNA VENTAJA!!!)
 
 Instalamos dependencias previas (si usamos systemd para lanzar el servicio de pipewire,
 ya que sin esto no se podrá instalar el servicio de usuario de pipewire que es como se debe lanzar normalmente):
