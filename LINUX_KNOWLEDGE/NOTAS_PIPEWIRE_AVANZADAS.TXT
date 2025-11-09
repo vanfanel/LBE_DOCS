@@ -6,14 +6,18 @@
 Nos bajamos la última release de aquí:
 https://gitlab.freedesktop.org/pipewire/pipewire/-/releases
 
-Configuramos y compilamos con meson así:
+Configuramos y compilamos:
+
+mkdir b4
+cd b4
 
 CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
-meson setup -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
--Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled -Draop=disabled -Dopus=disabled ..
+meson setup .. -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
+-Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled -Draop=disabled -Dopus=disabled \
+-Dlibusb=disabled -Ddbus=disabled -Dsndfile=disabled -Davb=disabled
 
-ninja -j4
+ninja -j10
 sudo ninja install
 sudo ldconfig
 (OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
@@ -33,7 +37,7 @@ y justo debajo en la sección "policy.device.routes" quitamos de los wants el "h
 pipewire &
 wireplumber &
 
-SDL_AUDIODRIVER=pipewire ./prince.bin
+SDL_AUDIODRIVER=pipewire ./prince.exe
 
 pkill wireplumber
 pkill pipewire
