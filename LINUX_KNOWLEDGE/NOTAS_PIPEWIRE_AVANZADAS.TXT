@@ -17,41 +17,29 @@ cd b4
 
 CFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -O2 -fomit-frame-pointer" \
-meson setup .. -Dsystemd-user-service=enabled -Dgstreamer=disabled -Dbluez5=disabled \
--Dlibpulse=disabled -Djack=disabled -Dpipewire-jack=disabled \
+meson setup .. -Dsystemd-user-service=enabled -Dgstreamer=disabled -Dbluez5=disabled -Djack=disabled -Dpipewire-jack=disabled \
 -Dv4l2=disabled -Dpipewire-v4l2=disabled -Dman=disabled -Draop=disabled -Dopus=disabled \
--Dlibusb=disabled -Dsndfile=disabled -Davb=disabled
+-Dlibusb=disabled -Davb=disabled -Ddbus=disabled
 
 ninja -j10
 sudo ninja install
 sudo ldconfig
 (OJO!!! SIEMPRE regenera la caché de librerías después de instalar!!)
+(NOTA: Wireplumber se compila e instala al compilar e instalar pipewire, a no ser que le digamos que no lo haga
+ o deshabilitemos algo que Wireplumber necesita).
 
---Para activar el socket de PIPEWIRE (que es lo que lanzará los servicios de pipewire y wireplumber automáticamente
-cuando algo intente abrir el audio), hacemos:
-systemctl --user enable --now pipewire.socket
-...Y comprobamos con:
+--Recargamos todos los servicios:
+systemctl --user daemon-reload
+
+-Comprobamos que los tres servicios importantes de Pipewire están funcionando:
+(Los tres deben salir como "active (running)")
+
 systemctl --user status pipewire.socket
+systemctl --user status pipewire.service
+systemctl --user status wireplumber.service
 
---Wireplumber se compila e instala al compilar e instalar pipewire (a no ser que le dijésemos que no lo haga, cosa que NO hemos hecho).
-Pero de entrada da unos errores que queremos quitar:
-----Para que no nos de errores de BLUEZ y V4L2, editamos /usr/local/share/wireplumber/wireplumber.conf
-y buscamos estas líneas y las ponemos a "disabled":
-hardware.bluetooth = required
-hardware.video-capture = required
-----Para que no nos de errores tipo "assertion 'already_registered_dispatcher == self' failed"
-editamos /usr/local/share/wireplumber/wireplumber.conf, buscamos "automute-alsa-routes" y comentamos esa sección incluida las llaves,
-y justo debajo en la sección "policy.device.routes" quitamos de los wants el "hooks.device.routes.automute-alsa".
-
---PROBAMOS A LANZAR UN PROGRAMA SDL2 SOBRE PIPEWIRE ASÍ:
-
-pipewire &
-wireplumber &
-
-SDL_AUDIODRIVER=pipewire ./prince.exe
-
-pkill wireplumber
-pkill pipewire
+--Comprobamos que hay sonido por pipewire:
+pw-cat -p /usr/share/sounds/alsa/Front_Center.wav
 
 --Ahora ponemos a punto pipewire-alsa, la capa de emulación de ALSA sobre PIPEWIRE.
 ----Al ser una compilación nuestra de PIPEWIRE, los plugins que PIPEWIRE le mete a ALSA para que ALSA corra sobre PIPEWIRE
@@ -97,6 +85,17 @@ OJO!!!! El hilo principal "pipewire" NO tendrá prioridad RT ni tiene por qué t
 pero los hilos de audio que crea, SÍ que nos saldrán con FF y 88!!!!
 (O el valor de RTPrio que tengamos en el argumento "rt.prio" del módulo "libpipewire-module-rt"
  en /usr/local/share/pipewire/pipewire.conf)
+
+OPCIONAL: QUITAR ERRORRES DE WIREPLUMBER
+Estos errores sólo se ven si lanzamos Wireplumber a mano en lugar de lanzarlo desde el servicio
+que se instala normalmente al instalar Pipewire.
+----Para que no nos de errores de BLUEZ y V4L2, editamos /usr/local/share/wireplumber/wireplumber.conf
+y buscamos estas líneas y las ponemos a "disabled":
+hardware.bluetooth = required
+hardware.video-capture = required
+----Para que no nos de errores tipo "assertion 'already_registered_dispatcher == self' failed"
+editamos /usr/local/share/wireplumber/wireplumber.conf, buscamos "automute-alsa-routes" y comentamos esa sección incluida las llaves,
+y justo debajo en la sección "policy.device.routes" quitamos de los wants el "hooks.device.routes.automute-alsa".
 
 ==== EXPLICACIÓN TÉCNICA DE LOS VALORES DE PIPEWIRE.CONF ====
 	
