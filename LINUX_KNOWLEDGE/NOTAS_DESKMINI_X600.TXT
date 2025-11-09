@@ -107,25 +107,25 @@ apt-get install firmware-amd-graphics
 
 pcm.!default {
     type plug
-    slave.pcm "dmix:Generic,8"
+    slave.pcm "dmix:0,8"
 }
 
 ctl.!default {
     type hw
-    card Generic
+    card 0
 }
 
 ...O SI SIMPLEMENTE QUIERES ACCESO DIRECTO AL HARDWARE SIN DMIX (PUEDE SER PROBLEMÁTICO!!):
 
 pcm.!default {
         type hw
-        card Generic
+        card 0
         device 8
 }
 
 ctl.!default {
         type hw
-        card Generic
+        card 0
 }
 
 ...O SI QUIERES SONIDO CON DMIX A DEMANDA:
@@ -136,19 +136,19 @@ pcm.dmixed {
         type dmix
         ipc_key 1234
         slave {
-                pcm "hw:Generic,8"
+                pcm "hw:0,8"
         }
 }                                                                                                                              
 
 pcm.!default {
         type hw
-        card Generic
+        card 0
         device 8
 }
 
 ctl.!default {
         type hw
-        card Generic
+        card 0
 }
                                                                                                                                        
 @hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
@@ -159,22 +159,26 @@ pcm.dmixed {
 	type dmix
 	ipc_key 1234
 	slave {
-		pcm "hw:Generic_1,0"
+		pcm "hw:1,0"
 	}
 }
 
 pcm.!default {
 	type hw
-	card Generic_1
+	card 1
 	device 0
 }
 
 ctl.!default {
 	type hw
-	card Generic
+	card 1
 }
 
 @hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
+
+NOTA IMPORTANTE: Para ver la configuración por defecto de ALSA que se está aplicando (sobre todo el period_size y buffer_size) 
+puedes hacer:
+aplay -v /usr/share/sounds/alsa/Front_Center.wav
 
 ACTUALIZAR EL MICROCODE EN LINUX (NO ES NECESARIO SI TIENES LA BIOS ACTUALIZADA)
 ================================================================================
