@@ -87,12 +87,7 @@ ctl.!default {
     type pipewire
 }
 ----Probamos pipewire-alsa con:
-pipewire &
-wireplumber &
 speaker-test -D pipewire
-pkill wireplumber
-pkill pipeqire
-    ...Y debería sonar.
 
 --RECUERDA: Podemos ver la prioridad de los hilos creados por Pipewire con:
 ps -eLo pid,tid,comm,policy,rtprio,ni | grep $(pidof pipewire)
