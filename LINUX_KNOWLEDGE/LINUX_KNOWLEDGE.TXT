@@ -156,7 +156,7 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="310b", ENV{MTP_NO_PR
 SUBSYSTEM=="input", ATTRS{name}=="8BitDo 8BitDo Pro 3 Receiver Keyboard", OPTIONS+="ignore_device"
 SUBSYSTEM=="input", ATTRS{name}=="8BitDo 8BitDo Pro 3 Receiver Mouse", OPTIONS+="ignore_device"
 
-# --- Activar servicio solo para el mando real ---
+# --- Activar servicio keepalive solo para el mando real ---
 SUBSYSTEM=="input", ATTRS{name}=="8BitDo Ultimate 2 Wireless Controller", \
   TAG+="systemd", ENV{SYSTEMD_WANTS}="evdev-keepalive@%k.service"
 
