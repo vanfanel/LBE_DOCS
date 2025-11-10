@@ -143,14 +143,24 @@ sudo cp evdev_keepalive /usr/local/bin
 
 --Creamos "/etc/udev/rules.d/10-evdev-keepalive.rules" con el contenido:
 
-# Don't perform MTP probing.
-SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="310b", ATTR{product}=="8BitDo Pro 3 Receiver", ENV{MTP_NO_PROBE}="1"
+		--EMPIEZA FICHERO--
 
-# Setup event device of 8BitDo controller.
-ACTION=="add", KERNEL=="event[0-9]*", SUBSYSTEM=="input", \
-ATTRS{id/vendor}=="2dc8", ATTRS{id/product}=="310b", \
-ATTRS{name}=="8BitDo Ultimate 2 Wireless Controller", \
-TAG+="systemd", ENV{SYSTEMD_WANTS}="evdev-keepalive@%k.service"
+# --- Bloquear el modo temporal "Nintendo Pro Controller" (057e:2009)
+# Esto evita el lag inicial al emparejar o despertar el mando.
+SUBSYSTEM=="usb", ATTR{idVendor}=="057e", ATTR{idProduct}=="2009", OPTIONS+="ignore_device"
+
+# --- Evitar probing MTP y carga de módulos innecesarios en el receptor 8BitDo ---
+SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="310b", ENV{MTP_NO_PROBE}="1"
+
+# --- Ignorar interfaces secundarias del receptor (teclado y ratón emulados) ---
+SUBSYSTEM=="input", ATTRS{name}=="8BitDo 8BitDo Pro 3 Receiver Keyboard", OPTIONS+="ignore_device"
+SUBSYSTEM=="input", ATTRS{name}=="8BitDo 8BitDo Pro 3 Receiver Mouse", OPTIONS+="ignore_device"
+
+# --- Activar servicio solo para el mando real ---
+SUBSYSTEM=="input", ATTRS{name}=="8BitDo Ultimate 2 Wireless Controller", \
+  TAG+="systemd", ENV{SYSTEMD_WANTS}="evdev-keepalive@%k.service"
+
+		--ACABA FICHERO--
 
 OJO!!!! AUNQUE EN "lsusb" VEAS QUE EL PRODUCTID ES "3109", ESE ES EL DEL DONGLE USB 2.4G, NO EL DEL MANDO!!
 EL DEL MANDO SÓLO APARECE MIENTRAS DURA LA CONEXIÓN Y ES "310b" QUE ES EL QUE TIENES QUE USAR!!
