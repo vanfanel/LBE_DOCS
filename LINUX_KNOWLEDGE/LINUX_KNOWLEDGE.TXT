@@ -144,13 +144,17 @@ sudo cp evdev_keepalive /usr/local/bin
 --Creamos "/etc/udev/rules.d/10-evdev-keepalive.rules" con el contenido:
 
 # Don't perform MTP probing.
-SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="310b", ENV{MTP_NO_PROBE}="1"
+SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="310b", ATTRS{name}=="8BitDo Ultimate 2 Wireless Controller", ENV{MTP_NO_PROBE}="1"
 
 # Setup event device of 8BitDo controller.
-ACTION=="add", KERNEL=="event[0-9]*", SUBSYSTEM=="input", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="310b", TAG+="systemd", ENV{SYSTEMD_WANTS}="evdev-keepalive@$kernel.service"
+ACTION=="add", KERNEL=="event[0-9]*", SUBSYSTEM=="input", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="310b", ATTRS{name}=="8BitDo Ultimate 2 Wireless Controller", TAG+="systemd", ENV{SYSTEMD_WANTS}="evdev-keepalive@$kernel.service"
 
 OJO!!!! AUNQUE EN lsusb VEAS QUE EL PRODUCTID ES "3109", ESE ES EL DEL DONGLE USB 2.4G, NO EL DEL MANDO!!
 EL DEL MANDO SÓLO APARECE MIENTRAS DURA LA CONEXIÓN Y ES "310b" QUE ES EL QUE TIENES QUE USAR!!
+
+NOTA: POR SI QUIERES VER LOS ATRIBUTOS DE UN DISPOSITIVO PARA FILTRAR EN LAS REGLAS ESTAS DE UDEV, SE MIRAN CON:
+udevadm info --attribute-walk --name=/dev/input/eventX
+...DONDE "eventX" LO DEBES SUSTITUIR POR EL NODO DEL DISPOSITIVO QUE SEA (event16, event17...)
 
 --Creamos una plantilla de servicio (es decir, para que se cree automáticamente el servicio evdev-keepalive@event16.service
   si el mando aparece en /dev/event16, etc.., por eso lleva la "@" en el nombre, porque es un servicio plantilla).
