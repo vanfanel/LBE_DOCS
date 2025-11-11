@@ -145,19 +145,19 @@ sudo cp evdev_keepalive /usr/local/bin
 
 		--EMPIEZA FICHERO--
 
-# --- Bloquear el modo temporal "Nintendo Pro Controller" (057e:2009)
-# Esto evita el lag inicial al emparejar o despertar el mando.
+# --- Bloquear el modo temporal "Nintendo Pro Controller" ---
 SUBSYSTEM=="usb", ATTR{idVendor}=="057e", ATTR{idProduct}=="2009", OPTIONS+="ignore_device"
 
-# --- Evitar probing MTP y carga de módulos innecesarios en el receptor 8BitDo ---
+# --- Evitar probing MTP y módulos innecesarios ---
 SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", ATTR{idProduct}=="310b", ENV{MTP_NO_PROBE}="1"
 
-# --- Ignorar interfaces secundarias del receptor (teclado y ratón emulados) ---
+# --- Ignorar las interfaces de teclado y ratón emuladas ---
 SUBSYSTEM=="input", ATTRS{name}=="8BitDo 8BitDo Pro 3 Receiver Keyboard", OPTIONS+="ignore_device"
 SUBSYSTEM=="input", ATTRS{name}=="8BitDo 8BitDo Pro 3 Receiver Mouse", OPTIONS+="ignore_device"
 
-# --- Activar servicio solo para el mando real (evento principal) ---
-KERNEL=="event*", SUBSYSTEM=="input", ATTRS{name}=="8BitDo Ultimate 2 Wireless Controller", \
+# --- Activar servicio solo para el mando real ---
+SUBSYSTEM=="input", KERNEL=="event*", \
+  ATTRS{name}=="8BitDo Ultimate 2 Wireless Controller", \
   TAG+="systemd", ENV{SYSTEMD_WANTS}="evdev-keepalive@%k.service"
   
 		--ACABA FICHERO--
