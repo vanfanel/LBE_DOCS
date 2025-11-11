@@ -926,13 +926,13 @@ Memory Management options->Slab allocator options->(Todo lo que hay ahí)
 make -j10
 
 -Instalamos los módulos (para desinstalarlos, simplemente borramos el directorio "/lib/modules/6.x.x"):
-make INSTALL_MOD_STRIP=1 modules_install
+sudo make INSTALL_MOD_STRIP=1 modules_install
 
 -Instalamos el kernel (para desinstalarlo, borramos de /boot/ todo lo correspondiente a esa versión del kernel):
-make install
+sudo make install
 
 -Actualizamos grub para que añada el nuevo kernel a su lista:
-update-grub
+sudo update-grub
 
 CUIDADO!!! NO REINICIES SIN PONER UN TIMEOUT DISTINTO DE 0 EN /etc/default/grub PARA LANZAR EL NUEVO KERNEL DESDE EL MENÚ DE GRUB!!!
 UNA VEZ QUE YA HAYAS COMPROBADO QUE FUNCIONA TODO BIEN, PUEDES PONERLO COMO KERNEL POR DEFECTO CON "GRUB_DEFAULT=..." EN /etc/default/grub
