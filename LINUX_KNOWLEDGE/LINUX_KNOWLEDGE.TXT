@@ -840,16 +840,19 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_MGBA=OFF -DENABLE_AUTOUP
 
 		--OPCIONES DE CONFIGURACIÓN--
 
---En las opciones de RA, para guardar como "Core Overrides":---
-----"Settings->Video->Synchronization->Sync to Exact Content Framerate" ON
-(Para que el frame pacing sea correcto si tienes VRR + ~120Hz, es el único core que parece funcionar bien con esto).
-
+PARA FRAMEPACING PERFECTO CON ~120Hz (VRR no pinta nada, como en el Flycast):
 --En las opciones del core:
+----Core           -> Precission Frame Timing: ON
+----Audio/DSP      -> Async Audio Callback:    ON
+----Graphics/Hacks -> Skip Duplicate Frames:   OFF
+--En las opciones de RetroArch:
+----Settings -> Video -> Synchronization -> Vsync Swap Interval: 2
+(Y lo típico: "VSYNC" a "ON", y "SYNC TO EXACT" a "OFF")
+
+OTRAS OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACIÓN DE SHADERS:
 ----"Wait for Shaders before starting" ON
 ----"Speed Up Disc Transfer Rate"	   ON
 ----"Shader Compilation Mode"		   A-SYNC UberShaders
-----"Emulation Speed"				   100%
-----"Skip Presenting Duplicate Frames" OFF
 
 ******Compilar DOLPHIN standalone en GNU/Linux****************
 
