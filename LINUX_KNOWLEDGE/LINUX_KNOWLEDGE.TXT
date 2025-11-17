@@ -843,7 +843,6 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_MGBA=OFF -DENABLE_AUTOUP
 PARA FRAMEPACING PERFECTO CON ~120Hz (VRR no pinta nada, como en el Flycast):
 --En las opciones del core:
 ----Core           -> Precission Frame Timing: ON
-----Audio/DSP      -> Async Audio Callback:    ON
 ----Graphics/Hacks -> Skip Duplicate Frames:   OFF
 --En las opciones de RetroArch:
 ----Settings -> Video -> Synchronization -> Vsync Swap Interval: 2
