@@ -5913,6 +5913,10 @@ https://github.com/JHDev2006/Super-Mario-Bros.-Remastered-Public/releases
   y recuerda que en los settings del compositor tienes que tener el allowTearing activado.
   En Labwc es con "<allowTearing>always</allowTearing>" en la sección "<core>" del fichero ".config/labwc/rc.xml"
 
+--Para no tener tirones cuando se acceda a assets durante el juego, los mandamos a la caché de disco antes de entrar:
+find ./ -type f -exec cat {} > /dev/null \;
+find ~/.local/share/SMB1R -type f -exec cat {} > /dev/null \;
+
 ***********OpenLara, versión opensource del Tomb Raider********************************************************************************
 
 PUEDES BAJARTE LOS DATOS DEL JUEGO SIMPLEMENTE DE:
