@@ -1111,7 +1111,7 @@ Ahora vamos a por SWAY en sí:
  (Si queremos la última versión GIT del código hacemos: git clone --depth 1 https://github.com/swaywm/sway.git
   RECUERDA que en tal caso tenemos que tener la última versión de WLROOTS instalada, aunque lo clones con submódulos no te lo incluye,
   tendrías que clonar a mano https://gitlab.freedesktop.org/wlroots/wlroots.git y meter el directorio "wlroots"
-  en "subprojects/wlroots).
+  en "subprojects/wlroots").
 -Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \

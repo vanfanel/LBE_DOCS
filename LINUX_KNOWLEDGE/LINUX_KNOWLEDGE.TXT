@@ -613,7 +613,7 @@ meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled -Dgst-example
 
 VAMOS CON WINE EN SÍ:
 --Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
-git clone --depth 1 -b wine-10.18 https://gitlab.winehq.org/wine/wine.git wine-10.18
+git clone --depth 1 -b wine-10.19 https://gitlab.winehq.org/wine/wine.git wine-10.19
 --Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
@@ -10218,10 +10218,8 @@ ZELDA OOT EN GNU/LINUX
 apt-get install libbz2-dev libpng-dev lsb-release libzip-dev zipcmp zipmerge ziptool \
 libtinyxml2-dev nlohmann-json3-dev libspdlog-dev
 
---Clonamos su repo:
-git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules
-Si quisiéramos la última versión estable del repo, haríamos algo como:
-git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules -b 9.1.0 
+--Clonamos la última versión estable del repo:
+git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules -b 9.1.1 
 
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
@@ -10304,7 +10302,7 @@ ZELDA MAJORA'S MASK en GNU/Linux
 apt-get install lsb-release
 
 --Clonamos la última versión estable con:
-git clone https://github.com/HarbourMasters/2ship2harkinian.git --depth 1 --recurse-submodules -b 2.0.1 
+git clone https://github.com/HarbourMasters/2ship2harkinian.git --depth 1 --recurse-submodules -b 3.0.1 
 
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
