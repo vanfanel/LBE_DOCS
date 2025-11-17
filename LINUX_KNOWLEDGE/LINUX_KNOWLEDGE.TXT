@@ -613,7 +613,7 @@ meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled -Dgst-example
 
 VAMOS CON WINE EN SÍ:
 --Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
-git clone --depth 1 -b wine-10.19 https://gitlab.winehq.org/wine/wine.git wine-10.19
+git clone --depth 1 -b wine-10.18 https://gitlab.winehq.org/wine/wine.git wine-10.18
 --Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
@@ -827,7 +827,7 @@ los datos del juego.
 ******Compilar el core DOLPHIN LIBRETRO*********************************************************************************
 
 --Compilamos su repo así:
-git clone --recursive --depth 1 https://github.com/cscd98/dolphin.git -b more-fix
+git clone --recursive --depth 1 https://github.com/libretro/dolphin.git
 
 --Compilamos con:
 
