@@ -1443,6 +1443,9 @@ WantedBy=default.target
 # Usar el runtime del usuario actual
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
+# Usar el renderer vulkan
+export WLR_RENDERER=vulkan
+
 # Ejecutar LabWC
 /usr/local/bin/labwc
 
