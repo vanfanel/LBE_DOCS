@@ -6321,10 +6321,8 @@ make -j10 GLES=y TILES=y CFOPTIMIZE="-march=native -mtune=native -O2"
 
 	####FIN BLOQUE COMPILAR CONTRA GLES1####
 
-Ahora creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
-Ahora copiamos los directorios "dat" y "settings" que viene dentro de "sources" a ~/crawl
-(OJO!! Si al lanzar el juego te dice que te falta algún asset, bájate la versión de Windows y usa los directorios que trae esa versión,
- que viene todo seguro).
+--Creamos el directorio ~/crawl, y metemos allí el ejecutable "crawl"
+--Copiamos los directorios "dat", "docs" y "settings" que vienen con los sources a ~/crawl
 
 Editamos "settings/init.txt" y añadimos estas opciones:
 
