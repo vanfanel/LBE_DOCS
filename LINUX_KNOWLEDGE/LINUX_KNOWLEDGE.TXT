@@ -6292,7 +6292,7 @@ git clone --depth 1 --recurse-submodules -b 0.33.1 https://github.com/crawl/craw
     ####BLOQUE COMPILAR CONTRA OPENGL 1.x####
 
 --Editamos el Makefile, buscamos:
-"LIBS += -lGL -lGLU"
+"LIBS += -lGL"
 y lo sustituimos por:
 "LIBS += -L/usr/local/lib64 -lOpenGL"
 
