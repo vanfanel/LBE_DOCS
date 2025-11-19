@@ -6285,9 +6285,7 @@ apt-get install libfreetype6-dev libpng-dev fonts-dejavu-core advancecomp pngcru
 
 --Clonamos la última versión etiquetada y sus submódulos (en este ejemplo estamos clonando la versión 0.32.1):
 
-git clone --depth 1 -b 0.32.1 https://github.com/crawl/crawl.git
-git submodule init
-git submodule update
+git clone --depth 1 --recurse-submodules -b 0.33.1 https://github.com/crawl/crawl.git
 
 --Entramos en crawl-ref/source para continuar desde allí.
 
