@@ -695,9 +695,9 @@ preferred=none
 [cursor]
 style=block
 blink=yes
-color=126e00 126e00
                                                                                                                
 [colors]                                                                                                       
+cursor=126e00 126e00
 alpha=0.90
 background=101010
 foreground=126e00
