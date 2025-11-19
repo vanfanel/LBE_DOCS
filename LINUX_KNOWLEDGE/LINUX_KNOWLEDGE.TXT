@@ -6326,17 +6326,21 @@ make -j10 GLES=y TILES=y CFOPTIMIZE="-march=native -mtune=native -O2"
 
 Editamos "settings/init.txt" y añadimos estas opciones:
 
-#Para que se vea a pantalla completa, 
+# Para que se vea a pantalla completa
 tile_full_screen = true
-#Para que el juego se vea más grande:
-game_scale=2
-#Para tener filtro bilineal:
+
+# Para tener filtro bilineal:
 tile_filter_scaling = true
-#Para que la fuente se vea más pequeña para ese tamaño de juego:
-tile_font_stat_size=10
-tile_font_msg_size=10
-#Para que se vean más grandes los gráficos (el valor por defecto es 32):
+
+# Para que se vean más grandes los gráficos (el valor por defecto es 32):
 tile_cell_pixels = 64
+
+# Para que se vean más grandes las fuentes
+tile_font_lbl_size   = 24
+tile_font_crt_size   = 24
+tile_font_stat_size  = 24
+tile_font_msg_size   = 24
+tile_font_tip_size   = 24
 
 ************AQUARIA en GNU/Linux***********************************************************************************************************
 
