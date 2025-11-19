@@ -64,7 +64,8 @@ apt-get purge triggerhappy rsyslog cron dphys-swapfile bluetooth avahi-* fake-hw
 (NOTA: en una Raspberry Pi, fake-hwclock ya no lo uso porque en su lugar dejo systemd-timesyncd,
  que sincroniza la hora al conectarase a la red y guarda la hora en disco al reiniciar,
  pero en un ordenador "normal" con RTC+pila, puedes deshabilitar systemd-timesyncd tranquilamente,
- incluso desinstalarlo porque está como paquete)
+ incluso desinstalarlo porque está como paquete,
+ y luego ajustar la hora con "sudo date MMDDHHHHYYYY" y guardarla con "sudo hwclock --systohc")
 
 -EN DEBIAN: Deshabilitamos estos servicios:
 systemctl mask apparmor.service
