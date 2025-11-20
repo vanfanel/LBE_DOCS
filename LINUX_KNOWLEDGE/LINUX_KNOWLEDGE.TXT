@@ -10264,8 +10264,8 @@ mkdir assets (lo podemos llamar como queramos, lo llamo "assets" por llamarlo de
 cd assets
 cmake ..
 cmake --build . --target ExtractAssets -j4
---Copiamos los archivos "soh.otr" y "oot.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
-cp soh/*.otr ~/zelda64/
+--Copiamos los archivos "soh.o2r" y "oot.o2r" al mismo directorio donde tenemos el ejecutable "soh.elf":
+cp soh/*.o2r ~/zelda64/
 
 --NOTAS ADICIONALES--
 
