@@ -2141,7 +2141,7 @@ cp build/bin/sameboy_libretro.so ~/.config/retroarch/cores/
 ******Compilar el core FLYCAST LIBRETRO en GNU/Linux********
 
 --Clonamos su repo:
-git clone --depth 1 --recurse-submodules https://github.com/flyinghead/flycast.git
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/flyinghead/flycast.git
 
 --Editamos CMakeLists.txt y cambiar la línea:
 set(OpenGL_GL_PREFERENCE LEGACY)
