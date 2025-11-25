@@ -823,7 +823,14 @@ CTRL+V: Mostrar la versión del juego.
 Para tener imágen con escalado perfecto en 1080p, añadimos a MiSTer.ini:
 
 [macplus]
+vscale_mode=2
+
+O bien:
+
+[macplus]
 video_mode=1920,1026,60
+
+...pero mejor lo de vscale.
 
 *********COMPILAR CORES DE MISTER********************************************************
 
