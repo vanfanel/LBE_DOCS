@@ -15,16 +15,17 @@ Tenemos que tener "Output Opt. -> TX mode" puesto a uno de los modos HDMI,
 y meter el audio por el jack que hay a la derecha de la salida HDMI del OSSC.
 
 ACTUALIZAR EL FIRMWARE (FW)
-El FW se baja de aquí: http://www.infocult.com/m/ossc/fw/release_audio/
+
+EL FIRMWARE PARA MI OSSC, QUE ES HARDWARE VERSIÓN 1.8, SE DESCAGA DE AQUÍ:
+https://github.com/marqs85/ossc/tags
+Hilo con novedades en el desarrollo del firmware:
+https://videogameperfection.com/forums/topic/ossc-v1-xx-series-beta-firmware/
 Es simplemente grabar con DD el .BIN en una MicroSD (RECUERDA!! CON DD!! NO ES COPIAR EL ARCHIVO A UNA FAT32!!),
 insertar la MicroSD en la ranura de MicroSD que hay a la izquierda de la pantallita en una hendidura,
 y seleccionar "Settings Op -> <FW Update>", y cuando termine saldrá en la pantalla que reiniciemos el OSSC (=apagar y encender).
-NOTA: Hay unas versiones superiores (1.x) que para funcionar necesitan hacerle una modificación a mi OSSC (que es HW v1.6),
-mira aquí para más información (https://videogameperfection.com/forums/topic/ossc-v1-xx-series-beta-firmware/)
-pero no es necesario porque la versión del FW 0.9 hace todo lo que necesito de momento.
 
-HILO CON MÁS INFO:
-https://videogameperfection.com/forums/topic/ossc-pentium-233-mmx/
+LO PRIMERO: EN EL MENÚ DEL MONITOR, VE A "MANUAL IMAGE ADJUST -> ASPECT RATIO" Y PONLO A "4:3",
+DE LO CONTRARIO NO SE VERÁ CON EL ASPECT RATIO CORRECTO HAGAS LO QUE HAGAS.
 
 Estos son los settings que usa el tio del hilo, lo pone en uno de los posts:
 
