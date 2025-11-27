@@ -27,25 +27,26 @@ y seleccionar "Settings Op -> <FW Update>", y cuando termine saldrá en la panta
 LO PRIMERO: EN EL MENÚ DEL MONITOR, VE A "MANUAL IMAGE ADJUST -> ASPECT RATIO" Y PONLO A "4:3",
 DE LO CONTRARIO NO SE VERÁ CON EL ASPECT RATIO CORRECTO HAGAS LO QUE HAGAS.
 
-Estos son los settings que usa el tio del hilo, lo pone en uno de los posts:
+ESTOS SON LOS SETTINGS PARA EL MODO 400p@70Hz, QUE ES EL QUE USAN EL 99% DE LOS JUEGOS DE DOS:
 
 Sampling opt. -> 480p in sampler: VESA 640×480@60
+Sampling opt. -> 400p in sampler: VGA 720×400@70
 Sampling opt. -> Allow upsample2x: On
 
 En Output Opt.:
-384x400p proc -> Line2x
+384x400p proc -> Line3x (Generic)
 480p/576p proc -> Line2x
 
-Sampling opt. -> Advanced Timmings para 640×400_70:
+Sampling opt. -> Advanced Timmings para 1600x400:
 —————–
-H. Samplerate : 700
-H. Synclength : 64
-H. Backporch : 50
-H. Active : 570
+H. Samplerate : 2000
+H. Synclength : 240
+H. Backporch : 120
+H. Active : 1600
 V. Synclength : 2
-V. Backporch : 29
-V. Active : 410
-Sampling Phase: 45 deg
+V. Backporch : 34
+V. Active : 400
+Sampling Phase: 180 deg
 
 Sampling opt. -> Advanced Timmings para 640×480_60 (También influye en los KEEN1-4, etc):
 —————–
