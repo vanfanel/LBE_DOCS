@@ -1,0 +1,19 @@
+CARTUCHO "M3 SIMPLY" O R4 (INTERNAMENTE SON LO MISMO)
+=====================================================
+
+Información procedente de: https://sanrax.github.io/flashcart-guides/cart-guides/r4ds/
+
+El firmware que necesita, a parte del menú, está en el archivo _DS_MENU.DAT
+(OJO!!! En los clones chinescos se llama _DSMENU.DAT y es diferente).
+
+El firmware que bajamos es: https://archive.flashcarts.net/R4_original_M3_Simply/R4DS_Wood_R4_1.62.zip
+
+Formateamos a FAT32, metemos el firmware en el raiz de la tarjeta, y debería ir.
+
+CARTUCHO CLON ALIEXPRESS
+========================
+
+El firmware que hay que instalar es el "AOS_R4iLS" que se baja de:
+https://github.com/flashcarts/AOS/releases
+
+Es un firmware completo que la incluye el archivo _DSMENU.DAT que usan los clones de R4.
