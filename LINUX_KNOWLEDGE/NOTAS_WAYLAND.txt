@@ -698,8 +698,8 @@ blink=yes
                                                                                                                
 [colors]                                                                                                       
 cursor=126e00 126e00
-alpha=0.90
-background=101010
+alpha=0.96
+background=000000
 foreground=126e00
 regular0=101010  # black
 regular1=fa5355  # red
