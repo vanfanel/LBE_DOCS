@@ -18,5 +18,7 @@ CARTUCHO CLON ALIEXPRESS
 
 El firmware que hay que instalar es el "AOS_R4iLS" que se baja de:
 https://github.com/flashcarts/AOS/releases
-
 Es un firmware completo que la incluye el archivo _DSMENU.DAT que usan los clones de R4.
+
+Formateamos a FAT32, metemos el firmware en el raiz de la tarjeta (con el archivo "_DSMENU.DAT"
+y los directorios "__rpg" y "moonshl2" es suficiente), y debería ir.
