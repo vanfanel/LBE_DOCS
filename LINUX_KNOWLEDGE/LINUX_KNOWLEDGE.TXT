@@ -2432,18 +2432,24 @@ Los flags posibles los puedes ver aquí: https://wiki.mamedev.org/index.php/Game
 Por ejemplo, para saber qué imperfecciones hay en los drivers del fabricante APPLE, puedes hacer esto:
 grep MACHINE_IMPERFECT_ src/mame/apple/* -R
 
-******Compilar MAME LIBRETRO con soporte sólo para unos ciertos drivers************
+******Compilar MAME LIBRETRO************
 NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, mantén pulsado SELECT y pulsa el botón que tengas asignado como Y.
 
+--Clonamos su repo:
 git clone --depth 1 https://github.com/libretro/mame.git
 
-Ahora, editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
+--Compilamos con:
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
+make -f Makefile.libretro -j8
+
+PARA COMPILAR SÓLO CON SOPORTE PARA CIERTOS DRIVERS:
+
+Editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
 SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp,src/mame/namco/namcos22.cpp
 
-Ahora ya ponemos compilar así (lo de REGENIE es para que se regenere la configuración o algo así):
-CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
-make REGENIE=1 -f Makefile.libretro -j4
+Y ahora compilamos así (lo de REGENIE es para que se regenere la configuración o algo así):
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native \
+make REGENIE=1 -f Makefile.libretro -j8
 
 ******DAYTONA USA EN MAME*********************************************************************
 
