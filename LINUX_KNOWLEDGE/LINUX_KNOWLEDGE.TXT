@@ -2423,7 +2423,9 @@ gl_glsl                 1
 glsl_shader_mame0       shaders/CRT-geom
 
 --Podemos editar ~/mame/shaders/CRT-geom.vsh para configurar el shader, porque viene con un efecto "tilt" inclinado raro puesto,
-  es mejor quitarle algo de curvatura (he dejado "R = 2.0" de momento), etc.
+  y es mejor quitarle algo de curvatura (he dejado "R = 2.0" de momento), etc.
+  También deja la línea de overscan así porque si no, no se ve toda la pantalla en los juegos:
+  overscan = vec2(1.00,1.00);
 
 ******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
 
@@ -2450,6 +2452,9 @@ SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp,src/mame/namco/namco
 Y ahora compilamos así (lo de REGENIE es para que se regenere la configuración o algo así):
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native \
 make REGENIE=1 -f Makefile.libretro -j8
+
+SCROLL PERFECTO EN TODOS LOS JUEGOS CON VRR:
+Este es el único core en el que tenemos que activar "SYNC TO EXACT", desctivar "VSYNC", y lo guardamos como un override para el core.
 
 ******DAYTONA USA EN MAME*********************************************************************
 
@@ -2618,8 +2623,8 @@ mame ct486 -rompath ct486 -hard1 ct486/dos622.img
 
 --En la BIOS:
 ----Nos vamos a "STANDARD CMOS SETUP":
---------En "HARD DISK C: Type" ponemos
-		"CYLN" a 1041, "Head" a 16, "WPCom" y "LZone" a 0, "Sect" a 63, y nos tiene que salir "Size" puesto a 2048 MB.
+--------En "HARD DISK C: Type", le damos a la tecla "PGUP" o "PGDOWN" del teclado para que nos deje modificarlo, y ponemos
+		"CYLN" a 1041, "Head" a 16, "WPCom" y "LZone" a 0, "Sect" a 63, y nos tiene que salir "Size" puesto a 512 MB.
 (NOTA: Si la imágen de disco que hemos creado fuese más grande, simplemente ajustaríamos el número de CYLN
 y los demás parámetros los dejaríamos como están. O sea que 1041 es para 512MB, para 2GB serían 4161, etc).
 --------En "Floppy Drive A:" ponemos "1.44 MB 3 1/2"
