@@ -2454,7 +2454,8 @@ CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native \
 make REGENIE=1 -f Makefile.libretro -j8
 
 SCROLL PERFECTO EN TODOS LOS JUEGOS CON VRR:
-Este es el único core en el que tenemos que activar "SYNC TO EXACT", desctivar "VSYNC", y lo guardamos como un override para el core.
+Tienes que crearte modos de vídeo más bajos que 120Hz, para los juegos de 55Hz, 56Hz, etc.
+Como en los demás cores, la opción de "SYNC TO EXACT" no funciona correctamente
 
 ******DAYTONA USA EN MAME*********************************************************************
 
