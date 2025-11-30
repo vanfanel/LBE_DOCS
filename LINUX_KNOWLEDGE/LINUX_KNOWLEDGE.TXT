@@ -2302,9 +2302,9 @@ git clone -b mame0283 --depth 1 https://github.com/mamedev/mame.git mame0283
 
 y cambiamos lo que hay ahí dentro por esto:
 
-typedef struct gbm_device  *EGLNativeDisplayType;
-typedef struct gbm_bo      *EGLNativePixmapType;
-typedef void               *EGLNativeWindowType;
+typedef struct wl_display     *EGLNativeDisplayType;                                                                                  
+typedef struct wl_egl_pixmap  *EGLNativePixmapType;                                                                                   
+typedef struct wl_egl_window  *EGLNativeWindowType;
 
 --Editamos scripts/src/osd/modules.lua, y allí:
 ----Borramos "input_x11.cpp".
