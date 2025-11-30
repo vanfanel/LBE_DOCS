@@ -2294,7 +2294,7 @@ Instalamos dependencias previas:
 apt-get install libfontconfig-dev
 
 Clonamos su repo:
-git clone -b mame0282 --depth 1 https://github.com/mamedev/mame.git mame0282
+git clone -b mame0283 --depth 1 https://github.com/mamedev/mame.git mame0283
 
 --Editamos 3rdparty/bgfx/3rdparty/khronos/EGL/eglplatform.h, buscamos la línea:
 
