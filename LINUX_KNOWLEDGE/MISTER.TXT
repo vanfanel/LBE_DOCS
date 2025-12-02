@@ -313,6 +313,7 @@ Cuando un juego no vaya bien, búscalo aquí:
 http://d-bug.mooo.com/klaz/
 
 -PARA MAYOR COMPATIBILIDAD, CONFIGURA EL SISTEMA COMO UN ***STE CON 4MB Y TOS 1.62 (LA MEJOR ROM PARA STE)***
+ EL CORE REPLICA EXACTAMENTE UN STE DESDE LOS ESQUEMAS ORIGINALES DE ATARI: EN MODO ST HAY BUGS AÚN.
  PARA ALGUNOS JUEGOS PUEDES NECESITAR CONFIGURAR EL SISTEMA COMO UN ***MEGASTE DE 4MB Y TOS 2.06***
  SI NO, DAN ERRORES RAROS, COMO SALIRSE SIN MÁS AL CARGAR, O DECIRTE QUE TIENES QUE TENER UN DRIVER DE DISCO DURO INSTALADO
  QUE YA TIENES INSTALADO, ETC.
@@ -341,6 +342,30 @@ Border: Visibile
 los .TOS sólo hay que renombrarlos y ya.
 
 -Si tienes que reinstalar el AMBERSTAR, sólo se instala desde una TOS 1.x. Desde una 2.x, al pedirnos el disco B no lo reconoce y no permite seguir la instalación.
+
+CÓMO INSTALÉ EL COMMANDER BLOOD EN DISCO DURO A PARTIR DE UNA IMÁGEN DE DISCO .ST
+=================================================================================
+
+Hay una versión ya instalada en https://atari.8bitchip.info/fromhd3.php pero se salta la música del principio.
+
+Así que hacemos una pseudo-instalación desde una imágen de floppy en .ST
+
+La versión que uso es "Captain Blood (1988)(ERE)(M3)[cr Elite]", la tienes en la colección TOSEC (En Myrient por ejemplo).
+Cópialo a BLOOD.DSK, ábrelo desde el core de ST como un floppy normal, crea la carpeta AUTO y copia allí el BLOOD.PRG,
+para que luego se autoarranque cuando carguemos la imágen de disco.
+
+Ahora, bajamos el programa IMGRUN de aquí: https://atari.8bitchip.info/imgrun.php
+Para instalarlo, monta la imágen de disco duro, copia el directorio con todas las versiones y su TXT,
+entra en el core, y allí selecciona el ejecutable IMGRF162.PRG haciendo un click con el botón derecho del ratón,
+y teniéndolo seleccionado, en el TOS ve a OPCIONES->INSTALAR APLICACIÓN, en TIPO DE DOCUMENTO por ST,
+deja las demas opciones como están y dale al botón INSTALAR, y ahora dale a OPCIONES->GRABAR DESKTOP para que quede instalada de un inicio a otro.
+
+Ahora mete el BLOOD.ST donde quieras (yo lo tengo en JUEGOS/BLOOD/BLOOD.ST) y al darle doble click ya lo lanza con el IMGRUN
+y se ejecuta automáticamente lo que metiste en AUTO. 
+
+NOTA PARA OTROS JUEGOS: Si el juego necesitase una TOS 1.04, tendrás que tener un fichero llamado T14UIDUB.FIC en el mismo fichero que el .ST
+y de ese modo el IMGRUN carga una TOS 1.04 en RAM y ejecutaría el juego con más compatibilidad.
+Pero para el Commander Blood en STE no hace falta, al parecer.
 
 CONVERTIR IMÁGENES DE DISCO MSA AL FORMATO .ST QUE NECESITA EL CORE DE ATARI ST
 ===============================================================================
