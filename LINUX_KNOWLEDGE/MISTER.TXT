@@ -356,8 +356,9 @@ para que luego se autoarranque cuando carguemos la imágen de disco.
 
 Ahora, bajamos el programa IMGRUN de aquí: https://atari.8bitchip.info/imgrun.php
 Para instalarlo, monta la imágen de disco duro, copia el directorio con todas las versiones y su TXT,
-entra en el core, y allí selecciona el ejecutable IMGRF162.PRG haciendo un click con el botón derecho del ratón,
-y teniéndolo seleccionado, en el TOS ve a OPCIONES->INSTALAR APLICACIÓN, en TIPO DE DOCUMENTO por ST,
+entra en el core, y allí selecciona el ejecutable IMGRF162.PRG (o el que corresponda a la versión de la TOS que estés usando)
+haciendo un click con el botón derecho del ratón.
+Y teniéndolo seleccionado, en el TOS ve a OPCIONES->INSTALAR APLICACIÓN, en TIPO DE DOCUMENTO por ST,
 deja las demas opciones como están y dale al botón INSTALAR, y ahora dale a OPCIONES->GRABAR DESKTOP para que quede instalada de un inicio a otro.
 
 Ahora mete el BLOOD.ST donde quieras (yo lo tengo en JUEGOS/BLOOD/BLOOD.ST) y al darle doble click ya lo lanza con el IMGRUN
