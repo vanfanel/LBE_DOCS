@@ -351,8 +351,8 @@ Hay una versión ya instalada en https://atari.8bitchip.info/fromhd3.php pero se
 Así que hacemos una pseudo-instalación desde una imágen de floppy en .ST
 
 La versión que uso es "Captain Blood (1988)(ERE)(M3)[cr Elite]", la tienes en la colección TOSEC (En Myrient por ejemplo).
-Cópialo a BLOOD.DSK, ábrelo desde el core de ST como un floppy normal, crea la carpeta AUTO y copia allí el BLOOD.PRG,
-para que luego se autoarranque cuando carguemos la imágen de disco.
+Cópialo a BLOOD.DSK, ábrelo desde el core de ST como un floppy normal (este .ST no se puede montar desde Linux, que sería lo más normal),
+y en su raíz crea la carpeta AUTO y copia allí el BLOOD.PRG, para que luego se autoarranque cuando carguemos la imágen de disco.
 
 Ahora, bajamos el programa IMGRUN de aquí: https://atari.8bitchip.info/imgrun.php
 Para instalarlo, monta la imágen de disco duro, copia el directorio con todas las versiones y su TXT,
