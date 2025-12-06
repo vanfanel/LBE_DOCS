@@ -13469,6 +13469,12 @@ meson setup -Dbuildtype=release -Dlua=disabled ..
 
 -Creamos ~/.config/mpv/mpv.conf con el contenido:
 fs=yes
+cache=yes
+cache-secs=30
+
+(NOTA: Lo de la caché es para que no de tirones cada 5-10 minutos cuando usas discos externos
+conectados a USB 2.0 como los puertos laterales del DeskMini x600.
+LibreElec usa read-ahead también por defecto, por eso allí nos los ves).
 
 En AMD/INTEL puedes añadir:
 hwdec=vaapi
