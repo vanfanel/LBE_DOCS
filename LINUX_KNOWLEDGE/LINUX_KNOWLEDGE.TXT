@@ -13453,6 +13453,10 @@ VAMOS CON MPV EN SÍ:
 
 -Bajamos la última estable de: https://github.com/mpv-player/mpv/releases
 
+-Hacemos una ñapa temporal hasta que haya una nueva release para que compile:
+editamos "demux/demux_mkv.c", nos vamos a la línea 2203, y en esa línea y las que hay cerca cambiamos los FF_PROFILE_* por AV_PROFILE_*
+Esto no debería ser necesario en el futuro, es un problema de mpv 0.40.0 que no se ajusta a los nombres del ffmpeg actual.
+
 -Configuramos con:
 
 mkdir b4
