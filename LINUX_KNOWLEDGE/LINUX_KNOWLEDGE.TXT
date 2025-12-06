@@ -3799,8 +3799,7 @@ NOTA: SI TE DA ERROR EL MOUNT, ES QUE NO ESTÁS USANDO LA VERSIÓN CORRECTA DEL 
 Compilar Amiberry en GNU/Linux
 ==============================
 
---Clonamos su repo: git clone --depth 1 -b preview https://github.com/BlitterStudio/amiberry.git
-(Lo de clonar la rama "preview" es para compilar la rama 6.x, que es la que está basada en el último WinUAE).
+--Clonamos su repo: git clone --depth 1 https://github.com/BlitterStudio/amiberry.git
 
 --Instalamos dependencias previas: apt-get install libserialport-dev libportmidi-dev
 
