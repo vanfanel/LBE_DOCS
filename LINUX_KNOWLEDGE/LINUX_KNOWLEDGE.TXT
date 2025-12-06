@@ -3808,7 +3808,8 @@ Compilar Amiberry en GNU/Linux
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DUSE_LIBENET=OFF -DUSE_PORTMIDI=OFF -DUSE_PCEM=OFF
 
 make -j8
 
