@@ -13441,6 +13441,7 @@ meson setup -Dbuildtype=release ..
 -Instalamos otra dependencia previa, libplacebo, que está en Debian pero arrastra toda la mierda de X11
 así que la compilamos nosotros.
 
+--Instalamos una dependencia previa: sudo apt-get install liblcms2-dev
 --Clonamos su última versión estable (vemos la última versión estable en https://code.videolan.org/videolan/libplacebo/-/tags):
   git clone --depth 1 --recurse-submodules -b v7.351.0 https://code.videolan.org/videolan/libplacebo.git libplacebo-7.351.0
 --Configuramos con:	
