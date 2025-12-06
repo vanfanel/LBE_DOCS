@@ -13311,8 +13311,8 @@ El fichero de configuración va en ~/.drirc
 La manera correcta de generarlo es usando "adriconf" (necesita GTK):
 git clone --depth 1 https://gitlab.freedesktop.org/mesa/adriconf
 
-REPRODUCCIÓN DE VÍDEO EN AMD64 Y RASPBERRY PI CON MPV + FFMPEG
-==============================================================
+REPRODUCCIÓN DE VÍDEO EN LINUX CON MPV + FFMPEG
+===============================================
 Página aclaratoria sobre el asunto: https://wiki.debian.org/HardwareVideoAcceleration
 
 -En AMD, la decodificación por hardware funciona mediante la implementación de VAAPI de MESA VAAPI
@@ -13441,8 +13441,8 @@ meson setup -Dbuildtype=release ..
 -Instalamos otra dependencia previa, libplacebo, que está en Debian pero arrastra toda la mierda de X11
 así que la compilamos nosotros.
 
---Clonamos su repo (no instalamos desde estable porque necesita submódulos):
-  git clone --depth 1 --recurse-submodules -j8 https://code.videolan.org/videolan/libplacebo.git
+--Clonamos su última versión estable (vemos la última versión estable en https://code.videolan.org/videolan/libplacebo/-/tags):
+  git clone --depth 1 --recurse-submodules -b v7.351.0 https://code.videolan.org/videolan/libplacebo.git libplacebo-7.351.0
 --Configuramos con:	
 
 CFLAGS="-march=native -mtune=native" \
