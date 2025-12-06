@@ -3803,13 +3803,17 @@ Compilar Amiberry en GNU/Linux
 
 --Instalamos dependencias previas: apt-get install libserialport-dev libportmidi-dev
 
+--Editamos cmake/Dependencies.cmake, buscamos:
+  find_package(OpenGL REQUIRED)
+Y justo encima añadimos:
+  set(OPENGL_USE_OPENGL ON)
+
 --Configuramos y compilamos con:
 
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DUSE_LIBENET=OFF -DUSE_PORTMIDI=OFF -DUSE_PCEM=OFF
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENGL=ON -DWITH_OPTIMIZE=ON -DUSE_LIBENET=OFF -DUSE_PORTMIDI=OFF -DUSE_PCEM=OFF
 
 make -j8
 
