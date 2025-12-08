@@ -1818,6 +1818,12 @@ sudo cpupower frequency-set --governor performance
 --O bien manualmente:
 echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 
+--Si queremos poner todos los cores a una frecuencia fija:
+echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq
+echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
+--Comprobamos que se mantienen constantemente en esa frecuencia:
+watch -n0.2 "cat /proc/cpuinfo | grep MHz"
+
 		BLOQUE GPU
 
 --Vemos las frecuencias disponibles de la GPU:
