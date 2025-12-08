@@ -1803,6 +1803,7 @@ si le tienes puesto "wayland-0" ponle "wayland-1" y viceversa. Lo sueles exporta
 
 FORZAR MÁXIMO RENDIMIENTO EN LA GPU
 ===================================
+INFO DE: https://docs.kernel.org/gpu/amdgpu/thermal.html
 
 Vemos las frecuencias disponibles:
 cat /sys/class/drm/card0/device/pp_od_clk_voltage
