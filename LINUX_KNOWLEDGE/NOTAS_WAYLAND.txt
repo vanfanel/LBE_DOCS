@@ -1831,7 +1831,9 @@ watch -n0.2 "cat /proc/cpuinfo | grep MHz"
 sudo cpupower frequency-set --governor performance
 echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost
 echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
-..Y ADEMÁS en las opciones de RetroArch tengo puesto en AUDIO->SYNCHRONIZATION el "Maximum Timing Skew" a 0.
+..Y ADEMÁS en las opciones de RetroArch tengo puesto en AUDIO->SYNCHRONIZATION
+"Synchronization" a OFF, "Maximum Timing Skew" a 0.0, "Dynamic Audio Rate Control" a 0.0
+y uso el driver de audio PIPEWIRE (Sólo para el core MAME).
 
 		BLOQUE GPU
 
