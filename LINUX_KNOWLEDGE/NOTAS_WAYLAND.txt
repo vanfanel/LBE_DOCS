@@ -1827,23 +1827,6 @@ echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
 --Comprobamos que se mantienen constantemente en esa frecuencia:
 watch -n0.2 "cat /proc/cpuinfo | grep MHz"
 
---Para MAME con "Sync to Exact" hago estas cosas:
-
-sudo cpupower frequency-set --governor performance
-echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq
-echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
-echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost
-echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
-
-..Y ADEMÁS en las opciones del core MAME hay que activar el THROTTLE.
-..Y ADEMÁS en las opciones de RetroArch en AUDIO->SYNCHRONIZATION ponemos:
-"Synchronization"				OFF
-"Maximum Timing Skew"			0.0
-"Dynamic Audio Rate Control"	0.0
-..Y ADEMÁS lanzo MAME con "chrt -f 80", por si acaso.
-..Y COMO CURIOSIDAD, si ponemos power_dpm_force_performance_level a "low" en vez de "high", también funciona!
-  El problema es sólo si usamos el valor por defecto, "auto".
-
 		BLOQUE GPU
 
 --Vemos las frecuencias disponibles de la GPU:
