@@ -3841,10 +3841,14 @@ mkdir ~/amiga
 cp amiberry ~/amiga/
 cp -R data controllers whdboot roms ~/ami/
 
-								##################################
-								#PARA TENER SCROLL SUAVE PERFECTO#
-								##################################
+								###########################################
+								#PARA TENER SCROLL SUAVE PERFECTO CON VRR #
+								###########################################
 
+--En DISPLAY, ponemos el "Vsync Native" a "Standard 50/60Hz"
+--En SOUND marcamos "Push Audio" y ponemos "Sound Buffer Size" a "Min".
+
+APUNTES VIEJOS:
 Editamos src/osdep/amiberry_gfx.cpp, nos vamos a la función "target_adjust_vblank_hz()", comentamos todo su contenido
 y hacemos que devuelta la frecuencia exacta con decimales de nuestro monitor.
 
