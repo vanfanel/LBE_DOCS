@@ -1847,13 +1847,15 @@ Se cambia pasándole un parámetro al kernel.
 
 amd-pstate=disable : Desactivado
 
-amd-pstate=active  : la "plataforma" (es decir, la placa) elige las frecuencias por sí mismo basándose en registros de uso y prefrerencias de ahorro vs 					 rendimiento.
+amd-pstate=active  : la placa elige las frecuencias por sí mismo basándose en registros de uso
+					 y prefrerencias de ahorro vs rendimiento que tengamos puestas en la BIOS.
+					 Se ignora el governor del OS por completo. Sólo se respetan las frecuencias máxima y mínima.
 
-amd-pstate=passive : la "plataforma" (es decir, la placa) obtiene del SO el nivel de rendimiento deseado (CPPC)
+amd-pstate=passive : la placa obtiene del SO el nivel de rendimiento deseado (CPPC)
                      a través del DPR (Desired Perf. Register).
-					 O sea, la placa ajusta voltaje / frecuencia según el nivel de rendimiento deseado por el SO.
+					 O sea, la placa ajusta voltaje / frecuencia según el governor que tengamos puesto en el SO.
 					  
-amd-pstate=guided  : El OS fija un rango y la "plataforma" (es decir, la placa) elige dentro de ese rango.
+amd-pstate=guided  : El OS fija un rango y la placa elige dentro de ese rango.
 
 En "active" el firmware de la placa es autónomo para elegir voltaje / frecuencia.
 
@@ -1861,6 +1863,8 @@ En "passive" el kernel manda el nivel deseado y, por tanto, tienes más control 
 No obstante, ese "nivel" es CPPC (nivel de rendimiento), no una frecuencia MHz fija.
 
 En "guided" tienes control de límites y la placa optimiza dentro de ellos - buen equilibrio si quieres evitar que el firmware salga de un rango.
+
+PBO: Precission Boost Overdrive. Se supone que esto hace que las frecuencias oscilen muy deprisa...
 
 INSTALAR JAY, COMPOSITOR WAYLAND EN RUST
 ========================================
