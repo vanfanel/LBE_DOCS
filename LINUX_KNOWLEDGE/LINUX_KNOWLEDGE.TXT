@@ -3705,8 +3705,19 @@ o los .slave de los juegos WHDLinstall, o directamente los .lha que contengan ju
 Tienes todos los juegos instalados con los últimos slaves de WHDLoad listos para usar en:
 https://gamesnostalgia.com/whdownload
 
---PARA CARGAR JUEGOS PAL A 100Hz (necesario tanto si tienes un monitor con VRR/AdaptiveSync/FreeSync como si no,
-ya que el VRR sí que da microtirones tanto en PAL como en contenido ~60Hz-70Hz):
+		SCROLL TOTALMENTE SUAVE CON VRR
+
+SE CONSIGUE CASI IGUAL QUE EN EL CORE MAME (sólo cambia que aquí no desactivamos AUDIO SYNCHRONIZATION)
+
+--En la BIOS vamos a "Advanced\AMD CBS\CPU Common Options" y desactivamos GLOBAL C-STATES y CORE PERFORMANCE BOOST.
+
+--En las opciones de RetroArch en AUDIO->SYNCHRONIZATION ponemos:
+"Maximum Timing Skew"			0.0
+"Dynamic Audio Rate Control"	0.0
+
+		SCROLL TOTALMENTE SUAVE SIN VRR 
+
+--PARA CARGAR JUEGOS PAL A 100Hz:
 -Crea un script /usr/local/bin/amiga como este que normalmente lanza los juegos como PAL pero que unos pocos los lanza como NTSC:
 ############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE AMIGA#############################################################
 if [[ 
