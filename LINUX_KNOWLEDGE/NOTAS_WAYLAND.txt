@@ -1829,6 +1829,8 @@ watch -n0.2 "cat /proc/cpuinfo | grep MHz"
 
 --Para MAME con "Sync to Exact" hago estas cosas:
 sudo cpupower frequency-set --governor performance
+echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq
+echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
 echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost
 echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
 ..Y ADEMÁS en las opciones de RetroArch tengo puesto en AUDIO->SYNCHRONIZATION
