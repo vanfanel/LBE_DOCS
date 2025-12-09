@@ -1838,6 +1838,7 @@ echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_lev
 "Synchronization"				OFF
 "Maximum Timing Skew"			0.0
 "Dynamic Audio Rate Control"	0.0
+..Y ADEMÁS lanzo MAME con "chrt -f 80", por si acaso.
 
 		BLOQUE GPU
 
