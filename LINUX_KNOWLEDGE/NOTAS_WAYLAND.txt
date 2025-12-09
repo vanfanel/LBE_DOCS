@@ -1864,6 +1864,8 @@ No obstante, ese "nivel" es CPPC (nivel de rendimiento), no una frecuencia MHz f
 
 En "guided" tienes control de límites y la placa optimiza dentro de ellos - buen equilibrio si quieres evitar que el firmware salga de un rango.
 
+OPCIONES RELEVANTES EN LA BIOS: En Advanced\AMD CBS\CPU Common Options
+
 PBO: Precission Boost Overdrive. Se supone que esto hace que las frecuencias oscilen muy deprisa...
 
 INSTALAR JAY, COMPOSITOR WAYLAND EN RUST
