@@ -2471,7 +2471,8 @@ pasándose por el forro al governor del SO. Es el modo por defecto así que no d
 
 LO QUE HAY QUE HACER:		
 En la BIOS vamos a "Advanced\AMD CBS\CPU Common Options" y desactivamos GLOBAL C-STATES y CORE PERFORMANCE BOOST.
-Y ya.
+Puedes comprobar el C-STATE más profundo en el que puede entrar el sistema con:
+cat /sys/module/processor/parameters/max_cstate
 
 		OPCIÓN 2: FRECUENCIA FIJA DE LA CPU
 
