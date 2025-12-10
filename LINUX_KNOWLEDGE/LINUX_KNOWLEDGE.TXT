@@ -2476,9 +2476,12 @@ NOTA: Se supone que usamos el driver amd-pstates en modo "active" que es el que 
 pasándose por el forro al governor del SO. Es el modo por defecto así que no deberías tener que preocuparte por ello.
 
 LO QUE HAY QUE HACER:		
-En la BIOS vamos a "Advanced\AMD CBS\CPU Common Options" y desactivamos GLOBAL C-STATES y CORE PERFORMANCE BOOST.
+--En la BIOS vamos a "Advanced\AMD CBS\CPU Common Options" y desactivamos GLOBAL C-STATES y CORE PERFORMANCE BOOST.
 Puedes comprobar el C-STATE más profundo en el que puede entrar el sistema con:
 cat /sys/module/processor/parameters/max_cstate
+
+--Si quieres aún menos deviance en RetroArch (se baja del 1.7% al 1.3%), pon también la gráfica en modo de alto rendimiento:
+echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
 
 		OPCIÓN 3: FRECUENCIA FIJA DE LA CPU
 
