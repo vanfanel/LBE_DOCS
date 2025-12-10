@@ -2497,9 +2497,9 @@ Si acaso ves que no basta (no lo he visto fallar, pero por si acaso), puedes pon
 y el governor a performance (aunque en teoría amd-pstate se pasa el governor por el forro
 cuando está en modo "active" que es el modo por defecto):
 
-echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost
-sudo cpupower frequency-set --governor performance
 echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
+sudo cpupower frequency-set --governor performance
+echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost
 
 ..Y COMO CURIOSIDAD, si ponemos power_dpm_force_performance_level a "low" en vez de "high", también funciona!
   El problema es sólo si usamos el valor por defecto, "auto".
