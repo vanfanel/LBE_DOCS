@@ -2482,6 +2482,11 @@ Para ello hacemos:
 echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq
 echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
 
+O bien le pasamos al kernel "idle=poll" y de esa manera se mantiene siemore la CPU a su frecuencia nominal (4.2HGz en el Ryzen 7 8700G).
+
+Podemos comprobar la frecuencia de la CPU con:
+watch -n0.2 "cat /proc/cpuinfo | grep MHz"
+
 Si acaso ves que no basta (no lo he visto fallar, pero por si acaso), puedes poner la GPU a tope
 y el governor a performance (aunque en teoría amd-pstate se pasa el governor por el forro
 cuando está en modo "active" que es el modo por defecto):
