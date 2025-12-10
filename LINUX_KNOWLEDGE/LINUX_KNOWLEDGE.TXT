@@ -2474,7 +2474,15 @@ En la BIOS vamos a "Advanced\AMD CBS\CPU Common Options" y desactivamos GLOBAL C
 Puedes comprobar el C-STATE más profundo en el que puede entrar el sistema con:
 cat /sys/module/processor/parameters/max_cstate
 
-		OPCIÓN 2: FRECUENCIA FIJA DE LA CPU
+		OPCIÓN 2: MODO PASSIVE DE AMD_PSTATE + PERFORMANCE GOVERNOR
+		
+--Ponemos el driver amd_pstate en modo "passive", es decir, que sea el SO y no la placa la que controle las frecuencias.
+  Para ello, le pasamos al kernel el parámetro: amd_pstate=passive
+
+--Ponemos el governor "performance" para todas las CPUs:
+  sudo cpupower frequency-set -g performance
+
+		OPCIÓN 3: FRECUENCIA FIJA DE LA CPU
 
 Encerramos al driver amd-pstate entre dos frecuencias, ya que dejar una frecuencia fija como tal no se puede en sistemas modernos.
 Para ello hacemos:
