@@ -2468,10 +2468,12 @@ ADEMÁS:
 "Maximum Timing Skew"			0.0
 "Dynamic Audio Rate Control"	0.0
 
-Y AHORA EN EL SISTEMA TENEMOS DOS OPCIONES:
+Y AHORA EN EL SISTEMA TENEMOS DOS OPCIONES PARA DISMINUIR EL FRAMETIME DEVIATION:
 
 		OPCIÓN 1: DESACTIVAR LOS C-STATES EN LA BIOS
-
+NOTA: La desactivación de los C-STATES y los DF CSTATES" no se puede sustituir por nada del SO, porque es a nivel de hardware,
+así que no pierdas el tiempo intentando pasarle parámetros al kernel buscando resultados similares (los CSTATES que gestiona
+el kernel son distintos).      
 NOTA: Se supone que usamos el driver amd-pstates en modo "active" que es el que hace que sea la placa la que establezca las frecuencias
 pasándose por el forro al governor del SO. Es el modo por defecto así que no deberías tener que preocuparte por ello.
 
@@ -2481,16 +2483,17 @@ LO QUE HAY QUE HACER:
 ----En "Advanced\AMD CBS\DF Common Options" desactivamos "DF CSTATES"
 ----En "Advanced\AMD CBS\NBIO Common Options\GFX Configuration" ponemos "iGPU Configuration" a "UMA_GAME_OPTIMIZED"
     (esto es sólo para un pequeño plus de estabilidad en el deviation, lo importante es quitar los C-STATES y el BOOST).
+^CON ESTAS DOS COSAS, ya deberíamos tener un deviation de 0.0-0.1%.
 
 --Si quieres aún menos frametime deviation en RetroArch:
-----Pon también la gráfica en modo de alto rendimiento (se baja del 1.7% al 1.3%):
+----Pon también la gráfica en modo de alto rendimiento
 echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
-----Pon el driver de audio PIPEWIRE (se baja del 1.3% al 1.0%)
-----Pon un modo de vídeo donde la electrónica del monitor genere menos variaciones (he conseguido bajar al 0.4%):
+----Pon el driver de audio PIPEWIRE
+----Pon un modo de vídeo donde la electrónica del monitor genere menos variaciones:
 wlr-randr --output DP-1 --custom-mode 1920x1080@119.427000
 ...Quizá se pueda buscar una frecuencia aún más ideal: hemos empezado bajando desde .430000
 
-		OPCIÓN 3: FRECUENCIA FIJA DE LA CPU
+		OPCIÓN 2: FRECUENCIA FIJA DE LA CPU
 
 Encerramos al driver amd-pstate entre dos frecuencias, ya que dejar una frecuencia fija como tal no se puede en sistemas modernos.
 Para ello hacemos:
@@ -2514,7 +2517,7 @@ echo 0 | sudo tee /sys/devices/system/cpu/cpufreq/boost
 ..Y COMO CURIOSIDAD, si ponemos power_dpm_force_performance_level a "low" en vez de "high", también funciona!
   El problema es sólo si usamos el valor por defecto, "auto".
 
-		OPCIÓN 4 (FUNCIONA PERO EL FRAMETIME DEVIATION NO BAJA DEL 3%): MODO PASSIVE DE AMD_PSTATE + DESHABILITAR BOOST + PERFORMANCE GOVERNOR
+		OPCIÓN 3 (FUNCIONA PERO EL FRAMETIME DEVIATION NO BAJA DEL 3%): MODO PASSIVE DE AMD_PSTATE + DESHABILITAR BOOST + PERFORMANCE GOVERNOR
 		
 --Ponemos el driver amd_pstate en modo "passive", es decir, que sea el SO y no la placa la que controle las frecuencias.
   Para ello, le pasamos al kernel el parámetro: amd_pstate=passive
