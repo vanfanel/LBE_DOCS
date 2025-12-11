@@ -3753,6 +3753,7 @@ SE CONSIGUE CASI IGUAL QUE EN EL CORE MAME (sólo cambia que aquí no desactivam
 ----En "Advanced\AMD CBS\DF Common Options" desactivamos "DF CSTATES"
 ----En "Advanced\AMD CBS\NBIO Common Options\GFX Configuration" ponemos "iGPU Configuration" a "UMA_GAME_OPTIMIZED"
     (esto es sólo para un pequeño plus de estabilidad en el deviation, lo importante es quitar los C-STATES y el BOOST).
+^CON ESTO ya deberíamos tener un deviation de 0.0-0.1%.
 
 --En las opciones de RetroArch en AUDIO->SYNCHRONIZATION ponemos:
 "Maximum Timing Skew"			0.0
