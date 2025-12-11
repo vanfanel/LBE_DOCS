@@ -2522,6 +2522,9 @@ echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_lev
 wlr-randr --output DP-1 --custom-mode 1920x1080@119.427000
 ...Quizá se pueda buscar una frecuencia aún más ideal: hemos empezado bajando desde .430000
 
+...Más info sobre las opciones de las BIOS de AMD:
+https://instinct.docs.amd.com/projects/system-acceptance/en/latest/common/bios-settings.html
+
 		OPCIÓN 2: FRECUENCIA FIJA DE LA CPU
 
 Encerramos al driver amd-pstate entre dos frecuencias, ya que dejar una frecuencia fija como tal no se puede en sistemas modernos.
