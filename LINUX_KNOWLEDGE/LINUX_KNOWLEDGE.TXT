@@ -2478,10 +2478,9 @@ pasándose por el forro al governor del SO. Es el modo por defecto así que no d
 LO QUE HAY QUE HACER:		
 --En la BIOS:
 ----En "Advanced\AMD CBS\CPU Common Options" desactivamos "GLOBAL C-STATES" y "CORE PERFORMANCE BOOST"
+----En "Advanced\AMD CBS\DF Common Options" desactivamos "DF CSTATES"
 ----En "Advanced\AMD CBS\NBIO Common Options\GFX Configuration" ponemos "iGPU Configuration" a "UMA_GAME_OPTIMIZED"
     (esto es sólo para un pequeño plus de estabilidad en el deviation, lo importante es quitar los C-STATES y el BOOST).
-Puedes comprobar el C-STATE más profundo en el que puede entrar el sistema con:
-cat /sys/module/processor/parameters/max_cstate
 
 --Si quieres aún menos frametime deviation en RetroArch:
 ----Pon también la gráfica en modo de alto rendimiento (se baja del 1.7% al 1.3%):
@@ -3743,7 +3742,11 @@ https://gamesnostalgia.com/whdownload
 
 SE CONSIGUE CASI IGUAL QUE EN EL CORE MAME (sólo cambia que aquí no desactivamos AUDIO SYNCHRONIZATION)
 
---En la BIOS vamos a "Advanced\AMD CBS\CPU Common Options" y desactivamos GLOBAL C-STATES y CORE PERFORMANCE BOOST.
+--En la BIOS:
+----En "Advanced\AMD CBS\CPU Common Options" desactivamos "GLOBAL C-STATES" y "CORE PERFORMANCE BOOST"
+----En "Advanced\AMD CBS\DF Common Options" desactivamos "DF CSTATES"
+----En "Advanced\AMD CBS\NBIO Common Options\GFX Configuration" ponemos "iGPU Configuration" a "UMA_GAME_OPTIMIZED"
+    (esto es sólo para un pequeño plus de estabilidad en el deviation, lo importante es quitar los C-STATES y el BOOST).
 
 --En las opciones de RetroArch en AUDIO->SYNCHRONIZATION ponemos:
 "Maximum Timing Skew"			0.0
