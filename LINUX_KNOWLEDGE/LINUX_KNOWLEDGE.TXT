@@ -9705,8 +9705,8 @@ renombrado a RUNME.PRG (o al nombre que quieras, pero .PRG).
 PARA ARRANCAR DESDE DISCO DURO "COMPLETO" (Para luego lanzar cada juego "a mano" desde el sistema Atari)
 Lo más fácil (y compatible con los juegos que te interesan, como Captain Blood, Viking Child, Ishar...)
 es, en CORE OPTIONS->SYSTEM:
-TOS ROM -> EmuTOS 192us
-Machine Type -> ST
+TOS ROM -> tos162uk
+Machine Type -> STE
 ST Memory Size -> 4 MB
 Hard Disk Type -> GemDOS
 Hard Disk Boot -> ON
@@ -9724,38 +9724,16 @@ Si queremos que se autolanze el command.prg para arrancar a consola de comandos 
 Tienes MUCHOS juegos instalados en disco duro aquí: https://atari.8bitchip.info/fromhd3.php
 (Busca por nombre del juego, y si tiene una "D" azul en esa fila, pincha en ella para ir a la ficha y descargarlo).
 
-PARA CARGAR JUEGOS PAL A 100Hz:
--Añade "PAL" al nombre del juego. Por ejemplo, "gods" pasaría a ser "godsPAL", lo mismo con su .gem
--Crea un script /usr/local/bin/atari como este, que en caso de ser PAL el juego, ponga el monitor a 100Hz si el juego es PAL y además
-cargue las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
-############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
-if [[ "$1" == *"PAL"* ]]; then
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@100
-  retroarch -L ~/.config/retroarch/cores/hatarib.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@120
-else
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@120
-  retroarch -L ~/.config/retroarch/cores/hatarib_libretro.so "$1"
-  wlr-randr --output HDMI-A-1 --mode 1920x1080@60
-fi
-############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
--Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
-el RetroArch se quede a 100Hz...¡Los 100Hz son sólo una excepcionalidad para juegos PAL! Y si la pantalla no soporta 100 Hz,
-tendríamos que añadir tabién audio_latency = "42"):
-video_refresh_rate = "50.000000"
-audio_driver = "alsathread"
-config_save_on_exit = "false"
--Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Atari ST que usamos para ejecutarlo
-(Recuerda que si es PAL tendrás que elegir una TOS europea), las opciones de pixel ratio que mejor le sientan, etc.
-
 PARA TODOS LOS JUEGOS EN GENERAL es interesante tener el espacio mapeado al botón START del mando, ya que los installs de HD
 usan SPACE para empezar a jugar. Esto lo puedes guardar como el core remap.
 A parte, para los que usan arriba para el salto (pero no para subir escaleras), puedes mapear la flecha arriba en el botón B
 del mando, y el fire en el botón Y del mando (por ejemplo, el Viking Child). 
 
 PARA EL CAPTAIN BLOOD DESDE HDD:
--Usa la release de 42-Crew para copiarla al disco duro GEMDOS en el directorio que quieras.
-Necesita la TOS 1.04 PAL como máximo: más que eso, revienta. Puedes usar versiones superiores de la TOS, o incluso EmuTOS, si son NTSC.
+-Usa la versión de PETARI nueva, que te la hizo para ti y la tienes en el correo electrónico.
+ Esa va mejor en STE/TOS162UK, como todo lo de PETARI.
+-También podrías usar la release de 42-Crew para copiarla al disco duro GEMDOS en el directorio que quieras.
+ Necesita la TOS 1.04 PAL como máximo: más que eso, revienta. Puedes usar versiones superiores de la TOS, o incluso EmuTOS, si son NTSC.
 
 PARA EL AMBERSTAR DESDE HDD
 Simplemente debes tener el juego metido en C:AMBRSTAR, es decir, que lo puedes meter en ~/roms/atari/ambrstar/AMBRSTAR/,
@@ -9791,6 +9769,30 @@ retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/dragonfl.m3u
 
 (POR SI LO NECESITAS, AUNQUE ES POCO PROBABLE: Para insertar un floppy a mano una vez que has arrancado el core habiéndole pasado el disco duro GEM,
 en el menú de RetroArch debes ir a "Disk Control->Load New Disc", y después más arriba darle a "Insert Disk").
+
+PARA CARGAR JUEGOS PAL A 100Hz SIN VRR:
+-Añade "PAL" al nombre del juego. Por ejemplo, "gods" pasaría a ser "godsPAL", lo mismo con su .gem
+-Crea un script /usr/local/bin/atari como este, que en caso de ser PAL el juego, ponga el monitor a 100Hz si el juego es PAL y además
+cargue las opciones necesarias para poner RetroArch en modo PAL desde ~/.config/retroarch/PAL.cfg:
+############SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
+if [[ "$1" == *"PAL"* ]]; then
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@100
+  retroarch -L ~/.config/retroarch/cores/hatarib.so --appendconfig ~/.config/retroarch/config/PAL.cfg "$1"
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@120
+else
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@120
+  retroarch -L ~/.config/retroarch/cores/hatarib_libretro.so "$1"
+  wlr-randr --output HDMI-A-1 --mode 1920x1080@60
+fi
+############FIN SCRIPT DE CARGA DE JUEGOS NTSC/PAL DE ATARI ST#############################################################
+-Crea ~/.config/retroarch/config/PAL.cfg con este contenido (la última línea es porque NO queremos que al quitar el juego
+el RetroArch se quede a 100Hz...¡Los 100Hz son sólo una excepcionalidad para juegos PAL! Y si la pantalla no soporta 100 Hz,
+tendríamos que añadir tabién audio_latency = "42"):
+video_refresh_rate = "50.000000"
+audio_driver = "alsathread"
+config_save_on_exit = "false"
+-Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Atari ST que usamos para ejecutarlo
+(Recuerda que si es PAL tendrás que elegir una TOS europea), las opciones de pixel ratio que mejor le sientan, etc.
 
 EMULANDO MACINTOSH EN ATARI ST
 ==============================
