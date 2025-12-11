@@ -2476,7 +2476,10 @@ NOTA: Se supone que usamos el driver amd-pstates en modo "active" que es el que 
 pasándose por el forro al governor del SO. Es el modo por defecto así que no deberías tener que preocuparte por ello.
 
 LO QUE HAY QUE HACER:		
---En la BIOS vamos a "Advanced\AMD CBS\CPU Common Options" y desactivamos GLOBAL C-STATES y CORE PERFORMANCE BOOST.
+--En la BIOS:
+----En "Advanced\AMD CBS\CPU Common Options" desactivamos "GLOBAL C-STATES" y "CORE PERFORMANCE BOOST"
+----En "Advanced\AMD CBS\NBIO Common Options\GFX Configuration" ponemos "iGPU Configuration" a "UMA_GAME_OPTIMIZED"
+    (esto es sólo para un pequeño plus de estabilidad en el deviation, lo importante es quitar los C-STATES y el BOOST).
 Puedes comprobar el C-STATE más profundo en el que puede entrar el sistema con:
 cat /sys/module/processor/parameters/max_cstate
 
