@@ -3385,6 +3385,9 @@ NOTA: El juego corre internamente a 256x224, por si lo quieres tener en cuenta p
 --Para que vaya a la velocidad correcta y suave, entramos en el menú con ESC, y ponemos "GAME SPEED" a 4. También ponemos el escalado a 4:3.
   Si quieres scroll perfecto con AdaptiveSync/VRR, NO ACTIVES "LIMIT FPS" EN EL MENÚ DE DEBUG.
 
+--Si te da por tocar los framerates del juego, mira en handleGameIterationFinished() en src/supaplex.c
+  Ahí ves cómo se hacen las esperas en función del framerate deseado.
+
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)***************************************************
 
 Los archivos que necesitamos están en este hilo:
