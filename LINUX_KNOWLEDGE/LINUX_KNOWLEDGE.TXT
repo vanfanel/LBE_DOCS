@@ -3382,8 +3382,8 @@ NOTA: El juego corre internamente a 256x224, por si lo quieres tener en cuenta p
 
 --Para ponerlo a pantalla completa, usamos ALT+ENTER. Y al salir ya se queda guardado.
 
---Para que vaya a la velocidad correcta y suave, entramos en el menú con ESC, y ponemos "GAME SPEED" a 6. También ponemos el escalado a 4:3.
-  Con AdaptiveSync/VRR, establecemos el modo de 143Hz nativo del monitor antes de entrar puede ser necesario para no tener micro-stuttering.
+--Para que vaya a la velocidad correcta y suave, entramos en el menú con ESC, y ponemos "GAME SPEED" a 4. También ponemos el escalado a 4:3.
+  Si quieres scroll perfecto con AdaptiveSync/VRR, NO ACTIVES "LIMIT FPS" EN EL MENÚ DE DEBUG.
 
 ********Instalando ROCKBOX en un Sony NWZ 383 (Walkman MP3)***************************************************
 
