@@ -7755,7 +7755,6 @@ sudo make ARCH=arm modules_install INSTALL_MOD_PATH=/media/manuel/LINUX/
 
 sudo cp arch/arm/boot/zImage /media/manuel/BOOT/
 
-
 ****************Extraer la configuración de un kernel*******************************************************
 
 Para extraer un .config de un kernel que sabemos que funciona, en el directorio scripts de los kernel sources tenemos un script apropiado que funciona así:
