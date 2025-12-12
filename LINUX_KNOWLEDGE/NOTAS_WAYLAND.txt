@@ -192,8 +192,10 @@ path=/usr/local/bin/foot
 path=/usr/local/libexec/weston-keyboard
 
 [output]
-name=HDMI-A-1
+name=DP-1
 mode=current
+# Fundamental para que funcione "Sync to Exact" en RetroArch
+vrr-mode=game
 
 [keyboard]
 keymap_layout=es
