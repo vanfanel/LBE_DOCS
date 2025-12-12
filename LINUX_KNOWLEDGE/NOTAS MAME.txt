@@ -1,0 +1,421 @@
+*************Compilar MAME standalone*******************************************************************************************
+
+Instalamos dependencias previas:
+apt-get install libfontconfig-dev
+
+Clonamos su repo:
+git clone -b mame0283 --depth 1 https://github.com/mamedev/mame.git mame0283
+
+--Editamos 3rdparty/bgfx/3rdparty/khronos/EGL/eglplatform.h, buscamos la línea:
+
+#elif defined(__unix__) || defined(USE_X11)
+
+y cambiamos lo que hay ahí dentro por esto:
+
+typedef struct wl_display     *EGLNativeDisplayType;                                                                                  
+typedef struct wl_egl_pixmap  *EGLNativePixmapType;                                                                                   
+typedef struct wl_egl_window  *EGLNativeWindowType;
+
+--Editamos scripts/src/osd/modules.lua, y allí:
+----Borramos "input_x11.cpp".
+----Nos vamos a la función osdmodulestargetconf(), y donde pone
+links { 
+	"GL",
+lo cambiamos por "OpenGL".
+
+--Editamos src/osd/modules/lib/osdobj_common.cpp y borramos la línea:
+REGISTER_MODULE(m_mod_man, LIGHTGUN_X11)
+
+--Compilamos así:
+CFLAGS="-march=znver3 -mtune=znver3" \
+CXXFLAGS="-march=znver3 -mtune=znver3" \
+make USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j8
+
+NOTA: No le pasamos los parámetros de optimización "native" típicos porque entonces VR sale con los gráficos mal,
+así que le pasamos estos específicos de AMD.
+
+--Si alguna vez necesitas editar un shader, están en src/osd/modules/render/bgfx/shaders.
+Por ejemplo, el código de crt-geom está en src/osd/modules/render/bgfx/shaders/chains/crt-geom/crt-geom_common.sc
+Y para recompilar los shaders sería con "make shaders"
+Luego se sobreescribe el directorio "bgfx" de ~/mame y ya estarías con los shaders alterados.
+
+	##### COMPILAR SÓLO CON DRIVERS SELECTOS #####
+
+--Editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan, tal que así:
+SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp,src/mame/namco/namcos22.cpp
+
+--Compilamos añadiendo el parámetro "REGENIE=1" a MAKE (es para que se regenere la configuración o algo así):
+
+CFLAGS="-march=znver3 -mtune=znver3" \
+CXXFLAGS="-march=znver3 -mtune=znver3" \
+make USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 REGENIE=1 -j8
+
+(+)MÁS INFO DE REFERENCIA:
+
+Un hilo sobre el asunto con la solución para compilar sólo un driver:
+http://forum.arcadecontrols.com/index.php?topic=162794.0
+
+This is actually spelled out in the mame documentation:
+
+https://docs.mamedev.org/initialsetup/compilingmame.html
+
+Quote:
+
+    You can do driver specific builds by using SOURCES=<driver> in your make statement. For instance, building Asteroids by itself would be:
+    "make SOURCES=src/mame/atari/asteroid.cpp REGENIE=1"
+    including the necessary REGENIE for rebuilding the settings
+
+USAR MAME STANDALONE
+====================
+
+--Lo primero, para conocer todos los parámetros de MAME, hacemos "mame -showusage".
+
+--Copiamos los directorios "bgfx" y "artwork" que vienen en la raiz de los sources a "~/mame/bgfx":
+cp -R bgfx artwork ~/mame/
+
+		SECCIÓN SCROLLES PERFECTOS EN TODOS LOS JUEGOS (INCLUÍDO MK) CON VRR
+
+--Ejecutamos "mame" sin ningún juego, y en "General Settings->Video Options":
+"Video Mode" a "bgfx"
+"Window Mode" a "Off"
+"Synchronized Refresh" a "Off"
+"Wait Vertical Sync" a "Off"
+Y en "General Settings->Advanced Options":
+"Throttle" a "On"
+"Adjust speed to match refresh rate" a "Off"
+"Low latency" a "Off"
+
+El "Low Latency" no tiene ningún efecto si se tiene VRR: https://docs.mamedev.org/usingmame/commonissues.html#gsync-freesync
+Los demás valores los dejamos como están por defecto.
+
+Ahora, para que no nos salga la info de cada juego ni nos salgan los warnings con los juegos imperfectos,
+nos vamos a "General Settings->Miscelaneous Options" y ponemos
+"Skip imperfect emulation warnings" a "On"
+"Skip system information screen" a "On"
+
+ES RECOMENDABLE ACTIVAR EL allowTearing EN EL COMPOSITOR DE WAYLAND.
+En Labwc es con "<allowTearing>yes</allowTearing>" en la sección "<core>" del fichero ".config/labwc/rc.xml"
+
+NO HACE FALTA PONER NINGÚN MODO DE VÍDEO ANTES DE ENTRAR A MAME SI LO TIENES BIEN CONFIGURADO TODO,
+EL VRR FUNCIONA PERFECTAMENTE CON EL MODO "PREFERRED" DEL MONITOR.
+
+		FIN SECCIÓN SCROLLES PERFECTOS EN TODOS LOS JUEGOS CON VRR
+
+--Editamos "~/.mame/mame.ini" y nos aseguramos de que esto está así:
+bgfx_backend	vulkan
+
+--Lanzamos MAME, entramos en el menú TAB, nos vamos a "Slider Controls", allí a "Window 0, Screen 0 Effect"
+y con el cursor situado ahí, usamos los cursores a derecha/izquierda para seleccionar el efecto deseado. Se queda guardado para cada juego. 
+
+--Para tener una fuente mejor en el menú:
+----MÉTODO RECOMENDADO: Ejecutamos "mame" sin ningún parámetro para entrar en el menú del MAME en sí.
+Nos vamos a "GENERAL SETTINGS -> CUSTOMIZE UI -> FONTS -> UI Font" y ahí podremos elegir entre las fuentes TTF del sistema.
+----ALTERNATIVA: Usamos una fuente en formato .BDF que guardamos como "ui.bfd" en el mismo directorio del ejecutable como "ui.bdf"
+y así se carga sola.
+Nos podemos bajar fuentes en BDF ya listas de https://mrdo.mameworld.info/mame_artwork_supp.php
+A mi me gusta la llamada "Nostalgia Four", que es estilo AtariST.
+
+******SOLUCIÓN TEMPORAL PARA SHADERS MIENTRAS ARREGLAN BGFX***********************
+
+El problema de BGFX es: https://github.com/mamedev/mame/issues/14022
+
+Mientras no lo arreglen, usamos simplemente el viejo renderer OpenGL de MAME (en vez de BGFX) y un shader GLSL.
+
+Para ello:
+--Nos descargamos el shader CRT-geom en formato ".vsh" de https://www.mameau.com/notes/emulation/mame/mame-glsl-shaders-setup/mame_glsl_osd.tar.gz
+--Creamos ~/mame/shaders y mandamos ahí el contenido del directorio "osd", es decir, los ficheros .vsh y .fsh los metemos en ~/mame/shaders
+--Ponemos al final de ~/.mame/mame.ini:
+#
+# Settings temporales hasta que arreglen BGFX
+#
+video                   opengl
+gl_glsl                 1
+glsl_shader_mame0       shaders/CRT-geom
+
+--Podemos editar ~/mame/shaders/CRT-geom.vsh para configurar el shader, porque viene con un efecto "tilt" inclinado raro puesto,
+  y es mejor quitarle algo de curvatura (he dejado "R = 2.0" de momento), etc.
+  También deja la línea de overscan así porque si no, no se ve toda la pantalla en los juegos:
+  overscan = vec2(1.00,1.00);
+
+******CONOCER EL STATUS DE UN DRIVER DE MAME ANTES DE COMPILARLO******************
+
+Lo más fácil es mirar en su fichero de código si tiene algún flag como MACHINE_IMPERFECT_SOUND, MACHINE_IMPERFECT_GRAPHICS, etc.
+Los flags posibles los puedes ver aquí: https://wiki.mamedev.org/index.php/Game_Drivers
+Por ejemplo, para saber qué imperfecciones hay en los drivers del fabricante APPLE, puedes hacer esto:
+grep MACHINE_IMPERFECT_ src/mame/apple/* -R
+
+******DAYTONA USA EN MAME*********************************************************************
+
+Para poner el juego en inglés y en "single":
+Pulsamos F2 para entrar en modo "service", y allí nos movemos con el 9 y aceptamos con el 1.
+Entramos en "Game System" y allí ponemos "LINK ID" a "SINGLE" y "COUNTRY" a "EXPORT" o a "USA".
+
+******USAR MAME PARA EMULAR MACINTOSH 128/SE Y MACINTOSH II**************************
+
+NOTA: El Macintosh 128 original no soporta disco duro, si queremos un Mac en blaco y negro emulamos el Mac SE (el Mac Plus no arranca con discos
+de más de 20MBm y el Mac Classic es incompatible con el Arkanoid).
+
+-Las ROMs necesarias de los Mac que vamos a emular las bajamos de retroroms.info (Downloads->MAME->Current ROMs)
+ Para emular un Mac SE, necesitamos adbmodem.zip y macse.zip.
+ 
+-Creamos el directorio "macse" y ahí metemos las roms
+adbmodem.zip
+macse.zip
+macsefd.zip
+maciici.zip y la imágen de disco que queramos usar (la mía se llama system.hdv),
+
+--Lanzamos la emulación de Mac SE:
+mame macse -rompath macse -hard macse/system.hdv
+
+PARA SALIR de "The Manhole", mantén presionado COMMAND (en PC es ALTGr) junto con SPACE, y sale la barra de arriba y puedes salir.
+
+	BLOQUE PARA CREAR LA IMÁGEN DE DISCO DURO (NO NECESARIO, TIENES LA IMÁGEN .HDV EN EL DISCO DE BACKUP, ES POR SI LA PIERDES)
+	(Info destilada de: https://wiki.mamedev.org/index.php/Driver:Mac_68K)
+
+El ejemplo va a ser para crear una imágen de Macintosj II ci (maciici) pero para Mac SE es muy parecido (sólo cambia la versión
+del sistema que instalamos).
+
+-Nos creamos una imágen de disco de 128M:
+dd if=/dev/zero of=system.hdv bs=1000000 count=128
+
+-Lo primero, en RetroArch, ponemos "Settings->Input->Auto Enable Game Focus Mode" a "Detect",
+ y "Settings->Input->Hotkeys->Game Focus(Toggle)" a "Key LSuper".
+ Esto es imprescindible para que el ratón vaya bien dentro del emulador y para tener teclado.
+
+-Arrancamos en modo Mac II tanto si vamos a emular un Mac 128/SE como si vamos a emular un Mac II (ya que si no, no tenemos CDROM)
+ con el "Apple Legacy Recovery Oct 1999", que lo tienes en el disco de backup y también está en archive.org.
+ Para ello:
+ 
+ mame maciici -rompath macse -ramsize 8M -hard maciici/system.hdv -cdrom "Apple Legacy Recovery Oct 1999.iso"
+ 
+ Nos vamos a "Legacy Recovery" y a "Disk Utilities" y a "Formatting Software" y a "Driver Setup 1.5",
+ seleccionamos el disco y le damos a inicializar. Cuando acabe, reiniciamos la emulación.
+ Para Mac 128/SE instaremos el System 6.0.8, y para Mac II el System 7.1 (El 7.1.1 Pro sólo se diferencia
+ en que trae algunos extras que no usamos como AppleTalk, utilidades de file sharing, etc..,
+ y las versiones más modernas que 7.1.1 usan ya MUCHA RAM).
+ Para ello, nos vamos a "System Software by CPU" e instalamos la versión del System que corresponda según hemos dicho,
+ usando el "Net Install.scr". Le damos a "Customize", elegimos "System Software for all Macs" y le damos a INSTALL.
+ 
+	BLOQUE PARA METER JUEGOS EN LA IMÁGEN DE DISCO
+ 
+Usamos HFSUTILS.
+(Si no nos funciona "apt-get install hfsutils" (no parece haber hfsutils en Debian 13),
+nos bajamos la última versión del paquete .deb desde https://debian.stanford.edu/debian/pool/main/h/hfsutils/ y la instalamos a mano con dpkg).
+
+Lo primero, nos bajamos el Stuffit Expander 5.5 en formato .img de aquí:
+https://winworldpc.com/product/stuffit-expander/55
+(La primera descarga, en la que pone "3.5-1.44mb" y el icono de un diskette)
+
+Ahora montamos el IMG con el hmount (nos quedamos con el "Volume name"):
+hmount stuffit_expander_5.5.img
+Miramos sus contenidos si queremos:
+hdir "StuffIt Expander 5.5":
+Copiamos el instalador a un directorio de Linux:
+mkdir stuffit
+hcopy -m "StuffIt Expander 5.5":* stuffit/
+(El "-m" es para que no se pierda el "resource fork")
+Desmontamos el IMG:
+humount "StuffIt Expander 5.5":
+Ahora montamos el disco de sistema (nos quedamos con el "Volume name"):
+hmount macse/system.hdv
+Y copiamos el instalador del stuffit allí:
+hcopy -m stuffit/* System:
+Y desmontamos el disco de sistema:
+humount System
+Ahora en el Mac instalamos el Stuffit (dice que necesita System 7.1.1 pero con 7.1 va igual),
+y ya podemos descomprimir archivos SIT que le podemos subir directamente como queramos ya que no hay que preocuparse por el tema de los forks.
+
+Ahora, por ejemplo podemos bajarnos un puñado de juegos en .SIT (macintoshgarden.org),
+y luego los copiamos al sistema para después descomprimirlos con Stuffit, así (en este caso no hace falta "-m" porque no tenemos resource fork):
+hmount macse/system.hdv
+hcopy juegos/* System:
+humount System
+
+OJO!!! NOTAS PARA JUEGOS ESPECÍFICOS:
+-Dungeon Master II: Necesita el QuickTime 2.1 y el Sound Manager 3.1. Ambos vienen en el CD "Apple Legacy Recovery Oct 1999"
+ que has usado para instalar el sistema.
+-Para extraer juegos comprimidos con .CPT debes usar Stuffit Deluxe 4.5, PERO instalarlo supone que te llena de mierda el sistema
+ y no se puede limpiar ni borrando las extensiones que mete. Así que usa una copia desechable del disco duro de sistema.
+-Hay juegos, como el Alone in the Dark, que están en un IMG que es para DiskCopy, un programa de Mac, y que
+por lo tanto no se pueden montar desde Linux con el típico "mount -t hfs". Para esos, usa DiskCopy 6.3.3 de Mac.
+
+ALTERNATIVA: TRAERNOS LOS JUEGOS YA INSTALADOS DESDE UNA IMÁGEN DE DISCO PRE-COCINADA
+Por ejemplo, vamos a extraer los archivos del Prince de una imágen de disco
+al sistema de archivos de Linux, extracción que hacemos en formato macbinary (para eso es el "-m") para que no se pierda el "resource fork",
+y luego copiamos esos archivos al disco HFV:
+
+hmount prince.dsk
+hdir "Prince of Persia"
+mkdir prin
+hcopy -m "Prince of Persia":* prin/
+humount prince.dsk
+
+hmount myhdd.hdv
+hmkdir "System7":"Prince of Persia"
+hcopy -m prin/* "System7":"Prince of Persia":
+humount hyhdd.hdv
+
+PARA EVITAR PROBLEMAS AL PULSAR SHIFT, ve a Menú Manzana->Control Panels, crea una carpeta llamada DISABLED, y mete ahí el panel "Easy Access".
+De lo contrario, pulsando shift varias veces (como en el Prince cuando luchas) se interrumpe todo el sistema para activar "sticky keys".
+PARA DESACTIVAR EXTENSIONES, ve a SYSTEM FOLDER, EXTENSIONS, y ahí creas una carpeta llamada DISABLED y metes las extensiones
+que quieras deshabilitar.
+
+		FIN BLOQUE PARA CREAR LA IMÁGEN DE DISCO DURO
+
+******USAR MAME PARA EMULAR UN 486 CON EL DRIVER CT486******************************************
+(INFORMACIÓN ORIGINAL SOBRE LA CONFIGURACIÓN DEL DRIVER: https://wiki.mamedev.org/index.php/Driver:CT486)
+
+	PARTE 1: ARRANQUE Y CONFIGURACIÓN PREVIA DEL SISTEMA
+
+--Se necesitan las BIOS:
+at_keybc.zip
+ct486.zip
+et4kw32i.zip
+s3_764.zip
+kb_ms_natural.zip
+
+--Creamos el directorio ~/mame/ct486 donde metemos las BIOS.
+
+--Creamos una imágen de disco de 512MB con:
+dd if=/dev/zero of=ct486/dos622.img bs=1M count=512
+
+--Metemos el set de discos de MS-DOS (Disk1.img, Disk2.img, Disk3.img, Disk4.img) en en directorio ct486. 
+
+--Lanzamos el sistema con:
+mame ct486 -rompath ct486 -hard1 ct486/dos622.img
+
+--Le damos a F1 para continuar cuando nos dé el error, y le damos a DEL para entrar en la BIOS.
+
+--En la BIOS:
+----Nos vamos a "STANDARD CMOS SETUP":
+--------En "HARD DISK C: Type", le damos a la tecla "PGUP" o "PGDOWN" del teclado para que nos deje modificarlo, y ponemos
+		"CYLN" a 1041, "Head" a 16, "WPCom" y "LZone" a 0, "Sect" a 63, y nos tiene que salir "Size" puesto a 512 MB.
+(NOTA: Si la imágen de disco que hemos creado fuese más grande, simplemente ajustaríamos el número de CYLN
+y los demás parámetros los dejaríamos como están. O sea que 1041 es para 512MB, para 2GB serían 4161, etc).
+--------En "Floppy Drive A:" ponemos "1.44 MB 3 1/2"
+----Nos vamos a "ADVANCED CMOS SETUP" y ponemos "System Boot Up Sequence" a "A:, C:"
+
+	PARTE 2: INSTALACIÓN DE MS-DOS
+
+--Lanzamos el sistema otra vez con:
+mame ct486 -rompath ct486 -hard1 ct486/dos622.img -flop1 ct486/Disk1.img
+
+--Aporreamos teclas (las que queramos) justo antes de que aparezca lo de "Iniciando MS-DOS..." para evitar que se cuelgue.
+(Ni idea, pero funciona).
+
+--Salimos de la instalación con F3. Particionamos el disco con FDISK, reiniciamos, volvemos a salir de la instalación,
+formateamos con "format c:", y reiniciamos.
+Esta vez procedemos con la instalación. Cuando nos pida otro diskette, pulsamos SCREEN LOCK (=BLOQ.DESP) para que se nos permita
+usar la GUI de MAME.
+(Si el teclado no tiene SCREEN LOCK, asignamos la tecla que queramos en:
+"General Settings -> Input Assignments -> User Interface -> Toggle UI Controls". Yo en el portátil uso el 0 del keypad). 
+Ahora pulsamos TAB para entrar en dicha GUI, entramos en FILE MANAGER y elegimos el siguiente diskette,
+y así sucesivamente.
+
+	PARTE 3: AÑADIR JUEGOS Y PROGRAMAS
+
+--Para meter más juegos, simplemente montamos la imágen con:
+sudo mount dos622.img -o rw,offset=32256 /mnt
+Le metemos lo que queramos y lo desmontamos.
+
+--Para tener 16MB de RAM y Sound Blaster 16 (poner otra tarjeta VGA aparentemente mejor como la S3 en el slot "isa1" no produce ninguna diferencia),
+lanzamos el sistema así:
+mame ct486 -rompath ct486 -hard1 ct486/dos622.img -ramsize 16M -isa1 svga_s3 -isa2 sblaster_16
+(RECUERDA QUE PUEDES VER LAS OPCIONES DE SLOTS DISPONIBLES CON "-listslots")
+
+--Para que vaya el sonido con Sound Blaster 16 en los juegos que necesitan la variable BLASTER, ponla así en AUTOEXEC.BAT:
+SET BLASTER=A220 I5 D1 T6 P330
+
+--Con VRR, para que el scroll vaya perfecto tanto en juegos de ~70Hz como de ~60Hz,
+ponemos el máximo refresco del monitor antes de entrar:
+wlr-randr --output DP-1 --mode 1920x1080@143.854996
+
+******USAR MAME PARA EMULAR UN APPLE2GS************************************************
+NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
+Si lo dejas activado, los programas se comportan de manera muy extraña: no tienen sonido, se resetean al pulsar teclas o botones, etc.
+NOTA IMPORTANTE!!! Para que funcione el joystick tienes que pasar a MAME la opción "-gameio joy"
+Hay otras cosas que puedes conectar en el slot "gameio", lo puedes ver aquí: https://wiki.mamedev.org/index.php/Driver:Apple_II
+NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, como este es un core de ordenador primero debes pulsar ScrollLock y después
+mantén pulsado SELECT y pulsa el botón que tengas asignado como Y.
+
+Información adicional: https://wiki.mamedev.org/index.php/Driver:Apple_II
+(Ver sección "Quickstart")
+
+En makefile, dejamos así la línea SOURCES:
+SOURCES = apple/apple2.cpp,apple/apple2gs.cpp
+
+Compilamos con:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make REGENIE=1 -f Makefile.libretro -j10
+
+Creamos ~/apple2gs con las ROMS:
+apple2gs.zip
+a2scsi.zip
+a2cffa2.zip
+(La ROM "a2cffa2.zip" es para emular la expansión interface CF, llamada cffa2, que nos permite cargar imágenes de disco duro en un IIGS,
+que normalmente funciona con floppies y no sabe nada de discos duros).
+
+Para lanzar un juego en floppy:
+mame apple2gs -rompath apple2gs -ramsize 8M -gameio joy -flop3 apple2gs/juego.2mg
+(NOTA: flop3 y flop4 son para discos 2mg/po de 800K del IIGS, ya que flop1 y flop2 son para discos de AppleII.
+ Por eso para cargar discos de IIGS le pasamos "-flop3").
+
+LO MÁS RECOMENDADO: para cargar una imágen de un juego en disco duro individual de la colección EXOAPPLEIIGS (disponible por Torrent
+en https://www.retro-exo.com/appleIIGS.html) hacemos:
+mame apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -gameio joy -hard1 apple2gs/Immortal.po
+
+SI FUESE UN JUEGO DE DOS DISCOS, como el Rocket Ranger, haríamos:
+mame apple2gs -rompath apple2gs -sl7 cffa2 -hard1 "apple2gs/Rocket-1.2mg" -hard2 "apple2gs/Rocket-1.2mg"
+
+OTRAS ALTERNATIVAS DE SOFTWARE PREINSTALADO EN DISCO DURO PARA EL IIGS
+
+Por ejemplo, para cargar la conección de Ninja Force, cargamos a la vez el disco de arranque con el sistema
+y los discos que queramos de las diferentes categorías de juegos (por eso usamos cffa2 en vez de scsi,
+ya que con scsi sólo se puede cargar una única imágen de disco cada vez):
+apple2gs -rompath apple2gs -ramsize 8M -sl7 cffa2 -hard1 apple2gs/A_Boot.po -hard2 "apple2gs/C_Adventure and Sim Games.hdv"
+
+Colección de juegos de Apple IIGS en disco duro:
+http://www.ninjaforce.com/downloads/wita2gs_0_70.zip
+Software en disco duro preparado:
+https://www.whatisthe2gs.apple2.org.za/home/index.html
+Concretamente, juegos instalados en disco duro y parcheados para funcionar:
+https://www.whatisthe2gs.apple2.org.za/files/Games_with_Path_Mods.zip
+
+*************EMULAR UN X68000 EN MAME*******************************************************************************************
+NOTA IMPORTANTE!!! La emulación de este sistema en MAME no soporta RunAhead!!! Así que desactívalo y sálvalo como un GAME OVERRIDE.
+Si lo dejas activado, los programas se comportan de manera muy extraña: no tienen sonido, se resetean al pulsar teclas o botones, etc.
+NOTA IMPORTANTE!!! Para que funcione el joystick, ve a "QUICK MENU->CONTROLS->PORT 1 CONTROLS" y pon "MAPPED PORT" a 2.
+También ve a "QUICK MENU->CONTROLS->PORT 2 CONTROLS" y pon "MAPPED PORT" a 1.
+NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, como este es un core de ordenador primero debes pulsar ScrollLock y después
+mantén pulsado SELECT y pulsa el botón que tengas asignado como Y.
+NOTA IMPORTANTE!!! Para quitar los LEDs de la pantalla, entra en el menú interno de MAME,y ve a "VIDEO OPTIONS->SCREEN #0" y selecciona 
+"Screen 0 Standard (4:3)"
+
+Creamos un directorio llamado "x68000" y dentro ponemos:
+x68000.zip
+x68k_cz6bs1.zip
++Juegos en floppy o en disco duro.
+
+--Para arrancar con los dos floppys del Akumajou Dracula:
+mame x68000 -rompath x68000 -flop1 "x68000/Akumajou Dracula (Disk A).hdm" -flop2 "x68000/Akumajou Dracula (Disk B).hdm"
+
+--Y para arrancar con una imágen de disco duro (el x68000 original no arranca desde el disco duro SCSI así que arrancamos desde
+un disco maestro o algo así, tienes copia de ese disco de arranque en el disco duro de backup):
+mame x68000 -rompath x68000 -flop1 MasterDisk_V2.xdf -exp1 cz6bs1 -hard1 x68000/akumajou.hdf 
+
+--Tienes imágenes de floppy y de disco duro para cada juego si buscas "x68000 collection" en Archive.org
+--Tienes imágenes de disco duro grandes con muchos juegos por imágen (poco práctico en MAME...) en:
+https://nfggames.com/forum2/index.php?board=14.0
+
+******KILLER INSTINCT en core MAME LIBRETRO*******************
+
+En el mismo directorio donde tengas el kinst.zip, crea un directorio kinst donde meterás el .chd, quedando así:
+/kinst.zip
+/kinst/kinst.chd
+Ahora lánzalo pasándole el directorio donde está el CHD:
+retroarch -L .config/retroarch/cores/mame_libretro.so emulation/MAME/kinst
+
+*************ROMS MAME**********************************************************************************************************
+
+https://pleasuredome.github.io/pleasuredome/mame/

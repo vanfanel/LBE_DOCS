@@ -1,0 +1,811 @@
+INSTALAR RETROARCH
+===================
+
+Instalamos dependencias previas:
+apt-get install libasound-dev glslang-dev glslang-tools spirv-tools
+
+INNECESARIO (ya que usamos el driver "GLCORE"): Si queremos que el driver "GL" use OpenGL de escritorio en lugar de GLES,
+editamos qb/config.libs.sh, y cambiamos "-lGL" por "-lOpenGL".
+(Esto es para que el driver GL use OpenGL en lugar de GLES2, cosa que es necesaria para que HARD SYNC funcione con el driver GL,
+ ya que si te fijas en Makefile.common y en gfx/drivers/gl2.c, resulta que HAVE_GL_SYNC sólo se activa si NO usamos GLES,
+ así que si queremos que la opción del backen OPENGL llamada "Hard GPU Sync" haga lo que se supone que hace, tenemos que usar OpenGL y no GLES.
+ "Hard GPU Sync" equivale a max_swapchain puesto a 2: recuerda que no puedes configurar el max_swapchain si usas el backend OpenGL en Wayland,
+ en Wayland sólo puedes configurar max_swapchain si usas el backend Vulkan).
+TODO ESTO INNECESARIO porque el driver GLCORE va sobre GL3 o GLES3 y ya soporta HARD SYNC directamente.
+
+Ahora, para configurar RetroArch con soporte de OPENGL, VULKAN y audio ALSA (y PIPEWIRE si lo detecta instalado), como lo venimos haciendo:
+
+CFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
+CXXFLAGS="-march=native -mtune=native -O2 -DEGL_NO_X11" \
+./configure --disable-ibxm --disable-vg --disable-x11 --disable-sdl2 --disable-al --disable-cheevos --disable-ffmpeg \
+--disable-netplaydiscovery --enable-udev --disable-sdl --disable-pulse --disable-oss \
+--disable-freetype --disable-7zip --disable-imageviewer --disable-rjpeg --disable-rbmp --disable-rtga --disable-flac \
+--disable-qt --disable-materialui --disable-xmb --enable-rgui --enable-ozone --disable-gfx_widgets --disable-langextra --disable-discord \
+--disable-cdrom --disable-accessibility --disable-tinyalsa --disable-rpiled --disable-v4l2 \
+--enable-egl --disable-glx --enable-opengl_core --enable-vulkan
+
+(NO le pases --enable-neon ni --enable-floathard, o fallará el configure porque dlopen() no va bien)
+(NO le pases --disable-builtinglslang, porque entonces fallará la compilación de shaders al cargar un segundo juego sin salir de RetroArch)
+(Lo de "--enable-opengl_core" es para que use OpenGL moderno, en vez de GL1/GL2)
+
+(Si quisieras OpenGL_ES, en lugar de "--enable-opengl --disable-glx" pásale "--enable-opengles --enable-opengles3",
+en realidad OpenGL de escritorio no es imprescindible porque el driver GLCORE (GL3, GLES3) soporta HARD SYNC,
+PERO es más compatible por defecto con cores que tiran de OpenGL en vez de GLES a no ser que los compiles contra GLES,
+como es el caso del core de N64).
+
+(NO le pasamos "--disable-networking" ni "--disable-libretrodb" porque si lo hacemos no tendremos el "Online Updater"
+que es lo que nos permite que se descarguen automáticamente los thumbnails para las playlist. Hacerlo a mano es horroroso.)
+
+PARA COMPILAR CUALQUIER CORE:
+
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
+
+		CONFIGURACIÓN ÓPTIMA DE RETROARCH EN WAYLAND
+
+		--VÍDEO--
+
+--Condiciones previas: Para estar seguro de que el sistema está preparado para que Sync To Exact vaya bien sin micro stuttering,
+  RetroArch debe ser capaz de mostrar en "Settings->Video->Output->Estimated Screen Refresh Rate" unos Hz totalmente estables
+  (no debe moverse ningún decimal en un buen rato) y una "dev" (significa "frametime deviation") de alrededor de 0.0-0.1% a 120Hz.
+  Esto es lo que llamo el "test de frametime deviation", sin esto no puedes estar seguro de que Sync to Exact vaya a ir bien en tu sistema
+  aunque el scroll del rooster del MK vaya aparentemente bien. 		
+
+DISMINUIR EL FRAMETIME DEVIATION:
+
+OPCIÓN 1: BIOS QUE NOS DEJA DESACTIVAR LOS "C-STATES" Y LOS "DF C-STATES":
+
+-En la BIOS:
+----En "Advanced\AMD CBS\CPU Common Options" desactivamos "GLOBAL C-STATES" y "CORE PERFORMANCE BOOST"
+----En "Advanced\AMD CBS\DF Common Options" desactivamos "DF CSTATES"
+----En "Advanced\AMD CBS\NBIO Common Options\GFX Configuration" ponemos "iGPU Configuration" a "UMA_GAME_OPTIMIZED"
+    (esto es sólo para un pequeño plus de estabilidad en el deviation, lo importante es quitar los C-STATES y el BOOST).
+^CON ESTAS DOS COSAS, ya deberíamos tener un deviation de 0.0-0.1%.
+NOTA: Más info sobre las opciones de las BIOS de AMD:
+https://instinct.docs.amd.com/projects/system-acceptance/en/latest/common/bios-settings.html
+NOTA: La desactivación de los C-STATES y los DF CSTATES" no se puede sustituir por nada del SO, porque es a nivel de hardware,
+así que no pierdas el tiempo intentando pasarle parámetros al kernel buscando resultados similares (los CSTATES que gestiona
+el kernel mediante el parámetro "max_cstates" son distintos).
+
+OPCIÓN 2: ALTERNATIVAS PARA REDUCIR EL FRAMETIME DEVIATION BIOS QUE NO NOS DEJA DESACTIVAR LOS "C-STATES" Y LOS "DF C-STATES":
+
+Cuando no es posible desactivar los C-STATES en la BIOS por lo que sea, sólo queda la alternativa de IMPEDIR que la CPU
+entre en C-STATES bajos por las malas: manteniéndola en frecuencias que no son la mínima. 
+
+Podemos comprobar cómo varía la frecuencia de la CPU con:
+watch -n0.2 "cat /proc/cpuinfo | grep MHz"
+
+Podemos poner la CPU a una velocidad fija "atrapándola" entre frecuencia máxima y mínima iguales:
+
+echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq
+echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
+
+O bien le pasamos al kernel "idle=poll" y de esa manera se mantiene siemore la CPU a su frecuencia nominal (4.2HGz en el Ryzen 7 8700G).
+(pero ojo que con esto sube la temperatura bastante).
+
+Y podemos hacer otras cosas en estos casos:
+----Pon también la gráfica en modo de alto rendimiento
+echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
+----Pon el driver de audio PIPEWIRE
+----Pon un modo de vídeo donde la electrónica del monitor genere menos variaciones:
+wlr-randr --output DP-1 --custom-mode 1920x1080@119.427000
+...Quizá se pueda buscar una frecuencia aún más ideal: hemos empezado bajando desde .430000
+
+		--SHADER--
+
+Opción 1: NEWPIXIE-CRT con "Accumulate Modulation" a 50, "Curvature" a 0, "Rolling Scanlines" a 0,
+		  "Vignette" a 0.90, "Ghosting" a 0.30.
+
+Opción 2: CRT-CONSUMER con "Pre-Scale Sharpening" a 1.00, "Convergence X" a 0.40, todo lo de curvatura quitado,
+          "Scanlines dark" a 1.20, "Scanlines bright" a 0.80, "Mask Type" a 4.00,
+          "Vignette on/off" a 1.00, "Vignette Power" a 0.10, "Vignette Strength" a 20.00.
+Opción 3: LOTTES
+
+		--AUDIO--
+	
+Driver PIPEWIRE o ALSA (Flycast), 48000 Hz, 32ms, resampler quality normal.
+Si usas "Sync to Exact" sin VSYNC, en muchos cores puedes desactivar la sincronización,
+poner los demás valores de sincronización de audio a 0, y es como sonará bien.
+
+		--LATENCY--
+
+Pasa de ello totalmente. O bien usa Sync to Exact,
+o bien en máquinas sin AdaptiveSync 120Hz + VSYNC + Vsync Swap Interval a 2 o Auto.
+
+		--INPUT LAG--
+
+EL TEST DEL CURSOR:
+Asigna una tecla a "TOGGLE MOUSE GRAB", yo suelo usar la M.
+Ahora, entra en el menú de RetroArch y pulsa M: verás a la vez el cursor de sistema y el cursor de RetroArch.
+Al mover el ratón, se moverán ambos cursores. Dado que el cursor de sistema no tiene lag, deberían ir casi pegados todo el tiempo.
+Si se separan bastante, es que tienes bastante lag. Si se mantienen casi juntos, es que no tienes casi lag.
+
+En lugar del cursor de RetroArch, se puede usar el cursor del crosshair para juegos de disparos de los cores SNES9X o GenesisPlusGX,
+de manera que se tenga en cuenta también el valor de FRAME DELAY (con el cursor de RetroArch, no se tiene en cuenta).
+
+		--NOTAS DE USO DEL FRONTEND DE RETROARCH--
+
+Si no quieres shimmering en las letras del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE
+y activar LINEAR FILTERING.
+
+Si quieres que aparezcan las opciones de SAVE/LOAD STATE, tienes dos opciones:
+-Activar la opción settings->core->"bypass core info save states"
+-O bien instalar los core info files, que se hace así:
+	--Clonamos el repo: git clone --depth 1 https://github.com/libretro/libretro-core-info.git
+	--Copiamos los .info a ~/.config/retroarch/cores, junto con los cores (suponiendo que tengamos ese directorio puesto
+	  como path para los core info, es la ruta por defecto).
+
+Si quieres que te salgan iconos en el menú OZONE o XMB, en lugar de cuadrados negros,
+necesitas los assets de aquí: git clone --depth 1 https://github.com/libretro/retroarch-assets.git
+Copia los directorios "ozone", "fonts" y "xmb" (aunque no vayas a usar el XMB, cópialo o te faltarán cosas) a ~/.config/retroarch/assets/ 
+
+Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
+git clone --depth 1 https://github.com/libretro/libretro-super.git
+Creamos el directorio ~/.config/retroarch/info
+Copiamos el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/info
+cp -R libretro-super/dist/info/* ~/.config/retroarch/info/
+Editamos ~/.config/retroarch/retroarch.cfg, y ponemos la variable "libretro_info_path" asi:
+libretro_info_path = "~/.config/retroarch/info"
+Por ultimo: Eliminamos el archivo "core_info.cache" (busca en todo .config/retroach) para que se recree el nuevo, o no funciona.
+Ahora en RetroArch, en Settings->User Interface->File Browser, desactiva todo y activa "Filter Unknows Extensions"
+
+Para añadir juegos de CONSOLA a una PLAYLIST:
+-Las ROMs deben estar en un directorio cuyo nombre coincida con el nombre del sistema en no-intro.
+ Puedes sacar los nombres correctos de los directorios de https://github.com/libretro/libretro-database
+-Los nombres de las ROMs deben coincidir con los nombres de las ROMs de no-intro, o no se identificarán correctamente al construir la playlist,
+y luego no se encontrarán los thumbnails para ellas desde el Online Updater.
+-Clonamos este repo: git clone --depth 1 https://github.com/libretro/libretro-database
+y metemos el contenido del directorio "rdb" en ~/.config/retroarch/databases/rdb/
+-Vamos a IMPORT CONTENT->MANUAL SCAN y ahí:
+ -En CONTENT DIRECTORY, seleccionamos el directorio que queremos escanear
+ -En SYSTEM NAME elegimos "Content Directory"
+ -En DEFAULT CORE elegimos el core que queramos usar para esa playlist.
+ ...Y una vez que lo tenemos todo le damos a START SCAN abajo del todo y esperamos.
+
+Para añadir juegos ARCADE a una PLAYLIST, lo vamos a ver con los juegos arcade de FBNeo como ejemplo.
+Vamos a IMPORT CONTENT->MANUAL SCAN y ahí:
+-En CONTENT DIRECTORY, seleccionamos el directorio que queremos escanear
+-En SYSTEM NAME elegimos "FBNeo - Arcade Games"
+-En DEFAULT CORE elegimos "Arcade (Final Burn Neo)"
+-En ARCADE DAT FILE elegimos la última versión del fichero "Final Burn Neo (ClrMame Pro XML, Arcade only)" que nos podemos bajar de:
+https://github.com/libretro/FBNeo/tree/master/dats
+(Yo suelo meter el DAT en /storage/roms/Downloads)
+...Y una vez que lo tenemos todo le damos a START SCAN abajo del todo y esperamos.
+Esto tenemos que hacerlo contra ROMs descargadas de https://www.retroroms.info, yéndonos a "FBNeo" y luego a "currentroms",
+ya que son las más actuales y se supone que son contra las que se ha creado el DAT.
+
+Para tener carátulas (thumbnails) debes hacer que RetroArch añada los juegos a una PLAYLIST (lo acabo de explicar),
+y luego desde dentro de RetroArch, vamos a Main Menu->Online Updater->Playlist Thumbnail Updater para que se descarguen solas
+las carátulas de la playlist que queramos.
+(Hacer esto depende de que tengamos las funcionalidades de "networking" y "libretrodb" compiladas en RetroArch:
+Libretrodb para que se hagan correctamente las playlists identificándose los juegos, y networking para tener el Online Updater).
+
+Si quieres configurar un tema del XMB o del RGUI, tienes que irte a SETTINGS->USER INTERFACE->APPEARANCE.
+En RGUI, para que se ponga el tema que elijas con CUSTOM THEME PRESET, tienes que poner MENU COLOR THEME en CUSTOM.
+En XMB, puedes desactivas el lazo de fondo en SETTINGS->USER INTERFACE->APPEARANCE si quieres.
+Para XMB, un buen tema es el Systematic ("SETTINGS->USER INTERFACE->APPEARANCE->MENU ICON THEME")
+
+PARA CUALQUIER PROBLEMA de librerías no encontradas pero que sí están instaladas, RECUERDA REGENERAR LA CACHE DE LDD:
+sudo rm /etc/ld.so.cache
+sudo ldconfig
+
+Si quieres filtros por software, entra en gfx/video_filters y haz make, y copias los .so y los .filt a ~/.config/retroarch/filters/video/
+y luego los seleccionas en retroarch.
+
+NOTA: Para que vayan los controles (teclado/ratón) sobre KMSDRM, añade a tu usuario al grupo "input":
+sudo usermod -aG input $USER
+...Luego cierra la sesión y vuelve a abrirla, y ya debería ir.
+
+		MENÚ XBM
+	
+-Tienes que habilitar el soporte para PNG (rpng) al configurar.
+
+-Necesitas los assets de aquí: https://github.com/libretro/retroarch-assets
+De ese repo, copia los directorios xmb y ozone en el directorio de assets a ~/.config/retroarch/assets
+
+-Si quieres que RetroArch te ofrezca con qué emulador quieres correr una ROM, tienes que clonar este repo:
+git clone --depth 1 https://github.com/libretro/libretro-super.git
+Y mandar el contenido del directorio libretro-super/dist/info a ~/.config/retroarch/cores. Sí, junto con los cores. Así:
+cp -R libretro-super/dist/info/* ~/.config/retroarch/cores/
+Ahora en RetroArch, en Settings->Core, desactiva "Cache core info files".
+Y elimina ".config/retroarch/cores/core_info.cache".
+(Si no haces estas últimas dos cosas, no funcionará, y no sabrás por qué).
+
+-Para que el mando se autoconfigure (si es un mando conocido o compatible con uno conocido: la mayoría de ellos los reconoce como XBOX360 PAD)
+tienes que clonar:
+git clone --depth 1 https://github.com/libretro/retroarch-joypad-autoconfig.git
+Y meter el directorio "udev" en ~/.config/retroarch/autoconfig/
+Esto es imprescindible en consolas sin teclado, porque si no, no tienes manera de configurar el mando al arrancar el RetroArch al principio.
+
+-Para poder tener las opciones de escanear directorios y tal, de modo que se nos creen las playlists que es lo que permite que al cargar una ROM
+ se cargue automáticamente su core, tienes que activar libretrodb.
+ Además, tienes que tener las databases de libretro, de manera que pueda comparar tus roms contra las de las databases.
+ Así que te bajas las databases de este repo:
+ clone --depth 1 https://github.com/libretro/libretro-database.git
+ Copiamos el directorio "rdb" a "~/.config/retroarch/database" (quedará como ~/.config/retroarch/database/rdb)
+ Ahora ya debería escanear las ROMS y sacártelas ordenadas por icono de sistema en la parte de arriba, pero si intentas lanzar una te dirá
+ que "not cores found".
+ Pues vale, nos vamos a settings->playlist, y ahí podemos asociar los playlists con cores,
+ de tal manera que el playlist de NES cargue el nestopia, etc...
+ Por CADA directorio de ROMs escaneado, XMB te va a crear una playlist, donde todas las ROMs de esa playlist
+ se van a abrir con un determinado core. 
+ Estas playlist son archivos.lpl que los crea al principio en ~/.config/RetroArch/playlists, pero tenemos el setting playlist_directory.
+ Yo lo que he hecho ha sido configurar playlist_directory para que apunte a ~/retro/db/playlists,
+ y ahí he metido las playlists que ya tenía, y ahí meterá XMB las nuevas que vaya creando.
+
+-Si además quieres fotos de las carátulas, etc.. en las playlist, pues te bajas los thumbnails de aquí: https://thumbnails.libretro.com/
+ Los mandas a donde quieras, hay que descomprimir el zip. y luego apuntas el setting thumbnails_directory a ese directorio.
+ Por ejemplo, yo me creé ~/home/manuel/retro/db/thumbnails, o sea, mandé los thumbnails a un directorio bajo retro/db,
+ y ahí dentro tengo Atari\ -\ 7800, etc...
+ Pues  pongo thumbnails_directory apuntando a ~/home/manuel/retro/db/thumbnails. Así de sencillo.
+ Lo puedes hacer desde el propio XMB en Settings > Directory
+
+**********CORES QUE NECESITAN TECLADO**********************************************
+
+La idea es usar el "GAME FOCUS", para lo cual NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE",
+ya que son dos funcionalidades que se solapan y si tuvieses ambas la "HOTKEY ENABLE"
+no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
+Así que hacemos esto:
+-En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
+-En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
+-En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
+
+**********OTRAS NOTAS SOBRE CORES ESPECÍFICOS************
+
+PARA EL CORE DE NES (NESTOPIA)
+Si quieres usar el ratón como Zapper, pon "QUICK MENU->CONTROLS->PORT 2 CONTROLS->DEVICE TYPE" a "ZAPPER",
+y "QUICK MENU->CORE OPTIONS->INPUT->ZAPPER DEVICE" a "POINTER".
+
+PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
+
+PARA EMULAR GAMEGEAR Y LYNX, el mejor shader es "handheld/sameboy-lcd" combinado con INTEGER SCALING.
+
+PARA EMULAR GAMEBOY Y GAMEBOY COLOR, si usas el GAMBATTE pon "Core Options->Color Correction" a "GBC Only",
+y usa el shader "handheld/sameboy-lcd" combinado con INTEGER SCALING. 
+
+PARA EL CORE GEOLITH (emulador muy preciso de NEOGEO) mete "aes.zip" y "neogeo.zip" en ~/.config/retroarch/system
+Como por defecto se inicia en modo AES, lo más importante para que funcione es tener "aes.zip".
+Las ROMs son en formato ".neo", las tienes en el disco duro de backup, o busca el pack LunaGarlic en Archive.org  
+
+SI USAS INTEGER SCALING Y QUIERES UN BORDE PARA LA PANTALLA:
+-Clona el repo https://github.com/libretro/common-overlays.git, y mete los overlays que quieras en ~/.config/retroarch/overlay
+-Ve a QUICK MENU->ON-SCREEN OVERLAY, activa DISPLAY OVERLAY, y selecciona un overlay preset de los que has copiado.
+(Se podría activar y ajustar también en SETTINGS->ON-SCREEN DISPLAY->ON-SCREEN OVERLAY, estableciendo así un solo overlay
+para todos los cores, pero como cada core aparece de un tamaño en pantalla al usar INTEGER SCALING, nos conviene gestonarlo
+aquí en QUICK MENU para que quede configurado core a core).
+
+**********RETROARCH no salva las partidas de SRAM a veces**************************
+
+Hay que tener en cuenta que RETROARCH no salva la SRAM automáticamente, sino que vuelca la SRAM al salir del core que sea.
+Para tener algo parecido a un volcado de SRAM automático, activa SETTINGS->SAVING->SaveRAM Autosave Interval,
+que por defecto deberían ser unos 10s.
+Sólo escribe en disco si encuentra diferencias en la SRAM (así que no escribe continuamente!) e incluso así, es una tarea que
+va en su propio thread si tienes activada la opción SETTINGS->USER INTERFACE->Threaded Tasks (cosa que SIEMPRE deberías tener activada).
+
+*********Conservar la asignación de mandos a los puertos de RetroArch***************************************
+
+La idea es que, si tenemos dos mandos por ejemplo, uno de ellos sea siempre el del puerto 1 de RetroArch y el otro sea el del puerto 2 de RetroArch.
+
+Nos vamos a SETTINGS->INPUT->PORT 1 CONTROLS y en DEVICE INDEX seleccionamos el mando que queramos que sea siempre
+el del puerto 1.
+Repetimos para  SETTINGS->INPUT->PORT 2 CONTROLS y su DEVICE INDEX.
+
+Puedes quitar y poner los mandos como quieras, etc... y la configuración se conserva siempre. Si inicias RetroArch con uno solo de los dos mandos
+conectado, tampoco hay problema y sigue en su puerto correcto.
+
+**********COMPILAR CORE GENÉRICO LIBRETRO******************************************
+
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j10
+
+**********CORES PRECOMPILADOS LIBRETRO*********************************************
+
+http://buildbot.libretro.com/stable
+http://buildbot.libretro.com/nightly
+
+**********MAME LIBRETRO************************************************************
+
+NOTA IMPORTANTE!!! Para entrar en el menú interno de MAME, pulsa la tecla "SCROLL LOCK" / "SCRLCK",
+y ya puedes entrar en el menú con el tabulador como en el MAME standalone.
+Otra manera es mantener pulsado SELECT y pulsa el botón que tengas asignado como Y.
+
+--Clonamos su repo:
+git clone --depth 1 https://github.com/libretro/mame.git
+
+--Compilamos con:
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
+make -f Makefile.libretro -j8
+
+PARA COMPILAR SÓLO CON SOPORTE PARA CIERTOS DRIVERS:
+
+Editamos "makefile" (en minúsculas) y añadimos la lista de los .cpp de los drivers que queremos que se incluyan.
+
+Para Namco System 22:
+SOURCES = src/mame/sega/model1.cpp,src/mame/sega/model2.cpp,src/mame/namco/namcos11.cpp,src/mame/namco/namcos21.cpp,src/mame/namco/namcos21_c67.cpp,src/mame/namco/namcos22.cpp
+
+Para Mac 128 (emulamos Mac SE que es el más compatible como se ha explicado arriba) y Mac II Ci:
+SOURCES = apple/mac128.cpp,apple/maciici.cpp
+
+Y ahora compilamos así (lo de REGENIE es para que se regenere la configuración o algo así):
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native \
+make REGENIE=1 -f Makefile.libretro -j8
+
+		SCROLL PERFECTO EN TODOS LOS JUEGOS CON "SYNC TO EXACT":
+
+--Comprobamos que tenemos un frametime deviation mínimo (idealmente 0.0-0.1%). Sin esto, olvídate.
+--En las opciones del core MAME hay que activar el THROTTLE.
+--En las opciones de RetroArch en AUDIO->SYNCHRONIZATION ponemos:
+"Synchronization"				OFF
+"Maximum Timing Skew"			0.0
+"Dynamic Audio Rate Control"	0.0
+
+********CORE UAE LIBRETRO*******
+
+LO PRIMERO QUE DEBES HACER CON ESTE CORE ES DESACTIVAR EL RUNAHEAD Y SALVAR DICHA OPCIÓN CON UN CORE OVERRIDE.
+SI NO LO HACES, EL CORE HACE COSAS RARAS COMO FALLOS CON LOS MANDOS, NO FUNCIONA EL TECLADO, ETC..
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/libretro/libretro-uae.git
+
+Se compila como los demás cores.
+
+			####¡¡¡¡MUY IMPORTANTE!!!! PRIMEROS AJUSTES DE BASE####
+
+-NO se puede usar RUNAHEAD con este core, acuérdate de desactivarlos: según el propio autor del core, la carga de savestates
+es muy lenta lo que lo hace imposible. 
+
+-La mejor manera de tener los juegos instalados es cada uno en su directorio (cuyo nombre incluirá la cadena "PAL" si es PAL,
+para que mi script de lanzamiento desde GNU/Linux ponga un modo de 100Hz para los juegos PAL y 120Hz si es NTSC),
+sin comprimir, y sin un .info acompañando al directorio ni nada.
+(Aunque funciona lo de tener cada juego instalado en un ZIP, a veces falla al lanzarlos, hace cosas raras,
+y se pierden los saves. No merece la pena, déjalos descomprimidos y ya).
+
+-Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST.
+
+-Deja "System->CPU Compatibility" como viene, es decir, a "Cycle-exact (DMA/Memory)".
+Esto se refiere a que la comunicación DMA/Memoria SÍ será cycle-exact aunque la emulación de la CPU no lo sea.
+Lo que NO tiene sentido emulando un 1200 es "Cycle-exact (Full)" ya que la emulación de la CPU 68020 en el WinUAE no es cycle-exact,
+el autor del WinUAE no tiene información para hacerlo, no se conoce el 68020 como para implementar su emulación cycle-exact y no hace falta.
+PERO SÍ QUEREMOS que la comunicación DMA/Memory sea cycle-exact SIEMPRE.
+(Si no lo fuese, por ejemplo al poner "System->CPU Compatibility" a "More compatible" pues fallan cosas en los juegos,
+como el Ishar 1 y 2 AGA que pierden efectos de sonido, etc. Así que hazte caso y deja siempre "System->CPU Compatibility"
+puesto a "Cycle-exact (DMA/Memory)").
+La emulación de 68000 plano sí es full cycle exact y podría tener sentido poner "Cycle-exact (Full)", pero no nos hace falta para nada
+ya que nosotros emulamos un Amiga 1200+FAST y tiramos de WHDLoad mayoritariamente.
+
+-COMO HEMOS VISTO, TODO LO EMULAMOS CON EL A1200+8MB FAST+CPU "Cycle-exact (DMA/Memory)", y si un juego va demasiado rápido
+o hace cosas raras, tenemos varios remedios posibles (a parte de simplemente bajarle la velocidad de la CPU, claro, que no suele prevenir
+las corropciones gráficas derivadas de correr en CPUs más rápidas de lo esperado juegos de 68000 que no esperan al blitter, pero prueba).
+Así que, para ciertos juegos instalados sin WHDLoad que efectivamente no esperan al blitter porque nunca pensaron que fuesen a correr
+en nada superior a un 68000, como el DUNE, tienes varias opciones:
+-MEJOR OPCIÓN SI FUNCIONA: Correr el juego en una configuracón A1200+8MB FAST+CPU "Cycle-exact (DMA/Memory)" como para todos los demás,
+ y poner "Immediate/Waiting Blits" to "Immediate Blitter" con lo que los errores derivados de correr un juego de 68000
+ en una máquina más rápida deberían desaparecer (lee https://eab.abime.net/showthread.php?t=95418 para entender lo que sucede).
+-Emular un A500/A600 (no he visto ninguno en el que haga falta aún si se hace lo anterior).
+-Usar una instalación WHDLoad cdel juego, on sus fixes para que funcionen en modo A1200 sin Cycle-Exact.
+
+-Pon "Video->Immediate/Waiting Blits" a "OFF" siempre que el juego no tenga ningún fallo gráfico.
+Viene puesto a "Wait for Blitter" pero eso es incorrecto: tanto "Immediate" como "Waiting Blits" son parches para juegos que usan el blitter mal,
+y el arreglo lo necesita el juego realmente. Es decir, un Amiga real es como "Video->Immediate/Waiting Blits" puesto a OFF. 
+
+-Para evitar problemas de audio en ciertos juegos (intro del Harlequin, etc), debes dejar "Allow Hz Change" a "Locked PAL/NTSC"
+en las opciones del core (viene así por defecto así que no deberías tener problema si no lo cambias),
+y para juegos PAL 40ms en las opciones de RetroArch.
+(NOTA: Lo que hace "Allow Hz Change" a "Locked PAL/NTSC" es redondear NTSC a 60.0000Hz y PAL a 50.0000Hz, todo con 44100Hz de audio,
+con lo que el buffer de audio es mucho más estable y no se dan tantas distorsiones si tenemos un buffer de audio pequeño).
+POR SI QUIERES SABER MÁS SOBRE POR QUÉ HACEN FALTA 40ms EN PAL, ESTO DICE SONNINOS AL RESPECTO:
+"Oh right you said 32ms, so since the audio buffer is supposed to only saturate half of the buffer, meaning that it targets 16ms which is not even enough for 60fps since it is a bit more than 16ms. Meaning that PAL needs minimum 40ms in that case."
+
+-Desactiva "Media->WHDLoad Support" siempre que el juego no use WHDLoad. No te olvides, porque si no se usa WHDLoad los juegos
+tienen problemas con esta opción activada.
+
+			####FIN PRIMEROS AJUSTES DE BASE####
+
+En Core Options->Video, desactiva "Automatic Crop Delay", para evitar dropouts de audio en los cambios
+de geometría de vídeo (como dar muchas veces a la "P" en el Agony). 
+NO actives pongas "Crop" a "Automatic", ve ajustándolo por cada juego. Lo de Automatic falla y encima produce dropouts de audio.
+
+Para comprobar el estado de los buffers, activa los stats en On-Screen Display Notifications. Los valores de "Deviation" y "Underrun" no deberían
+llegar nunca al 100%, que es cuando se producen dropouts con ALSA y distorsiones con ALSATHREAD.
+
+Tienes TODAS las kickstarts posibles que puede necesitar el core, para TODOS los modelos de Amiga que soporta, en el disco de backup,
+con sus nombres ya correctos y las MD5SUM comprobadas.
+
+PARA QUE FUNCIONE EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
+NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE", ya que son dos funcionalidades que se solapan
+y si tuvieses ambas la "HOTKEY ENABLE" no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
+Así que hacemos esto:
+-En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
+-En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
+-En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
+SI AUN ASÍ NO TE FUNCIONA EL TECLADO, ASEGÚRATE DE TENER QUITADO EL RUNAHEAD PARA ESTE CORE!! Aparentemente no tiene nada que ver,
+pero tener activo el RUNAHEAD hace que no funcione el teclado, además de provocar errores raros en los juegos.
+
+No hace falta andar con HDFs, carga los .info de las carpetas que contengan juegos de WHDInstall,
+o los .slave de los juegos WHDLinstall, o directamente los .lha que contengan juegos de WHDInstall.
+
+Tienes todos los juegos instalados con los últimos slaves de WHDLoad listos para usar en:
+https://gamesnostalgia.com/whdownload
+
+		SCROLL TOTALMENTE SUAVE CON ADAPTUVE SYNC / VRR
+
+LO PRIMERO, TENEMOS QUE TENER UN FRAMETIME DEVIANCE MUY BAJO (Idealmente 0.0-0.1%)
+EN LA PARTE DE CONFIGURACIÓN DE VÍDEO DE RETROARCH TIENES CÓMO LOGRARLO.
+
+SE CONSIGUE CASI IGUAL QUE EN EL CORE MAME (sólo cambia que aquí no desactivamos AUDIO SYNCHRONIZATION)
+--En las opciones de RetroArch en AUDIO->SYNCHRONIZATION ponemos:
+"Maximum Timing Skew"			0.0
+"Dynamic Audio Rate Control"	0.0
+
+--Para pasarle parámetros CUSTOM de WHDLoad:
+Pulsa repetidamente los botones RED y BLUE del mando de CD32 (que normalmente son el A y el B de un mando de SNES)
+y te aparecerá el README del WHDInstall del juego y a continuación podrás meter los CUSTOM que quieras y se quedarán guardados.
+(Para el segundo botón del Toki hay que pasarle "CUSTOM2=1", y para el Shadow of the Beast "CUSTOM4=2" para el segundo botón
+y "CUSTOM1=1" para saltar la intro).
+
+--Para jugar a juegos NO instalados con WHDLoad, simplemente en el directorio del juego crea un directorio "s" y dentro un fichero startup-sequence,
+y además un fichero .info que se llame igual que el directorio del juego. Este .info no necesita tener nada, lo puedes crear con "touch",
+es sólo para pasárselo al core.
+Por ejemplo, para jugar al Lemmings de CDTV, tendríamos:
+lemmings
+lemmings/s/startup-sequence
+lemmings/c/assign <--Esto lo sacamos del disco de WB correspondiente a la Kickstart que estemos usando. Con tener este archivo nos vale.
+Y en el caso del Lemmings, en el startup-sequence hacemos los Assigns necesarios y lanzamos el juego así:
+#####INICIO STARTUP-SEQUENCE#####
+assign LemSamples: dh0:LemSamples
+assign LemMusic: dh0:LemMusic
+assign LemGraphics: dh0:LemGraphics
+assign LemLevels: dh0:LemLevels
+assign LemMisc1: dh0:LemMisc1
+assign LemMisc2: dh0:LemMisc2
+Lemmings
+#####FIN STARTUP-SEQUENCE#####
+Para el "It Came from the Desert", tenemos que hacer Assign de los volúmenes desert1, desert2, desert3, des4 y dsave
+al directorio donde están los datos del juego. El ejecutable se llama "dshell".
+
+--PUEDES AHORRAR RAM Y TIEMPO DE ARRANQUE si, en los juegos instalados sin WHDLoad, vas a "Core Options->Media" y pones
+"WHDLoad Support" a "OFF". Además, debes copiar el comando "Assign" al directorio raíz del juego, porque casi todos lo usan.
+(NO hace falta que esté en C/, con que esté en el raíz del juego ahí tirado vale).
+
+--PARA INSTALAR JUEGOS DESDE ADFs A DISCO DURO USANDO ESTE CORE:
+-Pon "Core Options->Media->Global Boot HD" a "Files". Esto creará el directorio ~/.config/retroarch/saves/PUAE/BootHD, que es
+el disco duro desde el que se arrancará el sistema ahora.
+-Arranca el core, dejando que arranque desde ese disco duro vacío.
+-Usando "Disk Control->Load New Disk" + "Disk Control->Insert Disk", con cada disco, ya podemos ir cargando los ADF del juego
+e instalándolo (una vez cargado un ADF, nos permite ir a DF0: sin problemas para ejecutar el instalador o copiar los archivos a mano al disco duro).
+
+--PARA ACCEDER AL DISCO DURO DEL CORE MINIMIG, QUE ESTÁ EN PSF3 POR LO QUE NO SE PUEDE MONTAR DESDE LINUX:
+Lo mismo:
+-Pon "Core Options->Media->Global Boot HD" a "Files". Esto creará el directorio ~/.config/retroarch/saves/PUAE/BootHD, que es
+el disco duro desde el que se arrancará el sistema ahora.
+-Arranca el core pasándole como contenido el HDF que usas en el core de Minimig.
+-Una vez arrancado el core, ya puedes acceder a ambos. Al disco "local" accedes simplemente haciendo "BootHD:"
+
+	NOTAS SOBRE JUEGOS CONCRETOS (NUNCA EMULES UN A500/A600, USA SIEMPRE EL 1200+8MB FAST QUE VIENE POR DEFECTO)
+
+-La mayoría de juegos como el Another, Agony, Gods (CUSTOM2=1 para 2 botones), Beast, BC Kid, Defender of the Crown, Fuzzball,
+ SuperFrog, Moonstone, Another, Pinball Dreams y Fantasies, Turrican 1 y 2, etc
+ como mejor van es con "CPU Compatibility" a "More Compatible" y con "Video->Immediate/Waiting Blits" a "OFF".
+ Así que usa esa configuración de base. Luego algunos necesitan alguna cosilla especial:
+ El BC Kid lo mismo pero con "Immediate Blitter" 
+ El Lotus III con "CPU Speed" a "+400%" para una conducción suave.
+ El DUNE (versión NO WHDLoad)con "CPU Speed" a "-80%" para que la intro no vaya a mil por hora.
+ El Lionheart con "CPU Speed" a "-50%" para que se vea bien el agua del primer nivel.
+ El Hybris (CUSTOM4=1 para ir en PAL, CUSTOM3=1 para quitarle los blitterwaits) con "CPU Speed" a "-80%" para que vaya suave.
+ El Might & Magic II (no WHDLoad) con "Immediate Blitter" para que no se vean los colores raros al moverse.
+ 
+-En el IsharAGA e Ishar2AGA (versiones NO WHDLoad), para tener todos los sonidos de la intro, etc, tienes que
+    tener "CPU Compatibility" puesto a "Cycle-exact (DMA/Memory). 
+    (Con una CPU pocha tipo N100, podrías poner "CPU Compatibility" a "More Compatible", con "CPU Speed" a "-60%",
+    y con "Immediate Blitter", y también iría, más lento el juego como en un Amiga 500 o un Atari ST, claro, pero iría).
+    Para que no se salga con parte del área de juego por la derecha, pon "Core Options->Media->WHDLoad Support" a "OFF".
+	(Eso lo deberías desactivar para todos los juegos NO WHDLoad, recuerda).
+	Tanto Ishar como Ishar 2 (versiones NO WHDLoad) van mejor sin memoria extra de ningún tipo, sólo con los 2MB de chip un Amiga 1200 básico,
+    así que desconecta todo tipo de memoria extra o habrá corrupción del cursor al guardar objetos, etc.
+	Tanto Ishar como Ishar 2 necesitan video PAL, pero con pixel ratio NTSC si quieres círculos redondos.
+	El Ishar 1 puedes acelerarlo sin coste alguno poniendo "Immediate/Waiting Blits" a "Immediate Blitter".
+
+-En el Turrican2AGA lo más sencillo para tener los controles perfectos es poner en las opciones del menú del juego
+ "INPUT TYPE" a "JOYSTICK CUSTIMISED", y "FIRE 2" a "JUMP" (el rayo se saca manteniendo pulsado el botón de disparo).
+
+-En los juegos que necesitan integer scaling porque tienen secuencias en alta resolución que se ven mal sin ello si usas shaders
+ (Agony, Pinball Dreams, Pinball Fantasies...) pon el CROP a "Minimum" para que se vean más grandes: si lo pones a Maximum se verán,
+ de hecho, mucho más pequeños.
+
+NOTAS PARA INSTALAR ROCKET RANGER SIN WHDLOAD (OJO: NO FUNCIONA EN MODO AMIGA 1200, DA GURÚS CASI SIEMPRE QUE SE INICIA)
+-El Rocket Ranger se puede instalar a mano en una máquina A500/600 sin ampliación de memoria, sin WHDLoad.
+Para ello, como la versión de CD32 que hay en el FTP de EAB usa el "diskimage.device", y como el "diskimage.device" no funciona
+más que en 68020 y superiores, usamos el XFS:
+---Nos bajamos el XFS de Aminet
+---Copiamos, del paquete del XFS al sistema donde vamos a correr el RR: xfsd a L, devio a C, y fd.device mountlist.xfs y a Devs: 
+---En startup-sequence lo dejamos así para que nos monte los discos, lanze el juego en un fork nuevo, e imprima las claves
+para verlas con AMIGA+M (y de nuevo AMIGA+M para volver al juego):
+#################STARTUP-SEQUENCE PARA ROCKET RANGER########################
+Assign ENV: RAM: 
+Assign T: Ram:
+setenv env:file.device,0 DISK1.ADF
+mount file0: from devs:mountlist.xfs >nil:
+devio --reset file.device,0 >nil:
+                                                                                                            
+setenv env:file.device,1 DISK2.ADF
+mount file1: from devs:mountlist.xfs >nil:
+devio --reset file.device,1 >nil:
+
+file0:
+
+RUN >NIL: RR
+ED sys:Codes
+#################FIN STARTUP-SEQUENCE PARA ROCKET RANGER#####################
+NOTA: SI TE DA ERROR EL MOUNT, ES QUE NO ESTÁS USANDO LA VERSIÓN CORRECTA DEL COMANDO: HAY QUE USAR LA DE WB 3.1.
+
+******NES en el core FBNeo*****************************************************
+
+OJO: NO TE COMPLIQUES CON TODO LO DE ABAJO SI PUEDES EVITARLO. LAS ROMS DE FBNEO ESTÁN TODAS EN:
+www.retroroms.info
+
+RAINBOW ISLANDS necesita, a parte de la última ROM de retroroms, la BIOS cchip.zip.
+
+El emu de NES de FBNeo es el más exacto, pero requiere un A72 (Pi4) como mínimo.
+
+Las ROMS además hay que prepararlas antes.
+Lo más fácil es irte a 
+www.retroroms.info
+y bajarlas de ahí. O preguntarle a dink por privado en https://neo-source.com/index.php?action=pm#msg14377
+
+Pero por si tuvieras que prepararlas "a mano", aquí tienes cómo hacerlo.
+Veamos como ejemplo cómo preparar el romset de NES:
+-Cogemos la parte de NES del ROMSET de FBNeo, o el ROMSet no-intro de NES si no tenemos otra cosa
+(con el no-intro te van a faltar muchas cosas, mejor usa el ROMSet de NES de FBNeo, tienes romsets de FBNeo en archive.org).
+-Cogemos el DAT de aquí:
+https://github.com/libretro/FBNeo/blob/master/dats/FinalBurn%20Neo%20(ClrMame%20Pro%20XML%2C%20NES%20Games%20only).dat
+Cogemos el CLRMAME de aquí (bajamos el último ZIP para Windows, NO HAY versión Linux):
+https://mamedev.emulab.it/clrmamepro/#downloads
+Lanzamos el CLRMAME con WINE, en el profiler simplemente le damos a "Add DatFile", y le damos el DAT que acabamos de bajar.
+Ahora al volver al profiler le damos a Load/Update y ya nos sale el menú de dibujitos del CLRMAME.
+Ahí nos vamos a REBUILDER. En rebuilder, dejamos todo como está menos esto:
+-En el menú principal marcamos "non-merged sets" y elegimos como orígen el directorio donde tenemos el romset no-intro,
+y destino el que queramos.
+-En Advanced nos aseguramos de que "Separated BIOS sets" está sin marcar.
+Pues ya está, le damos a Rebuild.
+
+Ahora, para cargar la rom que queramos tenemos que pasar el parámetro --subsystem, así:
+retroarch -L ~/.config/retroarch/cores/fbneo_libretro.so --subsystem=nes nes/mario.zip
+
+O bien en el RetroArch, nos vamos a "load core", cargamos el core FBNeo, y luego vamos a "load content" y nos aparecerá
+"subsystem", allí elegimos NES, y luego volvemos a "subsystem" y le damos a "start content" y elegimos otra vez NES.
+
+Si quieres emular FDS, necesitas fdsbios.zip que contiene disksys.rom.
+PERO no te compliques: usa www.retroroms.info, o en los torrents de ROMsets de FBNeo viene todo lo de FDS listo.
+
+******MSX en el core FBNEO***************************************************************************************
+
+Los juegos los podemos bajar de aquí, que ya están preparados para el core FBNeo: www.retroroms.info
+Los metemos en un directorio junto con el msx.zip que lleva las BIOS del MSX.
+
+Ahora, para cargar la rom que queramos tenemos que pasar el parámetro --subsystem, así:
+retroarch -L ~/.config/retroarch/cores/fbneo_libretro.so --subsystem=msx msx/pengadv.zip
+
+O bien en el RetroArch, nos vamos a "load core", cargamos el core FBNeo, y luego vamos a "load content" y nos aparecerá
+"subsystem", allí elegimos MSX, y luego volvemos a "subsystem" y le damos a "start content" y elegimos otra vez MSX.
+
+RECUERDA que para poder salvar (o cargar!) los mapeos de teclado que se aplican sólo a lo que tengas en el directorio de
+los juegos de MSX (SAVE CONTENT DIRECTORY REMAP FILE), tienes que pasar la ruta de la ROM o bien completa o bien con ./ al menos, en plan:
+msx1 ./msx/penguin.zip
+Si haces: msx1 msx/penguin.zip, se salvará un .RMP con nombre de archivo corrupto.
+
+RECUERDA QUE TIENES QUE TENER EN SETTINGS->INPUT->MAXIMUM USERS MÍNIMO 3, YA QUE EL TECLADO VA EN EL PLAYER 3.
+
+PARA QUE FUNCIONE EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
+NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE", ya que son dos funcionalidades que se solapan
+y si tuvieses ambas la "HOTKEY ENABLE" no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
+Así que hacemos esto:
+-En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
+-En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
+-En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
+
+CORE HATARIB DE LIBRETRO
+========================
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/bbbradsmith/hatariB.git
+
+Compilamos con esta línea de compilación (es así de larga porque por defecto intenta usar unas SDL2 y libzip que trae incluidas,
+y en su lugar queremos que use las instaladas en el sistema):
+
+Para X86_64:
+
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make -j6 MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.so \
+ZLIB_INCLUDE=/usr/include ZLIB_LINK=/usr/lib/x86_64-linux-gnu/libz.so
+
+Para Raspberry Pi (respecto a X86_64 sólo cambia el directorio donde está libz del sistema):
+
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make -j4 MULTITHREAD= SDL2_INCLUDE=/usr/local/include/SDL2 SDL2_LINK=/usr/local/lib/libSDL2.so \
+ZLIB_INCLUDE=/usr/include ZLIB_LINK=/usr/lib/aarch64-linux-gnu/libz.so
+
+PARA QUE LA MÚSICA DE AMBERSTAR NO SUENE DESACOMPASADA, activa la opción CORE OPTIONS->ADVANCED->CYCLE-EXACT CACHE EMULATION.
+
+LA MEJOR FUENTE DE TOS ROMS ES ESTA PÁGINA RUSA: https://avtandil.narod.ru/tose.html
+(Vienen ordenadas por máquina, que es lo más importante).
+
+NOTA: El Dungeon Master tarda muchísimo en cargar después de abrir la puerta. Usa la versión disponible aquí:
+https://atari.8bitchip.info/ASTGA/D/dungmast.php
+
+PARA INSTALAR JUEGOS EN DISCO DURO:
+(Tienes muchos aquí: http://d-bug.me/, y aquí https://atari.8bitchip.info/fromhd3.php#DL)
+Simplemente mete el juego en el directorio que quieras (ese directorio a su vez debes meterlo
+en ~/.config/retroarch/hatarib/system para que el core lo vea), pon el tipo de disco duro como GEMDOS, y ya se puede acceder a él
+tanto desde Atari TOS a partir de la 1.04, como desde EMUTOS, sin hacer nada más ni instalar drivers de disco ni nada.
+
+Para que el juego se autoarranque, simplemente en el raíz del disco crea un directorio llamado AUTO y mete ahí el ejecutable del juego.
+O sea, crearíamos amberstar/AUTO, y ahí copiaríamos amberstar/AMBRSTAR/AMBRSTAR.PRG.
+Además, activamos la opción de "Boot hard disk" en las opciones del core.
+OJO!!! Si el ejecutable es un .TOS, le cambiaremos el juego a .PRG para que se autoarranque, si se llama .TOS no se autoarrancará!!!
+OJO!!! Ponle unos 4MB de RAM al equipo si no quieres que algunos de los juegos parpadeen durante el juego como el Amiga con el WHDLOAD con poca RAM.
+
+PARA USAR UN DIRECTORIO A MODO DE DISCO DURO: Para esto, tenemos que configurar el tipo del disco como GEMDOS, elegir una ROM adecuada
+como la EmuTOS 192us, y crear un archivo dummy de extensión .gem junto al directorio.
+O sea que si tenemos:
+~/roms/atari/gods
+...entonces creamos:
+~/roms/atari/gods.gem
+Y ya ponemos hacer:
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/gods.gem
+Y RECUERDA que para el juego se autoarranque, tendrías que crear ~/roms/atari/gods/AUTO y meter ahí el RUNME.TOS,
+renombrado a RUNME.PRG (o al nombre que quieras, pero .PRG).
+
+PARA ARRANCAR DESDE DISCO DURO "COMPLETO" (Para luego lanzar cada juego "a mano" desde el sistema Atari)
+Lo más fácil (y compatible con los juegos que te interesan, como Captain Blood, Viking Child, Ishar...)
+es, en CORE OPTIONS->SYSTEM:
+TOS ROM -> tos162uk
+Machine Type -> STE
+ST Memory Size -> 4 MB
+Hard Disk Type -> GemDOS
+Hard Disk Boot -> ON
+Es recomendable que el directorio que contiene el disco duro "completo" se llame "C", porque así el HatariB lo montará en el Atari emulado
+como disco "C".
+Tenemos que crear, junto al directorio del disco duro, un archivo dummy que se llame igual que el directorio donde está el disco duro "completo".
+O sea que si tenemos:
+~/roms/atari/C
+...entonces creamos:
+~/roms/atari/C.gem
+Y ya ponemos hacer:
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/C.gem
+Si queremos que se autolanze el command.prg para arrancar a consola de comandos en vez de arrancar al GEM, lo metemos en el directorio AUTO y ya.
+
+Tienes MUCHOS juegos instalados en disco duro aquí: https://atari.8bitchip.info/fromhd3.php
+(Busca por nombre del juego, y si tiene una "D" azul en esa fila, pincha en ella para ir a la ficha y descargarlo).
+
+PARA TODOS LOS JUEGOS EN GENERAL es interesante tener el espacio mapeado al botón START del mando, ya que los installs de HD
+usan SPACE para empezar a jugar. Esto lo puedes guardar como el core remap.
+A parte, para los que usan arriba para el salto (pero no para subir escaleras), puedes mapear la flecha arriba en el botón B
+del mando, y el fire en el botón Y del mando (por ejemplo, el Viking Child). 
+
+PARA EL CAPTAIN BLOOD DESDE HDD:
+-Usa la versión de PETARI nueva, que te la hizo para ti y la tienes en el correo electrónico.
+ Esa va mejor en STE/TOS162UK, como todo lo de PETARI.
+-También podrías usar la release de 42-Crew para copiarla al disco duro GEMDOS en el directorio que quieras.
+ Necesita la TOS 1.04 PAL como máximo: más que eso, revienta. Puedes usar versiones superiores de la TOS, o incluso EmuTOS, si son NTSC.
+
+PARA EL AMBERSTAR DESDE HDD
+Simplemente debes tener el juego metido en C:AMBRSTAR, es decir, que lo puedes meter en ~/roms/atari/ambrstar/AMBRSTAR/,
+y crearíamos ~/roms/atari/ambrstar.gem
+
+PARA QUE EL ISHAR VAYA MÁS DEPRISA
+Configura el sistema como un Mega STE y usa la TOS del MegaSTE (2.05). El MegaSTE ya va de por sí a 16MHz.
+(Con la CPU a 16Mhz + sistema ST sencillo + TOS de ST, la imágen HAM del cargador se ve mal. Y con EmuTOS, no se ve esa imágen HAM).
+
+PARA EL DRAGONFLIGHT DESDE HDD, tienes dos opciones:
+
+--OPCIÓN 1: Usar la versión de https://atari.8bitchip.info/ASTGA/D/dragonfl.php
+La ventaja de esta versión es que funciona desde cualquier unidad, NO hace falta que esté en la "E:" como la original de Thalion Shrine.
+Pero sí que debes tener un floppy metido en la disketera. No lo usa, pero debes tenerlo o se queda en una pantalla en negro.
+Puedes crearte uno vacío con el HATARI (versión no Libretro).
+Para cargar el disco GEM y el floppy a la vez, nos creamos el archivo ~/roms/atari/dragonfl.m3u, con el contenido:
+dragonfl.gem
+dragonfl.st
+Y lo podemos cargar con:
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/dragonfl.m3u
+
+--OPCIÓN 2: Usar la versión oficial HDD de Thalion Shrine: http://thalion.exotica.org.uk/games/dragonflight/st/dragonflight.zip
+La debes copiar a un disco GEM que tenga como letra de unidad la "E:"
+Para ello, el directorio del juego debe tener un solo directorio llamado "E", donde metemos el juego.
+O sea, que habría que meter el juego en ~/roms/atari/dragonfl/E/
+Y debes tener un floppy cualquiera metido en la disketera. No lo usa, pero debes tenerlo.
+Puedes crearte uno vacío con el HATARI (versión no Libretro).
+Para cargar el disco GEM y el floppy a la vez, nos creamos el archivo ~/roms/atari/dragonfl.m3u, con el contenido:
+dragonfl.gem
+dragonfl.st
+Y lo podemos cargar con:
+retroarch -L ~/.config/retroarch/cores/hatarib.so ~/roms/atari/dragonfl.m3u
+
+(POR SI LO NECESITAS, AUNQUE ES POCO PROBABLE: Para insertar un floppy a mano una vez que has arrancado el core habiéndole pasado el disco duro GEM,
+en el menú de RetroArch debes ir a "Disk Control->Load New Disc", y después más arriba darle a "Insert Disk").
+
+*********MELONDS LIBRETRO***************************
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/JesseTG/melonds-ds.git
+
+Configuramos con:
+
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DENABLE_OPENGL=OFF
+
+**********MUPEN64 LIBRETRO***************************
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/libretro/mupen64plus-libretro-nx.git
+
+--Editamos Makefile y cambiamos "-lGL" por "-lOpenGL"
+
+--Si hemos compilado RetroArch contra OpenGL de escritorio que es como lo hacemos ahora, compilamos con:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1 make -j10
+
+--Si hemos compilado RetroArch contra OpenGL_ES, compilamos con:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+FORCE_GLES3=1 HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1 make -j10
+
+NOTAS MUY IMPORTANTES PARA EL CORE:
+Para este core NO USES RUNAHEAD, si lo haces se producen fugas de memoria al salir.
+Y configuramos las opciones del core así:
+-"RDP Plugin" a "ParaLLEI-RDP"
+-"RSP Pligin" a "ParaLLEI"
+
+******TIC-80 FANTASY CONSOLE LIBRETRO**************************************************
+
+Clonamos su repo:
+git clone --recursive https://github.com/nesbox/TIC-80 --depth 1
+
+Configuramos con:
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" ..
+
+Los juegos están en:
+https://tic80.com/play?cat=0
+
+******MOJOZORK libretro***************************************************
+
+git clone --depth 1 https://github.com/icculus/mojozork.git
+
+mkdir b4
+cd b4
+
+cmake .. -DMOJOZORK_MULTIZORK=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -O2"
+
+***********DIRKSIMPLE LIBRETRO******************** 
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/icculus/DirkSimple.git
+
+Configuramos y compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DDIRKSIMPLE_SDL_DEFAULT=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+Copiamos el core a la ruta habitual.
+Copiamos el directorio "data" que queda en nuestro directorio de compilación a ~/.config/retroarch/system/DirkSimple/data, así:
+mkdir ~/.config/retroarch/system/DirkSimple
+cp -R data system/DirkSimple/
+
+Si no tenemos el audio/vídeo del Dragon's Lair convertido a un solo archivo, podemos hacerlo con ffmpeg así:
+ffmpeg -i lair.m2v -i lair.ogg -codec:v libtheora -qscale:v 7 -codec:a libvorbis -qscale:a 5 -pix_fmt yuv420p lair.ogv
+
+Lanzamos el core con el Dragon's Lair así (el fichero de audio/vídeo se tiene que llamar lair.ogv para que el core sepa qué juego es
+y cargue el LUA necesario!):
+
+retroarch -L ~/.config/retroarch/cores/dirksimple_libretro.so lair.ogv

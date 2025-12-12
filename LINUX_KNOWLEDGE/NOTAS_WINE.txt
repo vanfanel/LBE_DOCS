@@ -1,0 +1,163 @@
+COMPILAR/INSTALAR WINE EN DEBIAN AMD64
+======================================
+
+NOTA: A día de hoy, mediante NEW WOW64 podemos ejecutar programas de 32bits (win32) sin librerías de 32bits.
+Para eso sirve "--enable-archs=x86_64,i386".
+NO HACE FALTA hacer lo de "WINEARCH=win32 winecfg", ya que de hecho eso no funciona en modo WOW64.
+
+INSTALAMOS DEPENDENCIAS PREVIAS (mingw es necesario para compilar un WINE con soporte de WoW64):
+apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
+(Si usas el gstreamer del sistema, hay que instalar libgstreamer-plugins-base1.0-dev).
+
+INSTALAMOS OTRA DEPENDENCIA PREVIA: libgstreamer (no podemos instalar la de Debian porque nos mete la porquería de X11 y MESA viejo)
+--Bajalos los sources de la última estable de: https://gitlab.freedesktop.org/gstreamer/gstreamer/-/tags
+--Configuramos con:
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled -Dgst-examples=disabled -Drtsp_server=disabled \
+-Dtests=disabled -Dtools=disabled -Dexamples=disabled -Dbenchmarks=disabled -Dorc=disabled -Ddevtools=disabled -Dintrospection=disabled
+
+VAMOS CON WINE EN SÍ:
+--Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
+git clone --depth 1 -b wine-11.0-rc1 https://gitlab.winehq.org/wine/wine.git wine-11.0-rc1
+--Configuramos con:
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
+./configure --without-x --with-wayland \
+--without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
+--without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
+--disable-odbc32 --disable-odbcbcp --disable-odbccp32 --disable-odbccu32 \
+--without-gettext --without-gnutls --without-v4l2 --enable-archs=x86_64,i386
+
+(Lo de "--enable-archs=x86_64,i386" es necesario para compilar con soporte WoW64, es decir, ejecutar juegos de 32bits
+ sin tener las versiones i386 de todas las librerías instaladas).
+(Si compilas para un sistema con escritorio X11, NO le pases "--without-x").
+
+Ahora hacemos:
+wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d wayland
+
+...Y ya debería ir WINE sobre Wayland puro y con programas de 32bits usando el modo WoW64. Prueba a hacer "winecfg" o bien "wine notepad"
+
+PARA NO VER EL ERROR:
+00b0:err:ntoskrnl:ZwLoadDriver failed to create driver L"\\Registry\\Machine\\System\\CurrentControlSet\\Services\\winebth": c00000e5
+(FÍJATE QUE ES UN ERROR DEL SERVICIO "winebth")
+Ejecutamos:
+wine reg delete "HKLM\System\CurrentControlSet\Services\winebth" /f
+...esto deshabilita el BT completamente y nos libra del error.
+
+PARA NO VER LOS MENSAJES "fixme" EN LA CONSOLA, añade esto en ~/.bashrc:
+export WINEDEBUG=fixme-all
+Te saldrán sólo los errores y los warning, pero no los "fixme" que simplemente son funciones de WINE no implementadas.
+
+CÓMO SABER QUÉ LIBRERÍAS (DLLs) USA UN JUEGO EN WINE
+WINEDEBUG=+loaddll wine <JUEGO.EXE>
+
+NOTAS ESPECÍFICAS SOBRE JUEGOS EN WINE
+--MDK:
+Se usa la versión de GOG, que viene con NGLIDE. Ejecuta MKD3DFX.EXE. El MDK95 no se ve, y el MDKD3D peta al empezar. 
+Edita MDK.CFG y pon "hduse" a 6 para mejorar los tiempos de carga.
+--AM2R:
+La última versión es la 1.5.5. Usa la versión de Windows, que está para descargar en Archive. Lo tienes en el disco duro de backup.
+La de Linux se instala con una cosa que se llama AMR2Laucher que no funciona porque está compilada contra versiones de librerías viejas. 
+Usa un modo de 426x240 en 16:9, por si quieres ajustar los shaders.
+Como mejor se ve es a 4x en fullscreen, en stretch hay más shimmering.
+--BLADE: EDGE OF DARKNESS
+Tienes el juego ya listo en el disco duro de backup. Es la versión que mejor funciona: hay versiones más nuevas
+pero van a tirones y no hay manera de arreglarlo, así que usa la versión que tienes almacenada.
+Para tener movimiento suave pero sin que se coma toda la CPU, activa el VSYNC pero no actives el "Framerate Limit".
+--UNREAL
+Tienes el juego de Windows ya listo en el disco duro de backup, pero por si acaso, se hace así:
+Bájate el Unreal original de Archive, y luego copias encima los contenidos del ZIP del último parche de OldUnreal
+que está aquí: https://github.com/OldUnreal/Unreal-testing/releases, simplemente dejando que sobreescriba lo que quiera.
+Y con el vídeo puesto a OpenGL, va perfectamente en WINE.
+Hay una versión de OldUnreal nativa para Linux ahí también pero no se ve nada, pantallazo negro, hay una issue abierta.
+De momento con el de Windows en WINE vamos bien.
+Para evitar el "tirón" al atravesar la niebla durante la demo, usa el renderer DX9 y ten configurado e instalado DXVK
+para que así DX9 vaya sobre Vulkan.
+NO actives "Precache Content", no sólo no mejora los tirones sino que los empeora. Ni idea.
+--HALO
+Tienes el juego de Windows ya listo en el disco duro de backup, pero por si acaso, se hace así:
+Todo lo necesario (incluyendo el juego comercial) lo tienes en el mirror de "REFINED" aquí: https://www.proxeninc.net/Halo/Refined/
+--Instala la versión "RETAIL" original, ya que la "CE" es sólo para multijugador y no trae la campaña.
+  Te pedirá un código de producto, usa este: mcxmm-y29c6-dr36c-b6w4t-t9p73
+--Instala el parche de actualización de la versión 1.0.10.
+--¡¡CUIDADO!! NO INSTALES el parche halo_laa_fix que es para que pueda usar más de 2GB de RAM o algo así: el juego deja de funcionar en WINE!!
+--Instala la última versión de "CHIMERA", es lo que permite que tengamos 1080p, 16:9 y demás QOL,
+  y se baja de aquí: https://github.com/SnowyMouse/chimera/releases
+  Es simplemente renombrar "Strings.dll" a "strings_old.dll", traernos el "strings.dll", chimera.ini y el directorio "fonts".
+--Instala la última versión estable de "REFINED", que son los mapas arreglados para que sean como los de XBOX originales
+  Por ahora, uso Revined V2 "estable" que está en https://www.proxeninc.net/Halo/Refined/Refined%20V2%20Download/
+  El fichero que nos bajaremos es "halo_refined_retail_en.7z"
+  Para instalarlo es simplemente sobreescribir todo lo del directorio "MAPS" con lo que trae el .7z que te has bajado.
+--PARA JUGAR PERFECTO CON VRR (y sin que se nos caliente la CPU a saco) edita "chimera.ini" y deja así estos settings:
+  vsync=1
+  chimera_throttle_fps=117 <--Suponiendo que tengas puesto un modo de vídeo de ~120Hz. Siempre es el refresco -3.
+--PARA JUGAR CON EL DOBLAJE EN CASTELLANO, bájate "halo_refined_retail_es.7z" en vez del "halo_refined_retail_en.7z",
+  sobreescribe lo de MAPS con sus contenidos, y a parte mete la fuente "InterstateCondensed-Bold.otf" en "fonts"
+  y cambia todas las ocurrencias de "Interstate-Bold" por "InterstateCondensed-Bold" en chimera.ini, ya que en castellano
+  se necesita una fuente más estrecha para que entren bien todas las cadenas de texto de los menús.
+
+******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
+
+Ejecutamos "winecfg", vamos a la pestaña "Graphics" y allí ponemos "Screen Resolution" a un valor de unos 168.
+
+******DIRECTX SOBRE VULKAN USANDO WINE**************************************************************************************
+
+OPCIÓN 1 (RECOMENDADO): USANDO DXVK
+(NOTA: Para instalarlo, DXVK trae un script llamado "dxvk-setup" que deberíamos ejecutar como "dxvk-setup i"
+ para instalarlo con sencillez, pero yo lo hago a mano y es lo que tengo en estas instrucciones. En teoría es lo mismo). 
+
+--Clonamos la última versión (podemos mirar el número de versión en https://github.com/doitsujin/dxvk/tags):
+git clone --depth 1 --recurse-submodules -b v2.7.1 https://github.com/doitsujin/dxvk.git
+
+--Compilamos las versions de 32 bits (no podemos pasar "-march=native" debido a este commit: https://github.com/doitsujin/dxvk/commit/d2c8e54d04b970342293e565377b8431b0bbe3fa):
+
+mkdir build32
+cd build32
+
+CFLAGS="-O2 -march=x86-64-v2 -mtune=native -O2" \
+CXXFLAGS="-O2 -march=x86-64-v2 -mtune=native -O2" \
+meson setup .. -Dbuildtype=release --cross-file ../build-win32.txt
+
+ninja -j10
+
+--Las metemos en el profile de Wine que estemos usando:
+find ./ -name "*.dll" -exec cp {} ~/.wine/drive_c/windows/syswow64 \;
+
+--Compilamos las versions de 64 bits (no podemos pasar "-march=native" debido a este commit: https://github.com/doitsujin/dxvk/commit/d2c8e54d04b970342293e565377b8431b0bbe3fa):
+
+mkdir build64
+cd build64
+
+CFLAGS="-O2 -march=x86-64-v2 -mtune=native -O2" \
+CXXFLAGS="-O2 -march=x86-64-v2 -mtune=native -O2" \
+meson setup .. -Dbuildtype=release --cross-file ../build-win64.txt
+
+ninja -j10
+
+--Las metemos en el profile de Wine que estemos usando:
+find ./ -name "*.dll" -exec cp {} ~/.wine/drive_c/windows/system32 \;
+
+--Ejecutamos "winecfg", y allí vamos a la pestaña LIBRARIES, y vamos añadiendo overrides para "d3d8", "d3d9", "d3d10" y "d3d11",
+poniéndolos a "NATIVE" solamente, y ya está, ya todo lo de DirectX 8, 9, 10 y 11 te irá sobre Vulkan.
+
+OPCIÓN 2: USANDO EL SOPORTE D3D->VULKAN QUE INCLUYE WINE DE SERIE
+
+Ejecutamos "regedit", nos vamos a HKEY_CURRENT_USER\Software\Wine, añadimos una nueva clave llamada "Direct3D",
+y dentro de ella añadimos un nuevo valor string llamado "renderer" al que daremos el valor "vulkan".
+
+Alternativamente, podríamos hacer "winetricks renderer=vulkan", pero para eso hay que tener instalado winetricks.
+
+******USAR DXWRAPPER CON WINE************************************************************************************************
+
+--Bajamos la última versión de dxwrapper.zip de: https://github.com/elishacloud/dxwrapper/releases
+--Copiamos dxwrapper.dll y dxwrapper.ini al directorio del juego en el que queramos usarlo.
+--Averiguamos qué DLLs usa el juego con:
+WINEDEBUG=+loaddll wine juego.exe
+Si usa ddraw.dll, es que está usando DX7. En DX7, no había d3d*.dll diferenciada, eso empieza en DX8.
+--Entramos en el directorio "Stub" que viene en el dxwrapper.zip, y copiamos los DLLs que use el juego (abamamos de averiguarlo)
+  a su directorio. Por ejemplo, ddraw.dll, dsound.dll, dinput.dll...
+--Editamos "dxwrapper.ini" y ponemos a 1 lo necesario para la versión de DX que usa el juego.
+--Volvemos a ejecutar el juego con:
+WINEDEBUG=+loaddll wine juego.exe
+...y comprobamos que está usando las copias locales de las dll que deseamos sustituir.
