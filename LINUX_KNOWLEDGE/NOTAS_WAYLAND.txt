@@ -121,7 +121,7 @@ PARTE 4: INSTALAR WESTON (EL COMPOSITOR DE REFERENCIA DE WAYLAND)
 =================================================================
 
 -Instalamos dependencias previas, libinput-dev:
-sudo apt-get install libinput-dev libseat-dev --no-install-recommends
+sudo apt-get install libinput-dev libseat-dev libxcb1-dev --no-install-recommends
 
 -Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11.
  Ver instrucciones en la sección de instalación de Labwc.
@@ -136,12 +136,11 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson setup -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dscreenshare=false -Dremoting=false -Dpipewire=false \
--Dbackend-drm-screencast-vaapi=false -Dbackend-vnc=false -Dbackend-x11=false \
--Dxwayland=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
+meson setup -Dbuildtype=release -Dbackend-headless=false -Dbackend-rdp=false -Dremoting=false -Dpipewire=false \
+-Dbackend-vnc=false -Dbackend-x11=false -Dxwayland=false -Dsystemd=false -Dpipewire=false -Dshell-ivi=false \
 -Dcolor-management-lcms=false -Dcolor-management-lcms=false -Dtools=terminal -Dwcap-decode=false \
--Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Dbackend-drm-screencast-vaapi=false -Ddemo-clients=false \
--Dwcap-decode=false -Dbackend-pipewire=false ..
+-Dtest-junit-xml=false -Dimage-webp=false -Ddoc=false -Ddemo-clients=false \
+-Dwcap-decode=false -Dbackend-pipewire=false -Dshell-lua=false ..
 
 ninja -j4
 sudo ninja install
