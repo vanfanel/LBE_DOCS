@@ -3757,37 +3757,12 @@ reboot and ejoy! :)
 
 Si no tienes wifi en absoluto, instala el paquete firmware-b43-installer y reinicia, a ver si hay suerte.
 
-********Establecer el niceness de un programa siendo usuario******************************************************************************************
+********Establecer el niceness de un programa siendo usuario**************************
 
 Editamos /etc/security/limits.conf y añadimos la fila:
 pi 	-	nice	-20
 
 Ahora podemos lanzar el programa con nice -n -10 <nombre_programa>
-
-********DOSBOX en ARM**************************************************************************************************************
-
-Nos bajamos el archivo svn de aquí: http://www.dosbox.com/wiki/BuildingDOSBox
-Si queremos el ARM dynarec, tras ejecutar el ./configure tenemos que editar el config.h y añadir:
-#define C_DYNREC 1
-#define C_TARGETCPU ARMV7LE
-#define C_UNALIGNED_MEMORY 1
-Cuidado, que estos valores ya estarán undef en otras partes de fichero o con valores distintos.
-La info de cómo habilitar el dynanrec ARM viene de aquí: http://www.vogons.org/viewtopic.php?f=31&t=37651&p=333227#p333318
-
-Para compilar SDL1.2.15:
-
-Añadimos la llamada a: 
-
-ioctl(console_fd, FBIO_WAITFORVSYNC, 0);
-
-en src/video/fbcon/SDL_fbvideo.c, función FB_WaitVBL().
-
-Configuramos con:
-
-CFLAGS="-march=native -mtune=native -O2" ./configure --disable-video-opengl --enable-video-fbcon --disable-video-kms --disable-video-directfb --disable-oss --disable-alsatest --disable-pulseaudio --disable-pulseaudio-shared --disable-arts --disable-nas --disable-esd --disable-nas-shared --disable-diskaudio --disable-dummyaudio --disable-mintaudio --disable-video-x11
-
-Si se queja el DOSBOX de que falta el ratón, usa la variable de entorno SDL_NOMOUSE=1
-Si se queja de que las SDL no tienen soporte para CDROM, pues te toca recompilar las SDL.
 
 ********DESHABILITAR EL CURSOR QUE PARPADEA MIENTRAS ARRANCA EL KERNEL*********************************************************
 
@@ -4074,45 +4049,6 @@ hcopy -m directorio_temporal_juego/* nombre_volumen_destino:
 
 NOTA: Se puede usar ctrl-alt-f para salir del modo fullscreen.
 
-******************USAR CORE QEMU LIBRETRO (QEMU-LIBRETRO) PARA EMULAR UN MAC QUADRA 800*****************************************************
-
--Instalamos dependencias previas:
-apt-get install python3-venv flex bison zlib1g-dev
-
--Clonamos su repo:
-git clone --depth 1 --recursive https://git.libretro.com/libretro/qemu-libretro.git
-
--Configuramos con (sólo soporte para Mac 68k, y OJO!!! NO USES "-march=native -mtune=native" porque la versión resultante no funciona bien):
-
-mkdir b4
-cd b4
-
-CFLAGS="-Os -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
-    --target-list=m68k-softmmu \
-    --without-default-features \
-    --glib=internal \
-    --zlib=internal \
-    --disable-pie \
-    --enable-fdt=internal \
-    --disable-modules \
-    --disable-plugins \
-    --enable-libretro \
-    --audio-drv-list=libretro \
-    --disable-sdl \
-    -Dwrap_mode=forcefallback
-
-make -j$(nproc) libqemu_libretro.so
-(OJO!!! ES MUY IMPORTANTE COMPILAR JUSTAMENTE ASÍ PARA EVITAR ERRORES!!! NO HAGAS SIMPLEMENTE "make -j10"!!!)
-
--Para ejecutarlo:
-----Creamos un directorio llamado "quadra800" donde metemos la BIOS (que llamaremos "q800.rom")
-    y el disco duro con el sistema y los juegos (que llamaremos "system71.img" y que tienes instrucciones en otra parte
-    de este documento de cómo crearlo, instalar el sistema, meterle juegos, etc).
-----Creamos un fichero llamado "quadra800.qemu_cmd_line" con el contenido:
-qemu-system-m68k -M q800 -m 32 -bios quadra800/q800.rom -device scsi-hd,scsi-id=0,drive=hd0 -drive file=quadra800/system71.img,media=disk,format=raw,if=none,id=hd0
-----Lo ejecutamos con:
-retroarch -L ~/.config/retroarch/cores/libqemu_libretro.so quadra800.qemu_cmd_line
-
 ******************Actualizar a de DEBIAN WHEEZY a DEBIAN JESSIE****************************************************************************
 
 Podemos usar el generador de sources.list que está en http://debgen.simplylinux.ch, o directamente dejar el /etc/apt/sources.list así:
@@ -4127,21 +4063,6 @@ deb http://security.debian.org/ jessie/updates main contrib non-free
 deb-src http://security.debian.org/ jessie/updates main contrib non-free
 
 Ahora hacemos sudo apt-get update, apt-get --download-only dist-upgrade, apt-get dist-upgrade. Y cruza los dedos ^_^"
-
-********Instalar DOTNET 472 en WINE***********************************************************************************************************
-
-Creamos un WINEPREFIX de 32bits:
-
-rm -R ~/.wine
-WINEARCH=win32 winecfg 
-
-Actualizamos Winetricks a la última versión:
-
-sudo winetricks --self-update
-
-Instalamos:
-
-winetricks dotnet472
 
 ********Biblioteca de San José****************************************************************************************************************
 
@@ -5009,14 +4930,14 @@ NOTA: Para cambiar algo en la configuración, debes borrar totalmente el directo
 absurdos durante el proceso de building.
 
 PARTE 1: OPCIÓN B (Recomendad en Octube de 2015)
-================
+=================
 
 Clonamos el repo de https://github.com/raspberrypi/tools.git y nos queda el cross-compiler en tools. Lo demás es igual sólo que la ruta de los ejecutables del compilador es:
 /home/manuel/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin
 Y la tupla (para crosscompilar en local, lo que se llama host_alias en el scummvm que se cross-compila en local) es arm-linux-gnueabihf.
 
-PARTE 2: CONFIGURANDO EL SERVIDOR Y EL CLIENTE CUANDO YA TENEMOS CROSS-COMPILER (Válido también para Rpi)
-===============================================================================================
+PARTE 2: CONFIGURANDO EL SERVIDOR Y EL CLIENTE CUANDO YA TENEMOS CROSS-COMPILER
+===============================================================================
 
 Tenemos el cross-compiler ya.
 Si estamos en el caso en que estamos usando el cross-compiler oficial, habremos clonado el repo y tendremos el compilador para la Pi en:
@@ -5096,58 +5017,6 @@ Debes instalar un motor de TTS en el sistema, que las versiones libres de Androi
 Elígelo como motor TTS en la configuración del teléfono, en accesibilidad. 
 Ya te debería ir en OSMAND.
 
-***********Actualizar gcc 4.6 a gcc 4.7 en raspbian****************************************************************************************
-
-Tras hacer un apt-get update y un apt-get upgrade, y sin eliminar NADA, o sea, dejando gcc-4.6 ya que tiene muchas dependencias, hacemos
-¡¡¡¡¡¡CUIDADO E INSTALA AMBOS!!!!!!
-sudo apt-get install gcc-4.7
-sudo apt-get install g++-4.7
-
-Creamos el script /usr/bin/gcc-set-default-version con el contenido:
-
-#!/bin/bash 
-usage() {
-        echo 
-        echo Sets the default version of gcc, g++, etc
-        echo Usage:
-        echo 
-        echo "    gcc-set-default-version <VERSION>"
-        echo 
-        exit
-}
-cd /usr/bin
-if [ -z $1 ] ; then 
-        usage;
-fi 
-set_default() {
-        if [ -e "$1-$2" ] ; then 
-                echo $1-$2 is now the default
-                ln -sf $1-$2 $1
-        else 
-                echo $1-$2 is not installed
-        fi
-}
-for i in gcc cpp g++ gcov gccbug ; do 
-        set_default $i $1
-done
-
-Le damos permisos de ejecución (755 sirve), y hacemos:
-
-sudo gcc-set-default-version 4.7
-
-Y ya debería estar. Nos dirá que no tenemos instalado gccbug-4.7, pero eso no es importante.
-
-Instalamos VIM y le ponemos el ~/.vimrc que tienes en la sección de apuntes del VIM...
-Y ahora, para que VIM recuerde la última posición en que estábamos cuando abrimos un fichero dado por última vez, editamos /etc/vim/vimrc
-y descomentamos esto, que viene comentado por defecto:
-
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-SI ESTO NO FUNCIONA, comprueba los permisos de ~/.viminfo. Debe pertenecer al usuario actual, si no es así, probablemente no vuelva a la última
-posición cuando reabrimos un fichero.
-
 ***********Comparar ficheros con VIM***************************************************************************************************
 
 Puedes abrir dos ficheros en modo comparación con 
@@ -5167,18 +5036,6 @@ y antes de usarlo hacemos
 sudo updatedb
 
 Y ya se supone que podemos usarlo.
-
-***********TIC-80, una consola imaginaria para Pi************************************************************************************************
-
-Clonamos su repo y actualizamos los submódulos para poder compilar:
-git clone --depth 1 --recurse-submodules -j8 https://github.com/nesbox/TIC-80.git
-
-Creamos el dir de compilación, entramos, configuramos y compilamos:
-mkdir b3
-cd b3
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE \
--DCMAKE_C_FLAGS="-march=native -mtune=native" ..
-make -j4
 
 ***********Compilar RAZE, el engine de Duke Nukem, Blood, Exhumed, etc para Linux****************************************************************
 
@@ -5386,7 +5243,7 @@ NOTA: Tienes los datos listos ya en el disco duro de backup.
 -Copiamos el contenido del directorio "files" que viene con los sources a ~/aquaria, sobreescribiendo así parte de los datos del juego.
 OJO: Es el contenido de "files" lo que tenemos que copiar, no el directorio.
 
-************ECWOLF, el mejor port del Wolfenstein 3D, en la Pi*****************************************************************************
+************ECWOLF (WOLFENSTEIN 3D) EN GNU/LINUX*****************************************************************************
 
 Clonamos su repo:
 git clone --depth 1 https://bitbucket.org/ecwolf/ecwolf.git

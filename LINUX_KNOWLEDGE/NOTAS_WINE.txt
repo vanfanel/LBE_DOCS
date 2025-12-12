@@ -161,3 +161,18 @@ Si usa ddraw.dll, es que está usando DX7. En DX7, no había d3d*.dll diferencia
 --Volvemos a ejecutar el juego con:
 WINEDEBUG=+loaddll wine juego.exe
 ...y comprobamos que está usando las copias locales de las dll que deseamos sustituir.
+
+********Instalar DOTNET 472 en WINE***********************************************************************************************************
+
+Creamos un WINEPREFIX de 32bits:
+
+rm -R ~/.wine
+WINEARCH=win32 winecfg 
+
+Actualizamos Winetricks a la última versión:
+
+sudo winetricks --self-update
+
+Instalamos:
+
+winetricks dotnet472

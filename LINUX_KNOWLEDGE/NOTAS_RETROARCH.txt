@@ -763,7 +763,7 @@ Y configuramos las opciones del core así:
 ******TIC-80 FANTASY CONSOLE LIBRETRO**************************************************
 
 Clonamos su repo:
-git clone --recursive https://github.com/nesbox/TIC-80 --depth 1
+git clone --recurse-submodules https://github.com/nesbox/TIC-80 --depth 1
 
 Configuramos con:
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DBUILD_SDL=OFF -DDISABLE_NETWORKING=TRUE \
@@ -809,3 +809,44 @@ Lanzamos el core con el Dragon's Lair así (el fichero de audio/vídeo se tiene 
 y cargue el LUA necesario!):
 
 retroarch -L ~/.config/retroarch/cores/dirksimple_libretro.so lair.ogv
+
+******************QEMU LIBRETRO*****************************************************
+
+Por ejemplo, vamos a emular un QUADRA 800.
+
+-Instalamos dependencias previas:
+apt-get install python3-venv flex bison zlib1g-dev
+
+-Clonamos su repo:
+git clone --depth 1 --recursive https://git.libretro.com/libretro/qemu-libretro.git
+
+-Configuramos con (sólo soporte para Mac 68k, y OJO!!! NO USES "-march=native -mtune=native" porque la versión resultante no funciona bien):
+
+mkdir b4
+cd b4
+
+CFLAGS="-Os -Wno-error -Wno-nested-externs -Wno-redundant-decls" ../configure \
+    --target-list=m68k-softmmu \
+    --without-default-features \
+    --glib=internal \
+    --zlib=internal \
+    --disable-pie \
+    --enable-fdt=internal \
+    --disable-modules \
+    --disable-plugins \
+    --enable-libretro \
+    --audio-drv-list=libretro \
+    --disable-sdl \
+    -Dwrap_mode=forcefallback
+
+make -j$(nproc) libqemu_libretro.so
+(OJO!!! ES MUY IMPORTANTE COMPILAR JUSTAMENTE ASÍ PARA EVITAR ERRORES!!! NO HAGAS SIMPLEMENTE "make -j10"!!!)
+
+-Para ejecutarlo:
+----Creamos un directorio llamado "quadra800" donde metemos la BIOS (que llamaremos "q800.rom")
+    y el disco duro con el sistema y los juegos (que llamaremos "system71.img" y que tienes instrucciones en otra parte
+    de este documento de cómo crearlo, instalar el sistema, meterle juegos, etc).
+----Creamos un fichero llamado "quadra800.qemu_cmd_line" con el contenido:
+qemu-system-m68k -M q800 -m 32 -bios quadra800/q800.rom -device scsi-hd,scsi-id=0,drive=hd0 -drive file=quadra800/system71.img,media=disk,format=raw,if=none,id=hd0
+----Lo ejecutamos con:
+retroarch -L ~/.config/retroarch/cores/libqemu_libretro.so quadra800.qemu_cmd_line
