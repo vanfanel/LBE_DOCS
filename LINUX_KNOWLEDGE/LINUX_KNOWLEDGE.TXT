@@ -3582,24 +3582,6 @@ sudo crontab -e
 
 sudo service cron restart 
 
-SCREENSHOTS EN WAYLAND
-======================
-
-Usamos GRIM.
---Clonamos su repo: git clone --depth 1 https://git.sr.ht/~emersion/grim
---Compilamos con:
-
-mkdir b4
-cd b4
-
-CFLAGS="-march=native -mtune=native" \
-meson setup -Dbuildtype=release ..
-
-ninja -j4
-ninja install
-
---Ahora ya podemos capturar la pantalla simplemente escribiendo "grim", o si queremos capturar una salida concreta usamos "grim -o HDMI-A-1". 
-
 *******Captura de pantalla en Linux y apertura automática con el PINTA*****************************************************************************
 
 Creamos un script, captura, con permisos de ejecución y el siguiente contenido:
@@ -3612,39 +3594,6 @@ Lo enviamos a /usr/bin
 Ahora editamos ~/.config/openbox/lubuntu-rc.xml (NO editamos /etc/xdg/openbox... porque ESO LO IGNORA), y buscamos Print.
 Vemos que viene la combinación A-Print (Alt+Print screen) para capturar la pantalla. La dejamos sólo como Print, y entre <Command> y </Command>
 ponemos simplemente captura. Listo.
-
-*******Whatsapp en Linux**************************************************************************************************************************
-
-Más fácil que mear en pared.
-Nos bajamos el plugin para pidgin de aquí:  http://davidgf.net/nightly/whatsapp-purple/
-O de github si lo queremos compilar (https://github.com/davidgfnet/whatsapp-purple), pero vamos, que desde la página de binarios va bien.
-PARA COMPILARLO necesitamos tener instalados los paquetes libpurple-dev y libfreeimage-dev, o nos faltarán cabeceras.
-
-Una vez que tenemos el binario, bajado o compilado por nosotros, lo mandamos a /usr/lib/purple-2, que es donde todos los programas basados en libpurple, incluído pidgin,
-buscan los plugins.
-
-Pero claro, necesitamos un user y pass. El user será el número de teléfono con el 34 delante. El pass lo tenemos que hacer registrándonos.
-Para ello, usamos yowsup-cli del paquete yowsup: https://github.com/tgalal/yowsup
-Clonamos el repo, instalamos python-dateutil, y damos permisos de ejecución al script yowsup-cli en python que está en src.
-INstalamos esto: sudo apt-get install python-dateutil
-Ahora hacemos:
-
-./yowsup-cli registration --requestcode sms --phone 34620626230 --cc 34
-
-Y nos llegará un mensaje al móvil con un código para registrarnos. Así que hacemos:
-
-./yowsup-cli registration --register 396-299 --phone 34620626230 --cc 34
-
-Sustituimos 396-299 por el código, obviamente.
-Al acabar este último comando, nos dará un password. Ese password lo podemos meter en nuestro fichero config, y/o lo podemos usar ya
-directamente en el plugin de pidgin como password de la cuenta, de tal manera que mi cuenta es:
-
-login: 34620626230
-pw: ymcAunpgwsfsdDFHK4FSHPHJqxM=
-
-Ahora ya podemos agregar contactos de whatsapp con normalidad!
-
-Si tienes problemas de conectividad, edita ~/.purple/accounts.xml y busca el servidor, versión de android, puerto...
 
 *********DISCORDO, un cliente de discord para GNU/Linux en consola******************
 
@@ -3726,36 +3675,6 @@ vez de poner -D nl80211, tiene que poner -D wext, que es el driver viejo.
 Total, que la llamada a wpa_supplicant queda así:
 
 wpa_supplicant -iwlan0 -D wext -c/etc/wpa_supplicant/wpa_supplicant.conf -B
-
-*********NO funciona la conexión con una tarjeta de broadcom (módulo b43)***********
-
-Si miras 
-dmesg | grep err
-verás queSE QUEJA DE QUE LE FALTAN LOS FICHEROS DEL FIRMWARE. Tendrías que instalar el b43-fwcutter... pero claro, no tienes internet. (Si tienes internet, simplemente
-instala firmware-b43-installer
-Vale, la solución es descargar a mano desde otro ordenador con conexión:
-http://mirrors.kernel.org/ubuntu/pool/main/b/b43-fwcutter/b43-fwcutter_015-9_amd64.deb
-http://www.lwfinger.com/b43-firmware/broadcom-wl-5.100.138.tar.bz2
-
-Ahora descomprime, recorta el hardware y déjalo instalado:
-
-sudo dpkg -i b43-fwcutter_015-9_amd64.deb
-tar xfvj broadcom-wl-5.100.138.tar.bz2
-sudo b43-fwcutter -w /lib/firmware broadcom-wl-5.100.138/linux/wl_apsta.o
-
-Instrucciones sacadas de:
-https://askubuntu.com/questions/730799/installing-firmware-b43-installer-offline
-
-*********Conexión WIFI lenta con BCM4313*********************************************
-Para arreglarlo, líbrate de los drivers b43 que son una mierdaca.
-
-sudo apt-get install bcmwl-kernel-source
-sudo modprobe -r b43 ssb wl
-sudo modprobe wl
-
-reboot and ejoy! :)
-
-Si no tienes wifi en absoluto, instala el paquete firmware-b43-installer y reinicia, a ver si hay suerte.
 
 ********Establecer el niceness de un programa siendo usuario**************************
 

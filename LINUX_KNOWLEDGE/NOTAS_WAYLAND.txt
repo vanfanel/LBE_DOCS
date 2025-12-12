@@ -1828,15 +1828,21 @@ jay ranrd
 export WAYLAND_DISPLAY=$(ls /run/user/$UID | grep -m1 '^wayland-')
 ...DE ESE MODO, se exporta el valor correcto siempre, ya que en algunos compositores es "wayland-0" en otrs es "wayland-1", etc
 
-INVESTIGACIÓN DE SUAVIDAD TOTAL CON VRR EN WAYLAND
-==================================================
+SCREENSHOTS EN WAYLAND
+======================
 
---Se necesita que el compositor Wayland que usemos tenga implementado el protocolo "commit_timing_v1"
-  (GODOT se queja también de que falta "wp_fifo_manager_v1" y que eso afectaría al frame pacing).
-  Para saber qué protocolos tiene implementados cada compositor, mira https://absurdlysuspicious.github.io/wayland-protocols-table 
-  O directamente en la parte inferior de: https://wayland.app/protocols/commit-timing-v1
+Usamos GRIM.
+--Clonamos su repo: git clone --depth 1 https://git.sr.ht/~emersion/grim
+--Compilamos con:
 
---Los clientes (programas o librerías que usen Wayland directamente, como SDL2) deben usar "commit_timing_v1",
-  no es algo mágico que por usar VRR ya nos beneficie "commit_timing_v1".
-  En teoría, SDL3 ya usa "commit_timing_v1" pero no sé si los programas tienen que hacer algo especial.
-  Preguntar ambas cosas a la gente de SDL.
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release ..
+
+ninja -j4
+ninja install
+
+--Ahora ya podemos capturar la pantalla simplemente escribiendo "grim",
+o si queremos capturar una salida concreta usamos "grim -o DP-1". 
