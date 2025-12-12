@@ -7716,45 +7716,6 @@ apt-get sources timidity
 
 NO HAY que ser root para hacer esto, ya que los sources NO se instalan sino que se descargan en el directorio actual y ya.
 
-****************Bajarse los sources de un kernel en debian/ubuntu******************************************
-
-Pongamos que uname -r te dice que usas el kernel
-
-linux-image-3.4.0-1490-omap4
-
-Entonces, para bajarte los sources de ese kernel, haces:
-
-apt-get source linux-image-3.4.0-1490-omap4
-
-Si estás compilando justo este kernel, al compilar los módulos te dira no sé qué.
-Deactiva CONFIG_BINFMT_AOUT y vuelve a compilar.
-
--Podemos extraer una configuración de un kernel previo con
-
-./extract-ikconfig ~/panda/boot/uImage > ~/panda/.config
-
-O bien podemos crear una muy básica que arranca, por ejemplo, en todos los OMAP, con
-
-make ARCH=arm omap2plus_defconfig
-
-make ARCH=arm menuconfig 
-
--Compilamos el kernel
-
-make -j4 ARCH=arm CROSS_COMPILE=~/x-tools/arm-unknown-eabi/bin/arm-unknown-eabi-  uImage
-
--Compilamos los módulos del kernel:
-
-make -j4 ARCH=arm CROSS_COMPILE=~/x-tools/arm-unknown-eabi/bin/arm-unknown-eabi- modules
-
--E instalamos los módulos:
-
-sudo make ARCH=arm modules_install INSTALL_MOD_PATH=/media/manuel/LINUX/
-
--Y lo mismo el kernel:
-
-sudo cp arch/arm/boot/zImage /media/manuel/BOOT/
-
 ****************Extraer la configuración de un kernel*******************************************************
 
 Para extraer un .config de un kernel que sabemos que funciona, en el directorio scripts de los kernel sources tenemos un script apropiado que funciona así:
