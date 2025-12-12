@@ -850,3 +850,136 @@ make -j$(nproc) libqemu_libretro.so
 qemu-system-m68k -M q800 -m 32 -bios quadra800/q800.rom -device scsi-hd,scsi-id=0,drive=hd0 -drive file=quadra800/system71.img,media=disk,format=raw,if=none,id=hd0
 ----Lo ejecutamos con:
 retroarch -L ~/.config/retroarch/cores/libqemu_libretro.so quadra800.qemu_cmd_line
+
+******CORE SameBoy (GB/GBC)**********
+
+--Bajamos los últimos sources estables de SameBoy de aquí:
+https://github.com/LIJI32/SameBoy/releases
+
+--Descomprimimos los sources de SameBoy.
+
+--Clonamos el repo de herramientas:
+
+git clone --depth 1 https://github.com/gbdev/rgbds.git
+make -j4
+
+--Copiamos los ejecutables del repo de herramientas (rgb*) al raiz de los sources de SameBoy:
+cp rgb* ../SameBoy-1.0.2/
+
+--Desde el directorio raiz de los sources de SameBoy compilamos así:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make libretro -j10
+
+--Copiamos el core a su sitio:
+cp build/bin/sameboy_libretro.so ~/.config/retroarch/cores/
+
+******FLYCAST LIBRETRO********
+
+--Clonamos su repo:
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/flyinghead/flycast.git
+
+--Editamos CMakeLists.txt y cambiar la línea:
+set(OpenGL_GL_PREFERENCE LEGACY)
+por
+set(OpenGL_GL_PREFERENCE GLVND)
+
+--Configuramos y compilamos:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_VULKAN=ON -DUSE_OPENGL=ON \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
+
+¡¡¡RECUERDA!!! Este core NO SOPORTA RUNAHEAD, SI LO TIENES ACTIVADO DARÁ UN SEGFAULT AL INICIARSE.
+
+PARA TENER VÍDEO PERFECTAMENTE SUAVE EN TODOS LOS JUEGOS, TANTO LOS DE 60FPS COMO LOS DE 30FPS ("REZ", "Napple Tale"):
+
+			OPCIÓN 1 (CON VRR/ADAPTIVESYNC)
+
+--En las opciones de RetroArch
+----En VIDEO->SYNCHRONIZATION:
+"Vsync"							OFF
+"Sync to Exact"					ON
+----En AUDIO->OUTPUT, usa el driver ALSA (este core no va bien con el driver PIPEWIRE) y pon 44100 Hz,
+    este es un core de 44100Hz fijos y se evitan microcortes usando esa frecuencia.
+----En AUDIO->SYNCHRONIZATION:
+"Synchronization"				OFF
+"Maximum Timing Skew"			0.0
+"Dynamic Audio Rate Control"	0.0
+--EN LAS OPCIONES DEL CORE ACTIVA "FULL FRAMEBUFFER EMULATION" (NO ACTIVES "DETECT FRAME RATE CHANGES").
+  PUEDES ACTIVAR "Emulation Hacks -> GD-ROM Fast Loading" JUNTO CON "System -> HLE BIOS" Y NO HAY PROBLEMA.
+  SE RECOMIENDA ESPECIALMENTE HLE BIOS PORQUE ES COMO DESARROLLA EL AUTOR DEL EMULADOR.
+
+ADEMÁS DE VRR/ADAPTIVE SYNC, NECESITA FRAMETIME DEVIANCE A 0.0-0.1%. PARA ELLO:
+--En la BIOS:
+----En "Advanced\AMD CBS\CPU Common Options" desactivamos "GLOBAL C-STATES" y "CORE PERFORMANCE BOOST"
+----En "Advanced\AMD CBS\DF Common Options" desactivamos "DF CSTATES"
+----En "Advanced\AMD CBS\NBIO Common Options\GFX Configuration" ponemos "iGPU Configuration" a "UMA_GAME_OPTIMIZED"
+    (esto es sólo para un pequeño plus de estabilidad en el deviation, lo importante es quitar los C-STATES y el BOOST).
+^CON ESTAS DOS COSAS, ya deberíamos tener un deviation de 0.0-0.1%.
+
+			OPCIÓN 2 (SIN VRR/ADAPTIVESYNC)
+
+-ACTIVA "VSYNC", DESACTIVAMOS "SYNC TO EXACT CONTENT FRAME", Y PONEMOS "VSYNC SWAP INTERVAL" A "2".
+-USA EL DRIVER DE SONIDO "ALSA", NO EL PIPEWIRE PORQUE HAGAS LO QUE HAGAS PRODUCE "CLICKS".
+ Y PONLE 64ms DE LATENCIA DE AUDIO. ESTE CORE NO VA BIEN CON 32ms AUNQUE OTROS CORES SÍ VAYAN BIEN-
+-ACTIVA EN LAS OPCIONES DEL CORE "FULL FRAMEBUFFER EMULATION".
+ (NO ACTIVES "DETECT FRAME RATE CHANGES", ESO JODE LA SINCRONIZACIÓN, HAZLO JUSTO COMO TE HE DICHO).
+-PARA EVITAR EL CASO MÁS EXTREMO DE MICROCORTES DE AUDIO, PON EL AUDIO DE RETROARCH A 44100Hz (ESTE CORE ES DE 44100Hz Y SE NOTA MUCHO!),
+-PUEDES ACTIVAR "Emulation Hacks -> GD-ROM Fast Loading" JUNTO CON "System -> HLE BIOS" Y NO HAY PROBLEMA.
+ SE RECOMIENDA ESPECIALMENTE HLE BIOS PORQUE ES COMO DESARROLLA EL AUTOR DEL EMULADOR.
+
+			FIN OPCIÓN 2
+
+RECUERDA: Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
+(no consume más recursos ni nada según el autor del emulador). Deja la segunda demo del Daytona USA 2001
+y si hay errores de clipping en los edificios del lado izquierdo, lo activas.
+
+RECUERDA: Este es un core de 44100 Hz, se nota mucho, usa esa frecuencia de audio y guárdalo como un override para este core.
+
+RECUERDA, SI NO USAS WAYLAND: Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
+
+*******Beetle-Saturn********************************
+
+git clone --depth 1 https://github.com/libretro/beetle-saturn-libretro.git
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" make -j4
+
+La BIOS tiene que ir en ~/.config/retroarch/system/mpr-17933.bin
+
+Si estás en un sistema con PERFORMANCE CPUs y EFFICIENCY CPUs, debes asignarle un par de PERFORMANCE CPUs al RetroArch así:
+taskset -c 0-1 retroarch -L ~/.config/retroarch/cores/mednafen_saturn_libretro.so roms/Sega\ -\ Saturn/Virtua\ Fighter\ Remix\ \(USA\).chd
+Esto es así porque el core oscila muy rápido en el uso de la CPU: cuando usa poca es asignado a una CPU de tipo EFFICIENCY y luego
+cuando de repente usa mucha se ralentiza porque el scheduler no llega a tiempo de pasarlo a una CPU de tipo PERFORMANCE.
+
+********PPSSPP LIBRETRO**************************************
+
+--Clonamos los sources de la última release estable:
+git clone --depth 1 --recurse-submodules -b <NOMBRE_TAG> https://github.com/hrydgard/ppsspp.git
+
+--Compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DLIBRETRO=ON -DUSE_VULKAN_DISPLAY_KHR=ON -DUSE_WAYLAND_WSI=OFF -DUSING_X11_VULKAN=OFF \
+-DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON -DUSE_DISCORD=OFF
+
+OJO!! Por ahora no le pasamos optimizaciones porque la versión resultante se cuelga con el Ridge Racers,
+ pero en un futuro se las pasaremos así:
+-DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
+
+--¡¡¡OJO!!! Tenemos que copiar el contenido del directorio "assets" que viene con los sources a ~/.config/retroarch/system/PPSSPP/
+o si no, el Ridge Racers se nos quedará en una pantalla en gris después del menú principal."
+
+--Es un core con sonido 44100Hz y además necesita 64ms de latencia, así que configura los settings de audio así y guarda los core overrides.
+
+PARA FRAMERATE ESTABLE:
+--Deja "Buffer Graphis Commands" a 1, no lo desactives porque entonces la CPU y la GPU no pueden trabajar en paralelo.
+  Los 120Hz compensan el input lag debido a esto, y de todos modos seguramente la máquina real también tiene un buffer de comandos de la GPU.
+--Activa "Duplicate Frames in 30Hz games"

@@ -134,3 +134,266 @@ audio_driver = "alsathread"
 config_save_on_exit = "false"
 -Luego, en cada juego, creamos su propio fichero de opciones del core, con el tipo sistema Atari ST que usamos para ejecutarlo
 (Recuerda que si es PAL tendrás que elegir una TOS europea), las opciones de pixel ratio que mejor le sientan, etc.
+
+*******Core TYRQUAKE************
+
+Copia el core a ~/.config/retroarch/cores
+Los datos del juego (los .PAK) van en un subir llamado id1, así en minúsculas. La música, en ogg, va en id1/music.
+
+Se lanza con:
+retroarch -L ~/.config/retroarch/cores/tyrquake_libretro.so id1
+
+Pon en "Options" el "Frame Rate" a 60.
+
+Nada más empezar, los controles no te responderán. Para arreglarlo, ve a "controls->port 1 controls"
+y "Device Type" ponlo a "Gamepad Classic", y dale a "save core remap file".
+O puedes tener controles tipo HALO: para ello, pon "Device Type" a "Gamepad Modern" y luego en "Options" activar el "Invert Y Axis".
+
+Y para cambiar cosas del juego y que se conserven los cambios, mételos en id1/autoexec.cfg.
+Por ejemplo, con esto queda muy a mi gusto el tamaño de pantalla, escalado de texturas, animaciones suaves, volúmen...
+
+viewsize 120 
+r_lerpmodels 1.00
+r_lerpmove 1.00
+dither_filter 1.00
+gamma 0.90
+bgmvolume "0.500000"
+volume "0.200000"
+bind F1 ""
+
+Y desactiva lo de "load dummy core on shutdown", dentro de settings->core, si no quieres que al darle a quit en el menú del Quake
+te mande al menú de RA.
+
+--PARA CARGAR A CUJO--
+
+Te puedes bajar la última versión (cujo14.zip) de aquí: https://github.com/Jason2Brownlee/QuakeBotArchive/tree/main/bin
+El mod de Cujo es un sencillo archivo pak0.pak. Copia el pak0.pak a id1/pak2.pak, y ya se carga automáticamente al cargar el core.
+Ahora, para llamar a Cujo y encender su luz apretando los analógicos del mando hacia abajo, pon esto en id1/autoexe.cfg
+(Sí, aunque parezca raro hay que hacer unbind, wait, unbind, wait... y luego ya bind. Cosas que pasan).
+
+unbind "JOY_L3"
+unbind "JOY_R3"
+wait
+unbind "JOY_L3"
+unbind "JOY_R3"
+wait
+bind "JOY_R3" "IMPULSE 100"
+bind "JOY_L3" "IMPULSE 105"
+
+Hilos de interés de cómo cargar mods en el core tyrquake (por si quieres cargar algún día las expansiones oficiales, que
+a parte de un pak0.pak traen su propia música y tal):
+https://www.psx-place.com/threads/tyrquake-mods-for-retroarch.9539/
+https://forums.libretro.com/t/tyquake-qauke-mods-how/15631
+https://docs.libretro.com/library/tyrquake/
+
+*******Swanstation (Duckstation)***********
+
+(OJO: en el repo oficial de ducktstation tienes cores ya compilados, pero NO funcionan cuando Retrorch funciona sobre KMSDRM.
+NO te molestes en reportarlo, porque el autor de duckstation es un poco gilipollas.)
+
+Clonamos el repo donde mantienen la versión no oficial:
+git clone --depth 1 https://github.com/libretro/swanstation.git
+
+Editamos src/libretro/libretro_host_interface.cpp y comentamos el contenido de la función
+LibretroHostInterface::UpdateGeometry(), dejándola inutilizada por completo.
+(Esto evita las ralentizaciones cuando el WipeOut hace el efecto de terremoto de pantalla al sufrir un ataque enemigo).
+OJO!!! RECUERDA que debes poner en las opciones del core el ratio a 4:3 porque al comentar UpdateGeometry() no se puede establecer
+bien automáticamente.
+
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+ACUÉRDATE DE PONER EL RENDERER DEL CORE EN "SOFTWARE" (No le eches la culpa al shader si hay audio dropouts)
+Y EL "CPU EXECUTION MODE" A "CACHED INTERPRETER" (Contrariamente a lo que parece, es más rápido que "RECOMPILER"),
+Y EL "CD-ROM SEEK SPEED UP" PON "INFINITE/INSTANTANEOUS"
+Y EL "USE OLD MDEC ROUTINES" a "OFF" (las OLD MDEC ROUTUNES son para sustituir texturas en los juegos, nada más).
+A PARTE, EN "SETTINGS->AUDIO->OUTPUT" PON "ALSA" CON UN "AUDIO LATENCY" DE 32.
+
+*******DOSBOX-CORE**********************************
+
+Este sí sincroniza el vídeo bien (al fin).
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/realnc/dosbox-core.git
+
+SI QUEREMOS QUE NO AJUSTE EL RATIO (lo cual causa pausas de audio...) editamos libretro/src/libretro.cpp
+y comentamos entero el contenido de la función update_gfx_mode()
+Si decidimos hacer esto, luego es posible ajustar el ratio de ciertos juegos como el JAZZ (16:10) usando los overrides.
+
+Entramos en el directorio "libretro" y compilamos así:
+
+COMMONFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+make -j10 platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
+WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0
+
+(Desactivo FLUIDSYNTH porque compila un montón de mierdas como libsndfile y demás que consumen CPU,
+ con la emulación de GRAVIS vas que chutas en DOS).
+(También desactivo la emulación de tarjetas Voodoo, el PINHACK que es para ver completas las mesas de pinball sin scroll, etc).
+
+-Para que todo vaya suave en general (luego veremos que hay ciertos juegos que necesitan 70Hz sí o sí), en OPTIONS del core:
+En TIMING->FRAME TIMING MODE elegimos "EXTERNAL".
+
+-PARA TENER VÍDEO PERFECTO SI TIENES VRR/AdaptiveSync:
+--Juegos de 60Hz (la GRAN mayoría!):
+  En las opciones de RetroArch activa el VSYNC y desactiva "SYNC TO EXACT" (en este core NO funciona bien).
+  Además, van mejor poniéndole en las opciones del core "Timmings->Override emulated video refresh rate" a "59"
+  (previene dropouts de audio al cambiar el modo de vídeo en el PF, por ejemplo).
+--Juegos de 70Hz (Lemmings, Lemmings 2, Lotus 3, Pinball Dreams):
+----Crea el archivo ~/.config/retroarch/config/70hz.cfg con el contenido:
+####CONFIG DE RETROARCH PARA JUEGOS DE 70Hz####
+video_refresh_rate = "143.595642"
+config_save_on_exit = "false"
+####FIN CONFIG DE RETROARCH PARA JUEGOS DE 70Hz####
+y se lo pasas a RetroArch con "--appendconfig ~/.config/retroarch/config/70hz.cfg",
+y estableces un modo de 140Hz antes de lanzarlos.
+Por ejemplo, para lanzar Lemmings, lo hago así:
+####SCRIPT PARA LANZAR JUEGOS DE 70Hz####
+wlr-randr --output DP-1 --mode 1920x1080@143.854996
+retroarch -L ~/.config/retroarch/cores/dosbox_core_libretro.so --appendconfig ~/.config/retroarch/config/70hz.cfg confs/lemmings.conf
+wlr-randr --output DP-1 --preferred
+####FIN SCRIPT PARA LANZAR JUEGOS DE 70Hz####
+
+LÓGICAMENTE, trata siempre de tratar los juegos como si fuesen compatibles con 60Hz. Para saber si un juego es compatible con 60Hz,
+ponle "Timmings->Override emulated video refresh rate" a "59" y comprueba que no hace nada raro (músicas lentas). Si suena bien,
+es compatible con 60Hz.
+
+-SÓLO SI NO TIENES VRR Y NO TIENES UN MODO DE 120HZ PUESTO POR DEFECTO (DEBERÍAS TENERLO!):
+Para evitar el input lag causado por tener el VSYNC activado (es necesario si no tienes VRR),
+puedes poner un modo de vídeo de 120Hz y además tener "VSYNC SWAP INTERVAL" en "AUTO".
+A tal efecto, lo más cómodo es que crees /usr/local/bin/dos con este contenido:
+########
+wlr-randr --output HDMI-A-1 --mode 1920x1080@120
+retroarch -L ~/.config/retroarch/cores/dosbox_core_libretro.so "$1" &> /dev/null
+wlr-randr --output HDMI-A-1 --mode 1920x1080@60
+#########
+...Y luego en el script de lanzamiento de cada juego simplemente tendrías este contenido:
+#########
+dos confs/juego.conf
+#########
+
+-La configuración general (ciclos, emulación de la CPU usada, tarjetas de vídeo y audio, etc) se hace desde las OPTIONS del core.
+Y luego, para que en el inicio monte un directorio y se meta en él, debes pasarle un .conf que sólo haga eso, así:
+
+[autoexec]
+mount c: ~/root/dos/superfrog
+sf.exe
+exit
+
+PARA QUE FUNCIONE EL TECLADO, la idea es usar el "GAME FOCUS", para lo cual
+NO DEBEMOS TENER ACTIVADO el "HOTKEY ENABLE", ya que son dos funcionalidades que se solapan
+y si tuvieses ambas la "HOTKEY ENABLE" no funcionaría al tener activo el "GAME FOCUS" que dedica todas las teclas al core.
+Así que hacemos esto:
+-En Settings->Input, pon "Auto Enable Game Focus" a "Detect".
+-En Settings->Input->Hotkeys, pon en "Game Focus (Toggle)" la tecla Windows ("lsuper" se llama).
+-En Settings->Input->Hotkeys, NO PONGAS NINGUNA TECLA en "Hotkey Enable".
+
+PARA QUE EL PAD NO SE QUEDE ATASCADO EN UNA DIRECCIÓN AL SALTAR EN LOS JUEGOS:
+-En "QUICK MENU->CONTROLS->PORT 1 CONTROLS", usa "Joystick" como "DEVICE TYPE", y pon así los controles direccionales:
+D-Pad UP: Left Analog Y-
+D-Pad UP: Left Analog Y+
+D-Pad UP: Left Analog X-
+D-Pad UP: Left Analog X+
+
+PARA TENER escalado non-integer sin que se jodan las scanlines es el LOTTES, con la curvatura quitada.
+
+PARA EL ASPECT RATIO: Lo de siempre para todos los cores en general: en SETTINGS->VIDEO se pone en 4:3 para todo y fuera.  
+
+PARA EVITAR PANTALLA NEGRA al principio del SUPERFROG si se usa el driver de vídeo VULKAN: desactiva el "FRAME DUPING" en las opciones del core.
+(Sólo ocurre con el driver del vídeo VULKAN).
+
+PARA EVITAR QUE SE QUEDE EN EL MENÚ DE RETROARCH AL SALIR, desactiva SETTINGS->CORE->LOAD DUMMY CORE ON CORE SHUTDOWN.
+
+LA EQUIVALENCIA DE CICLOS VA ASÍ:
+8088 (4.77 MHz)     300
+286-8               700
+286-12             1500
+386SX-20           3000
+386DX-33           6000
+386DX-40           8000
+486DX-33          12000
+486DX/2-66        25000
+Pentium 90        50000
+Pentium MMX-166  100000
+Pentium II 300   200000
+
+PARA CARGAR EL Might & Magic 2, antes tienes que ejecutar LOADFIX (es un comando del propio DOSBOX), para que no se queje de la memoria.
+
+PARA EVITAR el error de que no encuentra /dev/snd/seq, pues cargar el módulo "snd_seq", o ignorar el error.
+
+PARA PONER EL ISHAR 1 EN INGLÉS SIN TENER TECLADO NUMÉRICO, dale a la tecla END. 
+
+PARA QUE NO HAYA "DISTORSIONES" DE AUDIO AL CARGAR EL MAPA Y LOS NIVELES DE "LEMMINGS 2", que hace algo raro al cargar de disco,
+manda los ficheros a la caché de disco así antes de empezar:
+find games/lem2 -type f -exec cat {} >> /dev/null \;
+...o bien usa el driver de audio ALSA en vez de ALSATHREAD
+
+PARA LOS JUEGOS QUE SE VEN MAL EN "ALTA" DEBIDO A LAS SCANLINES:
+-Los hay que se soluciona activando el INTEGER SCALING, ya que incluso con escalado a enteros se ven casi casi casi a pantalla completa,
+tal es el caso de Pinball Fantasies / Pinball Dreams.
+-Los hay que al activar el INTEGER SCALING se ven muy pequeños, como Lemmings y Rusty. Para estos, nos creamos un nuevo shader preset
+que llamaremos fakelottes_noscanlines.glslp, que cargará un shader fakelottes modificado con lo de "#define SCANLINES" comentado.  
+
+PARA CONTROLAR EL BCRACERS BIEN CON EL MANDO, NO intentes usar el joystick desde el SETUP del juego ni desde las opciones del menú del juego.
+El control de joystick de este juego está totalmente roto. Deja el control de teclado y ahora le hacemos el truco.
+Usamos la funcionalidad del dosbox-core "Gamepad/Joystick 1 keyboard mappings", y ponemos:
+(J1) B -> A
+(J1) A -> Q
+(J1) Y -> Space
+(J1) Start -> Retunn/Enter
+(J1) Right Thumb -> Tab
+NOTA: Además, debes tener, en QUICK MENU->Controls->Port 1 Controls, el "R Button (Shoulder)" asignado a "[Core] Right Thumb",
+o si no, lo de atacar con el botón R no funcionará.
+
+#######################
+# EMPIEZA EL DOS.CONF #
+#######################
+
+[autoexec]
+
+mount c: /home/manuel/dos/juegos
+c:
+
+#####################
+# ACABA EL DOS.CONF #
+#####################
+
+El tema del teclado: para que las teclas se lean todas desde DOS, sin liarse con las hotkeys de RETROARCH,
+debes tener un "HOTKEY ENABLE" en "SETTINGS->INPUT"
+(yo tengo puestas las comillas simples) para que así al pulsar las teclas no se activen cosas del RetroArch a no ser que pulses
+el "HOTKEY ENABLE" que tengas configurado.
+PARA QUE NO SE ATASQUEN LAS TECLAS DE DIRECCIÓN MIENTRAS JUEGAS CON TECLADO: Vete a "QUICK MENU->CONTROLS->PORT 1 CONTROLS"
+y pon el DEVICE TYPE a "KEYBOARD+MOUSE", y dale a "SAVE CORE REMAP FILE".
+
+Juegos de DOS para bajar: te enganchas el TORRENT y bajas sólo los que vayas queriendo: https://www.retro-exo.com/exodos.html
+
+NOTAS JUEGOS DOSBOX
+
+--Lemmings se puede iniciar el modo high-performace sin tener que elegir nada con: lemvga /v /o
+--Wizardry 6 necesita ir instalado en C:\BANE para que el setup (WINSTALL.EXE) funcione correctamente,
+  y para no colgarse en el primer logotipo, "Core Options->Specs->CPU core" puesto a "Auto",
+  y para sonar bien, usar el Nuked OPL3. Menos mal que con pocos ciclos el juego va bien...
+--PsychoPinball tiene que estar en C:\PSYCHO, o sea que tienes que meterlo en ~/dos/psycho/psycho
+  y luego montar ~/dos/psycho como C: en DOSBOX. Si no, se queda colgado en el DOS4GW.
+--Los juegos de modo real (es decir, todos los que NO usen extensores como el DOS4GW, etc) se supone que van
+  perfectos a 3000 ciclos constantes, y en teoría los juegos de modo real deberían usar el "CPU CORE" en "AUTO" o "NORMAL", NO el Dynamic Recompiler.
+--Dicho lo anterior, el Rusty lo debes poner a 3000 ciclos, no más, y si usas el kernel Cachyos, puedes usar el audio ALSA (no hace falta
+Alsathread) con 32ms de latencia.
+
+*******Compilar el core libretro Yabause***********
+
+Clonamos su repo:
+
+git clone --depth 1 -b kronos https://github.com/libretro/yabause.git
+
+entramos en yabause/src/libretro
+
+make -j4
+
+La bios tiene que ir en ~/.config/retroarch/system/saturn_bios.bin o ~/.config/retroarch/system/kronos/saturn_bios.bin
+
+(OJO: Tienes que tener puesto el driver de vídeo en GLCORE, o en SETTINGS->CORE, permitir que los cores hagan el cambio de driver de vídeo).
+(OJO: requiere OpenGL 4.1 o algo así, y NO FUNCIONA CON VULKAN, GLES, GLES2 ni GLES3, así que olvídate de que funcione en la Raspberry Pi 4).
