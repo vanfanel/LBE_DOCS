@@ -436,12 +436,6 @@ El programa se llama tunesviewer.
 Si te da un error y no te deja buscar, dale a view y desactiva Request HTM5 Mode.
 Cambia la búsqueda a Podcast Search.
 
-*******Eliminar la BASURA de repositorios de Micro$oft de Raspbian/RaspberryPiOS*****************************************************
-
-sudo rm /etc/apt/sources.list.d/vscode.list
-sudo rm /etc/apt/trusted.gpg.d/microsoft.gpg
-sudo apt update
-
 ******Hacer que lo que conectamos en un puerto USB siempre aparezca en un nodo de /dev determinado***************************
 
 Mediante UDEV rules. Por ejemplo, para joysticks compatibles con XBOX360 (como el 8bitdo SN30Pro), hacemos esto.
@@ -682,36 +676,6 @@ https://phoboslab.org/files/wipeout-data-v01.zip
 Creamos el directorio ~/wipeout, y ahí metemos el ejecutable "wipegame" y creamos el subdirectorio "wipeout" donde metemos
 los datos del juego.
 
-******Compilar el core DOLPHIN LIBRETRO*********************************************************************************
-
---Compilamos su repo así:
-git clone --recursive --depth 1 https://github.com/libretro/dolphin.git
-
---Compilamos con:
-
-mkdir b4
-cd b4
-
-cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_MGBA=OFF -DENABLE_AUTOUPDATE=OFF \
--DUSE_DISCORD_PRESENCE=OFF -DENABLE_TESTS=OFF -DENABLE_TESTS=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
-
-		--OPCIONES DE CONFIGURACIÓN--
-
-PARA FRAMEPACING PERFECTO CON ~120Hz (VRR no pinta nada, como en el Flycast):
---En las opciones del core:
-----Core           -> Precission Frame Timing: ON
-----Core           -> Dual Core Mode:          OFF
-----Graphics/Hacks -> Skip Duplicate Frames:   OFF
---En las opciones de RetroArch:
-----Settings -> Video -> Synchronization -> Vsync Swap Interval: 2
-(Y lo típico: "VSYNC" a "ON", y "SYNC TO EXACT" a "OFF")
-
-OTRAS OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACIÓN DE SHADERS:
-----"Wait for Shaders before starting" ON
-----"Speed Up Disc Transfer Rate"	   ON
-----"Shader Compilation Mode"		   A-SYNC UberShaders
-
 ******Compilar DOLPHIN standalone en GNU/Linux****************
 
 Dependencias previas:
@@ -736,47 +700,6 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_NOGUI=ON -DENABLE_WAYLAND=ON -DENAB
 
 --Ejecutamos con:
 SDL_VIDEODRIVER=wayland ./dolphin-emu-nogui -p sdl -v Vulkan <ruta_juego>
-
-******Compilar core PCSX2 para LIBRETRO**************************************************************************************
-NOTA: EL RENDERER SOFTWARE SÓLO FUNCIONA CON OPENGL. Necesitas activar OpenGL tanto cuando compiles RetroArch
-como cuando compiles el core.
-
---Instalamos dependencias previas:
-apt-get install liblzma-dev
-
---Clonamos su repo con sus submódulos:
-git clone --depth 1 https://github.com/libretro/ps2.git
-cd ps2
-git submodule update --init --recursive
-
---Editamos "cmake/SearchForStuff.cmake", buscamos la línea "find_package(OpenGL REQUIRED)" y justo encima ponemos:
-set(OPENGL_USE_OPENGL ON)
-
---Editamos "pcsx2/CMakeLists.txt", buscamos "OpenGL::GL" y lo cambiamos por "OpenGL::OpenGL".
-
---Compilamos con:
-
-mkdir b4
-cd b4
-
-cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=TRUE -DUSE_OPENGL=TRUE \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_C_FLAGS="-march=native -mtune=native"
-
---La BIOS que necesitamos está en https://pcsx2.gitlab.io/ps2bios/ (tienes copia de seguridad en el disco de backup)
-  Nos bajamos la que queramos de las tres, ya que el core no implementa region locking, y la metemos en:
-  ~/.config/retroarch/system/pcsx2/bios/
-ADEMÁS DE LA BIOS, se necesita tener "bin/resources" copiado al mismo sitio:
-cp -R bin/resources ~/.config/retroarch/system/pcsx2/bios/
-
---RECUERDA QUE EL CORE NO ES COMPATIBLE CON RUNAHEAD!! Para desactivarlo sólo para este core, creamos el archivo
-~/.config/retroarch/config/LRPS2/LRPS2.cfg con el contenido:
-run_ahead_enabled = "false"
-
---Las opciones del core las dejamos como vienen por defecto:
-Renderer: Auto
-Internal Resolution: 1xNative (PS2)
-Mipmapping: ON
 
 ******Carmageddon en GNU/Linux***********************************************************************************************
 
@@ -1004,20 +927,6 @@ una versión del UTMT más moderna, que conozca los heuristics de esa versión. 
 PETAN EN LINUX, Y NO SE PUEDE USAR NATIVAMENTE PORQUE USA CIERDA MIERDA QUE LO HACE EXCLUSIVO DE WINDOWS, ASÍ QUE ES WINE O NADA).
 
 CON ESO QUE TE ACABO DE EXPLICAR, DEBERÍAS SER CAPAZ DE AVERIGUAR QUÉ APK PUEDES USAR COMO DONANTE PARA UN data.win/game.droid DETERMINADO.
-
-******RetroArch en Android***************************************************************************************************
-
-Instálalo desde FDroid. Viene sin cores. Para instalar los cores, lo primero ve a "Online Updater -> Update Core Info Files",
-y después ya puedes ir a "Online Updater->Core Downloader" y descargar los cores que quieras de la lista.
-
-Para que no estén cambiamos los botones de OK y CANCELAR del mando, ve a "Settings->Input->Menu Controls->Swap OK and Cancel Buttons"
-y desactívalo.
-
-Para poder usar el teclado, ve a "Settings->Input->Select Physical Keyboard" y selecciónalo.
-
-Para meterle juegos a saco, los puedes copiar en:
-/media/manuel/<nombre_partición_grande>/media/0/Roms (tienes que crear "Roms")
-y las BIOS van en /media/manuel/<nombre_partición_grande>/media/0/RetroArch/system
 
 ******PPSSPP, el emulador de PSP en GNU/LINUX***************************************************************************
 
@@ -1461,121 +1370,6 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_QT_FRONTEND=OFF -DBUILD_MINI_FRONTEN
 --Para ponerlo en FULLSCREEN, es en "Interface Settings -> Start Fullscreen".
 
 --Para seleccionar el directorio de las BIOS, es en la categoría "BIOS Selection"
-
-CROSSCOMPILAR DOSBOX-CORE PARA ARM64
-====================================
-NOTA PREVIA: En Debian, el sistema es "ARM64", pero el compilador sigue siendo "AARCH64", ojo.
-
--Instalamos el cross-compilador:
-sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-
--Instalamos otra herramienta que nos hace falta en el host:
-apt-get install libtool-bin
-
--Instalamos el debootstrap
-sudo apt-get install debootstrap
-
--Instalamos los componentes que nos permitan ejecutar binarios arm64 en x86_64:
-sudo apt install qemu-user-static biplatform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
-WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0nfmt-support
-
--Creamos el directorio para el rootfs:
-mkdir ~/root_arm64
-
--Creamos el rootfs para AARCH64, usando como base Debian Trixie (Debian 13) que es la última estable:
-sudo debootstrap --arch=arm64 --no-check-gpg --variant=minbase bookworm ~/root_arm64 http://deb.debian.org/debian
-
--Nos chhrooteamos en el nuevo sistema e instalamos algunas cosas que necesitamos:
-sudo mount -t proc /proc ~/root_arm64/proc
-sudo mount -t sysfs /sys ~/root_arm64/sys
-sudo mount --bind /dev ~/root_arm64/dev
-sudo chroot ~/root_arm64
-
-apt-get install libasound2-dev
-
---IMPORTANTE: Tras salir del chroot, desmontamos los pseudo-filesystems que montamos antes de entrar:
-sudo umount ~/root_arm64/dev
-sudo umount ~/root_arm64/sys
-sudo umount ~/root_arm64/proc
-
--Clonamos el repo de dosbox-core:
-git clone --depth 1 https://github.com/libretro/dosbox-core.git
-
--Editamos libretro/Makefile.libretro y cambiamos las líneas:
-CMAKE=$(cross_prefix)cmake
-PKGCONFIG=$(cross_prefix)pkg-config
-por:
-CMAKE=cmake
-PKGCONFIG=pkg-config
-(Esto es porque tanto CMAKE como PKGCONFIG son herramientas que NO se deben coger del rootfs de destino, 
-sino que deben ser los del sistema donde estamos cross-compilando, a poco que lo pienses lo entiendes;
-ni siquiera existen "aarch64-linux-gnu-pkg-config" o similares... no tiene sentido).
-
--Crosscompilamos con:
-
-cd libretro
-
-make \
-TARGET_TRIPLET=aarch64-linux-gnu \
-CC="aarch64-linux-gnu-gcc --sysroot=$HOME/root_arm64" \
-CXX="aarch64-linux-gnu-g++ --sysroot=$HOME/root_arm64" \
-platform=unix \
-platform=unix WITH_FAKE_SDL=1 STATIC_LIBCXX=1 \
-WITH_DYNAREC=arm64 WITH_FLUIDSYNTH=0 BUNDLED_AUDIO_CODECS=0 BUNDLED_GLIB=0 BUNDLED_LIBSNDFILE=0 WITH_PINHACK=0 WITH_VOODOO=0 WITH_BASSMIDI=0
-
-********CROSSCOMPILAR el core libretro Swanstation(Duckstation)************
-
-La idea es crosscompilar en X86_64 para aarch64 (arm64).
-
--Instalamos los paquetes:
-sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-
--Copiamos el rootfs a /opt/DEBIAN_ROOT, excluyendo home, con:
-sudo rsync -av --progress /media/manuel/DEBIAN_ROOT /opt/ --exclude DEBIAN_ROOT/home/pi
-
--Bajamos la última release estable de aquí:
-https://github.com/kivutar/swanstation/releases
-
--Creamos en el raiz de los sources (o donde nos de la gana) el cmake toolchain file, donde le especificamos todo lo necesario
-para crosscompilar para aarch64.
-Yo lo he llamado toolchain.cmake, con el contenido:
-
-# Target system
-SET(CMAKE_SYSTEM_NAME Linux)
-SET(CMAKE_SYSTEM_PROCESSOR aarch64)
-
-SET(CMAKE_SYSROOT /opt/DEBIAN_ROOT)
-#set(CMAKE_FIND_ROOT_PATH /opt/DEBIAN_ROOT)
-
-# Cross compiler
-SET(CMAKE_C_COMPILER   aarch64-linux-gnu-gcc)
-SET(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)
-SET(CMAKE_LIBRARY_ARCHITECTURE aarch64-linux-gnu)
-SET(CMAKE_PREFIX_PATH /opt/DEBIAN_ROOT/usr/lib/aarch64-linux-gnu)
-
-SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
-SET(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
-
--Ahora creamos el directorio de compilación y nos movemos a él:
-
-mkdir build
-cd build
-
--Configuramos pasándole el cmake toolchain file así:
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO_CORE=ON -DENABLE_CHEEVOS=OFF -DENABLE_DISCORD_PRESENCE=OFF \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2" \
--DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ..
-
--Compilamos con make, y comprobamos el ejecutable, que sea aarch64:
-file duckstation_libretro.so
-
-¡¡Y listo!! Menuda aventura macho....
-
-NOTAS ADICIONALES para el core:
-
-SI DUCKSTATION DA SEGFAULT AL SELECCIONAR VULKAN, VE A SETTINGS->VIDEO->OUTPUT Y EN "OUTPUT" SELECCIONA "VULKAN"
 
 ******Sonic Robo Blast 2 en GNU/Linux****************************************************************************************
 
@@ -2495,67 +2289,6 @@ JUEGOS Y DEMOS DE AMIGA
 =======================
 
 https://ftp2.grandis.nu/turran/FTP/
-
-CORE DOSBOX PURE
-================
-
-Clonamos su repo:
-
-git clone --depth 1 https://github.com/libretro/dosbox-pure.git
-
-Compilamos con make -j4 sin más.
-
-Para que no nos molesten las hotkeys de RetroArch al teclear palabras, tenemos que poner una tecla para el HOTKEY ENABLE en:
-Settings -> Input -> Hotkeys -> Hotkey Enable
-Al tener configurada una tecla para HOTKEY ENABLE, las hotkeys NO están activas a no ser que pulses esa tecla, y así no molestan.
-Y recuerda que puedes quitar todas las hotkeys una a una poniéndote encima de ellas en Settins -> Input -> Hotkeys y presionando la tecla DELETE.
-
-Los juegos que se usan (en ZIP) son los de la colección EXODOS, que está aquí:
-https://exodos.the-eye.us/
-
-CORE DOSBOX RETROARCH: ACTIVAR DYNREC
-=======================================
-
-Hay que pasarle los flags de dynrec, unaligned memory y tal en el Makefile.libretro. Las platform definitions para la Pi2 están así:
-
-# Raspberry Pi 2
-else ifeq ($(platform), rpi2)
-   TARGET := $(TARGET_NAME)_libretro.so
-   LDFLAGS += -shared -Wl,--version-script=libretro/link.T
-   fpic = -fPIC
-
-   ENDIANNESS_DEFINES := -DLSB_FIRST
-   COMMONFLAGS += -DARM
-   COMMONFLAGS += -mfloat-abi=hard
-   COMMONFLAGS += -marm -mtune=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -fstrict-aliasing
-   COMMONFLAGS += -DDISABLE_EXCEPTIONS
-   COMMONFLAGS += -DC_DYNREC -DC_TARGETCPU="ARMV7LE" -DC_UNALIGNED_MEMORY
-   IS_X86 := 0
-   NEED_BPP := 16
-
-
-Luego nos vamos a
-
-libretro/dosbox.cpp
-
-Buscamos el bloque:
-
-const char* cores[] = { "auto",
-#if (C_DYNAMIC_X86) || (C_DYNREC)
-		"dynamic",
-#endif
-		"normal", "simple",0 };
-Pstring = secprop->Add_string("core",Property::Changeable::WhenIdle,"auto");
-
-Y lo dejamos así:
-
-const char* cores[] = { 
-                "dynamic"};
-Pstring = secprop->Add_string("core",Property::Changeable::WhenIdle,"dynamic");
-
-Compilamos con:
-
-make -f Makefile.libretro -j8 platform=rpi2
 
 *******OpenXComm, el UFO para la GNU/Linux***********************************************
 
@@ -4772,11 +4505,6 @@ https://www.moddb.com/games/wolfenstein-3d/addons/ecwolf-rmst
 Al final, mi script wolf3d contiene esta línea para lanzar el ECWOLF a mi gusto:
 ./ecwolf --noadaptive --audiobuffer 512 --file hdpack.pk3 hdmus.pk3
 
-NOTA: SI USAS EL CORE DE RETROARCH, pon los datos y el EXE de la versión de ACTIVISION, NO la original de Apogee, y a Retroarch, además del core, le pasas el WOLF3D.EXE.
-Y se compila con:
-
-CFLAGS="-O2 -march=native -mtune=native -O2" cmake -DLIBRETRO=1 ..
-
 ***********Half Life (XASH3D) en GNU/Linux **********************************************************************************************
 
 XASH3D SOPORTA AHORA TANTO OPENGL COMO GLES1 Y GLES2, SIN WRAPPERS NI NADA.
@@ -5437,14 +5165,6 @@ Para X Coordinate e Y Coordinate, usa 854x480. Para el tamaño máximo del juego
 Instalar cosas:
 sudo apt-get install libedit-dev pyhton-yaml
 editar el makefile para añadir los cflags. Compilar y listo.
-
-*************Core Cannonball (OutRun engine) en la Rpi*****************************************************************************************
-
-Necesitamos un directorio /roms donde metemos las roms del juego (es el romset del MAME y si te falta una eprom, es del SET B)
-donde metemos también el directorio /res que viene con los sources.
-Es decir, /res quedaría como /roms/res.
-En /roms, creamos un archivo vacío llamado outrun.game, y lanzaríamos el core como:
-retroarch -L ~/.config/retroarch/cores/cannonball-libretro.so roms/outrun.game
 
 *************Compilar Cannonball (OutRun engine) versión SDL2 en Rpi***************************************************************************
 
@@ -10462,21 +10182,6 @@ y copiamos el directorio "Content" que viene con los sources, de manera que tend
 Para que nos reconozca el gamepad si no está en la base de datos de SDL2, mete el gamecontrollerdb.txt en ~/.config/Jazz²\ Resurrection/
 o en ~/jazz2/Content/
 
-Juegos PICO8 en GNU/Linux usando el core de libretro "fake-08"
-==============================================================
-
-Clonamos el repo:
-
-git clone --depth 1 --recurse-submodules -b libretro-core https://github.com/jtothebell/fake-08.git
-
-cd fake-08/platform/libretr
-make -j4
-
-También podríamos compilar una versión SDL2 usando el branch principal, con:
-
-git clone --depth 1 https://github.com/jtothebell/fake-08.git
-make sdl2 -j4
-
 HEART OF DARKNESS en GNU/Linux (HODE)
 =====================================
 
@@ -10719,42 +10424,6 @@ Si nos falta alguna, la instalamos:
 sudo apt-get install libstdc++6:armhf
 
 NO CONFUNDAS libstd con libc, son cosas distintas.
-
-EASYRPG, EL MOTOR DE RPGMAKER 2000/2003 EN LINUX
-================================================
-OJO: Para juegos de RPGMaker XP, se usa "mkxp" que es otro motor opensource distinto.
-
-LO COMPILAMOS COMO UN CORE PARA LIBRETRO
-
---Instalamos dependencias previas:
-apt-get install libexpat1-dev libpixman-1-dev libfmt-dev libsndfile1-dev --no-install-recommends
-
---Instalamos liblcf, que es parte del proyecto EASYRPG, así que hay que instalarla a mano:
-----Instalamos dependencias previas:
-apt-get install libinih-dev
-----Bajamos la última versión estable de: https://github.com/EasyRPG/liblcf/releases
-----Configuramos con:
-mkdir b4
-cd b4
-cmake .. -DLIBLCF_WITH_ICU=0 \
--DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native"
-----PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
-for f in $(cat install_manifest.txt) ; do rm "$f"; done
-
---Ahora vamos a por EASYRPG en sí mismo:
-----Clonamos los últimos sources estables (ver en "Branches" cuál es el último, ahora mismo es el 0.8.1):
-git clone --depth 1 --recurse-submodules https://github.com/EasyRPG/Player.git -b 0-8-1-stable
-----Configuramos y compilamos con:
-mkdir b4
-cd b4
-cmake .. -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON \
--DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_C_FLAGS="-march=native -mtune=native"
-
-Y ya podríamos ejecutar juegos con:
-retroarch -L core <.zip o .exe del juego hecho con RPG Maker>
 
 INSTALAR DRIVER IMPRESORA CANON
 ===============================

@@ -383,6 +383,23 @@ NOTAS JUEGOS DOSBOX
 --Dicho lo anterior, el Rusty lo debes poner a 3000 ciclos, no más, y si usas el kernel Cachyos, puedes usar el audio ALSA (no hace falta
 Alsathread) con 32ms de latencia.
 
+CORE DOSBOX PURE
+================
+
+Clonamos su repo:
+
+git clone --depth 1 https://github.com/libretro/dosbox-pure.git
+
+Compilamos con make -j4 sin más.
+
+Para que no nos molesten las hotkeys de RetroArch al teclear palabras, tenemos que poner una tecla para el HOTKEY ENABLE en:
+Settings -> Input -> Hotkeys -> Hotkey Enable
+Al tener configurada una tecla para HOTKEY ENABLE, las hotkeys NO están activas a no ser que pulses esa tecla, y así no molestan.
+Y recuerda que puedes quitar todas las hotkeys una a una poniéndote encima de ellas en Settins -> Input -> Hotkeys y presionando la tecla DELETE.
+
+Los juegos que se usan (en ZIP) son los de la colección EXODOS, que está aquí:
+https://exodos.the-eye.us/
+
 *******Compilar el core libretro Yabause***********
 
 Clonamos su repo:
@@ -397,3 +414,18 @@ La bios tiene que ir en ~/.config/retroarch/system/saturn_bios.bin o ~/.config/r
 
 (OJO: Tienes que tener puesto el driver de vídeo en GLCORE, o en SETTINGS->CORE, permitir que los cores hagan el cambio de driver de vídeo).
 (OJO: requiere OpenGL 4.1 o algo así, y NO FUNCIONA CON VULKAN, GLES, GLES2 ni GLES3, así que olvídate de que funcione en la Raspberry Pi 4).
+
+Juegos PICO8 en GNU/Linux usando el core de libretro "fake-08"
+==============================================================
+
+Clonamos el repo:
+
+git clone --depth 1 --recurse-submodules -b libretro-core https://github.com/jtothebell/fake-08.git
+
+cd fake-08/platform/libretr
+make -j4
+
+También podríamos compilar una versión SDL2 usando el branch principal, con:
+
+git clone --depth 1 https://github.com/jtothebell/fake-08.git
+make sdl2 -j4

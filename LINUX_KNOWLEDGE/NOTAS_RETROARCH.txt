@@ -943,6 +943,14 @@ RECUERDA: Este es un core de 44100 Hz, se nota mucho, usa esa frecuencia de audi
 
 RECUERDA, SI NO USAS WAYLAND: Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
 
+*************CANNONBALL (OutRun engine)*************
+
+Necesitamos un directorio /roms donde metemos las roms del juego (es el romset del MAME y si te falta una eprom, es del SET B)
+donde metemos también el directorio /res que viene con los sources.
+Es decir, /res quedaría como /roms/res.
+En /roms, creamos un archivo vacío llamado outrun.game, y lanzaríamos el core como:
+retroarch -L ~/.config/retroarch/cores/cannonball-libretro.so roms/outrun.game
+
 *******Beetle-Saturn********************************
 
 git clone --depth 1 https://github.com/libretro/beetle-saturn-libretro.git
@@ -983,3 +991,106 @@ PARA FRAMERATE ESTABLE:
 --Deja "Buffer Graphis Commands" a 1, no lo desactives porque entonces la CPU y la GPU no pueden trabajar en paralelo.
   Los 120Hz compensan el input lag debido a esto, y de todos modos seguramente la máquina real también tiene un buffer de comandos de la GPU.
 --Activa "Duplicate Frames in 30Hz games"
+
+******DOLPHIN LIBRETRO*********************************************************************************
+
+--Compilamos su repo así:
+git clone --recursive --depth 1 https://github.com/libretro/dolphin.git
+
+--Compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_MGBA=OFF -DENABLE_AUTOUPDATE=OFF \
+-DUSE_DISCORD_PRESENCE=OFF -DENABLE_TESTS=OFF -DENABLE_TESTS=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+		--OPCIONES DE CONFIGURACIÓN--
+
+PARA FRAMEPACING PERFECTO CON ~120Hz (VRR no pinta nada, como en el Flycast):
+--En las opciones del core:
+----Core           -> Precission Frame Timing: ON
+----Core           -> Dual Core Mode:          OFF
+----Graphics/Hacks -> Skip Duplicate Frames:   OFF
+--En las opciones de RetroArch:
+----Settings -> Video -> Synchronization -> Vsync Swap Interval: 2
+(Y lo típico: "VSYNC" a "ON", y "SYNC TO EXACT" a "OFF")
+
+OTRAS OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACIÓN DE SHADERS:
+----"Wait for Shaders before starting" ON
+----"Speed Up Disc Transfer Rate"	   ON
+----"Shader Compilation Mode"		   A-SYNC UberShaders
+
+******EASYRPG, EL MOTOR DE RPGMAKER 2000/2003*******
+
+OJO: Para juegos de RPGMaker XP, se usa "mkxp" que es otro motor opensource distinto.
+
+--Instalamos dependencias previas:
+apt-get install libexpat1-dev libpixman-1-dev libfmt-dev libsndfile1-dev --no-install-recommends
+
+--Instalamos liblcf, que es parte del proyecto EASYRPG, así que hay que instalarla a mano:
+----Instalamos dependencias previas:
+apt-get install libinih-dev
+----Bajamos la última versión estable de: https://github.com/EasyRPG/liblcf/releases
+----Configuramos con:
+mkdir b4
+cd b4
+cmake .. -DLIBLCF_WITH_ICU=0 \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+----PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
+for f in $(cat install_manifest.txt) ; do rm "$f"; done
+
+--Ahora vamos a por EASYRPG en sí mismo:
+----Clonamos los últimos sources estables (ver en "Branches" cuál es el último, ahora mismo es el 0.8.1):
+git clone --depth 1 --recurse-submodules https://github.com/EasyRPG/Player.git -b 0-8-1-stable
+----Configuramos y compilamos con:
+mkdir b4
+cd b4
+cmake .. -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+Y ya podríamos ejecutar juegos con:
+retroarch -L core <.zip o .exe del juego hecho con RPG Maker>
+
+******PCSX2 LIBRETRO**************************************************************************************
+
+--Instalamos dependencias previas:
+apt-get install liblzma-dev
+
+--Clonamos su repo con sus submódulos:
+git clone --depth 1 https://github.com/libretro/ps2.git
+cd ps2
+git submodule update --init --recursive
+
+--Editamos "cmake/SearchForStuff.cmake", buscamos la línea "find_package(OpenGL REQUIRED)" y justo encima ponemos:
+set(OPENGL_USE_OPENGL ON)
+
+--Editamos "pcsx2/CMakeLists.txt", buscamos "OpenGL::GL" y lo cambiamos por "OpenGL::OpenGL".
+
+--Compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=TRUE -DUSE_OPENGL=TRUE \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+--La BIOS que necesitamos está en https://pcsx2.gitlab.io/ps2bios/ (tienes copia de seguridad en el disco de backup)
+  Nos bajamos la que queramos de las tres, ya que el core no implementa region locking, y la metemos en:
+  ~/.config/retroarch/system/pcsx2/bios/
+ADEMÁS DE LA BIOS, se necesita tener "bin/resources" copiado al mismo sitio:
+cp -R bin/resources ~/.config/retroarch/system/pcsx2/bios/
+
+--RECUERDA QUE EL CORE NO ES COMPATIBLE CON RUNAHEAD!! Para desactivarlo sólo para este core, creamos el archivo
+~/.config/retroarch/config/LRPS2/LRPS2.cfg con el contenido:
+run_ahead_enabled = "false"
+
+--Las opciones del core las dejamos como vienen por defecto:
+Renderer: Auto
+Internal Resolution: 1xNative (PS2)
+Mipmapping: ON
