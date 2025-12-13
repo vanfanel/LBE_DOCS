@@ -364,7 +364,7 @@ En VIDEO->SYNCHRONIZATION ponemos:
 "Vsync"							OFF
 "Sync to Exact"					ON
 En AUDIO->SYNCHRONIZATION ponemos:
-"Synchronization"				ON
+"Synchronization"				ON (No te molestes en probar distintos backends de audio, hace falta la sincronización sí o sí con este core).
 "Maximum Timing Skew"			0.0
 "Dynamic Audio Rate Control"	0.0
 
