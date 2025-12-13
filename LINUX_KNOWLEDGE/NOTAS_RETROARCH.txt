@@ -84,7 +84,7 @@ O bien le pasamos al kernel "idle=poll" y de esa manera se mantiene siemore la C
 (pero ojo que con esto sube la temperatura bastante).
 
 Y podemos hacer otras cosas en estos casos:
-----Pon también la gráfica en modo de alto rendimiento
+----Pon también la gráfica en modo de alto rendimiento (info de https://wiki.archlinux.org/title/AMDGPU)
 echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
 ----Pon el driver de audio PIPEWIRE
 ----Pon un modo de vídeo donde la electrónica del monitor genere menos variaciones:
