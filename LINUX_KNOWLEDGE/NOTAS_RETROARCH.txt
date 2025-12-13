@@ -547,6 +547,20 @@ ED sys:Codes
 #################FIN STARTUP-SEQUENCE PARA ROCKET RANGER#####################
 NOTA: SI TE DA ERROR EL MOUNT, ES QUE NO ESTÁS USANDO LA VERSIÓN CORRECTA DEL COMANDO: HAY QUE USAR LA DE WB 3.1.
 
+******FBNeo********************************************************************
+
+		SCROLL PERFECTO EN TODOS LOS JUEGOS CON "SYNC TO EXACT":
+
+--En las opciones de RetroArch
+----En VIDEO->SYNCHRONIZATION:
+"Vsync"							OFF
+"Sync to Exact"					ON
+----En AUDIO->OUTPUT, usa el driver ALSA (este core no va bien con el driver PIPEWIRE)
+----En AUDIO->SYNCHRONIZATION:
+"Synchronization"				OFF
+"Maximum Timing Skew"			0.0
+"Dynamic Audio Rate Control"	0.0
+
 ******NES en el core FBNeo*****************************************************
 
 OJO: NO TE COMPLIQUES CON TODO LO DE ABAJO SI PUEDES EVITARLO. LAS ROMS DE FBNEO ESTÁN TODAS EN:
