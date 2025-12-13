@@ -1,0 +1,26 @@
+TRUCAR UN JUEGO DE GBC PARA QUE SE IDENTIFIQUE COMO UN JUEGO DE GB
+==================================================================
+
+--Con Hexedit, nos vamos a la dirección 0x143 y cambiamos el byte 80 por 00.
+--Salvamos y salimos (CTRL+X)
+--Corregimos el checksum de la cabecera y el checksum global de la ROM con:
+rgbfix -f h juego.rom
+rgbfix -f g juego.rom
+
+USAR EL DEBUGGER DE BGB
+=======================
+
+--Para entrar en el debugger le damos a ESC
+--Le damos a CRTL+G para ir a una dirección de memoria (OJO!! No a una direción del Program Counter (PC),
+sino a una dirección donde sepueden leer y escribir valores).
+--Ponemos por ejemplo FF4F que es la dirección del VRAM BANK, que sólo se puede escribir en GBC y no en GB.
+--Hacemos click derecho en esa dirección y elegimos "Set Watchpoint" (los watchpoints son para que se pare
+en lecturas/escrituras a direcciones, y los breakpoints para que se pare en direcciones del PC). 
+--Ahí podemos poner un rango de direcciones (simplemente separa la dirección inicial y final con un guión)
+y el tipo (que se pare en lectura o en escritura).
+--IMPORTANTE: Le damos a ADD. Si no le damos, no se activa.
+--Salimos de esa ventana.
+
+--Una vez de vuelta en la ventana principal del debugger, le damos a CTRL+R para resetear,
+y F9 para inicial la ejecución del juego, y ya se debería parar en la lectura/escritura
+en la dirección en la que hemos puesto el watchpoint. 
