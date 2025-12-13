@@ -334,7 +334,11 @@ make REGENIE=1 -f Makefile.libretro -j8
 
 --Comprobamos que tenemos un frametime deviation mínimo (idealmente 0.0-0.1%). Sin esto, olvídate.
 --En las opciones del core MAME hay que activar el THROTTLE.
---En las opciones de RetroArch en AUDIO->SYNCHRONIZATION ponemos:
+--En las opciones de RetroArch:
+En VIDEO->SYNCHRONIZATION ponemos:
+"Vsync"							OFF
+"Sync to Exact"					ON
+En AUDIO->SYNCHRONIZATION ponemos:
 "Synchronization"				OFF
 "Maximum Timing Skew"			0.0
 "Dynamic Audio Rate Control"	0.0
@@ -349,7 +353,22 @@ git clone --depth 1 https://github.com/libretro/libretro-uae.git
 
 Se compila como los demás cores.
 
-			####¡¡¡¡MUY IMPORTANTE!!!! PRIMEROS AJUSTES DE BASE####
+		SCROLL TOTALMENTE SUAVE CON ADAPTIVE SYNC / VRR
+
+LO PRIMERO, TENEMOS QUE TENER UN FRAMETIME DEVIANCE MUY BAJO (Idealmente 0.0-0.1%)
+EN LA PARTE DE CONFIGURACIÓN DE VÍDEO DE RETROARCH TIENES CÓMO LOGRARLO.
+
+SE CONSIGUE CASI IGUAL QUE EN EL CORE MAME (sólo cambia que aquí no desactivamos AUDIO SYNCHRONIZATION)
+--En las opciones de RetroArch:
+En VIDEO->SYNCHRONIZATION ponemos:
+"Vsync"							OFF
+"Sync to Exact"					ON
+En AUDIO->SYNCHRONIZATION ponemos:
+"Synchronization"				ON
+"Maximum Timing Skew"			0.0
+"Dynamic Audio Rate Control"	0.0
+
+			####¡¡¡¡MUY IMPORTANTE!!!! PRIMEROS AJUSTES DEL SISTEMA AMIGA A EMULAR ####
 
 -NO se puede usar RUNAHEAD con este core, acuérdate de desactivarlos: según el propio autor del core, la carga de savestates
 es muy lenta lo que lo hace imposible. 
@@ -426,16 +445,6 @@ o los .slave de los juegos WHDLinstall, o directamente los .lha que contengan ju
 
 Tienes todos los juegos instalados con los últimos slaves de WHDLoad listos para usar en:
 https://gamesnostalgia.com/whdownload
-
-		SCROLL TOTALMENTE SUAVE CON ADAPTUVE SYNC / VRR
-
-LO PRIMERO, TENEMOS QUE TENER UN FRAMETIME DEVIANCE MUY BAJO (Idealmente 0.0-0.1%)
-EN LA PARTE DE CONFIGURACIÓN DE VÍDEO DE RETROARCH TIENES CÓMO LOGRARLO.
-
-SE CONSIGUE CASI IGUAL QUE EN EL CORE MAME (sólo cambia que aquí no desactivamos AUDIO SYNCHRONIZATION)
---En las opciones de RetroArch en AUDIO->SYNCHRONIZATION ponemos:
-"Maximum Timing Skew"			0.0
-"Dynamic Audio Rate Control"	0.0
 
 --Para pasarle parámetros CUSTOM de WHDLoad:
 Pulsa repetidamente los botones RED y BLUE del mando de CD32 (que normalmente son el A y el B de un mando de SNES)
