@@ -1,3 +1,9 @@
+ERROR DE GOWIN IDE CON LAS LIBRERÍAS LIBFREETYPE ("UNDEFINED SYMBOL...")
+========================================================================
+
+Ve al directorio lib, y renombra "libfreetype.so.6" a "libfreetype.so.6.bak"
+para que así use la versión de libfreetype del sistema.
+
 TRUCAR UN JUEGO DE GBC PARA QUE SE IDENTIFIQUE COMO UN JUEGO DE GB
 ==================================================================
 
