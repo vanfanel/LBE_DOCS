@@ -5,6 +5,7 @@ COMPILAR UN PROGRAMA DE GAMEBOY
   y mandamos "rgbasm", "rgblink" y "rgbfix" a /usr/local/bin
 
 --Creamos prueba.asm con el contenido de un ejemplo básico.
+Tienes un tutorial que empieza desde lo más básico en: https://gbdev.io/gb-asm-tutorial/
 Tienes ejemplos en: https://github.com/tbsp/simple-gb-asm-examples
 
 --Compilamos con:
