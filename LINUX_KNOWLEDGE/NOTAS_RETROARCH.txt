@@ -51,7 +51,7 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
   Esto es lo que llamo el "test de frametime deviation", sin esto no puedes estar seguro de que Sync to Exact vaya a ir bien en tu sistema
   aunque el scroll del rooster del MK vaya aparentemente bien. 		
 
-DISMINUIR EL FRAMETIME DEVIATION:
+LO PRIMERO: DISMINUIR EL FRAMETIME DEVIATION PARA TENER VÍDEO ESTABLE
 
 OPCIÓN 1: BIOS QUE NOS DEJA DESACTIVAR LOS "C-STATES" Y LOS "DF C-STATES":
 
@@ -66,6 +66,33 @@ https://instinct.docs.amd.com/projects/system-acceptance/en/latest/common/bios-s
 NOTA: La desactivación de los C-STATES y los DF CSTATES" no se puede sustituir por nada del SO, porque es a nivel de hardware,
 así que no pierdas el tiempo intentando pasarle parámetros al kernel buscando resultados similares (los CSTATES que gestiona
 el kernel mediante el parámetro "max_cstates" son distintos).
+
+--También podemos controlar el rendimiento de la gráfica, aunque esto se nota menos.
+(info de https://wiki.archlinux.org/title/AMDGPU)
+----Para ver los perfiles de rendimiento disponibles:
+cat /sys/class/drm/card0/device/pp_power_profile_mode
+Los más interesantes son 1 (3D_FULL_SCREEN), 3 (VIDEO). El 5 (COMPUTE) es para OpenCL así que nada.
+----Para poner un perfil, primero ponemos el control en manual y luego establecemos el perfil:
+echo "manual" | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
+echo "1" | sudo tee /sys/class/drm/card0/device/pp_power_profile_mode
+-----OTRAS OPCIONES---- 
+----Para poner al máximo la GPU y la memoria de la GPU:
+echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level 
+----Para vigital los C-STATES de la GPU:
+watch -n 0.2 cat /sys/class/drm/card0/device/pp_od_clk_voltage
+----Para vigilar la frecuencia de la GPU:
+watch -n 0.2 cat /sys/class/drm/card0/device/pp_dpm_sclk
+----Para vigilar la frecuencia de la memoria de la GPU:
+watch -n 0.2 cat /sys/class/drm/card0/device/pp_dpm_mclk
+----También es posible prohibirle al driver entrar en ciertos P-STATES, por ejemplo para evitar problemas
+con P-STATES profundos de ahorro de energía, que pueden causar parpadeos o stuttering.
+Para forzar el estado más alto en la VRAM y a la vez permitir que la GPU se ponga a frecuencias más bajas,
+buscamos el P-STATE más alto y lo establecemos:
+cat /sys/class/drm/card0/device/pp_dpm_mclk
+echo "manual" | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
+echo "3" | sudo tee /sys/class/drm/card0/device/pp_dpm_mclk
+...Y si quisiésemos permitir sólo los tres P-STATES más altos de la GPU, haríamos algo como:
+echo "5 6 7" |sudo tee /sys/class/drm/card0/device/pp_dpm_sclk
 
 OPCIÓN 2: ALTERNATIVAS PARA REDUCIR EL FRAMETIME DEVIATION BIOS QUE NO NOS DEJA DESACTIVAR LOS "C-STATES" Y LOS "DF C-STATES":
 
@@ -83,10 +110,10 @@ echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
 O bien le pasamos al kernel "idle=poll" y de esa manera se mantiene siemore la CPU a su frecuencia nominal (4.2HGz en el Ryzen 7 8700G).
 (pero ojo que con esto sube la temperatura bastante).
 
-Y podemos hacer otras cosas en estos casos:
-----Pon también la gráfica en modo de alto rendimiento (info de https://wiki.archlinux.org/title/AMDGPU)
-echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
-----Pon el driver de audio PIPEWIRE
+----Prueba el driver de audio PIPEWIRE, aunque ya sabes que algunos cores no van bien con él (Flycast, FBNeo)
+    al menos que quede documentado que si no puedes desactivar los C-STATES y DF-CSTATES,
+    el driver PIPEWIRE te baja un 1% el frametime deviation.
+    Pero si puedes desactivar los C-STATES y DF-CSTATES, usa ALSA, que en este caso no mete más deviation.
 ----Pon un modo de vídeo donde la electrónica del monitor genere menos variaciones:
 wlr-randr --output DP-1 --custom-mode 1920x1080@119.427000
 ...Quizá se pueda buscar una frecuencia aún más ideal: hemos empezado bajando desde .430000
@@ -103,8 +130,9 @@ Opción 3: LOTTES
 
 		--AUDIO--
 	
-Driver PIPEWIRE o ALSA (Flycast), 48000 Hz, 32ms, resampler quality normal.
-Si usas "Sync to Exact" sin VSYNC, en muchos cores puedes desactivar la sincronización,
+Driver ALSA en general, 48000 Hz, 32ms, resampler quality normal.
+Se puede usar el driver PIPEWIRE, pero con algunos cores no va bien (Flycast, FBNeo)
+Si en el vídeo usas "Sync to Exact" sin VSYNC, en muchos cores puedes desactivar la sincronización,
 poner los demás valores de sincronización de audio a 0, y es como sonará bien.
 
 		--LATENCY--
