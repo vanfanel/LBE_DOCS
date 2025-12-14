@@ -78,8 +78,8 @@ echo "1" | sudo tee /sys/class/drm/card0/device/pp_power_profile_mode
 -----OTRAS OPCIONES---- 
 ----Para poner al máximo la GPU y la memoria de la GPU:
 echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level 
-----Para vigital los C-STATES de la GPU:
-watch -n 0.2 cat /sys/class/drm/card0/device/pp_od_clk_voltage
+----Para ver los C-STATES de la GPU:
+cat /sys/class/drm/card0/device/pp_od_clk_voltage
 ----Para vigilar la frecuencia de la GPU:
 watch -n 0.2 cat /sys/class/drm/card0/device/pp_dpm_sclk
 ----Para vigilar la frecuencia de la memoria de la GPU:
@@ -90,8 +90,10 @@ Para forzar el estado más alto en la VRAM y a la vez permitir que la GPU se pon
 buscamos el P-STATE más alto y lo establecemos:
 cat /sys/class/drm/card0/device/pp_dpm_mclk
 echo "manual" | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
-echo "3" | sudo tee /sys/class/drm/card0/device/pp_dpm_mclk
-...Y si quisiésemos permitir sólo los tres P-STATES más altos de la GPU, haríamos algo como:
+echo "1" | sudo tee /sys/class/drm/card0/device/pp_dpm_mclk
+
+Ejemplo que no tiene sentido en mi GPU porque sólo tiene dos P-STATES, 0 y 1:
+Si quisiésemos permitir sólo los tres P-STATES más altos de la GPU, haríamos algo como:
 echo "5 6 7" |sudo tee /sys/class/drm/card0/device/pp_dpm_sclk
 
 OPCIÓN 2: ALTERNATIVAS PARA REDUCIR EL FRAMETIME DEVIATION BIOS QUE NO NOS DEJA DESACTIVAR LOS "C-STATES" Y LOS "DF C-STATES":
