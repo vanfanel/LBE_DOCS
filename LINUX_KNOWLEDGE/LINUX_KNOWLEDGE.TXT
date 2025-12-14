@@ -9001,19 +9001,17 @@ CXXFLAGS="-march=native -mtune=native" \
 make -f Makefiles/Makefile.UNIX -j10
 
 --Creamos el directorio ~/model3, y copiamos allí los directorios "Config" y "Assets" que vienen con los sources.
-Metemos también en ~/model3 los zips que queramos de juegos, y los lanzamos con:
+--Creamos el directorio ~/model3/roms, y metemos allí los zips que queramos de juegos.
 
-./supermodel -fullscreen -res=1920,1080 -channels=2 -true-hz daytona2.zip
+--Ejecutamos "supermodel" sin ningún parámetro para configurar lo que necesitemos:
+  Ponemos una resolución de 1920x1080, FullScreen, WideScreen, WideBackground, Throttle.
+  Ponemos la frecuencia de vídeo a 57.5000, y lo mismo en el audio.
+  En el modo de rendering por quads parece que no hay tantos "saltitos" durante el modo demo del Sega Rally 2.
 
---Le podríamos dar un modo de vídeo de 57.524Hz y pasarle "-true-hz", para que vaya a los frames originales si notas la emulación
-muy justa con algún juego.
-Pero NO intentes correrlo a 120Hz ni a 57.524Hz x2, porque aunque parece ir suave, luego se desincroniza (ver scroll
-del banner "Rolling Start" del Daytona USA 2). No se nota ningún input lag a 60Hz, así que no te compliques.
+--Si queremos lanzamor juegos sin pasar por el menú, lo hacemos así:
+./supermodel daytona2.zip
 
---PARA CONFIGURAR LOS CONTROLES: Ejecuta simplemente "supermodel -config-inputs", y puedes usar las flechas ARRIBA Y ABAJO del teclado
-para saltarte los controles que no te intererese configurar. Para configurar una tecla, dale a INTRO, y ya al botón o eje que sea.
-
---NOTA: Si no le pasas "-channels=2", no se oirá porque por defecto Supermodel intenta abrir un sistema de audio de 4 canales,
+--NOTA: Si usas ALSA y no se oye, pásale "-channels=2": por defecto Supermodel intenta abrir un sistema de audio de 4 canales,
 que no tenemos.
 
 --NOTA: Cuando al iniciar un juego nos de el error "Network board not present", le damos al 6 para entrar en modo Test,
