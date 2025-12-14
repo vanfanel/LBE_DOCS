@@ -1,3 +1,23 @@
+PROGRAMA BÁSICO DE GAMEBOY
+==========================
+
+--Creamos prueba.asm con el contenido:
+
+SECTION "Main", ROM0
+
+Start:
+    ld a, $42
+    ld [$C000], a   ; escribe en WRAM C000
+    nop
+    nop
+    jp Start
+
+--Compilamos con:
+
+rgbasm -o prueba.obj prueba.asm
+rgblink -o prueba.gb prueba.obj
+rgbfix -v -p 0 prueba.gb
+
 ERROR DE GOWIN IDE CON LAS LIBRERÍAS LIBFREETYPE ("UNDEFINED SYMBOL...")
 ========================================================================
 
