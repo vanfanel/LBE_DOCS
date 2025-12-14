@@ -35,13 +35,11 @@ rgbfix -f g juego.rom
 
 USAR EL DEBUGGER DE BGB
 =======================
+NOTA: Recuerda que los watchpoints son para que se pare en lecturas/escrituras a direcciones,
+y los breakpoints para que se pare en direcciones del contador de programa (PC, instrucciones vamos).
 
 --Para entrar en el debugger le damos a ESC
---Le damos a CRTL+G para ir a una dirección de memoria (OJO!! No a una direción del Program Counter (PC),
-sino a una dirección donde sepueden leer y escribir valores).
---Ponemos por ejemplo FF4F que es la dirección del VRAM BANK, que sólo se puede escribir en GBC y no en GB.
---Hacemos click derecho en esa dirección y elegimos "Set Watchpoint" (los watchpoints son para que se pare
-en lecturas/escrituras a direcciones, y los breakpoints para que se pare en direcciones del PC). 
+--Nos vamos a Debug->Watchpoints o le damos a CTRL+J
 --Ahí podemos poner un rango de direcciones (simplemente separa la dirección inicial y final con un guión)
 y el tipo (que se pare en lectura o en escritura).
 --IMPORTANTE: Le damos a ADD. Si no le damos, no se activa.
