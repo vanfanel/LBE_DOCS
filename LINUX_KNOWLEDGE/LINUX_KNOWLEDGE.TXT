@@ -9004,7 +9004,7 @@ make -f Makefiles/Makefile.UNIX -j10
 --Creamos el directorio ~/model3/roms, y metemos allí los zips que queramos de juegos.
 
 --Ejecutamos "supermodel" sin ningún parámetro para configurar lo que necesitemos:
-  Ponemos una resolución de 1920x1080, Quad Rendering (parece más rápido que por triángulos), FullScreen, WideScreen, WideBackground, Throttle.
+  Ponemos una resolución de 1920x1080, FullScreen ON, WideScreen ON, WideBackground ON, Throttle ON, Vsync OFF, NoWhiteFlash ON.
   Ponemos la frecuencia de vídeo a 57.5000, y lo mismo en el audio.
 
 --Si queremos lanzamor juegos sin pasar por el menú, lo hacemos así:
