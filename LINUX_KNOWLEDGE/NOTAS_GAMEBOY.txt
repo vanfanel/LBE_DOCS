@@ -1,16 +1,11 @@
-PROGRAMA BÁSICO DE GAMEBOY
-==========================
+COMPILAR UN PROGRAMA DE GAMEBOY
+===============================
 
---Creamos prueba.asm con el contenido:
+--Nos bajamos la última versión de la suite RGBDS de https://rgbds.gbdev.io/install
+  y mandamos "rgbasm", "rgblink" y "rgbfix" a /usr/local/bin
 
-SECTION "Main", ROM0
-
-Start:
-    ld a, $42
-    ld [$C000], a   ; escribe en WRAM C000
-    nop
-    nop
-    jp Start
+--Creamos prueba.asm con el contenido de un ejemplo básico.
+Tienes ejemplos en: https://github.com/tbsp/simple-gb-asm-examples
 
 --Compilamos con:
 
