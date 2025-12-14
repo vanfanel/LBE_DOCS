@@ -1,3 +1,23 @@
+COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC
+===========================================
+
+--Nos bajamos el Gowin IDE 1.9.9 (las versiones más nuevas no valen).
+  También vamos a necesitar una licencia que se solicita gratis en: https://www.gowinsemi.com/en/support/license
+  ...Pero ya tienes una en el correo que vale durante un año, luego hay que solicitar otra.
+  Es un fichero .lic, tenlo a mano.
+
+--Clonamos uno de los forks de: https://github.com/ModRetro/chromatic_fpga/forks
+  Se clonan con: git clone --recurse-submodules <dirección del repositorio>
+  
+--Entramos en Gowin_V1.9.9_linux/IDE/lib y hacemos:
+mv libfreetype.so.6 libfreetype.so.6.bak
+...para que así use la versión de libfreetype del sistema y no nos de un error de "Undefined Symbol..."
+
+--Entramos en Gowin_V1.9.9_linux/IDE/bin y ejecutamos "gw_ide".
+
+--Abrimos el fichero "evt1_x2.gprj", le damos al icono de las dos flechas verdes que parecen el símbolo de reciclaje,
+  y en unos 5min debería estar.
+
 COMPILAR UN PROGRAMA DE GAMEBOY
 ===============================
 
