@@ -1,3 +1,11 @@
+REORDENAR LOS ARCHIVOS DE LA MICROSD PARA QUE APAREZCAN EN ÓRDEN ALFABÉTICO CUANDO METEMOS NUEVOS JUEGOS
+========================================================================================================
+
+Desmontamos la partición y le metemos un "fatsort":
+
+sudo umount /media/manuel/0403-0201
+sudo fatsort /dev/sda
+
 COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC
 ===========================================
 
@@ -43,7 +51,12 @@ para que así use la versión de libfreetype del sistema.
 TRUCAR UN JUEGO DE GBC PARA QUE SE IDENTIFIQUE COMO UN JUEGO DE GB
 ==================================================================
 
---Con Hexedit, nos vamos a la dirección 0x143 y cambiamos el byte 80 por 00.
+--Con Hexedit:
+----Para que tenga la cabecera de un juego DMG en vez de GBC, en la dirección 0x143 cambiamos el byte 80 por 00.
+----Para que NO se ponga en modo GBC ni siquiera en una GBC, vamos a la dirección 0x100 donde hay estos valores:
+00 C3 50 01
+...Y los cambiamos por:
+AF C3 50 01
 --Salvamos y salimos (CTRL+X)
 --Corregimos el checksum de la cabecera y el checksum global de la ROM con:
 rgbfix -f h juego.rom
