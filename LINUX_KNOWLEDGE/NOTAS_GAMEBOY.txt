@@ -11,6 +11,7 @@ COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC
 
 --Nos bajamos el Gowin IDE 1.9.9 (las versiones más nuevas no valen).
   También vamos a necesitar una licencia que se solicita gratis en: https://www.gowinsemi.com/en/support/license
+  Necesitarás la MAC de la WIFI del PC, que se obtiene con: ip link show
   ...Pero ya tienes una en el correo que vale durante un año, luego hay que solicitar otra.
   Es un fichero .lic, tenlo a mano.
 
