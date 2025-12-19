@@ -54,7 +54,12 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 LO PRIMERO: DISMINUIR EL FRAMETIME DEVIATION PARA TENER VÍDEO ESTABLE
 
-OPCIÓN 1: BIOS QUE SÍ DEJA DESACTIVAR LOS "C-STATES" Y LOS "DF C-STATES":
+OPCIÓN 1: DEACTIVAR LOS C-STATES DESDE EL KERNEL LINUX
+(Mejor opción si no queremos modificar nada en la BIOS)
+
+-Le pasamos al kernel: "processor.max_cstate=1"
+
+OPCIÓN 2: DESDE LA BIOS, SI TENEMOS UNA BIOS QUE DEJA DESACTIVAR LOS "C-STATES" Y LOS "DF C-STATES":
 
 -En la BIOS:
 ----En "Advanced\AMD CBS\CPU Common Options" desactivamos "GLOBAL C-STATES" y "CORE PERFORMANCE BOOST"
@@ -101,12 +106,11 @@ Ejemplo que no tiene sentido en mi GPU porque sólo tiene dos P-STATES, 0 y 1:
 Si quisiésemos permitir sólo los tres P-STATES más altos de la GPU, haríamos algo como:
 echo "5 6 7" |sudo tee /sys/class/drm/card0/device/pp_dpm_sclk
 
-OPCIÓN 2: ALTERNATIVAS PARA REDUCIR EL FRAMETIME DEVIATION BIOS QUE NO NOS DEJA DESACTIVAR LOS "C-STATES" Y LOS "DF C-STATES":
+ALTERNATIVAS PARA REDUCIR DE OTRAS MANERAS EL FRAMETIME DEVIATION (SÓLO SON CURIOSIDADES)
 
-Cuando no es posible desactivar los C-STATES en la BIOS por lo que sea, sólo queda la alternativa de IMPEDIR que la CPU
-entre en C-STATES bajos por las malas: manteniéndola en frecuencias que no son la mínima. 
+Podemos mantener la CPU en frecuencias que no son la mínima. 
 
-Podemos comprobar cómo varía la frecuencia de la CPU con:
+Para comprobar cómo varía la frecuencia de la CPU:
 watch -n0.2 "cat /proc/cpuinfo | grep MHz"
 
 Podemos poner la CPU a una velocidad fija "atrapándola" entre frecuencia máxima y mínima iguales:
