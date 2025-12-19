@@ -50,6 +50,7 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
   (no debe moverse ningún decimal en un buen rato) y una "dev" (significa "frametime deviation") de alrededor de 0.0-0.1% a 120Hz.
   Esto es lo que llamo el "test de frametime deviation", sin esto no puedes estar seguro de que Sync to Exact vaya a ir bien en tu sistema
   aunque el scroll del rooster del MK vaya aparentemente bien. 		
+  Hilo con explicación y más información: https://forums.blurbusters.com/viewtopic.php?t=13726
 
 LO PRIMERO: DISMINUIR EL FRAMETIME DEVIATION PARA TENER VÍDEO ESTABLE
 
