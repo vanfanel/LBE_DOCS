@@ -77,9 +77,8 @@ NOTA: La desactivación de los C-STATES y los DF CSTATES" no se puede sustituir 
 así que no pierdas el tiempo intentando pasarle parámetros al kernel buscando resultados similares (los CSTATES que gestiona
 el kernel mediante el parámetro "max_cstates" son distintos).
 
---También podemos controlar el rendimiento de la gráfica, aunque esto se nota menos.
+--También podemos controlar el rendimiento de la gráfica, aunque esto se nota menos:
 (info de https://wiki.archlinux.org/title/AMDGPU)
------OTRAS OPCIONES---- 
 ----Para poner al máximo la GPU y la memoria de la GPU:
 echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level 
 ----Para ver los C-STATES de la GPU:
