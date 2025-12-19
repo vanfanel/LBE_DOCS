@@ -58,7 +58,10 @@ OPCIÓN 1: DESACTIVAR LOS C-STATES DESDE EL KERNEL LINUX
 (Mejor opción para modificar lo mínimo en la BIOS: nos tiene que quedar un frametime deviation de 0.1%)
 
 -Le pasamos al kernel: "processor.max_cstate=1"
--En la BIOS: En "Advanced\AMD CBS\DF Common Options" desactivamos "DF CSTATES"
+-En la BIOS:
+----En "Advanced\AMD CBS\DF Common Options" desactivamos "DF CSTATES"
+----En "Advanced\AMD CBS\NBIO Common Options\GFX Configuration" ponemos "iGPU Configuration" a "UMA_GAME_OPTIMIZED"
+    (esto es sólo para un pequeño plus de estabilidad en el deviation, lo importante es quitar los C-STATES y el BOOST).
 
 OPCIÓN 2: DESACTIVAR LOS C-STATES DESDE LA BIOS (OJO: NO TODAS LAS BIOS LO PERMITEN):
 
