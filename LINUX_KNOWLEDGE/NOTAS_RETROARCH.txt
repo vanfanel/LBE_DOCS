@@ -55,9 +55,10 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 LO PRIMERO: DISMINUIR EL FRAMETIME DEVIATION PARA TENER VÍDEO ESTABLE
 
 OPCIÓN 1: DEACTIVAR LOS C-STATES DESDE EL KERNEL LINUX
-(Mejor opción si no queremos modificar nada en la BIOS)
+(Mejor opción para modificar lo mínimo en la BIOS: nos tiene que quedar un frametime deviation de 0.1%)
 
 -Le pasamos al kernel: "processor.max_cstate=1"
+-En la BIOS: En "Advanced\AMD CBS\DF Common Options" desactivamos "DF CSTATES"
 
 OPCIÓN 2: DESDE LA BIOS, SI TENEMOS UNA BIOS QUE DEJA DESACTIVAR LOS "C-STATES" Y LOS "DF C-STATES":
 
