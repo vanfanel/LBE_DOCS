@@ -180,8 +180,13 @@ https://github.com/jabadiagm/MSXgoauld_tn20k
     Lo único es eso, que la partición sea de menos de 4GB.
 ----Nos bajamos NEXTOR.SYS y "tools.zip" (el "tools.zip" lleva los comandos) de https://github.com/Konamiman/Nextor/releases
     Si no encuentras directamente "tools.zip", busca "command line tools".
-----Copiamos a la MicroSD como primer fichero el NEXTOR.SYS, y de momento podemos dejar los ficheros de "tools.zip" tirados en el directorio raiz.
-    Ya deberíamos poder arrancar al NEXTOR DOS con esta MicroSD sin problemas.
+----Copiamos a la MicroSD como primer fichero el NEXTOR.SYS (con eso ya arrancaría)
+----Creamos un directorio llamado "DOS" en la raíz de la tarjeta.
+----Descomprimimos "tools.zip" y de ahí metemos todos los .COM excepto COMMAND2.COM en el directorio "DOS".
+    Los .SYS los dejamos en la raíz de la tarjeta.
+----Creamos "AUTOEXEC.BAT" en el raíz de la tarjeta con el contenido:
+MODE 80
+SET PATH=A:\DOS; 
 
 FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
 ===========================================================================================
