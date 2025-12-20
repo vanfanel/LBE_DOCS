@@ -187,6 +187,7 @@ https://github.com/jabadiagm/MSXgoauld_tn20k
 ----Creamos "AUTOEXEC.BAT" en el raíz de la tarjeta con el contenido:
 MODE 80
 SET PATH=A:\DOS; 
+(¡¡¡¡OJO!!!! SI LO CREAS USANDO VIM, ANTES DE SALIR HAZ ":set ff=dos" Y LUEGO SALVA EL FICHERO, SI NO, ESTARÁ MAL Y DARÁ ERRORES).
 
 FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
 ===========================================================================================
