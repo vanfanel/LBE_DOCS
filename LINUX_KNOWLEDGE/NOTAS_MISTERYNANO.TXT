@@ -162,8 +162,10 @@ FLASHEAR EL CORE DE MSX
 openFPGALoader -f MSXnano.fs
 openFPGALoader --external-flash -o 0x100000 Nextor-2.1.1.WonderTANG.ROM.bin
 
---Flasheamos el BL616 usando el archivo "fpga_companion_m0sdock.bin" de:
-https://github.com/MiSTle-Dev/FPGA-Companion/releases
+--Como en el resto de cores, usando el BouffaloLabDevCube:
+  Flasheamos el BL616 usando el archivo "fpga_companion_m0sdock.bin" (si usamos el BL616 "externo" con el M0SDock)
+  o el "fpga_companion_nano20k.bin" (si queremos que el teclado vaya directo al USB de la TangNano 20k) de:
+  https://github.com/MiSTle-Dev/FPGA-Companion/releases
 
 FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
 ===========================================================================================
