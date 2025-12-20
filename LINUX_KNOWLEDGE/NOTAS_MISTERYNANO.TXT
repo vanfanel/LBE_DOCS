@@ -153,6 +153,18 @@ Para asegurar la máxima compatibilidad con juegos, cuando arranques el core:
 -En SYSTEM->C1541 ROM, selecciona "CBM DOS".
 -En SETTINGS, dale a SAVE SETTINGS y reinicia.
 
+FLASHEAR EL CORE DE MSX
+=======================
+
+--Bajamos el core y la ROM Nextor ya preparada los podemos descargar de:
+
+--Flasheamos el core y la ROM:
+openFPGALoader -f MSXnano.fs
+openFPGALoader --external-flash -o 0x100000 Nextor-2.1.1.WonderTANG.ROM.bin
+
+--Flasheamos el BL616 usando el archivo "fpga_companion_m0sdock.bin" de:
+https://github.com/MiSTle-Dev/FPGA-Companion/releases
+
 FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
 ===========================================================================================
 
