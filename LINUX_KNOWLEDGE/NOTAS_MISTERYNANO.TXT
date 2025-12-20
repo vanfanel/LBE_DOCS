@@ -175,6 +175,14 @@ https://github.com/jabadiagm/MSXgoauld_tn20k
 --Para configurar el core: Pulsa la tecla "g" durante el logo de MSX.
   Como por HDMI no da tiempo a que se vea, spamea la "g" cuando enciendas hasta que aparezca el menú.
 
+--Para preparar una MicroSD con NEXTOR:
+----Creamos una partición FAT16 primaria de menos de 4GB. Se puede hacer simplemente con el GPARTED. Puede ser una tarjeta moderna (SDHC, etc).
+    Lo único es eso, que la partición sea de menos de 4GB.
+----Nos bajamos NEXTOR.SYS y "tools.zip" (el "tools.zip" lleva los comandos) de https://github.com/Konamiman/Nextor/releases
+    Si no encuentras directamente "tools.zip", busca "command line tools".
+----Copiamos a la MicroSD como primer fichero el NEXTOR.SYS, y de momento podemos dejar los ficheros de "tools.zip" tirados en el directorio raiz.
+    Ya deberíamos poder arrancar al NEXTOR DOS con esta MicroSD sin problemas.
+
 FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
 ===========================================================================================
 
