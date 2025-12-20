@@ -167,6 +167,14 @@ openFPGALoader --external-flash -o 0x100000 Nextor-2.1.1.WonderTANG.ROM.bin
   o el "fpga_companion_nano20k.bin" (si queremos que el teclado vaya directo al USB de la TangNano 20k) de:
   https://github.com/MiSTle-Dev/FPGA-Companion/releases
 
+	NOTAS SOBRE EL USO DEL CORE
+	
+La información del core procede del proyecto original en el que está basado, que usaba la TangNano20k como una expansión:
+https://github.com/jabadiagm/MSXgoauld_tn20k
+
+--Para configurar el core: Pulsa la tecla "g" durante el logo de MSX.
+  Como por HDMI no da tiempo a que se vea, spamea la "g" cuando enciendas hasta que aparezca el menú.
+
 FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
 ===========================================================================================
 
