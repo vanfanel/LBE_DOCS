@@ -272,7 +272,7 @@ cd FPGA-Companion/src/bl616/
 --Compilamos pasándole las rutas del TOOLCHAIN y el SDK:
 CROSS_COMPILE=~/src/bouffalo/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf- BL_SDK_BASE=~/src/bouffalo/bouffalo_sdk/ make -j10
 
---El resultado queda en build/build_out/mfg_bl616*.bin
+--El resultado queda en build/build_out/fpga_companion_bl616.bin
 
 ARREGLAR EL TECLADO DEL THEC64 PARA EL CORE
 ===========================================
