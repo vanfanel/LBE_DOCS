@@ -187,8 +187,13 @@ https://github.com/jabadiagm/MSXgoauld_tn20k
 ----Creamos "AUTOEXEC.BAT" en el raíz de la tarjeta con el contenido:
 COLOR 2,1
 MODE 80
+SET ECHO=OFF
 SET PATH=A:\DOS; 
 (¡¡¡¡OJO!!!! SI LO CREAS USANDO VIM, ANTES DE SALIR HAZ ":set ff=dos" Y LUEGO SALVA EL FICHERO, SI NO, ESTARÁ MAL Y DARÁ ERRORES).
+
+FALLOS PARA REPORTAR CUANDO ABRAN LAS ISSUES:
+---El teclado se atasca si se pulsa derecha,izquierda rápido.
+---Layout del teclado: el OCM upstream tiene versiones distintas para cada layout.
 
 FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
 ===========================================================================================
