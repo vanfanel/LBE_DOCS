@@ -108,7 +108,7 @@ OPCIÓN 1 (RECOMENDADO): USANDO DXVK
  para instalarlo con sencillez, pero yo lo hago a mano y es lo que tengo en estas instrucciones. En teoría es lo mismo). 
 
 --Clonamos la última versión (podemos mirar el número de versión en https://github.com/doitsujin/dxvk/tags):
-git clone --depth 1 --recurse-submodules -b v2.7.1 https://github.com/doitsujin/dxvk.git
+git clone --depth 1 --recurse-submodules -b v2.7.1 https://github.com/doitsujin/dxvk.git dxvk-2.7.1
 
 --Compilamos las versions de 32 bits (no podemos pasar "-march=native" debido a este commit: https://github.com/doitsujin/dxvk/commit/d2c8e54d04b970342293e565377b8431b0bbe3fa):
 
