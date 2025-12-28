@@ -492,6 +492,27 @@ no puede generar audio en formato IEC958_SUBFRAME_LE. De hecho, ningún programa
 Se puede volcar y ver con:
 cat /sys/class/drm/card1-HDMI-A-0/edid | edid-decode
 
+******Hackeando el EDID para cambiar el modo PREFERRED de 60Hz a exactamente 119.879997Hz************************************
+
+Lo de 119.879997Hz es porque es el típico modo de no-exactamente-120Hz que traen los monitores porque a ese modo se sincronizan mejor.
+Lo he sacado simplemente mirando en wlr-randr.
+
+--Obtenemos el EDID de la pantalla:
+cp /sys/class/drm/card0-DP-1/edid ./edid2.bin
+NOTA PARA SABER MÁS: El modo que el compositor Wayland toma como PREFERRED es simplemente el primer mode que la pantalla trae como "detailed mode",
+cosa que podemos ver simplemente haciendo "edid-decode edid2.bin"
+
+--Editamos el edid con hexedit. El primer modo "detailed" empieza en la posición 0x36, así que nos vamos a esa posición,
+y ponemos los bytes:
+E6 73 80 18 71 38 2D 40 58 2C 45 00 0F 28 21 00 00 1E
+
+--Los bytes los he sacado pasándole a ChatGPT la línea de "edid-decode edid2.bin" correspondiente a 1920x1080 a 120Hz
+(ya que el modo de 119.879997 como tal no viene listado), que es esta:
+VIC  63:  1920x1080  120.000000 Hz  16:9    135.000 kHz    297.000000 MHz
+...Y pidiéndole:
+“Ajusta solo el pixel clock del DTD CEA 1080p (2200×1125) para que el refresco sea exactamente 119.879997Hz.
+ Dame los 2 bytes del pixel clock y los 18 bytes del DTD desde 0x36.”
+
 ******Hackeando el EDID para cambiar el rango de VRR (VRR range)*************************************************************
 INFO EN GRAN PARTE SACADA DE:
 https://wiki.archlinux.org/title/Variable_refresh_rate#Change_VRR_range_of_a_FreeSync_monitor
