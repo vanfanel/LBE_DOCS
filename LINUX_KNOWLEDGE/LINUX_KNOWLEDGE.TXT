@@ -1051,7 +1051,7 @@ cp -R resources/mapping-unicode.org ~/.config/dosbox/
 
 --Metemos las ROMs de MT32 (MT32_CONTROL.ROM, MT32_PCM.ROM) en ~/.config/dosbox/mt32-roms
 
-	AJUSTES EN DOSBOX.CONF
+		AJUSTES EN DOSBOX.CONF
 
 Está en ~/.config/dosbox/dosbox-staging.conf
 --Ponemos "integer_scaling" a "off"
@@ -1084,6 +1084,10 @@ por lo que si notas micro-stuttering puedes probar a añadir "--set dos_rate=59.
 wlr-randr --output DP-1 --custom-mode 1920x1080@60.00
 dosbox <juego>
 wlr-randr --output DP-1 --preferred
+
+		CONFIGURAR EL JOYSTICK
+		
+Entra en el Keymapper típico de dosbox con CTRL+F1. Es bastante fácil de configurar.
 
 		NOTAS SOBRE JUEGOS ESPECÍFICOS
 		
