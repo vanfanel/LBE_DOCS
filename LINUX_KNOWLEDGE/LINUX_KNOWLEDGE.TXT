@@ -1057,7 +1057,8 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 --Ponemos "integer_scaling" a "off"
 --Ponemos "cpu_cycles" a "10000" (los "cpu_protected_cycles" a "60000" están bien si no encuentras ningún juego que vaya lento con eso).
 --Ponemos "shader" a "crt-auto-arcade"
---Ponemos "negotiate" a "off" para evitar cortes de audio. Si aún así tenemos alguno en primera carga de algún juego,
+--EN CASO DE TENER CORTES DE AUDIO AL EMPEZAR ALGÚN JUEGO (Si no los tienes no hace falta):
+  Ponemos "negotiate" a "off" para evitar cortes de audio. Si aún así tenemos alguno en primera carga de algún juego,
   podemos pasarle a dosbox para ese juego "--set hard_disk_speed=medium"
 
 		SCROLL PERFECTO EN UN MONITOR CON VRR:
