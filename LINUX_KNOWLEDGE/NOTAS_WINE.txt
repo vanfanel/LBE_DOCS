@@ -19,7 +19,7 @@ meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled -Dgst-example
 
 VAMOS CON WINE EN SÍ:
 --Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
-git clone --depth 1 -b wine-11.0-rc3 https://gitlab.winehq.org/wine/wine.git wine-11.0-rc3
+git clone --depth 1 -b wine-11.0-rc4 https://gitlab.winehq.org/wine/wine.git wine-11.0-rc4
 --Configuramos con:
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
