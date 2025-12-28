@@ -1090,6 +1090,10 @@ wlr-randr --output DP-1 --preferred
 		CONFIGURAR EL JOYSTICK
 		
 Entra en el Keymapper típico de dosbox con CTRL+F1. Es bastante fácil de configurar.
+MUY IMPORTANTE: Dado que el joystick en DOS es analógico, si mapeas un DPAD digital a los ejes del joystick te irá mal
+(el personaje se queda "atascado" si te mueves muy rápido a izquierda y derecha).
+Así que para jugar con un DPAD digital, añade bindings de las direcciones del DPAD a las flechas del teclado
+(OJO: A las que aparecen como FLECHAS, no donde pone UP, DOWN, LEFT, RIGHT, sino donde hay unas FLECHAS dibujadas).
 
 		NOTAS SOBRE JUEGOS ESPECÍFICOS
 		
