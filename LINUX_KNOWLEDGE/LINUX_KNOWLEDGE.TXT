@@ -9007,6 +9007,10 @@ make -f Makefiles/Makefile.UNIX -j10
   Ponemos una resolución de 1920x1080, FullScreen ON, WideScreen ON, WideBackground ON, Throttle ON, Vsync OFF, NoWhiteFlash ON.
   Ponemos la frecuencia de vídeo a 57.5000, y lo mismo en el audio.
 
+--Para evitar "saltitos" durante la primera ejecución de cada juego, cargamos con:
+  ENABLE_VKBASALT=1 MESA_LOADER_DRIVER_OVERRIDE=zink ./supermodel roms/srally2.zip
+  (Sí: usar ZINK y usar un shader ayuda con esto). 
+
 --Si queremos lanzamor juegos sin pasar por el menú, lo hacemos así:
 ./supermodel daytona2.zip
 
