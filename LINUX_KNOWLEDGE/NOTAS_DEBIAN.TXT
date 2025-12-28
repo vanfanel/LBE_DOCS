@@ -611,6 +611,9 @@ cd b4
 
 cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release -DSDL2COMPAT_X11=OFF -DSDL2COMPAT_TESTS=OFF
 
+--Tras instalarla, editamos "/usr/local/include/SDL2/SDL_syswm.h" y borramos todas las secciones entre #ifdefs de X11.
+  (Esto no debería ser necesario en el futuro: ver issue cerrada https://github.com/libsdl-org/sdl2-compat/issues/533)
+
 INSTALAR SDL2
 =============
 
