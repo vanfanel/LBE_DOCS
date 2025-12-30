@@ -1177,7 +1177,7 @@ gcc -shared -fPIC -o libGLX.so.0 fake_glx.c
 pero eso ya no funciona porque nos da "undefined symbols" para funciones de GLX).
 
 Lanzamos el emulador con:
-I_WANT_A_BROKEN_WAYLAND_UI=YES LD_LIBRARY_PATH=./ ./pcsx2.AppImage "$1" >> /dev/null 2>&1
+LD_LIBRARY_PATH=./ ./pcsx2.AppImage "$1" >> /dev/null 2>&1
 
 PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
 --En "Settings->Graphics" ponemos el Renderer a "Vulkan" y ponemos el Texture Preloading a "None"
@@ -1193,6 +1193,10 @@ PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
           Activamos solamente "Sync to Host Refresh Rate".
           Con Vulkan no es necesario activar "Vertical Sync (VSync)".
 --En "Settings->Audio", dejamos "Backend" a "Cubeb" y "Driver" a "alsa".
+
+-PARA EMULAR EL "SHADOW OF THE COLOSSUS" SIN PROBLEMAS DE VELOCIDAD
+--Pincha sobre el juego en la lista de juegos con el botón derecho del ratón, ve a "Properties->Emulation",
+y pon "EE Cycle Skipping" a "Mild Skipping".
 
 -SI LOS CONTROLES DEL DPAD VAN MAL: En "Settings->Controllers->Controller Port 1->Mapping Settings" activamos "Ignore inversion".
 
