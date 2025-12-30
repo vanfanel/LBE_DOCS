@@ -1196,7 +1196,7 @@ PARA TENER GRÁFICOS CON REFRESCO PERFECTO SIN LAG (=SIN VSYNC):
 
 -PARA EMULAR EL "SHADOW OF THE COLOSSUS" SIN PROBLEMAS DE VELOCIDAD
 --Pincha sobre el juego en la lista de juegos con el botón derecho del ratón, ve a "Properties->Emulation",
-y pon "EE Cycle Skipping" a "Mild Skipping".
+y pon "EE Cycle Rate" al 50%.
 
 -SI LOS CONTROLES DEL DPAD VAN MAL: En "Settings->Controllers->Controller Port 1->Mapping Settings" activamos "Ignore inversion".
 
