@@ -1004,7 +1004,14 @@ vcdxbuild --cue-file=videocd.cue --bin-file=videocd.bin example/vcd.xml
   for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd" -c cdzs,cdfl -hs 9792; done
 
 			(¡¡¡INCOMPLTETO!!!) MÉTODO ALTERNATIVO: CREAR VÍDEOS EN FORMATO ESPECÍFICO DEL CD-I
-  
+
+--Extraemos el .MV1 y el .MP2:
+
+ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -r 25 \
+    -vf "scale=384:256" -b:v 1150k -minrate 1150k -maxrate 1150k -bufsize 224k bunny.m1v
+    
+ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -b:a 224k -ar 44100 bunny.mp2
+
 --Al comprimir el .AVI a .M1P
 En TMPGENC, en Settings, tenemos que poner "VBV buffer size" a algo entre 36 y 39.
   
