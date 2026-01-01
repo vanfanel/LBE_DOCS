@@ -1002,4 +1002,8 @@ CDI "VIDEO01.MMD" pattern 0xFFFF from
 PINK.EXE video.psc
 ...Con esto obtenemos el .MMD
 
---Ahora, en K3B, nos vamos a "New Project->VideoCD"
+--Ahora, en K3B, nos vamos a "New Project->New VideoCD Project", arrastramos el MPG compatible, y le damos a "Burn".
+  Se nos abrirá otro diálogo: allí vamos a la pestaña "Settings" y nos aseguramos de que esté seleccionado "Video CD 2.0",
+  y el soporte para CD-i.
+  El CUE+BIN quedará en ~/Videos, y lo puedes pasar a .CHD con el típico:
+  for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd" -c cdzs,cdfl -hs 9792; done
