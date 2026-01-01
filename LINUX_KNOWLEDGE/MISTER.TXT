@@ -955,3 +955,40 @@ vsync_adjust=2
 
 Lo que hace es que los modos de vídeo precisos se calculan tomando como base el modo 1080p a 60Hz.
 Esto es necesario por un error de cálculo al usar vsync_adjust=2 con estos cores: se calcula mal sin especificar este modo base.
+
+***********CREAR DISCOS DE VÍDEO PARA EL CORE CD-I***********************
+
+PREQUISITOS:
+--Nos bajamos el TMPGEnc-2.525.64.184 (es la última versión gratis, y nos sirve para MPEG-1).
+  Está para bajar en su página oficial: https://www.tmpgenc.net/en/download.html
+  Y si no está allí, en Archive.org 
+--Nos bajamos DOS4GW.EXE, PINK.EXE, PINK.DLL de https://github.com/TwBurn/cdi-sdk/tree/master/TOOLS/Master
+--Instalamos esto en WINE: 
+  
+ 
+--Extraemos el vídeo del .MOV (con esto obtenemos el .AVI que re-comprimimos luego con TMPGENC):
+ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
+    -filter_complex '[0:v]crop=ih/3*4:ih[cropped];[cropped]scale=352x288[scaled]' \
+    -r 25 -map "[scaled]" -q:v 0 video.avi
+
+--Extraemos el audio del .MOV (con esto obtenemos el .MP2 que es el audio final ya para montar el vídeo final con el PINK):
+ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -b:a 224k -ar 44100 video.mp2
+
+--Con el TMPGENC, le damos al botón "Browse" de "Video Source", y seleccionamos el .AVI.
+  Seleccionamos en "Stream Type" el "ES [Video only]".
+  Entramos en "Settings" y ponemos "VBV Buffer Size" a un valor entre 36 y 39.
+  Volvemos al menú principal y le damos al botón "Start". Con esto obtenemos el .M1V.
+  
+--Ahora, en el mismo directorio que el .MP2 y el .M1V, creamos un fichero que llamaremos "video.psc" con el contenido:
+CDI "VIDEO01.MMD" pattern 0xFFFF from
+    audio    "audio.mp2"
+    start    0
+    stream   0
+
+    video    "video.m1v"
+    start    0
+    stream   0
+
+--Ahora en DOSBOX hacemos:
+PINK.EXE video.psc
+...Con esto obtenemos el .MMD
