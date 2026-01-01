@@ -956,7 +956,7 @@ vsync_adjust=2
 Lo que hace es que los modos de vídeo precisos se calculan tomando como base el modo 1080p a 60Hz.
 Esto es necesario por un error de cálculo al usar vsync_adjust=2 con estos cores: se calcula mal sin especificar este modo base.
 
-***********CREAR DISCOS DE VÍDEO PARA EL CORE CD-I***********************
+***********CREAR DISCOS DE VIDEOCD PARA EL CORE CD-I***********************
 INFO SACADA DE: https://github.com/Slamy/MPEG1_Handbook
 
 PREQUISITOS:
@@ -975,20 +975,43 @@ sudo cp CDI_VCD.APP /usr/share/k3b/cdi/cdi_vcd.app
 sudo cp icdia.htm /usr/share/k3b/cdi/icdia.htm
 sudo cp vcd_on_cdi_41.pdf /usr/share/k3b/cdi/vcd_on_cdi_41.pdf
 
---Extraemos el vídeo del .MOV (con esto obtenemos el .AVI que re-comprimimos luego con TMPGENC):
+--SACAMOS EL VIDEO STREAM INICIAL (.AVI) (Esto lo hacemos porque si comprimimos a MPEG1 directamente con ffmpeg queda mal):
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
     -filter_complex '[0:v]crop=ih/3*4:ih[cropped];[cropped]scale=352x288[scaled]' \
     -r 25 -map "[scaled]" -q:v 0 video.avi
 
---Extraemos el audio del .MOV (con esto obtenemos el .MP2 que es el audio final ya para montar el vídeo final con el PINK):
+--Sacamos el AUDIO STREAM (.MP2):
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -b:a 224k -ar 44100 video.mp2
 
---Con el TMPGENC, le damos al botón "Browse" de "Video Source", y seleccionamos el .AVI.
-  Seleccionamos en "Stream Type" el "ES [Video only]".
-  Entramos en "Settings" y ponemos "VBV Buffer Size" a un valor entre 36 y 39.
-  Volvemos al menú principal y le damos al botón "Start". Con esto obtenemos el .M1V.
+--COMPRIMIMOS EL VIDEO STREAM DE .AVI A .MP1:
+En TMPGENC, le damos al botón "Browse" de "Video Source", y seleccionamos el .AVI.
+Seleccionamos en "Stream Type" el "ES [Video only]".
+Volvemos al menú principal y le damos al botón "Start". Con esto obtenemos el .M1V.
+
+--MULTIPLEXAMOS EL AUDIO Y EL VÍDEO:
+En TMPGENC, vamos a File->MPEG Tools->Simple Multiplex, ponemos "Type" a "MPEG-1 Video-CD",
+seleccionamos el stream de vídeo (.M1V) y el de audio (.MP2) y le damos a "Run".
+Con esto obtenemos un .MPG que es compatible con VideoCD.
+
+--Ahora, en K3B, nos vamos a "New Project->New VideoCD Project", arrastramos el MPG compatible, y le damos a "Burn".
+  Se nos abrirá otro diálogo: allí vamos a la pestaña "Settings" y nos aseguramos de que esté seleccionado "Video CD 2.0",
+  y el soporte para CD-i.
+
+--ALTERNATIVA: Se puede salvar el perfil .xml desde k3b, y como en realidad k3b simplemente usa vcdxbuild por debajo, simplemente hacer:
+vcdxbuild --cue-file=videocd.cue --bin-file=videocd.bin example/vcd.xml
+
+--El CUE+BIN quedará en ~/Videos, y lo puedes pasar a .CHD con el típico:
+  for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd" -c cdzs,cdfl -hs 9792; done
+
+
+MÉTODO PARA CREAR VÍDEOS EN FORMATO ESPECÍFICO DEL CD-I
+=======================================================
   
---Ahora, en el mismo directorio que el .MP2 y el .M1V, creamos un fichero que llamaremos "video.psc" con el contenido:
+--Al comprimir el .AVI a .M1P
+En TMPGENC, en Settings, tenemos que poner "VBV buffer size" a algo entre 36 y 39.
+  
+--PARA MULTIPLEXAR AUDIO Y VÍDEO:
+En el mismo directorio que el .MP2 y el .M1V, creamos un fichero que llamaremos "video.psc" con el contenido:
 CDI "VIDEO01.MMD" pattern 0xFFFF from
     audio    "audio.mp2"
     start    0
@@ -1001,13 +1024,3 @@ CDI "VIDEO01.MMD" pattern 0xFFFF from
 --Ahora en DOSBOX hacemos:
 PINK.EXE video.psc
 ...Con esto obtenemos el .MMD
-
---Ahora, en K3B, nos vamos a "New Project->New VideoCD Project", arrastramos el MPG compatible, y le damos a "Burn".
-  Se nos abrirá otro diálogo: allí vamos a la pestaña "Settings" y nos aseguramos de que esté seleccionado "Video CD 2.0",
-  y el soporte para CD-i.
-
---ALTERNATIVA: Se puede salvar el perfil .xml desde k3b, y como en realidad k3b simplemente usa vcdxbuild por debajo, simplemente hacer:
-vcdxbuild --cue-file=videocd.cue --bin-file=videocd.bin example/vcd.xml
-
---El CUE+BIN quedará en ~/Videos, y lo puedes pasar a .CHD con el típico:
-  for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd" -c cdzs,cdfl -hs 9792; done
