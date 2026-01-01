@@ -1003,9 +1003,7 @@ vcdxbuild --cue-file=videocd.cue --bin-file=videocd.bin example/vcd.xml
 --El CUE+BIN quedará en ~/Videos, y lo puedes pasar a .CHD con el típico:
   for i in *.cue; do chdman createcd -i "$i" -o "${i%.*}.chd" -c cdzs,cdfl -hs 9792; done
 
-
-MÉTODO PARA CREAR VÍDEOS EN FORMATO ESPECÍFICO DEL CD-I
-=======================================================
+			(¡¡¡INCOMPLTETO!!!) MÉTODO ALTERNATIVO: CREAR VÍDEOS EN FORMATO ESPECÍFICO DEL CD-I
   
 --Al comprimir el .AVI a .M1P
 En TMPGENC, en Settings, tenemos que poner "VBV buffer size" a algo entre 36 y 39.
