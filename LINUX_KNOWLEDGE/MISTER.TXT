@@ -983,9 +983,10 @@ ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
 --Sacamos el AUDIO STREAM (.MP2):
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -b:a 224k -ar 44100 video.mp2
 
---COMPRIMIMOS EL VIDEO STREAM DE .AVI A .MP1:
+--RE-COMPRIMIMOS EL VIDEO STREAM DE .AVI A .MP1:
 En TMPGENC, le damos al botón "Browse" de "Video Source", y seleccionamos el .AVI.
 Seleccionamos en "Stream Type" el "ES [Video only]".
+Settings, ponemos "VBV buffer size" a algo entre 36 y 39.
 Volvemos al menú principal y le damos al botón "Start". Con esto obtenemos el .M1V.
 
 --MULTIPLEXAMOS EL AUDIO Y EL VÍDEO:
@@ -1011,9 +1012,6 @@ ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -r 25 \
     -vf "scale=384:256" -b:v 1150k -minrate 1150k -maxrate 1150k -bufsize 224k bunny.m1v
     
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -b:a 224k -ar 44100 bunny.mp2
-
---Al comprimir el .AVI a .M1P
-En TMPGENC, en Settings, tenemos que poner "VBV buffer size" a algo entre 36 y 39.
   
 --PARA MULTIPLEXAR AUDIO Y VÍDEO:
 En el mismo directorio que el .MP2 y el .M1V, creamos un fichero que llamaremos "video.psc" con el contenido:
