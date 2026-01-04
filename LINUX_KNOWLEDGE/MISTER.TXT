@@ -979,7 +979,9 @@ sudo cp vcd_on_cdi_41.pdf /usr/share/k3b/cdi/vcd_on_cdi_41.pdf
 mpv "big_buck_bunny_1080p_h264.mov"
 ...Y miramos en la consola su framerate EXACTO.
 
---SACAMOS EL VIDEO STREAM INICIAL (.AVI) (Esto lo hacemos porque si comprimimos a MPEG1 directamente con ffmpeg queda mal):
+--SACAMOS EL VIDEO STREAM INICIAL (.AVI)
+(En <FRAMERATE> pon el framerate que acabamos de sacar con MPV).
+(Esto lo hacemos porque si comprimimos a MPEG1 directamente con ffmpeg queda mal).
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
     -filter_complex '[0:v]crop=ih/3*4:ih[cropped];[cropped]scale=352x288[scaled]' \
     -r <FRAMERATE> -map "[scaled]" -q:v 0 video.avi
