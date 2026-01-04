@@ -998,14 +998,15 @@ En Setting:
 
 Volvemos al menú principal y le damos al botón "Start". Con esto obtenemos el .M1V.
 
-
 --MULTIPLEXAMOS EL AUDIO Y EL VÍDEO:
 En TMPGENC, vamos a File->MPEG Tools->Simple Multiplex, ponemos "Type" a "MPEG-1 Video-CD",
 seleccionamos el stream de vídeo (.M1V) y el de audio (.MP2) y le damos a "Run".
 Con esto obtenemos un .MPG que es compatible con VideoCD.
 
 --Ahora, en K3B, nos vamos a "New Project->New VideoCD Project", arrastramos el MPG compatible, y le damos a "Burn".
-  Se nos abrirá otro diálogo: allí vamos a la pestaña "Settings" y nos aseguramos de que esté seleccionado "Video CD 2.0",
+  Se nos abrirá otro diálogo:
+  En la pestaña "Writing" marcamos "Only create image". 
+  En la pestaña "Settings" y nos aseguramos de que esté seleccionado "Video CD 2.0",
   y el soporte para CD-i.
 
 --ALTERNATIVA: Se puede salvar el perfil .xml desde k3b, y como en realidad k3b simplemente usa vcdxbuild por debajo, simplemente hacer:
