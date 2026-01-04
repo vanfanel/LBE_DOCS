@@ -997,15 +997,18 @@ ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
 --Sacamos el AUDIO STREAM (.MP2):
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -filter:a "atempo=1.0416667" -ar 44100 -ac 2 -c:a mp2 -b:a 224k video.mp2
 
-VÍDEOS DE 30 FPS (Por si quieres convertirlos a 25FPS para que vayan suaves en PAL)
+VÍDEOS DE 30 FPS (Por si quieres convertirlos a 25FPS para que vayan suaves en PAL, tira de interpolación así que el resultado es un poco raro)
 --Sacamos el VÍDEO STREAM (.MP1)
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
--filter_complex "[0:v]crop=ih/3*4:ih,scale=352x288,setpts=1.2*PTS[scaled]" \
--r 25 -map "[scaled]" -q:v 0 video.avi
+-filter_complex "[0:v]crop=ih/3*4:ih,scale=352x288,minterpolate=fps=25:mi_mode=mci:mc_mode=aobmc:vsbmc=1[v]" \
+-map "[v]" -q:v 0 video.avi
 --Sacamos el AUDIO STREAM (.MP2):
-ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -filter:a "atempo=0.8333333" -ar 44100 -b:a 224k video.mp2
+ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -ar 44100 -b:a 224k audio.mp2
 
-NOTA: Si quisieras vídeos para NTSC, mantendrías los 30FPS y además el tamaño de vídeo para FFMPEG y TMPGENC sería 352x240.
+NOTA: Si en un vídeo te da error de buffer underflow / overflow cuando haces el multiplexing final en TMPGENC,
+sube o baja el VBV Buffer Size en "Settings".
+
+NOTA: Si quisieras vídeos NTSC para verlos en modo NTSC, mantendrías los 30FPS y además el tamaño de vídeo para FFMPEG y TMPGENC sería 352x240.
 Pero vamos, que yo lo paso todo a PAL para este core.
 
 				FIN BLOQUE DONDE SACAMOS EL VIDEO STREAM INICIAL (.AVI) Y EL VÍDEO STREAM INICIAL (.MP2)
