@@ -975,10 +975,14 @@ sudo cp CDI_VCD.APP /usr/share/k3b/cdi/cdi_vcd.app
 sudo cp icdia.htm /usr/share/k3b/cdi/icdia.htm
 sudo cp vcd_on_cdi_41.pdf /usr/share/k3b/cdi/vcd_on_cdi_41.pdf
 
+--AVERIGUAMOS EL FRAMERATE ORIGINAL DEL VÍDEO CON:
+mpv "big_buck_bunny_1080p_h264.mov"
+...Y miramos en la consola su framerate EXACTO.
+
 --SACAMOS EL VIDEO STREAM INICIAL (.AVI) (Esto lo hacemos porque si comprimimos a MPEG1 directamente con ffmpeg queda mal):
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
     -filter_complex '[0:v]crop=ih/3*4:ih[cropped];[cropped]scale=352x288[scaled]' \
-    -r 25 -map "[scaled]" -q:v 0 video.avi
+    -r <FRAMERATE> -map "[scaled]" -q:v 0 video.avi
 
 --Sacamos el AUDIO STREAM (.MP2):
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -b:a 224k -ar 44100 video.mp2
@@ -989,11 +993,11 @@ Seleccionamos en "Stream Type" el "ES [Video only]".
 En Setting:
 ----PARA VÍDEOS PAL (25FPS):
 "Aspect Ratio" a "4:3 625 Line (PAL)"
-"Framerate" a "25 fps"
+"Framerate" al valor que sacamos al principio con MPV.
 "VBV buffer size" a 36.
 ----PARA VÍDEOS NTSC (30FPS):
 "Aspect Ratio" a "4:3 525 Line (NTSC)"
-"Framerate" a "30 fps" o "29.97 fps" <---Esto lo puedes ver en la consola de Linux al lanzar el vídeo con MPV.
+"Framerate" al valor que sacamos al principio con MPV.
 "VBV buffer size" a 38.
 
 Volvemos al menú principal y le damos al botón "Start". Con esto obtenemos el .M1V.
