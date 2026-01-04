@@ -997,7 +997,7 @@ ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
 --Sacamos el AUDIO STREAM (.MP2):
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -filter:a "atempo=1.0416667" -ar 44100 -ac 2 -c:a mp2 -b:a 224k video.mp2
 
-VÍDEOS DE 30 FPS (Por si quieres convertirlos a 25FPS para que vayan suaves en PAL, tira de interpolación así que el resultado es un poco raro)
+VÍDEOS DE 30 FPS (USANDO INTERPOLACIÓN a 25FPS para que vayan suaves en PAL)
 --Sacamos el VÍDEO STREAM (.MP1)
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
 -filter_complex "[0:v]crop=ih/3*4:ih,scale=352x288,minterpolate=fps=25:mi_mode=mci:mc_mode=aobmc:vsbmc=1[v]" \
