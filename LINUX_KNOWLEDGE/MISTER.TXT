@@ -986,8 +986,18 @@ ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -b:a 224k -ar 44100 video.mp2
 --RE-COMPRIMIMOS EL VIDEO STREAM DE .AVI A .MP1:
 En TMPGENC, le damos al botón "Browse" de "Video Source", y seleccionamos el .AVI.
 Seleccionamos en "Stream Type" el "ES [Video only]".
-Settings, ponemos "VBV buffer size" a 36 (se supone que hay que ponerlo entre 36 y 39, pero con 36 parece que va bien).
+En Setting:
+----PARA VÍDEOS PAL (25FPS):
+"Aspect Ratio" a "4:3 625 Line (PAL)"
+"Framerate" a "25 fps"
+"VBV buffer size" a 36.
+----PARA VÍDEOS NTSC (30FPS):
+"Aspect Ratio" a "4:3 525 Line (NTSC)"
+"Framerate" a "30 fps" o "29.97 fps" <---Esto lo puedes ver en la consola de Linux al lanzar el vídeo con MPV.
+"VBV buffer size" a 38.
+
 Volvemos al menú principal y le damos al botón "Start". Con esto obtenemos el .M1V.
+
 
 --MULTIPLEXAMOS EL AUDIO Y EL VÍDEO:
 En TMPGENC, vamos a File->MPEG Tools->Simple Multiplex, ponemos "Type" a "MPEG-1 Video-CD",
