@@ -979,23 +979,30 @@ sudo cp vcd_on_cdi_41.pdf /usr/share/k3b/cdi/vcd_on_cdi_41.pdf
 mpv "big_buck_bunny_1080p_h264.mov"
 ...Y miramos en la consola su framerate EXACTO.
 
---SACAMOS EL VIDEO STREAM INICIAL (.AVI)
-(En <FRAMERATE> pon el framerate que acabamos de sacar con MPV).
-(Esto lo hacemos porque si comprimimos a MPEG1 directamente con ffmpeg queda mal).
+ 				BLOQUE DONDE SACAMOS EL VIDEO STREAM INICIAL (.AVI) Y EL VÍDEO STREAM INICIAL (.MP2)
+
+VÍDEOS DE 25 FPS (Lo ideal y más sencillo):
+--Sacamos el VÍDEO STREAM (.MP1)
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
     -filter_complex '[0:v]crop=ih/3*4:ih[cropped];[cropped]scale=352x288[scaled]' \
-    -r <FRAMERATE> -map "[scaled]" -q:v 0 video.avi
-
+    -r 25 -map "[scaled]" -q:v 0 video.avi
 --Sacamos el AUDIO STREAM (.MP2):
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -b:a 224k -ar 44100 video.mp2
+
+VÍDEOS DE 24 FPS (Hay que convertirlos a 25 FPS para que vayan suaves en PAL)
+--Sacamos el VÍDEO STREAM (.MP1)
+ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
+-filter_complex "[0:v]crop=ih/3*4:ih,scale=352x288,setpts=0.96*PTS[scaled]" \
+-r 25 -map "[scaled]" -q:v 0 video.avi
+--Sacamos el AUDIO STREAM (.MP2):
+ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -filter:a "atempo=1.0416667" -ar 44100 -ac 2 -c:a mp2 -b:a 224k video.mp2
+
+				FIN BLOQUE DONDE SACAMOS EL VIDEO STREAM INICIAL (.AVI) Y EL VÍDEO STREAM INICIAL (.MP2)
 
 --RE-COMPRIMIMOS EL VIDEO STREAM DE .AVI A .MP1 (O .MPG):
 En TMPGENC, le damos al botón "Browse" de "Video Source", y seleccionamos el .AVI.
 En la pantalla principal:
----"Stream Type" a "ES [Video only]" si el vídeo es de 25 o 30FPS.
----"Stream Type" a "System [Video only]" si el vídeo es de 24FPS o alguna otra cosa no estándar
-    para que NO lo convierta a 25/30FPS en el proceso, y en este caso obtenemos un .MPG en vez de un .M1V
-    pero se usa exactamente igual luego.
+---"Stream Type" a "ES [Video only]".
 En Setting:
 ----PARA VÍDEOS PAL (25FPS):
 "Aspect Ratio" a "4:3 625 Line (PAL)"
