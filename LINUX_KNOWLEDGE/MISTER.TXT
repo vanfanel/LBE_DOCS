@@ -989,9 +989,13 @@ ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" \
 --Sacamos el AUDIO STREAM (.MP2):
 ffmpeg -y -i "big_buck_bunny_1080p_h264.mov" -b:a 224k -ar 44100 video.mp2
 
---RE-COMPRIMIMOS EL VIDEO STREAM DE .AVI A .MP1:
+--RE-COMPRIMIMOS EL VIDEO STREAM DE .AVI A .MP1 (O .MPG):
 En TMPGENC, le damos al botón "Browse" de "Video Source", y seleccionamos el .AVI.
-Seleccionamos en "Stream Type" el "ES [Video only]".
+En la pantalla principal:
+---"Stream Type" a "ES [Video only]" si el vídeo es de 25 o 30FPS.
+---"Stream Type" a "System [Video only]" si el vídeo es de 24FPS o alguna otra cosa no estándar
+    para que NO lo convierta a 25/30FPS en el proceso, y en este caso obtenemos un .MPG en vez de un .M1V
+    pero se usa exactamente igual luego.
 En Setting:
 ----PARA VÍDEOS PAL (25FPS):
 "Aspect Ratio" a "4:3 625 Line (PAL)"
