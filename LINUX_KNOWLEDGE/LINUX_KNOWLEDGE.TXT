@@ -5752,8 +5752,22 @@ Editamos ese conquer.ini y ponemos Scaler a "linear", el ratio a 4:3, etc.
 NOTA: Si tienes algún problema en GNU/Linux con este engine, entra en discord y cita a Mephiles, que es un dev y usuario
 de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
 
--Instalamos dependencias previas:
-apt-get install glslc
+-Instalamos glslc. Aunque podríamos hacer simplemente "apt-get install glslc", esa versión luego no nos vale para compilar pcsx2,
+así que lo instalamos así:
+----Clonamos su repo: git clone --depth 1 https://github.com/google/shaderc.git
+----Entramos en el raiz de los sources y clonamos a mano sus sub-dependencias así (OJO: Tarda MUCHO rato, déjalo y no te preocupes):
+./utils/git-sync-deps
+----Configuramos y compilamos con:
+mkdir b4
+cd b4
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DSHADERC_SKIP_TESTS=ON \
+-DSPIRV_SKIP_EXECUTABLES=ON -DSKIP_GLSLANG_INSTALL=ON \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+ninja -j10
+
+PARA DESINSTALAR (no hay "make uninstall"):
+for f in $(cat install_manifest.txt) ; do rm "$f"; done
 
 -Instalamos otra dependencia previa: GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
 	---Dependencia previa: apt-get install --no-install-recommends extra-cmake-modules
