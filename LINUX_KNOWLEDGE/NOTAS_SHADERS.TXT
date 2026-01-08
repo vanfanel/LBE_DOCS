@@ -188,7 +188,7 @@ PARTE 1: GLAD
 --Clonamos su repo: git clone --depth 1  https://github.com/Dav1dde/glad.git
 --Instalamos una dependencia previa: sudo apt install python3-jinja2
 --Generamos lo que necesitamos con GLAD. Para ello, desde el raiz de los sources de GLAD, hacemos:
-python3 -m glad --api vulkan=1.3 --extensions="" --out-path build-vulkan c
+python3 -m glad --api vulkan=1.3 --out-path build-vulkan c
 --Instalamos la cabecera de Vulkan que hemos sacado con GLAD, que es lo único que nos interesa de GLAD:
 sudo mkdir -p /usr/include/glad
 sudo cp build-vulkan/include/glad/vulkan.h /usr/include/glad/
@@ -329,9 +329,12 @@ headers += [
 
 install_headers(headers, subdir : headers_install_dir)
 		####ACABA MESON.BUILD####
---Compilamos con:
+--Compilamos e instalamos con:
 mkdir b4
 cd b4
 meson ..
 ninja -j10
 sudo ninja install
+
+PARTE 3: VULKANFX (TO-DO)
+--Clonamos su repo: git clone --depth 1 https://github.com/pchome/VulkanFX.git
