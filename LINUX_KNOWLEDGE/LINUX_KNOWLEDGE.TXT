@@ -1321,6 +1321,41 @@ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/usr/local/Qt-6
 cmake --build . --parallel 12
 cmake --install .
 
+******Compilar PCSX2 standalone sin QT**********************************************************************************************
+
+--Instalamos dependencias previas:
+apt-get install liblz4-dev
+
+--Instalamos más dependencias previas:
+----Instalamos la última versión estable de "plutovg" de aquí: https://github.com/sammycage/plutovg/releases
+----Instalamos la última versión estable de "plutosvg" de aquí: https://github.com/sammycage/plutosvg/releases
+
+-Instalamos a mano otra dependencia previa: libshaderc. (La versión que viene con Debian 13 es muy antigua y no nos vale).
+----Clonamos su repo: git clone --depth 1 https://github.com/google/shaderc.git
+----Entramos en el raiz de los sources y clonamos a mano sus sub-dependencias así:
+./utils/git-sync-deps
+----Configuramos y compilamos con:
+mkdir b4
+cd b4
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DSHADERC_SKIP_TESTS=ON \
+-DSPIRV_SKIP_EXECUTABLES=ON -DSKIP_GLSLANG_INSTALL=ON \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+ninja -j10
+
+PARA DESINSTALAR (no hay "make uninstall"):
+for f in $(cat install_manifest.txt) ; do rm "$f"; done
+
+AHORA VAMOS CON PCSX2 EN SÍ:
+
+--Clonamos su repo:
+git clone --depth 1 https://github.com/PCSX2/pcsx2.git --recurse
+
+--Compilamos PCSX2 en sí:
+mkdir b4
+cd b4
+cmake -DENABLE_TESTS=OFF -DENABLE_QT_UI=OFF -DX11_API=OFF -DWAYLAND_API=OFF -DUSE_BACKTRACE=OFF ..
+
 ******Compilar PCSX2 standalone**********************************************************************************************
 
 -LO PRIMERO es que se necesita tener en el sistema una versión de QT6 con el módulo TOOLS.
