@@ -1332,6 +1332,8 @@ apt-get install lld llvm clang
 --Instalamos más dependencias previas:
 ----Instalamos la última versión estable de "plutovg" de aquí: https://github.com/sammycage/plutovg/releases
 ----Instalamos la última versión estable de "plutosvg" de aquí: https://github.com/sammycage/plutosvg/releases
+PARA DESINSTALAR (no hay "make uninstall"):
+for f in $(cat install_manifest.txt) ; do rm "$f"; done
 
 -Instalamos a mano otra dependencia previa: libshaderc. (La versión que viene con Debian 13 es muy antigua y no nos vale).
 ----Clonamos su repo: git clone --depth 1 https://github.com/google/shaderc.git
