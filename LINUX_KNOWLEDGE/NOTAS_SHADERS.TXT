@@ -180,3 +180,158 @@ export MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460 MESA_LOADER_D
 
 Si sólo quisiésemos OpenGL 3.3, no hace falta ZINK ni nada:
 export MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330
+
+##########COMPILAR E INSTALAR VULKANFX###############
+
+PARTE 1: GLAD
+
+--Clonamos su repo: git clone --depth 1  https://github.com/Dav1dde/glad.git
+--Instalamos una dependencia previa: sudo apt install python3-jinja2
+--Generamos lo que necesitamos con GLAD. Para ello, desde el raiz de los sources de GLAD, hacemos:
+python3 -m glad --api vulkan=1.3 --extensions="" --out-path build-vulkan c
+--Instalamos la cabecera de Vulkan que hemos sacado con GLAD, que es lo único que nos interesa de GLAD:
+sudo mkdir -p /usr/include/glad
+sudo cp build-vulkan/include/glad/vulkan.h /usr/include/glad/
+
+PARTE 2: SHADERFX
+--Clonamos su repo: git clone --depth 1  https://github.com/crosire/reshade.git
+--En el directorio raiz de los sources creamos "meson.build" con el contenido:
+
+		####EMPIEZA MESON.BUILD####
+project(
+  'ReShadeFX',
+  ['cpp'],
+  default_options : ['cpp_std=c++20'],
+  version : '1.0.0',
+  meson_version : '>= 0.50'
+)
+
+# Vulkan headers (needed for glad/vulkan.h -> vk_platform.h)
+vulkan_inc = include_directories('/usr/include/vulkan')
+
+sources = [
+  'source/effect_expression.cpp',
+  'source/effect_lexer.cpp',
+  'source/effect_parser_exp.cpp',
+  'source/effect_parser_stmt.cpp',
+  'source/effect_preprocessor.cpp',
+  'source/effect_symbol_table.cpp',
+]
+
+headers = [
+  # ReShade FX
+  'source/effect_codegen.hpp',
+  'source/effect_expression.hpp',
+  'source/effect_lexer.hpp',
+  'source/effect_module.hpp',
+  'source/effect_parser.hpp',
+  'source/effect_preprocessor.hpp',
+  'source/effect_symbol_table.hpp',
+  'source/effect_token.hpp',
+
+  # ReShade API
+  'include/reshade_api.hpp',
+  'include/reshade_api_device.hpp',
+  'include/reshade_api_format.hpp',
+  'include/reshade_api_pipeline.hpp',
+  'include/reshade_api_resource.hpp',
+]
+
+headers_install_dir = 'reshade'
+
+pkg = import('pkgconfig')
+
+# Base FX library
+out_lib = shared_library(
+  'ReShadeFX',
+  sources,
+  include_directories : vulkan_inc,
+  install : true
+)
+
+pkg.generate(
+  out_lib,
+  subdirs : headers_install_dir,
+  description : 'ReShade FX library'
+)
+
+# HLSL codegen
+out_lib_hlsl = shared_library(
+  'ReShadeFX-hlsl',
+  ['source/effect_codegen_hlsl.cpp'],
+  include_directories : vulkan_inc,
+  link_with : [out_lib],
+  install : true
+)
+
+pkg.generate(
+  out_lib_hlsl,
+  subdirs : headers_install_dir,
+  description : 'ReShade FX - HLSL'
+)
+
+# GLSL codegen
+out_lib_glsl = shared_library(
+  'ReShadeFX-glsl',
+  ['source/effect_codegen_glsl.cpp'],
+  include_directories : vulkan_inc,
+  link_with : [out_lib],
+  install : true
+)
+
+pkg.generate(
+  out_lib_glsl,
+  subdirs : headers_install_dir,
+  description : 'ReShade FX - GLSL'
+)
+
+# SPIR-V codegen
+out_lib_spirv = shared_library(
+  'ReShadeFX-spirv',
+  ['source/effect_codegen_spirv.cpp'],
+  include_directories : [
+    vulkan_inc,
+    '/usr/include/spirv/unified1'
+  ],
+  link_with : [out_lib],
+  install : true
+)
+
+pkg.generate(
+  out_lib_spirv,
+  subdirs : headers_install_dir,
+  description : 'ReShade FX - SPIR-V'
+)
+
+# Vulkan type converter
+out_lib_type_convert = shared_library(
+  'ReShadeFX-vulkan-type-convert',
+  ['source/vulkan/vulkan_impl_type_convert.cpp'],
+  include_directories : [
+    vulkan_inc,
+    'include',
+    'source/vulkan'
+  ],
+  cpp_args : ['-Wno-error=changes-meaning'],
+  install : true
+)
+
+pkg.generate(
+  out_lib_type_convert,
+  subdirs : headers_install_dir,
+  description : 'ReShade FX - Vulkan type converter'
+)
+
+# Extra headers
+headers += [
+  'source/vulkan/vulkan_impl_type_convert.hpp',
+]
+
+install_headers(headers, subdir : headers_install_dir)
+		####ACABA MESON.BUILD####
+--Compilamos con:
+mkdir b4
+cd b4
+meson ..
+ninja -j10
+sudo ninja install
