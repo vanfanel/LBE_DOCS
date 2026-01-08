@@ -1323,6 +1323,9 @@ cmake --install .
 
 ******Compilar PCSX2 standalone sin QT**********************************************************************************************
 
+----Instalamos llvm y clang (PCSX2 no compila con GCC):
+apt-get install lld llvm clang
+
 --Instalamos dependencias previas:
 apt-get install liblz4-dev
 
@@ -1358,7 +1361,7 @@ así que ve borrando los includes de mierdas de X11 y dejando vacías las funcio
 sobre todo es en common/Linux/LnxMisc.cpp):
 mkdir b4
 cd b4
-cmake -DENABLE_TESTS=OFF -DENABLE_QT_UI=OFF -DX11_API=OFF -DWAYLAND_API=OFF -DUSE_BACKTRACE=OFF ..
+CC=clang CXX=clang++ cmake -DENABLE_TESTS=OFF -DENABLE_QT_UI=OFF -DX11_API=OFF -DWAYLAND_API=OFF -DUSE_BACKTRACE=OFF ..
 
 ******Compilar PCSX2 standalone**********************************************************************************************
 
