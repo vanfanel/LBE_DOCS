@@ -1351,7 +1351,11 @@ AHORA VAMOS CON PCSX2 EN SÍ:
 --Clonamos su repo:
 git clone --depth 1 https://github.com/PCSX2/pcsx2.git --recurse
 
---Compilamos PCSX2 en sí:
+--Editamos common/CMakeLists.txt y borramos "X11:X11", "X11::Xrandr" y "X11::Xi" 
+
+--Compilamos PCSX2 en sí (OJO: Nos va a ir dando errores de cosas de X11 que en realidad no se usan,
+así que ve borrando los includes de mierdas de X11 y dejando vacías las funciones que den errores,
+sobre todo es en common/Linux/LnxMisc.cpp):
 mkdir b4
 cd b4
 cmake -DENABLE_TESTS=OFF -DENABLE_QT_UI=OFF -DX11_API=OFF -DWAYLAND_API=OFF -DUSE_BACKTRACE=OFF ..
