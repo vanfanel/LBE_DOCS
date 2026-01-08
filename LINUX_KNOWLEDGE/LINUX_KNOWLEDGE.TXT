@@ -1332,7 +1332,7 @@ apt-get install liblz4-dev
 
 -Instalamos a mano otra dependencia previa: libshaderc. (La versión que viene con Debian 13 es muy antigua y no nos vale).
 ----Clonamos su repo: git clone --depth 1 https://github.com/google/shaderc.git
-----Entramos en el raiz de los sources y clonamos a mano sus sub-dependencias así:
+----Entramos en el raiz de los sources y clonamos a mano sus sub-dependencias así (OJO: Tarda MUCHO rato, déjalo y no te preocupes):
 ./utils/git-sync-deps
 ----Configuramos y compilamos con:
 mkdir b4
@@ -1366,7 +1366,7 @@ apt-get install --no-install-recommends extra-cmake-modules liblzma-dev libpcap-
 
 -Instalamos a mano otra dependencia previa: libshaderc. (La versión que viene con Debian 13 es muy antigua y no nos vale).
 ----Clonamos su repo: git clone --depth 1 https://github.com/google/shaderc.git
-----Entramos en el raiz de los sources y clonamos a mano sus sub-dependencias así:
+----Entramos en el raiz de los sources y clonamos a mano sus sub-dependencias así (OJO: Tarda MUCHO rato, déjalo y no te preocupes):
 ./utils/git-sync-deps
 ----Configuramos y compilamos con:
 mkdir b4
