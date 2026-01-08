@@ -1323,11 +1323,11 @@ cmake --install .
 
 ******Compilar PCSX2 standalone sin QT**********************************************************************************************
 
-----Instalamos llvm y clang (PCSX2 no compila con GCC):
-apt-get install lld llvm clang
-
 --Instalamos dependencias previas:
-apt-get install liblz4-dev
+apt-get install liblz4-dev extra-cmake-modules
+
+--Instalamos llvm y clang (PCSX2 no compila con GCC):
+apt-get install lld llvm clang
 
 --Instalamos más dependencias previas:
 ----Instalamos la última versión estable de "plutovg" de aquí: https://github.com/sammycage/plutovg/releases
