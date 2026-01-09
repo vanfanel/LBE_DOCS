@@ -1024,16 +1024,15 @@ Instrucciones originales de: https://github.com/dosbox-staging/dosbox-staging/bl
 ----Instalamos libmt32 a mano ya que no hay versión empaquetada para Debian:
 ------Nos bajamos los últimos sources estables de: https://github.com/munt/munt/tags
 ------Configuramos con:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
+cmake .. -DCMAKE_BUILD_TYPE=Release -Dmunt_WITH_MT32EMU_QT=FALSE -Dmunt_WITH_MT32EMU_SMF2WAV=FALSE \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 ----Instalamos libiir a mano ya que la versión de Debian no tiene la librería estática necesaria:
 ------Nos bajamos los últimos sources estables de: https://github.com/berndporr/iir1/releases
 ------Configuramos con:
-mkdir b4
-cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
-for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
+ for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 --Bajamos los últimos sources estables de:
 https://github.com/dosbox-staging/dosbox-staging/releases
