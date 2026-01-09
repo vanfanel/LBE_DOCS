@@ -1040,15 +1040,17 @@ CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 15
 
 --Editamos src/gui/CMakeLists.txt y cambiamos "OpenGL::GL" por "OpenGL::OpenGL".
 
---Clonamos el repo de VCPKG:
+--Dentro del directorio de dosbox-staging (podría ser en otro sitio pero lo hacemos aquí), clonamos el repo de VCPKG:
 git clone https://github.com/microsoft/vcpkg.git --depth 1
-
---Exportamos la ruta de VCPKG:
-export VCPKG_ROOT=~/src/dosbox-staging/vcpkg
 
 --Entramos en el directorio de vcpkg y allí ejecutamos:
 ./bootstrap-vcpkg.sh --disableMetrics
 ...Y salimos del vuelta al directorio raiz de dosbox-staging
+
+--Exportamos la ruta de VCPKG:
+export VCPKG_ROOT=~/src/dosbox-staging/vcpkg
+
+VAMOS CON DOSBOX-STAGING EN SÍ:
 
 --Configuramos y compilamos (desde el directorio raiz de dosbox-staging) con:
 cmake --preset=release-linux-vcpkg
