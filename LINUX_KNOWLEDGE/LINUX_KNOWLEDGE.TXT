@@ -1021,6 +1021,45 @@ Instrucciones originales de: https://github.com/dosbox-staging/dosbox-staging/bl
 NOTA: En el futuro, podría ser interesante compilar usando vcpkg en vez de CMake, para no tener que instalar
 librerías a mano. Las instrucciones están ahí también.
 
+OPCIÓN 1 (Recomendado): CON VCPKG
+
+--Bajamos los últimos sources estables de:
+https://github.com/dosbox-staging/dosbox-staging/releases
+
+--Editamos CMakeLists.txt, buscamos:
+  find_package(OpenGL REQUIRED)
+Y lo dejamos como:
+  set(OPENGL_USE_OPENGL ON)
+  find_package(OpenGL REQUIRED)
+
+--También en CMakeLists.txt buscamos:
+CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 13
+y lo dejamos como:
+CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 15
+(O si no nos mete unos warnings que son incompatibles con la versión de GCC de Debian Stable).
+
+--Editamos src/gui/CMakeLists.txt y cambiamos "OpenGL::GL" por "OpenGL::OpenGL".
+
+--Clonamos el repo de VCPKG:
+git clone https://github.com/microsoft/vcpkg.git --depth 1
+
+--Exportamos la ruta de VCPKG:
+export VCPKG_ROOT=~/src/dosbox-staging/vcpkg
+
+--Entramos en el directorio de vcpkg y allí ejecutamos:
+./bootstrap-vcpkg.sh --disableMetrics
+...Y salimos del vuelta al directorio raiz de dosbox-staging
+
+--Configuramos y compilamos (desde el directorio raiz de dosbox-staging) con:
+cmake --preset=release-linux-vcpkg
+cmake --build --preset=release-linux-vcpkg
+
+--Copiamos el ejecutable a /usr/local/bin:
+
+sudo cp build/dosbox /usr/local/bin/
+
+OPCIÓN 2: CON CMAKE DIRECTO, USANDO LIBRERÍAS DE SISTEMA INSTALADAS A MANO
+
 --Instalamos dependencias previas:
 ----Instalamos libopusfile: apt-get install libopusfile-dev
 ----Instalamos zlib-ng a mano ya que no hay versión empaquetada para Debian:
