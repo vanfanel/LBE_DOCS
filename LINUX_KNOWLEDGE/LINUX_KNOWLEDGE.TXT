@@ -1021,6 +1021,12 @@ Instrucciones originales de: https://github.com/dosbox-staging/dosbox-staging/bl
 
 --Instalamos dependencias previas:
 ----Instalamos libopusfile: apt-get install libopusfile-dev
+----Instalamos zlib-ng a mano ya que no hay versión empaquetada para Debian:
+------Nos bajamos los últimos sources estables de: https://github.com/zlib-ng/zlib-ng/releases
+------Configuramos con:
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DCMAKE_C_FLAGS="-march=native -mtune=native"
+PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
+ for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 ----Instalamos libmt32 a mano ya que no hay versión empaquetada para Debian:
 ------Nos bajamos los últimos sources estables de: https://github.com/munt/munt/tags
 ------Configuramos con:
@@ -1035,6 +1041,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=nati
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
  for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
+VAMOS CON DOSBOX-STAGING EN SÍ:
+
 --Bajamos los últimos sources estables de:
 https://github.com/dosbox-staging/dosbox-staging/releases
 
@@ -1044,8 +1052,10 @@ Y lo dejamos como:
   set(OPENGL_USE_OPENGL ON)
   find_package(OpenGL REQUIRED)
 
+--Editamos src/gui/CMakeLists.txt y cambiamos "OpenGL::GL" por "OpenGL::OpenGL".
+
 --Configuramos con:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DOPT_TESTS=OFF \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DOPT_TESTS=OFF -DUSE_SYSTEM_LIBS=ON \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
 
 --Copiamos el ejecutable "dosbox" a /usr/local/bin
