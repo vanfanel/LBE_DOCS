@@ -1017,28 +1017,27 @@ Una vez tenemos la configuración lista, podemos pasarle "-F" para que arranque 
 ya que no hay una opción en el cfg para ello.
 
 *******Compilar DOSBOX-STAGING***************************************
- 
+Instrucciones originales de: https://github.com/dosbox-staging/dosbox-staging/blob/main/docs/build-linux.md
+
 --Instalamos dependencias previas:
-apt-get install libopusfile-dev
+----Instalamos libopusfile: apt-get install libopusfile-dev
+----Instalamos libiir a mano ya que la versión de Debian no tiene la librería estática necesaria:
+------Nos bajamos los últimos sources estables de: https://github.com/berndporr/iir1/releases
+------Configuramos con:
+mkdir b4
+cd b4
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=native -mtune=native -O2"
+PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 --Bajamos los últimos sources estables de:
 https://github.com/dosbox-staging/dosbox-staging/releases
 
---Editamos "meson.build", buscamos la línea:
-opengl_dep = dependency('gl', not_found_message: msg.format('use_opengl'))
-...Y la dejamos así:
-opengl_dep = dependency('opengl', not_found_message: msg.format('use_opengl'))
-
---Compilamos con:
-mkdir b4
-cd b4
-
-CFLAGS="-O2 -march=native -mtune=native" \
-CXXFLAGS="-O2 -march=native -mtune=native" \
-meson setup -Dbuildtype=release -Ddefault_library=static \
--Duse_zlib_ng=false -Duse_sdl2_net=false -Duse_slirp=false -Duse_alsa=false ..
-
-ninja -j10
+--Editamos CMakeLists.txt, buscamos:
+  find_package(OpenGL REQUIRED)
+Y lo dejamos como:
+  set(OPENGL_USE_OPENGL ON)
+  find_package(OpenGL REQUIRED)
 
 --Copiamos el ejecutable "dosbox" a /usr/local/bin
 
