@@ -1018,6 +1018,8 @@ ya que no hay una opción en el cfg para ello.
 
 *******Compilar DOSBOX-STAGING***************************************
 Instrucciones originales de: https://github.com/dosbox-staging/dosbox-staging/blob/main/docs/build-linux.md
+NOTA: En el futuro, podría ser interesante compilar usando vcpkg en vez de CMake, para no tener que instalar
+librerías a mano. Las instrucciones están ahí también.
 
 --Instalamos dependencias previas:
 ----Instalamos libopusfile: apt-get install libopusfile-dev
