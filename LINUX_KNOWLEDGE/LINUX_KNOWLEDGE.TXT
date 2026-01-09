@@ -1044,6 +1044,10 @@ Y lo dejamos como:
   set(OPENGL_USE_OPENGL ON)
   find_package(OpenGL REQUIRED)
 
+--Configuramos con:
+cmake .. -DCMAKE_BUILD_TYPE=Release -DOPT_TESTS=OFF \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
+
 --Copiamos el ejecutable "dosbox" a /usr/local/bin
 
 --Copiamos unos directorios de resources obligatorios a donde dosbox espera encontrarlos:
