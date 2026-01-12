@@ -1137,7 +1137,6 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 Siempre dejamos "vsync = off" y "presentation_mode = auto", que es como vienen por defecto.
 El truco" es poner un modo de vídeo cercano al refresh rate de los juegos (un poquito más alto para dejar "respirar" al VRR).
 NO NOS HACE FALTA VSYNC, así que no hay input lag asociado al VSYNC aunque estemos en modos de 60/71Hz!
-ES RECOMENDABLE tener puesto el allowTearing a "yes" en el compositor para que el compositor no meta VSYNC.
 QUEDA PENDIENTE conseguir que funcione con "presentation_mode = host-rate" porque así podríamos dejar
 la frecuencia del monitor a 120Hz y aún así tener frame pacing perfecto, pero de momento detecta un refresco de 0Hz con esto. 
 
@@ -4253,9 +4252,7 @@ https://github.com/JHDev2006/Super-Mario-Bros.-Remastered-Public/releases
   del juego, no hará falta volver a arrastrar la ROM a la ventana.
 
 --Para tener scroll perfecto con VRR, desactiva el VSYNC, pon el FRAME LIMIT a 120,
-  pon un modo de vídeo de 122 Hz antes de entrar para dar tiempo al VRR a "respirar",
-  y recuerda que en los settings del compositor tienes que tener el allowTearing activado.
-  En Labwc es con "<allowTearing>yes</allowTearing>" en la sección "<core>" del fichero ".config/labwc/rc.xml"
+  pon un modo de vídeo de 122 Hz antes de entrar para dar tiempo al VRR a "respirar".
 
 --Para no tener tirones cuando se acceda a assets durante el juego, los mandamos a la caché de disco antes de entrar:
 find ./ -type f -exec cat {} > /dev/null \;
