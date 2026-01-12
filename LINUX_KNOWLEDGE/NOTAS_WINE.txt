@@ -154,7 +154,7 @@ Alternativamente, podríamos hacer "winetricks renderer=vulkan", pero para eso h
 --Copiamos dxwrapper.dll y dxwrapper.ini al directorio del juego en el que queramos usarlo.
 --Averiguamos qué DLLs usa el juego con:
 WINEDEBUG=+loaddll wine juego.exe
-Si usa DDRAW.DLL/ddraw.dll, es que está usando DX7. En DX7, no había d3d*.dll diferenciada, eso empieza en DX8.
+Si usa DDRAW.DLL/ddraw.dll, es que está usando DX7. En DX7 no había d3d*.dll diferenciada, eso empieza en DX8.
 --Entramos en el directorio "Stub" que viene en el dxwrapper.zip, y copiamos los DLLs que use el juego (acabamos de averiguarlo)
   a su directorio. Por ejemplo, ddraw.dll, dsound.dll, dinput.dll...
 --Editamos "dxwrapper.ini" y ponemos a 1 lo necesario para la versión de DX que usa el juego.
