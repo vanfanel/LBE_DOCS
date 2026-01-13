@@ -702,8 +702,8 @@ CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure
 
-INSTRUCCIONES GENERALES PARA COMPILAR EL KERNEL DEBIAN
-======================================================
+INSTRUCCIONES GENERALES PARA COMPILAR EL KERNEL
+===============================================
 
 -Instalamos dependencias previas:
 apt-get install build-essential libncurses-dev bison flex libssl-dev libelf-dev
@@ -736,6 +736,7 @@ y sobre todo desactivamos "Intel Platform Monitoring Technology (PMT) Telemetry 
 --Para poder montar imágenes de disco (ISOs, etc), nos aseguramos de tener activadas estas dos opciones:
 Device Drivers->Block devices->Loopback device support
 File systems->CD-ROM/DVD Filesystems->ISO 9660 CDROM file system support
+--Para mejorar MUCHO el rendimiento de WINE, activamos Device Drivers-> Misc devices-> NT synchronization primitive emulation (NTSYNC)
 
 --En "General Setup" desactivamos:
 ----Todo en "BPF Subsystem"
