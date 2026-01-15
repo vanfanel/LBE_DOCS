@@ -21,7 +21,7 @@ HACEMOS UNA INSTALACIÓN "PERSONAL" DE LOS HEADERS DEL KERNEL ACTUAL (esto es po
 del paquete "linux-libc-dev", que son los que usaría WINE si no incidicamos otra cosa,
 no exponen el ioctl NTSYNC_IOC_EVENT_READ porque aún no se considera estable):
 cd src/linux/linux-6.18.5
-make headers_install INSTALL_HDR_PATH=/src/ntsync-headers INSTALL /src/ntsync-headers/include
+make headers_install INSTALL_HDR_PATH=~/src/ntsync-headers
 
 VAMOS CON WINE EN SÍ:
 --Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
