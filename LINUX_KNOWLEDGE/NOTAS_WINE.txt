@@ -37,9 +37,11 @@ CXXFLAGS="-march=native -mtune=native -O2 -I~/src/ntsync-headers/include" \
 
 (Lo de "--enable-archs=x86_64,i386" es necesario para compilar con soporte WoW64, es decir, ejecutar juegos de 32bits
  sin tener las versiones i386 de todas las librerías instaladas).
-(Si quieres soporte para NTSYNC, debes tener instalado un kernel con soporte NTSYC activado con lo cual tendrás /dev/ntsync
- y además al hacer el configure de WINE verás "checking for linux/ntsync.h... yes").
-(Si compilas para un sistema con escritorio X11, NO le pases "--without-x").
+(Para que funcione NTSYNC, debes tener instalado un kernel con soporte NTSYC activado con lo cual tendrás "/dev/ntsync",
+ y además al hacer el configure de WINE verás "checking for linux/ntsync.h... yes"
+ Si quieres estar seguro de que NTSYNC está funcionando, ejecuta "winecfg" y haz "lsof /dev/ntsync" y debería salir ahí.
+ Si no funciona, asegúrate de que en server/inproc_sync.c llega a al open( "/dev/ntsync"...), ya que sólo se llega a ese open()
+ si se ha detectado "inux/ntsync.h" y si tienes la ioctl NTSYNC_IOC_EVENT_READ). Ambas cosas se comprueban en los #ifdefs que hay antes).
 
 Ahora hacemos:
 wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d wayland
