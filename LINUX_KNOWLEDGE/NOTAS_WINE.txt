@@ -27,8 +27,9 @@ VAMOS CON WINE EN SÍ:
 --Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
 git clone --depth 1 -b wine-11.0 https://gitlab.winehq.org/wine/wine.git wine-11.0
 --Configuramos con:
-CFLAGS="-march=native -mtune=native -O2 -I~/src/ntsync-headers/include" \
-CXXFLAGS="-march=native -mtune=native -O2 -I~/src/ntsync-headers/include" \
+CPPFLAGS="-I/home/manuel/src/ntsync-headers/include" \
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --without-x --with-wayland \
 --without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
 --without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
