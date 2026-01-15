@@ -17,12 +17,18 @@ CXXFLAGS="-march=native -mtune=native" \
 meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled -Dgst-examples=disabled -Drtsp_server=disabled \
 -Dtests=disabled -Dtools=disabled -Dexamples=disabled -Dbenchmarks=disabled -Dorc=disabled -Ddevtools=disabled -Dintrospection=disabled
 
+HACEMOS UNA INSTALACIÓN "PERSONAL" DE LOS HEADERS DEL KERNEL ACTUAL (esto es porque los headers de Debian,
+del paquete "linux-libc-dev", que son los que usaría WINE si no incidicamos otra cosa,
+no exponen el ioctl NTSYNC_IOC_EVENT_READ porque aún no se considera estable):
+cd src/linux/linux-6.18.5
+sudo make headers_install INSTALL_HDR_PATH=/src/ntsync-headers INSTALL /src/ntsync-headers/include
+
 VAMOS CON WINE EN SÍ:
 --Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
 git clone --depth 1 -b wine-11.0 https://gitlab.winehq.org/wine/wine.git wine-11.0
 --Configuramos con:
-CFLAGS="-march=native -mtune=native -O2" \
-CXXFLAGS="-march=native -mtune=native -O2" \
+CFLAGS="-march=native -mtune=native -O2 -I/src/ntsync-headers/include" \
+CXXFLAGS="-march=native -mtune=native -O2 -I/src/ntsync-headers/include" \
 ./configure --without-x --with-wayland \
 --without-pulse --without-cups --without-gphoto --without-opencl --without-pcap --without-pcsclite \
 --without-dbus --without-sane --without-oss --without-krb5 --without-netapi --without-capi \
