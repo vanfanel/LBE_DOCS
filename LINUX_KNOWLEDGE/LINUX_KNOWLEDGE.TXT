@@ -10718,8 +10718,7 @@ Clonamos el repo:
 git clone --depth 1 https://github.com/jjuran/metamage_1
 
 Hacemos:
-make ams-linux
-(Para X11, make ams-x11)
+make ams-sdl-build
 
 Para lanzar el programa demo, desde el directorio de los sources:
 EXHIBIT_INTERACT=interact-x11 PATH="$PWD/var/demo:$PWD/var/out:$PATH" AMS_BIN=var/links/ams-68k-bin/bin AMS_LIB=var/links/ams-68k-bin/lib AMS_MNT=var/links/ams-68k-bin/mnt var/out/minivx -Z v/bin/ams.vx
