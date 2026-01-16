@@ -8181,6 +8181,10 @@ make -j10
 
 BLOQUE DE RECOMPILACIÓN
 
+--Editamos lib/rt64/src/contrib/plume/plume_render_interface_types.h y comentamos el #include "X11/Xlib.h"
+--Editamos lib/rt64/src/contrib/plume/plume_vulkan.h y cambiamos "VK_USE_PLATFORM_XLIB_KHR" por "VK_USE_PLATFORM_WAYLAND_KHR"
+--Editamos lib/rt64/src/contrib/plume/plume_vulkan.cpp y cambiamos "VK_KHR_XLIB_SURFACE_EXTENSION_NAME" por "VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME"
+
 --Nos vamos al raiz de los sources de Goemon64Recomp y hacemos:
 ./N64Recomp mnsg.us.toml
 ./RSPRecomp aspMain.us.toml
@@ -8227,6 +8231,18 @@ PARA INSTALAR LOS DATOS DEL JUEGO (NO NECESARIO YA QUE TIENES LOS DATOS PREPARAD
 (Es decir, los datos del juego deben estar en "~/carpet2/NETHERW").
 -Crea el directorio "~/carpet2/CD_Files" y copia allí los contenidos de la ISO del CD original
 PERO renombrando TODOS los archivos a mayúsculas.
+
+MANIC MINER nativo en GNU/Linux
+===============================
+
+--Clonamos su repo:
+git clone --depth 1 https://github.com/fawtytoo/ManicMiner.git
+
+--Editamos src/main.c y allí:
+-Comentamos el bucle "while (!videoSync)" 
+-Ponemos ambos SDL_HINT_RENDER_SCALE_QUALITY a 1
+
+--Compilamos con: make -j10
 
 FLARE, un engine RPG libre en GNU/Linux
 =======================================

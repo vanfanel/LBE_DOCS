@@ -1,0 +1,249 @@
+INSTRUCCIONES GENERALES PARA COMPILAR EL KERNEL
+===============================================
+
+-Instalamos dependencias previas:
+apt-get install build-essential libncurses-dev bison flex libssl-dev libelf-dev
+
+-Nos descargamos los sources del kernel en uso:
+apt-get source linux
+
+-Entramos en el directorio raiz de los sources:
+cd linux-$(uname -r)
+
+-Le ponemos la configuración del kernel en uso:
+cp /boot/config-$(uname -r) .config
+
+-Adelgazamos el kernel (ver BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL MÁS ABAJO)
+
+-Entramos en la configuración y ajustamos lo que queramos:
+---Desativamos las mitigations
+---Nos aseguramos de tener activadas estas opciones que son imprescindibles para que funcionen los discos USB externos:
+"Device Drivers->SCSI device support->SCSI disk support"
+"Device Drivers->USB support->USB Mass Storage support"
+"Device Drivers->USB support->USB Mass Storage support->USB Attached SCSI"
+---En "Processor type and features" activamos esto (ayuda luego a gestionar la velocidad de la CPU):
+"/dev/cpu/*/msr - Model-specific register support"
+---Para evitar depender de la herramienta "pahole", deshabilitamos:
+Kernel hacking  --->
+    Compile-time checks and compiler options  --->
+        [*] Provide BPF Type Format (BTF) debug info
+--Nos vamos a "Device Drivers->X86 Platform Specific Device Drivers" y desactivamos todo lo que veamos de marcas (DELL, HP, etc)
+y sobre todo desactivamos "Intel Platform Monitoring Technology (PMT) Telemetry Driver".
+--Para poder montar imágenes de disco (ISOs, etc), nos aseguramos de tener activadas estas dos opciones:
+Device Drivers->Block devices->Loopback device support
+File systems->CD-ROM/DVD Filesystems->ISO 9660 CDROM file system support
+--Para mejorar MUCHO el rendimiento de WINE, activamos Device Drivers-> Misc devices-> NT synchronization primitive emulation (NTSYNC)
+
+--En "General Setup" desactivamos:
+----Todo en "BPF Subsystem"
+----"Memory placement aware NUMA scheduler"
+(Las máquinas NUMA son servidores en los que cada CPU tiene una memoria distinta, ni tienes ni vas a tener nada así en la vida).
+----"Checkpoint/restore support" (Pa ké kieres saber eso? jaja salu2)
+----"Profiling support"
+--En "Processor type and features" desactivamos:
+----"Enable MPS table"
+----"Intel Low Power Subsystem Support"
+----"Linux guest support"
+----"Old AMD GART IOMMU support"
+----"Enable Maximum number of SMP Processors and NUMA Nodes"
+----"Cluster scheduler support"
+----"Reroute for broken boot IRQs"
+----"Intel MCE features" (si estás en AMD) o "AMD MCE features" (si estás en Intel)
+----"IOPERM and IOPL Emulation"
+----"Enable 5-level page tables support"
+----"AMD Secure Memory Encryption (SME) support"
+----"NUMA Memory Allocation and Scheduler Support"
+----"Software Guard eXtensions (SGX)"
+----"X86 userspace shadow stack"
+----"Kernel Live Patching"
+
+--En "General architecture-dependent options" desactivamos:
+----"Stack Protector buffer overflow detection"
+----"Kprobes"
+
+--En "Memory Management options" desactivamos:
+----"Memory hotplug"
+----"Transparent Hugepage Support"
+
+--En "Enable the block layer" desactivamos todos los "IO Schedulers",
+ya que para discos sólidos el "noop" o "none" es lo mejor.
+
+--MUY IMPORTANTE PARA JUEGOS:
+General Setup->Preemption model->Preemptible Kernel (Low-Latency Desktop)
+...Y desactivamos "Preemption behaviour defined on boot"
+Processor Type and Features->Timer Frequency->300Hz
+...Y también activamos como módulo:
+Device Drivers->Input device support->Joysticks/Gamepads->Xbox gamepad support
+...Y nos aseguramos de tener activado esto para WINE si queremos juegos de 32bits usando WOW64:
+Binary Emulations->IA32 Emulation
+(NO HACE FALTA que actives el resto de opciones de "Binary Emulations", sólo esa, las demás NO aportan NADA).
+...Y desactivamos estas cosas para evitar picos de uso de la CPU:
+Memory Management options->Support for paging of anonymous memory (swap)
+Memory Management options->Defer initialisation of struct pages to kthreads
+Memory Management options->Slab allocator options->(Todo lo que hay ahí)
+
+-Compilamos el kernel y los módulos:
+make -j10
+
+-Instalamos los módulos (para desinstalarlos, simplemente borramos el directorio "/lib/modules/6.x.x"):
+sudo make INSTALL_MOD_STRIP=1 modules_install
+
+-Instalamos el kernel (para desinstalarlo, borramos de /boot/ todo lo correspondiente a esa versión del kernel):
+sudo make install
+
+-Instalamos las cabeceras actualizadas del kernel. Esto es necesario para que WINE funcione con NTSYNC.
+ Las instalamos en una ruta "personal" porque el sistema tiene unas cabeceras por defecto
+ que provienen del paquete "linux-libc-dev" que en su versión de Debian 13 no exponen el ioctl NTSYNC_IOC_EVENT_READ
+ que es necesario para NTSYNC, y no podemos desinstalar ese paquete porque arrastra las libc y los compiladores:
+make headers_install INSTALL_HDR_PATH=~/src/ntsync-headers
+
+-Actualizamos grub para que añada el nuevo kernel a su lista:
+sudo update-grub
+
+CUIDADO!!! NO REINICIES SIN PONER UN TIMEOUT DISTINTO DE 0 EN /etc/default/grub PARA LANZAR EL NUEVO KERNEL DESDE EL MENÚ DE GRUB!!!
+UNA VEZ QUE YA HAYAS COMPROBADO QUE FUNCIONA TODO BIEN, PUEDES PONERLO COMO KERNEL POR DEFECTO CON "GRUB_DEFAULT=..." EN /etc/default/grub
+SI ESO NO FUNCIONA, PON "GRUB_SAVEDEFAULT=true" y "GRUB_DEFAULT=saved", eliges desde el menú el kernel nuevo, y pones el TIMEOUT a 0.
+
+################################################################## 
+#BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL USANDO MODPROBED-DB#
+##################################################################
+
+(La información está adaptada de: https://wiki.archlinux.org/title/Modprobed-db)
+--Clonamos su repo: git clone --depth 1 https://github.com/graysky2/modprobed-db.git
+--Entramos en el directorio de los sources y simplemente hacemos "make && make install" y ya se instala,
+es un script y no tiene que compilar nada. (Para desinstalarlo simplemente se usa "make uninstall" y ya).
+--Ejecutamos "modprobed-db" y se nos creará el archivo "~/.config/modprobed-db.conf"
+Este archivo nos permite añadir módulos que NO queremos que se tengan en cuenta aunque estén cargados, para lo cual
+añadiríamos en él una línea estilo "IGNORE=(nvidia vboxdrv..."
+--Ejecutamos "modprobed-db store" y se nos creará el archivo "~/.config/modprobed.db", que es donde quedan reflejados los módulos
+que tenemos cargados en nuestro kernel actual. Podemos consultar qué módulos tenemos cargados con "modprobed-db list".
+--Nos vamos al directorio de los sources del kernel (que ya tenemos configurados de antes) y hacemos:
+make LSMOD=~/.config/modprobed.db localmodconfig
+(Te preguntará cosas: dile a todo que NO, no nos interesa, gracias).
+(OJO!!! Si te pregunta algo como "Additional X.509 keys for default system keyring (SYSTEM_TRUSTED_KEYS)", dale al intro sin más,
+ NO se te ocurra poner una "n" ahí o intentará crear un certificado llamado "n" y fallará la compilación!!!)
+--Hacemos "make menuconfig" y nos aseguramos de tener activadas estas opciones que son para que funcionen los discos USB externos:
+"Device Drivers->SCSI device support->SCSI disk support"
+"Device Drivers->USB support->USB Mass Storage support"
+"Device Drivers->USB support->USB Mass Storage support->USB Attached SCSI"
+--Podemos aprovechar para volver a hacer "make menuconfig" y aligerar funcionalidades internas del kernel,
+como desactivar "Mitigations for speculative execution vulnerabilities",
+quitar todo lo que puedas de "Security Options", en Device Drivers los "Multiple devices driver support (RAID and LVM)"
+y los "Macintosh Device Drivers",
+En "Enable the block layer->Partition Types" quitamos todas las particiones que no necesitamos.
+En "Drivers->Network device support->Ethernet driver support" y "Drivers->Network device support->Wireless LAN"
+quitamos todo el hardware que no tengamos (habremos hecho "lscpi" antes para averiguar cuál sí necesitamos).
+En INTEL: Activamos "Device Drivers->Graphics support->Intel Xe Graphics", que no lo detecta modprobed-db.
+Usando "/", buscamos ANDROID, AMAZON, MICROSOFT, GOOGLE... Y nos aseguramos de que todas las opciones están desactivadas,
+¡nos dice cómo llegar a cada opción!.
+Cuidado: no andes quitando cosas de "Kernel Hacking" o los schedulers externos no funcionarán.
+--(OPCIONAL PARA NO NECESITAR UN INITRAMFS) metemos en el kernel (incluidos en el kernel, o sea con el [*], no como módulos con la [M])
+las cosas necesarias para que el propio kernel pueda montar el rootfs, es decir, los drivers de dispositivo y el filesystem EXT4,
+que en un sistema actual de 2024 con NVME son:
+----"File Systems->The Extended 4 (ext4) filesystem"
+----"Device Drivers->Memory Technology Device (MTD) support"
+----"Device Drivers->NVME Support->NVM Express block device"
+
+(EN INTEL: NO DESACTIVES el DEBUGFS o no compilará el driver gráfico de Intel)
+(RECUERDA que si en un submenú no encuentras una opción que debería estar ahí, puedes darle a Z y te aparecerá para poder darle a "?" sobre ella
+ y así averiguar de qué depende).
+(RECUERDA que puedes usar "/" para buscar la opción que quieras, te dice cómo llegar a cada opción).
+
+###################################################### 
+#FIN DEL BLOQUE OPCIONAL DE ADELGAZAMIENTO DEL KERNEL#
+######################################################
+
+KERNEL CACHYOS Y SCHEDULER LAVD EN DEBIAN (NO APORTA NADA, ES PARA TENER MÁS FPS MIENTRAS COMPILAS O ALGO ASÍ EN SEGUNDO PLANO)
+===============================================================================================================================
+
+PREVIO: Antes de hacer estos experimentos, edita /etc/default/grub, pon un timeout distinto de 0, y ejecuta "update-grub",
+para que si un nuevo kernel no arranca, seas capaz de arrancar el kernel original del sistema y desinstalar el nuevo.
+
+	###PARTE 1: INSTALACIÓN DE UN KERNEL QUE SOPORTE SCX (SCHED-EXT): EL KERNEL CACHYOS###
+
+-Instalamos una dependencia previa que es necesaria para compilar el kernel con la opción "Generate BTF typeinfo" (CONFIG_DEBUG_INFO_BTF)
+ activada: apt-get install pahole
+-Usamos un script que nos descarga el kernel y nos permite pre-configurarlo (hay que activar SCHED_CLASS_EXT a mano antes de compilar):
+ Clonamos su repo: git clone --depth 1 https://github.com/CachyOS/linux-cachyos-deb
+(No te olvides de poner el governor a PERFORMANCE en las opciones que nos presenta el script!)
+(NO COMPILAMOS EL KERNEL AÚN, lo vamos a hacer después a mano con "make", ya que tenemos que activar CONFIG_SCHED_CLASS_EXT).
+-Hacemos "make menuconfig" y hacemos estos cambios (RECUERDA que si una opción no aparece, puedes darle a la Z
+ para que aparezca y poder ponerte sobre ella y darle a la "?" para ver qué tienes que tener activado/desactivado para que aparezca): 
+	--Activamos "General Setup->Extensible Scheduling Class" (esto activa lo más importante: CONFIG_SCHED_CLASS_EXT).
+	--Activamos "Kernel hacking->Compile-time checks and compiler options->Generate BTF type information"
+	(Para lo cual tenemos que tener "Debug Information" puesto a "Rely on the toolchain's implicit default DWARF version")
+	--Activamos "Device Drivers->Sound card support->Advanced Linux Sound Architecture -> HR-timer backend support"
+	--Activamos "General Setup->Some kernel tweaks by CachyOS"
+¡¡RECUERDA que usando "/" puedes localizar la opción que quieras!!
+
+-Ahora ya sí: Compilamos el kernel y los módulos con "make -j6".
+
+-Instalamos los módulos del kernel (para desinstalarlos, simplemente borramos el directorio "/lib/modules/6.9.0"):
+cd linux-6.9.0
+make INSTALL_MOD_STRIP=1 modules_install
+
+-Instalamos el kernel en sí (RECUERDA que hay que instalar los módulos antes, cosa que hemos hecho en el paso anterior,
+ya que esto nos crea el initramfs del kernel que lleva dentro módulos necesarios para el arranque del kernel):
+make install
+update-grub
+(Si no necesitas el initramfs porque tienes las funcionalidades necesarias para montar el rootfs metidas en el kernel [*] en vez de como módulos [M],
+ simplemente borra /boot/initramfs-6.9.0 antes de ejecutar "update-grub".
+ Busca ahí arriba en "OPCIONAL PARA NO NECESITAR UN INITRAMFS" para saber cuáles son en un sistema actual de 2024 con disco duro NVME)
+
+-(PASOS NORMALMENTE NO NECESARIOS: NORMALMENTE AL INSTALAR EL KERNEL ESTAS COSAS SE HACEN SOLAS)
+--Creamos un initramfs para el nuevo kernel:
+update-initramfs -c -k 6.9.0
+--Actualizamos grub para que tenga localizado el nuevo kernel: update-grub
+Y editamos /etc/default/grub para poner el TIMEOUT a un valor distinto de 0, de manera que nos presente el menú de arranque.
+--Reiniciamos, y en el menú de arranque de GRUB entramos en "Advanced Options" y elegimos el nuevo kernel y arrancamos.
+(La próxima ver que arranquemos, GRUB recordará esta opción y arrancará en el nuevo kernel).
+
+	###PARTE 2: INSTALAR LOS SCHEDULERS EXTERNOS###
+
+--Previo: Para evitar problemas y confusiones luego, asegúrate antes de seguir de que estas opciones
+las tienes todas así en el .config del kernel:
+CONFIG_BPF=y
+CONFIG_SCHED_CLASS_EXT=y
+CONFIG_BPF_SYSCALL=y
+CONFIG_BPF_JIT=y
+CONFIG_BPF_JIT_ALWAYS_ON=y
+CONFIG_BPF_JIT_DEFAULT_ON=y
+CONFIG_DEBUG_INFO_BTF=y
+
+--Previo: Instalamos el buildsystem que necesita.
+----Instalamos rust desde su repositorio (si usamos el apt-get nos instalará una versión demasiado antigua, como siempre)
+Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+----Instalamos clang desde su repositorio (si usamos el apt-get nos instalará una versión demasiado antigua, como siempre)
+apt install lsb-release wget software-properties-common gnupg
+bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+ln -s /usr/bin/clang-18 /usr/bin/clang
+--Previo: Instalamos dependencias previas:
+apt-get install jq libzstd-dev
+
+VAMOS CON SCHED_EX EN SÍ...
+--Bajamos la última release de: https://github.com/sched-ext/scx/releases
+--Configuramos y compilamos con:
+mkdir b4
+cd b4
+
+CFLAGS="-O2 -march=native -mtune=native" \
+CXXFLAGS="-O2 -march=native -mtune=native" \
+meson setup -Dbuildtype=release ..
+
+ninja -j6
+ninja install
+
+--Para lanzar el LAVD y que no nos maree con estadísticas, editamos el fichero /etc/default/scx y lo dejamos así:
+SCX_SCHEDULER=scx_lavd
+SCX_FLAGS='-s 0'
+
+--Activamos el servicio scx:
+systemctl enable scx.service
+systemctl start scx.service
+...Comprobamos que está corriendo correctamente con:
+systemctl status scx.service
+
+--Alternativamente, sin habilitar/lanzar ninigún servicio, podemos lanzar a mano el scheduler externo que queramos:
+escribe "scx" y dale al tabulador para ver los que hay disponibles.
+Si no quieres que te esté mareando con información todo el rato, pásale el parámetro "-s0".
