@@ -5895,7 +5895,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DRETRO_SUBSYSTEM=VK \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 --Copiamos el ejecutable del engine RSDKv5 a nuestro directorio de sonicmania:
-cp dependencies/RSDKv5/RSDKv5U ~/sonicmania/
+cp RSDKv5U ~/sonicmania/
 
 --Clonamos el repo del juego:
 git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-Decompilation.git
@@ -8188,7 +8188,7 @@ BLOQUE DE RECOMPILACIÓN
 --Compilamos para nuestra arquitectura al fin:
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-cmake --target Goemon64Recompiled -j4 --config Release
-(Tras instalarlo. limpiamos con: cmake --build build-cmake --target clean)
+(Tras instalarlo, limpiamos con: cmake --build build-cmake --target clean)
 
 BLOQUE DE EJECUCIÓN
 
