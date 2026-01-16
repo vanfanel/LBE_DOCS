@@ -5883,9 +5883,6 @@ es más antigua y tiene un bug de "claridad excesiva", así que instalamos el en
 --Clonamos el repo del engine:
 git clone --recursive --depth 1 https://github.com/RSDKModding/RSDKv5-Decompilation.git 
 
---Copiamos el ejecutable del engine RSDKv5 a nuestro directorio de sonicmania:
-cp dependencies/RSDKv5/RSDKv5U ~/sonicmania/
-
 --Editamos RSDKv5/RSDK/Audio/Audio.hpp y dejamos la línea:
 #define MIX_BUFFER_SIZE (0x800)
 como:
@@ -5896,6 +5893,9 @@ mkdir b4
 cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DRETRO_SUBSYSTEM=VK \
 -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+
+--Copiamos el ejecutable del engine RSDKv5 a nuestro directorio de sonicmania:
+cp dependencies/RSDKv5/RSDKv5U ~/sonicmania/
 
 --Clonamos el repo del juego:
 git clone --recursive --depth 1 https://github.com/Rubberduckycooly/Sonic-Mania-Decompilation.git
