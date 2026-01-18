@@ -1,11 +1,15 @@
 COMPILAR SCUMMVM
 ================
 
-COMO LO VENIMOS COMPILANDO AHORA: CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
-Dependencias previas: apt-get install libmpeg2-4-dev libvorbis-dev libmad0-dev libjpeg-dev libpng-dev --no-install-recommends
+--Instalamos dependencias previas: apt-get install libmpeg2-4-dev libvorbis-dev libmad0-dev libjpeg-dev libpng-dev --no-install-recommends
 
-Para que no salga el cursor de sistema, editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse
+--Clonamos la última versión estable (podemos ver cuál es en):
+git clone --depth 1 -b v2026.1.0 https://github.com/scummvm/scummvm.git scummvm-2026.2.0
+
+--Editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse
 comentamos todo el "if" y lo que hay dentro.
+
+--LO COMPILAMOS CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
@@ -16,6 +20,8 @@ CXXFLAGS="-march=native -mtune=native -O2" \
 --enable-vorbis --disable-tremor --disable-theoradec \
 --disable-taskbar --disable-sdlnet --disable-libcurl \
 --disable-engine=hugo,drascula,hopkins,teenagent,tony,tsage,tucker,draci,toltecs,wintermute,touche,parallaction,composer,sword25,tinsel,queen,saga2,cge,cine,cruise,lure,cge2,mortevielle,voyeur,gnap,mads,bbvs,sherlock,access,lab,titanic,plumbers,illusions,bladerunner,cryomni3d,prince,hdb,supernova,pegasus,buried,myst3,zvision,dragons,griffon,director,trecision,ngi,petka,hypno,hadesch,private,stark,sludge,ags,asylum,chewy,pink,mtropolis,glk,freescape,nancy,efh,kingdom,vcruise,qdengine,m4,crab,bagel,dgds,got,awe,lastexpress,wage,tot,alcachofa,tetraedge,hpl1
+
+		NOTAS DE USO
 
 LO PRIMERO, PARA QUE LAS FUENTES VAYAN BIEN EN EL MENÚ PRINCIPAL (SIN ESTO SE VEN CON ESCALADO IRREGULAR...),
 copia el archivo "fonts.dat" que viene con los sources en ~/scummvm/data, que es el directorio que usarás como "EXTRA PATH"
