@@ -3,7 +3,7 @@ COMPILAR SCUMMVM
 
 --Instalamos dependencias previas: apt-get install libmpeg2-4-dev libvorbis-dev libmad0-dev libjpeg-dev libpng-dev --no-install-recommends
 
---Clonamos la última versión estable (podemos ver cuál es en):
+--Clonamos la última versión estable (podemos ver cuál es en https://github.com/scummvm/scummvm/tags):
 git clone --depth 1 -b v2026.1.0 https://github.com/scummvm/scummvm.git scummvm-2026.2.0
 
 --Editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse
