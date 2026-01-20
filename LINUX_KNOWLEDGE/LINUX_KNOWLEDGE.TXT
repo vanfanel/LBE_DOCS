@@ -1024,7 +1024,8 @@ librerías a mano. Las instrucciones están ahí también.
 OPCIÓN 1: CON CMAKE DIRECTO, INSTALANDO ANTES A MANO LAS DEPENDENCIAS
 
 --Instalamos dependencias previas:
-----Instalamos libopusfile: apt-get install libopusfile-dev
+----Instalamos libopusfile: apt-get install libopusfile-dev libasio-dev --no-install-recommends
+(CUIDADO: Sin "--no-install-recommends", libasio-dev nos instala la basura de libboost que son casi 200MB).
 
 ----Instalamos zlib-ng a mano ya que no hay versión empaquetada para Debian:
 ------Nos bajamos los últimos sources estables de: https://github.com/zlib-ng/zlib-ng/releases
