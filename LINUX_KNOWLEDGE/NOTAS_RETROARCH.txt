@@ -996,6 +996,12 @@ ADEMÁS DE VRR/ADAPTIVE SYNC, NECESITA FRAMETIME DEVIANCE A 0.0-0.1%. PARA ELLO:
 
 			FIN OPCIÓN 2
 
+TOQUE FINAL: Para evitar el último mini-dropout de audio al empezar el in-game del Napple Tale,
+pon la gráfica a máximo rendimiento antes de entrar a la emulación:
+echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
+...
+echo auto | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
+
 RECUERDA: Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador). Deja la segunda demo del Daytona USA 2001
 y si hay errores de clipping en los edificios del lado izquierdo, lo activas.
