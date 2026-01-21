@@ -126,8 +126,8 @@ wlr-randr --output DP-1 --custom-mode 1920x1080@119.427000
 
 		--SHADER--
 
-Opción 1: NEWPIXIE-CRT con "Accumulate Modulation" a 50, "Curvature" a 0, "Rolling Scanlines" a 0,
-		  "Vignette" a 0.90, "Ghosting" a 0.30.
+Opción 1: NEWPIXIE-CRT con "Accumulate Modulation" a 50, "Horizontal Blur" a 2.00, "Curvature" a 0,
+		  "Vignette" a 0.60, "Ghosting" a 0.30.
 
 Opción 2: CRT-CONSUMER con "Pre-Scale Sharpening" a 1.00, "Convergence X" a 0.40, todo lo de curvatura quitado,
           "Scanlines dark" a 1.20, "Scanlines bright" a 0.80, "Mask Type" a 4.00,
