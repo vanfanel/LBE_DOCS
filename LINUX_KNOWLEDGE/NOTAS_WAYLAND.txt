@@ -1281,6 +1281,7 @@ AHORA CREAMOS  ~/.config/labwc/rc.xml Y LE VAMOS AÑADIENDO COSAS:
 
 	<core>
 		<adaptiveSync>yes</adaptiveSync>
+		<allowTearing>yes</allowTearing>
 		<reuseOutputMode>yes</reuseOutputMode>
 	</core>
 
