@@ -17,12 +17,10 @@ CXXFLAGS="-march=native -mtune=native" \
 meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled -Dgst-examples=disabled -Drtsp_server=disabled \
 -Dtests=disabled -Dtools=disabled -Dexamples=disabled -Dbenchmarks=disabled -Dorc=disabled -Ddevtools=disabled -Dintrospection=disabled
 
-RECUERDA QUE PARA QUE FUNCIONE NTSYNC NECESITAMOS TENER UNA INSTALACIÓN "PERSONAL"
-DE LOS HEADERS DEL KERNEL ACTUAL (esto es porque los headers de Debian,
-del paquete "linux-libc-dev", que son los que usaría WINE si no incidicamos otra cosa,
+RECUERDA QUE PARA QUE FUNCIONE NTSYNC NECESITAMOS TENER UNA INSTALACIÓN "PERSONAL" DE LOS HEADERS DEL KERNEL ACTUAL,
+QUE DEBISTE INSTALAR EN /src/ntsync-headers CUANDO INSTALASTE EL KERNEL (Lo tienes en las instrucciones de instalación del kernel).
+Esto es porque los headers de Debian, del paquete "linux-libc-dev", que son los que usaría WINE si no incidicamos otra cosa,
 no exponen el ioctl NTSYNC_IOC_EVENT_READ porque aún no se consideraba estable cuando salió Debian 13).
-ESTO LO DEBISTE HACER CUANDO INSTALASTE EL KERNEL ACTUALIZADO, LAS DEBERÍAS TENER EN /src/ntsync-headers.
-MIRA LAS INSTRUCCIONES DE COMPILACIÓN E INSTALACIÓN DEL KERNEL SI NO ES ASÍ.
 
 VAMOS CON WINE EN SÍ:
 --Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
