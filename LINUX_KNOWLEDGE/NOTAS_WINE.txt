@@ -7,10 +7,10 @@ NO HACE FALTA hacer lo de "WINEARCH=win32 winecfg", ya que de hecho eso no funci
 
 INSTALAMOS DEPENDENCIAS PREVIAS (mingw es necesario para compilar un WINE con soporte de WoW64):
 apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
-(Si usas el gstreamer del sistema, hay que instalar libgstreamer-plugins-base1.0-dev).
 
-INSTALAMOS OTRA DEPENDENCIA PREVIA: libgstreamer (no podemos instalar la de Debian porque nos mete la porquería de X11 y MESA viejo)
---Bajalos los sources de la última estable de: https://gitlab.freedesktop.org/gstreamer/gstreamer/-/tags
+INSTALAMOS OTRA DEPENDENCIA PREVIA: libgstreamer
+No podemos instalar la de Debian (libgstreamer-plugins-base1.0-dev) porque nos mete la porquería de X11 y MESA viejo.
+--Bajamos los sources de la última estable de: https://gitlab.freedesktop.org/gstreamer/gstreamer/-/tags
 --Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \

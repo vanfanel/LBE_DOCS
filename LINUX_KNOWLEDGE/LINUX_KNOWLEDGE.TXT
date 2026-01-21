@@ -10284,7 +10284,6 @@ Clonamos el repo:
 
 git clone --depth 1 https://github.com/OpenFodder/openfodder.git
 
---Editamos Source/Amiga/Sound_Amiga.cpp y ponemos "desired->samples" a 0x400
 --Configuramos con:
 mkdir b4
 cd b4
