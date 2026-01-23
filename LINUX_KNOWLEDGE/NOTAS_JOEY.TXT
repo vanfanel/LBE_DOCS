@@ -20,3 +20,13 @@ NOTA: Si un cartucho chinorris usa saves, seguramente use la ROM para guardar pa
 como hacen los originales. Así que tenemos que parchearlo. Tienes varios parches en:
 https://github.com/acocalypso/batteryless-patches/tree/main/patches
 Y en el canal #patch-repository del servidor Discord de BennVenn (busca allí por nombre del juego a ver si sale algo...).
+
+
+Para flashear cartuchos desde flashgbx, primero tenemos que meterle al joeyjr el firmware de flashgbx, que es un fw especial
+de la gente de flashgbx.
+--En MODE.TXT ponemos UPDATE arriba del todo y salvamos.
+--Ejecutamos flashgbx como root. Se nos ejecutará en modo CLI. Elegimos la opción
+--Ejecutamos:
+flashgbx --flashcart-type "Generic Flash Cartridge (WR/AAA/AA)"
+...Nos pedirá la ruta de la ROM, etc. y la flasheará. Ya está!
+RECUERDA que si es un juego que usa saves, tienen que ser ROMs parcheadas con un parche "batteryless", o te dará una pantalla en blanco.
