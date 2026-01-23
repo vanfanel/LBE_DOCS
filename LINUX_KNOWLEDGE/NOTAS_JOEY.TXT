@@ -1,0 +1,22 @@
+FLASHEAR CARTUCHOS CHINORRIS DESDE LINUX
+========================================
+
+Aunque en teoría se puede simplemente copiar y pegar una ROM al cartucho como si fuese una unidad desconectable normal,
+eso no funciona y los juegos nos dan pantallazo blanco, así que usamos FLASHGBX:
+
+--Instalamos unas dependencias previas:
+sudo apt-get install python3-pil python3-serial
+
+--Nos bajamos el último .DEB para nuestra versión de Debian de aquí:
+https://github.com/JJ-Fox/FlashGBX-Linux-builds/releases/tag/4.5
+
+--Lo instalamos:
+sudo dpkg -i debian13-flashgbx_4.5-1_all.deb
+
+--Añadimos al usuario al grupo que nos permite tener acceso root a /dev/usbX:
+sudo adduser manuel dialout
+
+NOTA: Si un cartucho chinorris usa saves, seguramente use la ROM para guardar partidas en lugar de usar SRAM+pila
+como hacen los originales. Así que tenemos que parchearlo. Tienes varios parches en:
+https://github.com/acocalypso/batteryless-patches/tree/main/patches
+Y en el canal #patch-repository del servidor Discord de BennVenn (busca allí por nombre del juego a ver si sale algo...).
