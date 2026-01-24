@@ -17,7 +17,7 @@ sudo dpkg -i debian13-flashgbx_4.5-1_all.deb
 sudo adduser manuel dialout
 
 NOTA: Los juegos originales que salvan partida usan SRAM+Batería, pero los cartuchos chinos traen ROMs parcheadas para salvar a flash.
-Así que tendríamos que parchearlos, salvo que sean juegos que usen originalmente el mapper MBC5 (como el Link's Awakening DX).
+Así que tendríamos que parchearlos. Los juegos que usan MBC5 sí van sin parchear, y salvan pero al apagar la consola un rato se borra la partida.
 Tienes varios parches en:
 https://github.com/acocalypso/batteryless-patches/tree/main/patches
 Y en el canal #patch-repository del servidor Discord de BennVenn (busca allí por nombre del juego a ver si sale algo...).
@@ -30,5 +30,4 @@ de la gente de flashgbx.
 flashgbx --flashcart-type "Generic Flash Cartridge (WR/AAA/AA)"
 ...Nos pedirá la ruta de la ROM, etc. y la flasheará. Ya está!
 RECUERDA que si es un juego que usa saves, tienen que ser ROMs parcheadas con un parche "batteryless", o te dará una pantalla en blanco.
-RECUERDA que los juegos que usan el mapper MBC5 salvan sin problemas y sin necesidad de patchear nada, como Link's Awakening DX.
-Hay parches para poner los juegos a MBC5, como este: https://www.romhacking.net/hacks/2835/
+RECUERDA que los juegos que usan el mapper MBC5 salvan pero la partida se borra al apagar la consola un rato.
