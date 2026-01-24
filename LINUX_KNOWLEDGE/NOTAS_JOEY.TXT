@@ -16,11 +16,11 @@ sudo dpkg -i debian13-flashgbx_4.5-1_all.deb
 --Añadimos al usuario al grupo que nos permite tener acceso root a /dev/usbX:
 sudo adduser manuel dialout
 
-NOTA: Si un cartucho chinorris usa saves, seguramente use la ROM para guardar partidas en lugar de usar SRAM+pila
-como hacen los originales. Así que tenemos que parchearlo. Tienes varios parches en:
+NOTA: Los juegos originales que salvan partida usan SRAM+Batería, pero los cartuchos chinos traen ROMs parcheadas para salvar a flash.
+Así que tendríamos que parchearlos, salvo que sean juegos que usen originalmente el mapper MBC5 (como el Link's Awakening DX).
+Tienes varios parches en:
 https://github.com/acocalypso/batteryless-patches/tree/main/patches
 Y en el canal #patch-repository del servidor Discord de BennVenn (busca allí por nombre del juego a ver si sale algo...).
-
 
 Para flashear cartuchos desde flashgbx, primero tenemos que meterle al joeyjr el firmware de flashgbx, que es un fw especial
 de la gente de flashgbx.
@@ -30,3 +30,4 @@ de la gente de flashgbx.
 flashgbx --flashcart-type "Generic Flash Cartridge (WR/AAA/AA)"
 ...Nos pedirá la ruta de la ROM, etc. y la flasheará. Ya está!
 RECUERDA que si es un juego que usa saves, tienen que ser ROMs parcheadas con un parche "batteryless", o te dará una pantalla en blanco.
+RECUERDA que los juegos que usan el mapper MBC5 salvan sin problemas y sin necesidad de patchear nada, como Link's Awakening DX.
