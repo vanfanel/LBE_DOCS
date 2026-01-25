@@ -1003,8 +1003,14 @@ ADEMÁS DE VRR/ADAPTIVE SYNC, NECESITA FRAMETIME DEVIANCE A 0.0-0.1%. PARA ELLO:
 
 			FIN OPCIÓN 2
 
-TOQUE FINAL: Para evitar el último mini-dropout de audio al empezar el in-game del Napple Tale,
-pon la gráfica a máximo rendimiento antes de entrar a la emulación:
+EVITAR DROPOUTS EN PRIMERA EJECUCIÓN (SE NOTA EN EL "NAPPLE TALE" A VECES, JUSTO AL LLEGAR AL IN-GAME DE UNA PARTIDA GUARDADA)
+Tenemos que tener en caché la librería del core, lo cual hacemos con:
+cat /usr/local/bin/retroarch >> /dev/null
+cat ~/.config/retroarch/cores/flycast_libretro.so >> /dev/null
+retroarch -L .config/retroarch/cores/flycast_libretro.so "$1"
+
+MEJORAR EL RENDIMIENTO (NO HAY CONFIRMACIÓN DE QUE MEJORE NINGÚN JUEGO, PERO POR SI ACASO):
+Ponemos la gráfica a máximo rendimiento antes de entrar a la emulación:
 echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
 ...
 echo auto | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
