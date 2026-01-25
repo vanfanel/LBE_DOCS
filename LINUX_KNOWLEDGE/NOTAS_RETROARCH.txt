@@ -377,6 +377,13 @@ En AUDIO->SYNCHRONIZATION ponemos:
 "Maximum Timing Skew"			0.0
 "Dynamic Audio Rate Control"	0.0
 
+		EVITAR AUDIO DROPOUTS EN LA PRIMERA EJECUCIÓN (SE NOTA EN LA INTRO DEL "HOUSE OF THE DEAD / HOTD")
+		
+Antes de cargar el juego, mandamos el core y retroarch a la caché con:
+cat /usr/local/bin/retroarch >> /dev/null
+cat ~/.config/retroarch/cores/mame_libretro.so >> /dev/null
+retroarch -L ~/.config/retroarch/cores/mame_libretro.so "$1" >> /dev/null 2>&1
+
 		ENTRAR EN EL SERVICE MODE DE LOS JUEGOS
 		
 Se entra con F2 y nos movemos con el 9 y con F2.
