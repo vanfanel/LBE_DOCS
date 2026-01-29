@@ -8155,6 +8155,7 @@ apt-get install lld llvm clang
 	BLOQUE DE DESCOMPRESIÓN DE LA ROM
 	(NO ES NECESARIO A NO SER QUE PIERDAS LA ROM DESCOMPRIMIDA QUE TIENES EN EL DISCO DURO DE BACKUP).
 
+--Instalamos dependencias previas: sudo apt install build-essential python3 git binutils-mips-linux-gnu
 --Clonamos el descompresor de ROM: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/mnsg.git
 --Entramos en el raiz de los sources del descompresor: cd mnsg
 --Instalamos UV que se usa para instalar componentes necesarios de Python (se instala para el usuario en su ~/.bin, tranqui):
