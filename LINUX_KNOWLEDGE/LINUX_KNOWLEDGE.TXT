@@ -8140,7 +8140,7 @@ GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
 ============================================================
 NOTA: La documentación original está aquí --> https://github.com/klorfmorf/Goemon64Recomp/blob/modding/BUILDING.md
 
-BLOQUE DEPENDENCIAS PREVIAS
+	BLOQUE DEPENDENCIAS PREVIAS
 
 --Instalamos GTK3:
 ----Si estás en tu sistema personal, ve a la documentación de Wayland que tienes documentado allí cómo compilar GTK3
@@ -8152,25 +8152,19 @@ apt-get install lld llvm clang
 
 --Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/Goemon64Recomp.git
 
-BLOQUE DE DESCOMPRESIÓN DE LA ROM
-(NO ES NECESARIO A NO SER QUE PIERDAS LA ROM DESCOMPRIMIDA QUE TIENES EN EL DISCO DURO DE BACKUP).
+	BLOQUE DE DESCOMPRESIÓN DE LA ROM
+	(NO ES NECESARIO A NO SER QUE PIERDAS LA ROM DESCOMPRIMIDA QUE TIENES EN EL DISCO DURO DE BACKUP).
 
---Instalamos dependencias previas: sudo apt install build-essential python3 git binutils-mips-linux-gnu
---Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/mnsg.git
---Entramos en el raiz los sources, y allí creamos un entorno Python virtual, entramos en él e instalamos las dependencias de Python necesarias:
-cd mnsg
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
---Metemos la ROM USA del Mystical Ninja 64 como "baserom.us.z64" en el raiz de los sources (es decir, en la raiz de "msng").
---Extraemos los assets de la ROM:
-make setup VERSION=us
---Reconstruimos la ROM:
-make VERSION=us
+--Clonamos el descompresor de ROM: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/mnsg.git
+--Entramos en el raiz de los sources del descompresor: cd mnsg
+--Instalamos UV que se usa para instalar componentes necesarios de Python (se instala para el usuario en su ~/.bin, tranqui):
+curl -LsSf https://astral.sh/uv/install.sh | sh
+--Ponemos la ROM USA del Mystical Ninja en config/usa/baserom.z64 y hacemos: make setup
+--Obtenemos la ROM descomprimida en config/usa/baserom.decompressed.z64
 --Copiamos el fichero resultante "baserom.us.decompressed.z64" al raiz de los sources de Goemon64Recomp como "mnsg.us.decompressed.z64":
 cp baserom.us.decompressed.z64 ~/src/Goemon64Recomp/mnsg.us.decompressed.z64
 
-BLOQUE "N64RECOMP"
+	BLOQUE "N64RECOMP"
 
 --Clonamos su repo: git clone --depth 1 --recurse-submodules https://github.com/N64Recomp/N64Recomp.git
 --Compilamos con:
@@ -8180,7 +8174,7 @@ cmake ..
 make -j10
 --Copiamos los ejecutables "N64Recomp" y "RSPRecomp" al raiz de los sources de Goemon64Recomp
 
-BLOQUE DE RECOMPILACIÓN
+	BLOQUE DE RECOMPILACIÓN
 
 --Editamos lib/rt64/src/contrib/plume/plume_render_interface_types.h y comentamos el #include "X11/Xlib.h"
 --Editamos lib/rt64/src/contrib/plume/plume_vulkan.h y cambiamos "VK_USE_PLATFORM_XLIB_KHR" por "VK_USE_PLATFORM_WAYLAND_KHR"
@@ -8199,7 +8193,7 @@ cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang 
 cmake --build build-cmake --target Goemon64Recompiled -j4 --config Release
 (Tras instalarlo, limpiamos con: cmake --build build-cmake --target clean)
 
-BLOQUE DE EJECUCIÓN
+	BLOQUE DE EJECUCIÓN
 
 Creamos el directorio ~/goemon64, y allí copiamos:
 -El ejecutable "./build-cmake/Goemon64Recompiled"
@@ -8214,6 +8208,55 @@ BANJO RECOMP
 ============
 
 --Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/BanjoRecomp/BanjoRecomp.git
+
+	BLOQUE "N64RECOMP"
+
+--Clonamos su repo: git clone --depth 1 --recurse-submodules https://github.com/N64Recomp/N64Recomp.git
+--Compilamos con:
+mkdir b4
+cd b4
+cmake ..
+make -j10
+--Copiamos los ejecutables "N64Recomp" y "RSPRecomp" al raiz de los sources de BanjoRecomp
+
+	BLOQUE EXTRACCIÓN DE LA ROM
+    (NO ES NECESARIO A NO SER QUE PIERDAS LA ROM DESCOMPRIMIDA QUE TIENES EN EL DISCO DURO DE BACKUP).
+
+--Primero instalamos el buildsystem que necesita el descompresor de la ROM, que está hecho en RUST.
+Según las instrucciones de https://www.rust-lang.org/tools/install, se hace así:
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+(Para desinstalar Rust: rustup self uninstall)
+	
+--Clonamos el descompresor de ROM: git clone --depth 1 --recurse-submodules https://github.com/MittenzHugg/bk_rom_compressor.git
+--Instalamos el descompresor de la ROM
+(Tranquilo, se instala en el directorio local de ejecutables en RUST para el usuario, en /home/manuel/.cargo/bin/).
+Para ello entramos en el raiz de los sources de bk_rom_compressor y hacemos:
+cargo install --path .
+--Descomprimimos la ROM con: bk_rom_decompress rom_comprimida.z64 banjo.us.v10.decompressed.z64
+--Copiamos banjo.us.v10.decompressed.z64 a la raiz de los sources de BanjoRecomp
+
+	BLOQUE RECOMPILACIÓN
+	
+--Nos vamos a la raiz de los sources de BanjoRecomp y hacemos:
+
+./N64Recomp banjo.us.rev0.toml
+./RSPRecomp n_aspMain.us.rev0.toml
+
+--Editamos CMakeLists.txt y comentamos todo lo relativo a X11, Xrandr, etc. alrededor del:
+ind_package(X11 REQUIRED)
+También los target_include_directories y target_link_libraries de toda esa mierda de X11.
+
+--Por fin, configuramos los sources y compilamos:
+cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build-cmake --target BanjoRecompiled -j$(nproc) --config Release
+
+--Instalamos todo lo necesario a un directorio nuestro de juego:
+mkdir ~/banjo
+cp build-cmake/BanjoRecompiled ~/banjo/
+cp -R assets ~/banjo/
+cp recompcontrollerdb.txt ~/banjo/
+
+--Metemos la ROM 1.0 USA en el mismo directorio, ¡y a jugar!
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
