@@ -8242,9 +8242,8 @@ cargo install --path .
 ./N64Recomp banjo.us.rev0.toml
 ./RSPRecomp n_aspMain.us.rev0.toml
 
---Editamos CMakeLists.txt y comentamos todo lo relativo a X11, Xrandr, etc. alrededor del:
-ind_package(X11 REQUIRED)
-También los target_include_directories y target_link_libraries de toda esa mierda de X11.
+--Editamos CMakeLists.txt y comentamos todo lo relativo a X11, Xrandr, etc. alrededor del "find_package(X11 REQUIRED)"
+También los target_include_directories y target_link_libraries de toda esa mierda de X11 que hay debajo.
 
 --Por fin, configuramos los sources y compilamos:
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
