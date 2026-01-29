@@ -17,10 +17,12 @@ sudo dpkg -i debian13-flashgbx_4.5-1_all.deb
 sudo adduser manuel dialout
 
 NOTA: Los juegos originales que salvan partida usan SRAM+Batería, pero los cartuchos chinos traen ROMs parcheadas para salvar a flash.
-Así que tendríamos que parchearlos. Los juegos que usan MBC5 sí van sin parchear, y salvan pero al apagar la consola un rato se borra la partida.
-Tienes varios parches en:
+Así que tendríamos que parchearlos.
+En los cartuchos de Aliexpress, los juegos que usan MBC5 sí van sin parchear y salvan, pero al apagar la consola un rato se borra la partida.
+O sea que para los cartuchos de Aliexpress necesitas los parches "batteryless". Tienes varios de esos parches en:
 https://github.com/acocalypso/batteryless-patches/tree/main/patches
 Y en el canal #patch-repository del servidor Discord de BennVenn (busca allí por nombre del juego a ver si sale algo...).
+PERO en los cartuchos de originales de Chromatic se pueden grabar juegos MBC5, y salvan y el salvado se conserva.
 
 Para flashear cartuchos desde flashgbx, primero tenemos que meterle al joeyjr el firmware de flashgbx, que es un fw especial
 de la gente de flashgbx.
