@@ -8210,6 +8210,11 @@ Y ya deberíamos poder ejecutar "Goemon64Recompiled", y en el menú que nos sale
 NOTA: El mensaje de error "Failed to preload executable!" es porque la función preload_executable()
 en src/main/main.cpp de Goemon64Recomp sólo está implementada para Windows, hay un TODO para que alguien la implemente para GNU/Linux.
 
+BANJO RECOMP
+============
+
+--Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/BanjoRecomp/BanjoRecomp.git
+
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
 

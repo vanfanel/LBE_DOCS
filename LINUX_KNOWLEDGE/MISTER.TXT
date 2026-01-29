@@ -957,6 +957,7 @@ Lo que hace es que los modos de vídeo precisos se calculan tomando como base el
 Esto es necesario por un error de cálculo al usar vsync_adjust=2 con estos cores: se calcula mal sin especificar este modo base.
 
 ***********CREAR DISCOS DE VIDEOCD PARA EL CORE CD-I***********************
+NOTA: Ahora, en lugar de todos esto, se usa https://github.com/mrchrisster/mister_cdi_vcd_creator/tree/main
 INFO SACADA DE: https://github.com/Slamy/MPEG1_Handbook
 
 PREQUISITOS:
