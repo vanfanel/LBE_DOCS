@@ -8176,19 +8176,16 @@ make -j10
 
 	BLOQUE DE RECOMPILACIÓN
 
---Editamos lib/rt64/src/contrib/plume/plume_render_interface_types.h y comentamos el #include "X11/Xlib.h"
---Editamos lib/rt64/src/contrib/plume/plume_vulkan.h y cambiamos "VK_USE_PLATFORM_XLIB_KHR" por "VK_USE_PLATFORM_WAYLAND_KHR"
---Editamos lib/rt64/src/contrib/plume/plume_vulkan.cpp y cambiamos "VK_KHR_XLIB_SURFACE_EXTENSION_NAME" por "VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME"
-(Estas tres ediciones son porque en uno de los submódulos, plume, se piensan que Linux=X11.
- Hay una issue abierta aquí: https://github.com/renderbag/plume/issues/87#issuecomment-3761315850
- Si no lo arreglan en un tiempo, mencionan cómo arreglarlo desde un commit del proyecto desde el que se forkeó plume,
- por lo que podría yo arreglarlo fácilmente).
+--Nos vamos al raiz de los sources de Goemon64Recomp
 
---Nos vamos al raiz de los sources de Goemon64Recomp y hacemos:
-./N64Recomp mnsg.us.toml
-./RSPRecomp aspMain.us.toml
+--Nos vamos a lib/rt64/src/contrib/ y hacemos:
+rm -R plume
+git clone --recursive --depth 1 https://github.com/renderbag/plume.git
+(Esto no será necesario dentro de un tiempo, cuando actualicen la versión del submódulo PLUME a una que ya tenga mi arreglo, que está mergeado). 
 
 --Compilamos para nuestra arquitectura al fin:
+./N64Recomp mnsg.us.toml
+./RSPRecomp aspMain.us.toml
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-cmake --target Goemon64Recompiled -j4 --config Release
 (Tras instalarlo, limpiamos con: cmake --build build-cmake --target clean)
@@ -8236,16 +8233,20 @@ cargo install --path .
 --Copiamos banjo.us.v10.decompressed.z64 a la raiz de los sources de BanjoRecomp
 
 	BLOQUE RECOMPILACIÓN
-	
---Nos vamos a la raiz de los sources de BanjoRecomp y hacemos:
 
-./N64Recomp banjo.us.rev0.toml
-./RSPRecomp n_aspMain.us.rev0.toml
+--Nos vamos a la raiz de los sources de BanjoRecomp
+
+--Nos vamos a lib/rt64/src/contrib/ y hacemos:
+rm -R plume
+git clone --recursive --depth 1 https://github.com/renderbag/plume.git
+(Esto no será necesario dentro de un tiempo, cuando actualicen la versión del submódulo PLUME a una que ya tenga mi arreglo que está mergeado). 
 
 --Editamos CMakeLists.txt y comentamos todo lo relativo a X11, Xrandr, etc. alrededor del "find_package(X11 REQUIRED)"
 También los target_include_directories y target_link_libraries de toda esa mierda de X11 que hay debajo.
 
 --Por fin, configuramos los sources y compilamos:
+./N64Recomp banjo.us.rev0.toml
+./RSPRecomp n_aspMain.us.rev0.toml
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-cmake --target BanjoRecompiled -j$(nproc) --config Release
 
