@@ -8162,8 +8162,8 @@ apt-get install lld llvm clang
 curl -LsSf https://astral.sh/uv/install.sh | sh
 --Ponemos la ROM USA del Mystical Ninja en config/usa/baserom.z64 y hacemos: make setup
 --Obtenemos la ROM descomprimida en config/usa/baserom.decompressed.z64
---Copiamos el fichero resultante "baserom.us.decompressed.z64" al raiz de los sources de Goemon64Recomp como "mnsg.us.decompressed.z64":
-cp baserom.us.decompressed.z64 ~/src/Goemon64Recomp/mnsg.us.decompressed.z64
+--Copiamos el fichero resultante "baserom.us.decompressed.z64" al raiz de los sources de Goemon64Recomp como "mnsg.z64":
+cp baserom.us.decompressed.z64 ~/src/Goemon64Recomp/mnsg.z64
 
 	BLOQUE "N64RECOMP"
 
@@ -8179,16 +8179,18 @@ make -j10
 
 --Nos vamos al raiz de los sources de Goemon64Recomp
 
---Nos vamos a lib/rt64/src/contrib/ y hacemos:
-rm -R plume
-git clone --recursive --depth 1 https://github.com/renderbag/plume.git
-(Esto no será necesario dentro de un tiempo, cuando actualicen la versión del submódulo PLUME a una que ya tenga mi arreglo, que está mergeado). 
+
+--Editamos lib/rt64/src/contrib/plume/plume_render_interface_types.h y comentamos el #include "X11/Xlib.h"
+--Editamos lib/rt64/src/contrib/plume/plume_vulkan.h y cambiamos "VK_USE_PLATFORM_XLIB_KHR" por "VK_USE_PLATFORM_WAYLAND_KHR"
+--Editamos lib/rt64/src/contrib/plume/plume_vulkan.cpp y cambiamos "VK_KHR_XLIB_SURFACE_EXTENSION_NAME" por "VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME"
+(Esto no será necesario dentro de un tiempo, cuando actualicen la versión de los submódulos RT64 y PLUME,
+ porque publiqué un PR ya mergeado que lo arregla)
 
 --Compilamos para nuestra arquitectura al fin:
-./N64Recomp mnsg.us.toml
-./RSPRecomp aspMain.us.toml
+./N64Recomp mnsg.toml
+./RSPRecomp aspMain.toml
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build-cmake --target Goemon64Recompiled -j4 --config Release
+cmake --build build-cmake --target Goemon64Recompiled -j$(nproc) --config Release
 (Tras instalarlo, limpiamos con: cmake --build build-cmake --target clean)
 
 	BLOQUE DE EJECUCIÓN
@@ -8237,11 +8239,6 @@ cargo install --path .
 	BLOQUE RECOMPILACIÓN
 
 --Nos vamos a la raiz de los sources de BanjoRecomp
-
---Nos vamos a lib/rt64/src/contrib/ y hacemos:
-rm -R plume
-git clone --recursive --depth 1 https://github.com/renderbag/plume.git
-(Esto no será necesario dentro de un tiempo, cuando actualicen la versión del submódulo PLUME a una que ya tenga mi arreglo que está mergeado). 
 
 --Editamos CMakeLists.txt y comentamos todo lo relativo a X11, Xrandr, etc. alrededor del "find_package(X11 REQUIRED)"
 También los target_include_directories y target_link_libraries de toda esa mierda de X11 que hay debajo.
