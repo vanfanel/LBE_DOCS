@@ -8179,7 +8179,6 @@ make -j10
 
 --Nos vamos al raiz de los sources de Goemon64Recomp
 
-
 --Editamos lib/rt64/src/contrib/plume/plume_render_interface_types.h y comentamos el #include "X11/Xlib.h"
 --Editamos lib/rt64/src/contrib/plume/plume_vulkan.h y cambiamos "VK_USE_PLATFORM_XLIB_KHR" por "VK_USE_PLATFORM_WAYLAND_KHR"
 --Editamos lib/rt64/src/contrib/plume/plume_vulkan.cpp y cambiamos "VK_KHR_XLIB_SURFACE_EXTENSION_NAME" por "VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME"
