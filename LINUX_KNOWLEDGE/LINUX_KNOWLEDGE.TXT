@@ -8205,7 +8205,8 @@ en src/main/main.cpp de Goemon64Recomp sólo está implementada para Windows, ha
 BANJO RECOMP
 ============
 
---Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/BanjoRecomp/BanjoRecomp.git
+--Clonamos la última versión estable de su repo (podemos ver cuál es en https://github.com/BanjoRecomp/BanjoRecomp/tags):
+git clone --depth 1 --recurse-submodules -b v1.0.1 https://github.com/BanjoRecomp/BanjoRecomp.git BanjoRecomp-1.0.1
 
 	BLOQUE "N64RECOMP"
 
