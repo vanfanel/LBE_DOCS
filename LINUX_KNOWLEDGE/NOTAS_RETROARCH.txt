@@ -1041,8 +1041,7 @@ o si no, el Ridge Racers se nos quedará en una pantalla en gris después del me
 --Es un core con sonido 44100Hz y además necesita 64ms de latencia, así que configura los settings de audio así y guarda los core overrides.
 
 PARA FRAMERATE ESTABLE (CON VRR Y SIN ÉL):
---Deja "Buffer Graphis Commands" a 1, no lo desactives porque entonces la CPU y la GPU no pueden trabajar en paralelo.
-  Los 120Hz compensan el input lag debido a esto, y de todos modos seguramente la máquina real también tiene un buffer de comandos de la GPU.
+--Pon "Buffer Graphis Commands" a "No Buffer".
 --Desactiva "Duplicate Frames to 60Hz" y "Detect Frame Rate Changes"
 
 ******DOLPHIN LIBRETRO*********************************************************************************
