@@ -8239,8 +8239,9 @@ cargo install --path .
 
 --Nos vamos a la raiz de los sources de BanjoRecomp
 
---Editamos CMakeLists.txt y comentamos todo lo relativo a X11, Xrandr, etc. alrededor del "find_package(X11 REQUIRED)"
-También los target_include_directories y target_link_libraries de toda esa mierda de X11 que hay debajo.
+--(Esto no debería ser necesario una vez que mergeen mi PR al respecto)
+  Editamos CMakeLists.txt y comentamos todo lo relativo a X11, Xrandr, etc. alrededor del "find_package(X11 REQUIRED)"
+  También los target_include_directories y target_link_libraries de toda esa mierda de X11 que hay debajo.
 
 --Por fin, configuramos los sources y compilamos:
 ./N64Recomp banjo.us.rev0.toml
