@@ -7468,7 +7468,12 @@ dfu-util -d 2dc8:5200 -a 0 -s 0x08000000:leave -D RetroKeyboard177.bin
 (El 0x08000000 es la dirección de memoria más común para microcontroladores ARM)
 EL PROBLEMA POR AHORA ES QUE NO APARECE, ASÍ QUE NO LO PODEMOS FLASHEAR DESDE DFU-UTIL, QUE SERÍA LO IDEAL.
 
-****************************Milkytracker en Linux****************************
+****************************Actualizar el firmware del SAFFUN (Mando de N64)***********
+
+Mira este hilo de Reddit: https://www.reddit.com/r/switch2/comments/1l9bjir/comment/my5swpw/
+Tienes la herramienta y el firmware (para Windows, prueba con WINE) en el correo y en el disco de backup. 
+
+****************************Milkytracker en Linux**************************************
 
 Para evitar undefined symbols en tiempo de linkado, hacemos:
 
