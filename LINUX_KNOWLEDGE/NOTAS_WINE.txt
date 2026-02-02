@@ -48,6 +48,9 @@ wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d 
 
 ...Y ya debería ir WINE sobre Wayland puro y con programas de 32bits usando el modo WoW64. Prueba a hacer "winecfg" o bien "wine notepad"
 
+Ahora nos vamos a winecfg, y en la pestaña "Audio", ponemos en "Output device" y en "Voice Output device"
+el dispositivo correspondiente a nuestra salida de audio en uso (en el X600 es "HD Audio Generic - <nombre del monitor>").
+
 PARA NO VER EL ERROR:
 00b0:err:ntoskrnl:ZwLoadDriver failed to create driver L"\\Registry\\Machine\\System\\CurrentControlSet\\Services\\winebth": c00000e5
 (FÍJATE QUE ES UN ERROR DEL SERVICIO "winebth")
