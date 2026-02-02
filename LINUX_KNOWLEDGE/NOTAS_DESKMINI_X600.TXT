@@ -105,17 +105,29 @@ apt-get install firmware-amd-graphics
 ----OPCIÓN 1, COMO LO VENIMOS HACIENDO AHORA: SONIDO POR DP-1 CON DMIX (SIN DMIX HAY MÁS CORTES DE AUDIO EN LOS JUEGOS!!)
 (NOTA: Esto es para usar la salida de vídeo DisplayPort, si usas HDMI donde pone 8 pon un 3).
 
+pcm.dmix_lowlatency {
+    type dmix
+    ipc_key 1024
+    slave {
+        pcm "hw:0,8"
+        rate 48000
+        period_size 128
+        periods 4
+        buffer_size 512
+    }
+}
+
 pcm.!default {
     type plug
-    slave.pcm "dmix:0,8"
+    slave.pcm "dmix_lowlatency"
 }
 
-ctl.!default {
-    type hw
-    card 0
-}
+...O SI QUIERES SER MÁS "CONSERVADOR" PON:
+        period_size 256
+        periods 4
+        buffer_size 1024
 
-...O SI SIMPLEMENTE QUIERES ACCESO DIRECTO AL HARDWARE SIN DMIX (PUEDE SER PROBLEMÁTICO!!):
+...O SI SIMPLEMENTE QUIERES ACCESO DIRECTO AL HARDWARE SIN DMIX (¡¡PUEDE SER PROBLEMÁTICO!!):
 
 pcm.!default {
         type hw
