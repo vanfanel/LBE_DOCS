@@ -102,9 +102,10 @@ apt-get install firmware-amd-graphics
 
 --Dejamos /etc/asound.conf así:
 
-----OPCIÓN 1, COMO LO VENIMOS HACIENDO AHORA: SONIDO POR DP-1 CON ACCESO DIRECTO AL HARDWARE, SIN DMIX
+----OPCIÓN 1, COMO LO VENIMOS HACIENDO AHORA: SONIDO POR DP-1 CON ACCESO DIRECTO AL HARDWARE, CON DMIX A DEMANDA.
 (NO TE OLVIDES DE QUE AL HACER ESTO TIENES QUE ESPECIFICAR EL DISPOSITIVO DE AUDIO EN WINECFG PARA QUE SUENEN CIERTOS JUEGOS COMO "HALO")
 (Y SI ALGÚN JUEGO NECESITA ABRIR VARIOS STREAMS, COMO CIERTOS JUEGOS DE FNA, LANZA PIPEWIRE A DEMANDA)
+(PARA SACAR EL SONIDO POR EL JACK DELANTERO, USARÍAMOS "hw:0,1")
 
 pcm.!default {
         type hw
@@ -117,10 +118,20 @@ ctl.!default {
         card 0
 }
 
+pcm.dmixed {
+        type dmix
+        ipc_key 1234
+        slave {
+                pcm "hw:0,8"
+        }
+}                                                                                                                              
+
+@hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
+
+
 	OTRAS OPCIONES
 
-SONIDO CON DMIX
-(NOTA: Esto es para usar la salida de vídeo DisplayPort, si usas HDMI donde pone 8 pon un 3).
+SONIDO CON DMIX POR DEFECTO, ESPECIFICANDO TAMAÑO DE BUFFER ETC:
 
 pcm.dmix_lowlatency {
     type dmix
@@ -145,54 +156,6 @@ pcm.!default {
         buffer_size 1024
 ...SIMPLEMENTE TEN EN CUENTA QUE SI USAS 4 "PERIODS", EL "BUFFER_SIZE" TIENE QUE SER 4 VECES EL "PERIOD_SIZE",
    Y SI USAS 2 "PERIODS", PUES DEBE SER EL DOBLE SOLAMENTE, ETC.
-
-...O SI QUIERES SONIDO CON DMIX A DEMANDA:
-(NOTA: Lo de pcm.dmixed y lo de @hooks es para luego poder activar y desactivar dmix a demanda, para los juegos FNA.
-Si no vas a usar juegos FNA, no hacen falta esas secciones).
-
-pcm.dmixed {
-        type dmix
-        ipc_key 1234
-        slave {
-                pcm "hw:0,8"
-        }
-}                                                                                                                              
-
-pcm.!default {
-        type hw
-        card 0
-        device 8
-}
-
-ctl.!default {
-        type hw
-        card 0
-}
-                                                                                                                                       
-@hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
-
-----Opción 2: Sonido por jack delantero
-
-pcm.dmixed {
-	type dmix
-	ipc_key 1234
-	slave {
-		pcm "hw:1,0"
-	}
-}
-
-pcm.!default {
-	type hw
-	card 1
-	device 0
-}
-
-ctl.!default {
-	type hw
-	card 1
-}
-
-@hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
 
 NOTA IMPORTANTE: Para ver la configuración por defecto de ALSA que se está aplicando (sobre todo el period_size y buffer_size) 
 puedes hacer:
