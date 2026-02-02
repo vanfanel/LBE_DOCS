@@ -118,7 +118,7 @@ echo "pcm.!default { type plug slave.pcm "dmixed" }" > /tmp/dmix.conf
 rm /tmp/dmix.conf
 
 Lo bueno de crear dmix en /tmp, es que como /tmp es un punto de montaje de TMPFS pues está en RAM,
-así que si el juego nos colgase la máquina, al reiniciar todo estaría como al principio, sin usarse el dispositivo "dmixed" vamos.
+así que si el juego nos colgase la máquina, al reiniciar no se usaría el dispositivo "dmixed".
 
 NOTA: PODRÍAMOS AÑADIR ESTOS PARÁMETROS EN slave {} PARA CONTROLAR TAMAÑO DE BUFFER, DE PERIODO, ETC:
 period_time 0
