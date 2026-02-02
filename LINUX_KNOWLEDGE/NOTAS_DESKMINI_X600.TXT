@@ -117,7 +117,8 @@ ctl.!default {
 }
 
 	OTRAS OPCIONES
-SONIDO POR DP-1 CON DMIX
+
+SONIDO CON DMIX
 (NOTA: Esto es para usar la salida de vídeo DisplayPort, si usas HDMI donde pone 8 pon un 3).
 
 pcm.dmix_lowlatency {
