@@ -124,7 +124,7 @@ pcm.dmixed {
         slave {
                 pcm "hw:0,8"
         }
-}                                                                                                                              
+}
 
 @hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
 

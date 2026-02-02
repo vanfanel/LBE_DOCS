@@ -92,24 +92,22 @@ para el BASTION funciona así)
 OJO!!! INNECESARIO SI TIENES INSTALADO PIPEWIRE!!!
 CON PIPEWIRE, LOS JUEGOS YA PUEDEN ABRIR EL SISTEMA DE AUDIO VARIAS VECES, QUE ES LO QUE SE REQUIERE.
 
-Lo primemo es definir el dispositivo "dmixed" (lo podemos llamar como queramos), para lo cual añadimos en /etc/asound.conf
-algo parecido a esto (hay que ajustar los valores en slave{pcm "hw:PCH,3"} al sistema concreto):
+Añadimos estas cosas al final de /etc/asound.conf, que son para, en primer lugar,
+definir el dispositivo "dmixed" (lo podemos llamar como queramos),
+y lo del @hooks para que si existe ese archivo /tmp/dmix.conf se cargue, y si no, no se haga nada:
 
 pcm.dmixed {
-    type dmix
-    ipc_key 1234
-    slave {
-        pcm "hw:PCH,3"
-    }
+        type dmix
+        ipc_key 1234
+        slave {
+                pcm "hw:0,8"
+        }
 }
 
-De este modo, "dmixed" queda definido, pero NO se usa, todos los programas normales siguen usando el dispositivo por defecto.
-
-También añadimos AL FINAL de /etc/asound.conf:
 @hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
-...Para que, si existe ese archivo /tmp/dmix.conf se cargue, y si no, no se haga nada.
 
-Nos interesa que los juegos FNA sí usen el dispositivo dmixed.
+De este modo, "dmixed" queda definido, pero NO se usa, todos los programas normales siguen usando el dispositivo por defecto.
+Como nos interesa que los juegos FNA sí usen el dispositivo dmixed.
 Para ello, en el script de lanzamiento de los juegos, lo que hacemos es crear el /tmp/dmix.conf antes de cargar el juego,
 y borralo al salir del juego:
 
