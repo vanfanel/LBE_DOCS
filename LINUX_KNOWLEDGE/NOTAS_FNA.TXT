@@ -106,7 +106,7 @@ pcm.dmixed {
 
 @hooks [{ func load files ["/tmp/dmix.conf"] errors false }]
 
-De este modo, "dmixed" queda definido, pero NO se usa, todos los programas normales siguen usando el dispositivo por defecto.
+De este modo, "dmixed" queda definido pero NO se usa: todos los programas normales siguen usando el dispositivo por defecto.
 Como nos interesa que los juegos FNA sí usen el dispositivo dmixed.
 Para ello, en el script de lanzamiento de los juegos, lo que hacemos es crear el /tmp/dmix.conf antes de cargar el juego,
 y borralo al salir del juego:
