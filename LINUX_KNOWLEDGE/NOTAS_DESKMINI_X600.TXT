@@ -102,7 +102,22 @@ apt-get install firmware-amd-graphics
 
 --Dejamos /etc/asound.conf así:
 
-----OPCIÓN 1, COMO LO VENIMOS HACIENDO AHORA: SONIDO POR DP-1 CON DMIX (SIN DMIX HAY MÁS CORTES DE AUDIO EN LOS JUEGOS!!)
+----OPCIÓN 1, COMO LO VENIMOS HACIENDO AHORA: SONIDO POR DP-1 CON ACCESO DIRECTO AL HARDWARE, SIN DMIX
+(SI ALGÚN JUEGO NECESITA ABRIR VARIOS STREAMS, COMO CIERTOS JUEGOS DE FNA, LANZA PIPEWIRE A DEMANDA):
+
+pcm.!default {
+        type hw
+        card 0
+        device 8
+}
+
+ctl.!default {
+        type hw
+        card 0
+}
+
+	OTRAS OPCIONES
+SONIDO POR DP-1 CON DMIX
 (NOTA: Esto es para usar la salida de vídeo DisplayPort, si usas HDMI donde pone 8 pon un 3).
 
 pcm.dmix_lowlatency {
@@ -126,19 +141,6 @@ pcm.!default {
         period_size 256
         periods 4
         buffer_size 1024
-
-...O SI SIMPLEMENTE QUIERES ACCESO DIRECTO AL HARDWARE SIN DMIX (¡¡PUEDE SER PROBLEMÁTICO!!):
-
-pcm.!default {
-        type hw
-        card 0
-        device 8
-}
-
-ctl.!default {
-        type hw
-        card 0
-}
 
 ...O SI QUIERES SONIDO CON DMIX A DEMANDA:
 (NOTA: Lo de pcm.dmixed y lo de @hooks es para luego poder activar y desactivar dmix a demanda, para los juegos FNA.
