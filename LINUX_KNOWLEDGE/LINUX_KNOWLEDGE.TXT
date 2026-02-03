@@ -203,7 +203,11 @@ sudo ./Ventoy2Disk.sh -i /dev/sda
 --Copiamos la ISO al pen donde hemos instalado VENTOY y reiniciamos.
   Con ESC, F9 o lo que sea, seleccionamos el USB para arrancar desde él.
   
---Conectamos tanto el mando como el receptor 2.4 al ordenador,
+--M30 2.4G: Nos tenemos que bajar el actualizador específico tanto del mando como del receptor (son distintos programas) desde:
+  https://support.8bitdo.com/ y luego yendo a la sección de "2.4G Controllers"
+  ...Y luego seguir las instrucciones del propio programa.
+  
+--Ultimate Pro 3: Conectamos tanto el mando como el receptor 2.4 al ordenador.
   si estamos con el Ultimate Pro 3 ponemos el interruptor del mando en la posición más a la izquierda,
   y ejecuramos el "8BitDo Ultimate Software V2". No hace falta instalar nada más especial y debería ir sin más.
   Nos detectará el mando y el receptor y ya podemos actualizar las dos cosas. 
