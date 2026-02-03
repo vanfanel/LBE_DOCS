@@ -1,0 +1,5 @@
+RESETEAR CONTRASEÑA DE USUARIO
+==============================
+
+--Iniciamos en modo RECOVERY. Para ello, apagamos totalmente el ordenador y al encenderlo mantenemos pulsado COMMAND + R.
+--Allí simplemente nos vamos a Tools->Terminal y ahí ejecutamos el comando "resetpassword". Mete el nuevo password y ya.
