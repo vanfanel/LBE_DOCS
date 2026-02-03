@@ -7421,8 +7421,15 @@ switchres 1280 720 50 -s -k
 Settings->Video->CRT SwitchRes
 
 ****************************Actualizar firmware 8bitdo en GNU/Linux**********
+
+	SIN WINE
+
+¡OJO! REQUIERE QUE "sudo fwupdtool get-devices" LISTE EL DISPOSITIVO)
+https://ladis.cloud/blog/posts/firmware-update-8bitdo.html
+
+	CON WINE
+
 INFO SACADA DE: https://gist.github.com/archeYR/d687de5e484ce7b45d6a94415a04f3dc
-FORMA ALTERNATIVA SIN WINE: https://ladis.cloud/blog/posts/firmware-update-8bitdo.html
 
 --Miramos el productID y el vendorID con "lusb".
   Si vemos "2dc8:5200", entonces 2dc8 es el vendorID y 5200 es el productID
