@@ -763,6 +763,10 @@ pw-metadata -n settings
 creamos el fichero /etc/modprobe.d/audio_disable_powersave.conf con el contenido:
 options snd_hda_intel power_save=0
 options snd_hda_intel power_save_controller=N
+--Comprobamos con:
+cat /sys/module/snd_hda_intel/parameters/power_save
+cat /sys/module/snd_hda_intel/parameters/power_save_controller
+...Tiene que salir "0" y "N", respectivamente.
 
 --Para subir y bajar el volúmen de forma relativa (se queda guardado solo sin hacer nada):
 wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
