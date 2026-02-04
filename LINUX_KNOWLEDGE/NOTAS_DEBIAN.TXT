@@ -737,22 +737,27 @@ systemctl --user start pipewire.service
 Si nos sale que sí está rulando, los programas que hayamos compilado con soporte de pipewire (SDL2 y RetroArch lo soportan,
 en RetroArch debemos elegirlo como audio output y en SDL2 como SDL_AUDIODRIVER o compilar sin soporte ALSA para que lo use por defecto)
 deberían ya sonar sin problemas.
-
-		
+	
 			CONFIGURACIÓN DE PIPEWIRE
 			(INFO INTERESANTE DE: https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#setting-buffer-size-quantum)
 
 --PARA PODER PONER RETROARCH A 32ms DE LATENCIA DE AUDIO ESTABLES:
-----Creamos copias locales de usuario den las configuraciones de Pipewire y Wireplumber, o lo que hagamos se sobreescribiría en el reinicio:
-mkdir -p ~/.config/pipewire/pipewire.conf.d/
-cp /usr/share/pipewire/pipewire.conf ~/.config/pipewire/pipewire.conf.d/
-mkdir -p ~/.config/wireplumber/wireplumber.conf.d
-cp /usr/share/wireplumber/wireplumber.conf.d/alsa-vm.conf ~/.config/wireplumber/wireplumber.conf.d/
-----Forzamos el quantum a un valor más pequeño y de paso forzamos la frecuencia:
+----Creamos "~/.config/pipewire/pipewire.conf.d/10-lowlatency.conf" con el contenido:
+context.properties = {
+    default.clock.min-quantum = 512
+    default.clock.max-quantum = 512
+}
+----Reiniciamos Pipewire para que cargue esta nueva configuración:
+systemctl --user restart pipewire
+
+Para ir problando valores sin recargar Pipewire y de manera no permanente
+(poner "clock.force-quantum" a 512 equivale a poner min-quantum y max-quantum a 512,
+ y en el fichero de configuración no existe "clock.force-quantum")
+ podemos ir haciendo:
 pw-metadata -n settings 0 clock.force-quantum 512
-pw-metadata -n settings 0 clock.force-rate 48000
-----Comprobamos con:
+Y comprobamos que se ha aplicado con:
 pw-metadata -n settings
+...Pero vamos, esto al reiniciar se pierde, es sólo para probar valores.
 
 --Para evitar problemas de audio durante los primeros segundos de RetroArch sobre Pipewire,
 creamos el fichero /etc/modprobe.d/audio_disable_powersave.conf con el contenido:
