@@ -137,6 +137,8 @@ Opción 3: LOTTES
 		--AUDIO--
 	
 Driver PIPEWIRE en general, 48000 Hz, 32ms, resampler quality normal.
+RECUERDA QUE PARA PODER BAJAR A 32ms DE LATENCIA ESTABLE DEBES CONFIGURAR EL QUANTUM EN PIPEWIRE ADECUADAMENTE.
+TIENES NOTAS SOBRE ESTO EN LA DOCUMENTACIÓN DE INSTALACIÓN DE PIPEWIRE EN EL FICHERO "DEBIAN.TXT".
 (Si usaras ALSA o ALSATHREAD, en algunos cores debes desactivar la sincronización de audio, pero con PIPEWIRE, siempre activada).
 
 		--LATENCY--
