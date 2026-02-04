@@ -100,7 +100,8 @@ NOTAS ESPECÍFICAS DEL HARDWARE EN GNU/LINUX
 --Hay que instalar estos paquetes para compatibilidad con el sistema gráfico de AMD:
 apt-get install firmware-amd-graphics
 
---Dejamos /etc/asound.conf así:
+--(NO NECESARIO PORQUE USAMOS PIPEWIRE)
+Dejamos /etc/asound.conf así:
 
 ----OPCIÓN 1, COMO LO VENIMOS HACIENDO AHORA: SONIDO POR DP-1 CON ACCESO DIRECTO AL HARDWARE, CON DMIX A DEMANDA.
 (NO TE OLVIDES DE QUE AL HACER ESTO TIENES QUE ESPECIFICAR EL DISPOSITIVO DE AUDIO EN WINECFG PARA QUE SUENEN CIERTOS JUEGOS COMO "HALO")
