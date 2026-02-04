@@ -738,7 +738,9 @@ Si nos sale que sí está rulando, los programas que hayamos compilado con sopor
 en RetroArch debemos elegirlo como audio output y en SDL2 como SDL_AUDIODRIVER o compilar sin soporte ALSA para que lo use por defecto)
 deberían ya sonar sin problemas.
 
+		
 			CONFIGURACIÓN DE PIPEWIRE
+			(INFO INTERESANTE DE: https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#setting-buffer-size-quantum)
 
 --PARA PODER PONER RETROARCH A 32ms DE LATENCIA DE AUDIO ESTABLES:
 ----Creamos copias locales de usuario den las configuraciones de Pipewire y Wireplumber, o lo que hagamos se sobreescribiría en el reinicio:
