@@ -738,6 +738,20 @@ Si nos sale que sí está rulando, los programas que hayamos compilado con sopor
 en RetroArch debemos elegirlo como audio output y en SDL2 como SDL_AUDIODRIVER o compilar sin soporte ALSA para que lo use por defecto)
 deberían ya sonar sin problemas.
 
+			CONFIGURACIÓN DE PIPEWIRE
+
+--PARA PODER PONER RETROARCH A 32ms DE LATENCIA DE AUDIO ESTABLES:
+----Creamos copias locales de usuario den las configuraciones de Pipewire y Wireplumber, o lo que hagamos se sobreescribiría en el reinicio:
+mkdir -p ~/.config/pipewire/pipewire.conf.d/
+cp /usr/share/pipewire/pipewire.conf ~/.config/pipewire/pipewire.conf.d/
+mkdir -p ~/.config/wireplumber/wireplumber.conf.d
+cp /usr/share/wireplumber/wireplumber.conf.d/alsa-vm.conf ~/.config/wireplumber/wireplumber.conf.d/
+----Forzamos el quantum a un valor más pequeño y de paso forzamos la frecuencia:
+pw-metadata -n settings 0 clock.force-quantum 512
+pw-metadata -n settings 0 clock.force-rate 48000
+----Comprobamos con:
+pw-metadata -n settings
+
 --Para evitar problemas de audio durante los primeros segundos de RetroArch sobre Pipewire,
 creamos el fichero /etc/modprobe.d/audio_disable_powersave.conf con el contenido:
 options snd_hda_intel power_save=0
