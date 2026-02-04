@@ -168,7 +168,8 @@ sudo apt-get install --download-only alsa-utils
 2) En el entorno nativo, es decir, sin red:
 cd /var/cache/apt/archives
 sudo dpkg -i *
-AHORA PASA A CREAR /etc/asound.conf, cuyo contenido varía según el hardware concreto.
+AHORA PASA A CREAR /etc/asound.conf SI NO VAS A USAR PULSEAUDIO, cuyo contenido varía según el hardware concreto.
+PERO VAMOS, USA PULSEAUDIO.
 
 -Ahora ajusta los niveles en ALSAMIXER, que se van a quedar como los dejes porque vamos a quitar los servicios que los guardan y los restauran
 
@@ -715,7 +716,7 @@ Y ya. Reiniciar y listo.
 
 INSTALAR PIPEWIRE EN DEBIAN
 ===========================
-OJO: LA VERSIÓN DE PIPEWIRE DE DEBIAN 13 VA PERFECTAMENTE.
+NOTA: LA VERSIÓN DE PIPEWIRE DE DEBIAN 13 VA PERFECTAMENTE.
 SI QUISIERAS INSTALAR LA VERSIÓN ACTUAL, AUNQUE NO APORTA VENTAJAS NOTABLES, LO TIENES DOCUMENTADO EN "NOTAS_PIPEWIRE_AVANZADAS.TXT".
 NO SE TARDA NADA CON ESAS NOTAS. PERO VAMOS, QUE ASÍ CON LA VERSIÓN DE DEBIAN VA IGUAL.
 
@@ -795,7 +796,7 @@ pero los hilos de audio que crea, SÍ que nos saldrán con FF y 88!!!!
 --POR SI FALLA: Comprueba que el módulo "libpipewire-module-rt" está cargado:
 pw-cli list-objects | grep module.name | grep module-rt
 
-NOTAS INFORMATIVAS ADICIONALES:
+			NOTAS INFORMATIVAS ADICIONALES:
 
 --Para comprobar el sonido de pipewire, hacemos:
 pw-play /usr/share/sounds/alsa/Front_Center.wav
