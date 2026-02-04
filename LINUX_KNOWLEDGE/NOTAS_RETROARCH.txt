@@ -136,10 +136,8 @@ Opción 3: LOTTES
 
 		--AUDIO--
 	
-Driver ALSA en general, 48000 Hz, 32ms, resampler quality normal.
-Se puede usar el driver PIPEWIRE, pero con algunos cores no va bien (Flycast, FBNeo)
-Si en el vídeo usas "Sync to Exact" sin VSYNC, en muchos cores puedes desactivar la sincronización,
-poner los demás valores de sincronización de audio a 0, y es como sonará bien.
+Driver PIPEWIRE en general, 48000 Hz, 32ms, resampler quality normal.
+(Si usaras ALSA o ALSATHREAD, en algunos cores debes desactivar la sincronización de audio, pero con PIPEWIRE, siempre activada).
 
 		--LATENCY--
 
@@ -372,10 +370,6 @@ make REGENIE=1 -f Makefile.libretro -j8
 En VIDEO->SYNCHRONIZATION ponemos:
 "Vsync"							OFF
 "Sync to Exact"					ON
-En AUDIO->SYNCHRONIZATION ponemos:
-"Synchronization"				OFF
-"Maximum Timing Skew"			0.0
-"Dynamic Audio Rate Control"	0.0
 
 		EVITAR AUDIO DROPOUTS EN LA PRIMERA EJECUCIÓN (SE NOTA EN LA INTRO DEL "HOUSE OF THE DEAD / HOTD")
 		
@@ -403,13 +397,13 @@ Se compila como los demás cores.
 LO PRIMERO, TENEMOS QUE TENER UN FRAMETIME DEVIANCE MUY BAJO (Idealmente 0.0-0.1%)
 EN LA PARTE DE CONFIGURACIÓN DE VÍDEO DE RETROARCH TIENES CÓMO LOGRARLO.
 
-SE CONSIGUE CASI IGUAL QUE EN EL CORE MAME (sólo cambia que aquí no desactivamos AUDIO SYNCHRONIZATION)
+SE CONSIGUE CASI IGUAL QUE EN EL CORE MAME.
 --En las opciones de RetroArch:
 En VIDEO->SYNCHRONIZATION ponemos:
 "Vsync"							OFF
 "Sync to Exact"					ON
 En AUDIO->SYNCHRONIZATION ponemos:
-"Synchronization"				ON (No te molestes en probar distintos backends de audio, hace falta la sincronización sí o sí con este core).
+"Synchronization"				ON (Lo normal, vamos).
 "Maximum Timing Skew"			0.0
 "Dynamic Audio Rate Control"	0.0
 
@@ -600,11 +594,6 @@ NOTA: SI TE DA ERROR EL MOUNT, ES QUE NO ESTÁS USANDO LA VERSIÓN CORRECTA DEL 
 ----En VIDEO->SYNCHRONIZATION:
 "Vsync"							OFF
 "Sync to Exact"					ON
-----En AUDIO->OUTPUT, usa el driver ALSA (este core no va bien con el driver PIPEWIRE)
-----En AUDIO->SYNCHRONIZATION:
-"Synchronization"				OFF
-"Maximum Timing Skew"			0.0
-"Dynamic Audio Rate Control"	0.0
 
 ******NES en el core FBNeo*****************************************************
 
