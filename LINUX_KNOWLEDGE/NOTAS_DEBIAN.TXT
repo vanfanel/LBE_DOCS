@@ -743,10 +743,10 @@ deberían ya sonar sin problemas.
 			(INFO INTERESANTE DE: https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#setting-buffer-size-quantum)
 
 --PARA PODER PONER RETROARCH A 32ms DE LATENCIA DE AUDIO ESTABLES:
-----Creamos "~/.config/pipewire/pipewire.conf.d/10-lowlatency.conf" con el contenido:
+----Creamos "~/.config/pipewire/pipewire.conf.d/10-lowlatency.conf" con el contenido (¡OJO! Si notas distorsión sube ambos a 512):
 context.properties = {
-    default.clock.min-quantum = 512
-    default.clock.max-quantum = 512
+    default.clock.min-quantum = 256
+    default.clock.max-quantum = 256
 }
 ----Reiniciamos Pipewire para que cargue esta nueva configuración:
 systemctl --user restart pipewire
@@ -811,7 +811,7 @@ monitor.alsa.rules = [
     actions = {
       update-props = {
         device.profile = "pro-audio"
-        #api.alsa.period-size = 128,
+        #api.alsa.period-size = 256,
         #api.alsa.period-num = 3,
       }
     }
@@ -825,7 +825,7 @@ monitor.alsa.rules = [
 
 --Al usar el perfil pro-audio, ahora establecemos el dispositivo por defecto (importante en modo pro-audio, o no se oirá nada):
 ----Listamos los números de nodo con "wpctl status"
-----Establecemos el nodo por defecto con "wpctl set-default <NÚMERO_DE_ID>". Por ejemplo, en el X600 es con "wpctl set-default 47"
+----Establecemos el nodo por defecto con "wpctl set-default <NÚMERO_DE_ID>". Por ejemplo, en el X600 es con "c"
 ----Esto podemos añadirlo a ~/.config/labwc/autostart (o al autostart del compositor que usemos).
 Si lo pones en /etc/profile.d/ no funcionará ya que al ejecutarse tiene que estar todo lo de Pipewire listo y si lo pones ahí no lo estará.
 
