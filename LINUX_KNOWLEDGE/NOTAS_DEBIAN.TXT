@@ -798,7 +798,8 @@ pw-cli list-objects | grep module.name | grep module-rt
 
 		MODO PRO-AUDIO
 
---El modo Pro-Audio se establece en WirePlumber.
+--El modo Pro-Audio se establece en WirePlumber, ya que Wireplumber es lo que conecta Pipewire con ALSA.
+O sea que lo que configuramos es esa conexión con ALSA para que sea "profesional".
 Para ello, creamos el fichero "~/.config/wireplumber/wireplumber.conf.d/10-alsa-proaudio.conf" con el contenido:
 
 monitor.alsa.rules = [
