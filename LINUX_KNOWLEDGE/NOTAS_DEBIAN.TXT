@@ -796,10 +796,10 @@ pero los hilos de audio que crea, SÍ que nos saldrán con FF y 88!!!!
 --POR SI FALLA: Comprueba que el módulo "libpipewire-module-rt" está cargado:
 pw-cli list-objects | grep module.name | grep module-rt
 
-		MODO PRO-AUDIO (SÓLO PUEDE REPRODUCIR UN STREAM A LA VEZ...)
+		MODO PRO-AUDIO
 
 --El modo Pro-Audio se establece en WirePlumber.
-Para ello, creamos el fichero "~/.config/wireplumber/wireplumber.conf.d/proaudio.conf" con el contenido:
+Para ello, creamos el fichero "~/.config/wireplumber/wireplumber.conf.d/10-alsa-proaudio.conf" con el contenido:
 
 monitor.alsa.rules = [
   {
@@ -819,19 +819,18 @@ monitor.alsa.rules = [
 ]
 
 --El device.name ("alsa_card.pci-0000_6e_00.1") lo hemos sacado así:
------Con el comando "wpctl status" sacamos el número del dispositivo en Audio->Devices.
------Con el comando "wpctl inspect <número_de_dispositivo>" sacamos el nombre del dispositivo mirando el campo "device.name".
+-----Con el comando "wpctl status" sacamos el <ID_Dispositivo> en Audio->Devices (en el X600 es el 42).
+-----Con el comando "wpctl inspect <ID_Dispositivo>" sacamos el nombre del dispositivo mirando el campo "device.name".
 -----El "period-size" viene de los valores del quantum que hemos puesto en Pipewire, pero no parece hacer falta.
 
 --Para verificar que lo tenemos en modo pro-audio, hacemos:
-wpctl inspect <número_de_dispositivo>|grep pro-audio
-En el X600 el número de dispositivo es 33 para el "Radeon High Definition Audio Controller" que está en Audio-:Devices.
-Al hacer "wpctl inspect 33|grep pro-audio" nos tendría que salir una línea del estilo de:
+wpctl inspect <ID_Dispositivo>|grep pro-audio
+Nos tendría que salir una línea del estilo de:
 device.profile = "pro-audio"
 
---Al usar el perfil pro-audio, ahora tenemos que establecer el dispositivo por defecto (importante en modo pro-audio, o no se oirá nada):
+--Al usar el perfil pro-audio, tenemos que establecer el dispositivo por defecto o no se oirá nada:
 ----Listamos los números de nodo con "wpctl status"
-----Establecemos el nodo por defecto con "wpctl set-default <NÚMERO_DE_ID>". Por ejemplo, en el X600 es con "c"
+----Establecemos el nodo por defecto con "wpctl set-default <ID_Dispositivo>". Por ejemplo, en el X600 es con "42"
 ----Esto podemos añadirlo a ~/.config/labwc/autostart (o al autostart del compositor que usemos).
 Si lo pones en /etc/profile.d/ no funcionará ya que al ejecutarse tiene que estar todo lo de Pipewire listo y si lo pones ahí no lo estará.
 
