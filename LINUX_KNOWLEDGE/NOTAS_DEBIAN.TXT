@@ -812,7 +812,7 @@ monitor.alsa.rules = [
       update-props = {
         device.profile = "pro-audio"
         api.alsa.period-size = 256,
-        api.alsa.period-num = 3,
+        api.alsa.period-num = 2,
       }
     }
   }
@@ -821,16 +821,25 @@ monitor.alsa.rules = [
 --El device.name ("alsa_card.pci-0000_6e_00.1") lo hemos sacado así:
 -----Con el comando "wpctl status" sacamos el <ID_Dispositivo> en Audio->Devices (en el X600 es el 42).
 -----Con el comando "wpctl inspect <ID_Dispositivo>" sacamos el nombre del dispositivo mirando el campo "device.name".
------El "period-size" viene de los valores del quantum que hemos puesto en Pipewire, pero no parece hacer falta.
+-----El "period-size" viene de los valores del quantum que hemos puesto en Pipewire, así que si lo bajas, bájalo en ambos sitios.
 
 --Para verificar que lo tenemos en modo pro-audio, hacemos:
 wpctl inspect <ID_Dispositivo>|grep pro-audio
 Nos tendría que salir una línea del estilo de:
 device.profile = "pro-audio"
 
---Al usar el perfil pro-audio, tenemos que establecer el dispositivo por defecto o no se oirá nada:
-----Listamos los números de nodo con "wpctl status"
-----Establecemos el nodo por defecto con "wpctl set-default <ID_Dispositivo>". Por ejemplo, en el X600 es con "42"
+(SÓLO SI NO SE OYE: NORMALMENTE NO NECESARIO) Comprobamos el nodo por defecto y lo ajustamos si es necesario. 
+----Miramos el nodo que está puesto por defecto con "wpctl status" y fijándonos abajo del todo en:
+Settings
+ └─ Default Configured Devices
+----Listamos los números de nodo con "wpctl status" y fijándonos en los "Sinks".
+	Por ejemplo, en el X600 nos fijamos en las líneas:
+		Sinks:
+			45. Radeon High Definition Audio Controller [Rembrandt/Strix] Pro [vol: 1.00]
+			46. Radeon High Definition Audio Controller [Rembrandt/Strix] Pro 7 [vol: 1.00]
+		*   47. Radeon High Definition Audio Controller [Rembrandt/Strix] Pro 8 [vol: 1.00]
+			48. Radeon High Definition Audio Controller [Rembrandt/Strix] Pro 9 [vol: 1.00]	
+----Establecemos el nodo por defecto con "wpctl set-default 47".
 ----Esto podemos añadirlo a ~/.config/labwc/autostart (o al autostart del compositor que usemos).
 Si lo pones en /etc/profile.d/ no funcionará ya que al ejecutarse tiene que estar todo lo de Pipewire listo y si lo pones ahí no lo estará.
 
