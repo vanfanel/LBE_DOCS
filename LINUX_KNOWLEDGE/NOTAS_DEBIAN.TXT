@@ -743,10 +743,11 @@ deberían ya sonar sin problemas.
 			(INFO INTERESANTE DE: https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#setting-buffer-size-quantum)
 
 --PARA PODER PONER RETROARCH A 32ms DE LATENCIA DE AUDIO ESTABLES:
-----Creamos "~/.config/pipewire/pipewire.conf.d/10-lowlatency.conf" con el contenido (¡OJO! Si notas distorsión sube ambos a 512):
+----Creamos "~/.config/pipewire/pipewire.conf.d/10-lowlatency.conf" con este contenido:
+(¡OJO! ¡¡¡Si notas distorsión sube ambos a 512!!!)
 context.properties = {
-    default.clock.min-quantum = 256
-    default.clock.max-quantum = 256
+    default.clock.min-quantum = 128
+    default.clock.max-quantum = 128
 }
 ----Reiniciamos Pipewire para que cargue esta nueva configuración:
 systemctl --user restart pipewire
@@ -812,7 +813,7 @@ monitor.alsa.rules = [
     actions = {
       update-props = {
         device.profile = "pro-audio"
-        api.alsa.period-size = 256,
+        api.alsa.period-size = 128,
         api.alsa.period-num = 2,
       }
     }
