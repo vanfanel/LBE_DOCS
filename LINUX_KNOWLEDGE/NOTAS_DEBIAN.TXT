@@ -823,7 +823,13 @@ monitor.alsa.rules = [
 -----Con el comando "wpctl inspect <número_de_dispositivo>" sacamos el nombre del dispositivo mirando el campo "device.name".
 -----El "period-size" viene de los valores del quantum que hemos puesto en Pipewire, pero no parece hacer falta.
 
---Al usar el perfil pro-audio, ahora establecemos el dispositivo por defecto (importante en modo pro-audio, o no se oirá nada):
+--Para verificar que lo tenemos en modo pro-audio, hacemos:
+wpctl inspect <número_de_dispositivo>|grep pro-audio
+En el X600 el número de dispositivo es 33 para el "Radeon High Definition Audio Controller" que está en Audio-:Devices.
+Al hacer "wpctl inspect 33|grep pro-audio" nos tendría que salir una línea del estilo de:
+device.profile = "pro-audio"
+
+--Al usar el perfil pro-audio, ahora tenemos que establecer el dispositivo por defecto (importante en modo pro-audio, o no se oirá nada):
 ----Listamos los números de nodo con "wpctl status"
 ----Establecemos el nodo por defecto con "wpctl set-default <NÚMERO_DE_ID>". Por ejemplo, en el X600 es con "c"
 ----Esto podemos añadirlo a ~/.config/labwc/autostart (o al autostart del compositor que usemos).
