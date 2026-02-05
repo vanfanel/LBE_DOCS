@@ -744,7 +744,7 @@ deberían ya sonar sin problemas.
 
 --PARA PODER PONER RETROARCH A 32ms DE LATENCIA DE AUDIO ESTABLES:
 ----Creamos "~/.config/pipewire/pipewire.conf.d/10-lowlatency.conf" con este contenido:
-(¡OJO! ¡¡¡Si notas distorsión sube ambos a 512!!!)
+(¡OJO! ¡¡¡Si notas distorsión sube ambos a 256!!!)
 context.properties = {
     default.clock.min-quantum = 128
     default.clock.max-quantum = 128
