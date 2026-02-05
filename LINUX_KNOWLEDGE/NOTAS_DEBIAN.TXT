@@ -811,8 +811,8 @@ monitor.alsa.rules = [
     actions = {
       update-props = {
         device.profile = "pro-audio"
-        #api.alsa.period-size = 256,
-        #api.alsa.period-num = 3,
+        api.alsa.period-size = 256,
+        api.alsa.period-num = 3,
       }
     }
   }
