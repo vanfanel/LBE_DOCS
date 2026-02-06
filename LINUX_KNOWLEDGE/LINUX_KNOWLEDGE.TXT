@@ -11007,7 +11007,7 @@ Aunque se puede con el VLC, nos interesa escucharlos con los instrumentos origin
 Para ello, usamos el ADLMIDI.
 
 --Clonamos su repo: git clone --depth 1 https://github.com/Wohlstand/libADLMIDI.git
-  (El proyecto original es https://github.com/bisqwit/adlmidi pero está más avanzado el indico).
+  (El proyecto original es https://github.com/bisqwit/adlmidi pero está más avanzado el que indico).
 
 --Configuramos y compilamos con:
 mkdir b4
