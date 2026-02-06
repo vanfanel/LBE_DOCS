@@ -10994,14 +10994,11 @@ CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-lua --disable-xcb --disable-qt --disable-gst-decode --disable-addonmanagermodules \
 --disable-dbus --disable-avahi --disable-vnc --disable-ncurses --disable-theora --disable-freerdp
-
---NOTA: Muy importante pasarle "--disable-gst-decode" para evitar que use GStreamer, ya que con eso no compila
+NOTA: Muy importante pasarle "--disable-gst-decode" para evitar que use GStreamer, ya que con eso no compila
 porque necesita una versión de GStreamer más antigua que la que tengo yo para WINE.
 
---NOTA: En el futuro con versiones 4.x en un Debian del futuro, se hará con MESON:
-meson setup -Dbuildtype=release -Dwayland=enabled -Dvideolan_manager=false -Drun_as_root=true -Dssp=disabled -Dbranch_protection=disabled \
--Dqt=disabled -Dgst-decode=disabled -Dx11=disabled -Dlua=disabled -Dpulse=disabled -Ddbus=disabled -Davahi=disabled -Dgles2=enabled \
--Dtheoraenc=disabled -Ddaalaenc=disabled ..
+--Si queremos reproducir un .MID con una banco de instrumentos, haremos algo como:
+vlc --soundfont=/home/manuel/scummvm/data/UHD3.sf2 win95/midi/PASSPORT.MID
 
 AM2R NATIVO EN LINUX
 ====================
