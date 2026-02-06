@@ -11005,17 +11005,24 @@ REPRODUCIR ARCHIVOS .RMI EN LINUX
 
 Aunque se puede con el VLC, nos interesa escucharlos con los instrumentos originales incluidos, es decir, los bancos FM que llevan.
 Para ello, usamos el ADLMIDI.
+
 --Clonamos su repo: git clone --depth 1 https://github.com/Wohlstand/libADLMIDI.git
   (El proyecto original es https://github.com/bisqwit/adlmidi pero está más avanzado el indico).
---Editamos midiplay.cc y comentamos la línea de "#define SUPPORT_PUZZLE_GAME"
-  (Si luego nos da un error en la línea 2536, comentamos el "std::" al principio de esa línea.
-   Tengo un PR con un fix ya hecho pero lo tienen que mergear.)
---Compilamos con "make -j10"
+
+--Configuramos y compilamos con:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DWITH_MIDIPLAY=ON 
+
+--Instalamos simplemente con:
+sudo cp adlmidi /usr/local/bin/
+
 --Reproducimos con:
 adlmidi ~/win95/midi/FAIRY.RMI -nr
 (Lo de "-nr" es para que no le meta reverb).
-
-NOTA: 
 
 AM2R NATIVO EN LINUX
 ====================
