@@ -10997,7 +10997,7 @@ por:
 GL_LIBS="-lOpenGL"
 
 --Configuramos con:
-./configure --disable-lua --disable-xcb --disable-qt --disable-gst-decode --enable-gles2 --disable-addonmanagermodules \
+./configure --disable-lua --disable-xcb --disable-qt --disable-gst-decode --enable-wayland --enable-gles2 --disable-addonmanagermodules \
 --disable-dbus --disable-avahi --disable-theora --disable-ncurses --disable-a52 --disable-freerdp --disable-vnc
 
 --NOTA: Muy importante pasarle "--disable-gst-decode" para evitar que use GStreamer, ya que con eso no compila
