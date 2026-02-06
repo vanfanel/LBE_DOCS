@@ -10981,10 +10981,8 @@ ACELERACIÓN DE VÍDEO EN LA PI4 CON VLC
 El repo de VLC está en:
 https://code.videolan.org/videolan/vlc
 
---Clonamos los sources de la última versión estable (vemos las versiones estables desplegando donde pone "Master") :
-git clone --depth 1 -b 3.0.23-2 https://code.videolan.org/videolan/vlc.git vlc-3.0.23-2
-(NO usamos la rama "Master" porque es la versión 4.x en desarrollo y además necesita una versión de Meson más nueva que la que trae Debian 13.
- De hecho, Debian 13 tiene la versión 3.0.23 de VLC).
+--Clonamos los sources:
+git clone --depth 1 https://code.videolan.org/videolan/vlc.git
 
 --Antes de configurar:
 ----Instalamos libtool:
@@ -10997,8 +10995,8 @@ por:
 GL_LIBS="-lOpenGL"
 
 --Configuramos con:
-./configure --disable-lua --disable-xcb --disable-qt --disable-gst-decode --enable-wayland --enable-gles2 --disable-addonmanagermodules \
---disable-dbus --disable-avahi --disable-theora --disable-ncurses --disable-a52 --disable-freerdp --disable-vnc
+./configure --disable-lua --disable-xcb --disable-qt --disable-gst-decode --disable-addonmanagermodules \
+--disable-dbus --disable-avahi --disable-vnc --disable-ncurses --disable-theora --disable-a52 --disable-freerdp
 
 --NOTA: Muy importante pasarle "--disable-gst-decode" para evitar que use GStreamer, ya que con eso no compila
 porque necesita una versión de GStreamer más antigua que la que tengo yo para WINE.
