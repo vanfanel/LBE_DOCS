@@ -10992,7 +10992,7 @@ apt-get install libtool --no-install-recommends
 ----Ejecutamos el script "bootstrap" que viene con los sources.
 
 --Configuramos con:
-meson -Dbuildtype=release -Dwayland=enabled -Dvideolan_manager=false -Drun_as_root=true -Dssp=disabled -Dbranch_protection=disabled \
+meson setup -Dbuildtype=release -Dwayland=enabled -Dvideolan_manager=false -Drun_as_root=true -Dssp=disabled -Dbranch_protection=disabled \
 -Dqt=disabled -Dx11=disabled -Dlua=disabled -Dpulse=disabled -Ddbus=disabled -Davahi=disabled -Dgles2=enabled \
 -Dtheoraenc=disabled -Ddaalaenc=disabled ..
 
