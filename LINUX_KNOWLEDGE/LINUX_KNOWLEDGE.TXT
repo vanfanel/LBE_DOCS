@@ -10981,8 +10981,8 @@ ACELERACIÓN DE VÍDEO EN LA PI4 CON VLC
 El repo de VLC está en:
 https://code.videolan.org/videolan/vlc
 
---Clonamos su repo:
-git clone --depth 1 https://code.videolan.org/videolan/vlc.git
+--Clonamos los sources de la última versión estable (vemos las versiones estables desplegando donde pone "Master") :
+git clone --depth 1 -b 3.0.23-2 https://code.videolan.org/videolan/vlc.git vlc-3.0.23-2
 --Antes de configurar:
 ----Instalamos libtool:
 apt-get install libtool --no-install-recommends
