@@ -10992,8 +10992,10 @@ apt-get install libtool --no-install-recommends
 ----Ejecutamos el script "bootstrap" que viene con los sources.
 
 --Configuramos con:
-./configure --disable-lua --disable-xcb --disable-qt --disable-addonmanagermodules --disable-dbus --disable-avahi --disable-theora \
---disable-ncurses --disable-a52 --disable-freerdp --disable-vnc
+./configure --disable-lua --disable-xcb --disable-qt --disable-gst-decode --disable-addonmanagermodules \
+--disable-dbus --disable-avahi --disable-theora --disable-ncurses --disable-a52 --disable-freerdp --disable-vnc
+
+--NOTA: Muy importante pasarle "--disable-gst-decode" para evitar que use GStreamer.
 
 --NOTA: En el futuro con versiones 4.x en un Debian del futuro, se hará con MESON:
 meson setup -Dbuildtype=release -Dwayland=enabled -Dvideolan_manager=false -Drun_as_root=true -Dssp=disabled -Dbranch_protection=disabled \
