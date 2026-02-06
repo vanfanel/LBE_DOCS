@@ -10983,6 +10983,9 @@ https://code.videolan.org/videolan/vlc
 
 --Clonamos los sources de la última versión estable (vemos las versiones estables desplegando donde pone "Master") :
 git clone --depth 1 -b 3.0.23-2 https://code.videolan.org/videolan/vlc.git vlc-3.0.23-2
+(NO usamos la rama "Master" porque es la versión 4.x en desarrollo y además necesita una versión de Meson más nueva que la que trae Debian 13.
+ De hecho, Debian 13 tiene la versión 3.0.23 de VLC).
+
 --Antes de configurar:
 ----Instalamos libtool:
 apt-get install libtool --no-install-recommends
