@@ -11018,10 +11018,10 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DWITH_MIDIPLAY=ON 
 
 --Instalamos simplemente con:
-sudo cp adlmidi /usr/local/bin/
+sudo cp adlmidiplay /usr/local/bin/
 
 --Reproducimos con:
-adlmidi ~/win95/midi/FAIRY.RMI -nr
+adlmidiplay ~/win95/midi/FAIRY.RMI -nr
 (Lo de "-nr" es para que no le meta reverb).
 
 AM2R NATIVO EN LINUX
