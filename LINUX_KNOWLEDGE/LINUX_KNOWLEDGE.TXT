@@ -10990,8 +10990,10 @@ apt-get install libtool --no-install-recommends
 ----Ejecutamos el script "bootstrap" que viene con los sources.
 
 --Configuramos con:
+CFLAGS="-march=native -mtune=native -O2" \
+CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-lua --disable-xcb --disable-qt --disable-gst-decode --disable-addonmanagermodules \
---disable-dbus --disable-avahi --disable-vnc --disable-ncurses --disable-theora --disable-a52 --disable-freerdp
+--disable-dbus --disable-avahi --disable-vnc --disable-ncurses --disable-theora --disable-freerdp
 
 --NOTA: Muy importante pasarle "--disable-gst-decode" para evitar que use GStreamer, ya que con eso no compila
 porque necesita una versión de GStreamer más antigua que la que tengo yo para WINE.
