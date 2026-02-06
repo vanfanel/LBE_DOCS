@@ -10989,11 +10989,6 @@ git clone --depth 1 https://code.videolan.org/videolan/vlc.git
 apt-get install libtool --no-install-recommends
 ----Ejecutamos el script "bootstrap" que viene con los sources.
 
---Editamos "configure.ac" y cambiamos:
-GL_LIBS="-lGL"
-por:
-GL_LIBS="-lOpenGL"
-
 --Configuramos con:
 ./configure --disable-lua --disable-xcb --disable-qt --disable-gst-decode --disable-addonmanagermodules \
 --disable-dbus --disable-avahi --disable-vnc --disable-ncurses --disable-theora --disable-a52 --disable-freerdp
