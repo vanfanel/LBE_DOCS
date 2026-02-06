@@ -10992,13 +10992,13 @@ apt-get install libtool --no-install-recommends
 ----Ejecutamos el script "bootstrap" que viene con los sources.
 
 --Configuramos con:
+./configure --disable-lua --disable-xcb --disable-qt --disable-addonmanagermodules --disable-dbus --disable-avahi --disable-theora \
+--disable-ncurses --disable-a52 --disable-freerdp --disable-vnc
+
+--NOTA: En el futuro con versiones 4.x en un Debian del futuro, se hará con MESON:
 meson setup -Dbuildtype=release -Dwayland=enabled -Dvideolan_manager=false -Drun_as_root=true -Dssp=disabled -Dbranch_protection=disabled \
 -Dqt=disabled -Dx11=disabled -Dlua=disabled -Dpulse=disabled -Ddbus=disabled -Davahi=disabled -Dgles2=enabled \
 -Dtheoraenc=disabled -Ddaalaenc=disabled ..
-
-NOTA: Si usamos el antiguo configure && make, configuramos con:
-./configure --without-x --disable-xcb --enable-wayland --disable-qt --disable-ncurses --enable-v4l2 --disable-mmal \
---enable-gles2 --disable-lua --disable-a52 --disable-freerdp --disable-vnc
 
 AM2R NATIVO EN LINUX
 ====================
