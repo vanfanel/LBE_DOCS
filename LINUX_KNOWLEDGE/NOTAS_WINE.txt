@@ -79,9 +79,12 @@ Como mejor se ve es a 4x en fullscreen, en stretch hay más shimmering.
 Tienes el juego ya listo en el disco duro de backup. Es la versión que mejor funciona (v109): hay versiones más nuevas
 pero van a tirones y no hay manera de arreglarlo, así que usa la versión que tienes almacenada.
 Para tener movimiento suave pero sin que se coma toda la CPU, activa el VSYNC pero no actives el "Framerate Limit".
-Para poder poner el modo en primera persona, edita "SCRIPTS/DefControl.py" y allí:
-*Comenta la línea: Bladex.AssocKey("Screen Shot","Keyboard","F2")
-*Deja así las líneas de "Next View" y "Last View":
+Para empezar en modo de primera persona, editamos "SCRIPTS/BladeInit.py" y añadimos al final:
+cam = Bladex.GetEntity("Camera")
+cam.PViewType = 3
+Para poder poner y quitar el modo en primera persona, edita "SCRIPTS/DefControl.py" y allí comenta la línea:
+Bladex.AssocKey("Screen Shot","Keyboard","F2")
+Y deja así las líneas de "Next View" y "Last View":
 Bladex.AssocKey("Next View","Keyboard","F2")
 Bladex.AssocKey("Last View","Keyboard","F3")
 SI POR ERROR HUBIESES HECHO SCREENSHOTS, se guardan en .bmp dentro de los datos de los mapas del juego,
