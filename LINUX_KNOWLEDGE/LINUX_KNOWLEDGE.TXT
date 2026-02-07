@@ -5925,8 +5925,8 @@ creamos en ~/sonicmania el fichero "gamecontrollerdb.txt" con el contenido:
 030000005e0400008e02000072050000,Xbox 360 Controller,platform:Linux,crc:b881,a:b0,b:b2,x:b1,y:b3,back:b8,start:b6,leftshoulder:a2,rightshoulder:b5,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,misc1:b7,leftx:a0,lefty:a1,
 03000000412300003680000001010000,LLC Arduino Leonardo,a:b0,b:b1,x:b2,y:b3,back:b6,start:b7,leftshoulder:b4,rightshoulder:b5,dpup:-a1,dpdown:+a1,dpleft:-a0,dpright:+a0,platform:Linux,
 
-RECUERDA que estas cadenas de los mandos para el "gamecontrollerdb.txt" se sacan de la utilidad "controllermap" que viene
-en el directorio "tests" de los sources de SDL2.
+RECUERDA que estas cadenas de los mandos para el "gamecontrollerdb.txt" se sacan de la utilidad "testcontroller" (SDL3)
+o "controllermap" (SDL2) que viene en el directorio "tests" de los sources de SDL2.
 
 				#### BLOQUE SHADERS VULKAN #####
 
