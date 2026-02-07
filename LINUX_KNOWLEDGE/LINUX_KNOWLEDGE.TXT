@@ -11021,8 +11021,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 sudo cp adlmidiplay /usr/local/bin/
 
 --Reproducimos con:
-adlmidiplay ~/win95/midi/FAIRY.RMI -nr
-(Lo de "-nr" es para que no le meta reverb).
+adlmidiplay ~/win95/midi/FAIRY.RMI
 
 AM2R NATIVO EN LINUX
 ====================
