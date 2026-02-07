@@ -88,7 +88,7 @@ Y deja así las líneas de "Next View" y "Last View":
 Bladex.AssocKey("Next View","Keyboard","F2")
 Bladex.AssocKey("Last View","Keyboard","F3")
 ----Para poder jugar con el DPad digital, edita "SCRIPTS/DefControlGamepad.py" y donde pone por ejemplo "JoyUp" pones "ButtonUp",
-donde pone "JoyDown" pones "ButtonDown", etc.
+donde pone "JoyDown" pones "ButtonDown", etc. El resto de controles los puedes configurar en el menú del juego.
 ----SI POR ERROR HUBIESES HECHO SCREENSHOTS, se guardan en .bmp dentro de los datos de los mapas del juego,
 así que haz un "find ./ -name *.bmp" y todo lo que veas del tipo snp*.bmp, lo borras. ¡OJO: Hay más BMPs, borra sólo los que empiezan por "snp"!
 --PRINCE OF PERSIA: THE SANDS OF TIME
