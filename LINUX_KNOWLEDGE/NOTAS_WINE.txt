@@ -91,6 +91,8 @@ Bladex.AssocKey("Last View","Keyboard","F3")
 donde pone "JoyDown" pones "ButtonDown", etc. El resto de controles los puedes configurar en el menú del juego.
 ----SI POR ERROR HUBIESES HECHO SCREENSHOTS, se guardan en .bmp dentro de los datos de los mapas del juego,
 así que haz un "find ./ -name *.bmp" y todo lo que veas del tipo snp*.bmp, lo borras. ¡OJO: Hay más BMPs, borra sólo los que empiezan por "snp"!
+----Para que no se pare al principio de un giro después de andar, sería mirar en SCRIPTS/Biped/ActionTables.py y buscar "Relax",
+    ya que desde posición de relax gira continuo.
 --PRINCE OF PERSIA: THE SANDS OF TIME
 Tienes el juego ya listo en el disco duro de backup. Está ya parcheado.
 Para que se vean las texturas, tener 16:9, etc., tuve que aplicar una serie de parches que están todos en un solo parche gordo aquí:
