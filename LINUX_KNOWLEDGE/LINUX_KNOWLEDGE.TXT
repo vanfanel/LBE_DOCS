@@ -1703,14 +1703,14 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
 Ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
 
 PARA VÍDEO SUAVE (CON O SIN VRR, ES LO MISMO EN ESTE EMULADOR):
-En Settings->Video, activa Vsync y "Duplicate Frames"
+En "Settings->Video", activa Vsync y "Duplicate Frames"
 
-Entra en Settings->Video, y pon "Transparent Sorting" a "Per Pixel"
+NO ES NECESARIO poner "Core Options->Video->Alpha Sorting" a "Per Pixel", déjalo en "Per Triangle" e incluso
+el Rez y las nubes en la intro del Soul Calibur se verán perfectos.
 Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador).
 
-Entra en Settings->Video, y desactiva "Fix Upscaling Bleeding Edge" ya que vas a usar los juegos en su resolución nativa,
-así que no hay nada que arreglar.
+SI USAS LOS JUEGOS EN RESOLUCIÓN NATIVA, desactiva "Core Options->Video->Fix Upscaling Bleeding Edge".
 
 Entra en Settings->Audio y pon el driver a SDL2 con 42ms de buffer (recuerda que para que el audio no tenga microcortes necesitas
 un kernel "Preemptible Kernel (Low-Latency Desktop)" y a 300 Hz).

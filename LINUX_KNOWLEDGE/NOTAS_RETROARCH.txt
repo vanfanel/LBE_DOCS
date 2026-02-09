@@ -964,27 +964,32 @@ PARA TENER VÍDEO PERFECTAMENTE SUAVE EN TODOS LOS JUEGOS, TANTO LOS DE 60FPS CO
  PUEDES ACTIVAR "System -> HLE BIOS" Y NO HAY PROBLEMA, SE RECOMIENDA ESPECIALMENTE HLE BIOS PORQUE ES COMO DESARROLLA EL AUTOR DEL CORE.
 -NO TE MOLESTES EN INTENTAR USAR "SYNC TO EXACT": EN ALGUNOS JUEGOS PARECE IR BIEN PERO EN OTROS FALLA, COMO LA INTRO DEL "GUNLORD".
 
-			FIN OPCIÓN 2
-
 EVITAR DROPOUTS EN PRIMERA EJECUCIÓN (SE NOTA EN EL "NAPPLE TALE" A VECES, JUSTO AL LLEGAR AL IN-GAME DE UNA PARTIDA GUARDADA)
 Tenemos que tener en caché la librería del core, lo cual hacemos con:
 cat /usr/local/bin/retroarch >> /dev/null
 cat ~/.config/retroarch/cores/flycast_libretro.so >> /dev/null
 retroarch -L .config/retroarch/cores/flycast_libretro.so "$1"
 
-MEJORAR EL RENDIMIENTO (NO HAY CONFIRMACIÓN DE QUE MEJORE NINGÚN JUEGO, PERO POR SI ACASO):
-Ponemos la gráfica a máximo rendimiento antes de entrar a la emulación:
-echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
-...
-echo auto | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
+NO ES NECESARIO poner "Core Options->Video->Alpha Sorting" a "Per Pixel", déjalo en "Per Triangle" e incluso
+el Rez y las nubes en la intro del Soul Calibur se verán perfectos.
+Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
+(no consume más recursos ni nada según el autor del emulador).
+
+SI USAS LOS JUEGOS EN RESOLUCIÓN NATIVA, desactiva "Core Options->Video->Fix Upscaling Bleeding Edge".
 
 RECUERDA: Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador). Deja la segunda demo del Daytona USA 2001
 y si hay errores de clipping en los edificios del lado izquierdo, lo activas.
 
-RECUERDA: Este es un core de 44100 Hz, se nota mucho, usa esa frecuencia de audio y guárdalo como un override para este core.
+RECUERDA: Este es un core de 44100 Hz, prueba a usar esa frecuencia de audio y guárdalo como un override para este core.
 
 RECUERDA, SI NO USAS WAYLAND: Para que no de segfault al iniciarse desde la TTY, tienes que poner al final de la línea de retroarch: < /dev/null
+
+MEJORAR EL RENDIMIENTO (NO HAY CONFIRMACIÓN DE QUE MEJORE NINGÚN JUEGO, PERO POR SI ACASO):
+Ponemos la gráfica a máximo rendimiento antes de entrar a la emulación:
+echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
+...
+echo auto | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
 
 *************CANNONBALL (OutRun engine)*************
 
