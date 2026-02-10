@@ -935,7 +935,7 @@ cp build/bin/sameboy_libretro.so ~/.config/retroarch/cores/
 ******FLYCAST LIBRETRO********
 
 --Clonamos la última versión estable (para saber cuál es, ver los tags en https://github.com/flyinghead/flycast/tags):
-git clone -b v2.6 --depth 1 --recurse-submodules --shallow-submodules https://github.com/flyinghead/flycast.git
+git clone -b v2.6 --depth 1 --recurse-submodules --shallow-submodules https://github.com/flyinghead/flycast.git flycast-2.6
 
 --Editamos CMakeLists.txt y cambiar la línea:
 set(OpenGL_GL_PREFERENCE LEGACY)
