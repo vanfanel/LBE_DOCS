@@ -116,8 +116,8 @@ echo 4000000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
 O bien le pasamos al kernel "idle=poll" y de esa manera se mantiene siemore la CPU a su frecuencia nominal (4.2HGz en el Ryzen 7 8700G).
 (pero ojo que con esto sube la temperatura bastante).
 
-----Prueba el driver de audio PIPEWIRE, aunque ya sabes que algunos cores no van bien con él (Flycast, FBNeo)
-    al menos que quede documentado que si no puedes desactivar los C-STATES y DF-CSTATES,
+----Prueba el driver de audio PIPEWIRE.
+    Al menos que quede documentado que, si no puedes desactivar los C-STATES y DF-CSTATES,
     el driver PIPEWIRE te baja un 1% el frametime deviation.
     Pero si puedes desactivar los C-STATES y DF-CSTATES, usa ALSA, que en este caso no mete más deviation.
 ----Pon un modo de vídeo donde la electrónica del monitor genere menos variaciones:
@@ -991,6 +991,51 @@ echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_lev
 ...
 echo auto | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
 
+REZ a 60 FPS (Sólo para el REZ Europeo "Rez (Europe) (En,Ja,Fr,De,Es,It)")
+NOTA: Si quieres ver de dónde viene, mírate la sección "Entendiendo los cheats de RetroArch".
+Creamos el archivo ".config/retroarch/cheats/Flycast/Rez (Europe) (En,Ja,Fr,De,Es,It).cht" con el contenido:
+cheat0_address = "853732"
+cheat0_address_bit_position = "0"
+cheat0_big_endian = "false"
+cheat0_cheat_type = "1"
+cheat0_code = ""
+cheat0_desc = ""
+cheat0_enable = "true"
+cheat0_handler = "1"
+cheat0_memory_search_size = "5"
+cheat0_repeat_add_to_address = "1"
+cheat0_repeat_add_to_value = "0"
+cheat0_repeat_count = "1"
+cheat0_rumble_port = "0"
+cheat0_rumble_primary_duration = "0"
+cheat0_rumble_primary_strength = "0"
+cheat0_rumble_secondary_duration = "0"
+cheat0_rumble_secondary_strength = "0"
+cheat0_rumble_type = "0"
+cheat0_rumble_value = "0"
+cheat0_value = "3825324293"
+cheat1_address = "853736"
+cheat1_address_bit_position = "0"
+cheat1_big_endian = "false"
+cheat1_cheat_type = "1"
+cheat1_code = ""
+cheat1_desc = ""
+cheat1_enable = "true"
+cheat1_handler = "1"
+cheat1_memory_search_size = "5"
+cheat1_repeat_add_to_address = "1"
+cheat1_repeat_add_to_value = "0"
+cheat1_repeat_count = "1"
+cheat1_rumble_port = "0"
+cheat1_rumble_primary_duration = "0"
+cheat1_rumble_primary_strength = "0"
+cheat1_rumble_secondary_duration = "0"
+cheat1_rumble_secondary_strength = "0"
+cheat1_rumble_type = "0"
+cheat1_rumble_value = "0"
+cheat1_value = "557973515"
+cheats = "2"
+
 *************CANNONBALL (OutRun engine)*************
 
 Necesitamos un directorio /roms donde metemos las roms del juego (es el romset del MAME y si te falta una eprom, es del SET B)
@@ -1141,3 +1186,13 @@ run_ahead_enabled = "false"
 Renderer: Auto
 Internal Resolution: 1xNative (PS2)
 Mipmapping: ON
+
+ENTENDIENDO LOS CHEATS DE RETROARCH
+===================================
+
+Normalmente nos encontraremos los cheats de Flycast en este formato:
+020d06e4 e401d105
+Esto siginifica: Escribe 32 bits (02) en la dirección "0x0d06e4" el valor "0xe401d105"
+Para meterlo en RetroArch, vamos a "Quick Menu -> Cheats -> Add New Cheat to Top", y luego en los datos del cheat
+ponemos "Handler" a "Retroarch", el "Memory Search Size" a "32-bit", y metemos el "Value" y la "Memory Address" CONVERTIDAS A DECIMAL.
+(Sí, es un coñazo convertirlos a decimal).
