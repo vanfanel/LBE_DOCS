@@ -1208,3 +1208,4 @@ SONIC ADVENTURE 60FPS EN FLYCAST
   que ahora mismo es: wget https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/8.0.24/windowsdesktop-runtime-8.0.24-win-x64.exe
   Lo instalamos ejecutándolo con WINE.
 --Ejecutamos el DC Image Builder, le pasamos el GDI (los tienes en RetroGameTalk, proceden de TOSEC en vez de REDUMP) y lo parcheamos como queramos.
+  OJO: Cada parche tiene unas notas dentro del programa cuando haces click en ellos: leelas, sobre todo del parche de 16:9.
