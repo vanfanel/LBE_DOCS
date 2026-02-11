@@ -1199,3 +1199,12 @@ Esto siginifica: Escribe 32 bits (02) en la dirección "0x0d06e4" el valor "0xe4
 Para meterlo en RetroArch, vamos a "Quick Menu -> Cheats -> Add New Cheat to Top", y luego en los datos del cheat
 ponemos "Handler" a "Retroarch", el "Memory Search Size" a "32-bit", y metemos el "Value" y la "Memory Address" CONVERTIDAS A DECIMAL.
 (Sí, es un coñazo convertirlos a decimal antes).
+
+SONIC ADVENTURE 60FPS EN FLYCAST
+================================
+
+--Nos descargamos la última versión del DC Image Builder de: https://gitlab.com/PiKeyAr/dreamcast-image-builder
+--La ejecutamos con WINE. Nos dará un error de que falta una movida de DotNet, y nos dará un link para descarcar esa movida,
+  que ahora mismo es: wget https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/8.0.24/windowsdesktop-runtime-8.0.24-win-x64.exe
+  Lo instalamos ejecutándolo con WINE.
+--Ejecutamos el DC Image Builder, le pasamos el GDI (los tienes en RetroGameTalk, proceden de TOSEC en vez de REDUMP) y lo parcheamos como queramos.
