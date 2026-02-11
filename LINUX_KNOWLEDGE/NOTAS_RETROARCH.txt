@@ -992,8 +992,10 @@ echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_lev
 echo auto | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
 
 REZ a 60 FPS (Sólo para el REZ Europeo "Rez (Europe) (En,Ja,Fr,De,Es,It)")
+NOTA: Con esto ya no necesitas "full framebuffer emulation" para tener movimiento suave. Quítalo porque consume muchos recursos.
+      Se recomienda subir la CPU de la Dreamcast emulada a 300Mhz.
+NOTA: Para 16:9, sólo tienes que "Widescreen Cheats" en las opciones del core, no hace falta meter cheats "externos" como este de 60FPS.
 NOTA: Si quieres ver de dónde viene, mírate la sección "Entendiendo los cheats de RetroArch".
-NOTA: Para 16:9, sólo tienes que activarlo en los cheats de widescreen del core, no hace falta meter cheats "externos" como este de 60FPS.
 Creamos el archivo ".config/retroarch/cheats/Flycast/Rez (Europe) (En,Ja,Fr,De,Es,It).cht" con el contenido:
 cheat0_address = "853732"
 cheat0_address_bit_position = "0"
