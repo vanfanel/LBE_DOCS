@@ -993,6 +993,7 @@ echo auto | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_lev
 
 REZ a 60 FPS (Sólo para el REZ Europeo "Rez (Europe) (En,Ja,Fr,De,Es,It)")
 NOTA: Si quieres ver de dónde viene, mírate la sección "Entendiendo los cheats de RetroArch".
+NOTA: Para 16:9, sólo tienes que activarlo en los cheats de widescreen del core, no hace falta meter cheats "externos" como este de 60FPS.
 Creamos el archivo ".config/retroarch/cheats/Flycast/Rez (Europe) (En,Ja,Fr,De,Es,It).cht" con el contenido:
 cheat0_address = "853732"
 cheat0_address_bit_position = "0"
@@ -1195,4 +1196,4 @@ Normalmente nos encontraremos los cheats de Flycast en este formato:
 Esto siginifica: Escribe 32 bits (02) en la dirección "0x0d06e4" el valor "0xe401d105"
 Para meterlo en RetroArch, vamos a "Quick Menu -> Cheats -> Add New Cheat to Top", y luego en los datos del cheat
 ponemos "Handler" a "Retroarch", el "Memory Search Size" a "32-bit", y metemos el "Value" y la "Memory Address" CONVERTIDAS A DECIMAL.
-(Sí, es un coñazo convertirlos a decimal).
+(Sí, es un coñazo convertirlos a decimal antes).
