@@ -972,6 +972,7 @@ retroarch -L .config/retroarch/cores/flycast_libretro.so "$1"
 
 NO ES NECESARIO poner "Core Options->Video->Alpha Sorting" a "Per Pixel", déjalo en "Per Triangle" e incluso
 el Rez y las nubes en la intro del Soul Calibur se verán perfectos.
+Sólo parece necesitar "Per Pixel" el Sonic Adventure (si no, hay defectos en ojos y cara de Sonic).
 Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador).
 
