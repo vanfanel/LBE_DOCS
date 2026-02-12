@@ -78,3 +78,20 @@ y el tipo (que se pare en lectura o en escritura).
 --Una vez de vuelta en la ventana principal del debugger, le damos a CTRL+R para resetear,
 y F9 para inicial la ejecución del juego, y ya se debería parar en la lectura/escritura
 en la dirección en la que hemos puesto el watchpoint. 
+
+EL ZELDA LINK'S AWAKENING PERFECTO
+==================================
+
+EN MODO DMG
+-Lo mejor que tenemos es aplicar a la versión NO DX el parche Restoration 1.1 de Artemis251 (tiene versión para DX y para versión original)
+ y luego, para jugar en cartucho real regrabable, como estos cartuchos son MBC5, aplicamos el fix MBC5 para que no se cuelgue al salvar.
+ El parche para que no se cuelgue al salvar viene en el hilo https://forums.nesdev.org/viewtopic.php?t=5804&start=330
+ En las últimas páginas suele haber links funcionales, si no pues pregunta allí.
+-Descartamos la opción de aplicar el parche REDUX de toruzz al Zelda DX y luego parchear las direcciones 0x143 y 0x100 para forzarlo a modo DMG,
+pero el problema es el el parche REDUX incluye el parche VWF, que en modo DMG ralentiza la música durante los diálogos.
+-Descartamos la opción de aplicar el parche QOL de the_icepenguin al Zelda DX y luego parchear las direcciones 0x143 y 0x100 para forzarlo a modo DMG
+porque, aunque todo va aparentemente bien, la línea de glitch que el juego original tiene en la parte superior de la pantalla cuando
+colocamos a Link justo ahí, está desplazada una línea hacia abajo y eso hace que se note mucho.
+ 
+EN MODO COLOR (DX)
+-Aplicamos el parche REDUX junto con el parche opcional para salvar con START+SELECT en vez de tener que darle a todos los botones, y ya.
