@@ -1740,7 +1740,8 @@ flycast "$1"
 wlr-randr --output HDMI-A-1 --mode 1920x1080@60.000000
 
 PARA LOS JUEGOS DE 30FPS: Activar "Delay Frame Swap".
-EN DOA2 activa "Full Framebuffer Emulation" en lugar de "Delay Frame Swap" para que la voz de la pantalla del título se oiga completa.
+EN DOA2 puedes activar "Full Framebuffer Emulation" en lugar de "Delay Frame Swap" para que la voz de la pantalla del título se oiga completa.
+EN DOA2 ARCADE (NAOMI) eso no hace falta, con "Delay Frame Swap" va perfecto.
 
 	#### FIN BLOQUE ARREGLO PARA EL FRAMERATE ####
 
