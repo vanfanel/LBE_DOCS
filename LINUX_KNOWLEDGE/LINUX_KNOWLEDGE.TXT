@@ -1728,7 +1728,7 @@ y pon "UIScaling" a "200".
 
 --CON VRR (120Hz)--
 
-Activa VSYC, "Duplicate Frames", "Full Framebuffer Emulation", "Native Depth Interpolation".
+Activa VSYC, "Duplicate Frames", "Delay Frame Swap (para los juegos de 30FPS)", "Native Depth Interpolation".
 
 --SIN VRR--
 
