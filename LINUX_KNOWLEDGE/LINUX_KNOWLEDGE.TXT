@@ -1728,7 +1728,7 @@ y pon "UIScaling" a "200".
 
 --CON VRR (120Hz)--
 
-Activa VSYC, "Duplicate Frames", "Delay Frame Swap (para los juegos de 30FPS)", "Native Depth Interpolation".
+Activa VSYC, "Duplicate Frames", "Native Depth Interpolation".
 
 --SIN VRR--
 
@@ -1739,7 +1739,7 @@ wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.94
 flycast "$1"
 wlr-randr --output HDMI-A-1 --mode 1920x1080@60.000000
 
-PARA LOS JUEGOS DE 30FPS: Activar "full framebuffer emulation"
+PARA LOS JUEGOS DE 30FPS: Activar "Delay Frame Swap"
 
 	#### FIN BLOQUE ARREGLO PARA EL FRAMERATE ####
 
