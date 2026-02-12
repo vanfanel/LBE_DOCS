@@ -1119,6 +1119,10 @@ OTRAS OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COM
 ----"Speed Up Disc Transfer Rate"	   ON
 ----"Shader Compilation Mode"		   A-SYNC UberShaders
 
+NOTAS DE CADA JUEGO:
+--Luigi's Mansion: Para evitar errores en la cara de Luigi durante la intro,
+  desactiva "Dual Core Mode" en las opciones del core.
+
 ******EASYRPG, EL MOTOR DE RPGMAKER 2000/2003*******
 
 OJO: Para juegos de RPGMaker XP, se usa "mkxp" que es otro motor opensource distinto.
