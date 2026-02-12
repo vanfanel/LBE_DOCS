@@ -957,9 +957,9 @@ Ahora ponemos la BIOS, llamada "dc_boot.bin", en ~/.config/retroarch/system/
 
 PARA TENER VÍDEO PERFECTAMENTE SUAVE EN TODOS LOS JUEGOS, TANTO LOS DE 60FPS COMO LOS DE 30FPS ("REZ", "Napple Tale"):
 -ACTIVA "VSYNC", DESACTIVAMOS "SYNC TO EXACT CONTENT FRAME", Y PONEMOS "VSYNC SWAP INTERVAL" A "2".
+-PARA LOS JUEGOS DE 30FOS, ACTIVA EN LAS OPCIONES DEL CORE "DELAY FRAME SWAP".
+ (NO ACTIVES "FULL FRAMEBUFFER EMULATION" NI "DETECT FRAME RATE CHANGES", ESO JODE LA SINCRONIZACIÓN, HAZLO JUSTO COMO TE HE DICHO).
 -SI USAS EL DRIVER DE SONIDO "PIPEWIRE" PONLE 36ms DE LATENCIA DE AUDIO. ESTE CORE NO VA BIEN CON 32ms AUNQUE OTROS CORES SÍ VAYAN BIEN-
--ACTIVA EN LAS OPCIONES DEL CORE "FULL FRAMEBUFFER EMULATION".
- (NO ACTIVES "DETECT FRAME RATE CHANGES", ESO JODE LA SINCRONIZACIÓN, HAZLO JUSTO COMO TE HE DICHO).
 -NUNCA ACTIVES "Emulation Hacks -> GD-ROM Fast Loading".
  PUEDES ACTIVAR "System -> HLE BIOS" Y NO HAY PROBLEMA, SE RECOMIENDA ESPECIALMENTE HLE BIOS PORQUE ES COMO DESARROLLA EL AUTOR DEL CORE.
 -NO TE MOLESTES EN INTENTAR USAR "SYNC TO EXACT": EN ALGUNOS JUEGOS PARECE IR BIEN PERO EN OTROS FALLA, COMO LA INTRO DEL "GUNLORD".
@@ -992,7 +992,7 @@ echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_lev
 echo auto | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
 
 REZ a 60 FPS (Sólo para el REZ Europeo "Rez (Europe) (En,Ja,Fr,De,Es,It)")
-NOTA: Con esto ya no necesitas "full framebuffer emulation" para tener movimiento suave. Quítalo porque consume muchos recursos.
+NOTA: Con esto ya no necesitaías "Delay Frame Swap" para tener movimiento suave.
       Se recomienda subir la CPU de la Dreamcast emulada a 300Mhz.
 NOTA: Para 16:9, sólo tienes que "Widescreen Cheats" en las opciones del core, no hace falta meter cheats "externos" como este de 60FPS.
 NOTA: Si quieres ver de dónde viene, mírate la sección "Entendiendo los cheats de RetroArch".
