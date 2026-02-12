@@ -1105,19 +1105,11 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DLIBRETRO=ON -DUSE_MGBA=OFF -DENABLE_AUTOUP
 
 		--OPCIONES DE CONFIGURACIÓN--
 
-PARA FRAMEPACING PERFECTO CON ~120Hz (VRR no pinta nada, como en el Flycast):
---En las opciones del core:
-----Core           -> Precission Frame Timing: ON
-----Core           -> Dual Core Mode:          OFF
-----Graphics/Hacks -> Skip Duplicate Frames:   OFF
---En las opciones de RetroArch:
-----Settings -> Video -> Synchronization -> Vsync Swap Interval: 2
-(Y lo típico: "VSYNC" a "ON", y "SYNC TO EXACT" a "OFF")
+PARA FRAMEPACING PERFECTO CON VRR A ~120Hz, ACTIVANDO "SYNC TO EXACT"
+Y CON LAS OPCIONES DEL CORE POR DEFECTO VA BIEN, DE MOMENTO.
 
 OTRAS OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACIÓN DE SHADERS:
 ----"Wait for Shaders before starting" ON
-----"Speed Up Disc Transfer Rate"	   ON
-----"Shader Compilation Mode"		   A-SYNC UberShaders
 
 NOTAS DE CADA JUEGO:
 --Luigi's Mansion: Para evitar errores en la cara de Luigi durante la intro,
