@@ -28,7 +28,10 @@ Para flashear cartuchos desde flashgbx, primero tenemos que meterle al joeyjr el
 de la gente de flashgbx.
 --En MODE.TXT ponemos UPDATE arriba del todo y salvamos.
 --Ejecutamos flashgbx como root así (sin "sudo", sino como root real):
+PARA CARTUCHOS "GENÉRICOS":
 flashgbx --flashcart-type "Generic Flash Cartridge (WR/AAA/AA)"
+PARA CARTUCHOS "PERFECT DARK con batería":
+flashgbx <--Sin argumentos.
 Se nos ejecutará en modo CLI.
 ...Nos pedirá la ruta de la ROM, etc. y la flasheará. Ya está!
 RECUERDA que si es un juego que usa saves, tienen que ser ROMs parcheadas con un parche "batteryless", o te dará una pantalla en blanco.
