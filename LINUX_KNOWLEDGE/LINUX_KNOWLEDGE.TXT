@@ -9917,6 +9917,19 @@ wiimote.wm_ir_y = mouse(rel_y)
 A parte de tenerlo funcionando como ratón, tenemos que pasarle al Hypseus los parámetros: "-nojoymouse -sinden 1 x"
 Y para recargar dándole al botón A, en hypinput.ini tenemos que tener: "KEY_BUTTON1 = SDLK_LCTRL 0 1"
 
+CONECTAR EL MANDO DE PS4 POR BLUETOOTH
+======================================
+
+A parte de tener los típicos módulos de Bluetooth en el kernel, tienes que tener el módulo CONFIG_HID_SONY.
+
+Entramos en bluetoothctl y hacemos:
+scan on
+Y justo entonces, presionamos en el mando los botones "SHARE" y "PLAYSTATION".
+Ahora hacemos, tirando de TAB para el autocompletado:
+connect <DIRECCIÓN MAC DEL MANDO>
+Una vez conectado podemos hacer esto para que se conecte automáticamente cada vez que enciendes el mando:
+trust <DIRECCIÓN MAC DEL MANDO>
+
 CONFIGURAR BLUETOOTH MANUALMENTE Y CONECTARSE A DISPOSITIVOS EN GNU/LINUX
 =========================================================================
 
