@@ -9844,7 +9844,7 @@ Una vez conectados con bluetoothctl, debemos poder configurar el wiimote con las
 
 VEAMOS ĆOMO SE HACE:
 
-Instalamos las cosas que necesitamos: apt-get install bluez xwiimote
+Instalamos las cosas que necesitamos: sudo apt-get install bluez xwiimote
 
 Entramos en "bluetoothctl", y hacemos:
 scan on  <--- (Esto es necesario para poder usar el TAB en los siguientes pasos)
