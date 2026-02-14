@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 6.18.5 Kernel Configuration
+# Linux/x86 6.18.9 Kernel Configuration
 #
 CONFIG_CC_VERSION_TEXT="gcc (Debian 14.2.0-19) 14.2.0"
 CONFIG_CC_IS_GCC=y
@@ -1068,6 +1068,7 @@ CONFIG_ARCH_WANTS_THP_SWAP=y
 CONFIG_PAGE_MAPCOUNT=y
 CONFIG_PGTABLE_HAS_HUGE_LEAVES=y
 CONFIG_HAVE_GIGANTIC_FOLIOS=y
+CONFIG_ASYNC_KERNEL_PGTABLE_FREE=y
 CONFIG_NEED_PER_CPU_EMBED_FIRST_CHUNK=y
 CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK=y
 CONFIG_HAVE_SETUP_PER_CPU_AREA=y
@@ -1252,7 +1253,40 @@ CONFIG_NET_FLOW_LIMIT=y
 
 # CONFIG_HAMRADIO is not set
 # CONFIG_CAN is not set
-# CONFIG_BT is not set
+CONFIG_BT=m
+CONFIG_BT_BREDR=y
+# CONFIG_BT_RFCOMM is not set
+# CONFIG_BT_BNEP is not set
+# CONFIG_BT_HIDP is not set
+CONFIG_BT_LE=y
+CONFIG_BT_LE_L2CAP_ECRED=y
+# CONFIG_BT_LEDS is not set
+# CONFIG_BT_MSFTEXT is not set
+# CONFIG_BT_AOSPEXT is not set
+# CONFIG_BT_DEBUGFS is not set
+# CONFIG_BT_SELFTEST is not set
+
+#
+# Bluetooth device drivers
+#
+CONFIG_BT_INTEL=m
+CONFIG_BT_HCIBTUSB=m
+# CONFIG_BT_HCIBTUSB_AUTOSUSPEND is not set
+# CONFIG_BT_HCIBTUSB_POLL_SYNC is not set
+# CONFIG_BT_HCIBTUSB_BCM is not set
+# CONFIG_BT_HCIBTUSB_MTK is not set
+# CONFIG_BT_HCIBTUSB_RTL is not set
+# CONFIG_BT_HCIUART is not set
+# CONFIG_BT_HCIBCM203X is not set
+# CONFIG_BT_HCIBCM4377 is not set
+# CONFIG_BT_HCIBFUSB is not set
+# CONFIG_BT_HCIVHCI is not set
+# CONFIG_BT_MRVL is not set
+# CONFIG_BT_ATH3K is not set
+# CONFIG_BT_VIRTIO is not set
+# CONFIG_BT_INTEL_PCIE is not set
+# end of Bluetooth device drivers
+
 # CONFIG_AF_RXRPC is not set
 # CONFIG_AF_KCM is not set
 # CONFIG_MCTP is not set
