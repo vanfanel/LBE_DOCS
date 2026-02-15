@@ -9919,10 +9919,9 @@ Y para recargar dándole al botón A, en hypinput.ini tenemos que tener: "KEY_BU
 
 CONECTAR EL MANDO DE PS4 POR BLUETOOTH
 ======================================
-TODO: Ver si funciona sin el módulo BT_HIDP que se supone que es para cacharros más antiguos.
 
 A parte de tener los típicos módulos de Bluetooth en el kernel,
-debes tener el módulo "CONFIG_BT_HIDP" que está en:
+debes tener el módulo "CONFIG_BT_HIDP" (no tenerlo causa que se desconecte el mando en 2 segundos) que está en:
 Networking support -> Bluetooth subsystem support -> Bluetooth Classic (BR/EDR) features -> HIDP protocol support
 y debes tener el módulo "CONFIG_HID_PLAYSTATION" que está en:
 Device Drivers -> HID bus support -> Special HID drivers -> PlayStation HID Driver
