@@ -1,0 +1,25 @@
+EXTRAER EL PRG Y CHR DE UN ARCHIVO .NES
+=======================================
+
+Un .NES está estructurado así: header + PRG ROM + CHR ROM.
+A veces sólo tienen: header + PRG ROM.
+
+La cabecera de un .NES son 16 bytes.
+Podemos ver el tamaño del PRG y CHR de cada .NES concreto cargándolo con el MESEN y yéndonos a "Tools -> Log Window".
+
+Recuerda que cada dos caracteres en Hexedit son un byte.
+
+Usando "dd" con los parámetros bs, size, count y skip podemos hacer todo lo necesario.
+
+Supongamos un juego con 128 KB de PRG y 128 KB de CHR llamado "kiwi.nes".
+Vamos a "despiezarlo":
+
+--Extraemos la cabecera:
+dd if=kiwi.nes of=header bs=1B count=16 skip=0
+
+EDITAR GRÁFICOS SENCILLOS (SPRITES)
+===================================
+
+Lo más fácil es usar el "Tile Layer Pro", que va con WINE.
+Cargamos la ROM, montamos el "personaje" en el "Tile Arranger" ya que lo normal es que un personaje sean varios "tiles",
+y cambiamos lo que queramos ahí.
