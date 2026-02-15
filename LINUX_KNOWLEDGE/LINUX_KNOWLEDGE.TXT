@@ -9922,7 +9922,14 @@ CONECTAR EL MANDO DE PS4 POR BLUETOOTH
 
 A parte de tener los típicos módulos de Bluetooth en el kernel, tienes que tener el módulo CONFIG_HID_SONY.
 
-Entramos en bluetoothctl y hacemos:
+¡¡OJO!! Si al ejecutar "bluetoothctl" se te queda en:
+"Waiting to connect to bluetoothd..."
+...mira que no tengas maskeado "bluetooth.target" o alguna otra cosa de bluetooth:
+systemctl list-unit-files --state=masked |grep blue
+Y si tienes algo de eso maskeado, desmaskéalo con algo como:
+sudo systemctl unmask bluetooth.target
+
+Ejecutamos "bluetoothctl" y hacemos:
 scan on
 Y justo entonces, presionamos en el mando los botones "SHARE" y "PLAYSTATION".
 Ahora hacemos, tirando de TAB para el autocompletado:
