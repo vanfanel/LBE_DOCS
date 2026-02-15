@@ -9920,7 +9920,8 @@ Y para recargar dándole al botón A, en hypinput.ini tenemos que tener: "KEY_BU
 CONECTAR EL MANDO DE PS4 POR BLUETOOTH
 ======================================
 
-A parte de tener los típicos módulos de Bluetooth en el kernel, tienes que tener el módulo CONFIG_HID_SONY
+A parte de tener los típicos módulos de Bluetooth en el kernel,
+tienes que tener el módulo "CONFIG_HID_SONY"
 e instalar bluez:
 sudo apt-get install bluez
 
