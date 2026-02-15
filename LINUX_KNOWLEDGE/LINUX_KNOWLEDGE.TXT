@@ -9921,7 +9921,8 @@ CONECTAR EL MANDO DE PS4 POR BLUETOOTH
 ======================================
 
 A parte de tener los típicos módulos de Bluetooth en el kernel,
-tienes que tener el módulo "CONFIG_HID_SONY"
+tienes que tener el módulo "CONFIG_HID_SONY" que está en:
+Device Drivers -> HID bus support -> Special HID drivers -> Sony PS2/3/4 accessories
 e instalar bluez:
 sudo apt-get install bluez
 
