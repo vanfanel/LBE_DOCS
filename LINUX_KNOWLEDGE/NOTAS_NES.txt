@@ -1,5 +1,6 @@
 EXTRAER EL PRG Y CHR DE UN ARCHIVO .NES
 =======================================
+ALGUNA INFO PROCEDE DE: https://forums.nesdev.org/viewtopic.php?t=5661
 
 Un .NES está estructurado así: header + PRG ROM + CHR ROM.
 A veces sólo tienen: header + PRG ROM.
