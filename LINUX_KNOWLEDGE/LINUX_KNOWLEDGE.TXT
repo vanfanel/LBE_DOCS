@@ -9937,6 +9937,9 @@ systemctl list-unit-files --state=masked |grep blue
 Y si tienes algo de eso maskeado, desmaskéalo con algo como:
 sudo systemctl unmask bluetooth.target
 
+¡¡OJO!! Puede ser necesario desmaskear rfkill si lo tienes maskeado:
+systemctl list-unit-files --state=masked |grep rfkill
+
 Ejecutamos "bluetoothctl" y hacemos:
 scan on
 Y justo entonces, presionamos en el mando los botones "SHARE" y "PLAYSTATION".
