@@ -32,6 +32,7 @@ y sobre todo desactivamos "Intel Platform Monitoring Technology (PMT) Telemetry 
 --Para poder montar imágenes de disco (ISOs, etc), nos aseguramos de tener activadas estas dos opciones:
 Device Drivers->Block devices->Loopback device support
 File systems->CD-ROM/DVD Filesystems->ISO 9660 CDROM file system support
+--En "Device Drivers" desactivamos "Remote Controller Support"
 --Para mejorar MUCHO el rendimiento de WINE, activamos Device Drivers-> Misc devices-> NT synchronization primitive emulation (NTSYNC)
 
 --En "General Setup" desactivamos:
@@ -56,6 +57,18 @@ File systems->CD-ROM/DVD Filesystems->ISO 9660 CDROM file system support
 ----"Software Guard eXtensions (SGX)"
 ----"X86 userspace shadow stack"
 ----"Kernel Live Patching"
+
+--Desactivamos el "Remote Support"
+
+--En "Networking Support" desactivamos "Network light weight tunnels",
+  ACTIVAMOS "Bluetooth subsystem support" y dentro de eso el "HIDP protocol support".
+  Dejamos activados "Bluetooth Low Energy (LE) features" y "Bluetooth L2CAP".
+  NO se necesita ningún driver específico en "Bluetooth device drivers".
+
+--En "Networking Support -> Networking Options" dejamos activado "TCP/IP Networking"
+  PERO desactivamos TODO lo que se puede desactivar ahí,
+  dejamos activado "The IPv6 protocol" pero desactivamos TODO dentro y bajo esa opción (lo de "MPTCP: Multipath TCP"),
+  desactivamos "Switch (and switch-ish) device support", "3 Master device support", 
 
 --En "General architecture-dependent options" desactivamos:
 ----"Stack Protector buffer overflow detection"
