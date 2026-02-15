@@ -9919,6 +9919,8 @@ Y para recargar dándole al botón A, en hypinput.ini tenemos que tener: "KEY_BU
 
 CONECTAR EL MANDO DE PS4 POR BLUETOOTH
 ======================================
+TODO: Reemplazar el módulo "hid-sony" por el supuestamente más moderno "hid-playstation"
+y ver si eso funciona sin el módulo BT_HIDP que se supone que es para cacharros más antiguos.
 
 A parte de tener los típicos módulos de Bluetooth en el kernel,
 debes tener el módulo "CONFIG_BT_HIDP" que está en:
