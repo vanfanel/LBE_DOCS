@@ -2,21 +2,31 @@ EXTRAER EL PRG Y CHR DE UN ARCHIVO .NES
 =======================================
 ALGUNA INFO PROCEDE DE: https://forums.nesdev.org/viewtopic.php?t=5661
 
+Recuerda que cada dos caracteres en Hexedit son un byte.
+
 Un .NES está estructurado así: header + PRG ROM + CHR ROM.
 A veces sólo tienen: header + PRG ROM.
 
-La cabecera de un .NES son 16 bytes.
-Podemos ver el tamaño del PRG y CHR de cada .NES concreto cargándolo con el MESEN y yéndonos a "Tools -> Log Window".
+La cabecera de un .NES son 16 bytes. Eso fijo.
+Podemos ver el tamaño del PRG y CHR de cada .NES concreto abriéndolo con HEXEDIT:
+El byte 0x0004, es decir, el byte con la quinta posición, es el tamaño del PRG en bloques de 16K (16384 bytes).
+El byte 0x0005, es decir, el byte con la sexta posición, es el tamaño del CHR en bloques de 8K (8192 bytes).
+(También podríamos cargarlo con el MESEN y en "Tools -> Log Window" nos dice el tamaño del PRG y el CHR).
 
-Recuerda que cada dos caracteres en Hexedit son un byte.
-
-Usando "dd" con los parámetros bs, size, count y skip podemos hacer todo lo necesario.
+Usando "dd" con los parámetros bs, size, count y skip podemos hacer todo lo necesario para extraer y reinsertar las partes de la ROM.
 
 Supongamos un juego con 128 KB de PRG y 128 KB de CHR llamado "kiwi.nes".
 Vamos a "despiezarlo":
 
+--Miramos el byte 0x0004 y 0x0005, que son 0x08 y 0x10, lo que nos dice que tenemos 128 KB de PRG y 128 K de CHR. 
+
 --Extraemos la cabecera:
-dd if=kiwi.nes of=header bs=1B count=16 skip=0
+dd if=kiwi.nes of=header bs=1c count=16 skip=0
+("Cada bloque es un byte, no me salto ningún bloque y extraigo 16 bytes").
+
+--Extraemos el PRG:
+dd if=kiwi.nes of=kiwi.prg bs=1c skip=16 count=128K
+("Cada bloque es 1 byte, nos saltamos los primeros 16 bytes, extraemos 128 KB").
 
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
