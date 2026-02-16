@@ -62,6 +62,14 @@ vamos a Debug -> Memory Viewer, seleccionamos "PPU Memory", nos ponemos con el r
 y nos dice la "CHR Address", que es la dirección en el CHR donde empiezan los 8 KB que están en ese momento en el banco accesible por la PPU.
 Estos 8 KB van de 0x0000 a 0x1FFF.
 
+Supongamos que la PPU Memory en ese momento empieza en 0xB000.
+
+--Si queremos extraer esos 8 KB del fichero CHR, hacemos:
+dd if=kiwi_pal.chr of=titulo_pal.chr bs=1c count=8192 skip=$((0xB000))
+
+--Si queremos insertar estos 8 KB en la misma dirección de otro CHR:
+dd if=titulo_pal.chr of=kiwi_ntsc.chr bs=1c count=8192 seek=$((0xB000))
+
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
 
