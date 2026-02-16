@@ -22,11 +22,16 @@ Vamos a "despiezarlo":
 
 --Extraemos la cabecera:
 dd if=kiwi.nes of=header bs=1c count=16 skip=0
-("Cada bloque es un byte, no me salto ningún bloque y extraigo 16 bytes").
+("Cada bloque es un byte, no me salto ningún bloque y extraemos 16 bytes").
 
 --Extraemos el PRG:
 dd if=kiwi.nes of=kiwi.prg bs=1c skip=16 count=128K
 ("Cada bloque es 1 byte, nos saltamos los primeros 16 bytes, extraemos 128 KB").
+
+--Extraemos el CHR:
+dd if=kiwi.nes of=kiwi.chr bs=1c skip=$((16 + 128*1024)) count=128K
+("Cada bloque es 1 byte, nos saltamos los primeros 16 bytes y los siguientes 128 KB, y extraemos 128 KB".
+  El número de bytes a saltarnos se calcula usando lo que se llama "aritmética del shell". El cálculo en sí es trivial).
 
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
