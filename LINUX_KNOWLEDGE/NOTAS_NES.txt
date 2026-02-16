@@ -70,6 +70,9 @@ dd if=kiwi_pal.chr of=titulo_pal.chr bs=1c count=8192 skip=$((0xB000))
 --Si queremos insertar estos 8 KB en la misma dirección de otro CHR:
 dd if=titulo_pal.chr of=kiwi_ntsc.chr bs=1c count=8192 seek=$((0xB000))
 
+--Si ahora queremos re-insertar el CHR modificado en la ROM:
+dd if=titulo_pal.chr of=kiwi_ntsc.chr bs=1c count=8192 seek=$((0xB000))
+
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
 
