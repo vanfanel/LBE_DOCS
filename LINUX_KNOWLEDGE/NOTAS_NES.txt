@@ -55,8 +55,12 @@ NOS PONEMOS SERIOS: EXTRAER LOS GRÁFICOS EN BLOQUE
 ==================================================
 
 La PPU de la NES sólo puede acceder a 8KB en un momento dado (los CHR son más grandes porque se usa bank switching).
-En MESEN, si nos vamos a "Debug -> Memory Viewer" y allí seleccionamos "PPU Memory",
-lo que haya en las direcciones de 0x0000 a 0x1FFF (eso son exactamente 8 KB) son los tiles que está mostrando en pantalla en ese momento.
+
+La cosa ahora es saber qué parte del CHR está puesto en ese momento en el banco accesible por la PPU:
+Para ello, en MESEN, pausamos el juego en el momento en que están en pantalla los gráficos que queremos cambiar,
+vamos a Debug -> Memory Viewer, seleccionamos "PPU Memory", nos ponemos con el ratón en el primer byte,
+y nos dice la "CHR Address", que es la dirección en el CHR donde empiezan los 8 KB que están en ese momento en el banco accesible por la PPU.
+Estos 8 KB van de 0x0000 a 0x1FFF.
 
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
