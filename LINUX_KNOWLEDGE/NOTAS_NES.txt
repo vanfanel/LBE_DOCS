@@ -51,6 +51,13 @@ dd if=kiwi.prg of=kiwi2.nes bs=1c seek=16 conv=notrunc
 --Metemos el CHR después de la cabecera y el PRG:
 dd if=kiwi.chr of=kiwi2.nes bs=1c seek=$((16 + 128*1024)) conv=notrunc
 
+NOS PONEMOS SERIOS: EXTRAER LOS GRÁFICOS EN BLOQUE
+==================================================
+
+La PPU de la NES sólo puede acceder a 8KB en un momento dado (los CHR son más grandes porque se usa bank switching).
+En MESEN, si nos vamos a "Debug -> Memory Viewer" y allí seleccionamos "PPU Memory",
+lo que haya en las direcciones de 0x0000 a 0x1FFF (eso son exactamente 8 KB) son los tiles que está mostrando en pantalla en ese momento.
+
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
 
