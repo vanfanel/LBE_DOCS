@@ -33,6 +33,24 @@ dd if=kiwi.nes of=kiwi.chr bs=1c skip=$((16 + 128*1024)) count=128K
 ("Cada bloque es 1 byte, nos saltamos los primeros 16 bytes y los siguientes 128 KB, y extraemos 128 KB".
   El número de bytes a saltarnos se calcula usando lo que se llama "aritmética del shell". El cálculo en sí es trivial).
 
+AHORA VAMOS A INTENTAR VOLVER A "MONTAR" EL JUEGO
+NOTA: Para saltarse bloques en el destino es con "seek" en vez de "skip" que era para saltárselos en el orígen.
+NOTA: Al escribir dentro de un fichero ya existente, tenemos que pasarle "conv=notrunc"
+      porque si no, nos sobreescribe el fichero existente con lo que deseamos escribir en él.
+
+--Creo un fichero de 262160 bytes que es el tamaño que tiene el juego original
+(16 bytes de cabecera + 128 KB = 131072 bytes de PRG + 128 KB = 131072 bytes de CHR)
+dd if=/dev/zero of=kiwi2.nes bs=1c count=262160
+
+--Copio la cabecera a su sitio:
+dd if=header of=kiwi2.nes bs=1c skip=0 count=16 conv=notrunc
+
+--Metemos el PRG después de los 16 bytes de la cabecera:
+dd if=kiwi.prg of=kiwi2.nes bs=1c seek=16 conv=notrunc
+
+--Metemos el CHR después de la cabecera y el PRG:
+dd if=kiwi.chr of=kiwi2.nes bs=1c seek=$((16 + 128*1024)) conv=notrunc
+
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
 
