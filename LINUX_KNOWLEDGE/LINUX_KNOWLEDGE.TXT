@@ -8172,7 +8172,8 @@ NOTA: La documentación original está aquí --> https://github.com/klorfmorf/Go
 --Instalamos llvm y clang:
 apt-get install lld llvm clang
 
---Clonamos el repo: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/Goemon64Recomp.git
+--Clonamos los últimos sources etiquetados (podemos ver cuál es la última versión en https://github.com/klorfmorf/Goemon64Recomp/tags):
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/klorfmorf/Goemon64Recomp.git -b v0.2.0-dev Goemon64Recomp-v0.2.0-dev
 
 	BLOQUE DE DESCOMPRESIÓN DE LA ROM
 	(NO ES NECESARIO A NO SER QUE PIERDAS LA ROM DESCOMPRIMIDA QUE TIENES EN EL DISCO DURO DE BACKUP).
