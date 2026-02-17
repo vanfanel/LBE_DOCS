@@ -1118,7 +1118,7 @@ PORQUE EL TEST DE SCROLL PEGA TIRONES AL HACER QUE VAYA MÁS DEPRISA. ESTÁ ROTO
 OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACIÓN DE SHADERS
 (Están en "Core Options -> Graphics > Settings"):
 ----"Shader Compilation" a "Async (UberShaders)"
-----"Wait for Shaders before starting" ON
+----"Wait for Shaders" OFF
 
 NOTAS DE CADA JUEGO:
 --Luigi's Mansion: Para evitar errores en la cara de Luigi durante la intro,
