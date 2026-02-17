@@ -89,6 +89,11 @@ Para direccionar cada tile en el tilemap se usa 1 byte: por eso, 960 tiles = 960
 RESUMIENDO:
 1 NAMETABLE = 960 bytes de tilemap + 64 bytes = 1024 bytes. 1024 son 0x3FE, pero como contamos desde el primer byte, pues 0x3FF.
 
+Pero lo que estamos viendo es información que está en la memoria de la PPU en ese momento.
+LO QUE REALMENTE NOS INTERESA ES SABER EN QUÉ DIRECCIÓN DEL PRG SE ALMACENA EL TILEMAP (LOS TILEMAP VIVEN EN EL PRG).
+Una buena manera de encontrarlo es coger una secuencia del tilemap y buscarla con hexedit en el .PRG
+Si no está comprimida, esa tilemap debería estar ahí tal cual.
+
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
 
