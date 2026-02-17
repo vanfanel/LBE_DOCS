@@ -1091,6 +1091,7 @@ PARA FRAMERATE ESTABLE (CON VRR Y SIN ÉL):
 --Desactiva "Duplicate Frames to 60Hz" y "Detect Frame Rate Changes"
 
 ******DOLPHIN LIBRETRO*********************************************************************************
+INFO IMPORTANTE PROCEDENTE DE: https://docs.libretro.com/library/dolphin/
 
 --Compilamos su repo así:
 git clone --recursive --depth 1 https://github.com/libretro/dolphin.git
