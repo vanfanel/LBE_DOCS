@@ -8179,7 +8179,7 @@ git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com
 	(NO ES NECESARIO A NO SER QUE PIERDAS LA ROM DESCOMPRIMIDA QUE TIENES EN EL DISCO DURO DE BACKUP).
 
 --Instalamos dependencias previas: sudo apt install build-essential python3 git binutils-mips-linux-gnu
---Clonamos el descompresor de ROM: git clone --depth 1 --recurse-submodules https://github.com/klorfmorf/mnsg.git
+--Clonamos el descompresor de ROM: git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/klorfmorf/mnsg.git
 --Entramos en el raiz de los sources del descompresor: cd mnsg
 --Instalamos UV que se usa para instalar componentes necesarios de Python (se instala para el usuario en su ~/.bin, tranqui):
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -8190,7 +8190,7 @@ cp baserom.us.decompressed.z64 ~/src/Goemon64Recomp/mnsg.z64
 
 	BLOQUE "N64RECOMP"
 
---Clonamos su repo: git clone --depth 1 --recurse-submodules https://github.com/N64Recomp/N64Recomp.git
+--Clonamos su repo: git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/N64Recomp/N64Recomp.git
 --Compilamos con:
 mkdir b4
 cd b4
@@ -8228,11 +8228,11 @@ BANJO RECOMP
 ============
 
 --Clonamos la última versión estable de su repo (podemos ver cuál es en https://github.com/BanjoRecomp/BanjoRecomp/tags):
-git clone --depth 1 --recurse-submodules -b v1.0.1 https://github.com/BanjoRecomp/BanjoRecomp.git BanjoRecomp-1.0.1
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v1.0.1 https://github.com/BanjoRecomp/BanjoRecomp.git BanjoRecomp-v1.0.1
 
 	BLOQUE "N64RECOMP"
 
---Clonamos su repo: git clone --depth 1 --recurse-submodules https://github.com/N64Recomp/N64Recomp.git
+--Clonamos su repo: git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/N64Recomp/N64Recomp.git
 --Compilamos con:
 mkdir b4
 cd b4
