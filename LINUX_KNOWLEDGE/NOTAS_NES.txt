@@ -93,6 +93,7 @@ Pero lo que estamos viendo es información que está en la memoria de la PPU en 
 LO QUE REALMENTE NOS INTERESA ES SABER EN QUÉ DIRECCIÓN DEL PRG SE ALMACENA EL TILEMAP (LOS TILEMAP VIVEN EN EL PRG).
 Una buena manera de encontrarlo es coger una secuencia del tilemap y buscarla con hexedit en el .PRG
 Si no está comprimida, esa tilemap debería estar ahí tal cual.
+Y está: buscando en el .PRG por una serie de hex en HEXEDIT, encontramos que empieza en 0x57CF.
 
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
