@@ -67,7 +67,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_X11=OFF \
 make -j10 && make install
 
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
-for f in $(cat install_manifest.txt) ; do rm "$f"; done
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 --Ejecutamos un programa así para tracear todas sus llamadas a OpenGL:
 apitrace trace -o mame.trace mame cninja
@@ -1362,7 +1362,7 @@ export PATH=/usr/local/Qt-6.8.0/bin:$PATH
  ya que es lo correcto según la documentación debido a que se pueden tener varias versiones de QT en el mismo sistema, etc).
 
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
-for f in $(cat install_manifest.txt) ; do rm "$f"; done
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 PARTE 2: MÓDULOS DE QT6 NECESARIOS PARA LOS EMULADORES
 
@@ -1430,7 +1430,7 @@ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DSHADERC_SKIP_TESTS=ON \
 ninja -j10
 
 PARA DESINSTALAR (no hay "make uninstall"):
-for f in $(cat install_manifest.txt) ; do rm "$f"; done
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 AHORA VAMOS CON PCSX2 EN SÍ:
 
@@ -1477,7 +1477,7 @@ apt-get install lld llvm clang
 ----Instalamos la última versión estable de "plutovg" de aquí: https://github.com/sammycage/plutovg/releases
 ----Instalamos la última versión estable de "plutosvg" de aquí: https://github.com/sammycage/plutosvg/releases
 PARA DESINSTALAR (no hay "make uninstall"):
-for f in $(cat install_manifest.txt) ; do rm "$f"; done
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 -Instalamos a mano otra dependencia previa: libshaderc.
 (La versión que viene con Debian 13 es muy antigua y no nos vale).
@@ -1496,7 +1496,7 @@ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DSHADERC_SKIP_TESTS=ON \
 ninja -j10
 
 PARA DESINSTALAR (no hay "make uninstall"):
-for f in $(cat install_manifest.txt) ; do rm "$f"; done
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 AHORA VAMOS CON PCSX2 EN SÍ:
 
@@ -2679,7 +2679,7 @@ no le pases "-DENABLE_QRENDERDOC=OFF", pero en ese caso necesitas QT instalado: 
 --Instalamos:
 make install
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
-for f in $(cat install_manifest.txt) ; do rm "$f"; done
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 --PARA CAPTURAR, lanzamos con:
 renderdoccmd capture <PROGRAMA>
@@ -5030,7 +5030,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -Denable-dbus=0 -Denable-systemd=0 -Denable-
 -Denable-aufile=0 -Denable-network=0 -Denable-oss=0 -Denable-sdl3=0 ..
 
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
-for f in $(cat install_manifest.txt) ; do rm "$f"; done
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 *************MIDI remoto con fluidsynth o timidity (MIDI over LAN)*************************************************************
 
@@ -5863,7 +5863,7 @@ de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
 sudo apt-get install glslc
 
 PARA DESINSTALAR (no hay "make uninstall"):
-for f in $(cat install_manifest.txt) ; do rm "$f"; done
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 -Instalamos otra dependencia previa: GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
 	---Dependencia previa: apt-get install --no-install-recommends extra-cmake-modules
@@ -8576,7 +8576,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -DALSOFT_BACKEND_OSS=OFF -DALSOFT_REQUIRE_PIPEW
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" ..
 
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
-for f in $(cat install_manifest.txt) ; do rm "$f"; done
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 STUNT CAR RACER EN GNU/LINUX
 ============================
