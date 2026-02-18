@@ -6291,6 +6291,22 @@ CCLESTE_START_FULLSCREEN=1 ./ccleste
 
 Se sale con la tecla DELETE
 
+*************Unreal nativo en GNU/Linux******************
+
+--Partimos de una instalación limpia del juego original. Tienes una lista en el disco de backup, si la pierdes simplemente bájate
+  el "Unreal (Europe)" de la colección REDUMP en Myrient.
+
+--Nos bajamos la última versión de OldUnreal para Linux de aquí: https://github.com/OldUnreal/Unreal-testing/releases
+  la descomprimimos, y copiamos los archivos encima de la instalación limpia del juego original.
+  
+--Instalamos RTKit, ya que OpenAL lo intenta usar y así se supone que podemos tener menos latencia de audio:
+sudo apt-get install rtkit 
+
+--NO intentes poner el renderer Mesa3D porque peta.
+  NO HACE FALTA poner la CPU Affinity, deja que el sistema escoja en qué CPU correr el juego.
+  Si cambias algo y ya no arranca, para dejarlo como estaba edita System64/UnrealLinux.ini,
+  ahí puedes cambiar todo y los valores anteriores de cada setting aparecen comentados, por lo que es descomentar el valor anterior y listo.
+
 *************MightyMike en GNU/Linux*********************
 
 git clone --recurse-submodules --depth 1 -j8 https://github.com/jorio/MightyMike.git
