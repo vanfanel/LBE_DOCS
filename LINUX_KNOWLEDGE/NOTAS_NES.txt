@@ -66,13 +66,13 @@ Estos 8 KB van de 0x0000 a 0x1FFF.
 Supongamos que la PPU Memory en ese momento empieza en 0xB000.
 
 --Si queremos extraer esos 8 KB de tiles del fichero CHR, hacemos:
-dd if=kiwi_pal.chr of=titulo_pal.chr bs=1c count=8192 skip=$((0xB000))
+dd if=kiwi_pal.chr of=tiles_pal bs=1c count=8192 skip=$((0xB000))
 
 --Si queremos insertar estos 8 KB de tiles en la misma dirección de otro CHR:
-dd if=titulo_pal.chr of=kiwi_ntsc.chr bs=1c count=8192 seek=$((0xB000))
+dd if=tiles_pal of=kiwi_ntsc.chr bs=1c count=8192 seek=$((0xB000)) conv=notrunc
 
 --Si ahora queremos re-insertar el CHR modificado en la ROM:
-dd if=titulo_pal.chr of=kiwi_ntsc.chr bs=1c count=8192 seek=$((0xB000))
+dd if=tiles_pal of=kiwi_ntsc.chr bs=1c count=8192 seek=$((0xB000)) conv=notrunc
 
 PERO ESA ES SÓLO LA MITAD DEL PROBLEMA: NO SÓLO NOS INTERESA QUÉ TILES HAY, SINO CÓMO SE COLOCAN ESOS TILES.
 ESO LO DETERMINA EL TILEMAP-
@@ -94,8 +94,18 @@ LO QUE REALMENTE NOS INTERESA ES SABER EN QUÉ DIRECCIÓN DEL PRG SE ALMACENA EL
 Una buena manera de encontrarlo es coger una secuencia del tilemap y buscarla con hexedit en el .PRG
 Si no está comprimida, esa tilemap debería estar ahí tal cual.
 Y está: buscando en el .PRG por una serie de hex en HEXEDIT, encontramos que empieza en 0x57CF.
-Extraemos 960 bytes a partir de esa dirección:
+
+Extraemos el .PRG del WIKI PAL:
+dd if=kiwi_pal.nes of=kiwi_pal.prg bs=1c skip=16 count=128K
+
+Extraemos, del PRG PAL, 960 bytes a partir de esa dirección:
 dd if=kiwi_pal.prg of=tilemap_title_pal bs=1c skip=$((0x57CF)) count=960
+
+Insertamos los 960 bytes del tilemap en el .PRG NTSC:
+dd if=tilemap_title_pal of=kiwi.prg bs=1c seek=$((0x57CF)) conv=notrunc
+
+Insertamos el .PRG NTSC en la ROM NTSC modificada:
+dd if=kiwi.prg of=kiwi2.nes bs=1c seek=16 conv=notrunc
 
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
