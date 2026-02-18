@@ -10403,12 +10403,12 @@ OPENFODDER, versión opensource de Cannon Fodder 1 y 2
 
 Clonamos el repo:
 
-git clone --depth 1 https://github.com/OpenFodder/openfodder.git
+git clone --depth 1 --recurse-submoules https://github.com/OpenFodder/openfodder.git
 
 --Configuramos con:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DOPENFODDER_AUTO_FFMPEG=OFF \
 -DCMAKE_CXX_FLAGS="-DNDEBUG -march=native -mtune=native"
 
 Ahora, nos creamos ~/cf, y ahí:
