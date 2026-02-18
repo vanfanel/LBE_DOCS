@@ -1218,7 +1218,9 @@ SÓLO ES PARA EL REZ EUROPEO, CUYO NOMBRE EN REDUMP ES: "Rez (Europe) (En,Ja,Fr,
 NOTA: Se recomienda subir la CPU de la Dreamcast emulada a 300Mhz como un override para este juego.
 NOTA: Para 16:9, sólo tienes que "Widescreen Cheats" en las opciones del core, no hace falta meter cheats "externos" como este de 60FPS.
 NOTA: Si quieres ver de dónde viene, mírate la sección "Entendiendo los cheats de RetroArch".
+
 Creamos el archivo ".config/retroarch/cheats/Flycast/Rez (Europe) (En,Ja,Fr,De,Es,It).cht" con el contenido:
+
 cheat0_address = "853732"
 cheat0_address_bit_position = "0"
 cheat0_big_endian = "false"
