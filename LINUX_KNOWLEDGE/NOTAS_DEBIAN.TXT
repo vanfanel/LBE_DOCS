@@ -628,6 +628,20 @@ cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Releas
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
 for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
+		--INSTALACIÓN SDL3_MIXER
+		
+--Bajamos los últimos sources estables de: https://github.com/libsdl-org/SDL_mixer/releases
+
+--Compilamos con:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release -DSDLMIXER_MIDI_TIMIDITY=OFF
+
+PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
+
+
 INSTALAR SDL2
 =============
 
