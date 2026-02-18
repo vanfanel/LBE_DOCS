@@ -6423,6 +6423,10 @@ X + START : Xinput mode, for PC
 Y + START : Switch mode
 A + START : MacOS mode, for Apple computers (NOT PHONES/TABLETS)
 
+*************Directorios que aparecen con fondo verde************************************************************************
+
+chmod 755 <nombre_directorio>
+
 *************Abbaye des morts************************************************************************************************
 
 Clonamos su repo:
