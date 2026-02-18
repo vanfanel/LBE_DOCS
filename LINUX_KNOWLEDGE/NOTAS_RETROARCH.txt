@@ -1169,7 +1169,7 @@ Normalmente nos encontraremos los cheats de Flycast en este formato:
 Esto siginifica: Escribe 32 bits (02) en la dirección "0x0d06e4" el valor "0xe401d105"
 
 Entonces, lo que tenemos que hacer es convertir la dirección y el valor a decirmal,
-cogemos esta plantilla y rellenamos "address" y "value", y listo:
+cogemos esta plantilla, rellenamos "address" y "value":
 
 cheat0_address = ""
 cheat0_address_bit_position = "0"
@@ -1191,6 +1191,8 @@ cheat0_rumble_secondary_strength = "0"
 cheat0_rumble_type = "0"
 cheat0_rumble_value = "0"
 cheat0_value = ""
+
+...Y lo cargamos desde "Quick Menu -> Cheats -> Load Cheat File (Replace)"
 
 OPCIONAL: Si en lugar de eso quisiéramos meterlo en RetroArch a mano,
 vamos a "Quick Menu -> Cheats -> Add New Cheat to Top", y luego en los datos del cheat
@@ -1262,3 +1264,5 @@ cheat1_rumble_type = "0"
 cheat1_rumble_value = "0"
 cheat1_value = "557973515"
 cheats = "2"
+
+...Y lo cargamos desde "Quick Menu -> Cheats -> Load Cheat File (Replace)"
