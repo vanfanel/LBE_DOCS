@@ -1004,54 +1004,6 @@ echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_lev
 ...
 echo auto | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level
 
-REZ a 60 FPS (Sólo para el REZ Europeo "Rez (Europe) (En,Ja,Fr,De,Es,It)")
-NOTA: Con esto ya no necesitaías "Delay Frame Swap" para tener movimiento suave.
-      Se recomienda subir la CPU de la Dreamcast emulada a 300Mhz.
-NOTA: Para 16:9, sólo tienes que "Widescreen Cheats" en las opciones del core, no hace falta meter cheats "externos" como este de 60FPS.
-NOTA: Si quieres ver de dónde viene, mírate la sección "Entendiendo los cheats de RetroArch".
-Creamos el archivo ".config/retroarch/cheats/Flycast/Rez (Europe) (En,Ja,Fr,De,Es,It).cht" con el contenido:
-cheat0_address = "853732"
-cheat0_address_bit_position = "0"
-cheat0_big_endian = "false"
-cheat0_cheat_type = "1"
-cheat0_code = ""
-cheat0_desc = ""
-cheat0_enable = "true"
-cheat0_handler = "1"
-cheat0_memory_search_size = "5"
-cheat0_repeat_add_to_address = "1"
-cheat0_repeat_add_to_value = "0"
-cheat0_repeat_count = "1"
-cheat0_rumble_port = "0"
-cheat0_rumble_primary_duration = "0"
-cheat0_rumble_primary_strength = "0"
-cheat0_rumble_secondary_duration = "0"
-cheat0_rumble_secondary_strength = "0"
-cheat0_rumble_type = "0"
-cheat0_rumble_value = "0"
-cheat0_value = "3825324293"
-cheat1_address = "853736"
-cheat1_address_bit_position = "0"
-cheat1_big_endian = "false"
-cheat1_cheat_type = "1"
-cheat1_code = ""
-cheat1_desc = ""
-cheat1_enable = "true"
-cheat1_handler = "1"
-cheat1_memory_search_size = "5"
-cheat1_repeat_add_to_address = "1"
-cheat1_repeat_add_to_value = "0"
-cheat1_repeat_count = "1"
-cheat1_rumble_port = "0"
-cheat1_rumble_primary_duration = "0"
-cheat1_rumble_primary_strength = "0"
-cheat1_rumble_secondary_duration = "0"
-cheat1_rumble_secondary_strength = "0"
-cheat1_rumble_type = "0"
-cheat1_rumble_value = "0"
-cheat1_value = "557973515"
-cheats = "2"
-
 *************CANNONBALL (OutRun engine)*************
 
 Necesitamos un directorio /roms donde metemos las roms del juego (es el romset del MAME y si te falta una eprom, es del SET B)
@@ -1233,3 +1185,53 @@ Video/Widescreen Hack: Enabled
 Video/Widescreen Game Cheats: Disabled
 
 OJO: Cada parche tiene unas notas dentro del programa cuando haces click en ellos: leelas porque hay algunas limitaciones en lo que pueden hacer.
+
+REZ a 60 FPS
+============
+SÓLO ES PARA EL REZ EUROPEO, EN REDUMP LLAMADO: "Rez (Europe) (En,Ja,Fr,De,Es,It)"
+
+NOTA: Se recomienda subir la CPU de la Dreamcast emulada a 300Mhz como un override para este juego.
+NOTA: Para 16:9, sólo tienes que "Widescreen Cheats" en las opciones del core, no hace falta meter cheats "externos" como este de 60FPS.
+NOTA: Si quieres ver de dónde viene, mírate la sección "Entendiendo los cheats de RetroArch".
+Creamos el archivo ".config/retroarch/cheats/Flycast/Rez (Europe) (En,Ja,Fr,De,Es,It).cht" con el contenido:
+cheat0_address = "853732"
+cheat0_address_bit_position = "0"
+cheat0_big_endian = "false"
+cheat0_cheat_type = "1"
+cheat0_code = ""
+cheat0_desc = ""
+cheat0_enable = "true"
+cheat0_handler = "1"
+cheat0_memory_search_size = "5"
+cheat0_repeat_add_to_address = "1"
+cheat0_repeat_add_to_value = "0"
+cheat0_repeat_count = "1"
+cheat0_rumble_port = "0"
+cheat0_rumble_primary_duration = "0"
+cheat0_rumble_primary_strength = "0"
+cheat0_rumble_secondary_duration = "0"
+cheat0_rumble_secondary_strength = "0"
+cheat0_rumble_type = "0"
+cheat0_rumble_value = "0"
+cheat0_value = "3825324293"
+cheat1_address = "853736"
+cheat1_address_bit_position = "0"
+cheat1_big_endian = "false"
+cheat1_cheat_type = "1"
+cheat1_code = ""
+cheat1_desc = ""
+cheat1_enable = "true"
+cheat1_handler = "1"
+cheat1_memory_search_size = "5"
+cheat1_repeat_add_to_address = "1"
+cheat1_repeat_add_to_value = "0"
+cheat1_repeat_count = "1"
+cheat1_rumble_port = "0"
+cheat1_rumble_primary_duration = "0"
+cheat1_rumble_primary_strength = "0"
+cheat1_rumble_secondary_duration = "0"
+cheat1_rumble_secondary_strength = "0"
+cheat1_rumble_type = "0"
+cheat1_rumble_value = "0"
+cheat1_value = "557973515"
+cheats = "2"
