@@ -1080,8 +1080,8 @@ PORQUE EL TEST DE SCROLL PEGA TIRONES AL HACER QUE VAYA MÁS DEPRISA. ESTÁ ROTO
 
 OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACIÓN DE SHADERS
 (Están en "Core Options -> Graphics > Settings"):
-----"Shader Compilation" a "Async (UberShaders)"
-----"Wait for Shaders" OFF
+----"Shader Compilation" a "Sync (UberShaders)"
+----"Wait for Shaders" ON
 NOTA: LA CACHÉ DE SHADERS DEL CORE, POR SI QUIERES BORRARLOS Y HACER PRUEBAS, ESTÁ EN:
 ~/.config/retroarch/saves/dolphin-emu/User/Cache/Shaders/
 

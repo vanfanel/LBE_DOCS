@@ -771,11 +771,10 @@ deberían ya sonar sin problemas.
 
 --PARA PODER PONER RETROARCH A 32ms DE LATENCIA DE AUDIO ESTABLES:
 ----Creamos "~/.config/pipewire/pipewire.conf.d/10-lowlatency.conf" con este contenido:
-(El 128 es para poder tener 20ms estable de latencia de audio en RetroArch. Para 32ms basta con 256.)
-(¡OJO! ¡¡¡Si notas distorsión sube ambos a 256!!!)
+(El 256 es para 32ms de delay en RetroArch. Para 20ms bajaríamos a 128).
 context.properties = {
-    default.clock.min-quantum = 128
-    default.clock.max-quantum = 128
+    default.clock.min-quantum = 256
+    default.clock.max-quantum = 256
 }
 ----Reiniciamos Pipewire para que cargue esta nueva configuración:
 systemctl --user restart pipewire
@@ -841,7 +840,7 @@ monitor.alsa.rules = [
     actions = {
       update-props = {
         device.profile = "pro-audio"
-        api.alsa.period-size = 128,
+        api.alsa.period-size = 256,
         api.alsa.period-num = 2,
       }
     }
