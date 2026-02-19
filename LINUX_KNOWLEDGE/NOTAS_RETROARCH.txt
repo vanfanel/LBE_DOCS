@@ -39,7 +39,7 @@ que es lo que nos permite que se descarguen automáticamente los thumbnails para
 PARA COMPILAR CUALQUIER CORE:
 
 CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
-CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j4
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j10
 
 		CONFIGURACIÓN ÓPTIMA DE RETROARCH EN WAYLAND
 
@@ -1082,6 +1082,8 @@ OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACI
 (Están en "Core Options -> Graphics > Settings"):
 ----"Shader Compilation" a "Async (UberShaders)"
 ----"Wait for Shaders" OFF
+NOTA: LA CACHÉ DE SHADERS DEL CORE, POR SI QUIERES BORRARLOS Y HACER PRUEBAS, ESTÁ EN:
+~/.config/retroarch/saves/dolphin-emu/User/Cache/Shaders/
 
 NOTAS DE CADA JUEGO:
 --Luigi's Mansion: Para evitar errores en la cara de Luigi durante la intro,
