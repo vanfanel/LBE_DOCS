@@ -1078,12 +1078,17 @@ Y CON LAS OPCIONES DEL CORE POR DEFECTO VA BIEN, DE MOMENTO.
 ¡¡OJO!! EL 240P TEST SUITE DE GAMECUBE NO VALE PARA COMPROBAR EL FRAMEPACING DE ESTE CORE
 PORQUE EL TEST DE SCROLL PEGA TIRONES AL HACER QUE VAYA MÁS DEPRISA. ESTÁ ROTO EL TEST, NO LO USES.
 
-OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACIÓN DE SHADERS
+OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACIÓN DE SHADERS ("SHADER STUTTERING")
 (Están en "Core Options -> Graphics > Settings"):
 ----"Shader Compilation" a "Sync (UberShaders)"
 ----"Wait for Shaders" ON
 NOTA: LA CACHÉ DE SHADERS DEL CORE, POR SI QUIERES BORRARLOS Y HACER PRUEBAS, ESTÁ EN:
 ~/.config/retroarch/saves/dolphin-emu/User/Cache/Shaders/
+
+ELIMINAR LOS ÚLTIMOS MICRO-TIRONES NO ASOCIABLES A "SHADER STUTTERING"
+----Pon un buffer de audio de 45ms para este core (es típico de los "cores 3D" necesitar buffers de audio un poco más grandes).
+----Manda el core a la caché haciendo lo típico antes de cargarlo:
+cat ~/.config/retroarch/cores/dolphin_libretro.so >> /dev/null
 
 NOTAS DE CADA JUEGO:
 --Luigi's Mansion: Para evitar errores en la cara de Luigi durante la intro,
