@@ -10403,7 +10403,7 @@ OPENFODDER, versión opensource de Cannon Fodder 1 y 2
 
 Clonamos el repo:
 
-git clone --depth 1 --recurse-submoules https://github.com/OpenFodder/openfodder.git
+git clone --depth 1 --recurse-submodules https://github.com/OpenFodder/openfodder.git
 
 --Configuramos con:
 mkdir b4
