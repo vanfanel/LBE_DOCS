@@ -95,17 +95,17 @@ Una buena manera de encontrarlo es coger una secuencia del tilemap y buscarla co
 Si no está comprimida, esa tilemap debería estar ahí tal cual.
 Y está: buscando en el .PRG por una serie de hex en HEXEDIT, encontramos que empieza en 0x57CF.
 
-Extraemos el .PRG del WIKI PAL:
+Extraemos el .PRG del KIWI PAL:
 dd if=kiwi_pal.nes of=kiwi_pal.prg bs=1c skip=16 count=128K
 
 Extraemos, del PRG PAL, 960 bytes a partir de esa dirección:
 dd if=kiwi_pal.prg of=tilemap_title_pal bs=1c skip=$((0x57CF)) count=960
 
 Insertamos los 960 bytes del tilemap en el .PRG NTSC:
-dd if=tilemap_title_pal of=kiwi.prg bs=1c seek=$((0x57CF)) conv=notrunc
+dd if=tilemap_title_pal of=kiwi_ntsc.prg bs=1c seek=$((0x57CF)) conv=notrunc
 
 Insertamos el .PRG NTSC en la ROM NTSC modificada:
-dd if=kiwi.prg of=kiwi2.nes bs=1c seek=16 conv=notrunc
+dd if=kiwi_ntsc.prg of=kiwi2.nes bs=1c seek=16 conv=notrunc
 
 NOTAS ENSAMBLADOR NES
 =====================
