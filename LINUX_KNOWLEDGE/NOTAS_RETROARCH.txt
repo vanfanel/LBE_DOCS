@@ -136,8 +136,15 @@ Opción 3: LOTTES
 
 		--AUDIO--
 	
-Driver PIPEWIRE en general, 48000 Hz, 32ms (20ms en modo pro-audio de Wireplumber), resampler quality normal.
-RECUERDA QUE PARA PODER BAJAR A 32ms DE LATENCIA ESTABLE DEBES CONFIGURAR EL QUANTUM EN PIPEWIRE ADECUADAMENTE.
+Driver PIPEWIRE en general, 48000 Hz, deja los 64ms de latencia por defecto, resampler quality normal.
+
+¿Por qué dejar 64ms por defecto? Porque se ha confirmado en el canal de Discord (hunterk) que 
+la "latencia" en RetroArch es en realidad la latencia máxima: el driver de audio debería apuntar a una saturación del buffer de audio del 50%,
+así que en el caso ideal, si ponemos una latencia de 64ms andaría por una latencia efectiva de 32ms.
+Pero es que además no son exactamente milisegundos, sino samples.
+
+Podrías bajar a el setting 32ms (20ms en modo pro-audio de Wireplumber), 
+PERO RECUERDA QUE PARA PODER BAJAR A 32ms DE LATENCIA ESTABLE DEBES CONFIGURAR EL QUANTUM EN PIPEWIRE ADECUADAMENTE.
 TIENES NOTAS SOBRE ESTO EN LA DOCUMENTACIÓN DE INSTALACIÓN DE PIPEWIRE EN EL FICHERO "DEBIAN.TXT".
 (Si usaras ALSA o ALSATHREAD, en algunos cores debes desactivar la sincronización de audio, pero con PIPEWIRE, siempre activada).
 

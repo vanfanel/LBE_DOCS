@@ -8006,7 +8006,7 @@ PARA EXTRAER LOS DATOS DEL JUEGO PARA LA VERSIÓN DE SOH/LUS QUE ACABAMOS DE COM
 --Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
 y la copiamos a "OTRExporter/baserom.z64"
 --En el mismo directorio donde acabamos de compilar el juego, hacemos:
-cmake --build . --target ExtractAssets -j4
+cmake --build . --target ExtractAssets -j10
 --Copiamos los archivos "oot.otr" y "soh.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
 cp soh/*.o2r ~/zelda64/
 
