@@ -107,6 +107,26 @@ dd if=tilemap_title_pal of=kiwi.prg bs=1c seek=$((0x57CF)) conv=notrunc
 Insertamos el .PRG NTSC en la ROM NTSC modificada:
 dd if=kiwi.prg of=kiwi2.nes bs=1c seek=16 conv=notrunc
 
+NOTAS ENSAMBLADOR NES
+=====================
+
+LDA VALOR = Cargar valor en el registro "A"
+
+STA $DIR  = Guardar el valor del registro "A" en la direción de memoria $DIR
+
+LDA $8000,5 = Cargar en el registro A el valor de la dirección $8000 + 5 ($8005)  
+
+STA $0100,3 = Guardar en la dirección de memoria $0100+3 el valor del registro A.
+
+INX = Incrementa el contador X
+
+CPX #$20 = Comparar el contador X con $20 ($20 es 32 en decimal).
+           Si son iguales, se pone el flag Z a 1.
+
+BNE loop = (Branch if Not Equal)
+Si el flag Z es 0 (las cosas que has comparado NO son iguales) salta.
+Si el flag Z es 1 (las cosas que has comparado SÍ sin iguales) ya no salta.
+
 EDITAR GRÁFICOS SENCILLOS (SPRITES)
 ===================================
 
