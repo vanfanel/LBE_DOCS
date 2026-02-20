@@ -7982,7 +7982,7 @@ apt-get install libbz2-dev libpng-dev lsb-release libzip-dev zipcmp zipmerge zip
 libtinyxml2-dev nlohmann-json3-dev libspdlog-dev
 
 --Clonamos la última versión estable del repo:
-git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules -b 9.1.1 
+git clone https://github.com/HarbourMasters/Shipwright.git --depth 1 --recurse-submodules --shallow-submodules -b 9.1.1 Shipwright-9.1.1
 
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
