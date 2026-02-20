@@ -1088,9 +1088,11 @@ PORQUE EL TEST DE SCROLL PEGA TIRONES AL HACER QUE VAYA MÁS DEPRISA. ESTÁ ROTO
 OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACIÓN DE SHADERS ("SHADER STUTTERING")
 (Están en "Core Options -> Graphics > Settings"):
 ----"Shader Compilation" a "Sync (UberShaders)"
-----"Wait for Shaders" OFF
+----"Wait for Shaders" ON
 NOTA: LA CACHÉ DE SHADERS DEL CORE, POR SI QUIERES BORRARLOS Y HACER PRUEBAS, ESTÁ EN:
 ~/.config/retroarch/saves/dolphin-emu/User/Cache/Shaders/
+
+PODEMOS PONER "INTERNAL RESOLUTION" A "2 X Native (720p)" Y PARECE IR IGUAL DE BIEN TODO.
 
 ELIMINAR LOS ÚLTIMOS MICRO-TIRONES NO ASOCIABLES A "SHADER STUTTERING"
 ----Pon un buffer de audio de 45ms para este core (es típico de los "cores 3D" necesitar buffers de audio un poco más grandes).
