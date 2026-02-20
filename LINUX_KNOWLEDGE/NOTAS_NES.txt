@@ -25,7 +25,7 @@ dd if=kiwi.nes of=header bs=1c count=16 skip=0
 ("Cada bloque es un byte, no me salto ningún bloque y extraemos 16 bytes").
 
 --Extraemos el PRG:
-dd if=kiwi.nes of=kiwi.prg bs=1c skip=16 count=128K
+dd if=kiwi.nes of=kiwi_ntsc.prg bs=1c skip=16 count=128K
 ("Cada bloque es 1 byte, nos saltamos los primeros 16 bytes, extraemos 128 KB").
 
 --Extraemos el CHR:
@@ -46,7 +46,7 @@ dd if=/dev/zero of=kiwi2.nes bs=1c count=262160
 dd if=header of=kiwi2.nes bs=1c skip=0 count=16 conv=notrunc
 
 --Metemos el PRG después de los 16 bytes de la cabecera:
-dd if=kiwi.prg of=kiwi2.nes bs=1c seek=16 conv=notrunc
+dd if=kiwi_ntsc.prg of=kiwi2.nes bs=1c seek=16 conv=notrunc
 
 --Metemos el CHR después de la cabecera y el PRG:
 dd if=kiwi.chr of=kiwi2.nes bs=1c seek=$((16 + 128*1024)) conv=notrunc
