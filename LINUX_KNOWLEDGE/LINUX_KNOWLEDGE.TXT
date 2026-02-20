@@ -8178,8 +8178,8 @@ cmake --build . --target ExtractAssets
 ...Y copiamos los archivos resultantes "mk64.o2r" y "spaghetti.o2r" al mismo directorio que el ejecutable (yo lo meto todo en "~/mk64"):
 cp *.o2r ~/mk64/
 
-GAMBARE GOEMON 64 (Goemon64, Mystical Ninja 64) en GNU/Linux
-============================================================
+GAMBARE GOEMON RECOMP (Goemon64, Mystical Ninja 64) en GNU/Linux
+================================================================
 NOTA: La documentación original está aquí --> https://github.com/klorfmorf/Goemon64Recomp/blob/modding/BUILDING.md
 
 	BLOQUE DEPENDENCIAS PREVIAS
@@ -8300,6 +8300,37 @@ cp recompcontrollerdb.txt ~/banjo/
 
 --Los MODS se bajan de: https://thunderstore.io/c/banjo-recompiled/
 Se instalan simplemente abriendo el ZIP desde el menú del recomp, y quedan instalados en "~/.config/BanjoRecompiled/mods"
+
+MARIO KART 64 RECOMP
+====================
+
+--Clonamos la última versión estable de su repo (podemos ver cuál es en https://github.com/sonicdcer/MarioKart64Recomp/tags):
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.9.2 https://github.com/sonicdcer/MarioKart64Recomp.git MarioKart64Recmp-v0.9.2
+
+	BLOQUE "N64RECOMP"
+	
+Lo mismo que en los otros recomps: copia los ejecutables "N64Recomp" y "RSPRecomp" al raiz de los sources de MarioKart64Recomp
+
+	BLOQUE EXTRACCIÓN DE LA ROM
+	
+En este caso NO HAY QUE EXTRAERLA, simplemente pon la ROM USA del Mario Kart 64 como "mk64.us.z64" en el raiz de los sources de MarioKart64Recomp
+
+	BLOQUE RECOMPILACIÓN
+	
+En el raiz de los sources de MarioKart64Recomp hacemos:
+
+cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build-cmake --target MarioKart64Recompiled -j$(nproc) --config Release
+
+	BLOQUE FUNCIONAMIENTO
+	
+--Instalamos todo lo necesario a un directorio nuestro de juego:
+mkdir ~/mk64
+cp build-cmake/MarioKart64Recompiled ~/mk64/
+cp -R assets ~/mk64/
+cp recompcontrollerdb.txt ~/mk64/
+
+--Metemos la ROM USA en el mismo directorio, ¡y a jugar!
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
 ============================================
