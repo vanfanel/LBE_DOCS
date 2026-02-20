@@ -8316,8 +8316,10 @@ Lo mismo que en los otros recomps: copia los ejecutables "N64Recomp" y "RSPRecom
 En este caso NO HAY QUE EXTRAERLA, simplemente pon la ROM USA del Mario Kart 64 como "mk64.us.z64" en el raiz de los sources de MarioKart64Recomp
 
 	BLOQUE RECOMPILACIÓN
+
+--Editamos CMakeList.txt y eliminamos toda referencia a X11.
 	
-En el raiz de los sources de MarioKart64Recomp hacemos:
+--En el raiz de los sources de MarioKart64Recomp hacemos:
 
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-cmake --target MarioKart64Recompiled -j$(nproc) --config Release
