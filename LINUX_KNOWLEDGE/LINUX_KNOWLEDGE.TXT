@@ -8303,6 +8303,8 @@ Se instalan simplemente abriendo el ZIP desde el menú del recomp, y quedan inst
 
 MARIO KART 64 RECOMP
 ====================
+INSTRUCCIONES PROCEDENTES DE AQUÍ:
+https://github.com/sonicdcer/MarioKart64Recomp/blob/main/BUILDING.md
 
 --Clonamos la última versión estable de su repo (podemos ver cuál es en https://github.com/sonicdcer/MarioKart64Recomp/tags):
 git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.9.2 https://github.com/sonicdcer/MarioKart64Recomp.git MarioKart64Recomp-v0.9.2
@@ -8345,6 +8347,8 @@ Se instala simplemente eligiéndolo en el menú de mods, luego puedes borrarlo p
 
 STAR FOX 64 RECOMP
 ==================
+INSTRUCCIONES PROCEDENTES DE AQUÍ:
+https://github.com/sonicdcer/Starfox64Recomp/blob/main/BUILDING.md
 
 --Clonamos la última versión estable de su repo (podemos ver cuál es en https://github.com/sonicdcer/Starfox64Recomp/tags):
 git clone --depth 1 --recurse-submodules --shallow-submodules -b 1.0.3 https://github.com/sonicdcer/Starfox64Recomp.git Starfox64Recomp-1.0.3
