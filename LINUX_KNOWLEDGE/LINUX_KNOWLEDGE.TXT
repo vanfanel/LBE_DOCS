@@ -8362,6 +8362,8 @@ make -j10
 --Copiamos la ROM USA "Star Fox 64 (USA) (Rev 1).z64" como "baserom.us.rev1.z64" al directorio raiz de "Star Fox 64 Decomp" y hacemos:
 make decompress	
 
+--Copiamos la ROM descomprimida, llamada "baserom.us.rev1.uncompressed.z64", al directorio raiz de Starfox64Recomp
+
 	BLOQUE RECOMPILACIÓN
 
 --Editamos CMakeList.txt y eliminamos toda referencia a X11.
