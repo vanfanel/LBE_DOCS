@@ -8368,6 +8368,7 @@ make -j10
 make decompress	
 
 --Copiamos la ROM descomprimida, llamada "baserom.us.rev1.uncompressed.z64", al directorio raiz de Starfox64Recomp
+  con el nombre "starfox64.us.rev1.uncompressed.z64"
 
 	BLOQUE RECOMPILACIÓN
 
