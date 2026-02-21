@@ -8317,9 +8317,11 @@ En este caso NO HAY QUE EXTRAERLA, simplemente pon la ROM USA del Mario Kart 64 
 
 	BLOQUE RECOMPILACIÓN
 
+--Nos vamos a la raiz de los sources de MarioKart64Recomp
+
 --Editamos CMakeList.txt y eliminamos toda referencia a X11.
 	
---En el raiz de los sources de MarioKart64Recomp hacemos:
+--Por fin, recompilamos:
 
 ./N64Recomp us.toml
 ./RSPRecomp aspMain.us.toml
@@ -8369,9 +8371,11 @@ make decompress
 
 	BLOQUE RECOMPILACIÓN
 
+--Nos vamos al raiz de los sources de Starfox64Recomp-
+
 --Editamos CMakeList.txt y eliminamos toda referencia a X11.
 	
---En el raiz de los sources de Starfox64Recomp hacemos:
+--Por fin, recompilamos:
 
 ./N64Recomp us.rev1.toml
 ./RSPRecomp aspMain.us.rev1.toml
