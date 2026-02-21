@@ -8379,11 +8379,9 @@ make decompress
 --Nos vamos al raiz de los sources de Starfox64Recomp-
 
 --(ESTO  NO DEBERÍA SER NECESARIO CUANDO ACTUALICEN DEPENDENCIAS)
-  Nos vamos a lib/rt64/src/contrib, y actualizamos a la última versión de "plume"
-  (la arreglé yo para que no usara X11 cuando se usa SDL para el contexto, está mergeado ya, no te preocupes):
-rm -R plume
-git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/renderbag/plume.git
-
+  Nos vamos a lib/rt64/src/contrib/plume y allí aplicamos los cambios de este PR ya mergeado:
+  https://github.com/renderbag/plume/pull/88/commits
+  
 --Editamos CMakeList.txt y eliminamos toda referencia a X11.
 	
 --Por fin, recompilamos:
