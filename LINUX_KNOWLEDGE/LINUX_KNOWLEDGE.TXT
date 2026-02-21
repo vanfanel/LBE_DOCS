@@ -8321,6 +8321,9 @@ En este caso NO HAY QUE EXTRAERLA, simplemente pon la ROM USA del Mario Kart 64 
 	
 --En el raiz de los sources de MarioKart64Recomp hacemos:
 
+./N64Recomp us.toml
+./RSPRecomp aspMain.us.toml
+
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-cmake --target MarioKart64Recompiled -j$(nproc) --config Release
 
@@ -8369,6 +8372,9 @@ make decompress
 --Editamos CMakeList.txt y eliminamos toda referencia a X11.
 	
 --En el raiz de los sources de Starfox64Recomp hacemos:
+
+./N64Recomp us.rev1.toml
+./RSPRecomp aspMain.us.rev1.toml
 
 cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-cmake --target Starfox64Recompiled -j$(nproc) --config Release
