@@ -8305,7 +8305,7 @@ MARIO KART 64 RECOMP
 ====================
 
 --Clonamos la última versión estable de su repo (podemos ver cuál es en https://github.com/sonicdcer/MarioKart64Recomp/tags):
-git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.9.2 https://github.com/sonicdcer/MarioKart64Recomp.git MarioKart64Recmp-v0.9.2
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.9.2 https://github.com/sonicdcer/MarioKart64Recomp.git MarioKart64Recomp-v0.9.2
 
 	BLOQUE "N64RECOMP"
 	
@@ -8336,6 +8336,53 @@ cp recompcontrollerdb.txt ~/mk64/
 
 --Tienes un MOD con texturas en HD en:
 https://evilgames.eu/texture-packs/mk64-reloaded.htm#pc
+Se instala simplemente eligiéndolo en el menú de mods, luego puedes borrarlo porque queda instalado.
+
+STAR FOX 64 RECOMP
+==================
+
+--Clonamos la última versión estable de su repo (podemos ver cuál es en https://github.com/sonicdcer/Starfox64Recomp/tags):
+git clone --depth 1 --recurse-submodules --shallow-submodules -b 1.0.3 https://github.com/sonicdcer/Starfox64Recomp.git Starfox64Recomp-1.0.3
+
+	BLOQUE "N64RECOMP"
+	
+Lo mismo que en los otros recomps: copia los ejecutables "N64Recomp" y "RSPRecomp" al raiz de los sources de Starfox64Recomp
+
+	BLOQUE EXTRACCIÓN DE LA ROM
+(OJO!! PARA EXTRAER LA ROM, SE USA SF 64 ---DECOMP---, QUE ES UN PROYECTO DISTINTO DEL RECOMP QUE QUEREMOS COMPILAR)
+
+--Clonamos el "Star Fox 64 Decomp":
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/sonicdcer/sf64.git
+
+--Entramos en el directorio "tools" y hacemos:
+make -j10
+
+--Volvemos al directorio raiz de "Star Fox 64 Decomp"
+
+--Copiamos la ROM USA "Star Fox 64 (USA) (Rev 1).z64" como "baserom.us.rev1.z64" al directorio raiz de "Star Fox 64 Decomp" y hacemos:
+make decompress	
+
+	BLOQUE RECOMPILACIÓN
+
+--Editamos CMakeList.txt y eliminamos toda referencia a X11.
+	
+--En el raiz de los sources de Starfox64Recomp hacemos:
+
+cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build-cmake --target Starfox64Recompiled -j$(nproc) --config Release
+
+	BLOQUE FUNCIONAMIENTO
+	
+--Instalamos todo lo necesario a un directorio nuestro de juego:
+mkdir ~/sf64
+cp build-cmake/MarioKart64Recompiled ~/sf64/
+cp -R assets ~/sf64/
+cp recompcontrollerdb.txt ~/sf64/
+
+--Metemos la ROM USA en el mismo directorio, ¡y a jugar!
+
+--Tienes un MOD con texturas en HD en:
+
 Se instala simplemente eligiéndolo en el menú de mods, luego puedes borrarlo porque queda instalado.
 
 MAGIC CARPET 2 HD (antes remc2) en GNU/Linux
