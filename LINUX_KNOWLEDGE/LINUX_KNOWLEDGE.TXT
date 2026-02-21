@@ -8387,7 +8387,7 @@ cmake --build build-cmake --target Starfox64Recompiled -j$(nproc) --config Relea
 	
 --Instalamos todo lo necesario a un directorio nuestro de juego:
 mkdir ~/sf64
-cp build-cmake/MarioKart64Recompiled ~/sf64/
+cp build-cmake/Starfox64Recompiled ~/sf64/
 cp -R assets ~/sf64/
 cp recompcontrollerdb.txt ~/sf64/
 
