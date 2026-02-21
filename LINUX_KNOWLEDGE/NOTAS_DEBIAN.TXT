@@ -3,8 +3,32 @@ FINETUNING THE SYSTEM
 
 Una vez que hemos arrancado nativamente, tenemos mucho que hacer.
 
--Para configurar la WIFI una vez arrancado el sistema sin escritorio, en Debian es editando /etc/network/interfaces,
-y en Raspbian es usando el raspi-config.
+-Para configurar la WIFI una vez arrancado el sistema sin escritorio, en Debian es editando /etc/network/interfaces
+ Yo lo tengo más o menos así:
+ 
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug wlp109s0
+iface wlp109s0 inet dhcp
+   wpa-ssid UltimaCabra
+   wpa-psk  ???????????
+   #wpa-ssid AndroidAP
+   #wpa-psk  ?????????
+   #wpa-ssid MIWIFI_N4hn
+   #wpa-psk  ?????????
+   wpa-scan-ssid 1
+   wireless-power off
+
+...Lo de "wireless-power off" es para evitar tirones por SSH,
+   y lo de "wpa-scan-ssid 1" es para que rescanee si arrancas el ordenador sin haber levantado el punto de acceso WIFI.
 
 -Para que no se quede esperando al apagar el sistema cuando no tenemos WIFI, crea el fichero
 /etc/systemd/system/networking.service.d/override.conf
