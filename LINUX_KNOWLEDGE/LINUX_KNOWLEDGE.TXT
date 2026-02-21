@@ -8345,8 +8345,8 @@ cp recompcontrollerdb.txt ~/mk64/
 https://evilgames.eu/texture-packs/mk64-reloaded.htm#pc
 Se instala simplemente eligiéndolo en el menú de mods, luego puedes borrarlo porque queda instalado.
 
-STAR FOX 64 RECOMP
-==================
+STARFOX 64 RECOMP
+=================
 INSTRUCCIONES PROCEDENTES DE AQUÍ:
 https://github.com/sonicdcer/Starfox64Recomp/blob/main/BUILDING.md
 
@@ -8378,6 +8378,12 @@ make decompress
 
 --Nos vamos al raiz de los sources de Starfox64Recomp-
 
+--(ESTO  NO DEBERÍA SER NECESARIO CUANDO ACTUALICEN DEPENDENCIAS)
+  Nos vamos a lib/rt64/src/contrib, y actualizamos a la última versión de "plume"
+  (la arreglé yo para que no usara X11 cuando se usa SDL para el contexto, está mergeado ya, no te preocupes):
+rm -R plume
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/renderbag/plume.git
+
 --Editamos CMakeList.txt y eliminamos toda referencia a X11.
 	
 --Por fin, recompilamos:
@@ -8396,7 +8402,7 @@ cp build-cmake/Starfox64Recompiled ~/sf64/
 cp -R assets ~/sf64/
 cp recompcontrollerdb.txt ~/sf64/
 
---Metemos la ROM USA REV.1 en el mismo directorio, ¡y a jugar!
+--Metemos la ROM "Star Fox 64 (USA) (Rev 1).z64" en el mismo directorio, ¡y a jugar!
 
 --Tienes un MOD con texturas en HD en:
 
