@@ -1223,6 +1223,8 @@ Video/Widescreen Hack: Enabled
 Video/Widescreen Game Cheats: Disabled
 --Para que no se vea mal el logo de SEGA del principio:
 Video/Fix Upscaling Bleeding Edge: ON
+--Para que se vean suaves los vídeos pre-renderizados (ver panning de la cámara hacia abajo justo al empezar la intro):
+Video/Detect Frame Rate Changes: ON
 
 OJO: Cada parche tiene unas notas dentro del programa cuando haces click en ellos: leelas porque hay algunas limitaciones en lo que pueden hacer.
 
