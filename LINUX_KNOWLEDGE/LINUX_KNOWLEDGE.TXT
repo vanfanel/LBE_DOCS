@@ -10506,9 +10506,14 @@ OJO!!! doom.sh debe empezar con #!/bin/bash en la primera línea, o no funcionar
 OPENFODDER, versión opensource de Cannon Fodder 1 y 2
 =====================================================
 
-Clonamos el repo:
-
+--Clonamos su repo:
 git clone --depth 1 --recurse-submodules https://github.com/OpenFodder/openfodder.git
+
+--Editamos y dejamos la línea:
+mBriefingHelicopter_TimeScale = 60.0f / (float)mWindow->GetRefreshRate();
+...Así:
+mBriefingHelicopter_TimeScale = 60.0f / 120;
+...Donde 120 es el refresco de pantalla físico que uso.
 
 --Configuramos con:
 mkdir b4
