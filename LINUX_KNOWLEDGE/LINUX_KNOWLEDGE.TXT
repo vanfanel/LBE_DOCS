@@ -7942,10 +7942,9 @@ cp -R build/us_pc/res ~/mario64/res/
 NOTAS:
 
 --Si quieres evitar los tirones al mover la cámara por primera vez, ya que el engine no interpola bien a 120FPS,
-  tenemos que poner un modo de vídeo de 60Hz con:
-wlr-randr --output DP-1 --mode 1920x1080@60
-./sm64.us.f3dex2e > /dev/null 2>&1
-wlr-randr --output DP-1 --preferred
+  tenemos que poner un modo de vídeo de 60Hz antes de entrar al juego.
+  Esto se debe a que la interpolación de frames es para 60FPS, no para 120. El parche de interpolación (HIGH_FPS_PC)
+  es ENORME así que no esperes ajustar eso.
 
 --Para usar el mando Saffun N64 2.4G, no hace falta que exportemos ningún SDL_GAMECONTROLLERCONFIG, basta con ponerlo en modo X-Input,
   lo cual se hace pulsando START + B durante 3 segundos.
