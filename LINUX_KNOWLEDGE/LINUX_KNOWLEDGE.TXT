@@ -7945,6 +7945,8 @@ NOTAS:
   tenemos que poner un modo de vídeo de 60Hz antes de entrar al juego.
   Esto se debe a que la interpolación de frames es para 60FPS, no para 120. El parche de interpolación (HIGH_FPS_PC)
   es ENORME así que no esperes ajustar eso.
+  Si aún así algún día te quieres pegar con ello, la espera cutre de Sleep() se hace en sync_framerate_with_timer()
+  de src/pc/gfx/gfx_sdl2.c, y si la quitas va a 120 FPS suave a 120Hz... pero demasiado rápido.
 
 --Para usar el mando Saffun N64 2.4G, no hace falta que exportemos ningún SDL_GAMECONTROLLERCONFIG, basta con ponerlo en modo X-Input,
   lo cual se hace pulsando START + B durante 3 segundos.
