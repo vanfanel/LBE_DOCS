@@ -8101,7 +8101,7 @@ ninja -j10
 mkdir ~/majora
 cp mm/2s2h.elf ~/majora/
 
-PARA QUE NO DE TIRONCILLOS EN WAYLAND+AdaptiveSync, limita la tasa de frames del juego a 60 y activa el VSYNC.
+PARA QUE NO DE TIRONCILLOS EN LA PRIMERA CARGA, PON LOS FPS A 30.
 
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
