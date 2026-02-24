@@ -254,7 +254,7 @@ Y meterlo en el AUTOEXEC.BAT como:
 LH FREESPT.COM C
 
 --Para que los juegos se vean en una tele CRT (el modo texto se ve sin hacer nada), hay que ajustar "HSYNC WIDTH".
-  Para que se vea centrado, ponemos "HSYNC WIDTH" a 7 y "CRT V Offset" a 7. Con eso queda "niquelao".
+  Para que se vea centrado, ponemos "HSYNC WIDTH" a 7 , "CRT H Offset" a 7 y "CRT V Offset" a 7. Con eso queda "niquelao".
 
 --Para activar/desactivar los colores COMPOSITE dinámicamente (ya que los juegos en modo PCXT se ven genial con colores composite
 pero los colores composite hacen que la consola de texto de DOS se vea FATA) usa el XTCTL.EXE, que está aquí para descargar:
