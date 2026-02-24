@@ -216,24 +216,24 @@ En PCXT BIOS va "pcxt_original.rom", en TANDY BIOS va "tandy.rom", y en EC00 BIO
 NOTAS SOBRE LAS IMÁGENES DE DISCO PARA EL CORE PCXT
 ===================================================
 
-La mejor BIOS para XT es la de Juko Electronics, ya que tiene scroll suave en el texto.
+--La mejor BIOS para XT es la de Juko Electronics, ya que tiene scroll suave en el texto.
 Para obtener BIOS ya preparadas tanto de XT como de TANDY 1000, tienes que bajar los scripts de Python de aquí:
 https://github.com/spark2k06/PCXT_MiSTer/tree/main/SW/ROMs
 ...Y luego ejecutas "python <nombre_script>".
 La BIOS resultante está lista para usarse. NO tienes que descargar nada a mano, lo hace todo el script.
 Si no te arranca de disco duro, carga la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
 
-Para arrancar en modo TANDY y con disco duro IDE real, necesitamos una BIOS TANDY limpia (=sin XTIDE incluido, es decir, una BIOS TANDY 1000
+--Para arrancar en modo TANDY y con disco duro IDE real, necesitamos una BIOS TANDY limpia (=sin XTIDE incluido, es decir, una BIOS TANDY 1000
 que te bajes de aquí: http://retrograde.inf.ua/tandyroms.htm) y cargar la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
 
-Si queremos arrancar con una BIOS de XT limpia, tenemos que cargar la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
+--Si queremos arrancar con una BIOS de XT limpia, tenemos que cargar la BIOS de XTIDE en la opción "BIOS/EC00 BIOS:" del core.
 (Si queremos hacer que una BIOS de XT esté "limpia" tenemos que editarla con HEXEDIT y machacar el primer byte,
 que es una letra "U", para que no cargue la XTIDE interna que lleva esa BIOS)
 
-Para crear la imágen simplemente desde el propio GNU/Linux de la Mister haz:
+--Para crear la imágen simplemente desde el propio GNU/Linux de la Mister haz:
 dd if=/dev/zero of=hdd.vhd bs=128M count=1
 
-Ahora tenemos que particionarla y formatearla desde la MiSTER, para lo cual tenemos que arrancar desde una imágen de disco de MSDOS.
+--Ahora tenemos que particionarla y formatearla desde la MiSTER, para lo cual tenemos que arrancar desde una imágen de disco de MSDOS.
 Lo mejor con diferencia es instalar MS-DOS 5.0 o 3.3 (aunque si instalas 3.3 estás limtado a discos duros de 32MB)
 desde imágenes de disco de 320KB 5-1/4 que hay en WinWordPC disponibles para bajar.
 -NO uses las imágenes de 720KB porque fallan.
@@ -241,26 +241,29 @@ desde imágenes de disco de 320KB 5-1/4 que hay en WinWordPC disponibles para ba
 para que el core lea imágenes de 1.44MB tenemos que usar la BIOS micro8088, PERO esa viene con el XTIDE integrado,
 así que tenemos que editarla con HEXEDIT y machacar el primer byte (una letra "U") para que no cargue la XTIDE interna que lleva esa BIOS.
 
-Una vez que hemos arrancado desde el diskette de MSDOS y el core nos ha reconocido el disco, podemos particionarlo con fdisk y formatearlo
+--Una vez que hemos arrancado desde el diskette de MSDOS y el core nos ha reconocido el disco, podemos particionarlo con fdisk y formatearlo
 con format.
 
-Para transferir directorios entre discos, montar los discos desde Linux así:
+--Para transferir directorios entre discos, montar los discos desde Linux así:
 sudo mount -t vfat -o loop,offset=32256 hdd.vhd mnt
 (TODOS los discos duros de MSDOS se montan igual)
 
-Para que el primer DIR no tarde taaaaaanto, puedes descargarte el FREESPT.COM de aquí:
+--Para que el primer DIR no tarde taaaaaanto, puedes descargarte el FREESPT.COM de aquí:
 https://github.com/ChartreuseK/FREESP/releases
 Y meterlo en el AUTOEXEC.BAT como:
 LH FREESPT.COM C
 
-Para activar/desactivar los colores COMPOSITE dinámicamente (ya que los juegos en modo PCXT se ven genial con colores composite
+--Para que los juegos se vean en una tele CRT (el modo texto se ve sin hacer nada), hay que ajustar "HSYNC WIDTH".
+  Para que se vea centrado, ponemos "HSYNC WIDTH" a 7 y "CRT V Offset" a 7. Con eso queda "niquelao".
+
+--Para activar/desactivar los colores COMPOSITE dinámicamente (ya que los juegos en modo PCXT se ven genial con colores composite
 pero los colores composite hacen que la consola de texto de DOS se vea FATA) usa el XTCTL.EXE, que está aquí para descargar:
 https://github.com/MiSTer-devel/PCXT_MiSTer/tree/main/hdd
 
-Hay muchos juegos preparados para XT de verdad aquí: https://www.pcjs.org
+--Hay muchos juegos preparados para XT de verdad aquí: https://www.pcjs.org
 Se pueden descargar dándole a SAVE.
 
-El driver de ratón que pone en los docs del core que hay que usar (CTMOUSE versión 1.9,
+--El driver de ratón que pone en los docs del core que hay que usar (CTMOUSE versión 1.9,
 que está en https://github.com/spark2k06/PCXT_MiSTer/tree/main/hdd/) no es compatible con el EDIT.COM de MS-DOS, se cuelga el EDIT.
 Si el que debes usar es este CTMOUSE.EXE: https://github.com/davidebreso/ctmouse
 La diferencia es que este está adaptado a procesadores 8088, ya que el CUTEMOUSE normal usa instrucciones de 286 y por eso falla.
