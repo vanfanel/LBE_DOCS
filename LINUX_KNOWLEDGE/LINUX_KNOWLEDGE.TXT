@@ -8046,11 +8046,13 @@ PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16
 PARA USAR MODS, creamos el directorio ~/zelda64/mods y los metemos ahí.
 Si el MOD tiene directorios, da igual, lo metes tal cual con sus directorios.
 Ahora activamos "Enhancements->Graphics->Mods->Use Alternate Assets" y ya se cargan y se utilizan.
-Si usas el Djipi's 3DS Experience debes tener activados:
++++Si usas el Djipi's 3DS Experience (https://gamebanana.com/mods/477979) debes tener activados:
 Enhancements->Graphics->Mods->Disable Grotto Fixed Rotation
 Enhancements->Graphics->Enable 3D dropped items / projectiles
 Y desactivado:
 Enhancements->Fixes->Out of Bounds Textures
++++Si usas el Djipi's 3DS Experience, compleméntalo con el mod de fuente original de alta resolución (https://gamebanana.com/mods/602400)
+para solucionar los problemas de spacing.
 
 --TRADUCCIÓN AL CASTELLANO--
 
