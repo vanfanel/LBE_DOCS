@@ -7,32 +7,37 @@ eso no funciona y los juegos nos dan pantallazo blanco, así que usamos FLASHGBX
 --Instalamos unas dependencias previas:
 sudo apt-get install python3-pil python3-serial
 
---Nos bajamos el último .DEB para nuestra versión de Debian de aquí:
-https://github.com/JJ-Fox/FlashGBX-Linux-builds/releases/tag/4.5
-
---Lo instalamos:
-sudo dpkg -i debian13-flashgbx_4.5-1_all.deb
+--Nos bajamos el último AppImage de aquí: https://github.com/Lesserkuma/FlashGBX/releases
+  Le damos permiso de escritura ("chmod +x ...") y lo mandamos a /usr/local/bin/flashgbx
 
 --Añadimos al usuario al grupo que nos permite tener acceso root a /dev/usbX:
 sudo adduser manuel dialout
-
-NOTA: Los juegos originales que salvan partida usan SRAM+Batería, pero los cartuchos chinos traen ROMs parcheadas para salvar a flash.
-Así que tendríamos que parchearlos.
-En los cartuchos de Aliexpress, los juegos que usan MBC5 sí van sin parchear y salvan, pero al apagar la consola un rato se borra la partida.
-O sea que para los cartuchos de Aliexpress necesitas los parches "batteryless". Tienes varios de esos parches en:
-https://github.com/acocalypso/batteryless-patches/tree/main/patches
-Y en el canal #patch-repository del servidor Discord de BennVenn (busca allí por nombre del juego a ver si sale algo...).
-PERO en los cartuchos de originales de Chromatic se pueden grabar juegos MBC5, y salvan y el salvado se conserva.
 
 Para flashear cartuchos desde flashgbx, primero tenemos que meterle al joeyjr el firmware de flashgbx, que es un fw especial
 de la gente de flashgbx.
 --En MODE.TXT ponemos UPDATE arriba del todo y salvamos.
 --Ejecutamos flashgbx como root así (sin "sudo", sino como root real):
+
+El FlashGBX debería ir en modo gráfico, pero si se nos ejecuta en modo CLI, en algunos casos le tenemos que pasar algún argumento:
 PARA CARTUCHOS "GENÉRICOS":
 flashgbx --flashcart-type "Generic Flash Cartridge (WR/AAA/AA)"
 PARA CARTUCHOS "PERFECT DARK con batería":
 flashgbx <--Sin argumentos.
-Se nos ejecutará en modo CLI.
+...elegimos 3 (Write ROM) y luego 1 (Game Boy / Game Boy Color)
 ...Nos pedirá la ruta de la ROM, etc. y la flasheará. Ya está!
 RECUERDA que si es un juego que usa saves, tienen que ser ROMs parcheadas con un parche "batteryless", o te dará una pantalla en blanco.
 RECUERDA que los juegos que usan el mapper MBC5 salvan pero la partida se borra al apagar la consola un rato.
+
+NOTA: Algunos cartuchos baratos no nos deja escribir en ellos. Simplemente, cuando te diga lo de:
+"To continue, please re-connect the USB cable of your Joey Jr device on port..."
+Simplemente dale al botón CANCEL y empezará a escribir la ROM.
+Este "truco" sólo funciona en modo gráfico, desde el modo CLI del FlashGBX no se puede.
+
+NOTA: Los juegos originales que salvan partida usan SRAM+Batería, pero algunos cartuchos chinos traen ROMs parcheadas para salvar a flash.
+Los puedes detectar porque son juegos que salvan PERO no tienen pila.
+Así que tendríamos que parchearlos para que salven y carguen las partidas.
+En los cartuchos de Aliexpress, los juegos que usan MBC5 sí van sin parchear y salvan, pero al apagar la consola un rato se borra la partida.
+O sea que para los cartuchos de Aliexpress necesitas los parches "batteryless". Tienes varios de esos parches en:
+https://github.com/acocalypso/batteryless-patches/tree/main/patches
+Y en el canal #patch-repository del servidor Discord de BennVenn (busca allí por nombre del juego a ver si sale algo...).
+PERO en los cartuchos de originales de Chromatic se pueden grabar juegos MBC5, y salvan y el salvado se conserva.
