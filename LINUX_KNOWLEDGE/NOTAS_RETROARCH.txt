@@ -403,20 +403,13 @@ Se compila como los demás cores.
 
 		SCROLL TOTALMENTE SUAVE CON ADAPTIVE SYNC / VRR
 
-LO PRIMERO, TENEMOS QUE TENER UN FRAMETIME DEVIANCE MUY BAJO (Idealmente 0.0-0.1%)
+TENEMOS QUE TENER UN FRAMETIME DEVIANCE MUY BAJO (Idealmente 0.0-0.1%)
 EN LA PARTE DE CONFIGURACIÓN DE VÍDEO DE RETROARCH TIENES CÓMO LOGRARLO.
 
-SE CONSIGUE CASI IGUAL QUE EN EL CORE MAME.
---En las opciones de RetroArch:
-En VIDEO->SYNCHRONIZATION ponemos:
-"Vsync"							OFF
-"Sync to Exact"					ON
-En AUDIO->SYNCHRONIZATION ponemos:
-"Synchronization"				ON (Lo normal, vamos).
-"Maximum Timing Skew"			0.0
-"Dynamic Audio Rate Control"	0.0
+SI TIENES VRR/ADAPTIVE SYNC, ACTIVAMOS "VIDEO->SYNCHRONIZATION".
+Y SI NO, PUES NECESITAMOS PONER UN MODO DE 100Hz PARA LOS JUEGOS PAL.
 
-			####¡¡¡¡MUY IMPORTANTE!!!! PRIMEROS AJUSTES DEL SISTEMA AMIGA A EMULAR ####
+		####¡¡¡¡MUY IMPORTANTE!!!! PRIMEROS AJUSTES DEL SISTEMA AMIGA A EMULAR ####
 
 -NO se puede usar RUNAHEAD con este core, acuérdate de desactivarlos: según el propio autor del core, la carga de savestates
 es muy lenta lo que lo hace imposible. 
