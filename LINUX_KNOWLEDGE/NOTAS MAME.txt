@@ -70,7 +70,7 @@ USAR MAME STANDALONE
 
 --Lo primero, para conocer todos los parámetros de MAME, hacemos "mame -showusage".
 
---Copiamos los directorios "bgfx" y "artwork" que vienen en la raiz de los sources a "~/mame/bgfx":
+--Copiamos los directorios "bgfx" y "artwork" que vienen en la raiz de los sources a "~/mame":
 cp -R bgfx artwork ~/mame/
 
 		SECCIÓN SCROLLES PERFECTOS EN TODOS LOS JUEGOS (INCLUÍDO MK) CON VRR
