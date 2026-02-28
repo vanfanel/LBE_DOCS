@@ -12,8 +12,8 @@ git clone -b mame0286 --depth 1 https://github.com/mamedev/mame.git mame0286
 
 y cambiamos lo que hay ahí dentro por esto:
 
-typedef struct wl_display     *EGLNativeDisplayType;                                                                                  
-typedef struct wl_egl_pixmap  *EGLNativePixmapType;                                                                                   
+typedef struct wl_display     *EGLNativeDisplayType;
+typedef struct wl_egl_pixmap  *EGLNativePixmapType;
 typedef struct wl_egl_window  *EGLNativeWindowType;
 
 --Editamos scripts/src/osd/modules.lua, y allí:
