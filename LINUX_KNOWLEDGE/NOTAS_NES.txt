@@ -1,3 +1,12 @@
+HACKEAR TEXTO EN JUEGOS DE NES
+==============================
+
+Es bastante fácil: con el Tilemap Viewer del MESEN sacamos las cadenas que forman los tiles mirando el "Tile Index" de los tiles.
+Luego buscamos esas cadenas en Hexedit, y cambiamos lo que queramos.
+Recuerda, si tienes que hacer algo más complicado, que normalmente las pantallas de texto, diálogos y tal,
+se suelen generar al vuelo, por lo que están en el PRG. Pero vamos, que para cambiar textos y cosas así simples
+no hace falta que extraigas el .PRG de la ROM, puedes trabajar sobre el .NES directamente sin problema.  
+
 EXTRAER EL PRG Y CHR DE UN ARCHIVO .NES
 =======================================
 ALGUNA INFO PROCEDE DE: https://forums.nesdev.org/viewtopic.php?t=5661
