@@ -8115,6 +8115,11 @@ cmake --build . --target ExtractAssets -j10
 --Copiamos los archivos de datos a su sitio:
 cp mm/mm.o2r mm/2ship.o2r ~/majora/
 
+	----MODS----
+	
+Tienes un MOD de texturas HD en https://github.com/GhostlyDark/MM-Reloaded-2S2H/releases
+Simplemente es meterlo en ~/majora/mods y activar "Enhancements -> Graphics -> Use Alternate Assets"
+
 STARFOX64 EN GNU/LINUX
 ======================
 NOTAS PREVIAS:
