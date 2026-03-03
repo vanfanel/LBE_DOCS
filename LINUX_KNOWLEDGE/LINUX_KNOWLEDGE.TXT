@@ -8083,7 +8083,7 @@ ZELDA MAJORA'S MASK en GNU/Linux
 apt-get install lsb-release
 
 --Clonamos la última versión estable (podemos ver cuál es la última estable en https://github.com/HarbourMasters/2ship2harkinian/releases):
-git clone --depth 1 https://github.com/HarbourMasters/2ship2harkinian.git --recurse-submodules --shallow-submodules -b 4.0.0 2ship2harkinian-4.0.0
+git clone --depth 1 https://github.com/HarbourMasters/2ship2harkinian.git --recurse-submodules --shallow-submodules -b 4.0.2 2ship2harkinian-4.0.2
 
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
