@@ -7970,20 +7970,23 @@ make clean
 
   Si aun así da error, borra el fichero con el que da error (el tool que da el error seguramente ya lo hayas borrado antes).
 
-SM64-COOP, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
-==================================================
+SM64COOPDX, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
+===================================================
 
-Clonamos su repo:
+--Bajamos la útima estable de:
+https://github.com/coop-deluxe/sm64coopdx/releases
 
-git clone --depth 1 https://github.com/djoslin0/sm64ex-coop
+--Metemos la ROM en el directorio raiz de los sources como "baserom.us.z64"
 
-Metemos la ROM en el directorio raiz de los sources como "baserom.us.z64"
-
-Compilamos así:
-
+--Compilamos así:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-make TARGET_RPI=1 DISCORD_SDK=0 -j4
+make COOPNET=0 DISCORD_SDK=0 -j10
+
+(NOTA: Si quisiéramos usar el multijugador, no le pasaríamos "COOPNET=0", lógicamente).
+
+(NOTA: Tenemos más flags de compilación documentados en:
+ https://github.com/coop-deluxe/sm64coopdx/wiki/Build-Flags)
 
 ----PARA HOSTEAR O CONECTARNOS A UNA PARTIDA----
 
