@@ -7979,6 +7979,7 @@ https://github.com/coop-deluxe/sm64coopdx/releases
 --Metemos la ROM en el directorio raiz de los sources como "baserom.us.z64"
 
 --Compilamos así:
+
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 make COOPNET=0 DISCORD_SDK=0 -j10
