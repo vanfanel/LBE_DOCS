@@ -7982,9 +7982,7 @@ https://github.com/coop-deluxe/sm64coopdx/releases
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-make COOPNET=0 DISCORD_SDK=0 -j10
-
-(NOTA: Si quisiéramos usar el multijugador, no le pasaríamos "COOPNET=0", lógicamente).
+make DISCORD_SDK=0 -j10
 
 (NOTA: Tenemos más flags de compilación documentados en:
  https://github.com/coop-deluxe/sm64coopdx/wiki/Build-Flags)
