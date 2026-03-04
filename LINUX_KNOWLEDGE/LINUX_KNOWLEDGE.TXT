@@ -7978,6 +7978,8 @@ https://github.com/coop-deluxe/sm64coopdx/releases
 
 --Metemos la ROM en el directorio raiz de los sources como "baserom.us.z64"
 
+--Editamos "Makefile" y cambiamos "-lGL" por "-lOpenGL"
+
 --Compilamos así:
 
 CFLAGS="-march=native -mtune=native" \
@@ -7988,6 +7990,9 @@ make COOPNET=0 DISCORD_SDK=0 -j10
 
 (NOTA: Tenemos más flags de compilación documentados en:
  https://github.com/coop-deluxe/sm64coopdx/wiki/Build-Flags)
+
+--Copiamos el ejecutable resultante a un directorio de usuario:
+cp build/us_pc/sm64coopdx ~/sm64dx/
 
 ----PARA HOSTEAR O CONECTARNOS A UNA PARTIDA----
 
