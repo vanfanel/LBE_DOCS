@@ -7995,8 +7995,24 @@ cmake .. -GNinja \
 
 ninja -j10
 
+--Copiamos el ejecutable a un directorio de usuario, junto con el directorio "assets":
+
 mkdir ~/sm64
-cp ghostship/ghostship.elf ~/sm64/
+cp Ghostship ~/sm64/
+cp -R assets ~/sm64/
+
+	----EXTRACCIÓN DE LOS DATOS----
+
+--Bajamos la ROM USA y la metemos en el mismo directorio donde hemos compilado el juego.
+--En el mismo directorio donde acabamos de compilar el juego, ejecutamos el propio ./Ghostship,
+  y nos irá dando opciones para compilarlo. 
+--Copiamos los archivos de datos a su sitio:
+cp sm64.o2r ~/sm64/
+
+	----MODS----
+	
+Tienes un MOD de texturas HD en https://github.com/GhostlyDark/SM64-Reloaded/releases
+Simplemente es meterlo en ~/sm64/mods y activar "Enhancements -> Graphics -> Use Alternate Assets"
 
 SM64COOPDX, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
 ===================================================
