@@ -7970,6 +7970,34 @@ make clean
 
   Si aun así da error, borra el fichero con el que da error (el tool que da el error seguramente ya lo hayas borrado antes).
 
+
+GHOSTSHIP, SUPER MARIO 64 EN GNU/LINUX
+======================================
+
+--Clonamos su repo y submódulos:
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/HarbourMasters/Ghostship.git
+
+--Editamos "CMakeLists.txt", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
+set(OPENGL_USE_OPENGL ON)
+
+--Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
+set(OPENGL_USE_OPENGL ON)
+
+--Configuramos y compilamos:
+
+mkdir b4
+cd b4
+
+cmake .. -GNinja \
+-DCMAKE_C_FLAGS="-march=native -mtune=native" \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
+-DCMAKE_BUILD_TYPE=Release
+
+ninja -j10
+
+mkdir ~/sm64
+cp ghostship/ghostship.elf ~/sm64/
+
 SM64COOPDX, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
 ===================================================
 
