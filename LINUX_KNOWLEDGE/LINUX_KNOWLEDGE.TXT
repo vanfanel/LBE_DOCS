@@ -8003,10 +8003,10 @@ cp -R assets ~/sm64/
 
 	----EXTRACCIÓN DE LOS DATOS----
 
---Bajamos la ROM USA y la metemos en el mismo directorio donde hemos compilado el juego.
+--Bajamos la ROM USA y la metemos en el directorio raiz de los sources de Ghostship.
 --En el mismo directorio donde acabamos de compilar el juego, hacemos:
 cmake --build ./ --target GeneratePortO2R
-cmake --build build-cmake --target ExtractAssets
+cmake --build ./ --target ExtractAssets
 
 --Copiamos los archivos de datos a su sitio:
 cp *.o2r ~/sm64/
