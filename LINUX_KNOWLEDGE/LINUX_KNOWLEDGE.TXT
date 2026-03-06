@@ -9516,12 +9516,6 @@ sudo i2cdetect -y 1
 
 Si el i2cdetect no encuentra /dev/i2c-1, es que nos falta algo de los módulos. El pts debería estar en el 73 en la tabla que nos sale.
 
-SELECCIONAR LA SALIDA DE AUDIO CON MPV
-======================================
-
-Podemos ver los dispositivos de salida con: mpv --audio-device=help
-Y elegit el que queramos de la lista con: mpv --audio-device=<NOMBRE_DISPOSITIVO>
-
 PROBLEMA: UN PROGRAMA NO ENCUENTRA UNA LIBRERÍA QUE SÍ ESTÁ INSTALADA Y CONTRA LA QUE SE HA LINKADO DINÁMICAMENTE SIN PROBLEMAS
 ================================================================================================================================
 
@@ -11536,6 +11530,12 @@ Y podemos ajustar el tipo de máscara dándole a SHADOW_MASK valores de 0 a 4 (c
 --NOTA EXTRA: Para que un shader se active con CTRL+1, por ejemplo, creamos el fichero ".config/mpv/input.conf" con el contenido:
 CTRL+1 no-osd change-list glsl-shaders set "~~/shaders/crt-lottes.glsl"; show-text "Shader engaged"
 CTRL+0 no-osd change-list glsl-shaders clr ""; show-text "Shaders cleared"
+
+SELECCIONAR LA SALIDA DE AUDIO CON MPV
+======================================
+
+Podemos ver los dispositivos de salida con: mpv --audio-device=help
+Y elegit el que queramos de la lista con: mpv --audio-device=<NOMBRE_DISPOSITIVO>
 
 NAVEGAR POR THREADS DE TWITTER/X SIN TENER CUENTA EN LA RED DEL PUTO NAZI DE MIERDA
 ===================================================================================
