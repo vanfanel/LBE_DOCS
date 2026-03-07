@@ -10113,6 +10113,31 @@ wiimote.wm_ir_y = mouse(rel_y)
 A parte de tenerlo funcionando como ratón, tenemos que pasarle al Hypseus los parámetros: "-nojoymouse -sinden 1 x"
 Y para recargar dándole al botón A, en hypinput.ini tenemos que tener: "KEY_BUTTON1 = SDLK_LCTRL 0 1"
 
+CONECTAR EL MANDO DE "GULIKIT TT PRO" POR BLUETOOTH
+===================================================
+
+A parte de tener los típicos módulos de Bluetooth en el kernel,
+debes tener el módulo "CONFIG_BT_HIDP" (no tenerlo causa que se desconecte el mando en 2 segundos) que está en:
+Networking support -> Bluetooth subsystem support -> Bluetooth Classic (BR/EDR) features -> HIDP protocol support
+y debes instalar "bluez":
+sudo apt-get install bluez
+
+¡¡OJO!! Si al ejecutar "bluetoothctl" se te queda en:
+"Waiting to connect to bluetoothd..."
+...mira que no tengas maskeado "bluetooth.target" o alguna otra cosa de bluetooth:
+systemctl list-unit-files --state=masked |grep blue
+Y si tienes algo de eso maskeado, desmaskéalo con algo como:
+sudo systemctl unmask bluetooth.target
+
+¡¡OJO!! Puede ser necesario desmaskear rfkill si lo tienes maskeado:
+systemctl list-unit-files --state=masked |grep rfkill
+
+Ejecutamos "bluetoothctl", ponemos el mando en modo emparejamiento manteniendo pulsado el botón de arriba a la izquierda, y hacemos:
+scan on
+pair 69:01:10:17:6C:CA
+trust 69:01:10:17:6C:CA
+connect 69:01:10:17:6C:CA
+
 CONECTAR EL MANDO DE PS4 POR BLUETOOTH
 ======================================
 
