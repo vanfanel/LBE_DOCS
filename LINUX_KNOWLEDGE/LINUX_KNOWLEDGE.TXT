@@ -11568,8 +11568,17 @@ NAVEGAR POR THREADS DE TWITTER/X SIN TENER CUENTA EN LA RED DEL PUTO NAZI DE MIE
 En vez de "x.com/nombre_usuario", usa "xcancel.com/nombre_usuario" y podrás navegar sin tener que loguearte por todos los twits y respuestas
 de los retrasados que aún usan esa mierda de red.
 
-U/P DE TWITCH
-=============
+DIAGNOSTICAR PROBLEMAS DE RENDIMIENTO CON PERF + HOTSPOT
+========================================================
 
-vanfanelio
-tuputamadre22
+--Instalamos el perf:
+sudo apt-get install linux-perf
+
+--Bajamos la última versión estable de Hotspot en forma de AppImage de:
+https://github.com/KDAB/hotspot/releases
+...y lo guardamos como "hotspot". Le damos permisos de ejecución con "chmod +x hotspot".
+
+--Metemos el "libGLX.so.0" fake que usamos para PCSX2 en el mismo directorio que "hotspot".
+
+--Cargamos Hotspot así para que encuentre el GLX fake:
+LD_LIBRARY_PATH=./ ./hotspot

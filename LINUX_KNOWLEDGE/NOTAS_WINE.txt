@@ -43,11 +43,6 @@ CXXFLAGS="-march=native -mtune=native -O2" \
  Si no funciona, asegúrate de que en server/inproc_sync.c llega a al open( "/dev/ntsync"...), ya que sólo se llega a ese open()
  si se ha detectado "inux/ntsync.h" y si tienes la ioctl NTSYNC_IOC_EVENT_READ). Ambas cosas se comprueban en los #ifdefs que hay antes).
 
-Ahora hacemos:
-wine reg add "HKEY_CURRENT_USER\Software\Wine\Drivers" /v Graphics /t REG_SZ /d wayland
-
-...Y ya debería ir WINE sobre Wayland puro y con programas de 32bits usando el modo WoW64. Prueba a hacer "winecfg" o bien "wine notepad"
-
 Ahora nos vamos a winecfg, y en la pestaña "Audio", ponemos en "Output device" y en "Voice Output device"
 el dispositivo correspondiente a nuestra salida de audio en uso (en el X600 es "HD Audio Generic - <nombre del monitor>").
 Esto es imprescindible si usamos ALSA sin DMIX, porque si no, ciertos juegos como el HALO no suenan.
