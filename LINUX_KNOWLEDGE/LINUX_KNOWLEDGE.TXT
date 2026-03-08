@@ -11580,5 +11580,8 @@ https://github.com/KDAB/hotspot/releases
 
 --Metemos el "libGLX.so.0" fake que usamos para PCSX2 en el mismo directorio que "hotspot".
 
---Cargamos Hotspot así para que encuentre el GLX fake:
+--Generamos los datos de profiling con "perf":
+perf record -F 999 -g -- ./soh.elf
+
+--Cargamos Hotspot así para que encuentre el GLX fake, y allí abrimos el "perf.data" que acabamos de generar en el paso anterior:
 LD_LIBRARY_PATH=./ ./hotspot
