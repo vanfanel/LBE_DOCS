@@ -6600,7 +6600,7 @@ que es simplemente un SDL_ShowCursor() que sobra totalmente.
 -Editamos src/opentyr.c y comentamos la llamada a intro_logos()
 
 Compilamos con:
-CFLAGS="-march=native -mtune=native" CPPFLAGS="-march=native -mtune=native" make WITH_NETWORK=false -j4
+CFLAGS="-march=native -mtune=native" CPPFLAGS="-march=native -mtune=native" make WITH_NETWORK=false -j10
 
 Metemos el ejecutable "opentyrian" en ~/tyrian, y los datos del juego en ~/tyrian/data,
 y ejecutamos con:

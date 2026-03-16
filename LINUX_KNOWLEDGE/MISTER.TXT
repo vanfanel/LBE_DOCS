@@ -471,13 +471,13 @@ scp /usr/share/consolefonts/Lat2-TerminusBold24x12.psf.gz root@192.168.207.xxx:/
 Si queremos autologin, ahí mismo en /etc/inittab, buscamos "agetty" y dejamos la segunda línea de "agetty" así:
 console::respawn:/sbin/agetty --nohostname -L -a root tty1 linux
 
-***********Montar el VHD de MSDOS (AO486) para la MiSTer********************************************************************************
+NOTAS CORE AO486
+================
 
+--Montar el VHD de MSDOS:
 mount -o loop,offset=32256 msdos622.vhd /mnt
 
-***********MONTAR LA IMÁGEN DE DISCO DEL CORE ZXNEXT PARA AÑADIRLE O QUITARLE COSAS*****************************************************
-
-sudo mount -o loop,rw,offset=65536 boot.vhd /mnt
+--Evitar "drifting" con joystick con DPAD digital solamente: Poner "Joystick Axes" a "Count 8+141".
 
 NOTAS CORE MSX
 ==============
@@ -556,6 +556,10 @@ Usa el script update_all de aquí:
 https://github.com/theypsilon/Update_All_MiSTer
 Es bajarse un ZIP, descomprimirlo en Scripts/Updates, y luego ejecutarlo. Entra en el menú la primera vez que lo ejecutes
 pulsando UP. Allí cambia en la primera opción que los cores que te baje sean los de DB9.
+
+***********MONTAR LA IMÁGEN DE DISCO DEL CORE ZXNEXT PARA AÑADIRLE O QUITARLE COSAS*****************************************************
+
+sudo mount -o loop,rw,offset=65536 boot.vhd /mnt
 
 *********NOTAS CORE PC98**************************************************************
 
