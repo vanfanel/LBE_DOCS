@@ -10803,7 +10803,8 @@ Ahora nos vamos a emuparadise, le damos a Download Links de lo que queramos baja
 HACER QUE LOS MANDOS SEAN DETECTADOS COMO GAMEPAD POR LA API DE SDL2 (Método actual)
 ====================================================================
 
-Compila los tests que vienen con los sources. Entre ellos, se creará un ejecutable llamado "controllermap".
+Compila los tests que vienen con los sources.
+Entre ellos, se creará un ejecutable llamado "testcontroller" (SDL3) o "controllermap" (SDL2).
 Lo ejecutamos y tras seguir las instrucciones nos da una cadena de mapeo para que SDL2 reconozca el mando como un gamepad.
 
 Si algún juego no nos reconoce el mando como gamepad, podemos setear una variable de entorno antes de lanzar el juego:
