@@ -5856,9 +5856,6 @@ Editamos ese conquer.ini y ponemos Scaler a "linear", el ratio a 4:3, etc.
 
 **********************SonicMania Decomp en GNU/Linux********************************************************************************
 
-NOTA: Si tienes algún problema en GNU/Linux con este engine, entra en discord y cita a Mephiles, que es un dev y usuario
-de Linux, y a Stxtic que es el desarrollador principal de la parte de frontend.
-
 -Instalamos glslc:
 sudo apt-get install glslc
 
