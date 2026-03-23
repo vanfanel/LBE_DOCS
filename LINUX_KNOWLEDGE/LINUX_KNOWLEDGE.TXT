@@ -11537,7 +11537,7 @@ mkdir -p ~/.config/mpv/shaders
 git clone --depth https://git.sr.ht/~taiite/mpv-retro-shaders ~/.config/mpv/shaders/mpv-retro-shaders
 
 --Añadimos esto al principio del fichero ~/.config/mpv/mpv.conf:
-include=~/shaders/all.conf
+include=~/shaders/mpv-retro-shaders/all.conf
 
 --Ahora ya cargaríamos un vídeo con un shader así:
 mpv --profile=crt-lottes my_video.mp4
