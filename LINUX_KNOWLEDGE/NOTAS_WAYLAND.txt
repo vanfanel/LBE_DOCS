@@ -1232,7 +1232,7 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
 
-Instalar labwc en sí:
+VAMOS CON LABWC EN SÍ:
 
 Bajamos la última release estable de aquí:
 https://github.com/labwc/labwc/releases
