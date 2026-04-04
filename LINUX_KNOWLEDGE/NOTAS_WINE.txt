@@ -126,12 +126,6 @@ Todo lo necesario (incluyendo el juego comercial) lo tienes en el mirror de "REF
   y cambia todas las ocurrencias de "Interstate-Bold" por "InterstateCondensed-Bold" en chimera.ini, ya que en castellano
   se necesita una fuente más estrecha para que entren bien todas las cadenas de texto de los menús.
 
-******INSTALAR WINE MONO SIN USAR WINETRICKS********************************************************************************
-OJO: ESTO NO DEBERÍA SER NECESARIO, UN WINE BIEN COMPILADO INSTALA WINE-MONO AL INSTALAR WINE.
-
---Nos bajamos el .msi de la última versión de: https://dl.winehq.org/wine/wine-mono/11.0.0/
---Lo instalamos con: wine msiexec -i wine-mono-<versión>-x86.msi 
-
 ******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
 
 Ejecutamos "winecfg", vamos a la pestaña "Graphics" y allí ponemos "Screen Resolution" a un valor de unos 168.
