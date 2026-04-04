@@ -24,7 +24,7 @@ no exponen el ioctl NTSYNC_IOC_EVENT_READ porque aún no se consideraba estable 
 
 VAMOS CON WINE EN SÍ:
 --Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
-git clone --depth 1 -b wine-11.5 https://gitlab.winehq.org/wine/wine.git wine-11.5
+git clone --depth 1 -b wine-11.6 https://gitlab.winehq.org/wine/wine.git wine-11.6
 --Configuramos con:
 CPPFLAGS="-I/home/manuel/src/ntsync-headers/include" \
 CFLAGS="-march=native -mtune=native -O2" \
@@ -126,6 +126,12 @@ Todo lo necesario (incluyendo el juego comercial) lo tienes en el mirror de "REF
   sobreescribe lo de MAPS con sus contenidos, y a parte mete la fuente "InterstateCondensed-Bold.otf" en "fonts"
   y cambia todas las ocurrencias de "Interstate-Bold" por "InterstateCondensed-Bold" en chimera.ini, ya que en castellano
   se necesita una fuente más estrecha para que entren bien todas las cadenas de texto de los menús.
+
+******INSTALAR WINE MONO SIN USAR WINETRICKS********************************************************************************
+OJO: ESTO NO DEBERÍA SER NECESARIO, UN WINE BIEN COMPILADO INSTALA WINE-MONO AL INSTALAR WINE.
+
+--Nos bajamos el .msi de la última versión de: https://dl.winehq.org/wine/wine-mono/11.0.0/
+--Lo instalamos con: wine msiexec -i wine-mono-<versión>-x86.msi 
 
 ******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
 
