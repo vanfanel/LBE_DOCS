@@ -6,7 +6,7 @@ Para eso sirve "--enable-archs=x86_64,i386".
 NO HACE FALTA hacer lo de "WINEARCH=win32 winecfg", ya que de hecho eso no funciona en modo WOW64.
 
 INSTALAMOS DEPENDENCIAS PREVIAS (mingw es necesario para compilar un WINE con soporte de WoW64):
-apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
+sudo apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
 
 INSTALAMOS OTRA DEPENDENCIA PREVIA: libgstreamer
 No podemos instalar la de Debian (libgstreamer-plugins-base1.0-dev) porque nos mete la porquería de X11 y MESA viejo.
