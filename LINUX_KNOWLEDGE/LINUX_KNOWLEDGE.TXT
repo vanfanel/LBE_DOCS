@@ -5917,10 +5917,10 @@ cp libGame.so ~/sonicmania/Game.so
 
 El soporte de mandos del juego es a través de GLFW a no ser que compiles contra SDL2, pero entonces pierdes los shaders.
 El problema es que GLFW sólo soporta los mandos que tiene en una base de datos suya en src/mappings.h.
-Tenemos que añadir allí nuestro mando.
+Tenemos que añadir allí nuestro mando usando la cadena generada por "testcontroller" de SDL3.
 
-Para el GuliKit TT Pro:
-0500573f5e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b10,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,
+Para el GuliKit TT Pro (CUIDADO: SI REGENERAS LA CADENA, QUITA SIEMPRE EL BOTÓN 10):
+0500573f5e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,
 
 Alternativamente, podríamos en ~/sonicmania el fichero "gamecontrollerdb.txt" con el contenido:
 
@@ -10820,8 +10820,8 @@ export SDL_GAMECONTROLLERCONFIG="03000000412300003680000001010000,LLC Arduino Le
 
 ---Cadenas de diferentes mandos---
 
-Mando GuliKit TT Pro:
-0500573f5e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b10,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,
+Mando GuliKit TT Pro (CUIDADO: SI REGENERAS LA CADENA, QUITA SIEMPRE EL BOTÓN 10):
+0500573f5e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,
 
 Adaptador DaemonBite de UltimateMister para SNES:
 03000000412300003680000001010000,LLC Arduino Leonardo,a:b0,b:b1,x:b2,y:b3,back:b6,start:b7,leftshoulder:b4,rightshoulder:b5,dpup:-a1,dpdown:+a1,dpleft:-a0,dpright:+a0,platform:Linux,
