@@ -5916,13 +5916,17 @@ cp libGame.so ~/sonicmania/Game.so
 	NOTAS SOBRE LOS CONTROLES
 
 El soporte de mandos del juego es a través de GLFW a no ser que compiles contra SDL2, pero entonces pierdes los shaders.
-El problema es que GLFW sólo soporta los mandos que tiene en una base de datos suya en src/mappings.h.
+El problema es que GLFW sólo soporta los mandos que tiene en una base de datos suya en "src/mappings.h".
 Tenemos que añadir allí nuestro mando usando la cadena generada por "testcontroller" de SDL3.
 
-Para el GuliKit TT Pro (CUIDADO: SI REGENERAS LA CADENA, QUITA SIEMPRE EL BOTÓN 10):
-0500573f5e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,
+Para el GuliKit TT Pro no hace falta añadir nada, porque GLFW lo identifica con el mando con esta GUID que sí tiene en "src/mappings.h":
+050000005e040000e002000003090000
+El GUID completo sería:
+0500573f5e040000e002000003090000
+...pero el GUID que GLFW genera internamente para el mando (y que luego usa para buscarlo en su base de datos interna)
+no contempla los bytes 3 y 4, que son de info detallada para distinguir mejor entre mandos de un mismo fabricante y modelo. 
 
-Alternativamente, podríamos en ~/sonicmania el fichero "gamecontrollerdb.txt" con el contenido:
+Para otros mandos, suelo añadirlos a "gamecontrollerdb.txt" en ~/sonicmania:
 
 Khensu 2.4G:
 030000005e0400008e02000073060000,Khensu,a:b0,b:b1,x:b2,y:b3,back:b6,guide:b8,start:b7,leftstick:b9,rightstick:b10,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.0,dpleft:h0.8,dpright:h0.2,leftx:a0,lefty:a1,rightx:a3,righty:a4,lefttrigger:a2,righttrigger:a5,
