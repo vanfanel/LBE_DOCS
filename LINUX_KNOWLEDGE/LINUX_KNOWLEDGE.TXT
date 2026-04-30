@@ -9640,9 +9640,43 @@ No tiene backen KMS/DRM, sólo Wayland.
 
 --Instalamos una dependencia previa: apt-get install --no-install-recommends extra-cmake-modules
 --Nos bajamos la última estable de GLFW de: https://www.glfw.org/
---Editamos "src/input.c", buscamos la función "findValidMapping" y allí comentamos el "if (mapping)" con todo lo que hay dentro.
-   (Esto es porque en el mapping de "src/mappings.h" que se selecciona para algunos mandos como el GuliKit TT Pro,
-	hay botones que el mando no tiene, y si no comentamos esa parte, no lo detecta como mando).
+--Editamos "src/input.c", buscamos la función "findValidMapping" y la dejamos así:
+static GLFWbool isValidElementForJoystick(const _GLFWmapelement* e,
+                                          const _GLFWjoystick* js)
+{
+    if (e->type == _GLFW_JOYSTICK_HATBIT)
+    {
+        if ((e->index >> 4) >= js->hatCount)
+            return GLFW_TRUE; // ignorar, no fallar
+    }
+
+    if (e->type == _GLFW_JOYSTICK_BUTTON)
+    {
+        if (e->index == (uint8_t)-1)
+            return GLFW_TRUE;
+
+        if (e->index >= js->buttonCount)
+            return GLFW_TRUE;
+    }
+
+    if (e->type == _GLFW_JOYSTICK_AXIS)
+    {
+        if (e->index == (uint8_t)-1)
+            return GLFW_TRUE;
+
+        if (e->index >= js->axisCount)
+            return GLFW_TRUE;
+    }
+
+    return GLFW_TRUE;
+} 
+
+COMO ALTERNATIVA: simplemente comenta el "if (mapping)" con todo lo que hay dentro.
+(Esto es porque en el mapping de "src/mappings.h" que se selecciona para algunos mandos como el GuliKit TT Pro,
+hay botones que el mando no tiene, y si no comentamos esa parte, no lo detecta como mando).
+NOTA: Tienes un PR pendiente de mergeo que soluciona este asunto: https://github.com/glfw/glfw/pull/2853
+      Cuando lo mergeen, puedes comentar esta sección.
+
 --Configuramos, compilamos e instalamos GLFW:
 mkdir b4
 cd b4
