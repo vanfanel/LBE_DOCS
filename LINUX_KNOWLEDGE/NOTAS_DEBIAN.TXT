@@ -567,8 +567,9 @@ sudo adduser manuel render
 
 					COMPILACIÓN DE MESA COMO TAL
 
-Bajamos los últimos estables de:
-https://mesa.freedesktop.org/archive/
+Bajamos directamente los últimos estables así:
+wget https://archive.mesa3d.org/mesa-xx.x.x.tar.xz
+...donde xx.x.x es el número de versión.
 
 --CONFIGURAMOS COMO LO VENIMOS HACIENDO AHORA, CON GLES, GLES2, OPENGL COMPLETO MEDIANTE GLVND Y VULKAN:
 
