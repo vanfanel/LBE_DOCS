@@ -5862,6 +5862,9 @@ sudo apt-get install glslc
 -Instalamos otra dependencia previa: GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
 	---Dependencia previa: apt-get install --no-install-recommends extra-cmake-modules
 	---Nos bajamos la última estable de GLFW de: https://www.glfw.org/
+    ---Editamos "src/input.c", buscamos la función "findValidMapping" y allí comentamos el "if (mapping)" con todo lo que hay dentro.
+       (Esto es porque en el mapping de "src/mappings.h" que se selecciona para algunos mandos como el GuliKit TT Pro,
+	    hay botones que el mando no tiene, y si no comentamos esa parte, no lo detecta como mando).
 	---Configuramos, compilamos e instalamos GLFW:
 	mkdir b4
 	cd b4
@@ -9679,20 +9682,18 @@ SI NO HACES ESTO, los programas que usen GLEW los tienes que compilar siempre pa
 AMBERMOON.NET EN LINUX
 ======================
 
-Necesitamos un sistema Wayland funcionando, e instalar GLFW.
-Nos bajamos la última estable de GLFW de:
-https://www.glfw.org/
-
-Y configuramos, compilamos e instalamos GLFW:
+Instalamos una dependencia previa: GLFW, que solo va sobre Wayland, no tiene backend KMS/DRM.
+---Dependencia previa: apt-get install --no-install-recommends extra-cmake-modules
+---Nos bajamos la última estable de GLFW de: https://www.glfw.org/
+---Editamos "src/input.c", buscamos la función "findValidMapping" y allí comentamos el "if (mapping)" con todo lo que hay dentro.
+   (Esto es porque en el mapping de "src/mappings.h" que se selecciona para algunos mandos como el GuliKit TT Pro,
+	hay botones que el mando no tiene, y si no comentamos esa parte, no lo detecta como mando).
+---Configuramos, compilamos e instalamos GLFW:
 mkdir b4
 cd b4
-
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 \
 -DGLFW_BUILD_WAYLAND=1 -DGLFW_BUILD_X11=0 -DGLFW_BUILD_EXAMPLES=0 -DGLFW_BUILD_TESTS=0 \
 -DCMAKE_C_FLAGS="-DEGL_NO_X11 -march=native -mtune=native"
-
-make -j4
-sudo make install
 
 OPCIÓN 1: BAJARNOS LOS BINARIOS PRECOMPILADOS PARA AARCH64 Y USARLO DIRECTAMENTE:
 
