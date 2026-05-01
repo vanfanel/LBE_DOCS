@@ -610,6 +610,10 @@ kick13.rom  (que es en realidad la kick34005.A500)
 kick205.rom (que es en realidad la kick37350.A600)
 kick31.rom  (genérica)
 
+--Para juegos instalados con WHDLoad, tenemos que tener el directorio "whdboot" (que viene con los sources)
+  en ~/.config/retroarch/system/whdboot
+  Los juegos deben estar en .lha, y se lanzan como si fuesen ROMs normales.
+
 ******FBNeo********************************************************************
 
 		SCROLL PERFECTO EN TODOS LOS JUEGOS CON "SYNC TO EXACT":
