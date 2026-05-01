@@ -967,9 +967,12 @@ cmake -S . -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/v
 -DYmir_AVX2=ON -DYmir_ENABLE_TESTS=OFF -DYmir_ENABLE_SANDBOX=OFF -DYmir_ENABLE_YMDASM=OFF -DYmir_ENABLE_DEVLOG=OFF \
 -DYmir_ENABLE_IMGUI_DEMO=OFF -DYmir_ENABLE_UPDATE_CHECKS=OFF -DYmir_EXTRA_INLINING=ON
 
-cd build
+cmake --build build --parallel
 
-ninja -j10
+--Copiamos el ejecutable a su sitio:
+cp build/apps/ymir-sdl3/ymir-sdl3 /usr/local/bin/
+
+--Metemos la BIOS de la Saturn (mpr-17933.bin) en ~/.local/share/StrikerX3/Ymir/roms/ipl/
 
 ******PPSSPP, el emulador de PSP en GNU/LINUX***************************************************************************
 
