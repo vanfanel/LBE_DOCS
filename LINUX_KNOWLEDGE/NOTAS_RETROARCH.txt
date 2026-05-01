@@ -590,6 +590,18 @@ ED sys:Codes
 #################FIN STARTUP-SEQUENCE PARA ROCKET RANGER#####################
 NOTA: SI TE DA ERROR EL MOUNT, ES QUE NO ESTÁS USANDO LA VERSIÓN CORRECTA DEL COMANDO: HAY QUE USAR LA DE WB 3.1.
 
+******AMIBERRY LIBRETRO********************************************************
+
+--Clonamos los sources de la última versión estable
+(podemos ver cuál es en https://github.com/BlitterStudio/amiberry/releases):
+git clone --recurse-submodules --depth 1 --shallow-submodules -b v8.1.5 https://github.com/BlitterStudio/amiberry.git amiberry-v8.1.5
+
+--Necesitamos tener en ~/.config/retroarch/system estas KICKSTART ROMs:
+
+kick13.rom  (que es en realidad la kick34005.A500)
+kick205.rom (que es en realidad la kick37350.A600)
+kick31.rom  (genérica)
+
 ******FBNeo********************************************************************
 
 		SCROLL PERFECTO EN TODOS LOS JUEGOS CON "SYNC TO EXACT":
