@@ -780,8 +780,10 @@ PRIORIDAD REALTIME PARA USUARIOS
 sudo usermod -aG realtime manuel
 
 --Deslogueamos y volvemos a loguear (recuerda que si estás lanzando Wayland después de
-loguearte en la TTY será necesario reiniciar el sistema) y comprobamos que nos deja hacer esto:
+loguearte en la TTY será necesario reiniciar el sistema) y comprobamos que estamos
+en el grupo "realtime" y que nos deja lanzar programas con prioridad elevada:
 
+groups manuel
 chrt -f 80 ls
 
 INSTALAR PIPEWIRE EN DEBIAN
@@ -845,19 +847,7 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
 			PIPEWIRE CON PRIORIDAD REALTIME
 
---Metemos a nuestro usuario en el grupo "audio" (creamos el grupo antes)
-sudo usermod -a -G audio $USER
-MUY IMPORTANTE: REINICIAMOS SESIÓN DE USUARIO Y COMPROBAMOS QUE HA SIDO AÑADIDO AL GRUPO "audio" CON EL COMANDO "groups".
-
---Damos permisos de realtime a todos los usuarios que estén en el grupo "audio".
-Para ello, creamos /etc/security/limits.d/99-audio.conf con el contenido:
-@audio - rtprio 99
-@audio - memlock unlimited
-@audio - nice -11
-MUY IMPORTANTE: REINICIAMOS SESIÓN de USUARIO (MUY IMPORTANTE!!)
-y comprobamos que los rlimits se han aplicado con "ulimit -a"
-
---Y ahora ya podemos ver la prioridad de los hilos creados por Pipewire con:
+--Podemos ver la prioridad de los hilos creados por Pipewire con:
 ps -eLo pid,tid,comm,policy,rtprio,ni | grep $(pidof pipewire)
 OJO!!!! El hilo principal "pipewire" NO tendrá prioridad RT ni tiene por qué tenerla,
 pero los hilos de audio que crea, SÍ que nos saldrán con FF y 88!!!!
@@ -867,7 +857,7 @@ pero los hilos de audio que crea, SÍ que nos saldrán con FF y 88!!!!
 --POR SI FALLA: Comprueba que el módulo "libpipewire-module-rt" está cargado:
 pw-cli list-objects | grep module.name | grep module-rt
 
-		MODO PRO-AUDIO
+			MODO PRO-AUDIO
 
 --El modo Pro-Audio se establece en WirePlumber, ya que Wireplumber es lo que conecta Pipewire con ALSA.
 O sea que lo que configuramos es esa conexión con ALSA para que sea "profesional".
