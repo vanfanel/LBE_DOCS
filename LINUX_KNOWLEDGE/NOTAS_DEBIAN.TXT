@@ -766,6 +766,24 @@ Session=lxqt.desktop
 
 Y ya. Reiniciar y listo.
 
+
+PRIORIDAD REALTIME PARA USUARIOS
+================================
+
+--Creamos /etc/security/limits.d/99-realtime.conf con el contenido:
+
+@realtime - rtprio 99
+@realtime - memlock unlimited
+@realtime - nice -11
+
+--Añadimos el usuario al grupo "realtime":
+sudo usermod -aG realtime manuel
+
+--Deslogueamos y volvemos a loguear (recuerda que si estás lanzando Wayland después de
+loguearte en la TTY será necesario reiniciar el sistema) y comprobamos que nos deja hacer esto:
+
+chrt -f 80 ls
+
 INSTALAR PIPEWIRE EN DEBIAN
 ===========================
 NOTA: LA VERSIÓN DE PIPEWIRE DE DEBIAN 13 VA PERFECTAMENTE.
