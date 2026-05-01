@@ -597,6 +597,9 @@ NOTA: SI TE DA ERROR EL MOUNT, ES QUE NO ESTÁS USANDO LA VERSIÓN CORRECTA DEL 
 
 --Compilamos con:
 cd libretro
+
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
 make -j10
 
 --Necesitamos tener en ~/.config/retroarch/system estas KICKSTART ROMs:
