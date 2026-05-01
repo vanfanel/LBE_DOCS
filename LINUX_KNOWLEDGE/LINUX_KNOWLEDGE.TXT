@@ -5854,7 +5854,7 @@ La primera vez que ejecutemos vanillatd o vanillara, se nos creará .config/vani
 (A NO SER que tengamos un conquer.ini entre los datos del juego, en cuyo caso lo primero es borrar ese conquer.ini).
 Editamos ese conquer.ini y ponemos Scaler a "linear", el ratio a 4:3, etc.
 
-**********************SonicMania Decomp en GNU/Linux********************************************************************************
+**********************Sonic Mania Decomp en GNU/Linux********************************************************************************
 
 -Instalamos glslc:
 sudo apt-get install glslc
