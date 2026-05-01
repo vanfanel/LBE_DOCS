@@ -5875,7 +5875,7 @@ las mierdas de X11. (Nosotros instalamos un CAIRO sin X11 a mano porque el metac
 es más antigua y tiene un bug de "claridad excesiva", así que instalamos el engine desde su propio repo)
 
 --Clonamos el repo del engine:
-git clone --recursive --depth 1 https://github.com/RSDKModding/RSDKv5-Decompilation.git 
+git clone --recurse-submodules --depth 1 --shallow-submodules https://github.com/RSDKModding/RSDKv5-Decompilation.git 
 
 --Editamos RSDKv5/RSDK/Audio/Audio.hpp y dejamos la línea:
 #define MIX_BUFFER_SIZE (0x800)
