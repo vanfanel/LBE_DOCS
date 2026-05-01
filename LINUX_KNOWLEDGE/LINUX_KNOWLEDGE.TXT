@@ -955,6 +955,9 @@ CON ESO QUE TE ACABO DE EXPLICAR, DEBERÍAS SER CAPAZ DE AVERIGUAR QUÉ APK PUED
 
 ******YMIR, el emulador de Saturn para GNU/Linux************************************************************************
 
+--Instalamos dependencias previas:
+sudo apt-get install autoconf autoconf-archive automake libtool
+
 --Clonamos su repo:
 git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/StrikerX3/Ymir.git
 
