@@ -847,7 +847,9 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
 			PIPEWIRE CON PRIORIDAD REALTIME
 
---Podemos ver la prioridad de los hilos creados por Pipewire con:
+Pipewire NO NECESITA el grupo "audio" con limits quitados ni nada de eso, usa RTKIT que es la manera moderna
+que tienen los programas de usuario de obtener prioridad realtime.
+Podemos ver la prioridad de Pipewire y de los hilos creados por Pipewire con:
 
 ps -eLo pid,tid,comm,policy,rtprio,ni | grep -E "$(pidof pipewire | tr ' ' '|')"
 
