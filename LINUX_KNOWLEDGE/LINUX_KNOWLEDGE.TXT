@@ -959,13 +959,14 @@ CON ESO QUE TE ACABO DE EXPLICAR, DEBERÍAS SER CAPAZ DE AVERIGUAR QUÉ APK PUED
 git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/StrikerX3/Ymir.git
 
 --Compilamos con:
-mkdir b4
-cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
+
+cmake -S . -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
 -DYmir_AVX2=ON -DYmir_ENABLE_TESTS=OFF -DYmir_ENABLE_SANDBOX=OFF -DYmir_ENABLE_YMDASM=OFF -DYmir_ENABLE_DEVLOG=OFF \
 -DYmir_ENABLE_IMGUI_DEMO=OFF -DYmir_ENABLE_UPDATE_CHECKS=OFF -DYmir_EXTRA_INLINING=ON
 
-make -j10
+cd build
+
+ninja -j10
 
 ******PPSSPP, el emulador de PSP en GNU/LINUX***************************************************************************
 
