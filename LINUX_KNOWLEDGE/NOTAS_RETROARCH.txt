@@ -594,7 +594,9 @@ NOTA: SI TE DA ERROR EL MOUNT, ES QUE NO ESTÁS USANDO LA VERSIÓN CORRECTA DEL 
 
 --Clonamos los sources de la última versión estable
 (podemos ver cuál es en https://github.com/BlitterStudio/amiberry/releases):
-git clone --recurse-submodules --depth 1 --shallow-submodules -b v8.1.5 https://github.com/BlitterStudio/amiberry.git amiberry-v8.1.5
+
+--Compilamos con:
+
 
 --Necesitamos tener en ~/.config/retroarch/system estas KICKSTART ROMs:
 
