@@ -1049,7 +1049,7 @@ OPCIÓN 1: CON CMAKE DIRECTO, INSTALANDO ANTES A MANO LAS DEPENDENCIAS
 ------Configuramos con:
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DCMAKE_C_FLAGS="-march=native -mtune=native"
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
- for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 ----Instalamos libmt32 a mano ya que no hay versión empaquetada para Debian:
 ------Nos bajamos los últimos sources estables de: https://github.com/munt/munt/tags
