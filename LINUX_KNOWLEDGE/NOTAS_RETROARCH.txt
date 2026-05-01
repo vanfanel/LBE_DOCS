@@ -596,7 +596,8 @@ NOTA: SI TE DA ERROR EL MOUNT, ES QUE NO ESTÁS USANDO LA VERSIÓN CORRECTA DEL 
 (podemos ver cuál es en https://github.com/BlitterStudio/amiberry/releases):
 
 --Compilamos con:
-
+cd libretro
+make -j10
 
 --Necesitamos tener en ~/.config/retroarch/system estas KICKSTART ROMs:
 
