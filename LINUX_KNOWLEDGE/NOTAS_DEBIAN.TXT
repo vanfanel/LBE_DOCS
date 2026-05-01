@@ -848,7 +848,9 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 			PIPEWIRE CON PRIORIDAD REALTIME
 
 --Podemos ver la prioridad de los hilos creados por Pipewire con:
-ps -eLo pid,tid,comm,policy,rtprio,ni | grep $(pidof pipewire)
+
+ps -eLo pid,tid,comm,policy,rtprio,ni | grep -E "$(pidof pipewire | tr ' ' '|')"
+
 OJO!!!! El hilo principal "pipewire" NO tendrá prioridad RT ni tiene por qué tenerla,
 pero los hilos de audio que crea, SÍ que nos saldrán con FF y 88!!!!
 (O el valor de RTPrio que tengamos en el argumento "rt.prio" del módulo "libpipewire-module-rt"
