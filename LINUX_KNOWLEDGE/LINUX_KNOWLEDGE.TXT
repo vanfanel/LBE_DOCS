@@ -9635,8 +9635,7 @@ rm /usr/local/sbin/wpa_*
 INSTALAR GLFW EN GNU/LINUX
 ==========================
 
-Se usa para RSDKv5U (Sonic Mania, Sonic 1 & 2, Sonic CD...).
-No tiene backen KMS/DRM, sólo Wayland.
+No tiene backend KMS/DRM, sólo Wayland.
 
 --Instalamos una dependencia previa: apt-get install --no-install-recommends extra-cmake-modules
 --Nos bajamos la última estable de GLFW de: https://www.glfw.org/
