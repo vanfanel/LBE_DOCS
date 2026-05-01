@@ -595,6 +595,8 @@ NOTA: SI TE DA ERROR EL MOUNT, ES QUE NO ESTÁS USANDO LA VERSIÓN CORRECTA DEL 
 --Clonamos los sources de la última versión estable
 (podemos ver cuál es en https://github.com/BlitterStudio/amiberry/releases):
 
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v8.1.5 https://github.com/BlitterStudio/amiberry.git amiberry-v8.1.5
+
 --Compilamos con:
 
 cd libretro
