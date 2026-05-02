@@ -46,13 +46,18 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 		--VÍDEO--
 
 --Condiciones previas: Para estar seguro de que el sistema está preparado para que Sync To Exact vaya bien sin micro stuttering,
-  RetroArch debe ser capaz de mostrar en "Settings->Video->Output->Estimated Screen Refresh Rate" unos Hz totalmente estables
-  (no debe moverse ningún decimal en un buen rato) y una "dev" (significa "frametime deviation") de alrededor de 0.0-0.1% a 120Hz.
+  RetroArch con:
+  "Settings->Video->Synchronization->Vertical Sync (VSync)" a "ON"
+  "Settings->Video->Synchronization->Sync to Exact[...]" a "OFF"
+  ...debe ser capaz de mostrar en "Settings->Video->Output->Estimated Screen Refresh Rate", 
+  unos Hz totalmente estables, es decir, no debe moverse ningún decimal en un buen rato,
+  con una "dev" (significa "frametime deviation") de alrededor de 0.0-0.1% a 120Hz.
   Esto es lo que llamo el "test de frametime deviation", sin esto no puedes estar seguro de que Sync to Exact vaya a ir bien en tu sistema
   aunque el scroll del rooster del MK vaya aparentemente bien. 		
   Hilo con explicación y más información: https://forums.blurbusters.com/viewtopic.php?t=13726
 
-LO PRIMERO: DISMINUIR EL FRAMETIME DEVIATION PARA TENER VÍDEO ESTABLE
+MEDIDAS DISMINUIR EL FRAMETIME DEVIATION POR SI NO TIENES FRAMETIMES ESTABLES = NO PASAS EL TEST QUE ACABAMOS DE MENCIONAR: 
+(YA NO PARECEN SER NECESARIAS CON KERNEL 6.19.x Y MESA 26.0.x)
 
 DESACTIVAR LOS "C-STATES" Y "DF C-STATES":
 -En la BIOS:
