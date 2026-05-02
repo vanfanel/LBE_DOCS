@@ -71,6 +71,10 @@ Screen Resolution: By desktop
 Aspect Ratio: Aspect correction
 ..Y lo demás, por defecto o como quieras.
 
+--YS & YS2
+Para que funcionen con DXVK, debes ponerlos a la misma resolución que estés usando en el escritorio,
+para lo cual se usa el "config.exe" que viene con los juegos.
+
 --AM2R:
 La última versión es la 1.5.5. Usa la versión de Windows, que está para descargar en Archive. Lo tienes en el disco duro de backup.
 La de Linux se instala con una cosa que se llama AMR2Laucher que no funciona porque está compilada contra versiones de librerías viejas. 
