@@ -37,8 +37,8 @@ apt-get install liblzo2-dev
 
 cd jollygood
 
-CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
-CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j10
+CFLAGS="-march=native -mtune=native -DALIGN_LONG" \
+CXXFLAGS="-march=native -mtune=native -DALIGN_LONG" make -j10
 
 sudo make install
 
