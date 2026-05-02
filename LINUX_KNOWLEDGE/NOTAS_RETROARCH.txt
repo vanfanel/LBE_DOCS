@@ -636,6 +636,9 @@ cmake -S . -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/v
 
 cmake --build build --parallel
 
+--Lo instalamos:
+cp build/apps/ymir-libretro/ymir_libretro.so ~/.config/retroarch/cores/
+
 ******FBNeo********************************************************************
 
 		SCROLL PERFECTO EN TODOS LOS JUEGOS CON "SYNC TO EXACT":
