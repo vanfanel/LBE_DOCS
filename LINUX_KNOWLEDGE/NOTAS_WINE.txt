@@ -6,7 +6,8 @@ Para eso sirve "--enable-archs=x86_64,i386".
 NO HACE FALTA hacer lo de "WINEARCH=win32 winecfg", ya que de hecho eso no funciona en modo WOW64.
 
 INSTALAMOS DEPENDENCIAS PREVIAS (mingw es necesario para compilar un WINE con soporte de WoW64):
-sudo apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
+sudo apt-get install libxkbregistry-dev flex bison libusb-dev libusb-1.0-0-dev \
+mingw-w64 mingw-w64-x86-64-dev --no-install-recommends
 
 INSTALAMOS OTRA DEPENDENCIA PREVIA: libgstreamer
 No podemos instalar la de Debian (libgstreamer-plugins-base1.0-dev) porque nos mete la porquería de X11 y MESA viejo.
@@ -64,6 +65,12 @@ NOTAS ESPECÍFICAS SOBRE JUEGOS EN WINE
 --MDK:
 Se usa la versión de GOG, que viene con NGLIDE. Ejecuta MKD3DFX.EXE. El MDK95 no se ve, y el MDKD3D peta al empezar. 
 Edita MDK.CFG y pon "hduse" a 6 para mejorar los tiempos de carga.
+Para que funcione con DXVK, ejecuta "wine nglide_config.exe" y allí pon:
+Video Backend: Vulkan
+Screen Resolution: By desktop
+Aspect Ratio: Aspect correction
+..Y lo demás, por defecto o como quieras.
+
 --AM2R:
 La última versión es la 1.5.5. Usa la versión de Windows, que está para descargar en Archive. Lo tienes en el disco duro de backup.
 La de Linux se instala con una cosa que se llama AMR2Laucher que no funciona porque está compilada contra versiones de librerías viejas. 
