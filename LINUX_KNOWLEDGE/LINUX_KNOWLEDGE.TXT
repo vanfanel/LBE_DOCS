@@ -964,7 +964,7 @@ git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com
 --Compilamos con:
 
 cmake -S . -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
--DYmir_AVX2=ON -DYmir_ENABLE_TESTS=OFF -DYmir_ENABLE_SANDBOX=OFF -DYmir_ENABLE_YMDASM=OFF -DYmir_ENABLE_DEVLOG=OFF \
+-DYmir_DEV_BUILD=OFF -DYmir_AVX2=ON -DYmir_ENABLE_TESTS=OFF -DYmir_ENABLE_SANDBOX=OFF -DYmir_ENABLE_YMDASM=OFF -DYmir_ENABLE_DEVLOG=OFF \
 -DYmir_ENABLE_IMGUI_DEMO=OFF -DYmir_ENABLE_UPDATE_CHECKS=OFF -DYmir_EXTRA_INLINING=ON
 
 cmake --build build --parallel
