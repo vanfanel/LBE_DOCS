@@ -617,6 +617,7 @@ kick31.rom  (genérica)
   Los juegos deben estar en .lha, y se lanzan como si fuesen ROMs normales.
 
 ******YMIR Libretro************************************************************
+(ALTERNATIVA: https://github.com/coredds/brimir)
 
 --Instalamos dependencias previas:
 sudo apt-get install autoconf autoconf-archive automake libtool
@@ -632,7 +633,6 @@ cmake -S . -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/v
 -DYmir_ENABLE_IMGUI_DEMO=OFF -DYmir_ENABLE_UPDATE_CHECKS=OFF -DYmir_EXTRA_INLINING=ON -DYmir_ENABLE_LIBRETRO=ON
 
 cmake --build build --parallel
-
 
 ******FBNeo********************************************************************
 
