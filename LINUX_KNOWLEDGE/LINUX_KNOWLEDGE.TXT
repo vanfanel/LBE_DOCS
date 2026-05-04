@@ -953,6 +953,21 @@ PETAN EN LINUX, Y NO SE PUEDE USAR NATIVAMENTE PORQUE USA CIERDA MIERDA QUE LO H
 
 CON ESO QUE TE ACABO DE EXPLICAR, DEBERÍAS SER CAPAZ DE AVERIGUAR QUÉ APK PUEDES USAR COMO DONANTE PARA UN data.win/game.droid DETERMINADO.
 
+******BGFX en GNU/Linux*************************************************************************************************
+
+--Clonamos sus repos (sí, son varios), debiendo quedar todos en el mismo directorio padre:
+
+mkdir bgfx
+cd bgfx
+
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/bkaradzic/bx.git
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/bkaradzic/bimg.git
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/bkaradzic/bgfx.git
+
+--Ahora entramos en el directorio principal de los sources y compilamos:
+cd bgfx
+make linux-gcc-release64 -j10
+
 ******YMIR, el emulador de Saturn para GNU/Linux************************************************************************
 
 --Instalamos dependencias previas:
