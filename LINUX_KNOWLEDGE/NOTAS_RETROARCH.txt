@@ -1144,17 +1144,17 @@ CON LAS OPCIONES DEL CORE POR DEFECTO VA BIEN, DE MOMENTO.
 PORQUE EL TEST DE SCROLL PEGA TIRONES AL HACER QUE VAYA MÁS DEPRISA. ESTÁ ROTO EL TEST, NO LO USES.
 
 OPCIONES DEL CORE QUE PODEMOS QUERER ACTIVAR PARA EVITAR "TIRONES" POR COMPILACIÓN DE SHADERS ("SHADER STUTTERING")
-(Están en "Core Options -> Graphics > Settings"):
+En "Core Options -> Graphics>Settings":
 ----"Shader Compilation" a "Sync (UberShaders)"
 ----"Wait for Shaders"     ON
 ----"GPU Texture Decoding" ON
+
 NOTA: LA CACHÉ DE SHADERS DEL CORE, POR SI QUIERES BORRARLOS Y HACER PRUEBAS, ESTÁ EN:
 ~/.config/retroarch/saves/dolphin-emu/User/Cache/Shaders/
 
-PODEMOS PONER "INTERNAL RESOLUTION" A "2 X Native (720p)" Y PARECE IR IGUAL DE BIEN TODO.
+PODEMOS Y DEBEMOS PONER "INTERNAL RESOLUTION" A "2 X Native (720p)" Y PARECE IR IGUAL DE BIEN TODO.
 
-ELIMINAR LOS ÚLTIMOS MICRO-TIRONES NO ASOCIABLES A "SHADER STUTTERING"
-----Pon un buffer de audio de 45ms para este core (es típico de los "cores 3D" necesitar buffers de audio un poco más grandes).
+ELIMINAR LOS ÚLTIMOS MICRO-TIRONES NO ASOCIDOS A "SHADER STUTTERING"
 ----Manda el core a la caché haciendo lo típico antes de cargarlo:
 cat ~/.config/retroarch/cores/dolphin_libretro.so >> /dev/null
 
@@ -1162,6 +1162,9 @@ NOTAS DE CADA JUEGO:
 --Luigi's Mansion: Para evitar errores en la cara de Luigi durante la intro,
   desactiva "Dual Core Mode" en las opciones del core.
 --F-Zero GX: Tiene modo 16:9 nativo. Elígelo en las opciones del juego y NO uses ningún hack 16:9 con él, va perfecto con su opción nativa.
+--Zelda Wind Waker: La única manera de evitar los "tironcillos" cuando haces las pruebas de suavidad mirando alrededor
+con la cámara en primera persona es poner la CPU emulada al 150%. NINGUNA otra opción evita eso.
+Seguramente es un problema de optimización del juego en hardware real.
 
 ******EASYRPG, EL MOTOR DE RPGMAKER 2000/2003*******
 
