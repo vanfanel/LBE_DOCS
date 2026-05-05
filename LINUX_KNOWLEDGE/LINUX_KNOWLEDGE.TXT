@@ -966,6 +966,11 @@ git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com
 
 --Ahora entramos en el directorio principal de los sources y compilamos:
 cd bgfx
+
+--Editamos "examples/common/entry/entry_p.h" y ponemos "ENTRY_CONFIG_USE_NATIVE" a 0
+  y "ENTRY_CONFIG_USE_SDL" a 1 (no he encontrado manera de pasárselo al compilar como variable de entorno ni nada).
+
+--Compilamos con:
 make linux-gcc-release64 -j10
 
 ******YMIR, el emulador de Saturn para GNU/Linux************************************************************************
