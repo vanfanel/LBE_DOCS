@@ -13,7 +13,7 @@ Nos bajamos el fichero (OJO! es de un branch que se llama feature/pi5, no del ma
 wget https://raw.githubusercontent.com/pimoroni/picade-hat/feature/pi5/picade.dts
 Y le hacemos:
 dtc -I dts -O dtb -o picade.dtbo picade.dts
-Lo metemos /LAKKA/overlays (o en /flash/overlays/ si lo estamos haciendo desde el propio Lakka por ssh)
+Metemos el .dtbo resultante en /LAKKA/overlays (o en /flash/overlays/ si lo estamos haciendo desde el propio Lakka por ssh)
 
 Editamos config.txt y añadimos:
 
@@ -47,7 +47,7 @@ QUE LLEVAN SONIDO POR HIFIBERRY!!!
 
 ###FIN BLOQUE PI 4####
 
-Desde dentro de LAKKA (entramos por SSH):
+Desde dentro de LAKKA (entramos por SSH, user/pass: root/root):
 
 MUY IMPORTANTE!!!! Deshabilitamos cec-mini-kb, que causa hiccups en el framerate (lo hemos detectado gracias a dmesg):
 systemctl mask cec-mini-kb
@@ -55,10 +55,13 @@ systemctl mask cec-mini-kb
 Nos bajamos el fichero de rules:
 wget https://raw.githubusercontent.com/pimoroni/picade-hat/master/etc/udev/rules.d/10-picade.rules
 Lo editamos y cambiamos "ID_INPUT_KEYBOARD" por "ID_INPUT_KEY".
-Lo copiamos a su sitio:
-cp 10-picade-rules /etc/udev/rules.d/
+Lo mandamos a su sitio:
+mv 10-picade.rules /etc/udev/rules.d/
 
-Ahora editamos /LAKKA/cmdline.txt y añadimos:
+Re-montamos la partición de arranque (/flash) como lectura+escritura:
+mount -o remount,rw /flash
+
+Editamos /flash/cmdline.txt y añadimos:
 video="HDMI-A-1:1024x768@60" mitigations=off audit=0 vt.global_cursor_default=0 console=null fsck.mode=skip
 
 (NOTA NO NECESARIA EN LAKKA: Para que funcione el botón de apagado (poweroff/shutdown) en Raspberry Pi OS necesitamos
@@ -72,14 +75,14 @@ EN TEORÍA es posible hacer lo mismo sin systemd, según la documentación origi
 https://github.com/raspberrypi/firmware/blob/915a7080ccfbf253053e249bde6489a5be908498/boot/overlays/README#L1273
 ).
 
-Ahora editamos desde el PC el fichero LAKKA_DISK/.config/retroarch/retroarch.cfg y en audio_device ponemos:
+Ahora editamos desde el PC el fichero /storage/.config/retroarch/retroarch.cfg y en audio_device ponemos:
 hw:CARD=sndrpihifiberry
 (NOTA: Antes usaba "sysdefault:CARD=sndrpihifiberry", pero se supone que "hw:CARD=sndrpihifiberry" es más directo según "aplay -L").
 Lo normal sería irnos a SETTINGS->AUDIO->OUTPUT y en DEVICE lo elegimos, pero por si no te deja elegirlo desde el mando,
 pues lo mejor es eso, editar el fichero de configración a mano.
 
 VIDEO: driver Vulkan, "MAX SWAPCHAIN IMAGES" a 2, "VSYNC" OFF. 
-En ~/.config/retroarch/retroarch.cfg, pon el modo de vídeo que usa el sistema en los parámetros:
+En /storage/.config/retroarch/retroarch.cfg, pon el modo de vídeo que usa el sistema en los parámetros:
 (OJO, no te olvides de deshabilitar temporalmente el salvado automático de la configuración al salir de RetroArch, porque si no,
 lo que vas a cambiar en retroarch.cfg se sobreescribirá al reiniciar)
 
