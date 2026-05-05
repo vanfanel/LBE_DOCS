@@ -973,6 +973,10 @@ cd bgfx
 --Compilamos con:
 make linux-gcc-release64 -j10
 
+NOTA: Te va a dar más errores. De cosas de X11 que tienes que ir comentando, de no linkado contra SDL2, etc.
+Ve quitándolos, reintenta, etc.
+Lo de los linkados puedes irlo añadiendo en los .lua que es donde linka contra GL (debe linkar contra OpenGL), etc.
+
 ******YMIR, el emulador de Saturn para GNU/Linux************************************************************************
 
 --Instalamos dependencias previas:
