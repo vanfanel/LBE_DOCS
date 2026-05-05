@@ -970,6 +970,9 @@ cd bgfx
 --Editamos "examples/common/entry/entry_p.h" y ponemos "ENTRY_CONFIG_USE_NATIVE" a 0
   y "ENTRY_CONFIG_USE_SDL" a 1 (no he encontrado manera de pasárselo al compilar como variable de entorno ni nada).
 
+--Editamos "makefile", buscamos ".build/projects/gmake-linux-gcc:" y cambiamos "--with-combined-examples" por "--with-examples"
+  (Así nos compila todos los ejemplos)
+
 --Compilamos con:
 make linux-gcc-release64 -j10
 
