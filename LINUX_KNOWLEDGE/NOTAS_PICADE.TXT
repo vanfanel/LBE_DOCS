@@ -159,6 +159,7 @@ Pasa lo mismo con el Wonder Boy en MonsterLand, etc.
 
 ALGUNOS JUEGOS NECESITAN PACKS DE SAMPLES (dkong, dkongjr, mario...).
 Estos samples van en ~/system/fbneo/samples/
+HAY QUE REINICIAR ANTES DE QUE EMPIEZEN A FUNCIONAR, YA QUE EL SISTEMA LOS TIENE QUE MANDAR A "/tmp/system"
 
 Para cambiar el logo de Lakka durante el inicio, ponemos el PNG que queramos en la partición LAKKA, llamándolo "oemsplash.png" 
 Tiene que ser un PNG de 1920x1080, o no se mostrará. Como la pantalla es 4:3 (1024x768), nos conviene coger una imágen en 4:3
