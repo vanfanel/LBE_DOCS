@@ -144,11 +144,12 @@ las carátulas de la playlist que queramos.
 La otra, más LENTA y complicada, es meter a mano los THUMBNAILS de los sistemas que quieras en /storage/thumbnails, y ya se verán en las playlist.
 
 SI TE FALTAN CARÁTULAS (porque a menudo el nombre del juego en la playlist no coincide con el nombre del PNG que que hay en los thumbnails
-de libretro) lo mejor es clonar los metadatos del repo de thumbnails:
+de libretro) lo mejor es:
+--Clonar los metadatos del repo de thumbnails:
 git clone --filter=blob:none --no-checkout --depth 1 https://github.com/libretro-thumbnails/FBNeo_-_Arcade_Games.git
-Listar los archivos que hay con el nombre que buscas, por ejemplo para el Demon's World:
+--Listar los archivos que hay con el nombre que buscas, por ejemplo para el Demon's World:
 git ls-tree -r HEAD --name-only |grep Demon
-Nos bajamos el archivo que queramos:
+--Bajar el archivo que queramos:
 git checkout Named_Boxarts/Demon's World _ Horror Story (set 1).png
 
 Para cambiar el logo de Lakka durante el inicio, ponemos el PNG que queramos en la partición LAKKA, llamándolo "oemsplash.png" 
