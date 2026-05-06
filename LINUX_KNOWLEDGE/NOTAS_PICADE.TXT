@@ -102,8 +102,9 @@ Se podría bajar a 32ms con 44100Hz en vez de 48000Hz (has de poner 44100 tambi�
 EL SHADER IDEAL para PiCade con una Pi5 es CRT-LOTTES-FAST con "MASK TYPE" a 2 o 3 y "SCANLINE INTENSITY" a 0.40.
 TODO ESTO con "Integer Scale" puesto a "ON" y "Integer Scale Scaling" puesto a "Smart".
 
-Puedes usar el mismo shader para los juegos verticales si le pones SCANLINE INTENSITY a 0: Crea un directorio arcade_vertical
-para meter allí todos los juegos verticales, y luego salva los parámetros del shader para ese directorio solamente.
+PARA JUEGOS VERTICALES, puedes usar el shader "crt-nobody" con los parámetros:
+Orientation			1.00
+Curvature Toggle 	0.00
 
 Para mapear los botones a otras teclas distintas en vez de las que vienen por defecto, se hace mediante dparams del dtoverlay=picade,
 mira esto: https://github.com/pimoroni/picade-hat
