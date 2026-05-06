@@ -105,6 +105,7 @@ TODO ESTO con "Integer Scale" puesto a "ON" y "Integer Scale Scaling" puesto a "
 PARA JUEGOS VERTICALES, puedes usar el shader "crt-nobody" con los parámetros:
 Orientation			1.00
 Curvature Toggle 	0.00
+...O el "ctr-CreativeForce-Arcade" con "Vertical Lines Strenght" bajado a 0.60
 
 Para mapear los botones a otras teclas distintas en vez de las que vienen por defecto, se hace mediante dparams del dtoverlay=picade,
 mira esto: https://github.com/pimoroni/picade-hat
