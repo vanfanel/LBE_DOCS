@@ -150,7 +150,8 @@ git clone --filter=blob:none --no-checkout --depth 1 https://github.com/libretro
 --Listar los archivos que hay con el nombre que buscas, por ejemplo para el Demon's World:
 git ls-tree -r HEAD --name-only |grep Demon
 --Bajar el archivo que queramos:
-git checkout Named_Boxarts/Demon's World _ Horror Story (set 1).png
+git checkout HEAD -- "Named_Boxarts/Demon's World _ Horror Story (set 1).png"
+--Editamos la playlist, que estará en ~/playlists(...), y renombramos el PNG para que coincida con la entrada del juego en la playlist.
 
 Para cambiar el logo de Lakka durante el inicio, ponemos el PNG que queramos en la partición LAKKA, llamándolo "oemsplash.png" 
 Tiene que ser un PNG de 1920x1080, o no se mostrará. Como la pantalla es 4:3 (1024x768), nos conviene coger una imágen en 4:3
