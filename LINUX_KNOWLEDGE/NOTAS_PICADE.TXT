@@ -99,8 +99,9 @@ Ahora, ponemos Settings->Power Management->CPU Performance and Power->Governing 
 Puedes bajar la latencia de audio a 36ms con el driver ALSATHREAD a 48000Hz.
 Se podría bajar a 32ms con 44100Hz en vez de 48000Hz (has de poner 44100 también en las opciones de audio del FBNEO).
 
-EL SHADER IDEAL para PiCade con una Pi5 es CRT-LOTTES-FAST con "MASK TYPE" a 2 o 3 y "SCANLINE INTENSITY" a 0.40.
-TODO ESTO con "Integer Scale" puesto a "ON" y "Integer Scale Scaling" puesto a "Smart".
+EL SHADER IDEAL para PiCade con una Pi5 es CRT-LOTTES-MULTIPASS, tal como viene. Se ve PERFECTO.
+El CRT-LOTTES sin "MULTIPASS" no lo mueve, tiene que ser la versión "MULTIPASS".
+NO HACE FALTA ACTIVAR "Integer Scale".
 
 PARA JUEGOS VERTICALES, puedes usar el shader "crt-nobody" con los parámetros:
 Orientation			1.00
