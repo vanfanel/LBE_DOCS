@@ -168,6 +168,10 @@ También podemos simplemente crear un archivo vacío con ese nombre y no se ver�
 "touch /media/manuel/LAKKA/oemsplash.png" desde el ordenador.
 Esto, junto con "vt.global_cursor_default=0 console=null" que tendremos en cmdline.txt, hará que no se vea nada durante el inicio. 
 
+PARA PONER SANGRE ROJA EN LOS METAL SLUG:
+-En modo MVS normal: Mantén presionado START durante unos segundos durante el juego para acceder al menú.
+-En modo UNIBIOS: Mantén presionados B+C+D durante la pantalla de inicio de la UNIBIOS.
+
 --NOTAS SOBRE JUEGOS CONCRETOS EN MAME--
 
 El tbyahho necesita también konamigx.zip
