@@ -105,6 +105,7 @@ NO HACE FALTA ACTIVAR "Integer Scale".
 
 PARA JUEGOS VERTICALES, puedes dejar el CRT-LOTTES-MULTIPASS con warpX y warpY a 0.00,
 shadowMask a 1.00 y "filter kernel shape" a 3.00.
+Si aún consigues ver alguna irregularidad vertical (pareces del Pengo), sube hardPix a -2.00.
 ...O bien el shader "crt-nobody" con los parámetros:
 Orientation			1.00
 Curvature Toggle 	0.00
