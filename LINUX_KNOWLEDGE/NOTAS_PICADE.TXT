@@ -103,7 +103,9 @@ EL SHADER IDEAL para PiCade con una Pi5 es CRT-LOTTES-MULTIPASS, tal como viene.
 El CRT-LOTTES sin "MULTIPASS" no lo mueve, tiene que ser la versión "MULTIPASS".
 NO HACE FALTA ACTIVAR "Integer Scale".
 
-PARA JUEGOS VERTICALES, puedes usar el shader "crt-nobody" con los parámetros:
+PARA JUEGOS VERTICALES, puedes dejar el CRT-LOTTES-MULTIPASS con warpX y warpY a 0.00,
+shadowMask a 1.00 y "filter kernel shape" a 3.00.
+...O bien el shader "crt-nobody" con los parámetros:
 Orientation			1.00
 Curvature Toggle 	0.00
 ...O el "ctr-CreativeForce-Arcade" con "Vertical Lines Strenght" bajado a 0.60
