@@ -131,13 +131,14 @@ wlr-randr --output DP-1 --custom-mode 1920x1080@119.427000
 
 		--SHADER--
 
-Opción 1: NEWPIXIE-CRT con "Accumulate Modulation" a 50, "Horizontal Blur" a 2.00, "Curvature" a 0,
+Opción 1: LOTTES-MULTIPASS
+
+Opción 2: NEWPIXIE-CRT con "Accumulate Modulation" a 50, "Horizontal Blur" a 2.00, "Curvature" a 0,
 		  "Vignette" a 0.60, "Ghosting" a 0.30.
 
-Opción 2: CRT-CONSUMER con "Pre-Scale Sharpening" a 1.00, "Convergence X" a 0.40, todo lo de curvatura quitado,
+Opción 3: CRT-CONSUMER con "Pre-Scale Sharpening" a 1.00, "Convergence X" a 0.40, todo lo de curvatura quitado,
           "Scanlines dark" a 1.20, "Scanlines bright" a 0.80, "Mask Type" a 4.00,
           "Vignette on/off" a 1.00, "Vignette Power" a 0.10, "Vignette Strength" a 20.00.
-Opción 3: LOTTES
 
 		--AUDIO--
 	
@@ -302,7 +303,7 @@ PARA EL CORE DE NES (NESTOPIA)
 Si quieres usar el ratón como Zapper, pon "QUICK MENU->CONTROLS->PORT 2 CONTROLS->DEVICE TYPE" a "ZAPPER",
 y "QUICK MENU->CORE OPTIONS->INPUT->ZAPPER DEVICE" a "POINTER".
 
-PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=232
+PARA EL CORE DE PC-ENGINE, INITIAL_SCANLINE=10, LAST_SCANLINE=234
 
 PARA EMULAR GAMEGEAR Y LYNX, el mejor shader es "handheld/sameboy-lcd" combinado con INTEGER SCALING.
 
