@@ -178,7 +178,9 @@ PARA PONER SANGRE ROJA EN LOS METAL SLUG:
 -En modo UNIBIOS: Mantén presionados B+C+D durante la pantalla de inicio de la UNIBIOS.
 
 PARA EL CORE DE PC-ENGINE:
--Initial Scanline 10, Last Scanline 234
+-El core que debes usar es Geargrafx, que tiene soporte libretro upstream.
+ Sólo tienes que poner en sus opciones el Aspect Ratio a 4:3 y ya va todo perfecto.
+-Si insistes en usar Beetle-PCE: Initial Scanline 10, Last Scanline 234.
 
 --NOTAS SOBRE JUEGOS CONCRETOS EN MAME--
 
