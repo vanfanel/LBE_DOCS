@@ -64,6 +64,8 @@ mount -o remount,rw /flash
 Editamos /flash/cmdline.txt y añadimos:
 video="HDMI-A-1:1024x768@60" mitigations=off audit=0 vt.global_cursor_default=0 fsck.mode=skip
 ...Y ponemos sólo "console=null" en vez de "console=ttyAMA10,115200 console=tty0" que es como viene.
+...SI TE SIGUEN SALIENDO COSAS EN LA CONSOLA AL APAGAR O ENCENDER, ASEGÚRATE DE QUE SÓLO TIENES "console=null",
+   ES DECIR, QUE NO HAY MÁS "console=..." EN TODA LA LÍNEA DEL KERNEL.
 
 (NOTA NO NECESARIA EN LAKKA: Para que funcione el botón de apagado (poweroff/shutdown) en Raspberry Pi OS necesitamos
 que el servicio systemd-logind esté activo, que a su vez depende de que tengamos instalado el paquete "dbus"
