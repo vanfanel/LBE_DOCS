@@ -115,6 +115,14 @@ Curvature Toggle 	0.00
 ...O el "ctr-CreativeForce-Arcade" con "Vertical Lines Strenght" bajado a 0.60
 ...O el "newpixie-crt" sin curvatura, sin ghosting y con "Accumulative Modulation" a 0.55
 
+PARA TENER BEZELS EN LOS JUEGOS VERTICALES:
+Por cada juego necesitamos una pareja de .cfg y su .png correspondiente, que se bajan de aquí:
+https://github.com/svera/vertical-bezels-4-3
+Luego, mientras tenemos el juego funcionando, vamos a "ON-SCREEN OVERLAY", elegimos el .cfg que corresponda,
+y cuando ya se ve el overlay, salvamos el GAME OVERRIDE para ese juego.
+Sí, hay que ir juego por juego estableciendo su overlay y salvando el override, porque los overlays
+no están pensados para esto sino para controles en pantalla.
+
 Para mapear los botones a otras teclas distintas en vez de las que vienen por defecto, se hace mediante dparams del dtoverlay=picade,
 mira esto: https://github.com/pimoroni/picade-hat
 Y en particular esto: https://github.com/pimoroni/picade-hat/blob/master/picade.txt
