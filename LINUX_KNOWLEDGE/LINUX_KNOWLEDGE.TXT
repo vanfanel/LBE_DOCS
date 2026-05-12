@@ -2474,7 +2474,7 @@ git clone --recurse-submodules --depth 1 --shallow-submodules https://github.com
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor -DGLFW_BUILD_X11=OFF -DDAWN_USE_WAYLAND=ON
+cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor
 
 make -j10
 
