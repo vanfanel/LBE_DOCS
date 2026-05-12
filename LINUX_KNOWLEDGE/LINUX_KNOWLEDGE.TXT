@@ -8063,7 +8063,7 @@ make DISCORD_SDK=0 -j10
  https://github.com/coop-deluxe/sm64coopdx/wiki/Build-Flags)
 
 --Copiamos el ejecutable resultante a un directorio de usuario:
-cp build/us_pc/sm64coopdx ~/sm64/
+cp build/us_pc/sm64coopdx ~/n64/sm64coop/
 
 --Copiamos la ROM USA de Mario 64 al mismo directorio que el ejecutable, con el nombre que queramos, y hacemos:
 ./sm64coopdx baserom.us.z64
