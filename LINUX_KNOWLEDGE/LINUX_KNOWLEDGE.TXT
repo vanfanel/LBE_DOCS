@@ -2474,9 +2474,12 @@ git clone --recurse-submodules --depth 1 --shallow-submodules https://github.com
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DDAWN_USE_WAYLAND=ON
+cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor -DGLFW_BUILD_X11=OFF -DDAWN_USE_WAYLAND=ON
 
 make -j10
+
+NOTA: "-DAURORA_DAWN_PROVIDER=vendor" es fundamental porque sin eso usaría una versión estática precompilada de la librería
+que no estaría compilada con soporte para Waylan.
 
 Compilar Amiberry en GNU/Linux
 ==============================
@@ -8043,8 +8046,10 @@ Simplemente es meterlo en ~/sm64/mods y activar "Enhancements -> Graphics -> Use
 SM64COOPDX, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
 ===================================================
 
---Bajamos la útima estable de:
-https://github.com/coop-deluxe/sm64coopdx/releases
+--Clonamos los sources la útima versión estable
+(podemos ver cuál es la última versión estable en https://github.com/coop-deluxe/sm64coopdx/releases):
+
+git clone --depth 1 -b v1.4.1 https://github.com/coop-deluxe/sm64coopdx.git sm64coopdx-v1.4.1
 
 --Editamos "Makefile" y cambiamos "-lGL" por "-lOpenGL"
 
