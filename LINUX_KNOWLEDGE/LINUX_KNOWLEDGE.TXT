@@ -2507,6 +2507,9 @@ pero como normalmente los juegos de GameCube los tienes en .RVZ en vez de .ISO, 
 usa Dolphin-Tool (que viene con el Dolphin de Windows) así:
 wine DolphinTool.exe convert -i zelda.rvz -o zelda.iso
 
+--Lanzamos el engine pasándole la ISO, ya que la opción de cargar la ISO desde el menú no funciona:
+./dusklight zelda.iso
+
 Compilar Amiberry en GNU/Linux
 ==============================
 
