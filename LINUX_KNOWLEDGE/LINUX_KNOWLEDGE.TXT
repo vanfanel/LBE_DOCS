@@ -8076,7 +8076,7 @@ apt-get install libbz2-dev libpng-dev lsb-release libzip-dev zipcmp zipmerge zip
 libtinyxml2-dev nlohmann-json3-dev libspdlog-dev
 
 --Clonamos la última versión estable (podemos ver cuál es en https://github.com/HarbourMasters/Shipwright/releases):
-git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/HarbourMasters/Shipwright.git -b 9.2.1 Shipwright-9.2.1
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/HarbourMasters/Shipwright.git -b 9.2.3 Shipwright-9.2.3
 
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
@@ -8102,7 +8102,7 @@ y la copiamos a "OTRExporter/baserom.z64"
 --En el mismo directorio donde acabamos de compilar el juego, hacemos:
 cmake --build . --target ExtractAssets -j10
 --Copiamos los archivos "oot.otr" y "soh.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
-cp soh/*.o2r ~/zelda64/
+cp soh/*.o2r ~/n64/zelda64/
 
 ALTERNATIVA PARA EXTRAER LOS DATOS DEL JUEGO SIN COMPILAR EL JUEGO:
 --Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
@@ -8113,7 +8113,7 @@ cd assets
 cmake ..
 cmake --build . --target ExtractAssets -j4
 --Copiamos los archivos "soh.o2r" y "oot.o2r" al mismo directorio donde tenemos el ejecutable "soh.elf":
-cp soh/*.o2r ~/zelda64/
+cp soh/*.o2r ~/n64/zelda64/
 
 --NOTAS ADICIONALES--
 
@@ -8121,7 +8121,7 @@ PARA QUE NO DE TIRONCILLOS DURANTE LA PRIMERA EJECUCIÓN, PON LOS FPS DEL JUEGO 
 
 PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16:9, habilitamos "Enhancements->Graphics->Widescreen Actor Culling"
 
-PARA USAR MODS, creamos el directorio ~/zelda64/mods y los metemos ahí.
+PARA USAR MODS, creamos el directorio ~/n64/zelda64/mods y los metemos ahí.
 Si el MOD tiene directorios, da igual, lo metes tal cual con sus directorios.
 Ahora activamos "Enhancements->Graphics->Mods->Use Alternate Assets" y ya se cargan y se utilizan.
 +++Si usas el Djipi's 3DS Experience (https://gamebanana.com/mods/477979) debes tener activados:
@@ -8178,8 +8178,8 @@ cmake .. -GNinja \
 
 ninja -j10
 
-mkdir ~/majora
-cp mm/2s2h.elf ~/majora/
+mkdir ~/n64/majora
+cp mm/2s2h.elf ~/n64/majora/
 
 PARA QUE NO DE TIRONCILLOS EN LA PRIMERA CARGA, PON LOS FPS A 30.
 
@@ -8191,12 +8191,12 @@ PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16
 --En el mismo directorio donde acabamos de compilar el juego, hacemos:
 cmake --build . --target ExtractAssets -j10
 --Copiamos los archivos de datos a su sitio:
-cp mm/mm.o2r mm/2ship.o2r ~/majora/
+cp mm/mm.o2r mm/2ship.o2r ~/n64/majora/
 
 	----MODS----
 	
 Tienes un MOD de texturas HD en https://github.com/GhostlyDark/MM-Reloaded-2S2H/releases
-Simplemente es meterlo en ~/majora/mods y activar "Enhancements -> Graphics -> Use Alternate Assets"
+Simplemente es meterlo en ~/n64/majora/mods y activar "Enhancements -> Graphics -> Use Alternate Assets"
 
 STARFOX64 EN GNU/LINUX
 ======================
