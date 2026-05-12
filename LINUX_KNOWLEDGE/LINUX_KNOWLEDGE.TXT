@@ -2502,6 +2502,11 @@ mkdir ~/twilight
 cp dusklight ~/twilight/
 cp -R res ~/twilight/
 
+--Metemos la ISO del Zelda:TP en el mismo directorio. La tienes en el disco duro de backup,
+pero como normalmente los juegos de GameCube los tienes en .RVZ en vez de .ISO, para convertir un .RVZ a .ISO
+usa Dolphin-Tool (que viene con el Dolphin de Windows) así:
+wine DolphinTool.exe convert -i zelda.rvz -o zelda.iso
+
 Compilar Amiberry en GNU/Linux
 ==============================
 
