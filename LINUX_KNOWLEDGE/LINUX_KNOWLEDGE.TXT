@@ -2469,7 +2469,7 @@ Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altur
 --Clonamos su repo:
 git clone --recurse-submodules --depth 1 --shallow-submodules https://github.com/TwilitRealm/dusk.git
 
---Compilamos con:
+--Configuramos los sources con:
 
 mkdir b4
 cd b4
@@ -2480,15 +2480,27 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor
  que no estaría compilada con soporte para Wayland).
 
 --Fallará porque una dependencia de DAWN (GLFW) no encuentra X11.
-Editamos _deps/dawn-src/CMakeLists.txt y ponemos todo lo del GLFW a OFF y USE_X11 también a OFF (lo pone a ON si UNIX...).
+  Por ello, editamos _deps/dawn-src/CMakeLists.txt y ponemos todo lo del GLFW a OFF y USE_X11 también a OFF (lo pone a ON si UNIX...).
 
 --Editamos _deps/dawn-src/src/dawn/native/vulkan/SwapChainVk.cpp, buscamos "DAWN_USE_WAYLAND" y en ese #ifdef
   comentamos esta línea y su cierre de llave:
   if (info.HasExt(InstanceExt::XlibSurface)) {
   (NO TIENE SENTIDO que compruebe una extensión de Vulkan que es de X11 cuando está dentro de un #ifdef de Wayland).
 
+--Hacemos limpieza:
+make clean
+rm CMakeCache.txt
+
+--Volvemos a configurar:
+cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor
+
+--Compilamos por fin con:
 make -j10
 
+--Creamos un directorio ~/twilight (o como queramos llamarlo) y metemos allí el ejecutable y los datos que vienen con los sources:
+mkdir ~/twilight
+cp dusklight ~/twilight/
+cp -R res ~/twilight/
 
 Compilar Amiberry en GNU/Linux
 ==============================
