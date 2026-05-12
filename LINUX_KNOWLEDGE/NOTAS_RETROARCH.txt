@@ -307,11 +307,11 @@ PARA PC-ENGINE, USA EL CORE "geargrafx" (https://github.com/drhelius/Geargrafx.g
 No hace falta ajustar nada y tiene soporte upstream de libretro.
 PERO si te empeñas en usar el viejo beetle-pce, pon INITIAL_SCANLINE=10 y LAST_SCANLINE=234
 
-PARA EMULAR GAMEGEAR Y LYNX, el mejor shader es "handheld/sameboy-lcd" combinado con INTEGER SCALING.
-
 PARA EMULAR GAMEBOY Y GAMEBOY COLOR, USA EL CORE "gearboy" (https://github.com/drhelius/Geargrafx.git)
 con el shader "handheld/sameboy-lcd" combinado con INTEGER SCALING. 
 (Si usas el GAMBATTE pon "Core Options->Color Correction" a "GBC Only").
+
+PARA EMULAR GAMEGEAR Y LYNX, el mejor shader es "handheld/sameboy-lcd" combinado con INTEGER SCALING.
  
 PARA EL CORE GEOLITH (emulador muy preciso de NEOGEO) mete "aes.zip" y "neogeo.zip" en ~/.config/retroarch/system
 Como por defecto se inicia en modo AES, lo más importante para que funcione es tener "aes.zip".

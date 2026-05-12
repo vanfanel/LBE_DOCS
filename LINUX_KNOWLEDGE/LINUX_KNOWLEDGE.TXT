@@ -2463,6 +2463,21 @@ Ejecutamos el juego que queramos con:
 java -jar freej2me-sdl.jar DoomRPG.jar 240 320 -i linear
 Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altura mayor, de 320.
 
+"Zelda: Twilight Princess" nativo en GNU/Linux
+==============================================
+
+--Clonamos su repo:
+git clone --recurse-submodules --depth 1 --shallow-submodules https://github.com/TwilitRealm/dusk.git
+
+--Compilamos con:
+
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release
+
+make -j10
+
 Compilar Amiberry en GNU/Linux
 ==============================
 
