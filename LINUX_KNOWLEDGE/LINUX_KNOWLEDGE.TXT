@@ -1108,11 +1108,13 @@ VAMOS CON DOSBOX-STAGING EN SÍ:
 --Bajamos los últimos sources estables de:
 https://github.com/dosbox-staging/dosbox-staging/releases
 
---Editamos CMakeLists.txt, buscamos:
+--Editamos CMakeLists.txt y buscamos:
   find_package(OpenGL REQUIRED)
 Y lo dejamos como:
   set(OPENGL_USE_OPENGL ON)
   find_package(OpenGL REQUIRED)
+
+--Editamos src/gui/CMakeLists.txt y cambiamos "OpenGL::GL" por "OpenGL::OpenGL".
 
 --También en CMakeLists.txt buscamos:
 CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 13
