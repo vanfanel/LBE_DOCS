@@ -7505,6 +7505,18 @@ switchres 1280 720 50 -s -k
 ...O bien compilando RetroArch con soporte para SwitchRes y luego configurando la resolución que queramos en:
 Settings->Video->CRT SwitchRes
 
+****************************SegaSaturnPatcher en GNU/Linux con WINE**********
+
+--Limpiamos el prefix y reconfiguramos por defecto todo:
+sudo rm -R ~/.wine
+winecfg
+
+--Instalamos el "dotnet 5.0.17 desktop runtime", que descargamos de:
+https://download.visualstudio.microsoft.com/download/pr/3aa4e942-42cd-4bf5-afe7-fc23bd9c69c5/64da54c8864e473c19a7d3de15790418/windowsdesktop-runtime-5.0.17-win-x64.exe
+...Y simplemente ejecutamos el .exe con WINE y ya está.
+
+Y con estas cosas funciona.
+
 ****************************Actualizar firmware 8bitdo en GNU/Linux**********
 
 	SIN WINE
