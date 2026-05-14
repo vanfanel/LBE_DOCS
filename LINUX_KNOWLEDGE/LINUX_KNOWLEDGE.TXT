@@ -10227,14 +10227,15 @@ Y para recargar dándole al botón A, en hypinput.ini tenemos que tener: "KEY_BU
 CONECTAR EL TECLADO 8BITDO POR BLUETOOTH
 ========================================
 
-A parte de tener los típicos módulos de Bluetooth en el kernel,
-debes tener el módulo "CONFIG_BT_HIDP" (no tenerlo causa que se desconecte el mando en 2 segundos) que está en:
-Networking support -> Bluetooth subsystem support -> Bluetooth Classic (BR/EDR) features -> HIDP protocol support
-y debes instalar "bluez":
+MÓDULOS DEL KERNEL
+--Los típicos módulos de Bluetooth en el kernel.
+--"CONFIG_BT_HIDP" que está en:
+"Networking support -> Bluetooth subsystem support -> Bluetooth Classic (BR/EDR) features -> HIDP protocol support"
+--"CONFIG_UHID" (no tenerlo have que podamos conectar con bluetoothctl pero que no se reconozca como teclado) que está en:
+"Device Drivers -> HID bus support -> User-space I/O driver support for HID subsystem"
+
+DEPENDENCIAS PREVIAS
 sudo apt-get install bluez
-
-
-"User-space I/O driver support for HID subsystem"
 
 ¡¡OJO!! Si al ejecutar "bluetoothctl" se te queda en:
 "Waiting to connect to bluetoothd..."
