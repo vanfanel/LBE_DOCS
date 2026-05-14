@@ -95,6 +95,10 @@ Memory Management options->Support for paging of anonymous memory (swap)
 Memory Management options->Defer initialisation of struct pages to kthreads
 Memory Management options->Slab allocator options->(Todo lo que hay ahí)
 
+--PARA TECLADOS Y MANDOS BLUETOOTH, ACTIVAMOS ESTAS COSAS:
+"Networking support -> Bluetooth subsystem support -> Bluetooth Classic (BR/EDR) features -> HIDP protocol support"
+"Device Drivers     -> HID bus support -> User-space I/O driver support for HID subsystem"
+
 -Compilamos el kernel y los módulos:
 make -j10
 
