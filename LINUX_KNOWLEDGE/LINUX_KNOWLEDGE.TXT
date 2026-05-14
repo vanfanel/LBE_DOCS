@@ -10233,6 +10233,9 @@ Networking support -> Bluetooth subsystem support -> Bluetooth Classic (BR/EDR) 
 y debes instalar "bluez":
 sudo apt-get install bluez
 
+
+"User-space I/O driver support for HID subsystem"
+
 ¡¡OJO!! Si al ejecutar "bluetoothctl" se te queda en:
 "Waiting to connect to bluetoothd..."
 ...mira que no tengas maskeado "bluetooth.target" o alguna otra cosa de bluetooth:
