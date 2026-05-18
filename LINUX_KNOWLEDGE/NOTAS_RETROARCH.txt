@@ -480,7 +480,7 @@ de geometría de vídeo (como dar muchas veces a la "P" en el Agony).
 NO actives pongas "Crop" a "Automatic", ve ajustándolo por cada juego. Lo de Automatic falla y encima produce dropouts de audio.
 
 Para comprobar el estado de los buffers, activa los stats en On-Screen Display Notifications. Los valores de "Deviation" y "Underrun" no deberían
-llegar nunca al 100%, que es cuando se producen dropouts con ALSA y distorsiones con ALSATHREAD.
+llegar nunca al 100%, que es cuando se producen dropouts o distorsiones.
 
 Tienes TODAS las kickstarts posibles que puede necesitar el core, para TODOS los modelos de Amiga que soporta, en el disco de backup,
 con sus nombres ya correctos y las MD5SUM comprobadas.
@@ -504,8 +504,8 @@ https://gamesnostalgia.com/whdownload
 --Para pasarle parámetros CUSTOM de WHDLoad:
 Pulsa repetidamente los botones RED y BLUE del mando de CD32 (que normalmente son el A y el B de un mando de SNES)
 y te aparecerá el README del WHDInstall del juego y a continuación podrás meter los CUSTOM que quieras y se quedarán guardados.
-(Para el segundo botón del Toki hay que pasarle "CUSTOM2=1", y para el Shadow of the Beast "CUSTOM4=2" para el segundo botón
-y "CUSTOM1=1" para saltar la intro).
+(Para el segundo botón del Toki hay que pasarle "CUSTOM2=1", para el Superfrog "CUSTOM2=1",
+ para el Shadow of the Beast "CUSTOM4=2" para el segundo botón y "CUSTOM1=1" para saltar la intro).
 
 --Para jugar a juegos NO instalados con WHDLoad, simplemente en el directorio del juego crea un directorio "s" y dentro un fichero startup-sequence,
 y además un fichero .info que se llame igual que el directorio del juego. Este .info no necesita tener nada, lo puedes crear con "touch",
