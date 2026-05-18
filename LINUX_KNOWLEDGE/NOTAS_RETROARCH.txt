@@ -425,13 +425,16 @@ Y SI NO, PUES NECESITAMOS PONER UN MODO DE 100Hz PARA LOS JUEGOS PAL.
 -NO se puede usar RUNAHEAD con este core, acuérdate de desactivarlos: según el propio autor del core, la carga de savestates
 es muy lenta lo que lo hace imposible. 
 
--La mejor manera de tener los juegos instalados es cada uno en su directorio (cuyo nombre incluirá la cadena "PAL" si es PAL,
-para que mi script de lanzamiento desde GNU/Linux ponga un modo de 100Hz para los juegos PAL y 120Hz si es NTSC),
-sin comprimir, y sin un .info acompañando al directorio ni nada.
+-La mejor manera de tener los juegos instalados es cada uno preinstalado en su LHA.
+Los puedes bajar de https://gamesnostalgia.com/whdownload
+Si no tienes VRR/AdaptiveSync puedes nombrar los archivos de manera que incluya la cadena "PAL" si es PAL,
+para que mi script de lanzamiento desde GNU/Linux ponga un modo de 100Hz para los juegos PAL y 120Hz si es NTSC.
+
 (Aunque funciona lo de tener cada juego instalado en un ZIP, a veces falla al lanzarlos, hace cosas raras,
 y se pierden los saves. No merece la pena, déjalos descomprimidos y ya).
 
--Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST.
+-Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST,
+ y si algún juego da problemas por la velocidad (Hybris o BC Kid que van a tirones, etc) eliges como modelo el A600 con 8MB de FAST y listo.
 
 -Deja "System->CPU Compatibility" como viene, es decir, a "Cycle-exact (DMA/Memory)".
 Esto se refiere a que la comunicación DMA/Memoria SÍ será cycle-exact aunque la emulación de la CPU no lo sea.
