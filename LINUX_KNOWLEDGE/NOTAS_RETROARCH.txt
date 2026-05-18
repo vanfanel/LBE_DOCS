@@ -434,7 +434,8 @@ para que mi script de lanzamiento desde GNU/Linux ponga un modo de 100Hz para lo
 y se pierden los saves. No merece la pena, déjalos descomprimidos y ya).
 
 -Deja como modelo de Amiga el que viene por defecto para juegos en HDD, que es un 1200 con 8MB de FAST,
- y si algún juego da problemas por la velocidad (Hybris o BC Kid que van a tirones, etc) eliges como modelo el A600 con 8MB de FAST y listo.
+ y si algún juego da problemas por la velocidad (Hybris o BC Kid que van a tirones, etc)
+ prueba poniendo IMMEDIATE BLITTER y si eso no lo arregla eliges como modelo el A600 con 8MB de FAST y listo.
 
 -Deja "System->CPU Compatibility" como viene, es decir, a "Cycle-exact (DMA/Memory)".
 Esto se refiere a que la comunicación DMA/Memoria SÍ será cycle-exact aunque la emulación de la CPU no lo sea.
