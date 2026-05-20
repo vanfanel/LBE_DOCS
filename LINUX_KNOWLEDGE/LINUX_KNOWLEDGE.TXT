@@ -2482,7 +2482,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor
  que no estaría compilada con soporte para Wayland).
 
 --Fallará porque una dependencia de DAWN (GLFW) no encuentra X11.
-  Por ello, editamos _deps/dawn-src/CMakeLists.txt y ponemos todo lo del GLFW a OFF y USE_X11 también a OFF (lo pone a ON si UNIX...).
+  Por ello, editamos _deps/dawn-src/CMakeLists.txt y comentamos el "set(USE_X11 ON)" que está dentro del "elseif(UNIX)".
 
 --Editamos _deps/dawn-src/src/dawn/native/vulkan/SwapChainVk.cpp, buscamos "DAWN_USE_WAYLAND" y en ese #ifdef
   comentamos esta línea y su cierre de llave:
