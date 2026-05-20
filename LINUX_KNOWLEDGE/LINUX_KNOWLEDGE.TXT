@@ -2476,7 +2476,7 @@ git clone --recurse-submodules --depth 1 --shallow-submodules https://github.com
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor
+cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor -DDUSK_ENABLE_DISCORD=OFF
 
 (NOTA: "-DAURORA_DAWN_PROVIDER=vendor" es fundamental porque sin eso usaría una versión estática precompilada de la librería
  que no estaría compilada con soporte para Wayland).
@@ -2494,7 +2494,7 @@ make clean
 rm CMakeCache.txt
 
 --Volvemos a configurar:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor
+cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor -DDUSK_ENABLE_DISCORD=OFF
 
 --Compilamos por fin con:
 make -j10
