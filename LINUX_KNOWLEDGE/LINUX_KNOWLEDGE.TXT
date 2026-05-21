@@ -8296,7 +8296,7 @@ MARIO KART 64 EN GNU/LINUX
 ==========================
 
 --Clonamos la última versión estable (podemos ver cuál es el nombre de la última versión en https://github.com/HarbourMasters/SpaghettiKart/tags)
-git clone --recurse-submodules https://github.com/HarbourMasters/SpaghettiKart.git -b Latest2
+git clone --recurse-submodules --depth 1 --shallow-submodules https://github.com/HarbourMasters/SpaghettiKart.git -b 1.0.0 SpaghettiKart-1.0.0
 
 --Editamos "CMakeLists.txt", buscamos "find_package(OpenGL REQUIRED)", y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
