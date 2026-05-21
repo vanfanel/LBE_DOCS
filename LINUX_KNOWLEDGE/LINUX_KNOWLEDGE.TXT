@@ -4368,8 +4368,8 @@ find ~/.local/share/SMB1R -type f -exec cat {} > /dev/null \;
 ***********OpenLara, versión opensource del Tomb Raider********************************************************************************
 
 PARA PONERLO EN FULLSCREEN:
+Si compilas para OpenGL, pásale "-f".
 Si compilas para GLES no hay que hacer nada porque se pone siempre en fullscreen.
-Si compilas para OpenGL, pásale "-f". Es un añadido mio, hay un PR pendiente de mergeo en https://github.com/XProger/OpenLara/pull/528
 
 PUEDES BAJARTE LOS DATOS DEL JUEGO SIMPLEMENTE DE:
 http://xproger.info/projects/OpenLara/files/
