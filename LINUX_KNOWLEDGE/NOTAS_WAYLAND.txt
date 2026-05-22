@@ -1848,3 +1848,26 @@ ninja install
 
 --Ahora ya podemos capturar la pantalla simplemente escribiendo "grim",
 o si queremos capturar una salida concreta usamos "grim -o DP-1". 
+
+GRABAR PANTALLA EN WAYLAND
+==========================
+
+Usamos WF-RECORDER, que sirve para los compositors basados en WL-ROOTS.
+--Clonamos su repo: git clone --depth 1 https://github.com/ammen99/wf-recorder.git
+--Compilamos con:
+
+mkdir b4
+cd b4
+
+CFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release ..
+
+ninja -j4
+ninja install
+
+--Podemos grabar con:
+wf-recorder -Dyf ~/grabación.mkv
+("-f" es para que el formato de archivo se determine por su extensión,
+ "-y" es para que no nos pregunte al sobreescribir,
+ "-D" para grabar sólo cuando hay cambios en pantalla y que así ocupe menos).
+  
