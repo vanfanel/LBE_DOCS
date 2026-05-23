@@ -142,7 +142,7 @@ Todo lo necesario (incluyendo el juego comercial) lo tienes en el mirror de "REF
   se necesita una fuente más estrecha para que entren bien todas las cadenas de texto de los menús.
   --Pon estas cosas así:
   "large_font_size=15"
-  "large_font_offset_x=5"
+  "large_font_offset_x=0"
   "large_font_offset_y=10"
   "small_font_offset_y=5"
 
