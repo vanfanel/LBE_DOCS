@@ -41,3 +41,7 @@ O sea que para los cartuchos de Aliexpress necesitas los parches "batteryless". 
 https://github.com/acocalypso/batteryless-patches/tree/main/patches
 Y en el canal #patch-repository del servidor Discord de BennVenn (busca allí por nombre del juego a ver si sale algo...).
 PERO en los cartuchos de originales de MODRETRO se pueden grabar juegos MBC5, y salvan y el salvado se conserva.
+
+NOTAS SOBRE JUEGOS ESPECÍFICOS:
+--Si en el Super Mario Land 2 le falta un cacho de cabeza a Mario, es porque con el flashcart que estás usando debes
+  aplicarle este parche de compatibilidad con FPGA a la ROM: https://www.romhacking.net/hacks/9687/
