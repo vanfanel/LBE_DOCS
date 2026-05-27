@@ -138,13 +138,8 @@ Todo lo necesario (incluyendo el juego comercial) lo tienes en el mirror de "REF
   Bájate "es-halopc-restored-retail-shared-<ÚLTIMA_VERSIÓN>.7z" de https://github.com/Aerocatia/halopc-restored/releases 
   sobreescribe todo lo de MAPS con sus contenidos (no hace falta que dejes nada en MAPS de la versión original).
   Para que se vean bien los menús, en chimera.ini:
-  --Cambia todas las ocurrencias de "Interstate-Bold" por "InterstateCondensed-Bold" en chimera.ini, ya que en castellano
+  --Cambia todas las ocurrencias de "Interstate-Bold" por "InterstateCompressed-Bold" en chimera.ini, ya que en castellano
   se necesita una fuente más estrecha para que entren bien todas las cadenas de texto de los menús.
-  --Pon estas cosas así:
-  "large_font_size=15"
-  "large_font_offset_x=0"
-  "large_font_offset_y=10"
-  "small_font_offset_y=5"
 
 ******LAS FUENTES DE LETRA EN WINE SE VEN MUY PEQUEÑAS**********************************************************************
 
