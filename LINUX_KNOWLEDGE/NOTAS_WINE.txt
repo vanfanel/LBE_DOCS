@@ -126,10 +126,11 @@ Todo lo necesario (incluyendo el juego comercial) lo tienes en el mirror de "REF
 --Instala la última versión de "CHIMERA", es lo que permite que tengamos 1080p, 16:9 y demás QOL,
   y se baja de aquí: https://github.com/SnowyMouse/chimera/releases
   Es simplemente renombrar "Strings.dll" a "strings_old.dll", traernos el "strings.dll", chimera.ini y el directorio "fonts".
---Instala la última versión estable de "REFINED", que son los mapas arreglados para que sean como los de XBOX originales
-  Por ahora, uso Refined V5 "estable" que está en https://www.proxeninc.net/Halo/Refined/Refined%20V5%20Download/
-  El fichero que nos bajaremos es "halo_refined_retail_en.7z"
-  Para instalarlo es simplemente sobreescribir todo lo del directorio "MAPS" con lo que trae el .7z que te has bajado.
+--Instala la última versión estable de "HALO RESTORED", que son los mapas arreglados para que sean como los de XBOX originales
+  con los shaders originales de XBOX.
+  Se descarga de: https://github.com/Aerocatia/halopc-restored/releases
+  El fichero que nos bajaremos es "en-halopc-restored-retail-shared-<ÚLTIMA_VERSIÓN>.7z"
+  Para instalarlo, borramos todo lo del directorio "MAPS" del juego y metemos allí los contenidos del .7z que te has bajado.
 --PARA JUGAR PERFECTO CON VRR (y sin que se nos caliente la CPU a saco) edita "chimera.ini" y deja así estos settings:
   vsync=1
   chimera_throttle_fps=117 <--Suponiendo que tengas puesto un modo de vídeo de ~120Hz. Siempre es el refresco -3.
