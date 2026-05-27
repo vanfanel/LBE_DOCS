@@ -1012,3 +1012,19 @@ w /sys/kernel/debug/sched/nr_migrate - - - - 8
 
 Reiniciamos, y hacemos algo como: cat /proc/sys/vm/compaction_proactiveness
 ...que nos tiene que dar 0 porque acabamos de establecer su valor en ese fichero (por defecto viene a 20).
+
+ACTUALIZAR DE STABLE A TESTING
+==============================
+
+Actualizar de Stable a Testing es un procedimiento normal y se considera seguro para uso doméstico.
+Las instrucciones proceden de aquí:
+https://wiki.debian.org/DebianTesting
+
+En resúmen:
+
+--Editamos sources.list.d/debian.sources y cambiamos todas las ocurrencias de "trixie" por "testing".
+--Ejecutamos:
+"sudo apt update"
+"sudo apt upgrade"
+"sudo apt full-upgrade"
+--Reiniciamos y todo debería ir bien.
