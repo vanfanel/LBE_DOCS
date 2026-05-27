@@ -2481,11 +2481,6 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor -DDUSK_ENABLE_
 (NOTA: "-DAURORA_DAWN_PROVIDER=vendor" es fundamental porque sin eso usaría una versión estática precompilada de la librería
  que estaría compilada con soporte para X11).
 
---Editamos _deps/dawn-src/src/dawn/native/vulkan/SwapChainVk.cpp, buscamos "DAWN_USE_WAYLAND" y en ese #ifdef
-  comentamos esta línea y su cierre de llave:
-  if (info.HasExt(InstanceExt::XlibSurface)) {
-  (NO TIENE SENTIDO que compruebe una extensión de Vulkan que es de X11 cuando está dentro de un #ifdef de Wayland).
-
 --Compilamos por fin con:
 make -j10
 
