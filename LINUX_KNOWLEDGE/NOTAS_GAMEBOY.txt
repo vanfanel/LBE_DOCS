@@ -27,7 +27,8 @@ mv libfreetype.so.6 libfreetype.so.6.bak
 --Abrimos el fichero "evt1_x2.gprj", le damos al icono de las dos flechas verdes que parecen el símbolo de reciclaje,
   y en unos 5min debería estar.
 
---El fichero resultante queda en la carpeta del proyecto, en "esp32t/impl/pnr/evt1_x2.fs"
+--Para flashear el core resultante, entramos en el directorio "chromatic_fpga/esp32t/impl/pnr/" y flasheamos así:
+openFPGALoader --write-flash --cable gwu2x --reset evt1_x2.fs
 
 COMPILAR UN PROGRAMA DE GAMEBOY
 ===============================
