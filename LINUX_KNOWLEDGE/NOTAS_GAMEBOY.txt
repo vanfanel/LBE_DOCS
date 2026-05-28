@@ -16,7 +16,7 @@ COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC
   Es un fichero .lic, tenlo a mano.
 
 --Clonamos uno de los forks de: https://github.com/ModRetro/chromatic_fpga/forks
-  Se clonan con: git clone --recurse-submodules <dirección del repositorio>
+  Se clonan con: git clone --recurse-submodules --depth 1 --shallow-submodules <dirección del repositorio>
   
 --Entramos en Gowin_V1.9.9_linux/IDE/lib y hacemos:
 mv libfreetype.so.6 libfreetype.so.6.bak
