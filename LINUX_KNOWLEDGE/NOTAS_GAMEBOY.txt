@@ -9,7 +9,8 @@ sudo fatsort /dev/sda
 COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC
 ===========================================
 
---Nos bajamos el Gowin IDE 1.9.9 (las versiones más nuevas no valen).
+--Nos bajamos el Gowin EDA de aquí: https://www.gowinsemi.com/en/support/download_eda/
+  Lo he llegado a compilar con la versión 1.9.12.02, NO es necesaria una versión antigua como dice la documentación del core.
   También vamos a necesitar una licencia que se solicita gratis en: https://www.gowinsemi.com/en/support/license
   Necesitarás la MAC de la WIFI del PC, que se obtiene con: ip link show
   ...Pero ya tienes una en el correo que vale durante un año, luego hay que solicitar otra.
