@@ -9,7 +9,8 @@ sudo fatsort /dev/sda
 COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC
 ===========================================
 
---Nos bajamos el Gowin EDA de aquí: https://www.gowinsemi.com/en/support/download_eda/
+--Nos bajamos el Gowin EDA de WINDOWS (la versión de Linux es un dolor con QT y basura así que no funciona en Debian
+  por rollos de Wayland) de aquí: https://www.gowinsemi.com/en/support/download_eda/
   Lo he llegado a compilar con la versión 1.9.12.02, NO es necesaria una versión antigua como dice la documentación del core.
   También vamos a necesitar una licencia que se solicita gratis en: https://www.gowinsemi.com/en/support/license
   Necesitarás la MAC de la WIFI del PC, que se obtiene con: ip link show
@@ -19,17 +20,18 @@ COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC
 --Clonamos uno de los forks de: https://github.com/ModRetro/chromatic_fpga/forks
   Se clonan con: git clone --recurse-submodules --depth 1 --shallow-submodules <dirección del repositorio>
   
---Entramos en Gowin_V1.9.9_linux/IDE/lib y hacemos:
-mv libfreetype.so.6 libfreetype.so.6.bak
-...para que así use la versión de libfreetype del sistema y no nos de un error de "Undefined Symbol..."
-
---Entramos en Gowin_V1.9.9_linux/IDE/bin y ejecutamos "gw_ide".
+--Entramos en Gowin_Vx.xx/IDE/bin y ejecutamos "gw_ide".
 
 --Abrimos el fichero "evt1_x2.gprj", le damos al icono de las dos flechas verdes que parecen el símbolo de reciclaje,
   y en unos 5min debería estar.
 
 --Para flashear el core resultante, encendemos la consola, entramos en el directorio "chromatic_fpga/esp32t/impl/pnr/" y flasheamos así:
 openFPGALoader --write-flash --cable gwu2x --reset evt1_x2.fs
+
+NOTA: Si nos empeñamos en usar la versión de Linux pero nos da problemas con libfreetype:
+--Entramos en Gowin_Vx.xx_linux/IDE/lib y hacemos:
+mv libfreetype.so.6 libfreetype.so.6.bak
+...para que así use la versión de libfreetype del sistema y no nos de un error de "Undefined Symbol..."
 
 COMPILAR UN PROGRAMA DE GAMEBOY
 ===============================
