@@ -28,6 +28,8 @@ COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC
 --Para flashear el core resultante, encendemos la consola, entramos en el directorio "chromatic_fpga/esp32t/impl/pnr/" y flasheamos así:
 openFPGALoader --write-flash --cable gwu2x --reset evt1_x2.fs
 
+NOTA: Si al reiniciarse después del flashed suena un zumbido constante, deja la consola apagada sin pilas durante 20 minutos y se pasará.
+
 NOTA: Si nos empeñamos en usar la versión de Linux pero nos da problemas con libfreetype:
 --Entramos en Gowin_Vx.xx_linux/IDE/lib y hacemos:
 mv libfreetype.so.6 libfreetype.so.6.bak
