@@ -20,7 +20,7 @@ COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC
 --Clonamos uno de los forks de: https://github.com/ModRetro/chromatic_fpga/forks
   Se clonan con: git clone --recurse-submodules --depth 1 --shallow-submodules <dirección del repositorio>
   
---Entramos en Gowin_Vx.xx/IDE/bin y ejecutamos "gw_ide".
+--Entramos en Gowin_Vx.xx/IDE/bin y ejecutamos "wine gw_ide".
 
 --Abrimos el fichero "evt1_x2.gprj", le damos al icono de las dos flechas verdes que parecen el símbolo de reciclaje,
   y en unos 5min debería estar.
