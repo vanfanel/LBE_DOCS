@@ -45,14 +45,15 @@ CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j
 
 		--VÍDEO--
 
---Condiciones previas: Para estar seguro de que el sistema está preparado para que Sync To Exact vaya bien sin micro stuttering,
-  RetroArch con:
+--CONDICIONES PREVIAS: LA PRUEBA DE FRAME TIME DEVIATION
+  Para estar seguro de que el sistema está preparado para que Sync To Exact vaya bien sin micro stuttering,
+  configura RetroArch con:
   "Settings->Video->Synchronization->Vertical Sync (VSync)" a "ON"
   "Settings->Video->Synchronization->Sync to Exact[...]" a "OFF"
   ...debe ser capaz de mostrar en "Settings->Video->Output->Estimated Screen Refresh Rate", 
   unos Hz totalmente estables, es decir, no debe moverse ningún decimal en un buen rato,
   con una "dev" (significa "frametime deviation") de alrededor de 0.0-0.1% a 120Hz.
-  Esto es lo que llamo el "test de frametime deviation", sin esto no puedes estar seguro de que Sync to Exact vaya a ir bien en tu sistema
+  Sin esto no puedes estar seguro de que Sync to Exact vaya a ir bien en tu sistema
   aunque el scroll del rooster del MK vaya aparentemente bien. 		
   Hilo con explicación y más información: https://forums.blurbusters.com/viewtopic.php?t=13726
 
@@ -128,6 +129,12 @@ O bien le pasamos al kernel "idle=poll" y de esa manera se mantiene siemore la C
 ----Pon un modo de vídeo donde la electrónica del monitor genere menos variaciones:
 wlr-randr --output DP-1 --custom-mode 1920x1080@119.427000
 ...Quizá se pueda buscar una frecuencia aún más ideal: hemos empezado bajando desde .430000
+
+		--VIDEO--
+		
+En VIDEO->SYNCHRONIZATION ponemos:
+"Vsync"							OFF
+"Sync to Exact"					ON
 
 		--SHADER--
 
