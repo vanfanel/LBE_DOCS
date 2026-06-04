@@ -14,7 +14,7 @@ comentamos todo el "if" y lo que hay dentro.
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-debug --enable-release --enable-optimizations \
---opengl-mode=gles2 --disable-hq-scalers --disable-fribidi \
+--opengl-mode=gles2 --disable-hq-scalers --disable-gtk --disable-fribidi \
 --disable-eventrecorder --disable-cloud --disable-savegame-timestamp \
 --enable-mt32emu --disable-timidity --disable-flac --disable-alsa \
 --enable-vorbis --disable-tremor --disable-theoradec \
@@ -29,6 +29,14 @@ en "GLOBAL OPTIONS -> PATHS".
 
 PARA TENER UN TEMA que no sea el built-in, copia el directorio gui/themes que viene con los sources a ~/scummvm/themes,
 y en "GLOBAL OPTIONS -> PATHS" pon "THEME PATH" apuntando a ~/scummvm/themes, y luego en MISC selecciona el tema.
+
+PARA TENER SUBTÍTULOS EN EL 7TH GUEST, tienes que poner desde el menú del Scummvm en las opciones del juego
+el "Extra Path" apuntando al directorio con los subtítulos que quieras.
+O sea que si lo quieres en español, pones "Extra Path" apuntando a "7th/subs/Es",
+y si lo quieres en inglés, pones "Extra Path" apuntando a "7th/subs/En_sub", etc.
+Los archivos de los subtítulos los tienes ya en el subdirectorio "subs" del directorio "7th" del juego en el disco de backup,
+pero por si los tienes que volver a sacar, se sacan de la versión GOG, del directorio:
+"The 7th Guest- 25th Anniversary Edition/T7G_data_all.bundle/" 
 
 PARA TENER ICONOS en el modo GRID VIEW del menú, bájate todos los archivos de aquí: https://downloads.scummvm.org/frs/icons/
 	Para descargarlos todos de un plumazo sin que se metan en su path remoto completo y sin archivos index* raros, hacemos:
