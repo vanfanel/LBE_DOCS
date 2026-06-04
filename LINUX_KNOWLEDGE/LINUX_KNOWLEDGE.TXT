@@ -11718,3 +11718,12 @@ perf record -F 999 -g -- ./soh.elf
 
 --Cargamos Hotspot así para que encuentre el GLX fake, y allí abrimos el "perf.data" que acabamos de generar en el paso anterior:
 LD_LIBRARY_PATH=./ ./hotspot
+
+DAYTONA USA XBLA RECOMP EN GNU/LINUX
+====================================
+
+--Clonamos su repo:
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/Subarasheese/daytona-xbla-recomp.git
+
+--Nos ponemos en el raíz de los sources y hacemos:
+cmake --preset linux-amd64 -S project
