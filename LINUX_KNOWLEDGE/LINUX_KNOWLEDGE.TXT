@@ -11727,3 +11727,5 @@ git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com
 
 --Nos ponemos en el raíz de los sources y hacemos:
 cmake --preset linux-amd64 -S project
+
+(De momento tiene X11 hardcodeado. Continuará).
