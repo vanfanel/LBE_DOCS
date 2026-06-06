@@ -1255,6 +1255,20 @@ Renderer: Auto
 Internal Resolution: 1xNative (PS2)
 Mipmapping: ON
 
+CORE GOOSESTATION
+=================
+
+--Clonamos su repo:
+git clone --depth 1 https://codeberg.org/hueponik/goosestation-builder.git
+
+--Entramos en el directorio raiz de los sources.
+
+--Ejecutamos este script que compila las dependencias no presentes en Debian y las deja dentro de los sources:
+./build-linux-deps.sh
+
+--Instalamos Docker:
+sudo apt-get install docker.io
+
 ENTENDIENDO LOS CHEATS DE RETROARCH
 ===================================
 
