@@ -1269,8 +1269,10 @@ git clone --depth 1 https://codeberg.org/hueponik/goosestation-builder.git
 --Ejecutamos este script que compila las dependencias no presentes en Debian y las deja dentro de los sources:
 ./build-linux-deps.sh
 
---Usamos docker para construir el sistema de compilación:
+--Construimos el sistema de compilación y compilamos el core:
 sudo sudo make docker-linux
+
+--El resultado queda en "./dist/linux-x86_64/goosestation_libretro.so"
 
 ENTENDIENDO LOS CHEATS DE RETROARCH
 ===================================
