@@ -1258,6 +1258,9 @@ Mipmapping: ON
 CORE GOOSESTATION
 =================
 
+--Instalamos Docker:
+sudo apt-get install docker.io
+
 --Clonamos su repo:
 git clone --depth 1 https://codeberg.org/hueponik/goosestation-builder.git
 
@@ -1266,8 +1269,8 @@ git clone --depth 1 https://codeberg.org/hueponik/goosestation-builder.git
 --Ejecutamos este script que compila las dependencias no presentes en Debian y las deja dentro de los sources:
 ./build-linux-deps.sh
 
---Instalamos Docker:
-sudo apt-get install docker.io
+--Usamos docker para construir el sistema de compilación:
+sudo sudo make docker-linux
 
 ENTENDIENDO LOS CHEATS DE RETROARCH
 ===================================
