@@ -1291,6 +1291,11 @@ wget https://github.com/stenzek/duckstation/archive/<UPSTREAM_COMMIT>.tar.gz
 
 --Instalamos dependencias de compilación:
 
+--Compilamos con:
+mkdir b4
+cd b4
+cmake -DCMAKE_BUILD_TYPE=Release  ..
+make -j10
 
 ENTENDIENDO LOS CHEATS DE RETROARCH
 ===================================
