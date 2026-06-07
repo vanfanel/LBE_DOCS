@@ -1255,8 +1255,8 @@ Renderer: Auto
 Internal Resolution: 1xNative (PS2)
 Mipmapping: ON
 
-CORE GOOSESTATION CON DOCKER
-============================
+COMPILAR CORE GOOSESTATION CON DOCKER
+=====================================
 
 --Instalamos Docker:
 sudo apt-get install docker.io
@@ -1274,11 +1274,13 @@ sudo sudo make docker-linux
 
 --El resultado queda en "./dist/linux-x86_64/goosestation_libretro.so"
 
-CORE GOOSESTATION SIN DOCKER
-============================
+COMPILAR CORE GOOSESTATION SIN DOCKER
+=====================================
 
 --Clonamos su repo:
 git clone --depth 1 https://codeberg.org/hueponik/goosestation-builder.git
+
+--Ejecutamos "build-linux-deps.sh"
 
 --Editamos Makefile y nos copiamos el valor de UPSTREAM_COMMIT (está arriba del todo).
 
@@ -1297,6 +1299,9 @@ mkdir b4
 cd b4
 cmake -DCMAKE_BUILD_TYPE=Release  ..
 make -j10
+
+--El ejecutable queda en:
+src/goosestation-libretro/goosestation_libretro.so
 
 ENTENDIENDO LOS CHEATS DE RETROARCH
 ===================================
