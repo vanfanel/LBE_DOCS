@@ -1255,8 +1255,8 @@ Renderer: Auto
 Internal Resolution: 1xNative (PS2)
 Mipmapping: ON
 
-CORE GOOSESTATION
-=================
+CORE GOOSESTATION CON DOCKER
+============================
 
 --Instalamos Docker:
 sudo apt-get install docker.io
@@ -1273,6 +1273,24 @@ git clone --depth 1 https://codeberg.org/hueponik/goosestation-builder.git
 sudo sudo make docker-linux
 
 --El resultado queda en "./dist/linux-x86_64/goosestation_libretro.so"
+
+CORE GOOSESTATION SIN DOCKER
+============================
+
+--Clonamos su repo:
+git clone --depth 1 https://codeberg.org/hueponik/goosestation-builder.git
+
+--Editamos Makefile y nos copiamos el valor de UPSTREAM_COMMIT (está arriba del todo).
+
+--Descargamos el commit de Duckstation en cuestión:
+wget https://github.com/stenzek/duckstation/archive/<UPSTREAM_COMMIT>.tar.gz
+
+--Descomprimimos los sources del commit de Duckstation, copiamos "goosify.sh" a la raiz de los sources de Duckstation,
+  le damos permisos de ejecución y lo ejecutamos.
+  Nos dirá solamente "GOOSIFYING...". Cuando acabe, ya tenemos un core Libretro.
+
+--Instalamos dependencias de compilación:
+
 
 ENTENDIENDO LOS CHEATS DE RETROARCH
 ===================================
