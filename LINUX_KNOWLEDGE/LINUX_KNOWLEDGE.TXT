@@ -4785,6 +4785,9 @@ Obtendremos no sólo los archivos del juego, sino también un XML de cómo va co
 --Reempaquetamos el .bin con:
 mkpsxiso -o tod-reforged-new.bin tod-reforged.xml
 
+NOTA: Puedes convertir los STR a ficheros reproducibles en GN/Linux con: https://github.com/m35/jpsxdec
+Es simplemente ejecutarlo con "java -jar jpsxdec.jar"
+
 ***********Half Life (XASH3D) en GNU/Linux **********************************************************************************************
 
 XASH3D SOPORTA AHORA TANTO OPENGL COMO GLES1 Y GLES2, SIN WRAPPERS NI NADA.
