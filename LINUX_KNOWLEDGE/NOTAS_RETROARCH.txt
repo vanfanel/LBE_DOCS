@@ -1290,6 +1290,7 @@ wget https://github.com/stenzek/duckstation/archive/<UPSTREAM_COMMIT>.tar.gz
   Nos dirá solamente "GOOSIFYING...". Cuando acabe, ya tenemos un core Libretro.
 
 --Instalamos dependencias de compilación:
+sudo apt-get install libspirv-cross-c-shared-dev
 
 --Compilamos con:
 mkdir b4
