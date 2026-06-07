@@ -8075,8 +8075,8 @@ ninja -j10
 --Copiamos el ejecutable a un directorio de usuario, junto con el directorio "assets":
 
 mkdir ~/sm64
-cp Ghostship ~/sm64/
-cp -R assets ~/sm64/
+cp Ghostship ~/n64/sm64/
+cp -R assets ~/n64/sm64/
 
 	----EXTRACCIÓN DE LOS DATOS----
 
@@ -8086,7 +8086,7 @@ cmake --build ./ --target GeneratePortO2R
 cmake --build ./ --target ExtractAssets
 
 --Copiamos los archivos de datos a su sitio:
-cp *.o2r ~/sm64/
+cp *.o2r ~/n64/sm64/
 
 	----MODS----
 	
