@@ -4770,6 +4770,19 @@ https://www.moddb.com/games/wolfenstein-3d/addons/ecwolf-rmst
 Al final, mi script wolf3d contiene esta línea para lanzar el ECWOLF a mi gusto:
 ./ecwolf --noadaptive --audiobuffer 512 --file hdpack.pk3 hdmus.pk3
 
+***********Extraer y reempaquetar juegos de PSX******************************************************************************************
+
+Como hacemos con el Tales of Destiny REFORGED para conservar el opening de la versión USA.
+Del hilo: https://github.com/mziab/tod-reforged/issues/1
+
+--Extraemos el juego del .bin con https://github.com/Lameguy64/mkpsxiso así:
+dumpsxiso tod-reforged.bin
+
+--Cambiamos los archivos que queramos
+
+--Reempaquetamos el .bin con:
+mkpsxiso -o tod-reforged-new.bin tod-reforged.xml
+
 ***********Half Life (XASH3D) en GNU/Linux **********************************************************************************************
 
 XASH3D SOPORTA AHORA TANTO OPENGL COMO GLES1 Y GLES2, SIN WRAPPERS NI NADA.
