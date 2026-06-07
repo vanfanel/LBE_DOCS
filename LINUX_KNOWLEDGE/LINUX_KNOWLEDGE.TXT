@@ -4778,7 +4778,9 @@ Del hilo: https://github.com/mziab/tod-reforged/issues/1
 --Extraemos el juego del .bin con https://github.com/Lameguy64/mkpsxiso así:
 dumpsxiso tod-reforged.bin
 
---Cambiamos los archivos que queramos
+Obtendremos no sólo los archivos del juego, sino también un XML de cómo va colocado todo en la imágen del CD.
+
+--Cambiamos los archivos que queramos.
 
 --Reempaquetamos el .bin con:
 mkpsxiso -o tod-reforged-new.bin tod-reforged.xml
