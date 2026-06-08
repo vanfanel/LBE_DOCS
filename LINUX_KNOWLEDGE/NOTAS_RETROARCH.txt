@@ -1261,6 +1261,9 @@ COMPILAR CORE GOOSESTATION SIN DOCKER
 --Clonamos su repo:
 git clone --depth 1 https://codeberg.org/hueponik/goosestation-builder.git
 
+--Instalamos dependencias para el parcheo (ed) y compilación:
+sudo apt-get install ed libspirv-cross-c-shared-dev
+
 --Ejecutamos "build-linux-deps.sh"
 
 --Editamos Makefile y nos copiamos el valor de UPSTREAM_COMMIT (está arriba del todo).
@@ -1271,9 +1274,6 @@ wget https://github.com/stenzek/duckstation/archive/<UPSTREAM_COMMIT>.tar.gz
 --Descomprimimos los sources del commit de Duckstation, copiamos "goosify.sh" a la raiz de los sources de Duckstation,
   le damos permisos de ejecución y lo ejecutamos.
   Nos dirá solamente "GOOSIFYING...". Cuando acabe, ya tenemos un core Libretro.
-
---Instalamos dependencias de compilación:
-sudo apt-get install libspirv-cross-c-shared-dev
 
 --Compilamos con:
 mkdir b4
