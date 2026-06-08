@@ -1281,7 +1281,7 @@ cd b4
 cmake -DCMAKE_BUILD_TYPE=Release  ..
 make -j10
 
---El ejecutable queda en:
+--El core queda en:
 src/goosestation-libretro/goosestation_libretro.so
 
 COMPILAR CORE GOOSESTATION CON DOCKER
