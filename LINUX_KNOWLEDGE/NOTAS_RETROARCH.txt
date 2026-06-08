@@ -1262,7 +1262,7 @@ COMPILAR CORE GOOSESTATION SIN DOCKER
 git clone --depth 1 https://codeberg.org/hueponik/goosestation-builder.git
 
 --Instalamos dependencias para el parcheo (ed) y compilación:
-sudo apt-get install ed libspirv-cross-c-shared-dev
+sudo apt-get install ed libcpuinfo-dev libshaderc-dev libspirv-cross-c-shared-dev
 
 --Ejecutamos "build-linux-deps.sh"
 
