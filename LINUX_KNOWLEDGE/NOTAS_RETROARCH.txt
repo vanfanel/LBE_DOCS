@@ -369,7 +369,7 @@ y ya puedes entrar en el menú con el tabulador como en el MAME standalone.
 Otra manera es mantener pulsado SELECT y pulsa el botón que tengas asignado como Y.
 
 --Clonamos su repo:
-git clone --depth 1 https://github.com/libretro/mame.git
+git clone --depth 1 https://github.com/sonninnos/mame.git
 
 --Compilamos con:
 CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" \
