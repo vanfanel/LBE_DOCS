@@ -1291,6 +1291,7 @@ src/goosestation-libretro/goosestation_libretro.so
 
 NOTAS:
 --Para evitar glitches con el renderer Vulkan, siempre que lo actives pon en las opciones del core el MSAA a 2x como mínimo.
+  Luego ya con el resto de opciones gráficas del core puedes jugar como quieras.
 
 COMPILAR CORE GOOSESTATION CON DOCKER
 =====================================
