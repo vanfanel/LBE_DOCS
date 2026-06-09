@@ -1289,6 +1289,9 @@ make -j10
 --El core queda en:
 src/goosestation-libretro/goosestation_libretro.so
 
+NOTAS:
+--Para evitar glitches con el renderer Vulkan, siempre que lo actives pon en las opciones del core el MSAA a 2x como mínimo.
+
 COMPILAR CORE GOOSESTATION CON DOCKER
 =====================================
 
