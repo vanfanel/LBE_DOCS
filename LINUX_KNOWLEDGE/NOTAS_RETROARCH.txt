@@ -1266,7 +1266,8 @@ sudo apt-get install ed libcpuinfo-dev libshaderc-dev libspirv-cross-c-shared-de
 
 --Editamos Makefile y nos copiamos el valor de UPSTREAM_COMMIT (está arriba del todo).
 
---Editamos "goosify.sh", buscamos la línea:
+--(SÓLO SI QUEREMOS USAR EL RENDERER VULKAN)
+Editamos "goosify.sh", buscamos la línea:
 if (!lib.Open(DynamicLibrary::GetVersionedFilename("shaderc_shared").c_str(), error))
 ...y cambiamos "shaderc_shared" por "shaderc" (es decir, simplemente borramos la parte de "_shared").
 ALTERNATIVA: No editar "goosify.sh", pero después de ejecutarlo editar "src/util/gpu_device.cpp"
