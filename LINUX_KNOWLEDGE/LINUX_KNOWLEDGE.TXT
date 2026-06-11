@@ -4421,7 +4421,7 @@ el error en google, que a la gente también le pasan estas miserias.
 NOTA: Para cambiar algo en la configuración, debes borrar totalmente el directorio cross-rasp y empezar de cero, o dará problemas
 absurdos durante el proceso de building.
 
-PARTE 1: OPCIÓN B (Recomendad en Octube de 2015)
+PARTE 1: OPCIÓN B (Recomendada a Octube de 2015)
 =================
 
 Clonamos el repo de https://github.com/raspberrypi/tools.git y nos queda el cross-compiler en tools. Lo demás es igual sólo que la ruta de los ejecutables del compilador es:
