@@ -1051,7 +1051,7 @@ git clone --depth 1 https://github.com/86Box/86Box.git
 --Configuramos con:
 mkdir b4
 cd b4
-cmake .. -DCMAKE_BUILD_TYPE=Release -DRELEASE=ON -DUSE_SDL_SHADER=ON -DUSE_IMGUI=ON -DQT=OFF -DRTMIDI=OFF -DDISCORD=OFF -DFLUIDSYNTH=OFF
+cmake .. -DCMAKE_BUILD_TYPE=Release -DRELEASE=ON -DUSE_SDL_SHADER=ON -DQT=OFF -DRTMIDI=OFF -DDISCORD=OFF -DFLUIDSYNTH=OFF
 
 --PARA INSTALAR LAS ROMS:
 ----Clonamos su repo (Sí, sí, ¡las ROMs están en un repo!):
