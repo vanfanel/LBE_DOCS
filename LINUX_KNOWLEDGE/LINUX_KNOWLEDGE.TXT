@@ -1046,7 +1046,7 @@ INFORMACIÓN ORIGINAL PROCEDENTE DE: https://86box.readthedocs.io/en/latest/dev/
 apt-get install libsndfile1-dev libslirp-dev
 
 --Clonamos su repo:
-git clone --depth 1 git clone https://github.com/86Box/86Box.git
+git clone --depth 1 https://github.com/86Box/86Box.git
 
 --Configuramos con:
 mkdir b4

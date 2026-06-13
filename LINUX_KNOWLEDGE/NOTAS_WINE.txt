@@ -25,7 +25,7 @@ no exponen el ioctl NTSYNC_IOC_EVENT_READ porque aún no se consideraba estable 
 
 VAMOS CON WINE EN SÍ:
 --Clonamos los sources de la última versión (podemos ver el número de versión en https://gitlab.winehq.org/wine/wine/-/tags) con:
-git clone --depth 1 -b wine-11.10 https://gitlab.winehq.org/wine/wine.git wine-11.10
+git clone --depth 1 -b wine-11.11 https://gitlab.winehq.org/wine/wine.git wine-11.11
 --Configuramos con:
 CPPFLAGS="-I/home/manuel/src/ntsync-headers/include" \
 CFLAGS="-march=native -mtune=native -O2" \
