@@ -1187,7 +1187,9 @@ Seguramente es un problema de optimización del juego en hardware real.
 OJO: Para juegos de RPGMaker XP, se usa "mkxp" que es otro motor opensource distinto.
 
 --Instalamos dependencias previas:
-apt-get install libexpat1-dev libpixman-1-dev libfmt-dev libsndfile1-dev --no-install-recommends
+apt-get install libexpat1-dev libpixman-1-dev libsndfile1-dev --no-install-recommends
+(También hace falta libfmt, pero como para el Dusklight se necesita la versión 1.12 mínimo,
+ instala la última estable a mano, que ya la tendrás si tienes el Dusklight)
 
 --Instalamos liblcf, que es parte del proyecto EASYRPG, así que hay que instalarla a mano:
 ----Instalamos dependencias previas:
