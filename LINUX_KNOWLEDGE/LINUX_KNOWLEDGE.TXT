@@ -1043,7 +1043,7 @@ INFORMACIÓN ORIGINAL PROCEDENTE DE: https://86box.readthedocs.io/en/latest/dev/
 
 --Se necesita FluidSynth y OpenAL, que ya las deberías tener instaladas.
 --Instalamos otras dependencias previas:
-apt-get install libsndfile1-dev libslirp-dev
+sudo apt-get install libsndfile1-dev libslirp-dev
 
 --Clonamos su repo:
 git clone --depth 1 https://github.com/86Box/86Box.git

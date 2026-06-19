@@ -66,7 +66,7 @@ vamos a "Advanced->OC Tweaker" y allí:
 
 ¡¡¡OJO!!! NO CARGAMOS PERFILES XMP, ESOS PERFILES LOS TRAE LA RAM DDR5 PARA INTEL, LA TECNOLOGÍA PARA AMD ES "EXPO",
 PERO LA RAM QUE TENGO AHORA NO TRAE PERFILES EXPO POR MI DESCONOCIMIENTO AL COMPRARLA.
-(Hay muy pocas margas que tengan memoria DDR5 SODIMM con EXPO... En Amazon sólo he visto una Crucial 5600 que sería la ideal).
+(Hay muy pocas marcas que tengan memoria DDR5 SODIMM con EXPO... En Amazon sólo he visto una Crucial 5600 que sería la ideal).
 
 --Para desactivar el Hyperthreading (en AMD se llama "SMT") nos vamos a "ADVANCED->CPU CONFIGURATION->SMT MODE" y lo ponemos a "DISABLED",
 y nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement" y ponemos "SMT Control" a "DISABLED".
