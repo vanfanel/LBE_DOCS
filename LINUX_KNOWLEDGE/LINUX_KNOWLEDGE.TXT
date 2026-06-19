@@ -1051,6 +1051,11 @@ git clone --depth 1 https://github.com/86Box/86Box.git
 --Configuramos con:
 mkdir b4
 cd b4
+
+VERSIÓN QT:
+cmake .. -DCMAKE_BUILD_TYPE=Release -DRELEASE=ON -DQT=ON -DRTMIDI=OFF -DDISCORD=OFF -DFLUIDSYNTH=OFF -DLIBRASHADER_STATIC=ON
+
+VERSIÓN EMBEDIDA (SIN QT):
 cmake .. -DCMAKE_BUILD_TYPE=Release -DRELEASE=ON -DUSE_SDL_SHADER=ON -DQT=OFF -DRTMIDI=OFF -DDISCORD=OFF -DFLUIDSYNTH=OFF
 
 --PARA INSTALAR LAS ROMS:
@@ -1060,6 +1065,9 @@ git clone --depth 1 https://github.com/86Box/roms.git
 cp roms/* -R ~/.local/share/86Box/roms/
 
 --CONFIGURACIÓN
+NOTA: Los valores posibles de 86Box.cfg proceden de aquí:
+https://86box.readthedocs.io/en/latest/settings/index.html
+
 Nos creamos un directorio para cada máquina. Por ejemplo, nos creamos el directorio "486", metemos ahí la imágen
 de disco duro que queramos usar, entramos en él y hacemos:
 86Box -C 486.cfg
