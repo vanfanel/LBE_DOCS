@@ -2486,7 +2486,7 @@ cmake --build --preset linux-default-relwithdebinfo
 
 --Creamos un directorio ~/twilight (o como queramos llamarlo) y metemos allí el ejecutable y los datos que vienen con los sources:
 mkdir ~/twilight
-cp dusklight ~/twilight/
+build/linux-default-relwithdebinfo/dusklight ~/twilight/
 cp -R res ~/twilight/
 
 --Metemos la ISO del Zelda:TP en el mismo directorio. La tienes en el disco duro de backup,
