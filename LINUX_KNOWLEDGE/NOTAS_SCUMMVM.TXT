@@ -14,6 +14,7 @@ comentamos todo el "if" y lo que hay dentro.
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
 ./configure --disable-debug --enable-release --enable-optimizations \
+--enable-plugins --default-dynamic \
 --opengl-mode=gles2 --disable-hq-scalers --disable-gtk --disable-fribidi \
 --disable-eventrecorder --disable-cloud --disable-savegame-timestamp \
 --enable-mt32emu --disable-timidity --disable-flac --disable-alsa \
@@ -44,9 +45,6 @@ PARA TENER ICONOS en el modo GRID VIEW del menú, bájate todos los archivos de 
 	wget -r -np -nd -R "index.html*" https://downloads.scummvm.org/frs/icons/
 (No tienes que renombrarlos, tienen que estar con sus nombres originales que llevan una fecha, porque son incrementales).
 Los metes en ~/scummvm/icons y pones el "ICON PATH" apuntando a ~/scummvm/icons. Y ya se deberían ver.
-
-NO LE PASAMOS POR AHORA "--enable-plugins --default-dynamic" ya que eso hace que el LBA de un segfault al salir.
-Está pendiente de arreglar y cuando lo esté podemos volver al sistema de plugins.
 
 Y ya podemos hacer un make -j8 VERBOSE_BUILD=1 si nos apetece. 
 
