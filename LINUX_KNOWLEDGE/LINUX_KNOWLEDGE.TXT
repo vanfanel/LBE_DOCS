@@ -2473,22 +2473,17 @@ Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altur
 
 "Zelda: Twilight Princess" nativo en GNU/Linux
 ==============================================
+NOTA:
+Instrucciones de: https://github.com/TwilitRealm/dusklight/blob/main/docs/building.md
+Los parámetros que se le pueden pasar a CMake para deshabilitar cosas están en "build/linux-default-relwithdebinfo/CMakeCache.txt"
 
 --Clonamos su repo:
-git clone --recurse-submodules --depth 1 --shallow-submodules https://github.com/TwilitRealm/dusk.git
+git clone --recurse-submodules --depth 1 --shallow-submodules ght
 
---Configuramos los sources con:
+--Nos vamos al raíz de los sources y hacemos:
 
-mkdir b4
-cd b4
-
-cmake .. -DCMAKE_BUILD_TYPE=Release -DDUSK_ENABLE_DISCORD=OFF
-
-make -j10
-
-OPCIONAL: SI QUISIÉSEMOS USAR UNA VERSIÓN DE LA LIBRERÍA GRÁFICA "AURORA" COMPILADA AL COMPILAR EL DUSKLIGHT
-          EN VEZ DE USAR LA LIBRERÍA ESTÁTICA QUE SE DESCARGA NORMALMENTE, HARÍAMOS:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DAURORA_DAWN_PROVIDER=vendor -DDUSK_ENABLE_DISCORD=OFF -DDAWN_USE_X11=OFF
+cmake --preset linux-default-relwithdebinfo -DDUSK_ENABLE_DISCORD=OFF -DDUSK_ENABLE_UPDATE_CHECKER=OFF
+cmake --build --preset linux-default-relwithdebinfo
 
 --Creamos un directorio ~/twilight (o como queramos llamarlo) y metemos allí el ejecutable y los datos que vienen con los sources:
 mkdir ~/twilight
