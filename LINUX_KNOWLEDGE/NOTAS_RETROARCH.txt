@@ -1266,10 +1266,10 @@ git clone --depth 1 https://codeberg.org/hueponik/goosestation-builder.git
 --Instalamos dependencias para el parcheo (ed) y compilación:
 sudo apt-get install ed libcpuinfo-dev libshaderc-dev libspirv-cross-c-shared-dev
 
---Editamos Makefile y nos copiamos el valor de UPSTREAM_COMMIT (está arriba del todo).
+--Hacemos "cat UPSTREAM_COMMIT" para ver el hash del commit de Duckstation que necesitamos.
 
 --Descargamos el commit de Duckstation en cuestión:
-wget https://github.com/stenzek/duckstation/archive/<UPSTREAM_COMMIT>.tar.gz
+wget https://github.com/stenzek/duckstation/archive/<HASH_DE_UPSTREAM_COMMIT>.tar.gz
 
 --Descomprimimos los sources del commit de Duckstation, copiamos "goosify.sh" a la raiz de los sources de Duckstation,
   le damos permisos de ejecución y lo ejecutamos.
