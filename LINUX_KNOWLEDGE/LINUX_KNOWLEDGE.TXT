@@ -2475,10 +2475,9 @@ Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altur
 ==============================================
 NOTA:
 Instrucciones de: https://github.com/TwilitRealm/dusklight/blob/main/docs/building.md
-Los parámetros que se le pueden pasar a CMake para deshabilitar cosas están en "build/linux-default-relwithdebinfo/CMakeCache.txt"
 
 --Clonamos su repo:
-git clone --recurse-submodules --depth 1 --shallow-submodules ght
+git clone --recurse-submodules --depth 1 --shallow-submodules https://github.com/TwilitRealm/dusklight.git
 
 --Nos vamos al raíz de los sources y hacemos:
 
