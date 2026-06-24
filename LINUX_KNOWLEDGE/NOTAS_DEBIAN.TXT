@@ -640,7 +640,7 @@ cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Releas
 --Tras instalarla, editamos "/usr/local/include/SDL2/SDL_syswm.h" y borramos todas las secciones entre #ifdefs de X11.
   (Esto no debería ser necesario en el futuro: ver issue cerrada https://github.com/libsdl-org/sdl2-compat/issues/533)
 
-		--INSTALAR SDL3_TTF
+		--INSTALAR SDL3_TTF--
 		
 --Bajamos los últimos sources estables de: https://github.com/libsdl-org/SDL_ttf/releases
 
@@ -653,7 +653,7 @@ cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Releas
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
 for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
-		--INSTALAR SDL3_MIXER
+		--INSTALAR SDL3_MIXER--
 		
 --Bajamos los últimos sources estables de: https://github.com/libsdl-org/SDL_mixer/releases
 
@@ -666,6 +666,18 @@ cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Releas
 PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
 for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
+		--INSTALAR SDL3_IMAGE--
+		
+--Bajamos los últimos sources estables de: https://github.com/libsdl-org/SDL_image/releases
+
+--Compilamos con:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release
+
+PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
+for f in $(cat install_manifest.txt) ; do sudo rm "$f"; done
 
 INSTALAR SDL2
 =============

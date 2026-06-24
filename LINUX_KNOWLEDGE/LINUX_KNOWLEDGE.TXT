@@ -1113,6 +1113,8 @@ VAMOS CON DOSBOX-STAGING EN SÍ:
 
 --Bajamos los últimos sources estables de:
 https://github.com/dosbox-staging/dosbox-staging/releases
+O clonamos los sources:
+git clone --depth 1 https://github.com/dosbox-staging/dosbox-staging.git
 
 --Editamos CMakeLists.txt y buscamos:
   find_package(OpenGL REQUIRED)
@@ -1127,8 +1129,6 @@ CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 13
 y lo dejamos como:
 CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 15
 (O si no nos mete unos warnings que son incompatibles con la versión de GCC de Debian Stable).
-
---Editamos src/gui/CMakeLists.txt y cambiamos "OpenGL::GL" por "OpenGL::OpenGL".
 
 --Configuramos con:
 cmake .. -DCMAKE_BUILD_TYPE=Release -DOPT_TESTS=OFF -DUSE_SYSTEM_LIBS=ON \
