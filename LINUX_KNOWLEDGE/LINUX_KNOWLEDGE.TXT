@@ -1198,27 +1198,7 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 		SCROLL PERFECTO EN UN MONITOR CON VRR:
 
 Siempre dejamos "vsync = off" y "presentation_mode = auto", que es como vienen por defecto.
-El truco" es poner un modo de vídeo cercano al refresh rate de los juegos (un poquito más alto para dejar "respirar" al VRR).
-NO NOS HACE FALTA VSYNC, así que no hay input lag asociado al VSYNC aunque estemos en modos de 60/71Hz!
-QUEDA PENDIENTE conseguir que funcione con "presentation_mode = host-rate" porque así podríamos dejar
-la frecuencia del monitor a 120Hz y aún así tener frame pacing perfecto, pero de momento detecta un refresco de 0Hz con esto. 
-
---CATEGORÍA 1: Para la mayoría de los juegos de DOS.
-Al ir la mayoría de los juegos de DOS a ~70Hz (son pocos los que sincronizan la velocidad de la música con el vídeo,
-como Lemmings 1/2, Lotus III.. pero aún así casi todos los juegos están pensados para ir a sus ~70Hz)
-deja el dos_rate en "default" y pon un modo de vídeo custom de 71Hz, así:
-
-wlr-randr --output DP-1 --custom-mode 1920x1080@71
-dosbox <juego>
-wlr-randr --output DP-1 --preferred
-
---Para los juegos de modo-x como el SuperFrog, Jazz Jackrabbit, Pinball Fantasies, etc..
-ponemos un modo de 60Hz y no tocamos el dos_rate (el modo-x va exactamente a 59.713 Hz,
-por lo que si notas micro-stuttering puedes probar a añadir "--set dos_rate=59.713"):
-
-wlr-randr --output DP-1 --custom-mode 1920x1080@60.00
-dosbox <juego>
-wlr-randr --output DP-1 --preferred
+Ya no hace falta nada más si se tiene un sistema con VRR/AdaptiveSync funcional y el compositor de Wayland al día.
 
 		CONFIGURAR EL JOYSTICK
 		
