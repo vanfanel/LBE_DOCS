@@ -8093,6 +8093,8 @@ cp *.o2r ~/n64/sm64/
 Tienes un MOD de texturas HD en https://github.com/GhostlyDark/SM64-Reloaded/releases
 Simplemente es meterlo en ~/sm64/mods y activar "Enhancements -> Graphics -> Use Alternate Assets"
 
+Para evitar tirones de audio, pon "HD Texture Upload Budget" a 0.
+
 SM64COOPDX, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
 ===================================================
 
