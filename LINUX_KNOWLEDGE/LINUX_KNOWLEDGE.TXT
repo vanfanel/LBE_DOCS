@@ -1212,7 +1212,7 @@ Así que para jugar con un DPAD digital, añade bindings de las direcciones del 
 		
 --Ishar 1 y 2: Pásale al dosbox "--set sbtype=sb1" para evitar los chirridos antes del logo.
 
---Lemmings 1: Pásale "--set cycles=3000" para tenerlo como un 386 a 20Mhz y que no salga la línea glicheada
+--Lemmings 1: Pásale "--set cycles=3800" para tenerlo como un 386 a 20Mhz y que no salga la línea glicheada
   de la parte inferior de la pantalla cuando lanzas el juego con "lemvga.com /v /o" que permite
   ejecutarlo en modo VGA + "High Performance PC" directamente sin pasar por el menú.
 
