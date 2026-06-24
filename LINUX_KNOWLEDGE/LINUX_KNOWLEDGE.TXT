@@ -8125,6 +8125,20 @@ cp build/us_pc/sm64coopdx ~/n64/sm64coop/
 Busca e instala, en Aurora Store, el "FWD PORT FORWARDER".
 (Es totalmente opensource y está en github, solo que no está en FDRoid).
 
+SM64PLUS EN GNU/LINUX
+=====================
+NOTA: Instrucciones de https://github.com/MorsGames/sm64plus/wiki/Manual-Building-Guide
+NOTA: DE MOMENTO no compila en Linux por esta issue: https://github.com/MorsGames/sm64plus/issues/132
+...Se puede hacer compilar editando src/pc/gfx/gfx_opengl.c y haciendo que en vez de importar los headers de SDL_opengles2
+   importe los de SDL_opengl, pero luego sale todo glicheao.
+
+--Clonamos su repo:
+git clone --depth 1 https://github.com/MorsGames/sm64plus.git
+
+--Copiamos la ROM de Mario64 a la raiz de los sources como "baserom.us.z64"
+
+--Compilamos con "make -j8"
+
 ZELDA OOT EN GNU/LINUX
 ======================
 
