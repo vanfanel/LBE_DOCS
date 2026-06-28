@@ -1124,12 +1124,6 @@ Y lo dejamos como:
 
 --Editamos src/gui/CMakeLists.txt y cambiamos "OpenGL::GL" por "OpenGL::OpenGL".
 
---También en CMakeLists.txt buscamos:
-CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 13
-y lo dejamos como:
-CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 15
-(O si no nos mete unos warnings que son incompatibles con la versión de GCC de Debian Stable).
-
 --Configuramos con:
 cmake .. -DCMAKE_BUILD_TYPE=Release -DOPT_TESTS=OFF -DUSE_SYSTEM_LIBS=ON \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
