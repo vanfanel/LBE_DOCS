@@ -8068,6 +8068,8 @@ Tienes un MOD de texturas HD en https://github.com/GhostlyDark/SM64-Reloaded/rel
 Simplemente es meterlo en ~/sm64/mods y activar "Enhancements -> Graphics -> Use Alternate Assets"
 
 Para evitar tirones de audio, NO uses el backend Vulkan sino el OpenGL por defecto, y pon "HD Texture Upload Budget" a 0.
+Por ahora no va del todo bien a 60FPS: Enemigos que se mueven raro, algunos diálogos con los Toads que se ven raro...
+Así que usa los 30FPS originales por defecto.
 
 SM64COOPDX, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
 ===================================================
