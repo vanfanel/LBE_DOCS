@@ -8975,7 +8975,7 @@ Y LOS SHADERS SÓLO VAN EN MODO OPENGL Y EN MODO VULKAN.
 Le falta la extensión "multiDrawIndirect" que es comprobada en la función "VulkanDeviceBuilder::FindDevices", aquí:
 https://github.com/ZDoom/gzdoom/blob/f369cd7f6d8c4e6dc339e51d645f410c8fc897e2/libraries/ZVulkan/src/vulkanbuilders.cpp#L1833
 
-MODs para UZDOOM que molan (Son del antiguo GZDOOM, pero funcionan):
+MODs para UZDOOM que molan (Son del antiguo GZDOOM, pero funcionan en UDOOM):
 
 --Doom 3: https://www.moddb.com/mods/doom-3-doom-ii-mod/downloads/doom-iii-doom-ii-mod-v10b
 
