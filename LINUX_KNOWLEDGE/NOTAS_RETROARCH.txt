@@ -645,6 +645,7 @@ sudo apt-get install autoconf autoconf-archive automake libtool
 
 --Clonamos su repo:
 git clone --depth 1 --recurse-submodules --shallow-submodules https://git.libretro.com/warmenhoven/ymir.git
+(Si no está actualizado, prueba este: https://git.libretro.com/libretro/ymir.git)
 
 --Editamos "vcpkg.json", buscamos "curl" y en sus "dependencies" borramos "zstd".
 
