@@ -638,14 +638,12 @@ kick31.rom  (genérica)
   Los juegos deben estar en .lha, y se lanzan como si fuesen ROMs normales.
 
 ******YMIR Libretro************************************************************
-(ALTERNATIVA: https://github.com/coredds/brimir)
 
 --Instalamos dependencias previas:
 sudo apt-get install autoconf autoconf-archive automake libtool
 
 --Clonamos su repo:
-git clone --depth 1 --recurse-submodules --shallow-submodules https://git.libretro.com/warmenhoven/ymir.git
-(Si no está actualizado, prueba este: https://git.libretro.com/libretro/ymir.git)
+git clone --depth 1 --recurse-submodules --shallow-submodules https://git.libretro.com/libretro/ymir.git
 
 --Editamos "vcpkg.json", buscamos "curl" y en sus "dependencies" borramos "zstd".
 
