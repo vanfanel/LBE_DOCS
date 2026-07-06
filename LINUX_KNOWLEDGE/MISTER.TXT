@@ -230,7 +230,16 @@ que te bajes de aquí: http://retrograde.inf.ua/tandyroms.htm) y cargar la BIOS 
 (Si queremos hacer que una BIOS de XT esté "limpia" tenemos que editarla con HEXEDIT y machacar el primer byte,
 que es una letra "U", para que no cargue la XTIDE interna que lleva esa BIOS)
 
---Para generar una BIOS limpia de PCXT, nos vamos al directorio de los sources "PCXT_MiSTer/SW/ROMs",
+BIOS RECOMEMDADA:
+--Para generar una BIOS original de PCXT que no tarde mil años en pasar el test de memoria,
+  bájate el script https://github.com/nand2mario/pctang/blob/master/scripts/bios_make.py
+  ejecútalo como "python bios_make.py patched" y se bajará una BIOS de PCXT original, la parcheará para quitar el test de memoria,
+  y generará "bios.bin" que puedes renombrar a "pcxt.rom" o a lo que quieras para usarla en el core de PCXT.
+  Si quieres arrancar desde HDD (la BIOS original de PCXT no permite hacer eso) tienes que poner en "EC00 Bios"
+  la "ide_xtl.rom", cuya versión más reciente está en el hilo principal del core de PCXT en el foro de MiSTer, es decir, en:
+  https://misterfpga.org/viewtopic.php?p=109350#p109350
+
+--Si quisieras generar una BIOS limpia de PCXT original, sin parchear ni nada, nos vamos al directorio de los sources "PCXT_MiSTer/SW/ROMs",
   nos descargamos cpm WGET el archivo "http://minuszerodegrees.net/bios/BIOS_5160_08NOV82.zip", lo descomprimimos,
   dejamos así "make_rom_with_ibm5160.py":
 
