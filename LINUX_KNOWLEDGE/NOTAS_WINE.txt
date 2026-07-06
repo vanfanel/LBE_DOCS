@@ -80,7 +80,7 @@ Usamos "dxwrapper". Para ello:
 --En las opciones del menú del juego, nos vamos a "Direct3D Configuration" y ponemos "Texture error detection" a "Direct3D".
   (Esto es para que se vean las texturas, sin esto aparecen todas las pareces blancas dentro del juego).
 --Funcionará, sí, pero con algunas líneas raras alrededor del juego.
-  Se ha reportado en dxwrapper en: https://github.com/elishacloud/dxwrapper/issues/575
+  Se ha reportado como issue a dxwrapper, en: https://github.com/elishacloud/dxwrapper/issues/575
 
 --YS & YS2
 Para que funcionen con DXVK, debes ponerlos a la misma resolución que estés usando en el escritorio,
