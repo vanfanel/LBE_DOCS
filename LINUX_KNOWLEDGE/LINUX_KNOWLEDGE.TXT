@@ -1236,7 +1236,10 @@ y además hay que deshabilitar el sbmixer para que los efectos no se oigan muy b
   con los efectos de sonido si usas SoundBlaster, y "--set cpu_cycles=3000" para una velocidad correcta.
   
 --Magic Carpet: lo mismo que el Psycho Pinball con los directorios.
-  Además, le puedes pasar a dosbox "--set cputype=pentium" para que active los reflejos del agua por defecto. 
+  Además, le puedes pasar a dosbox "--set cputype=pentium" para que active los reflejos del agua por defecto,
+  y "--set cpu_cycles_protected=30000" para que vaya a una velocidad adecuada en baja resolución.
+  Si quieres cambiar a alta resolución, presiona "r" durante el juego, pero ya le tendrías que pasar
+  "--set cpu_cycles_protected=100000" o así.
 
 --Wing Commander: lo mismo que el Psycho Pinball con los directorios.
   Además, le pasamos estas cosas a dosbox para que vaya bien:
