@@ -12,12 +12,17 @@ COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC
 --Nos bajamos el Gowin EDA de WINDOWS (la versión de Linux es un dolor con QT y basura así que no funciona en Debian
   por rollos de Wayland) de aquí: https://www.gowinsemi.com/en/support/download_eda/
   Lo he llegado a compilar con la versión 1.9.12.02, NO es necesaria una versión antigua como dice la documentación del core.
+  PERO si compilas el firmware principal de https://github.com/ModRetro/chromatic_fpga con el GOWIN 1.9.12.02,
+  el resultado es que vas a tener un zumbido en la Chromatic.
+  En el siguiente apartado explico qué forks podemos compilar y que el resultado no de problemas.
+  
   También vamos a necesitar una licencia que se solicita gratis en: https://www.gowinsemi.com/en/support/license
   Necesitarás la MAC de la WIFI del PC, que se obtiene con: ip link show
   ...Pero ya tienes una en el correo que vale durante un año, luego hay que solicitar otra.
   Es un fichero .lic, tenlo a mano.
 
---Clonamos uno de los forks de: https://github.com/ModRetro/chromatic_fpga/forks
+--Un fork que compila sin problemas con GOWIN 1.9.12.02 es este: https://github.com/t-chamb/chromatic_fpga
+  O buscamos en la lista de los forks de: https://github.com/ModRetro/chromatic_fpga/forks
   Se clonan con: git clone --recurse-submodules --depth 1 --shallow-submodules <dirección del repositorio>
   
 --Entramos en Gowin_Vx.xx/IDE/bin y ejecutamos "wine gw_ide".

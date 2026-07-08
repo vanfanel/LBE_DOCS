@@ -1236,6 +1236,11 @@ y además hay que deshabilitar el sbmixer para que los efectos no se oigan muy b
   con los efectos de sonido si usas SoundBlaster, y "--set cpu_cycles=3000" para una velocidad correcta.
   
 --Magic Carpet: lo mismo que el Psycho Pinball con los directorios.
+  La versión que tienes que usar es "Magic Carpet Plus", que include la expansión "Hidden Worlds".
+  La versión original se sale del juego al entrar varias veces en el menú seguidas (ENTER), hagas lo que hagas.
+  NO vale montar la ISO con parámetros exóticos ni nada: simplemente olvídate de la versión original.
+  Esta versión PLUS permite cargar el juego normalmente sin pasar por ningún menú previo, ejecutando el CARPET.EXE
+  que viene en el directorio CARPET del CD-ROM, así que no tiene ninguna desventaja respecto al original.
   Además, le puedes pasar a dosbox "--set cputype=pentium" para que active los reflejos del agua por defecto,
   y "--set cpu_cycles_protected=30000" para que vaya a una velocidad adecuada en baja resolución.
   Si quieres cambiar a alta resolución, presiona "r" durante el juego, pero ya le tendrías que pasar
