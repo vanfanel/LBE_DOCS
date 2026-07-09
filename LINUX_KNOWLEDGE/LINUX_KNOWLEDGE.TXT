@@ -11019,12 +11019,12 @@ Editamos Makefile y en la línea "CFLAGS =" quitamos el "-g" y ponemos: "-O2 -ma
 Compilamos con:
 make -j10
 
-Creamos el directorio "ishar" y copiamos allí el ejecutable del engine:
-mkdir ~/ishar
-cp -R build/alis ~/ishar/
+Creamos el directorio "alis" y copiamos allí el ejecutable del engine:
+mkdir ~/alis
+cp -R build/alis ~/alis/
 
-Dentro de ~/ishar, creamos los directorios de los diferentes juegos:
-cd ~/ishar
+Dentro de ~/alis, creamos los directorios de los diferentes juegos:
+cd ~/alis
 mkdir ishar1
 mkdir ishar2
 mkdir crystals
