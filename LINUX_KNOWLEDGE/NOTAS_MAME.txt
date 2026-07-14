@@ -138,7 +138,7 @@ Para ello:
 #
 video                   opengl
 gl_glsl                 1
-glsl_shader_mame0       shaders/CRT-geom
+glsl_shader_mame0       /home/manuel/mame/shaders/CRT-geom
 
 --Podemos editar ~/mame/shaders/CRT-geom.vsh para configurar el shader, porque viene con un efecto "tilt" inclinado raro puesto,
   y es mejor quitarle algo de curvatura (he dejado "R = 2.0" de momento), etc.

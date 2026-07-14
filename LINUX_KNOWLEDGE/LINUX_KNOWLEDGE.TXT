@@ -1124,9 +1124,14 @@ Y lo dejamos como:
 
 --Editamos src/gui/CMakeLists.txt y cambiamos "OpenGL::GL" por "OpenGL::OpenGL".
 
---Configuramos con:
-cmake .. -DCMAKE_BUILD_TYPE=Release -DOPT_TESTS=OFF -DUSE_SYSTEM_LIBS=ON \
+--Desde el raíz de los sources, compilamos así:
+
+cmake --preset release-linux -DOPT_TESTS=OFF \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native"
+
+cd build/release-linux
+
+ninja -j10
 
 --Copiamos el ejecutable "dosbox" a /usr/local/bin
 
@@ -1185,6 +1190,8 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 --Ponemos "cpu_cycles" a "10000" (los "cpu_protected_cycles" a "60000" están bien si no encuentras ningún juego que vaya lento con eso).
 --Ponemos "shader" a "crt-auto-arcade"
 --Ponemos "mididevice" a "none"
+--Ponemos "soundfont_dir" a "/home/manuel/dos/soundfonts" y ahí meteremos los .sf2 que queramos usar con juegos
+  en los que pongamos "mididevice" a "fluidsynth"
 --EN CASO DE TENER CORTES DE AUDIO AL EMPEZAR ALGÚN JUEGO (Si no los tienes no hace falta):
   Ponemos "negotiate" a "off" para evitar cortes de audio. Si aún así tenemos alguno en primera carga de algún juego,
   podemos pasarle a dosbox para ese juego "--set hard_disk_speed=medium"
