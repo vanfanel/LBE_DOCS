@@ -1190,8 +1190,6 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 --Ponemos "cpu_cycles" a "10000" (los "cpu_protected_cycles" a "60000" están bien si no encuentras ningún juego que vaya lento con eso).
 --Ponemos "shader" a "crt-auto-arcade"
 --Ponemos "mididevice" a "none"
---Ponemos "soundfont_dir" a "/home/manuel/dos/soundfonts" y ahí meteremos los .sf2 que queramos usar con juegos
-  en los que pongamos "mididevice" a "fluidsynth"
 --EN CASO DE TENER CORTES DE AUDIO AL EMPEZAR ALGÚN JUEGO (Si no los tienes no hace falta):
   Ponemos "negotiate" a "off" para evitar cortes de audio. Si aún así tenemos alguno en primera carga de algún juego,
   podemos pasarle a dosbox para ese juego "--set hard_disk_speed=medium"
