@@ -947,18 +947,15 @@ Y para que no nos instale el core de NeoGeo Pocket, añadimos en "[jtcores]" el 
 db_url = https://raw.githubusercontent.com/jotego/jtcores_mister/main/jtbindb.json.zip
 filter = [MiSTer] !console
 
-**********APUNTES CABLE VGA->SCART********************************************************
-
---Debes poner en el MiSTer.ini: 
-"direct_video=1"
-"composite_sync=1"
-"vga_scaler=0" 
-
 **********APUNTES DIRECT VIDEO************************************************************
 
 --Debes poner en el MiSTer.ini:
 "direct_video=1"
 "composite_sync=1"
+"vga_scaler=0"
+Y si coges el audio del conversor HDMI->VGA y tienes un zumbido de fondo, pon también esto para evitarlo:
+"hdmi_audio_96k=1" 
+
 --El conversor que yo tengo, y que funciona más o menos, lleva un chip EP94Z1E.
 
 **********MODO DE VÍDEO ESPECÍFICO PARA EL CORE MACPLUS***********************************
