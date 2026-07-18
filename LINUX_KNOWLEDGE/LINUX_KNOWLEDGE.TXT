@@ -2511,21 +2511,9 @@ mkdir ~/amiga
 cp amiberry ~/amiga/
 cp -R data controllers whdboot roms ~/ami/
 
-								###########################################
-								#PARA TENER SCROLL SUAVE PERFECTO CON VRR #
-								###########################################
-
---En DISPLAY, ponemos el "Vsync Native" a "Standard 50/60Hz"
---En SOUND marcamos "Push Audio" y ponemos "Sound Buffer Size" a "Min".
-
-APUNTES VIEJOS:
-Editamos src/osdep/amiberry_gfx.cpp, nos vamos a la función "target_adjust_vblank_hz()", comentamos todo su contenido
-y hacemos que devuelta la frecuencia exacta con decimales de nuestro monitor.
-
-OTRA ALTERNATIVA: El emulador Amiberry produce ~59.94005994 FPS en NTSC (recuerda que la frecuencia típica de NTSC es 59.94005994005994)
-por lo que antes de lanzarlo tenemos que hacer:
-
-wlr-randr --output HDMI-A-1 --custom-mode 1920x1080@59.940060
+NOTAS DE USO:
+--Para tener el aspect ratio correcto en fullscreen, ponemos "Screen Settings -> Native" a "Full-window".
+  Si lo pones a "Fullscreen" no establece el aspect ratio correcto aunque tengas "Correct aspect ratio" activado.
 
 MONTAR DISCOS ADF DE AMIGA EN LINUX
 ===================================
