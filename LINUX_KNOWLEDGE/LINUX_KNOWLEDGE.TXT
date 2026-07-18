@@ -2504,9 +2504,6 @@ cd b4
 cmake .. -DCMAKE_BUILD_TYPE=Release -DWITH_OPTIMIZE=ON -DUSE_LIBENET=OFF -DUSE_PORTMIDI=OFF -DUSE_PCEM=OFF \
 -DUSE_LIBMPEG2=OFF -DUSE_MPG123=OFF
 
-NOTA: Más adelante se podrá añadir "-DUSE_OPENGL=ON" para tener un shader estilo newpixie sobre OpenGL,
-pero de momento el soporte OpenGL es experimental y por ejemplo el SOTB no llega a in-game.
-
 make -j8
 
 --Creamos ~/amiga, y ahí metemos el ejecutable "amiberry" y ciertos directorios que vienen con los sources:
