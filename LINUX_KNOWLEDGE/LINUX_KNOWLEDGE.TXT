@@ -2512,6 +2512,10 @@ cp amiberry ~/amiga/
 cp -R data controllers whdboot roms ~/ami/
 
 NOTAS DE USO:
+--Lo primero ve a "Paths" y ponlos todos a subdirectorios de "/home/manuel/amiga",
+  para que no te cree el directorio "Amiberry" con sus subdirectorios cada vez que ejecutas el emulador.
+--Si necesitas que una configuración se cargue siempre automáticamente, renómbrala a "default.cfg"
+  y déjala en el directorio de configs que tengas puesto en "Paths".
 --Para tener el aspect ratio correcto en fullscreen, ponemos "Screen Settings -> Native" a "Full-window".
   Si lo pones a "Fullscreen" no establece el aspect ratio correcto aunque tengas "Correct aspect ratio" activado.
 
