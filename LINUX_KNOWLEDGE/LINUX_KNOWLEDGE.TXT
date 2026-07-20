@@ -2513,14 +2513,12 @@ cp amiberry ~/amiga/
 cp -R data controllers whdboot roms ~/ami/
 
 NOTAS DE USO:
---Lo primero ve a "Paths" y ponlos todos a subdirectorios de "/home/manuel/amiga",
-  para que no te cree el directorio "Amiberry" con sus subdirectorios cada vez que ejecutas el emulador.
---Créate una configuración llamada "default.cfg" y déjala en el directorio de configs que tengas puesto en "Paths".
+--Lo primero ve a "Paths" y marca "Portable Mode".
+--Créate una configuración llamada "default.cfg".
 --Ahora configura la pantalla en la sección "Global Settings". De esa manera, cuando cargues un juego en LHA
   se aplicará la configuración de pantalla: si sólo la tienes en la configuración "default.cfg" u otra,
   al cargar un LHA no se aplica la configuración de pantalla.
---Para tener el aspect ratio correcto en fullscreen, ponemos "Screen Settings -> Native" a "Full-window".
-  Si lo pones a "Fullscreen" no establece el aspect ratio correcto aunque tengas "Correct aspect ratio" activado.
+--Para pantalla completa, ponemos "Screen Settings -> Native" a "Full-window".
 
 MONTAR DISCOS ADF DE AMIGA EN LINUX
 ===================================
