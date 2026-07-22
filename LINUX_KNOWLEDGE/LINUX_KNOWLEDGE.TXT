@@ -2519,6 +2519,7 @@ NOTAS DE USO:
   se aplicará la configuración de pantalla: si sólo la tienes en la configuración "default.cfg" u otra,
   al cargar un LHA no se aplica la configuración de pantalla.
 --Para pantalla completa, ponemos "Screen Settings -> Native" a "Full-window".
+--Pon el audio buffer a 1024 (=5.3ms) en "Global Settings"
 
 MONTAR DISCOS ADF DE AMIGA EN LINUX
 ===================================
