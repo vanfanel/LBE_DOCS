@@ -2520,6 +2520,10 @@ NOTAS DE USO:
   al cargar un LHA no se aplica la configuración de pantalla.
 --Para pantalla completa, ponemos "Screen Settings -> Native" a "Full-window".
 --Pon el audio buffer a 1024 (=5.3ms) en "Global Settings"
+--Para pasar parámetros de WHDLoad a los juegos en LHA, carga el juego que quieras en LHA, dale a F12 para entrar en el menú de Amiberry,
+  ve al panel "WHDLoad", dale al botón "Custom Fields", marca lo que quieras, ve a "Configurations", salva una config con el nombre del LHA
+  que ya te viene escrito ahí para que le des a "Save" directamente sin ponerlo tú, y la próxima vez que cargues ese LHA ya se le pasarán
+  los parámetros que marcaste en el panel "WHDLoad".
 
 MONTAR DISCOS ADF DE AMIGA EN LINUX
 ===================================
