@@ -9,6 +9,8 @@ ES DECIR, que cuando declaramos una señal como "wire" es simplemente una señal
 y si declaramos una señal como "output", "input" o "inout", esa señal es además un puerto de entrada, o de salida, o de entrada y salida.
 SON DISTINTAS FORMAS DE DECLARAR UNA SEÑAL: TODAS ELLAS SON SEÑALES PERO LOS "INPUT", OUTPUT" E "INOUT" SON ADEMÁS PUERTOS.
 
+Un puerto es una señal; simplemente tiene la propiedad de atravesar el límite del módulo.
+
 --Cuando vemos:
 
 module emu (
