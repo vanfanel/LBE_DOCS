@@ -1,0 +1,40 @@
+--Tipos de señales:
+wire a;	 	<--Señal interna del módulo. Una señal, sin más.
+input a; 	<--Señal que entra al módulo (=señal del módulo y además PUERTO de entrada del módulo).
+output a; 	<--Señal que sale del módulo (=señal del módulo y además PUERTO de salida del módulo).
+inout a;	<--Señal bidireccional del módulo, es decir, que entra y sale del módulo.
+			   (=señal del módulo y además PUERTO de entrada y salida del módulo).
+
+ES DECIR, que cuando declaramos una señal como "wire" es simplemente una señal,
+y si declaramos una señal como "output", "input" o "inout", esa señal es además un puerto de entrada, o de salida, o de entrada y salida.
+SON DISTINTAS FORMAS DE DECLARAR UNA SEÑAL: TODAS ELLAS SON SEÑALES PERO LOS "INPUT", OUTPUT" E "INOUT" SON ADEMÁS PUERTOS.
+
+--Cuando vemos:
+
+module emu (
+	...
+	output [12:0] VIDEO_ARX
+	...
+
+	video_freak video_freak
+    (
+      .*,
+      ...
+    );
+
+)
+
+Estamos declarando el tipo de módulo "emu" y estamos diciendo que tiene una señal que sale al exterior del módulo llamada "VIDEO_ARX"
+Estamos instanciando un módulo de tipo "video_freak" y estamos conectando todas las salidas de "video_freak" a las señales del módulo "emu"
+que tengan el mismo nombre.
+
+Si hacemos:
+
+video_freak vf
+(
+    .VIDEO_ARX(VIDEO_ARX)
+);
+
+
+...Estamos conectando el puerto VIDEO_ARX (representado por .VIDEO_ARX) de la instancia de "video_freak"
+a la salida VIDEO_ARX del módulo "emu". 
