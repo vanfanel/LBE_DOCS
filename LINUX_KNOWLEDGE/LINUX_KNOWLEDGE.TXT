@@ -9838,16 +9838,23 @@ make -j10
 
 Copia al mismo directorio donde metas el ejecutable hypseus los directorios "sound", "fonts" y "pics".
 
-SI NOS DA UN ERROR "Could not initialize SDL IMG!", es porque has compilado SDL2_image sin soporte para
+SI NOS DA UN ERROR "Could not initialize SDL IMG!", es porque has compilado SDL3_image sin soporte para
 uno de los formatos PNG, JPG o WEBP.
 
 Para poner un buffer de audio más pequeño, puedes pasar el parámetro -sound_buffer 1024
 (Por defecto viene puesto 2048 que es mucho).
 
+Para que el vídeo se vea con filtrado linear, pasa: -linear_scale
+
+Para que el overlay se vea con filtrado linear, pasa: -blend
+
 Para tener scanlines, pasa: -scanlines
 
 Para que el SuperDonQuixote se vea a 4:3, pasa: -force_aspect_ratio
 (OJO que en este parámetro se usan guiones bajos!)
+
+POR EJEMPLO, PARA EL DRAGON'S LAIR YO LO CARGO CON:
+./hypseus dle2 vldp -framefile mpeg/lair/lair.txt -nolog -fastboot -fullscreen -linear_scale -blend -scanlines -sound_buffer 1024 -bank 0 11011100 -bank 1 01110111 > /dev/null 2>&1
 
 Para configurar el joystick:
 Copia, al mismo directorio donde metas el ejecutable hypseus, el archivo docs/hypinput.ini,
