@@ -8404,7 +8404,7 @@ BANJO RECOMP
 ============
 
 --Clonamos la última versión estable de su repo (podemos ver cuál es en https://github.com/BanjoRecomp/BanjoRecomp/tags):
-git clone --depth 1 --recurse-submodules --shallow-submodules -b v1.0.1 https://github.com/BanjoRecomp/BanjoRecomp.git BanjoRecomp-v1.0.1
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v1.0.2 https://github.com/BanjoRecomp/BanjoRecomp.git BanjoRecomp-v1.0.2
 
 	BLOQUE "N64RECOMP"
 
