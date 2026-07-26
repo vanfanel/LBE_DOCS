@@ -11,32 +11,37 @@ SON DISTINTAS FORMAS DE DECLARAR UNA SEÑAL: TODAS ELLAS SON SEÑALES PERO LOS "
 
 Un puerto es una señal; simplemente tiene la propiedad de atravesar el límite del módulo.
 
---Cuando vemos:
+--Si el módulo "video_freak" tiene en sí una señal "output VIDEO_ARX", y si al instanciar el módulo "video_freak" dentro del módulo "emu
+  hacemos:
 
-module emu (
-	...
-	output [12:0] VIDEO_ARX
-	...
+module emu(
+  wire VIDEO_ARX;
 
-	video_freak video_freak
-    (
-      .*,
-      ...
-    );
+  video_freak video_freak
+  (
+  	.VIDEO_ARX(VIDEO_ARX)
+  )
+)  
+...Lo que estamos diciendo es que la señal VIDEO_ARX del módulo "emu" pasa a ser conducida por la señal VIDEO_ARX de "video_freak",
+precisamente porque VIDEO_ARX de "video_freak" es una SALIDA.
+Si en vez de un "output VIDEO_ARX", video_freak tuviese un "input VIDEO_ARX", eso mismo de ".VIDEO_ARX(VIDEO_ARX)"
+significaría que la ENTRADA VIDEO_ARX de video_freak pasa a estar conducida por la señal VIDEO_ARX de "emu".
 
-)
+ASÍ QUE una regla que te servirá siempre:
+".PUERTO(señal)" nunca indica la dirección de los datos.
+La dirección la decide si PUERTO es input, output o inout en el módulo hijo.
 
-Estamos declarando el tipo de módulo "emu" y estamos diciendo que tiene una señal que sale al exterior del módulo llamada "VIDEO_ARX"
-Estamos instanciando un módulo de tipo "video_freak" y estamos conectando todas las salidas de "video_freak" a las señales del módulo "emu"
-que tengan el mismo nombre.
+--Debes entender que es un problema si tienes esto y ADEMÁS tienes que VIDEO_ARX de "video_freak" es un output:
 
-Si hacemos:
+module emu(
+  assign VIDEO_ARX = ...;
 
-video_freak vf
-(
-    .VIDEO_ARX(VIDEO_ARX)
-);
+  video_freak video_freak
+  (
+  	.VIDEO_ARX(VIDEO_ARX)
+  )
+)   
 
-
-...Estamos conectando el puerto VIDEO_ARX (representado por .VIDEO_ARX) de la instancia de "video_freak"
-a la salida VIDEO_ARX del módulo "emu". 
+...Y es un problema PORQUE como es un output se entiende que esa señal la genera internamente "video_freak"
+y tú estás diciendo que una señal escrita por "emu" mediante el "assign" conduce esa señal de salida de "video_freak".
+Obviamente, si el VIDEO_ARX de "video_freak" fuese un input, no habría problema.

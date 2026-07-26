@@ -9844,17 +9844,21 @@ uno de los formatos PNG, JPG o WEBP.
 Para poner un buffer de audio más pequeño, puedes pasar el parámetro -sound_buffer 1024
 (Por defecto viene puesto 2048 que es mucho).
 
+Para usar el backend de vídeo vulkan, pasa: -vulkan
+
 Para que el vídeo se vea con filtrado linear, pasa: -linear_scale
 
 Para que el overlay se vea con filtrado linear, pasa: -blend
 
 Para tener scanlines, pasa: -scanlines
 
+Para tener el panel de puntos/vidas a un lado, pasa: -scorebezel
+
 Para que el SuperDonQuixote se vea a 4:3, pasa: -force_aspect_ratio
 (OJO que en este parámetro se usan guiones bajos!)
 
 POR EJEMPLO, PARA EL DRAGON'S LAIR YO LO CARGO CON:
-./hypseus dle2 vldp -framefile mpeg/lair/lair.txt -nolog -fastboot -fullscreen -linear_scale -blend -scanlines -sound_buffer 1024 -bank 0 11011100 -bank 1 01110111 > /dev/null 2>&1
+./hypseus dle2 vldp -framefile mpeg/lair/lair.txt -vulkan -nolog -scorebezel -fastboot -fullscreen -linear_scale -blend -scanlines -sound_buffer 1024 -bank 0 11011100 -bank 1 01110111 > /dev/null 2>&1
 
 Para configurar el joystick:
 Copia, al mismo directorio donde metas el ejecutable hypseus, el archivo docs/hypinput.ini,
