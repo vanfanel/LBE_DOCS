@@ -18,12 +18,19 @@ git clone --depth 1 https://gitlab.com/jgemu/jgrf.git
 
 --Compilamos e instalamos con:
 
-CFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" \
-CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer -DALIGN_LONG" make -j10
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+ENABLE_VULKAN=1 make -j10
 
 sudo make install
 
 			PARTE 3: LOS CORES
+
+CORE CEN64
+----------
+
+--Compilamos con:
+make -j8 CFLAGS="-O2 -flto" LDFLAGS="-flto" CC=clang
 
 CORE MEDNAFEN
 -------------
@@ -37,8 +44,8 @@ apt-get install liblzo2-dev
 
 cd jollygood
 
-CFLAGS="-march=native -mtune=native -DALIGN_LONG" \
-CXXFLAGS="-march=native -mtune=native -DALIGN_LONG" make -j10
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" make -j10
 
 sudo make install
 
