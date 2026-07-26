@@ -27,9 +27,12 @@ precisamente porque VIDEO_ARX de "video_freak" es una SALIDA.
 Si en vez de un "output VIDEO_ARX", video_freak tuviese un "input VIDEO_ARX", eso mismo de ".VIDEO_ARX(VIDEO_ARX)"
 significaría que la ENTRADA VIDEO_ARX de video_freak pasa a estar conducida por la señal VIDEO_ARX de "emu".
 
+
 ASÍ QUE una regla que te servirá siempre:
-".PUERTO(señal)" nunca indica la dirección de los datos.
-La dirección la decide si PUERTO es input, output o inout en el módulo hijo.
+	****************************************************************************
+	".PUERTO(señal)" nunca indica la dirección de los datos.
+	La dirección la decide si PUERTO es input, output o inout en el módulo hijo.
+    ****************************************************************************
 
 --Debes entender que es un problema si tienes esto y ADEMÁS tienes que VIDEO_ARX de "video_freak" es un output:
 
