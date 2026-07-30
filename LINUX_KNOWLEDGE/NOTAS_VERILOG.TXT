@@ -23,7 +23,9 @@ module emu(
   )
 )  
 ...Lo que estamos diciendo es que la señal VIDEO_ARX del módulo "emu" pasa a ser conducida por la señal VIDEO_ARX de "video_freak",
-precisamente porque VIDEO_ARX de "video_freak" es una SALIDA.
+precisamente porque VIDEO_ARX de "video_freak" es una SALIDA. MUY IMPORTANTE EL ÓRDEN: AL INSTANCIAR EL SUBMÓDULO "VIDEO_FREAK"
+ESTAMOS "COGIENDO" LA SEÑAK "VIDEO_ARX" PARA LA "VIDEO_ARX" DE "EMU".
+QUÉDATE CON LA REGLA NEMOTÉCNICA DE QUE EL "." ES "COGER DE... PARA MI...". 
 Si en vez de un "output VIDEO_ARX", video_freak tuviese un "input VIDEO_ARX", eso mismo de ".VIDEO_ARX(VIDEO_ARX)"
 significaría que la ENTRADA VIDEO_ARX de video_freak pasa a estar conducida por la señal VIDEO_ARX de "emu".
 
@@ -48,3 +50,11 @@ module emu(
 ...Y es un problema PORQUE como es un output se entiende que esa señal la genera internamente "video_freak"
 y tú estás diciendo que una señal escrita por "emu" mediante el "assign" conduce esa señal de salida de "video_freak".
 Obviamente, si el VIDEO_ARX de "video_freak" fuese un input, no habría problema.
+
+--NO es un problema si tienes en el módulo "video_freak" una señal tipo output, en el módulo "emu" otra señal tipo output,
+y en la instanciación de "video_freak" dentro de "emu" conectas ambas señales.
+*********
+Es decir, no hay problema en que una señal de un módulo externo alimente la salida del módulo que lo contiene.
+*********
+Lo único es que sólo uno escriba la señal. O sea, podría haber un "assign" o un "always" de VIDEO_ARX **PERO** DENTRO DE VIDEO_FREAK,
+QUE ES DESDE DONDE COGEMOS LA SEÑAL PARA LA VIDEO_ARX DE EMU, pero NUNCA en "emu"!!!

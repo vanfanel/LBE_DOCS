@@ -22,7 +22,7 @@ CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
 ENABLE_VULKAN=1 make -j10
 
-sudo make install
+sudo make install ENABLE_VULKAN=1
 
 			PARTE 3: LOS CORES
 
