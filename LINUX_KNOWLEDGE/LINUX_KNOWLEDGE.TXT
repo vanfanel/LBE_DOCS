@@ -8459,10 +8459,10 @@ cp recompcontrollerdb.txt ~/n64/banjo/
 MARIO KART 64 RECOMP
 ====================
 INSTRUCCIONES PROCEDENTES DE AQUÍ:
-https://github.com/sonicdcer/MarioKart64Recomp/blob/main/BUILDING.md
+https://gitlab.com/sonicdcer/MarioKart64Recomp/blob/main/BUILDING.md
 
---Clonamos la última versión estable de su repo (podemos ver cuál es en https://github.com/sonicdcer/MarioKart64Recomp/tags):
-git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.9.2 https://github.com/sonicdcer/MarioKart64Recomp.git MarioKart64Recomp-v0.9.2
+--Clonamos la última versión estable de su repo (podemos ver cuál es en https://gitlab.com/sonicdcer/MarioKart64Recomp/tags):
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.9.2 https://gitlab.com/sonicdcer/MarioKart64Recomp.git MarioKart64Recomp-v0.9.2
 
 	BLOQUE "N64RECOMP"
 	
@@ -8503,10 +8503,10 @@ Se instala simplemente eligiéndolo en el menú de mods, luego puedes borrarlo p
 STARFOX 64 RECOMP
 =================
 INSTRUCCIONES PROCEDENTES DE AQUÍ:
-https://github.com/sonicdcer/Starfox64Recomp/blob/main/BUILDING.md
+https://gitlab.com/sonicdcer/Starfox64Recomp/blob/main/BUILDING.md
 
---Clonamos la última versión estable de su repo (podemos ver cuál es en https://github.com/sonicdcer/Starfox64Recomp/tags):
-git clone --depth 1 --recurse-submodules --shallow-submodules -b 1.0.3 https://github.com/sonicdcer/Starfox64Recomp.git Starfox64Recomp-1.0.3
+--Clonamos la última versión estable de su repo (podemos ver cuál es en https://gitlab.com/sonicdcer/Starfox64Recomp/tags):
+git clone --depth 1 --recurse-submodules --shallow-submodules -b 1.0.3 https://gitlab.com/sonicdcer/Starfox64Recomp.git Starfox64Recomp-1.0.3
 
 	BLOQUE "N64RECOMP"
 	
@@ -8516,7 +8516,7 @@ Lo mismo que en los otros recomps: copia los ejecutables "N64Recomp" y "RSPRecom
 (OJO!! PARA EXTRAER LA ROM, SE USA SF 64 ---DECOMP---, QUE ES UN PROYECTO DISTINTO DEL RECOMP QUE QUEREMOS COMPILAR)
 
 --Clonamos el "Star Fox 64 Decomp":
-git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/sonicdcer/sf64.git
+git clone --depth 1 --recurse-submodules --shallow-submodules https://gitlab.com/sonicdcer/sf64.git
 
 --Entramos en el directorio "tools" y hacemos:
 make -j10
