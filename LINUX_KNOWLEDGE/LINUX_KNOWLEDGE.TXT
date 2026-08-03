@@ -2501,11 +2501,14 @@ Compilar Amiberry en GNU/Linux
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DWITH_OPTIMIZE=ON -DUSE_VULKAN=ON -DUSE_LIBENET=OFF -DUSE_PORTMIDI=OFF -DUSE_PCEM=OFF \
+cmake .. -DCMAKE_BUILD_TYPE=Release -DWITH_OPTIMIZE=ON -DUSE_LIBENET=OFF -DUSE_PORTMIDI=OFF -DUSE_PCEM=OFF \
 -DUSE_PPC=OFF -DUSE_QEMU_PPC=OFF -DUSE_LIBMPEG2=OFF -DUSE_MPG123=OFF -DUSE_UAENET_PCAP=OFF -DUSE_UAENET_TAP=OFF \
 -DUSE_IPC_SOCKET=OFF
 
 make -j8
+
+NOTA: En el futuro se podrá usar "-DUSE_VULKAN=ON" pero ahora mismo los shaders de Vulkan no funcionan bien,
+así que al no pasarlo se compila el soporte OpenGL por defecto, que es mutuamente excluyente con el soporte de Vulkan.
 
 --Creamos ~/amiga, y ahí metemos el ejecutable "amiberry" y ciertos directorios que vienen con los sources:
 mkdir ~/amiga
