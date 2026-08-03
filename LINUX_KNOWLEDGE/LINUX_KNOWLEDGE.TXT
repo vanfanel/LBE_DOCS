@@ -8454,8 +8454,11 @@ cp recompcontrollerdb.txt ~/n64/banjo/
 
 --Metemos la ROM 1.0 USA en el mismo directorio, ¡y a jugar!
 
---Los MODS se bajan de: https://thunderstore.io/c/banjo-recompiled/
-Se instalan simplemente abriendo el ZIP desde el menú del recomp, y quedan instalados en "~/.config/BanjoRecompiled/mods"
+--El MOD de UI de alta resolución se baja de https://github.com/GhostlyDark/BK-Reloaded/releases
+  Debes bajarte el que tiene formato "bk-reloaded-v0.2.0-rt64.rtz"
+  Para instalarlo, abres el .rtz desde el menú del recomp, y queda instalado en "~/.config/BanjoRecompiled/mods"
+  y ya puedes borrar el .rtz original.
+  Tienes más MODS en: https://thunderstore.io/c/banjo-recompiled/
 
 MARIO KART 64 RECOMP
 ====================
