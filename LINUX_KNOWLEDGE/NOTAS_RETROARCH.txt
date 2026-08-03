@@ -868,6 +868,34 @@ cmake .. -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-march=native -mtune=native" -DCMAKE_C_FLAGS="-march=native -mtune=native" \
 -DENABLE_OPENGL=OFF
 
+**********PARALLEL64 LIBRETRO***************************
+
+Clonamos su repo:
+git clone --depth 1 https://github.com/libretro/parallel-n64.git
+
+--Si hemos compilado RetroArch contra OpenGL de escritorio que es como lo hacemos ahora, compilamos con:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1 make -j10
+
+--Si hemos compilado RetroArch contra OpenGL_ES, compilamos con:
+CFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+CXXFLAGS="-march=native -mtune=native -fomit-frame-pointer" \
+FORCE_GLES3=1 HAVE_PARALLEL_RSP=1 HAVE_PARALLEL_RDP=1 make -j10
+
+NOTAS MUY IMPORTANTES PARA EL CORE:
+
+--Para este core NO USES RUNAHEAD, si lo haces se producen fugas de memoria al salir.
+
+--Configuramos las opciones del core así:
+-"RDP Plugin" a "ParaLLEI-RDP"
+-"RSP Pligin" a "ParaLLEI"
+
+--PARA TENER FRAME PACING CORRECTO CON CON VRR:
+-Activa VSYNC, pon "VSYNC SWAP INTERVAL" a 1, y ACTIVA "SYNC TO EXACT"
+(PASA LA PRUEBA DE MARIO64 PARA JUEGOS A 30FPS PRUEBA A CORRER EN CÍRCULOS EN UN PLANO
+ Y VERÁS QUE LOS ÁRBOLES, ETC, NO DEBEN DAR "TIRONES" SINO IR SIEMPRE CON UN PACING CONSTANTE). 
+
 **********MUPEN64 LIBRETRO***************************
 
 Clonamos su repo:
