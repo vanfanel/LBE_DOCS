@@ -8447,10 +8447,10 @@ cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang 
 cmake --build build-cmake --target BanjoRecompiled -j$(nproc) --config Release
 
 --Instalamos todo lo necesario a un directorio nuestro de juego:
-mkdir ~/banjo
-cp build-cmake/BanjoRecompiled ~/banjo/
-cp -R assets ~/banjo/
-cp recompcontrollerdb.txt ~/banjo/
+mkdir ~/n64/banjo
+cp build-cmake/BanjoRecompiled ~/n64/banjo/
+cp -R assets ~/n64/banjo/
+cp recompcontrollerdb.txt ~/n64/banjo/
 
 --Metemos la ROM 1.0 USA en el mismo directorio, ¡y a jugar!
 
