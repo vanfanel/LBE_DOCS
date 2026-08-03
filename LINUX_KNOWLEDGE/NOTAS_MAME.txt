@@ -4,7 +4,7 @@ Instalamos dependencias previas:
 apt-get install libfontconfig-dev
 
 Clonamos su repo:
-git clone -b mame0288 --depth 1 https://github.com/mamedev/mame.git mame0288
+git clone -b mame0289 --depth 1 https://github.com/mamedev/mame.git mame0289
 
 --Editamos 3rdparty/bgfx/3rdparty/khronos/EGL/eglplatform.h, buscamos la línea:
 
@@ -34,9 +34,7 @@ REGISTER_MODULE(m_mod_man, DEBUG_QT);
                      "-I$(shell qmake6 -query QT_INSTALL_HEADERS)",
                }
 
---Compilamos así:
-CFLAGS="-march=znver3 -mtune=znver3" \
-CXXFLAGS="-march=znver3 -mtune=znver3" \
+--Compilamos así (si queremos podemos añadir CFLAGS y CXXFLAGS):
 make USE_WAYLAND=1 NO_X11=1 USE_QTDEBUG=0 NO_USE_XINPUT=1 NO_USE_PULSEAUDIO=1 -j8
 
 NOTA: No le pasamos los parámetros de optimización "native" típicos porque entonces VR sale con los gráficos mal,
