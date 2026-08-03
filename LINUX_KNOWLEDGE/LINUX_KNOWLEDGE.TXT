@@ -11208,7 +11208,7 @@ AMS (Advanced Mac Substitute) en LINUX
 INSTRUCCIONES DE: https://github.com/jjuran/metamage_1/blob/master/HOWTO.md
 
 Clonamos el repo:
-git clone --depth 1 https://github.com/jjuran/metamage_1
+git clone --depth 1 https://github.com/jjuran/metamage_1.git
 
 Hacemos:
 make ams-sdl-build
