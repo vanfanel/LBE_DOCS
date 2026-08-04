@@ -29,6 +29,9 @@ sudo make install ENABLE_VULKAN=1
 CORE CEN64
 ----------
 
+--Clonamos su repo:
+git clone --depth 1 https://gitlab.com/jgemu/cen64.git
+
 --Compilamos con:
 make -j8 CFLAGS="-O2 -flto" LDFLAGS="-flto" CC=clang
 
