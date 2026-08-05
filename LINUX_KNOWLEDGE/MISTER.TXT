@@ -214,12 +214,10 @@ int main () {
                                                         vdisp, vsyncstart - vdisp, vsyncend - vsyncstart, vtotal - vsyncend,
                                                         clock * 1000);
 
-*********APUNTES CORE PCXT***************************************************************
-
-En PCXT BIOS va "pcxt_original.rom", en TANDY BIOS va "tandy.rom", y en EC00 BIOS va "ide_xtl.rom" 
-
 NOTAS SOBRE LAS IMÁGENES DE DISCO PARA EL CORE PCXT
 ===================================================
+
+--En "PCXT BIOS" va "pcxt_original.rom", en "TANDY BIOS" va "tandy.rom", y en "EC00 BIOS" va "ide_xtl.rom" 
 
 --La mejor BIOS para XT es la de Juko Electronics, ya que tiene scroll suave en el texto.
 Para obtener BIOS ya preparadas tanto de XT como de TANDY 1000, tienes que bajar los scripts de Python de aquí:
@@ -267,6 +265,9 @@ if __name__ == "__main__":
 ##ACABA SCRIPT PYHTON
 
 ...Y ejecutamos "python make_rom_with_ibm5160.py" y nos debería crear un "pcxt.rom" básico sin XTIDE ni nada.
+
+--Para PCXT-EGA, la BIOS que tienes que cargar en "EGA BIOS" es la "ibm_6277356_ega_card_u44_27128.bin"
+  del 86Box renombrada a ".rom"
 
 --Para crear la imágen de disco duro desde el propio GNU/Linux de la Mister haz:
 dd if=/dev/zero of=hdd.vhd bs=128M count=1
