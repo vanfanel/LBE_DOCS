@@ -2487,7 +2487,8 @@ wine DolphinTool.exe convert -i zelda.rvz -o zelda.iso
 Compilar Amiberry en GNU/Linux
 ==============================
 
---Clonamos su repo: git clone --depth 1 https://github.com/BlitterStudio/amiberry.git
+--Clonamos los últimos sources estables (miramos en https://github.com/BlitterStudio/amiberry/tags para ver cuál es):
+git clone --depth 1 -b v8.3.0 https://github.com/BlitterStudio/amiberry.git amiberry-v8.3.0
 
 --Instalamos dependencias previas: apt-get install libserialport-dev libportmidi-dev
 
@@ -2517,12 +2518,9 @@ cp -R data controllers whdboot roms ~/ami/
 
 NOTAS DE USO:
 --Lo primero ve a "Paths" y marca "Portable Mode".
---Créate una configuración llamada "default.cfg".
---Ahora configura la pantalla en la sección "Global Settings". De esa manera, cuando cargues un juego en LHA
-  se aplicará la configuración de pantalla: si sólo la tienes en la configuración "default.cfg" u otra,
-  al cargar un LHA no se aplica la configuración de pantalla.
---Para pantalla completa, ponemos "Screen Settings -> Native" a "Full-window".
---Pon el audio buffer a 1024 (=5.3ms) en "Global Settings"
+--En "Global Settings" (de esa manera, cuando cargues un juego en LHA se aplica todo):
+	--Configura la pantalla: ponla en "full-window", elije el shader "pc".
+	--Pon el audio buffer a 2048 (=5.3ms) en "Global Settings"
 --Para pasar parámetros de WHDLoad a los juegos en LHA, carga el juego que quieras en LHA, dale a F12 para entrar en el menú de Amiberry,
   ve al panel "WHDLoad", dale al botón "Custom Fields", marca lo que quieras, ve a "Configurations", salva una config con el nombre del LHA
   que ya te viene escrito ahí para que le des a "Save" directamente sin ponerlo tú, y la próxima vez que cargues ese LHA ya se le pasarán
