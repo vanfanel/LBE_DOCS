@@ -8157,7 +8157,7 @@ NOTA: Para Pi5, usa -j2
 
 PARA EXTRAER LOS DATOS DEL JUEGO PARA LA VERSIÓN DE SOH/LUS QUE ACABAMOS DE COMPILAR:
 --Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
-y la copiamos a "OTRExporter/baserom.z64"
+y la copiamos a "roms/baserom.z64"
 --En el mismo directorio donde acabamos de compilar el juego, hacemos:
 cmake --build . --target ExtractAssets -j10
 --Copiamos los archivos "oot.otr" y "soh.otr" al mismo directorio donde tenemos el ejecutable "soh.elf":
@@ -8165,7 +8165,7 @@ cp soh/*.o2r ~/n64/zelda64/
 
 ALTERNATIVA PARA EXTRAER LOS DATOS DEL JUEGO SIN COMPILAR EL JUEGO:
 --Nos bajamos la ROM de No-Intro llamada "Legend of Zelda, The - Ocarina of Time (Europe) (GameCube).zip", extraemos la ROM del ZIP
-y la copiamos a "OTRExporter/baserom.z64"
+y la copiamos a "roms/baserom.z64"
 --Hacemos:
 mkdir assets (lo podemos llamar como queramos, lo llamo "assets" por llamarlo de alguna manera)
 cd assets
