@@ -8149,6 +8149,9 @@ cmake .. -GNinja \
 
 ninja -j10
 
+NOTA: Para compilar con CLANG sería:
+cmake --fresh -H.. -B. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang
+
 NOTA: Para Pi5, usa -j2
 (No hace falta disco de swap. Y recuerda NO pasarle más de -j2, porque en la Pi5 fallará aunque le metas gigas y gigas de swap).
 
