@@ -58,6 +58,9 @@ git clone --depth 1 https://github.com/MiSTer-devel/Gameboy_MiSTer.git
 
 --Compilamos con GOWIN versión 1.9.12.02 de Windows usando WINE.
 
+--Para flashear el core resultante:
+openFPGALoader --write-flash --cable gwu2x --reset esp32t/impl/pnr/evt1_x2.fs
+
 COMPILAR UN PROGRAMA DE GAMEBOY
 ===============================
 
