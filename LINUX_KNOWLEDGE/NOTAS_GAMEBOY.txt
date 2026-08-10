@@ -40,6 +40,24 @@ NOTA: Si nos empeñamos en usar la versión de Linux pero nos da problemas con l
 mv libfreetype.so.6 libfreetype.so.6.bak
 ...para que así use la versión de libfreetype del sistema y no nos de un error de "Undefined Symbol..."
 
+COMPILAR EL CORE DE GAMEBOY DE LA CHROMATIC CON LOS SOURCES DE MISTER UPSTREAM ACTUALIZADOS
+===========================================================================================
+
+El core de la Chromatic utiliza los sources del core de gameboy de la MiSTer como un submódulo.
+Por tanto:
+
+--Clonamos los sources de la Chromatic PERO sin clonar su submódulo (sólo tiene ese submódulo):
+git clone --depth 1 https://github.com/t-chamb/chromatic_fpga.git
+
+--Entramos en "esp32t/src" y allí clonamos el core de GameBoy de la MiSTer:
+git clone --depth 1 https://github.com/MiSTer-devel/Gameboy_MiSTer.git
+
+--Volvemos al raíz de los sources de la Chromatic, editamos "esp32t/src/rtl/EMU/CORE/gb.v", y allí buscamos
+  la instanciación del módulo "hdma", es decir, buscamos "hdma hdma(" y allí comentamos la señal:
+  .hdma_active       ( hdma_active      ), 
+
+--Compilamos con GOWIN versión 1.9.12.02 de Windows usando WINE.
+
 COMPILAR UN PROGRAMA DE GAMEBOY
 ===============================
 
