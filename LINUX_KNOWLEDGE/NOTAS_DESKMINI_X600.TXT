@@ -71,6 +71,9 @@ PERO LA RAM QUE TENGO AHORA NO TRAE PERFILES EXPO POR MI DESCONOCIMIENTO AL COMP
 --Para desactivar el Hyperthreading (en AMD se llama "SMT") nos vamos a "ADVANCED->CPU CONFIGURATION->SMT MODE" y lo ponemos a "DISABLED",
 y nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement" y ponemos "SMT Control" a "DISABLED".
 
+--Para montaje fanless (Cirrus7 Incus), ponemos "OC Tweaker -> Performance Preset" a "PBO and Tjmax = 85ºC",
+  o a menos incluso si ves que te vale así.
+
 ACTUALIZAR LA BIOS
 ==================
 Las actualizaciones están todas aquí: https://www.asrock.com/nettop/AMD/DeskMini%20X600%20Series/index.asp#BIOS
