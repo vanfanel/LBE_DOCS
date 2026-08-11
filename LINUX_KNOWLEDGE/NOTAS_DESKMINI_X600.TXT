@@ -77,6 +77,11 @@ y nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement" y ponem
   aunque asegura que es lo ideal porque permite más rendimiento y menos calor.
   Yo en verano lo he bajado a "PBO and Tjmax = 75ºC" porque rinde igual para las cosas que yo hago (la emulación de los arcades
   de Sega Model 2, de PS2 y de Saturn es lo más exigente a lo que llego).
+  PARA COMPROBAR LA TEMPERATURA ALCANZADA POR LA CPU:
+  --En una terminal ponemos a compilar MAME con -j8.
+  --En otra terminal, ejecutamos "watch -n 1 sensors", siendo sensors del paquete "lm-sensors".
+  Nos fijamos en la temperatura del sensor "k10temp*" que es el de la CPU. El "spd5118*" es de la RAM, y lógicamente
+  los de "nvme-pci*" son los del disco duro SSD.
 
 ACTUALIZAR LA BIOS
 ==================
