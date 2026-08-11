@@ -73,6 +73,10 @@ y nos vamos a "ADVANCED->AMD CBS->CPU Common Options->Thread Enablement" y ponem
 
 --Para montaje fanless (Cirrus7 Incus), ponemos "OC Tweaker -> Performance Preset" a "PBO and Tjmax = 85ºC",
   o a menos incluso si ves que te vale así.
+  La IA recomienda "PBO, TJmax = 85ºC and Curve Optimizer -20mV" pero hay que ver si es estable la CPU con esa disminución del voltage,
+  aunque asegura que es lo ideal porque permite más rendimiento y menos calor.
+  Yo en verano lo he bajado a "PBO and Tjmax = 75ºC" porque rinde igual para las cosas que yo hago (la emulación de los arcades
+  de Sega Model 2, de PS2 y de Saturn es lo más exigente a lo que llego).
 
 ACTUALIZAR LA BIOS
 ==================
