@@ -1,7 +1,10 @@
-FINETUNING THE SYSTEM
-=====================
+CONEXIÓN WIFI
+=============
 
-Una vez que hemos arrancado nativamente, tenemos mucho que hacer.
+-LO PRIMERO, PARA QUE SYSTEMD NO ASIGNE NOMBRES RAROS A LA WIFI, AÑADIMOS A LA LÍNEA DE PARÁMETROS DEL KERNEL:
+net.ifnames=0
+...DE ESE MODO, SE LLAMARÁ SIEMPRE "wlan0".
+NOS PODEMOS ASEGURAR MIRANDO EN DMESG CON "dmesg |grep iw"
 
 -Para configurar la WIFI una vez arrancado el sistema sin escritorio, en Debian es editando /etc/network/interfaces
  Yo lo tengo más o menos así:
@@ -16,8 +19,8 @@ auto lo
 iface lo inet loopback
 
 # The primary network interface
-allow-hotplug wlp109s0
-iface wlp109s0 inet dhcp
+allow-hotplug wlan0
+iface wlan0 inet dhcp
    wpa-ssid UltimaCabra
    wpa-psk  ???????????
    #wpa-ssid AndroidAP
@@ -66,6 +69,9 @@ LANG="C"
 
 -Conexión por SSH con mucho lag: Edita /etc/network/interfaces y añade al final:
 wireless-power off
+
+OTRAS OPTMIZACIONES
+===================
 
 -Ponemos el governor a PERFORMANCE.
 
