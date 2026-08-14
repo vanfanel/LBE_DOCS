@@ -19,7 +19,6 @@ NOTAS MISTER RETROCASTLE
 PREPARAR LA TARJETA SD
 ======================
 
-
 	****OPCIÓN RECOMENDADA A DÍA DE HOY: USANDO Mr. FUSION****
 
 ----Nos bajamos la última release estable de https://github.com/MiSTer-devel/mr-fusion/releases
@@ -925,6 +924,12 @@ Probablemente sea que necesita libpng12 en lugar de libpng16 que es lo que usa D
 así que descarga el paquete de libpng12 de aquí:
 http://snapshot.debian.org/archive/debian/20160413T160058Z/pool/main/libp/libpng/libpng12-0_1.2.54-6_amd64.deb
 E instálalo con "sudo dpkg -i" y ya debería funcionar en un Debian reciente.
+
+*********CORES DUALRAM*******************************************************************
+
+Si activas la opción "" en update_all, te instalará tanto los core singleRAM como los dualRAM, por lo que tendrás duplicidades.
+Lo mejor es sobreescribir los cores singleRAM con las versiones doubleRAM, que están disponibles en:
+https://github.com/TheJesusFish/Dual-Ram-Console-Cores/tree/main/_Console%20(Dual%20SDRAM)
 
 *********HACER QUE EL UPDATE_ALL NO ACTUALIZE LOS CHEATS*********************************
 
