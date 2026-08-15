@@ -860,6 +860,10 @@ cat /sys/module/snd_hda_intel/parameters/power_save
 cat /sys/module/snd_hda_intel/parameters/power_save_controller
 ...Tiene que salir "0" y "N", respectivamente.
 
+--Para subir y bajar el volúmen de forma absoluta (se queda guardado solo sin hacer nada):
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.9
+...Esto lo dejaría al 90%, siendo 1.0 el 100% de volúmen.
+
 --Para subir y bajar el volúmen de forma relativa (se queda guardado solo sin hacer nada):
 wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
