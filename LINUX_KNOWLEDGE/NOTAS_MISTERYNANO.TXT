@@ -195,6 +195,13 @@ FALLOS PARA REPORTAR CUANDO ABRAN LAS ISSUES:
 ---El teclado se atasca si se pulsa derecha,izquierda rápido.
 ---Layout del teclado: el OCM upstream tiene versiones distintas para cada layout.
 
+FLASHEAR LA RASPBERRY PI PICO (W)
+=================================
+
+Simplemente hay que conectarla por USB con un cable adecuado (no todos los cables Micro-USB funcionan) y el botón BOOTSEL pulsado.
+Debería automontarse como una unidad de almacenamiento normal. Si falla y quieres ver si ha sido detectada, usa "lsblk -f".
+Ahora simplemente copia el firmware (archivo .uf2) a la unidad y ya está. Se puede hacer con "cp" desde la consola.
+
 FLASHEAR EL BL616 (M0S), TANTO EL INTERNO DE LA TANG NANO 20K COMO EL EXTERNO SI TIENES UNO
 ===========================================================================================
 
