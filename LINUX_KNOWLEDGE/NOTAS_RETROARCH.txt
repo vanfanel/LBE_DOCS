@@ -637,6 +637,9 @@ kick31.rom  (genérica)
   en ~/.config/retroarch/system/whdboot
   Los juegos deben estar en .lha, y se lanzan como si fuesen ROMs normales.
 
+--¡¡¡CUIDADO NO MEZCLES "Integer Scaling" PUESTO A "Overscale" CON EL "Crop Overscan" DEL CORE!!!
+  SI USAS INTEGER SCALING, PONLO EN "Underscale" SIEMPRE. Y SI NO, PUES NO USES INTEGER SCALING CON "Crop-Overscan".
+
 ******YMIR Libretro************************************************************
 
 --Instalamos dependencias previas:
