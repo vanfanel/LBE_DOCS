@@ -1755,8 +1755,10 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=ON -DUSE_OPENGL=OFF \
 
 Ponemos la BIOS, llamada "dc_boot.bin", en ~/.local/share/flycast
 
-PARA VÍDEO SUAVE (CON O SIN VRR, ES LO MISMO EN ESTE EMULADOR):
-En "Settings->Video", activa Vsync y "Duplicate Frames"
+PARA VÍDEO SUAVE CON VRR INCLUSO EN LOS JUEGOS QUE VAN A 30FPS:
+En "Settings->Video":
+--Activa Vsync y "Duplicate Frames"
+--Desactiva "Delay Frame Swapping" (Mete cortes de audio entre escenas en el DOA2).
 
 NO ES NECESARIO poner "Core Options->Video->Alpha Sorting" a "Per Pixel", déjalo en "Per Triangle" e incluso
 el Rez y las nubes en la intro del Soul Calibur se verán perfectos.
