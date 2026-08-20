@@ -1196,7 +1196,15 @@ Está en ~/.config/dosbox/dosbox-staging.conf
 
 		SCROLL PERFECTO EN UN MONITOR CON VRR:
 
-Siempre dejamos "vsync = off" y "presentation_mode = auto", que es como vienen por defecto.
+PASO 1: DESACTIVAR LOS "C-STATES" Y "DF C-STATES" EN LA BIOS:
+----En "Advanced\AMD CBS\CPU Common Options" desactivamos "GLOBAL C-STATE CONTROL" y "CORE PERFORMANCE BOOST"
+    MUY IMPORTANTE: SI TENEMOS UNA BIOS QUE NO TIENE OPCIÓN DE DESACTIVAR "GLOBAL C-STATES",
+    EN SU LUGAR PODEMOS PASARLE AL KERNEL: "processor.max_cstate=1". FUNCIONA EXACTAMENTE IGUAL.
+----En "Advanced\AMD CBS\DF Common Options" desactivamos "DF CSTATES"
+----En "Advanced\AMD CBS\NBIO Common Options\GFX Configuration" ponemos "iGPU Configuration" a "UMA_GAME_OPTIMIZED"
+    (esto es sólo para un pequeño plus de estabilidad en el deviation, lo importante es quitar los C-STATES y el BOOST).
+
+PASO 2: NO hay que hacer nada realmente: simplemente dejamos "vsync = off" y "presentation_mode = auto", que es como vienen por defecto.
 Ya no hace falta nada más si se tiene un sistema con VRR/AdaptiveSync funcional y el compositor de Wayland al día.
 
 		CONFIGURAR EL JOYSTICK
