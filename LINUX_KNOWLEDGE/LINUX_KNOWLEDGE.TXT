@@ -1764,7 +1764,8 @@ NO ES NECESARIO "Full framebuffer emulation" ni para los juegos de 30FPS.
 
 JUEGOS QUE NECESITAN "Core Options->Video->Alpha Sorting" a "Per Pixel":
 --Napple Tale (letrero de la heladería).
---Daytona USA.
+--DOA2 (pelo de la rubia durante la demo/intro).
+--Daytona USA (coche).
 
 Puede ser necesario activar "Native Depth Interpolation" si tienes errores y usas un chip gráfico de Intel o AMD
 (no consume más recursos ni nada según el autor del emulador).
