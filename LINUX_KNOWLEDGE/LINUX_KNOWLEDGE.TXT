@@ -1742,7 +1742,7 @@ NOTA PREVIA: Usa el emulador standalone sólo si tienes VRR/AdaptiveSync. Sin es
 Instalamos una dependencia previa rara:
 apt-get install libcurl4-openssl-dev
 
-git clone --depth 1 --recurse-submodules -j8 https://github.com/flyinghead/flycast.git
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/flyinghead/flycast.git
 
 Configuramos y compilamos con:
 
