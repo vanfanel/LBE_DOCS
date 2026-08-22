@@ -8128,6 +8128,10 @@ NOTAS SOBRE LOS MODS
 --Hay que activarlos para cada partida: al darle a "Host" te sale un botón "Mods" donde puedes elegir cuáles activar
   para esa partida en concreto. 
 --Si quieres un mod que muestre la pantalla del título original: https://mods.sm64coopdx.com/mods/vanilla-sm64-title-screen.1287/
+--Para texturas en alta resolución, bájate la última versión del pack "sm64-reloaded" de https://github.com/GhostlyDark/SM64-Reloaded/releases
+  Te tienes que bajar la versión cuyo nombre de archivo tiene el formato "sm64-reloaded-vx.x.x-sm64ex-hd.zip"
+  La descomprimes, y metes los directorios "actors", "levels" y "textures" en "dynos/packs/sm64-reloaded/"
+  Luego lo tienes que activar en el menú entrando en "Options" y luego en "DynOS Packs"
 
 ----PARA HOSTEAR O CONECTARNOS A UNA PARTIDA----
 
