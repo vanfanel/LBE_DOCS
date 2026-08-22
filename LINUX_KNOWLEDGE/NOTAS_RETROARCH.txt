@@ -1156,6 +1156,19 @@ PARA FRAMERATE ESTABLE (CON VRR Y SIN ÉL):
 --Pon "Buffer Graphis Commands" a "No Buffer".
 --Desactiva "Duplicate Frames to 60Hz" y "Detect Frame Rate Changes"
 
+******MGBA LIBRETRO************************************************************************************
+
+--Clonamos su repo:
+git clone --depth 1 https://github.com/mgba-emu/mgba.git
+
+--Compilamos con:
+
+mkdir b4
+cd b4
+
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LIBRETRO=ON -DSKIP_LIBRARY=ON ..
+-DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+
 ******DOLPHIN LIBRETRO*********************************************************************************
 INFO IMPORTANTE PROCEDENTE DE: https://docs.libretro.com/library/dolphin/
 
