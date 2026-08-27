@@ -1111,10 +1111,8 @@ PARA DESINSTALAR, ya que no hay "make uninstall", hacemos:
 
 VAMOS CON DOSBOX-STAGING EN SÍ:
 
---Bajamos los últimos sources estables de:
-https://github.com/dosbox-staging/dosbox-staging/releases
-O clonamos los sources:
-git clone --depth 1 https://github.com/dosbox-staging/dosbox-staging.git
+--Clonamos los últimos sources estables (miramos la versión en https://github.com/dosbox-staging/dosbox-staging/tags):
+git clone --depth 1 -b v0.83.0 https://github.com/dosbox-staging/dosbox-staging.git dosbox-staging-v0.83.0
 
 --Editamos CMakeLists.txt y buscamos:
   find_package(OpenGL REQUIRED)
