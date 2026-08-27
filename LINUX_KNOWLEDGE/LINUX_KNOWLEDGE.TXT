@@ -6326,6 +6326,7 @@ while((tframe = SDL_GetTicks())<tnext)
 no hay VSYNC y se sincroniza con timings internos como tenemos que hacer con VRR. 
 
 *************RAGE RACER NATIVO DE PSX EN GNU/LINUX****
+(Para el port de Ridge Racer: https://github.com/kazuyette/rr-pc-port)
 
 --Clonamos su repo:
 git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/khasinski/rage-racer-pc.git
