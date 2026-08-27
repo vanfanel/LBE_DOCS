@@ -6342,6 +6342,27 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF
 --Copiamos el ejecutable "rage-racer" a un directorio y metemos allí también la versión PAL del CUE/BIN de PSX,
   que nos pedirá al iniciarase la primera vez.
 
+--Si queremos usar el renderer "modern" necesitamos una caché de assets que se construye así:
+----Copiamos el directorio "tools" que viene con los sources al mismo directorio donde tengamos el ejecutable y el CUE/BIN del juego.
+----Hacemos:
+manuel@debian:~/PSX/rr$ python3 tools/assetbrowser/extract.py \
+  "Rage Racer (Europe).bin" \              
+  --out build/release/native-assets \
+  --no-raw --no-audio --no-vram --no-fmv
+
+--Creamos "rage-port.ini" con el contenido:
+
+[video]
+renderer = modern
+internal_scale = 4
+aspect = 16:9
+fps = vsync
+post = fxaa
+toggle_renderer_key = F10
+
+NOTA: También podríamos pasar el parámetro que quisiéramos al lanzar el ejecutable, como por ejemplo:
+./rage-racer --set video.renderer=modern
+
 *************CELESTE nativo en GNU/Linux**************
 
 Clonamos su repo:
