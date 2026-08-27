@@ -6350,6 +6350,12 @@ manuel@debian:~/PSX/rr$ python3 tools/assetbrowser/extract.py \
   --out build/release/native-assets \
   --no-raw --no-audio --no-vram --no-fmv
 
+--Copiamos el directorio "build/release/native-assets" al mismo directorio donde tenemos el ejecutable y el CUE/BIN del juego.
+  (O bien le pasamos la ruta de "native-assets" en el .ini con:
+
+[modern]
+assets = /ruta/de/native-assets
+
 --Creamos "rage-port.ini" con el contenido:
 
 [video]
