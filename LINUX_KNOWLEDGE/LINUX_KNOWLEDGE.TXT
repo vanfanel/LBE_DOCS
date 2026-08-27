@@ -6325,6 +6325,20 @@ while((tframe = SDL_GetTicks())<tnext)
 ...lo hemos sacado de la versión de la función "PHL_EndDrawing" de SDL1.x (que está en "src/sdl/graphics.c") ya que en SDL1.x
 no hay VSYNC y se sincroniza con timings internos como tenemos que hacer con VRR. 
 
+*************RAGE RACER NATIVO DE PSX EN GNU/LINUX****
+
+--Clonamos su repo:
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/khasinski/rage-racer-pc.git
+
+--Compilamos con:
+mkdir b4
+cd b4
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF
+
+--Copiamos el ejecutable "rage-racer" a un directorio y metemos allí también la versión PAL del CUE/BIN de PSX,
+  que nos pedirá al iniciarase la primera vez.
+
 *************CELESTE nativo en GNU/Linux**************
 
 Clonamos su repo:
