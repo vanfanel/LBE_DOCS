@@ -6369,6 +6369,8 @@ toggle_renderer_key = F10
 NOTA: También podríamos pasar el parámetro que quisiéramos al lanzar el ejecutable, como por ejemplo:
 ./rage-racer --set video.renderer=modern
 
+Para entrar y salir de fullscreen, F4. Para acelerar y frenar con el teclado, X y Z.
+
 *************CELESTE nativo en GNU/Linux**************
 
 Clonamos su repo:
