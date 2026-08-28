@@ -1234,8 +1234,8 @@ meson setup -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
 
 VAMOS CON LABWC EN SÍ:
 
-Bajamos la última release estable de aquí:
-https://github.com/labwc/labwc/releases
+Clonamos los últimos sources estable (mira en https://github.com/labwc/labwc/tags para saber qué versión es):
+git clone --depth 1 https://github.com/labwc/labwc.git -b 0.20.2 labwc-0.20.2
 
 Configuramos con:
 

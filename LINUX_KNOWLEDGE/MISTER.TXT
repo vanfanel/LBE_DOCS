@@ -756,7 +756,7 @@ Si necesitas el LHA
 -Para ROMs 2.x y 3.x necesitas este: https://aminet.net/package/util/arc/lha
 
 Para hacer un archivo ejecutable hazle: protect <archivo> +e
-Y si es un script ejecutable: protect <archivo> +se 
+Y si es un script ejecutable: protect <archivo> +s
 
 Para ejecutar juegos instalados en disco en ROM 1.3, como WHDLoad no funciona porque requiere 2.x, puedes usar JST para
 cargar slaves de WHDLOAD: https://jotd.pagesperso-orange.fr/amiga.html
@@ -771,8 +771,9 @@ PRELOAD
 SplashDelay=0
 ConfigDelay=0
 
-Para dar permisos de ejecución a un archivo es con: PROTECT nombre_archivo e
-Si no puedes borrar un archivo porque está protegido: PROTECT nombre_archivo d
+Para dar permisos de ejecución a un script es con: PROTECT nombre_archivo +s
+Para dar permisos de ejecución a un archivo es con: PROTECT nombre_archivo +e
+Si no puedes borrar un archivo porque está protegido: PROTECT nombre_archivo +d
 Puedes ver los permisos de los archivos con el comando LIST, y a partir de ahí las modificas como quieras.
 Por ejemplo, para que tenga permiso de lectura, escritura, ejecución y borrado sería:
 PROTECT nombre_archivo rwed
