@@ -8,3 +8,14 @@ NOTA: Instrucciones originales de https://docs.gamebub.net/user-guide/firmware-u
 --Conecta la consola por USB al ordenador y aparecerá una unidad llamada "GAME BUB".
   Copia a ella el archivo .uf2 del firmware y ya.
 
+LOS JUEGOS NO VAN BIEN!!!
+=========================
+
+Necesitas las BIOS de cada consola, porque las que lleva incluido el core tienen muchos problemas.
+Así que necesitas estas BIOS en el directorio "system" en la raíz de la MicroSD:
+
+Consola		Nombre de archivo		Tamaño		SH1SUM
+-------		--------------------	------		------
+GB			gameboy.bios-dmg.bin 	256 		4ed31ec6b0b175bb109c0eb5fd3d193da823339f
+GBC 		gameboy.bios-cgb.bin 	2304 		1293d68bf9643bc4f36954c1e80e38f39864528d
+GBA 		gba.bios.bin 			16384 		300c20df6731a33952ded8c436f7f186d25d3492
