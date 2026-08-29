@@ -1,0 +1,10 @@
+ACTUALIZAR EL FIRMWARE
+======================
+NOTA: Instrucciones originales de https://docs.gamebub.net/user-guide/firmware-updates/#handheld
+
+--Nos bajamos el último firmware disponible de: https://github.com/elipsitz/gamebub/releases
+--Manten pulsado el botón de bajar volúmen, y con él pulsado, pulsa el botón de POWER.
+--La pantalla NO se encenderá, pero una luz morada parpadeará.
+--Conecta la consola por USB al ordenador y aparecerá una unidad llamada "GAME BUB".
+  Copia a ella el archivo .uf2 del firmware y ya.
+
