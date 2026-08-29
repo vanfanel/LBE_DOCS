@@ -832,6 +832,14 @@ Wait 1
 SYS:Programs/TL/TinyLauncher.exe
 reboot
 
+DEBUGUEAR PROGRAMAS CON HRTMON
+--Bájate esta versión de HRTMON y ponla en /media/fat/HRTMON.ROM:
+https://github.com/nretro/Minimig-AGA_MiSTer/raw/refs/heads/MiSTer/releases/hrtmonV2.37WinUAE.zip
+(SÍ, va ahí, tirada en /media/fat/HRTMON.ROM tal cual).
+--Activa el HRTMON en las opciones del core.
+--Carga el programa que sea.
+--Cuando dé el gurú o lo que sea, pulsa F11 y pásale la foto a quien lo esté investigando.
+
 *********NOTAS CORE PDP2011**************************************************************
 
 Los discos de Unix sólo funcionan en los modelos 11/45. Para BSD2.x, es con una 11/70.
