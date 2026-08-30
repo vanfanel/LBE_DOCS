@@ -513,7 +513,7 @@ NOTAS CORE AO486
 ================
 
 --Montar el VHD de MSDOS:
-mount -o loop,offset=32256 msdos622.vhd /mnt
+mount -o loop,offset=32256 dos622.vhd /mnt
 
 --Evitar "drifting" con joystick con DPAD digital solamente: Poner "Joystick Axes" a "Count 8+141".
 
