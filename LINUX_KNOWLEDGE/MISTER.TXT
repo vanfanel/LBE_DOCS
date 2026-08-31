@@ -517,6 +517,11 @@ mount -o loop,offset=32256 dos622.vhd /mnt
 
 --Evitar "drifting" con joystick con DPAD digital solamente: Poner "Joystick Axes" a "Count 8+141".
 
+--Parche Lemmings para que siempre detecte la ADLIB (aunque no evita que se salte notas si te pasas con la velocidad):
+  En VGALEMMI.EXE ponemos estos bytes así con HEXEDIT:
+  0x07A1 = 9D
+  0x07A2 = 9C
+
 NOTAS CORE MSX
 ==============
 
