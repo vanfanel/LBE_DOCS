@@ -6848,8 +6848,7 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 ===========================================================
 
 Y cambiamos el ownership de ~/.viminfo al usuario, ya que viene como propiedad del root y así no funciona lo que pongas en vimrc.
-Y si aún así no funciona, comenta todo lo que has puesto en ~/.vimrc, debería funcionar. Entonces ve descomentando líneas y comprobando qué setting de .vimrc es el que
-impide que funcione. Sí, esto me ha pasado.
+Y si aún así no funciona, comenta todo lo que has puesto en ~/.vimrc, debería funcionar. Entonces ve descomentando líneas y comprobando qué setting de .vimrc es el que impide que funcione. Sí, esto me ha pasado.
 
 ===========================================================
 
@@ -11447,11 +11446,11 @@ esac
 
 
 -Le damos permisos de ejecución al script de montaje:
-chmod +x /usr/local/bin/usbmount
+sudo chmod +x /usr/local/bin/usbmount
 
 -Recargamos las udev rules y los servicios:
-udevadm control --reload-rules
-systemctl daemon-reload
+sudo udevadm control --reload-rules
+sudo systemctl daemon-reload
 
 ...Y ya deberíamos tener los dispositivos de almacenamiento USB automáticamente montados en /media/...
 
