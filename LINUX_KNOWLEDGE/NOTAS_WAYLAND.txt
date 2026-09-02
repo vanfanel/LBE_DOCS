@@ -1212,7 +1212,7 @@ INSTALAR LABWC, COMPOSITOR WINDOW-STACKING (NECESITA WLROOTS)
 =============================================================
 
 Instalamos dependencias previas:
-sudo apt-get install libxml2-dev libinput --no-install-recommends
+sudo apt-get install libxml2-dev libinput libseat-dev libdisplay-info-dev --no-install-recommends
 
 -Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
 --Instalamos dependencias previas de CAIRO:
@@ -1256,13 +1256,15 @@ CXXFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release -Dxwayland=disabled ..
 
 PARA PODER LANZAR LABWC O CUALQUIER COMPOSITOR, EN SU SCRIPT DE LANZAMIENTO (NORMALMENTE /usr/local/bin/launch-labwc)
-TENDREMOS QUE HACER ESTAS COSAS (el directorio "/run/user/1000" puede variar, mira cuál tienes creado y exporta ese):
+TENDREMOS QUE HACER ESTAS COSAS:
 
-rundir="/run/user/1000"
-if [[ ! -e $rundir ]]; then
-    mkdir -p $rundir
-fi
-export XDG_RUNTIME_DIR=$rundir
+#!/bin/bash
+# Usar el runtime del usuario actual
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+# Usar el renderer vulkan
+export WLR_RENDERER=vulkan
+# Ejecutar LabWC
+/usr/local/bin/labwc
 
 Y PARA QUE PODAMOS EJECUTAR PROGRAMAS DE WAYLAND POR SSH, TENEMOS QUE TENER EN ~/.bashrc:
 export WAYLAND_DISPLAY=wayland-0
