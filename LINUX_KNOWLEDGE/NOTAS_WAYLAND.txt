@@ -1256,9 +1256,9 @@ CXXFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release -Dxwayland=disabled ..
 
 PARA PODER LANZAR LABWC O CUALQUIER COMPOSITOR, EN SU SCRIPT DE LANZAMIENTO (NORMALMENTE /usr/local/bin/launch-labwc)
-TENDREMOS QUE HACER ESTAS COSAS:
+TENDREMOS QUE HACER ESTAS COSAS (el directorio "/run/user/1000" puede variar, mira cuál tienes creado y exporta ese):
 
-rundir="/run/user/0"
+rundir="/run/user/1000"
 if [[ ! -e $rundir ]]; then
     mkdir -p $rundir
 fi
