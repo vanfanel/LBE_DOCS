@@ -512,7 +512,7 @@ En este punto, puedes probar si libdrm te funciona bien haciendo:
 modetest -s 32:1280x720
 (donde 32 es un ID de conector válido: puedes ver los conectores con "modetest|grep connected").
 O bien, en X86_64 con AMD, usa: modetest -s 93:1280x720
-O bien, en X86_64 con Intel, usa: modetest -s 236:1280x720
+O bien, en X86_64 con Intel, usa: modetest -s 241:1280x720
 
 ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ATENCIÓN, ATENCIÓN!!!!!!!!!!!!!!!!!!!!!!!!!!!
 SI ESTÁS EN X86_64:
@@ -537,14 +537,14 @@ ASÍ QUE HAZ LAS DOS COSAS QUE ACABO DE DECIRTE.
 				DEPENDENCIAS PREVIAS DE MESA
 
 SI QUIERES OPENGL NECESITAS ESTAS DEPENDENCIAS:
-apt-get install --no-install-recommends \
+sudo apt-get install --no-install-recommends \
     flex bison python3-mako python3-setuptools python3-yaml \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
     zlib1g-dev pkg-config
 
 SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
-apt-get install libvulkan-dev libvulkan1 vulkan-tools glslang-tools --no-install-recommends
+sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools glslang-tools --no-install-recommends
 
 SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, TIENES QUE INSTALAR LIBGLVND:
 Bajamos la última estable de aquí:
