@@ -556,13 +556,10 @@ meson setup -Dbuildtype=release -Dglx=disabled -Dx11=disabled ..
 SI QUIERES QUE MESA FUNCIONE SOBRE WAYLAND, VE E INSTALA WAYLAND AHORA (Mira en el fichero de notas de Wayland).
 
 #####
-DEPENDENCIAS EXCLUSIVAS PARA GRÁFICOS INTEL (los números de versión son para Debian 12, pueden cambian en Debian 13 y posteriores):
+DEPENDENCIAS EXCLUSIVAS PARA GRÁFICOS INTEL (los números de versión son para Debian 13, pueden cambian en Debian 14 y posteriores):
 
 PARA DEBIAN 13:
-apt-get install python3-ply libclang-common-18-dev libllvmspirvlib-18-dev llvm-18-dev libclang-cpp18-dev libclang-18-dev libclc-18 libclc-18-dev
-
-SI AÚN ESTÁS EN DEBIAN 12:
-apt-get install python3-ply libclang-common-15-dev libllvmspirvlib-15-dev llvm-15-dev libclang-cpp15-dev libclang-15-dev libclc-15 libclc-15-dev
+sudo apt-get install python3-ply libclang-common-19-dev libllvmspirvlib-19-dev llvm-19-dev libclang-cpp19-dev libclang-19-dev libclc-19 libclc-19-dev
 
 ¡¡¡OJO!!! ES MUY IMPORTANTE QUE COINCIDA EL NÚMERO DE VERSIÓN DE TODO. SI NO, NO COMPILARÁ Y LOS ERRORES SERÁN IMPOSIBLES DE ENTENDER.
 #####
