@@ -1234,6 +1234,16 @@ CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
 meson setup -Dbuildtype=release -Dlibthai=disabled -Dxft=disabled ..
 
+DEPENDENCIA PREVIA SÓLO PARA DEBIAN 13 (en Debian 14 ya nos vale con la versión de sistema):
+--Eliminamos la versión de sistema:
+sudo apt-get purge libpixman*
+--Bajamos la última versión estable:
+wget https://cairographics.org/releases/pixman-0.46.4.tar.xz
+--Configuramos y compilamos con:
+CFLAGS="-march=native -mtune=native" \
+CXXFLAGS="-march=native -mtune=native" \
+meson setup -Dbuildtype=release ..
+
 VAMOS CON LABWC EN SÍ:
 
 Clonamos los últimos sources estable (mira en https://github.com/labwc/labwc/tags para saber qué versión es):
