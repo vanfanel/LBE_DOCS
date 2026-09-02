@@ -7102,7 +7102,7 @@ Para extraer un .config de un kernel que sabemos que funciona, en el directorio 
 ****************INSTALAR GLMARK2****************************************************************************
 
 Instalamos dependencias previas:
-apt-get install libpng-dev libjpeg-dev
+sudo apt-get install libpng-dev libjpeg-dev
 
 Clonamos su repo:
 git clone --depth 1 https://github.com/glmark2/glmark2.git

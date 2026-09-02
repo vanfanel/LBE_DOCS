@@ -647,7 +647,7 @@ INSTALAR FOOT, UN EMULADOR DE TERMINAL PARA WAYLAND
 ===================================================
 
 Instalamos dependencias previas:
-apt-get install libfontconfig-dev libncurses-dev libtllist-dev libfcft-dev --no-install-recommends
+sudo apt-get install libfontconfig-dev libncurses-dev libtllist-dev libfcft-dev --no-install-recommends
 
 Bajamos la última versión estable de aquí:
 https://codeberg.org/dnkl/foot/releases
@@ -1437,7 +1437,7 @@ LANZAR WAYLAND COMO SERVICIO DE SYSTEMD (MODO USUARIO NORMAL, RECOMENDADO)
 --Creamos el directorio de servicios de usuario:
 mkdir -p ~/.config/systemd/user/
 
---Creamos el archivo de servicio de usuario "/etc/systemd/system/wayland.service" con el contenido:
+--Creamos el archivo de servicio de usuario "~/.config/systemd/user/wayland.service" con el contenido:
 
 [Unit]
 Description=Wayland compositor (LabWC)
