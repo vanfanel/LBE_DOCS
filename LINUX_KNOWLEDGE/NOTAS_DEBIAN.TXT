@@ -831,6 +831,13 @@ No nos debe dar ningún error de rtkit. Y recuerda que pipewire se comunica con 
 --Para seleccionar la salida de audio, miramos cuáles tenemos con "wpctl status", seleccionamos la que queramos
 de las que hay en Audio->Sinks con "wpctl <número>", y probamos el audio con "speaker-test -c 2 -t wav"
 
+--Para subir y bajar el volúmen de forma absoluta (se queda guardado solo sin hacer nada):
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.9
+...Esto lo dejaría al 90%, siendo 1.0 el 100% de volúmen.
+
+--Para subir y bajar el volúmen de forma relativa (se queda guardado solo sin hacer nada):
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
+
 --Para evitar problemas de audio durante los primeros segundos de RetroArch sobre Pipewire,
 creamos el fichero /etc/modprobe.d/audio_disable_powersave.conf con el contenido:
 options snd_hda_intel power_save=0
@@ -840,15 +847,6 @@ cat /sys/module/snd_hda_intel/parameters/power_save
 cat /sys/module/snd_hda_intel/parameters/power_save_controller
 ...Tiene que salir "0" y "N", respectivamente.
 
---Para subir y bajar el volúmen de forma absoluta (se queda guardado solo sin hacer nada):
-wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.9
-...Esto lo dejaría al 90%, siendo 1.0 el 100% de volúmen.
-
---Para subir y bajar el volúmen de forma relativa (se queda guardado solo sin hacer nada):
-wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
-
-
-	
 			CONFIGURACIÓN AVANZADA DE PIPEWIRE (NO ES NECESARIO NORMALMENTE HACER NADA DE ESTO)
 			(INFO INTERESANTE DE: https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#setting-buffer-size-quantum)
 
