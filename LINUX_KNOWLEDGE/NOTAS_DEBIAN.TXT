@@ -631,8 +631,7 @@ cmake .. -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_BUILD_TYPE=Releas
 
 		--INSTALAR SDL2-COMPAT--
 
---Clonamos el repo de SDL2-COMPAT:
-git clone --depth 1 https://github.com/libsdl-org/sdl2-compat.git
+--Bajamos los últimos sources estables de: https://github.com/libsdl-org/sdl2-compat/releases
 
 --Compilamos con:
 mkdir b4
