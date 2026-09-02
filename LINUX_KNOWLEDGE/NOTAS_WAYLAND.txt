@@ -1212,7 +1212,7 @@ INSTALAR LABWC, COMPOSITOR WINDOW-STACKING (NECESITA WLROOTS)
 =============================================================
 
 Instalamos dependencias previas:
-sudo apt-get install libxml2-dev --no-install-recommends
+sudo apt-get install libxml2-dev libinput --no-install-recommends
 
 -Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
 --Instalamos dependencias previas de CAIRO:
