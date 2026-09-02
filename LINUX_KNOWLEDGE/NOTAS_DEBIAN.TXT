@@ -828,7 +828,7 @@ en RetroArch debemos elegirlo como audio output y en SDL2 como SDL_AUDIODRIVER o
 deberían ya sonar sin problemas.
 No nos debe dar ningún error de rtkit. Y recuerda que pipewire se comunica con rtkid mediante d-bus.
 	
-			CONFIGURACIÓN DE PIPEWIRE
+			CONFIGURACIÓN AVANZADA DE PIPEWIRE (NO ES NECESARIO NORMALMENTE HACER NADA DE ESTO)
 			(INFO INTERESANTE DE: https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#setting-buffer-size-quantum)
 
 --PARA PODER PONER RETROARCH A 32ms DE LATENCIA DE AUDIO ESTABLES:
@@ -866,7 +866,7 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.9
 --Para subir y bajar el volúmen de forma relativa (se queda guardado solo sin hacer nada):
 wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%+
 
-			PIPEWIRE CON PRIORIDAD REALTIME
+			PIPEWIRE CON PRIORIDAD REALTIME (YA DEBERÍA ESTAR FUNCIONANDO SI TIENES RTKIT Y D-BUS, NO HAY QUE HACER NADA)
 
 Pipewire NO NECESITA el grupo "audio" con limits quitados ni nada de eso, usa RTKIT que es la manera moderna
 que tienen los programas de usuario de obtener prioridad realtime.
