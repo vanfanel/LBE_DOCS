@@ -808,7 +808,7 @@ SI QUISIERAS INSTALAR LA VERSIÓN ACTUAL, AUNQUE NO APORTA VENTAJAS NOTABLES, LO
 NO SE TARDA NADA CON ESAS NOTAS. PERO VAMOS, QUE ASÍ CON LA VERSIÓN DE DEBIAN VA IGUAL.
 
 --Instalamos los paquetes necesarios:
-sudo apt-get install pipewire libpipewire-0.3-dev wireplumber pipewire-alsa --no-install-recommends
+sudo apt-get install pipewire libpipewire-0.3-dev wireplumber pipewire-alsa rtkit --no-install-recommends
 
 NOTA: Al instalar el paquete "pipewire-alsa", ya no nececesitas un /etc/asound.conf:
 todo el sonido de ALSA ya sale por Pipewire porque automáticamente el dispositivo ALSA por defecto pasa a ser Pipewire,
@@ -818,13 +818,15 @@ pipewire
 default
     Default ALSA Output (currently PipeWire Media Server)
 
---Lanzamos el servicio sin reiniciar así:
+--Activamos y lanzamos rtkit y el servicio pipewire sin reiniciar así:
+systemctl enable --now rtkit-daemon.service
 systemctl --user start pipewire.service
 
---Para comprobar que el servicio pipewire está funcionando, hacemos "systemctl --user status pipewire.service"
+--Para comprobar que el servicio pipewire está funcionando, hacemos "systemctl --user status pipewire.service".
 Si nos sale que sí está rulando, los programas que hayamos compilado con soporte de pipewire (SDL2 y RetroArch lo soportan,
 en RetroArch debemos elegirlo como audio output y en SDL2 como SDL_AUDIODRIVER o compilar sin soporte ALSA para que lo use por defecto)
 deberían ya sonar sin problemas.
+No nos debe dar ningún error de rtkit. Y recuerda que pipewire se comunica con rtkid mediante d-bus.
 	
 			CONFIGURACIÓN DE PIPEWIRE
 			(INFO INTERESANTE DE: https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#setting-buffer-size-quantum)
