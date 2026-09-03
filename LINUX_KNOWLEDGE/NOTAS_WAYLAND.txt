@@ -1212,11 +1212,11 @@ INSTALAR LABWC, COMPOSITOR WINDOW-STACKING (NECESITA WLROOTS)
 =============================================================
 
 Instalamos dependencias previas:
-sudo apt-get install libxml2-dev libinput-dev libseat-dev libdisplay-info-dev --no-install-recommends
+sudo apt-get install libxml2-dev libinput-dev libxkbcommon-dev libseat-dev libdisplay-info-dev --no-install-recommends
 
 -Instalamos manualmente una dependencia previa, CAIRO, ya que el paquete de DEBIAN viene con dependencias de X11:
 --Instalamos dependencias previas de CAIRO:
-sudo apt-get install libfontconfig-dev
+sudo apt-get install libglib2.0-dev libharfbuzz-dev libfontconfig-dev
 --Bajamos los últimos sources estables de: https://gitlab.freedesktop.org/cairo/cairo/-/releases
 --Configuramos con:
 CFLAGS="-march=native -mtune=native" \
@@ -1226,7 +1226,7 @@ meson setup -Dbuildtype=release -Dtests=disabled -Ddwrite=disabled ..
 
 Instalamos otra diferencia previa, PANGO, ya que la que trae Debian depende de mierdas de X11:
 -Instalamos dependencias previas:
-sudo apt-get install libfontconfig-dev --no-install-recommends
+sudo apt-get install libglib2.0-dev libharfbuzz-dev libfontconfig-dev --no-install-recommends
 -Desinstalamos el pango del sistema: apt-get purge libpango* && apt-get autoremove
 -Bajamos los últimos sources estables de: https://github.com/GNOME/pango/tags
 -Configuramos con:
