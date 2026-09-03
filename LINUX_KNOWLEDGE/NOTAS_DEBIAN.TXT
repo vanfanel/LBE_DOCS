@@ -544,7 +544,7 @@ sudo apt-get install --no-install-recommends \
     zlib1g-dev pkg-config
 
 SI ADEMÁS QUIERES VULKAN NECESITAS ESTAS DEPENDENCIAS:
-sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools glslang-tools --no-install-recommends
+sudo apt-get install libvulkan-dev libvulkan1 vulkan-tools glslang-tools spirv-tools-dev spirv-tools-headers --no-install-recommends
 
 SI ADEMÁS QUIERES OPENGL COMPLETO SOBRE LIBGLVND, TIENES QUE INSTALAR LIBGLVND:
 Bajamos la última estable de aquí:
