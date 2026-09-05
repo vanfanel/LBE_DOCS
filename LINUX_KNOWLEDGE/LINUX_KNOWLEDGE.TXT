@@ -11605,9 +11605,12 @@ Configuramos con:
 mkdir b4
 cd b4
 
-cmake .. -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_CXX_FLAGS="-march=native -mtune=native" \
--DCMAKE_C_FLAGS="-march=native -mtune=native"
+cmake .. -DCMAKE_BUILD_TYPE=Release  \
+-DCMAKE_CXX_FLAGS="-march=native -mtune=native -Wno-error=dangling-pointer -Wno-error=array-bounds"  \
+-DCMAKE_C_FLAGS="-march=native -mtune=native -Wno-error=dangling-pointer -Wno-error=array-bounds" \
+-DCMAKE_POLICY_VERSION_MINIMUM=3.5
+
+NOTA: Los "-wno-error" son porque GCC 16 considera errores ciertas chorradillas, y para que no las considere.
 
 	***(OPCIONAL!!!) PARTE 3: VAINFO***
 
