@@ -11769,7 +11769,7 @@ SHADERS CON MPV
 
 --Clonamos el repo al lugar donde se van a guardar los shaders:
 mkdir -p ~/.config/mpv/shaders
-git clone --depth https://git.sr.ht/~taiite/mpv-retro-shaders ~/.config/mpv/shaders/mpv-retro-shaders
+git clone --depth 1 https://git.sr.ht/~taiite/mpv-retro-shaders ~/.config/mpv/shaders/mpv-retro-shaders
 
 --Añadimos esto al principio del fichero ~/.config/mpv/mpv.conf:
 include=~/shaders/mpv-retro-shaders/all.conf
