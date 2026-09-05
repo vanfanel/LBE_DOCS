@@ -11689,7 +11689,7 @@ así que la compilamos nosotros.
 
 --Instalamos una dependencia previa: sudo apt-get install liblcms2-dev
 --Clonamos su última versión estable (vemos la última versión estable en https://code.videolan.org/videolan/libplacebo/-/tags):
-  git clone --depth 1 --recurse-submodules -b v7.351.0 https://code.videolan.org/videolan/libplacebo.git libplacebo-7.351.0
+  git clone --depth 1 --recurse-submodules -b v7.360.1 https://code.videolan.org/videolan/libplacebo.git libplacebo-7.360.1
 --Configuramos con:	
 
 CFLAGS="-march=native -mtune=native" \
