@@ -4,7 +4,8 @@ INSTRUCCIONES GENERALES PARA COMPILAR EL KERNEL
 -Instalamos dependencias previas:
 apt-get install build-essential libncurses-dev bison flex libssl-dev libelf-dev
 
--Nos descargamos los sources del kernel en uso:
+-Nos bajamos los últimos sources estables del kernel upstream de https://kernel.org
+o nos descargamos los sources del kernel Debian:
 apt-get source linux
 
 -Entramos en el directorio raiz de los sources:
