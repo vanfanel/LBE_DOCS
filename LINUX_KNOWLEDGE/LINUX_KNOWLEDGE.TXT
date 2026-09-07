@@ -8213,7 +8213,8 @@ ZELDA OOT EN GNU/LINUX
 
 --Instalamos dependencias previas:
 sudo apt-get install libbz2-dev libpng-dev lsb-release libzip-dev zipcmp zipmerge ziptool \
-libtinyxml2-dev nlohmann-json3-dev libspdlog-dev
+libtinyxml2-dev nlohmann-json3-dev libspdlog-dev \
+libogg-dev libvorbis-dev libopus-dev libopusfile-dev
 
 --Clonamos la última versión estable (podemos ver cuál es en https://github.com/HarbourMasters/Shipwright/releases):
 git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/HarbourMasters/Shipwright.git -b 9.2.3 Shipwright-9.2.3
