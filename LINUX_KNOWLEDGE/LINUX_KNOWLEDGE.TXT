@@ -8222,6 +8222,10 @@ git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
 
+--(En Debian Testing, debido a los cambios de GCC 16.x)
+  Editamos "libultraship/include/ship/window/MouseStateManager.h" y añadimos:
+  #include <cstdint>
+
 --Configuramos y compilamos con:
 
 mkdir b4
