@@ -1,7 +1,7 @@
 SPECS
 =====
 
-Motherboard: X600TM-ITX
+Motherboard: X600TM-ITX (alibaba)
 RAM: SODIMM DDR5 Kingston FURY Impact 32GB (2x16GB) 6400MT/s CL38 <--MAL: Sólo tiene perfiles XMP que son para INTEL,
      no tiene perfiles EXPO que es lo que se usa en AMD. Puedes cargar perfiles XMP en la BIOS pero dan inestabilidad
      (puntos blancos/rojos/verdes en pantalla cuando se carga la CPU).
