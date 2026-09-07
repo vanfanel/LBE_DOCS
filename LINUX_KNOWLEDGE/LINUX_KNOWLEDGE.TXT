@@ -8141,6 +8141,9 @@ Así que usa los 30FPS originales por defecto.
 SM64COOPDX, SUPER MARIO 64 COOPERATIVO EN GNU/LINUX
 ===================================================
 
+--Instalamos dependencias previas:
+sudo apt-get install libcurl4-gnutls-dev --no-install-recommends
+
 --Clonamos los sources la útima versión estable
 (podemos ver cuál es la última versión estable en https://github.com/coop-deluxe/sm64coopdx/releases):
 
