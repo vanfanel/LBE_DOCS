@@ -8212,7 +8212,7 @@ ZELDA OOT EN GNU/LINUX
 ======================
 
 --Instalamos dependencias previas:
-apt-get install libbz2-dev libpng-dev lsb-release libzip-dev zipcmp zipmerge ziptool \
+sudo apt-get install libbz2-dev libpng-dev lsb-release libzip-dev zipcmp zipmerge ziptool \
 libtinyxml2-dev nlohmann-json3-dev libspdlog-dev
 
 --Clonamos la última versión estable (podemos ver cuál es en https://github.com/HarbourMasters/Shipwright/releases):
