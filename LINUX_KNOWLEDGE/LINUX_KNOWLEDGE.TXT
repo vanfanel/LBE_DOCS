@@ -7734,6 +7734,16 @@ export LC_TYPE=en_US.UTF-8
 
 en el .bashrc y listo. Si persiste, añadimos lo mismo a .bash_profile.
 
+Buscar qué paquete instala un archivo en Debian
+===============================================
+
+Se hace con "apt-file".
+--Instalamos "apt-file"
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install apt-file
+--Buscamos el archivo que nos falta:
+apt-file search 'curl/curl.h'
+
 Roms FastROM preparadas y actualizadas
 ======================================
 
