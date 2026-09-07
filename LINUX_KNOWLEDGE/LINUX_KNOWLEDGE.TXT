@@ -8254,7 +8254,9 @@ PARA QUE NO DESAPAREZCAN OBJETOS DEL ESCENARIO AL LLEGAR A LOS BORDES EN MODO 16
 PARA USAR MODS, creamos el directorio ~/n64/zelda64/mods y los metemos ahí.
 Si el MOD tiene directorios, da igual, lo metes tal cual con sus directorios.
 Ahora activamos "Enhancements->Graphics->Mods->Use Alternate Assets" y ya se cargan y se utilizan.
-+++Si usas el Djipi's 3DS Experience (https://gamebanana.com/mods/477979) debes tener activados:
++++Se recomienda usar "OOT Reloaded", baja la versión para SOH de aquí: https://evilgames.eu/texture-packs/oot-reloaded.htm
++++NO RECOMENDADO PORQUE TIENE ROTAS LAS TEXTURAS DEL EXTERIOR DEL TEMPO DEL TIEPO:
+Si en su lugar usas el Djipi's 3DS Experience (https://gamebanana.com/mods/477979) debes tener activados:
 Enhancements->Graphics->Mods->Disable Grotto Fixed Rotation
 Enhancements->Graphics->Enable 3D dropped items / projectiles
 Y desactivado:
