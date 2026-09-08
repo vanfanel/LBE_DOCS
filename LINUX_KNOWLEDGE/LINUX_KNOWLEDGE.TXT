@@ -1202,8 +1202,21 @@ PASO 1: DESACTIVAR LOS "C-STATES" Y "DF C-STATES" EN LA BIOS:
 ----En "Advanced\AMD CBS\NBIO Common Options\GFX Configuration" ponemos "iGPU Configuration" a "UMA_GAME_OPTIMIZED"
     (esto es sólo para un pequeño plus de estabilidad en el deviation, lo importante es quitar los C-STATES y el BOOST).
 
-PASO 2: NO hay que hacer nada realmente: simplemente dejamos "vsync = off" y "presentation_mode = auto", que es como vienen por defecto.
-Ya no hace falta nada más si se tiene un sistema con VRR/AdaptiveSync funcional y el compositor de Wayland al día.
+PASO 2:
+--Para juegos de 70Hz (la GRAN mayoría)
+  NO hay que hacer nada realmente: simplemente dejamos "vsync = off" y "presentation_mode = auto", que es como vienen por defecto.
+  Ya no hace falta nada más si se tiene un sistema con VRR/AdaptiveSync funcional y el compositor de Wayland al día.
+--Para juegos de 60Hz (Superfrog, Jazz, Pinball Dreams/Fantasies, Lost Vikings...), ponemos un modo de 60Hz al entrar
+  y restauramos el modo preferido al salir. Por ejemplo, para Superfrog:
+wlr-randr --output DP-1 --mode 1920x1080@60
+dosbox --set cpu_cycles_protected=12000 --set gus=on games/juansapo/sf.exe
+wlr-randr --output DP-1 --preferred
+--SI EL JUEGO ES DE LOS QUE CAMBIA ENTRE 70Hz Y 60Hz (Jazz, Pinball Dreams/Fantasies...),
+  además forzamos 60Hz constantes con "--set dos_rate=60" y así nos aseguramos de que siempre va bien.
+  Por ejemplo, para Jazz:
+wlr-randr --output DP-1 --set dos_rate=60 --mode 1920x1080@60
+dosbox --set cpu_cycles_protected=25000 games/jazz/jazz.exe
+wlr-randr --output DP-1 --preferred
 
 		CONFIGURAR EL JOYSTICK
 		
