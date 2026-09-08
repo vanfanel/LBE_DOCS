@@ -118,6 +118,7 @@ donde pone "JoyDown" pones "ButtonDown", etc. El resto de controles los puedes c
 así que haz un "find ./ -name *.bmp" y todo lo que veas del tipo snp*.bmp, lo borras. ¡OJO: Hay más BMPs, borra sólo los que empiezan por "snp"!
 ----Para que no se pare al principio de un giro después de andar, sería mirar en SCRIPTS/Biped/ActionTables.py y buscar "Relax",
     ya que desde posición de relax gira continuo.
+
 --PRINCE OF PERSIA: THE SANDS OF TIME
 Tienes el juego ya listo en el disco duro de backup. Está ya parcheado.
 Para hacerlo, si quieres las voces en casrellano, lo primero fue bajar e instalar la versión DE ESPAÑA (GOG no tiene la versión de España).
@@ -125,6 +126,7 @@ Para que se vean las texturas, tener 16:9, etc., tuve que aplicar una serie de p
 https://www.moddb.com/games/prince-of-persia-the-sands-of-time/downloads/sands-of-time-fix-compilation
 Para que que funcione sin el CD, es necesario un crack NOCD del que sólo hace falta el archivo POP.EXE.
 (Lo encontré en Archive.org, te vale el EXE de cualquier versión aunque sea en otro idioma).
+
 --UNREAL
 Tienes el juego de Windows ya listo en el disco duro de backup, pero por si acaso, se hace así:
 Bájate el Unreal original de Archive, y luego copias encima los contenidos del ZIP del último parche de OldUnreal
@@ -135,6 +137,11 @@ De momento con el de Windows en WINE vamos bien.
 Para evitar el "tirón" al atravesar la niebla durante la demo, usa el renderer DX9 y ten configurado e instalado DXVK
 para que así DX9 vaya sobre Vulkan.
 NO actives "Precache Content", no sólo no mejora los tirones sino que los empeora. Ni idea.
+
+--AMERICAN MCGEE'S ALICE
+----Para tener movimiento suave en sistemas sin VRR, edita "bin/alice.bat" y déjalo así:
+alice.exe -RunningFromAlice2 +seta r_swapinterval 1 +seta com_maxfps 0
+
 --HALO
 Tienes el juego de Windows ya listo en el disco duro de backup, pero por si acaso, se hace así:
 Todo lo necesario (incluyendo el juego comercial) lo tienes en el mirror de "REFINED" aquí: https://www.proxeninc.net/Halo/Refined/
