@@ -71,7 +71,7 @@ también muy bien, sólo que las scanlines no se verán, pero la shadowmask qued
 
 ########NOTAS SOBRE AJUSTES EN LOS SHADERS######
 
---PARA CRTFakeottes: Pon "crt_gamma" a 2.0 y "monitor_gamma" a 2.5, para evitar tener colores "washed out" (rojo pálido, amarillo caca, etc).
+--PARA CRTFakelottes: Pon "crt_gamma" a 2.0 y "monitor_gamma" a 2.5, para evitar tener colores "washed out" (rojo pálido, amarillo caca, etc).
                      Combínalo con brillo/contraste en el monitor puestos a 45/85.
 
 --PARA CRTLottes2: Los valores "INPUT_X" e "INPUT_Y" vienen configurados con valores raros y se ve todo mal.
