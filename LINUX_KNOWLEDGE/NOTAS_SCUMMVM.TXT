@@ -10,7 +10,9 @@ git clone --depth 1 -b v2026.3.0 https://github.com/scummvm/scummvm.git scummvm-
 --Editamos backends/graphics/sdl/sdl-graphics.cpp y en la función SdlGraphicsManager::showMouse
 comentamos todo el "if" y lo que hay dentro.
 
---LO COMPILAMOS CON PLUGINS DINÁMICOS Y ENGINES SELECTOS:
+--LO COMPILAMOS CON PLUGINS DINÁMICOS Y ENGINES SELECTOS
+(OJO!! Si te da un error raro de linkado relacionado con "Scumm::ScummPAKFile",
+ quita lo de "--enable-plugins --default-dynamic")
 
 CFLAGS="-march=native -mtune=native -O2" \
 CXXFLAGS="-march=native -mtune=native -O2" \
