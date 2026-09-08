@@ -56,12 +56,11 @@ git clone --depth 1 https://github.com/Matsilagi/RSRetroArch.git
 los del primer repo que hemos clonado. 
 
 --Ahora creamos el fichero de configuración "~/.config/vkBasalt/vkBasalt.conf" con este contenido:
-
-enableOnLaunch = True  
-toggleKey = Home                                                                                                                          
-effects = crt                                                                                                                                                                                                                                                                                    
-crt = /home/manuel/reshade-shaders/Shaders/CRTFakeLottes.fx                                                                                             
-reshadeTexturePath = /home/manuel/reshade-shaders/Textures                                                                                              
+enableOnLaunch = True
+toggleKey = Home
+effects = crt
+crt = /home/manuel/reshade-shaders/Shaders/CRTFakeLottes.fx
+reshadeTexturePath = /home/manuel/reshade-shaders/Textures
 reshadeIncludePath = /home/manuel/reshade-shaders/Shaders
 
 (Alternativamente, si un juego necesita una configuración especial,
