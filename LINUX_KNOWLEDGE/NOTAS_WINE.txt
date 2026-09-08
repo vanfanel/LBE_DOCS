@@ -21,10 +21,11 @@ libwebrtc-audio-processing-dev libsqlite3-dev libfdk-aac-dev
 --Configuramos con:
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled  -Dgst-plugins-good:soup=disabled -Dgst-examples=disabled
+meson setup .. -Dbuildtype=release -Dgst-plugins-bad:avtp=disabled -Dgst-plugins-good:soup=disabled -Dgst-examples=disabled \
 -Drtsp_server=disabled -Dtests=disabled -Dtools=disabled -Dexamples=disabled -Dbenchmarks=disabled -Dorc=disabled \
 -Ddevtools=disabled -Dlibnice=disabled -Dintrospection=disabled -Dlibnice=disabled -Dwebrtc=disabled \
--Dgst-plugins-bad:vmaf=disabled -Dges=disabled
+-Dgst-plugins-bad:vmaf=disabled -Dges=disabled -Dgst-plugins-good:soup=disabled \
+-Dgst-plugins-good:adaptivedemux2=disabled
 
 RECUERDA QUE PARA QUE FUNCIONE NTSYNC NECESITAMOS TENER UNA INSTALACIÓN "PERSONAL" DE LOS HEADERS DEL KERNEL ACTUAL,
 QUE DEBISTE INSTALAR EN /src/ntsync-headers CUANDO INSTALASTE EL KERNEL (Lo tienes en las instrucciones de instalación del kernel).
