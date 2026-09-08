@@ -13,7 +13,10 @@ INSTALAMOS OTRA DEPENDENCIA PREVIA: libgstreamer
 No podemos instalar la de Debian (libgstreamer-plugins-base1.0-dev) porque nos mete la porquería de X11 y MESA viejo.
 --Instalamos dependencias previas:
 sudo apt-get install libflac-dev libmp3lame-dev libsrtp2-dev libvpx-dev libopenh264-dev \
-libwebrtc-audio-processing-dev libsqlite3-dev
+libwebrtc-audio-processing-dev libsqlite3-dev libfdk-aac-dev
+(NOTA: Si no encuentra "libfdk-aac-dev" es porque no tienes añadidos los repositorios non-free
+ a tu "/etc/apt/sources.list.d/debian.sources", para lo cual simplemente añadimos "contrib non-free"
+ a cada línea de "Components" y actualizamos). 
 --Bajamos los sources de la última estable de: https://gitlab.freedesktop.org/gstreamer/gstreamer/-/tags
 --Configuramos con:
 CFLAGS="-march=native -mtune=native" \
