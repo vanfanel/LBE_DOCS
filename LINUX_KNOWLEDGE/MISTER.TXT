@@ -638,6 +638,15 @@ copy win95e devs:keymaps
 
 Y ahora nos vamos a Preferences/Input, y seleccionamos el mapa win95e. ¡Y ya está!
 
+********JUEGOS CDTV*********************************************************************
+
+Tenemos que tener en /media/fat/games/Amiga los ficheros:
+-cdtv.rom, que es el "kick34005.CDTV.rom" renombrado.
+-cdtv_ext.rom, que es el "CDTV Extended-ROM v1.0 (1991)(Commodore)(CDTV)[!].rom" renombrado.
+
+Entonces y sólo entonces te dejará elegir "Start CDTV Game" y también "Load Preset -> CDTV".
+Haces una cosa y luego la otra, y debería ir.
+
 ********INSTALAR LAS KICKSTART PARA WHDLOAD*********************************************
 
 Tienes las ROMs ya preparadas en shared/Kickstarts
