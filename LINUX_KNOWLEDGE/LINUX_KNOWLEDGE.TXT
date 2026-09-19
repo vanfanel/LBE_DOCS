@@ -11825,6 +11825,37 @@ SELECCIONAR LA SALIDA DE AUDIO CON MPV
 Podemos ver los dispositivos de salida con: mpv --audio-device=help
 Y elegit el que queramos de la lista con: mpv --audio-device=<NOMBRE_DISPOSITIVO>
 
+VER VÍDEOS DE YOUTUBE DESDE MPV
+===============================
+
+--Instalamos dependencias previas:
+sudo apt-get install fzf nodejs
+
+--Instalamos yt-dlp (busca en este documento)
+
+--Creamos el script "/usr/local/bin/yt" con este contenido:
+
+####EMPIEZA SCRIPT YT#####
+#!/bin/bash
+
+results="$(
+    yt-dlp --flat-playlist "ytsearch30:$*" \
+        --print '%(title)s	%(channel)s	%(duration_string)s	%(webpage_url)s'
+)" || exit 1
+
+sel="$(
+    printf '%s\n' "$results" |
+        fzf \
+            --delimiter=$'\t' \
+            --with-nth=1,2,3 \
+            --prompt='YouTube> '
+)" || exit 0
+
+url="$(printf '%s\n' "$sel" | cut -f4-)"
+
+[ -n "$url" ] && exec mpv "$url"
+####TERMINA SCRIPT YT#####
+
 NAVEGAR POR THREADS DE TWITTER/X SIN TENER CUENTA EN LA RED DEL PUTO NAZI DE MIERDA
 ===================================================================================
 
