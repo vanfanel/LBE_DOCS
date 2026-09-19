@@ -11744,7 +11744,9 @@ cd b4
 
 CFLAGS="-march=native -mtune=native" \
 CXXFLAGS="-march=native -mtune=native" \
-meson setup -Dbuildtype=release -Dlua=disabled ..
+meson setup -Dbuildtype=release
+
+(NOTA: NO desactivamos LUA ni CURL porque nos sirven para poder ver vídeos de Youtube pasándole la URL).
 
 -Creamos ~/.config/mpv/mpv.conf con el contenido:
 fs=yes
@@ -11828,6 +11830,14 @@ Y elegit el que queramos de la lista con: mpv --audio-device=<NOMBRE_DISPOSITIVO
 VER VÍDEOS DE YOUTUBE DESDE MPV
 ===============================
 
+--Lo primero: Hay que tener MPV compilado con soporte de LUA y CURL.
+  Si tienes una versión reciente pues lo tendrás, ya que no desactivas estas cosas, pero asegúrate al compilarlo.
+  
+--Activamos el soporte CURL de MPV, añadiendo esto a ~/.config/mpv/mpv.conf:
+curl-enabled=yes 
+(NOTA: Esto es necesario hacerlo así explícitamente porque, por defecto, el soporte CURL de mpv está desactivado ya que
+ suele usar el de FFMPEG, pero tú lo tienes desactivado en FFMPEG por pasarle "--disable-network" así que peta).
+
 --Instalamos dependencias previas:
 sudo apt-get install fzf nodejs
 
@@ -11855,6 +11865,9 @@ url="$(printf '%s\n' "$sel" | cut -f4-)"
 
 [ -n "$url" ] && exec mpv "$url"
 ####TERMINA SCRIPT YT#####
+
+--Ahora hacemos esto en la consola:
+yt soniccd intro
 
 NAVEGAR POR THREADS DE TWITTER/X SIN TENER CUENTA EN LA RED DEL PUTO NAZI DE MIERDA
 ===================================================================================
