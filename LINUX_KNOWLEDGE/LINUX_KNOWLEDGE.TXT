@@ -2494,8 +2494,10 @@ git clone -b v2.0.1 --recurse-submodules --depth 1 --shallow-submodules https://
 
 --Nos vamos al raíz de los sources y hacemos:
 
-cmake --preset linux-default-relwithdebinfo -DDUSK_ENABLE_DISCORD=OFF -DDUSK_ENABLE_UPDATE_CHECKER=OFF
+cmake --preset linux-default-relwithdebinfo -DBOREALIS_ENABLE_DISCORD=OFF -DBOREALIS_ENABLE_UPDATE=OFF
 cmake --build --preset linux-default-relwithdebinfo
+
+(NOTA: Si queremos empezar de cero, simplemente hay que borrar el directorio "build").
 
 --Creamos un directorio ~/twilight (o como queramos llamarlo) y metemos allí el ejecutable y los datos que vienen con los sources:
 mkdir ~/twilight
