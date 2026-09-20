@@ -133,7 +133,7 @@ wlr-randr --output DP-1 --custom-mode 1920x1080@119.427000
 		--VIDEO--
 		
 En VIDEO->SYNCHRONIZATION ponemos:
-"Vsync"							OFF
+"Vsync"							ON
 "Sync to Exact"					ON
 
 		--SHADER--
@@ -395,7 +395,7 @@ make REGENIE=1 -f Makefile.libretro -j8
 --En las opciones del core MAME hay que activar el THROTTLE.
 --En las opciones de RetroArch:
 En VIDEO->SYNCHRONIZATION ponemos:
-"Vsync"							OFF
+"Vsync"							ON
 "Sync to Exact"					ON
 
 		EVITAR AUDIO DROPOUTS EN LA PRIMERA EJECUCIÓN (SE NOTA EN LA INTRO DEL "HOUSE OF THE DEAD / HOTD")
@@ -669,7 +669,7 @@ cp build/apps/ymir-libretro/ymir_libretro.so ~/.config/retroarch/cores/
 
 --En las opciones de RetroArch
 ----En VIDEO->SYNCHRONIZATION:
-"Vsync"							OFF
+"Vsync"							ON
 "Sync to Exact"					ON
 
 ******NES en el core FBNeo*****************************************************
