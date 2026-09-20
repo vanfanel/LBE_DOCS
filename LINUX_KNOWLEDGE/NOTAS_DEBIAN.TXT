@@ -802,7 +802,7 @@ chrt -f 80 ls
 
 INSTALAR PIPEWIRE EN DEBIAN
 ===========================
-NOTA: LA VERSIÓN DE PIPEWIRE DE DEBIAN 13 VA PERFECTAMENTE.
+NOTA: LA VERSIÓN DE PIPEWIRE DE DEBIAN VA PERFECTAMENTE.
 SI QUISIERAS INSTALAR LA VERSIÓN ACTUAL, AUNQUE NO APORTA VENTAJAS NOTABLES, LO TIENES DOCUMENTADO EN "NOTAS_PIPEWIRE_AVANZADAS.TXT".
 NO SE TARDA NADA CON ESAS NOTAS. PERO VAMOS, QUE ASÍ CON LA VERSIÓN DE DEBIAN VA IGUAL.
 
@@ -845,6 +845,17 @@ options snd_hda_intel power_save_controller=N
 cat /sys/module/snd_hda_intel/parameters/power_save
 cat /sys/module/snd_hda_intel/parameters/power_save_controller
 ...Tiene que salir "0" y "N", respectivamente.
+
+--Para no ver errores en amarillo de bluetooth y cámara en el journal
+(cosa que comprobamos con "sudo journalctl -b _SYSTEMD_USER_UNIT=wireplumber.service"),
+creamos "~/.config/wireplumber/wireplumber.conf.d/51-disable-unused-monitors.conf" con este contenido para que no cargue esos plugins:
+wireplumber.profiles = {
+  main = {
+    monitor.bluez = disabled
+    monitor.bluez-midi = disabled
+    monitor.libcamera = disabled
+  }
+}
 
 			CONFIGURACIÓN AVANZADA DE PIPEWIRE (NO ES NECESARIO NORMALMENTE HACER NADA DE ESTO)
 			(INFO INTERESANTE DE: https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#setting-buffer-size-quantum)
