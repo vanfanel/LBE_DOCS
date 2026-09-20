@@ -1214,8 +1214,8 @@ wlr-randr --output DP-1 --preferred
 --SI EL JUEGO ES DE LOS QUE CAMBIA ENTRE 70Hz Y 60Hz (Jazz, Pinball Dreams/Fantasies...),
   además forzamos 60Hz constantes con "--set dos_rate=60" y así nos aseguramos de que siempre va bien.
   Por ejemplo, para Jazz:
-wlr-randr --output DP-1 --set dos_rate=60 --mode 1920x1080@60
-dosbox --set cpu_cycles_protected=25000 games/jazz/jazz.exe
+wlr-randr --output DP-1 --mode 1920x1080@60
+dosbox --set cpu_cycles_protected=25000 --set dos_rate=60 games/jazz/jazz.exe
 wlr-randr --output DP-1 --preferred
 
 		CONFIGURAR EL JOYSTICK
