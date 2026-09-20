@@ -11676,7 +11676,7 @@ Bajamos la última estable del branch más reciente de: https://www.ffmpeg.org/d
 -Configuramos con:
 
 PARA AMD/INTEL:
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --disable-network --disable-debug \
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --enable-gnutls --disable-debug \
 --disable-muxers --disable-encoders --disable-indevs \
 --disable-outdev=fbdev,oss \
 --disable-doc --disable-bsfs \
@@ -11685,8 +11685,8 @@ CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./co
 --enable-libdrm --enable-vaapi
 
 PARA RASPBERRY PI5 (es lo mismo pero en vez de "--enable-vaapi" le pasamos "--enable-neon"):
-CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --disable-network --disable-debug \
---disable-muxers --disable-encoders --disable-indevs \
+CFLAGS="-march=native -mtune=native" CXXFLAGS="-march=native -mtune=native" ./configure --enable-gnutls --disable-debug \
+--disable-muxers --disable-encoders --disable-indevs --enable-gnutls \
 --disable-outdev=fbdev,oss \
 --disable-doc --disable-bsfs \
 --disable-sdl2 --disable-stripping --enable-shared \
