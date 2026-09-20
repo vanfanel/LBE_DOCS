@@ -37,7 +37,6 @@ File systems->CD-ROM/DVD Filesystems->ISO 9660 CDROM file system support
 --Para mejorar MUCHO el rendimiento de WINE, activamos Device Drivers-> Misc devices-> NT synchronization primitive emulation (NTSYNC)
 
 --En "General Setup" desactivamos:
-----Todo en "BPF Subsystem"
 ----"Memory placement aware NUMA scheduler"
 (Las máquinas NUMA son servidores en los que cada CPU tiene una memoria distinta, ni tienes ni vas a tener nada así en la vida).
 ----"Checkpoint/restore support" (Pa ké kieres saber eso? jaja salu2)
