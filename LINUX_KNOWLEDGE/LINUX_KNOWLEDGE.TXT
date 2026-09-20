@@ -2489,8 +2489,8 @@ Piensa que los juegos son verticales, por eso doy una anchura de 240 y una altur
 NOTA:
 Instrucciones de: https://github.com/TwilitRealm/dusklight/blob/main/docs/building.md
 
---Clonamos su repo:
-git clone --recurse-submodules --depth 1 --shallow-submodules https://github.com/TwilitRealm/dusklight.git
+--Clonamos los últimos sources estables (mira en https://github.com/TwilitRealm/dusklight/releases para ver qué versión es):
+git clone -b v2.0.1 --recurse-submodules --depth 1 --shallow-submodules https://github.com/TwilitRealm/dusklight.git dusklight-v2.0.1
 
 --Nos vamos al raíz de los sources y hacemos:
 
