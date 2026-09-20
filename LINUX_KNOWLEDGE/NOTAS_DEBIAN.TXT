@@ -90,7 +90,7 @@ sudo adduser manuel video
 pero aplay -L no listaba los dispositivos...¡porque no estabas en el grupo audio!)
 
 -DESINSTALAMOS loggers y cosas raras, que se llevan por delante servicios que no usamos:
-apt-get purge triggerhappy rsyslog cron dphys-swapfile bluetooth avahi-* fake-hwclock
+apt-get purge triggerhappy cron dphys-swapfile bluetooth avahi-* fake-hwclock
 (NOTA: en una Raspberry Pi, fake-hwclock ya no lo uso porque en su lugar dejo systemd-timesyncd,
  que sincroniza la hora al conectarase a la red y guarda la hora en disco al reiniciar,
  pero en un ordenador "normal" con RTC+pila, puedes deshabilitar systemd-timesyncd tranquilamente,
@@ -415,8 +415,7 @@ sudo apt-mark unhold raspberrypi-kernel
 GUARDAR TODOS LOS LOGS EN RAM
 =============================
 
-Lo primero es desisntalar rsyslog
-apt-get purge rsyslog
+(NOTA: Ya no se usa rsyslog: en Debian modernos, systemd se encarga de la gestión de los logs).
 (RECUERDA: con systemd-journald nos vale para que nos guarde los logs de sistema,
 puedes usar el comando "journalctl" sin mas para ver los mensajes de inicio/parada del kernely los servicios).
 
