@@ -537,7 +537,7 @@ ASÍ QUE HAZ LAS DOS COSAS QUE ACABO DE DECIRTE.
 
 SI QUIERES OPENGL NECESITAS ESTAS DEPENDENCIAS:
 sudo apt-get install --no-install-recommends \
-    flex bison python3-mako python3-setuptools python3-yaml \
+    flex bison python3-mako python3-setuptools python3-yaml python3-lxml python3-rnc2rng \
     libexpat1-dev libudev-dev gettext \
     ca-certificates xz-utils \
     zlib1g-dev pkg-config
