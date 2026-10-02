@@ -2518,13 +2518,18 @@ Daytona USA nativo en GNU/Linux
 --Compilamos su repo:
 git clone --depth 1 https://github.com/alphanu1/daytona-arcade-recomp.git
 
---Creamos el directotio "roms" en el raíz de los sources y metemos "daytona93.zip" de MAME en el directorio "roms".
+--Creamos el directotio "roms" en el raíz de los sources y metemos "daytona93.7z" (tienes una copia en el disco de backup)
+  en ese directorio "roms".
 
 --Ejecutamos "python3 scripts/setup.py"
 (OJO: Las instrucciones originales del repo dicen que ejecutemos "setup.sh", pero eso lo que hace es que
  instala un montón de dependencias incluyendo MESA, Wayland, X11, etc, sin pedir confirmación, 
  y a continuación llama a "python3 scripts/setup.py").
- 
+
+--Creamos ~/daytona y metemos allí el ejecutable y el "daytona93.7z".
+  Lanzamos el ejecutable, y tendremos que escribir a mano la ruta del "daytona93.7z" en el campo de arriba,
+  tras lo cual clickamos en "check" y ya podemos lanzarlo.
+
 Compilar Amiberry en GNU/Linux
 ==============================
 
