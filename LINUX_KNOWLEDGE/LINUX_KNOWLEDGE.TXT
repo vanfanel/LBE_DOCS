@@ -1943,7 +1943,7 @@ NINGUNO de los parámetros del módulo i915 funciona para desactivar el RC6 ("i9
 
 Ve a /sys/class/drm/card0 y juega con esos valores.
 Por ejemplo, para que la GPU no baje de 1200 MHz, puedes hacer:
-echo 1200 > gt_min_freq_mhz
+echo 1200 | sudo tee /sys/class/drm/card0/gt_min_freq_mhz
 Y lo puedes comprobar con:
 cat gt_cur_freq_mhz
 
@@ -1952,11 +1952,11 @@ Con este script pondríamos a velocidad máxima constante la GPU, y después de 
 ####EMPIEZA SCRIPT####
 
 gpu_min_freq=$(cat /sys/class/drm/card0/gt_min_freq_mhz)
-echo $(cat /sys/class/drm/card0/gt_max_freq_mhz > /sys/class/drm/card0/gt_min_freq_mhz)
+cat /sys/class/drm/card0/gt_max_freq_mhz | sudo tee /sys/class/drm/card0/gt_min_freq_mhz >/dev/null
 
 <EJECUTAR_PROGRAMA>
 
-echo $gpu_min_freq > /sys/class/drm/card0/gt_min_freq_mhz
+echo "$gpu_min_freq" | sudo tee /sys/class/drm/card0/gt_min_freq_mhz >/dev/null
 
 ####ACABA SCRIPT####
 
@@ -1980,21 +1980,25 @@ Con este script pondríamos a velocidad máxima las CPUs 0 y 1, y después de ej
 
 ####EMPIEZA SCRIPT####
 
-#Declaramos un array para guardar los valores originales de min_freq de los P-Cores
-declare -A cpu_min_freqs
+#!/bin/bash
+
+#Guardamos los valores originales de min_freq de los P-Cores
+cpu0_min=$(< /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq)
+cpu1_min=$(< /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq)
 
 #Ponemos los dos P-Cores al máximo
-for cpu in cpu0 cpu1; do
-        cpu_min_freqs[$cpu]=$(cat /sys/devices/system/cpu/$cpu/cpufreq/scaling_min_freq)
-        echo $(cat /sys/devices/system/cpu/$cpu/cpufreq/scaling_max_freq) > /sys/devices/system/cpu/$cpu/cpufreq/scaling_min_freq
-done
+cpu0_max=$(< /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
+cpu1_max=$(< /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq)
 
-<EJECUTAR_PROGRAMA>
+printf '%s\n' "$cpu0_max" | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq >/dev/null
+printf '%s\n' "$cpu1_max" | sudo tee /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq >/dev/null
+
+#Ejecutamos el programa que sea
+LD_LIBRARY_PATH=./ ./pcsx2 "$1" >/dev/null 2>&1
 
 #Devolvemos los P-Cores a su estado normal
-for cpu in cpu0 cpu1; do
-        echo ${cpu_min_freqs[$cpu]} > /sys/devices/system/cpu/$cpu/cpufreq/scaling_min_freq
-done
+printf '%s\n' "$cpu0_min" | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq >/dev/null
+printf '%s\n' "$cpu1_min" | sudo tee /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq >/dev/null
 
 ####ACABA SCRIPT####
 
