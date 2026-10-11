@@ -1053,6 +1053,8 @@ Esto es necesario por un error de cálculo al usar vsync_adjust=2 con estos core
   y guarda el kernel GENERIC como "/vmunix.orig" 
   Debes comprobar las arrancar que tienes "/dev/cgtwo", ya que para gráficos en blanco y negro se usa "/dev/fb".
 
+--Viene con un montón de juegos de UNIX en "/usr/games"
+
 ***********OPENFPGAOS EN LA MISTER*****************************************
 
 		PARTE 1: INSTALACIÓN DEL SO
