@@ -1046,6 +1046,13 @@ Esto es necesario por un error de cálculo al usar vsync_adjust=2 con estos core
 
 --Tienes imágenes listas de SunOS 4 aquí: https://archive.org/download/MiSTer_Sun
 
+--(INFO PROCEDENTE DE LA DOCUMENTACIÓN DE: https://github.com/MiSTer-devel/Sun-2_MiSTer)
+  Para que arranque el Sunview (comando "suntools" o "sunview") con gráficos a color,
+  debes copiar "/vmunix.orig" a "/vmunix", ya que en la imágen "precocinada" que usas se ha aplicado una actualización
+  que pone el kernel GENERIC_SMALL como "vmunix", que no trae el soporte para gráficos a color,
+  y guarda el kernel GENERIC como "/vmunix.orig" 
+  Debes comprobar las arrancar que tienes "/dev/cgtwo", ya que para gráficos en blanco y negro se usa "/dev/fb".
+
 ***********OPENFPGAOS EN LA MISTER*****************************************
 
 		PARTE 1: INSTALACIÓN DEL SO
