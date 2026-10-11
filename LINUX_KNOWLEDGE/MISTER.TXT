@@ -1044,7 +1044,7 @@ Esto es necesario por un error de cálculo al usar vsync_adjust=2 con estos core
 
 ***********Core SUN-2******************************************************
 
---Lo primero es ejecutar el script que trae, llamado ".py", para que se genere boot1.rom
+--Lo primero es ejecutar el script que trae, llamado "Sun-2_mkidprom.py", para que se genere boot1.rom
 --Tienes imágenes listas de SunOS 4 aquí: https://archive.org/download/MiSTer_Sun
 
 ***********OPENFPGAOS EN LA MISTER*****************************************
