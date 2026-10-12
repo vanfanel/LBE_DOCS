@@ -715,13 +715,32 @@ sudo pip3 install amitools
 -Nos bajamos el filesystem PFS3 libre, llamado PFS3aio, de aquí:
 http://aminet.net/package/disk/misc/pfs3aio
 
--Creamos la imágen del disco RBD, la inicializamos reservando 4 cilindros de espacio RBD para el driver de filesystem PSF3,
-le instalamos el driver de filesystem PFS3, etc:
+-Creamos la imágen del disco RBD con DD (si la creásemos con el rdbtool directamene nos haría una imágen "sparse"
+ que para el core Minimig no nos vale):
 
-rdbtool -f -p DH test.hdf create size=512Mi + init rdb_cyls=4 + fsadd pfs3aio dostype=PFS3 + add size=98% name=DH0 fs=PFS3 bootable=true automount=true pri=1 Bla max_transfer=0x0001fe00 mask=0x7ffffffe num_buffer=30
+dd if=/dev/zero of=wb13.hdf bs=1M count=256 status=progress
 
--Formateamos la partición desde AmigaOS, pinchando en el icono y dándole a icon->format. Al final nos saldrá una confirmación de que estamos
- usando PFS3AIO.
+-Inicializamos la imágen reservando 4 cilindros de espacio RBD para el driver de filesystem PSF3,
+e instalándole el driver de filesystem PFS3, etc:
+
+rdbtool -f -p DH wb13.hdf \
+  init rdb_cyls=4 \
+  + fsadd pfs3aio dostype=PFS3 \
+  + add size=98% name=DH0 fs=PFS3 bootable=true automount=true pri=1 \
+    max_transfer=0x0001fe00 mask=0x7ffffffe num_buffer=30
+
+-Formateamos la partición desde WB (Debe ser 2.x como mínimo, con 1.x no se puede). Lo puedes hacer desde el Minimig o desde un emulador.
+ Esto se hace normalmente usando "HdInstTools", que se baja de Aminet en LHA pero tienes una versión en ADF que te preparó la IA.
+ (ALTERNATIVA: En teoría también se puede desde el propio WB, pinchando en el icono y dándole a icon->format.
+  Al final nos saldrá una confirmación de que estamos usando PFS3AIO).
+
+NOTA ACLARATORIA:
+El core Minimig NO trae el controlador+ROM A590 que es el disco duro desde el que es capaz de arrancar un Amiga 500,
+lo que trae es el controlador IDE de un A600. Así que para arrancar desde disco duro con una KS 1.x, tienes que usar
+una KS 1.x que tenga metido el scsi.device de un A600.
+Por eso, aunque un Amiga 500 puede arrancar desde disco duro usando el "sidecar" A590, el core no puede normalmente,
+porque no tiene ni la controladora ni la ROM del A590.
+Pero vamos, que con la Kick13_IDE esa parcheada que tienes, se puede.
 
 NOTA: Podemos crear una imágen de disco adicional secundaria para los juegos de Laserdisc así (en esta no ponemos una partición bootable
 y tampoco necesitamos una prioridad por lo mismo, etc):
