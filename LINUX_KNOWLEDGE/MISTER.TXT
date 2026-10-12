@@ -645,7 +645,14 @@ Tenemos que tener en /media/fat/games/Amiga los ficheros:
 -cdtv_ext.rom, que es el "CDTV Extended-ROM v1.0 (1991)(Commodore)(CDTV)[!].rom" renombrado.
 
 Entonces y sólo entonces te dejará elegir "Start CDTV Game" y también "Load Preset -> CDTV".
-Haces una cosa y luego la otra, y debería ir.
+
+********JUEGOS CD32*********************************************************************
+
+Tenemos que tener en /media/fat/games/Amiga los ficheros:
+-cd32.rom, que es el "Kickstart v3.1 r40.060 (1993-05)(Commodore)(CD32)[!].rom" renombrado.
+-cd32_ext.rom, que es el "CD32 Extended-ROM r40.60 (1993)(Commodore)(CD32).rom" renombrado.
+
+Entonces y sólo entonces te dejará elegir "Start CD32 Game" y también "Load Preset -> CD32".
 
 ********INSTALAR LAS KICKSTART PARA WHDLOAD*********************************************
 
@@ -1052,6 +1059,11 @@ Esto es necesario por un error de cálculo al usar vsync_adjust=2 con estos core
   que pone el kernel GENERIC_SMALL como "vmunix", que no trae el soporte para gráficos a color,
   y guarda el kernel GENERIC como "/vmunix.orig" 
   Debes comprobar las arrancar que tienes "/dev/cgtwo", ya que para gráficos en blanco y negro se usa "/dev/fb".
+
+--Para poner la consola "blanco sobre negro" para no quedarte ciego, añade al final de /etc/rc.local:
+/usr/5bin/echo '\033[q\c' > /dev/console
+(En el "vi" de SunOS 4, para meter caracteres nuevos después del cursor es con la letra "a",
+ para borrar el carácter bajo el cursor es con la "x", y se mueve uno con: h (izq), j(abajo), k(arriba), l(derecha))
 
 --Viene con un montón de juegos de UNIX en "/usr/games"
 
