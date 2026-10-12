@@ -736,9 +736,9 @@ rdbtool -f -p DH wb13.hdf \
 
 NOTA ACLARATORIA:
 El core Minimig NO trae el controlador+ROM A590 que es el disco duro desde el que es capaz de arrancar un Amiga 500,
-lo que trae es el controlador IDE de un A600. Así que para arrancar desde disco duro con una KS 1.x, tienes que usar
-una KS 1.x que tenga metido el scsi.device de un A600.
-Por eso, aunque un Amiga 500 puede arrancar desde disco duro usando el "sidecar" A590, el core no puede normalmente,
+lo que trae implementado es el controlador IDE de un A600.
+Así que para arrancar desde disco duro con una KS 1.x, tienes que usar una KS 1.x que tenga metido el scsi.device de un A600.
+Por eso, aunque un Amiga 500 REAL puede arrancar desde disco duro usando el "sidecar" A590, el core no puede normalmente,
 porque no tiene ni la controladora ni la ROM del A590.
 Pero vamos, que con la Kick13_IDE esa parcheada que tienes, se puede.
 
