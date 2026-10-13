@@ -959,6 +959,9 @@ video_mode=1920,1026,60
 
 --Como filtro de audio, DanielB recomienda "Arcade LPF 4khz 2nd".
 
+--Si le subes la velocidad de la CPU a 16MHz, pon "Sound Scan Phase" a 20
+  para evitar distorsiones en la música de los juegos.
+
 *********COMPILAR CORES DE MISTER********************************************************
 
 Se compilan con el Quartus Lite. 
