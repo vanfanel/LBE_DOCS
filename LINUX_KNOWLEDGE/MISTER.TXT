@@ -945,7 +945,7 @@ CTRL+V: Mostrar la versión del juego.
 
 *********Notas core Macplus**************************************************************
 
-Para tener imágen con escalado perfecto en 1080p, añadimos a MiSTer.ini:
+--Para tener imágen con escalado perfecto en 1080p, añadimos a MiSTer.ini:
 
 [macplus]
 vscale_mode=2
@@ -956,6 +956,8 @@ O bien:
 video_mode=1920,1026,60
 
 ...pero mejor lo de vscale.
+
+--Como filtro de audio, DanielB recomienda "Arcade LPF 4khz 2nd".
 
 *********COMPILAR CORES DE MISTER********************************************************
 
