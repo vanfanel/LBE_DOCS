@@ -872,21 +872,21 @@ sudo pip3 install amitools
 
 --Creamos el HDF:
 
-rdbtool lemmings.hdf create size=2Mi + init rdb_cyls=1
-rdbtool lemmings.hdf fill name=DH0 dostype=DOS0
+rdbtool disco.hdf create size=2Mi + init rdb_cyls=1
+rdbtool disco.hdf fill name=DH0 dostype=DOS0
 
 --Lo formateamos:
 
-xdftool lemmings.hdf open part=DH0 + format LEMMINGS DOS0
+xdftool disco.hdf open part=DH0 + format DISCO DOS0
 
---Copiamos el directorio "Lemmings" al HDF:
+--Copiamos el directorio "juego" al HDF:
 
-xdftool lemmings.hdf open part=DH0 + write Lemmings
+xdftool disco.hdf open part=DH0 + write juego
 
 --Confirmamos que están las cosas dentro:
 
-rdbtool lemmings.hdf info
-xdftool lemmings.hdf open part=DH0 + list / all info
+rdbtool disco.hdf info
+xdftool disco.hdf open part=DH0 + list / all info
 
 *********NOTAS CORE PDP2011**************************************************************
 
