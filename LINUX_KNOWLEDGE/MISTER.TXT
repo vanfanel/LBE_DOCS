@@ -894,6 +894,16 @@ En hexedit, nos vamos a la dirección 0x28BBE y cambiamos "3B 7C 00 0F FF AC" po
 Lo que hacemos es que, como MM2 abría su Screen como CUSTOMSCREEN normal,
 bastaba con añadirle el flag SCREENQUIET y listo.
 
+Y si queremos arreglar tanto esto de los iconos esos como la velocidad de la música en KS 1.3,
+de una sola pasada podemos hacerte esto al ejecutable "mm2":
+
+printf '\x01'     | dd of=mm2 bs=1 seek=$((0x28BBE)) conv=notrunc
+printf '\x00\x30' | dd of=mm2 bs=1 seek=$((0x277EC)) conv=notrunc
+printf '\x00\x18' | dd of=mm2 bs=1 seek=$((0x277EE)) conv=notrunc
+printf '\x00\x0C' | dd of=mm2 bs=1 seek=$((0x277F0)) conv=notrunc
+printf '\x00\x06' | dd of=mm2 bs=1 seek=$((0x277F2)) conv=notrunc
+printf '\x00\x12' | dd of=mm2 bs=1 seek=$((0x27800)) conv=notrunc
+
 *********NOTAS CORE PDP2011**************************************************************
 
 Los discos de Unix sólo funcionan en los modelos 11/45. Para BSD2.x, es con una 11/70.
