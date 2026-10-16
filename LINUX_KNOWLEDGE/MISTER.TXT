@@ -888,6 +888,12 @@ xdftool disco.hdf open part=DH0 + write juego
 rdbtool disco.hdf info
 xdftool disco.hdf open part=DH0 + list / all info
 
+*********QUITAR ICONOS EN MIGHT & MAGIC II***********************************************
+
+En hexedit, nos vamos a la dirección 0x28BBE y cambiamos "3B 7C 00 0F FF AC" por "3B 7C 01 0F FF AC"
+Lo que hacemos es que, como MM2 abría su Screen como CUSTOMSCREEN normal,
+bastaba con añadirle el flag SCREENQUIET y listo.
+
 *********NOTAS CORE PDP2011**************************************************************
 
 Los discos de Unix sólo funcionan en los modelos 11/45. Para BSD2.x, es con una 11/70.
