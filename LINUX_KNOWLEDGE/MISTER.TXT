@@ -904,6 +904,17 @@ printf '\x00\x0C' | dd of=mm2 bs=1 seek=$((0x277F0)) conv=notrunc
 printf '\x00\x06' | dd of=mm2 bs=1 seek=$((0x277F2)) conv=notrunc
 printf '\x00\x12' | dd of=mm2 bs=1 seek=$((0x27800)) conv=notrunc
 
+*********PARCHEAR ISHAR 1 OCS PARA QUE SALVE EN "SAV:" Y NO EN "DF0:"********************
+
+El Ishar OCS en castellano se parchearía así:
+
+printf 'SAV:' | dd of=t.x bs=1 seek=$((0x1CC6)) conv=notrunc
+printf 'SAV:' | dd of=t.x bs=1 seek=$((0x2FD8)) conv=notrunc
+
+Y recuerda que tienes que hacer un assign a SAV: antes de lanzar el juego,
+yo lo mando a un directorio "saves" dentro del directorio del juego, así:
+assign SAV: saves
+
 *********NOTAS CORE PDP2011**************************************************************
 
 Los discos de Unix sólo funcionan en los modelos 11/45. Para BSD2.x, es con una 11/70.
