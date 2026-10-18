@@ -923,10 +923,16 @@ sudo apt-get install imagemagick
 --Clonamos el repo de la utilidad:
 it clone --depth 1 https://github.com/neildavis/amiga_asmdev_workflow.git
 
+--Editamos scripts/amiga-icon-converter.py, comentamos la llamada a "img.resize" (sólo hay una)
+  y en su lugar hacemos:
+  
+  if img.size != (icon_width, icon_height):
+  raise ValueError("La imagen no tiene las dimensiones indicadas")
+
 --Creamos la paleta de WB 1.3:
 magick -size 4x1 xc:black \
   -fill '#FFFFFF' -draw 'point 1,0' \
-  -fill '#0055FF' -draw 'point 2,0' \
+  -fill '#55AAFF' -draw 'point 2,0' \
   -fill '#FF8800' -draw 'point 3,0' \
   wb13-palette.png
 
