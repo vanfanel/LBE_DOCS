@@ -923,11 +923,22 @@ sudo apt-get install imagemagick
 --Clonamos el repo de la utilidad:
 it clone --depth 1 https://github.com/neildavis/amiga_asmdev_workflow.git
 
---Le pedimos a la IA que nos pase el PNG a 4 colores de Amiga Workbench 1.3
+--Creamos la paleta de WB 1.3:
+magick -size 4x1 xc:black \
+  -fill '#FFFFFF' -draw 'point 1,0' \
+  -fill '#0055FF' -draw 'point 2,0' \
+  -fill '#FF8800' -draw 'point 3,0' \
+  wb13-palette.png
 
---Creamos el icono a partir del PNG de 4 colores:
-magick imagen_original.png -resize 216x80! imagen_4colores.png
-python3 scripts/amiga-icon-converter.py --palette 1 --type 2 --width 256 --height 72 --output "Pinball Dreams.info" imagen_4colores.png
+--Redimensionamos la imágen y la pasamos a los 4 colores del WB 1.3:
+magick imagen_original.png \
+  -resize 216x80! \
+  -dither FloydSteinberg \
+  -remap wb13-palette.png \
+  imagen_preparada.png
+
+--Creamos el icono:
+python3 scripts/amiga-icon-converter.py --palette 1 --type 2 --width 256 --height 72 --output "Pinball Dreams.info" imagen_preparada.png
 
 --Metemos el icono en un ADF para "subírselo" al Amiga:
 xdftool icons.adf create + format ICONS DOS0 + write "Pinball Dreams.info"
