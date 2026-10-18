@@ -239,6 +239,7 @@ WINEDEBUG=+loaddll wine juego.exe
 wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
 chmod +x winetricks
 sudo mv winetricks /usr/local/bin/
+sudo apt-get install cabextract
 
 ********Instalar DOTNET 472 en WINE***********************************************************************************************************
 
