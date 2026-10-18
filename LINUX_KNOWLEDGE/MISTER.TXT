@@ -915,6 +915,17 @@ Y recuerda que tienes que hacer un assign a SAV: antes de lanzar el juego,
 yo lo mando a un directorio "saves" dentro del directorio del juego, así:
 assign SAV: saves
 
+*********CREAR ICONOS PARA WB 1.x********************************************************
+
+--Clonamos el repo de la utilidad:
+it clone --depth 1 https://github.com/neildavis/amiga_asmdev_workflow.git
+
+--Creamos el icono a partir de un PNG:
+python3 scripts/amiga-icon-converter.py --palette 1 --type 2 --width 256 --height 72 --output "Pinball Dreams.info" ~/Downloads/pinball-dreams.png
+
+--Metemos el icono en un ADF para "subírselo" al Amiga:
+xdftool icons.adf create + format ICONS DOS0 + write "Pinball Dreams.info"
+
 *********NOTAS CORE PDP2011**************************************************************
 
 Los discos de Unix sólo funcionan en los modelos 11/45. Para BSD2.x, es con una 11/70.
