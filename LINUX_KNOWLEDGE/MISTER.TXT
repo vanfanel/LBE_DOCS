@@ -936,6 +936,8 @@ Pásame esta imagen (y que quede bonito a pesar de la reducción de colores) a l
 
 --Redimensionamos la imágen a algo razonable para el WB 1.3, sin tocal ni su paleta y evitando dithering (de ahí el "+dither"):
 magick imagen_original.png -resize 256x80! +dither imagen_preparada.png
+...O bien, si queremos conservar el dithering que le mete la IA:
+magick ~/Downloads/prince.png -resize 236x110! -filter point imagen_preparada.png
 
 --Creamos el icono:
 python3 scripts/amiga-icon-converter.py --palette 1 --type 4 --width 256 --height 80 --output "Pinball Dreams.info" imagen_preparada.png
