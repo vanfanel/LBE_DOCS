@@ -873,7 +873,7 @@ sudo pip3 install amitools
 --Creamos el HDF:
 
 rdbtool disco.hdf create size=8Mi + init rdb_cyls=1
-rdbtool disco.hdf fill name=DH0 dostype=DOS0
+rdbtool disco.hdf fill name=DH1 dostype=DOS0
 
 --Lo formateamos:
 
