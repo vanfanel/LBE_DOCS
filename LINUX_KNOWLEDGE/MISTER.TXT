@@ -903,6 +903,28 @@ xdftool utils.adf format Utilidades
 --Copiamos el directorio que queramos al disco:
 xdftool utils.adf write utils
 
+*********Compilar programas de Amiga desde Linux*****************************************
+
+--Instalamos el compilador:
+git clone --depth 1 https://github.com/mbitsnbites/vasm-mirror.git
+cd vasm-mirror
+make CPU=m68k SYNTAX=mot -j10
+sudo install -m755 vasmm68k_mot /usr/local/bin/
+
+--Creamos un pequeño archivo de pruebla llamado "test.s" con este contenido:
+
+section code,code
+
+start:
+        moveq   #0,d0
+        rts
+
+--Lo compilamos así:
+vasmm68k_mot -m68000 -kick1hunks -Fhunkexe -nosym -o test test.s
+
+--Comprobamos que el resultado es un ejecutable de Amiga con "file test" que nos dirá:
+test: AmigaOS loadseg()ble executable/binary
+
 *********APAGAR SONIDO DE DISKETERA EN KICKSTART 1.3*************************************
 
 El típico "NoClick" es para KS 2.0+ y en KS 1.x da un Gurú, así que se usa "TrackSalve", que puedes bajar de Aminet.
