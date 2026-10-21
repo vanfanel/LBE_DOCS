@@ -905,7 +905,7 @@ xdftool utils.adf write utils
 
 *********APAGAR SONIDO DE DISKETERA EN KICKSTART 1.3*************************************
 
-El típico "noclick" es para KS 2.0+, así que se usa "TrackSalve", que puedes bajar de Aminet.
+El típico "NoClick" es para KS 2.0+ y en KS 1.x da un Gurú, así que se usa "TrackSalve", que puedes bajar de Aminet.
 Copia el ejecutable "tracksalve" a c:, y luego sólo es hacer:
 tracksalve 0 n
 ...Lo puedes meter en el startup sequence.
