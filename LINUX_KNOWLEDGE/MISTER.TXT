@@ -888,6 +888,21 @@ xdftool disco.hdf open part=DH0 + write juego
 rdbtool disco.hdf info
 xdftool disco.hdf open part=DH0 + list / all info
 
+METER ARCHIVOS EN UN ADF PARA ACCEDER DESDE EL MINIMIG
+======================================================
+
+-Instalamos pip3 que es el gestor de paquetes de python:
+sudo apt-get install python3-pip
+
+-Instalamos las amitools:
+sudo pip3 install amitools
+
+--Creamos el disco:
+xdftool utils.adf format Utilidades
+
+--Copiamos el directorio que queramos al disco:
+xdftool utils.adf write utils
+
 *********QUITAR ICONOS EN MIGHT & MAGIC II***********************************************
 
 En hexedit, nos vamos a la dirección 0x28BBE y cambiamos "3B 7C 00 0F FF AC" por "3B 7C 01 0F FF AC"
