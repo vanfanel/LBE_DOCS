@@ -921,7 +921,7 @@ assign SAV: saves
 sudo apt-get install imagemagick
 
 --Clonamos el repo de la utilidad:
-it clone --depth 1 https://github.com/neildavis/amiga_asmdev_workflow.git
+git clone --depth 1 https://github.com/neildavis/amiga_asmdev_workflow.git
 
 --Editamos scripts/amiga-icon-converter.py, comentamos la llamada a "img.resize" (sólo hay una)
   y en su lugar hacemos:
