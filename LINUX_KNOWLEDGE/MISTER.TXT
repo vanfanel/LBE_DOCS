@@ -877,16 +877,16 @@ rdbtool disco.hdf fill name=DH1 dostype=DOS0
 
 --Lo formateamos:
 
-xdftool disco.hdf open part=DH0 + format DISCO DOS0
+xdftool disco.hdf open part=DH1 + format DISCO DOS0
 
 --Copiamos el directorio "juego" al HDF:
 
-xdftool disco.hdf open part=DH0 + write juego
+xdftool disco.hdf open part=DH1 + write juego
 
 --Confirmamos que están las cosas dentro:
 
 rdbtool disco.hdf info
-xdftool disco.hdf open part=DH0 + list / all info
+xdftool disco.hdf open part=DH1 + list / all info
 
 METER ARCHIVOS EN UN ADF PARA ACCEDER DESDE EL MINIMIG
 ======================================================
