@@ -903,6 +903,15 @@ xdftool utils.adf format Utilidades
 --Copiamos el directorio que queramos al disco:
 xdftool utils.adf write utils
 
+*********APAGAR SONIDO DE DISKETERA EN KICKSTART 1.3*************************************
+
+El típico "noclick" es para KS 2.0+, así que se usa "TrackSalve", que puedes bajar de Aminet.
+Copia el ejecutable "tracksalve" a c:, y luego sólo es hacer:
+tracksalve 0 n
+...Lo puedes meter en el startup sequence.
+...Puedes ver la ayuda con "tracksalve ?"
+...Si tuvieras que aplicárselo a otra disketera, sería con "tracksalve 1 n", etc
+
 *********QUITAR ICONOS EN MIGHT & MAGIC II***********************************************
 
 En hexedit, nos vamos a la dirección 0x28BBE y cambiamos "3B 7C 00 0F FF AC" por "3B 7C 01 0F FF AC"
