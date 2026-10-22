@@ -903,6 +903,12 @@ xdftool utils.adf format Utilidades
 --Copiamos el directorio que queramos al disco:
 xdftool utils.adf write utils
 
+*********FECHA INCORRECTA EN KS 1.3 / WB 1.3*********************************************
+
+Debido al "Efecto 2000" del SetClock que trae esta versión del sistema, detecta fechas de los 70's.
+La solución es usar el SetClock 34.3 que se descarga de aquí: https://www.amigaforever.com/classic/download
+Sustituye C:SetClock por la versión corregida y ya.
+
 *********Compilar programas de Amiga desde Linux*****************************************
 
 --Instalamos el compilador:
