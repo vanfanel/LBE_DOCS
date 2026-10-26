@@ -1132,7 +1132,7 @@ cuando de repente usa mucha se ralentiza porque el scheduler no llega a tiempo d
 ********PPSSPP LIBRETRO**************************************
 
 --Clonamos los sources de la última release estable:
-git clone --depth 1 --recurse-submodules -b <NOMBRE_TAG> https://github.com/hrydgard/ppsspp.git
+git clone --depth 1 --recurse-submodules --shallow-submodules -b <NOMBRE_TAG> https://github.com/hrydgard/ppsspp.git
 
 --Compilamos con:
 

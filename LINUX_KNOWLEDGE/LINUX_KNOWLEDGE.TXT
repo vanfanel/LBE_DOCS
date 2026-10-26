@@ -8257,7 +8257,7 @@ libtinyxml2-dev nlohmann-json3-dev libspdlog-dev \
 libogg-dev libvorbis-dev libopus-dev libopusfile-dev
 
 --Clonamos la última versión estable (podemos ver cuál es en https://github.com/HarbourMasters/Shipwright/releases):
-git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/HarbourMasters/Shipwright.git -b 9.2.3 Shipwright-9.2.3
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/HarbourMasters/Shipwright.git -b 9.3.1 Shipwright-9.3.1
 
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
@@ -8351,7 +8351,7 @@ ZELDA MAJORA'S MASK en GNU/Linux
 apt-get install lsb-release
 
 --Clonamos la última versión estable (podemos ver cuál es la última estable en https://github.com/HarbourMasters/2ship2harkinian/releases):
-git clone --depth 1 https://github.com/HarbourMasters/2ship2harkinian.git --recurse-submodules --shallow-submodules -b 4.0.2 2ship2harkinian-4.0.2
+git clone --depth 1 https://github.com/HarbourMasters/2ship2harkinian.git --recurse-submodules --shallow-submodules -b 5.0.1 2ship2harkinian-5.0.1
 
 --Editamos "libultraship/cmake/dependencies/common.cmake", buscamos la línea "find_package(OpenGL QUIET)" y justo encima ponemos:
 set(OPENGL_USE_OPENGL ON)
