@@ -870,13 +870,10 @@ sudo apt-get install python3-pip
 -Instalamos las amitools:
 sudo pip3 install amitools
 
---Creamos el HDF:
+--Creamos el HDF y lo formateamos:
 
 rdbtool disco.hdf create size=8Mi + init rdb_cyls=1
 rdbtool disco.hdf fill name=DH1 dostype=DOS0
-
---Lo formateamos:
-
 xdftool disco.hdf open part=DH1 + format DISCO DOS0
 
 --Copiamos el directorio "juego" al HDF:
@@ -966,6 +963,10 @@ printf 'SAV:' | dd of=t.x bs=1 seek=$((0x2FD8)) conv=notrunc
 Y recuerda que tienes que hacer un assign a SAV: antes de lanzar el juego,
 yo lo mando a un directorio "saves" dentro del directorio del juego, así:
 assign SAV: saves
+
+*********SALTAR CON EL SEGUNDO BOTÓN EN TINY BOBBLE**************************************
+
+Es con CUSTOM2=3, no viene en los docs...
 
 *********CREAR ICONOS PARA WB 1.x********************************************************
 
