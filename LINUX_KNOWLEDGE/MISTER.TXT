@@ -906,7 +906,7 @@ Debido al "Efecto 2000" del SetClock que trae esta versión del sistema, detecta
 La solución es usar el SetClock 34.3 que se descarga de aquí: https://www.amigaforever.com/classic/download
 Sustituye C:SetClock por la versión corregida y ya.
 
-*********Compilar programas de Amiga desde Linux*****************************************
+*********Compilar programas en ensamblador de Amiga desde Linux*****************************************
 
 --Instalamos el compilador:
 git clone --depth 1 https://github.com/mbitsnbites/vasm-mirror.git
@@ -927,6 +927,28 @@ vasmm68k_mot -m68000 -kick1hunks -Fhunkexe -nosym -o test test.s
 
 --Comprobamos que el resultado es un ejecutable de Amiga con "file test" que nos dirá:
 test: AmigaOS loadseg()ble executable/binary
+
+*********Compilar programas en C de Amiga desde Linux************************************
+
+--Instalamos el compilador:
+
+sudo apt install git make curl gcc g++ flex bison \
+    gettext autoconf rsync libreadline-dev
+
+git clone --depth 1 https://github.com/AmigaPorts/m68k-amigaos-gcc
+cd m68k-amigaos-gcc
+
+make update
+make all -j8 PREFIX=$HOME/amiga-gcc
+
+--Metemos su directorio de instalación en el PATH:
+
+export PATH="$HOME/amiga-gcc/bin:$PATH"
+
+--Compilamos el programa:
+
+m68k-amigaos-gcc -m68000 -Os -mcrt=nix13 \
+    -o programa programa.c
 
 *********APAGAR SONIDO DE DISKETERA EN KICKSTART 1.3*************************************
 
