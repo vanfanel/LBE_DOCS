@@ -1035,6 +1035,14 @@ rm icons.adf && xdftool icons.adf create + format ICONS DOS0 + write "Prince of 
   escribir en "Tool Types": "WINDOW=NIL:" 
   ..Y darle a SAVE.
 
+*********CAMBIAR ICONOS DE WB DE TIPO TOOL A TIPO PROJECT (PARA QUE EJECUTEN UN SCRIPT)**
+
+printf '\x04' | dd of="Mind Walker.info" bs=1 seek=$((0x30)) conv=notrunc
+
+y comprobamos con:
+
+xxd -s 0x30 -l 1 "Mind Walker.info"
+
 *********NOTAS CORE PDP2011**************************************************************
 
 Los discos de Unix sólo funcionan en los modelos 11/45. Para BSD2.x, es con una 11/70.
