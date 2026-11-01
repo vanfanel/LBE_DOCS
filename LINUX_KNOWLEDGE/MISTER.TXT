@@ -985,16 +985,16 @@ printf '\x00\x0C' | dd of=mm2 bs=1 seek=$((0x277F0)) conv=notrunc
 printf '\x00\x06' | dd of=mm2 bs=1 seek=$((0x277F2)) conv=notrunc
 printf '\x00\x12' | dd of=mm2 bs=1 seek=$((0x27800)) conv=notrunc
 
-*********PARCHEAR ISHAR 1 OCS PARA QUE SALVE EN "SAV:" Y NO EN "DF0:"********************
+*********ISHAR 1 OCS EN WB 1.3********************
 
-El Ishar OCS en castellano se parchearía así:
+No hace falta parchear el ejecutable, ahora que sabemos que podemos cancelar el assign de DF0.
+Así que simplemente hay que hacer:
 
-printf 'SAV:' | dd of=t.x bs=1 seek=$((0x1CC6)) conv=notrunc
-printf 'SAV:' | dd of=t.x bs=1 seek=$((0x2FD8)) conv=notrunc
+assign df0: remove
+assign df0: ""
+assign saves: saves
 
-Y recuerda que tienes que hacer un assign a SAV: antes de lanzar el juego,
-yo lo mando a un directorio "saves" dentro del directorio del juego, así:
-assign SAV: saves
+t.x
 
 *********PARCHEAR CASTLE MASTER PARA QUE NO PRESENTE EL MENÚ DE CONSOLA DE SELECCIÓN DE IDIOMA Y ASÍ PODERLO LANZAR DESDE UN ICONO*********
 
