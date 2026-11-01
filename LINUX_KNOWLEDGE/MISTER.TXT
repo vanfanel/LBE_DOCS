@@ -996,6 +996,11 @@ Y recuerda que tienes que hacer un assign a SAV: antes de lanzar el juego,
 yo lo mando a un directorio "saves" dentro del directorio del juego, así:
 assign SAV: saves
 
+*********PARCHEAR CASTLE MASTER PARA QUE NO PRESENTE EL MENÚ DE CONSOLA DE SELECCIÓN DE IDIOMA Y ASÍ PODERLO LANZAR DESDE UN ICONO*********
+
+Parcheamos el ejecutable "cm" del crack de PNA así:
+printf '\x70\x45\x60\x2e' | dd of=cm bs=1 seek=182 conv=notrunc
+
 *********SALTAR CON EL SEGUNDO BOTÓN EN TINY BOBBLE**************************************
 
 Es con CUSTOM2=3, no viene en los docs...
@@ -1025,7 +1030,7 @@ magick ~/Downloads/prince.png -resize 256x80! -filter point imagen_preparada.png
 magick imagen_original.png -resize 256x80! +dither imagen_preparada.png
 
 --Creamos el icono:
-python3 scripts/amiga-icon-converter.py --palette 1 --type 4 --width 256 --height 80 --output "Prinde of Persia.info" imagen_preparada.png
+python3 scripts/amiga-icon-converter.py --palette 1 --type 4 --width 256 --height 80 --output "Prince of Persia.info" imagen_preparada.png
 
 --Metemos el icono en un ADF para "subírselo" al Amiga:
 rm icons.adf && xdftool icons.adf create + format ICONS DOS0 + write "Prince of Persia.info"
