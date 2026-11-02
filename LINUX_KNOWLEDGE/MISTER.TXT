@@ -1024,6 +1024,8 @@ if img.size != (icon_width, icon_height):
 Pásame esta imagen (y que quede bonito a pesar de la reducción de colores) a los 4 colores de la paleta de WB 1.3 que son:
 #000000, #FFFFFF, #0055FF, #FF8800
 
+Prepárame la imagen para que se vea bien cuando luego le baje la resolución para hacer un icono.
+
 --Redimensionamos la imágen a algo razonable para el WB 1.3, sin tocal ni su paleta y evitando dithering (de ahí el "+dither"):
 magick ~/Downloads/prince.png -resize 256x80! -filter point imagen_preparada.png
 ...O bien, si no queremos conservar el dithering que le mete la IA:
