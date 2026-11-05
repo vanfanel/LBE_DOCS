@@ -1050,13 +1050,23 @@ y comprobamos con:
 
 xxd -s 0x30 -l 1 "Mind Walker.info"
 
-*********Establecer los directorios de MODs, Songs, Samples, etc.. en ProTracker*********
+*********PROTRACKER: Establecer los directorios de MODs, Songs, Samples, etc************
 
 Nos vamos a SETUP, pulsamos el botón 2, y ahí establecemos los directorios.
 Es fundamental establecer también el directorio "PTDIR:" o no podremos salvar la configuración.
 Al acabar, le damos al botón 1, y allí a "Save Config".
 
 Se sale de Protracker con ALT+Q.
+
+**********DELUXE PAINT III***************************************************************
+
+--Para instalarlo simplemente es copiar el contenido de los tres discos al directorio que quieras
+  del disco duro.
+  
+--Para que se vean las animaciones del drawer "Anim" al hacer doble click sobre ellas,
+  editamos su INFO y ponemos la DEFAULT TOOL apuntando a la ruta del ejecutable del Deluxe Paint en nuestro disco duro.
+  
+--Para ver una animación "seguida", cargamos el programa "Play" y le damos a "DH0" y navegamos hasta donde la tengamos. 
 
 *********NOTAS CORE PDP2011**************************************************************
 
