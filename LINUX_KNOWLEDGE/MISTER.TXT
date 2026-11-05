@@ -871,6 +871,18 @@ assign df0: "" ;Esto lo asignaría al directorio actual.
 Recuerda que en WB 3.1 es con:
 assign df0: dismount
 
+ACCESO AL DIRECTORIO SHARED DESDE DENTRO DEL CORE MINIMIG
+=========================================================
+
+--Nos bajamos "MiSTer_share.lha" desde https://github.com/MiSTer-devel/Minimig-AGA_MiSTer/blob/MiSTer/extra/
+  Y lo mandamos al disco de sistema del Minimig, usando un ADF o un HDF
+  (tienes debajo cómo crear cualquiera de las dos cosas y meterle archivos).
+
+--Copiamos "MiSTerFileSystem" en L:, lo de "DEVS" en DEVS: y se monta el dispositivo share:.
+  (Que simplemente es hacer "mount share:").
+
+--Ya podemos ir a "share:" sin problemas.
+
 METER ARCHIVOS EN UN HDF PARA ACCEDER DESDE EL MINIMIG
 ======================================================
 
@@ -883,7 +895,7 @@ sudo pip3 install amitools
 --Creamos el HDF y lo formateamos:
 
 rdbtool disco.hdf create size=8Mi + init rdb_cyls=1
-rdbtool disco.hdf fill name=DH1 dostype=DOS0
+rdbtool disco.hdf fill name=DH1 dostype=DOS0 max_transfer=0x0001fe00 mask=0x7ffffffe
 xdftool disco.hdf open part=DH1 + format DISCO DOS0
 
 --Copiamos el directorio "juego" al HDF:
