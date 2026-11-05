@@ -874,14 +874,16 @@ assign df0: dismount
 ACCESO AL DIRECTORIO SHARED DESDE DENTRO DEL CORE MINIMIG
 =========================================================
 
-NOTA: El handler (o sea el archivo "MiSTerFileSystem") es normalmente para KS 3.1,
-      y para KS 1.3 tenemos que usar una versión especial. Lo demás es igual.
+NOTA: El handler (o sea el archivo "L:MiSTerFileSystem") es normalmente para KS 3.1,
+      y para KS 1.3 tenemos que usar una versión especial, por eso nos bajamos
+      una cosa u otra según sea para un sistema 1.x o un 3.x.
+      Lo demás es igual.
 
---Para KS 1.3/WB 1.3:
-  Nos bajamos el ADF del final de este hilo: https://misterfpga.org/viewtopic.php?t=2033
+--Para KS 1.3/WB 1.3 nos bajamos:
+  El ADF del final de este hilo: https://misterfpga.org/viewtopic.php?t=2033
 
---Para KS 3.1/WB 3.1:
-  Nos bajamos "MiSTer_share.lha" desde https://github.com/MiSTer-devel/Minimig-AGA_MiSTer/blob/MiSTer/extra/
+--Para KS 3.1/WB 3.1 nos bajamos:
+  "MiSTer_share.lha" desde https://github.com/MiSTer-devel/Minimig-AGA_MiSTer/blob/MiSTer/extra/
 
 --Copiamos "MiSTerFileSystem" a L: y "dummy.device" a DEVS:
 
