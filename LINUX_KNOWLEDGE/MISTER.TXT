@@ -874,14 +874,25 @@ assign df0: dismount
 ACCESO AL DIRECTORIO SHARED DESDE DENTRO DEL CORE MINIMIG
 =========================================================
 
---Nos bajamos "MiSTer_share.lha" desde https://github.com/MiSTer-devel/Minimig-AGA_MiSTer/blob/MiSTer/extra/
-  Y lo mandamos al disco de sistema del Minimig, usando un ADF o un HDF
-  (tienes debajo cómo crear cualquiera de las dos cosas y meterle archivos).
+NOTA: El handler (o sea el archivo "MiSTerFileSystem") es normalmente para KS 3.1,
+      y para KS 1.3 tenemos que usar una versión especial. Lo demás es igual.
 
---Copiamos "MiSTerFileSystem" en L:, lo de "DEVS" en DEVS: y se monta el dispositivo share:.
-  (Que simplemente es hacer "mount share:").
+--Para KS 1.3/WB 1.3:
+  Nos bajamos el ADF del final de este hilo: https://misterfpga.org/viewtopic.php?t=2033
 
---Ya podemos ir a "share:" sin problemas.
+--Para KS 3.1/WB 3.1:
+  Nos bajamos "MiSTer_share.lha" desde https://github.com/MiSTer-devel/Minimig-AGA_MiSTer/blob/MiSTer/extra/
+
+--Copiamos "MiSTerFileSystem" a L: y "dummy.device" a DEVS:
+
+--Metemos el MountList que trae el LHA al final del MountList del sistema:
+Copy MountList RAM:MiSTerMountList
+Copy DEVS:MountList RAM:MountList
+Join RAM:MountList RAM:MiSTerMountList AS RAM:MountListNew
+Copy RAM:MountListNew DEVS:MountList 
+
+--Montamos "share":
+mount share:
 
 METER ARCHIVOS EN UN HDF PARA ACCEDER DESDE EL MINIMIG
 ======================================================
