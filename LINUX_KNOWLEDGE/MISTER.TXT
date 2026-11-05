@@ -818,7 +818,7 @@ PARA QUE SE VEAN LOS ICONOS DE WHLOAD:
 
 OPCIÓN 1: INSTALAR NEWICONS
 Nos lo bajamos de https://aminet.net/package/util/wb/NewIcons46, extraemos, copiamos C/Newicons a C:,
-copiamos Libs:NewIcons.library a Libs:, y añadimos al final de S:Startup-Sequence:
+copiamos Libs:ME/NewIcons.library a Libs:, y añadimos al final de S:Startup-Sequence:
 Run <>NIL: C:NewIcons
 Wait 1
 ....Y aquí ya cargaríamos WB, o TinyLauncher o lo que sea.
