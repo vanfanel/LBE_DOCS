@@ -1030,6 +1030,10 @@ printf '\x70\x45\x60\x2e' | dd of=cm bs=1 seek=182 conv=notrunc
 
 Es con CUSTOM2=3, no viene en los docs...
 
+*********GUILD OF THIEVES EN AMIGA1200 SIN WHDLOAD***************************************
+
+TUDE CHIPSET=OLD FMODE=1x CACHES=NONE BLANKVIEW <NIL: >NIL:
+
 *********CREAR ICONOS PARA WB 1.x********************************************************
 
 --Instalamos imagemagick:
