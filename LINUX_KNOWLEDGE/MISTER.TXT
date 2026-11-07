@@ -1032,7 +1032,10 @@ Es con CUSTOM2=3, no viene en los docs...
 
 *********GUILD OF THIEVES EN AMIGA1200 SIN WHDLOAD***************************************
 
-TUDE CHIPSET=OLD FMODE=1x CACHES=NONE BLANKVIEW <NIL: >NIL:
+TUDE FMODE=1x BLANKVIEW CHIPSET=OLD  CACHES=NONE <NIL: >NIL:
+
+(Lo que suele arreglar las pantallas distorsionadas es la combinación "FMODE=1x BLANKVIEW",
+ una de ellas por separado no suele arreglarlo). 
 
 *********CREAR ICONOS PARA WB 1.x********************************************************
 
