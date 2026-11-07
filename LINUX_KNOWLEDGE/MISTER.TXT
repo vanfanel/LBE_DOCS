@@ -1032,10 +1032,16 @@ Es con CUSTOM2=3, no viene en los docs...
 
 *********GUILD OF THIEVES EN AMIGA1200 SIN WHDLOAD***************************************
 
-TUDE FMODE=1x BLANKVIEW CHIPSET=OLD  CACHES=NONE <NIL: >NIL:
+TUDE FMODE=1x BLANKVIEW CHIPSET=OLD CACHES=NONE <NIL: >NIL:
 
 (Lo que suele arreglar las pantallas distorsionadas es la combinación "FMODE=1x BLANKVIEW",
  una de ellas por separado no suele arreglarlo). 
+
+*********LOST VIKINGS EN AMIGA1200 SIN WHDLOAD*******************************************
+
+TUDE FMODE=1x BLANKVIEW NOFASTMEMORY CACHES=NONE <NIL: >NIL:
+
+(Al quitarle la FastMem, evitamos distorsiones de audio en las transiciones de pantalla).
 
 *********CREAR ICONOS PARA WB 1.x********************************************************
 
