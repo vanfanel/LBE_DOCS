@@ -1043,6 +1043,11 @@ TUDE FMODE=1x BLANKVIEW NOFASTMEMORY CACHES=NONE <NIL: >NIL:
 
 (Al quitarle la FastMem, evitamos distorsiones de audio en las transiciones de pantalla).
 
+*********ERROR DE LECTURA EN AMBERSTAR AL IR A EMPEZAR LA PARTIDA AUNQUE TENGO BIEN HECHOS LOS ASSIGNS*********
+
+Este juego sólo funciona correctamente si se lanza desde su icono original.
+Si lo lanzas desde el CLI, da ese error, aunque tengas bien hechos los assigns y todo.
+
 *********CREAR ICONOS PARA WB 1.x********************************************************
 
 --Instalamos imagemagick:
