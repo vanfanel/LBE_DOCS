@@ -985,6 +985,14 @@ export PATH="$HOME/amiga-gcc/bin:$PATH"
 m68k-amigaos-gcc -m68000 -Os -mcrt=nix13 \
     -o programa programa.c
 
+*********Evitar que nos salga el diálogo al lanzar un juego de WHDLoad*******************
+
+Añadimos a s:whdload.prefs:
+
+SplashDelay=0
+ConfigDelay=0
+ReadDelay=0
+
 *********APAGAR SONIDO DE DISKETERA EN KICKSTART 1.3*************************************
 
 El típico "NoClick" es para KS 2.0+ y en KS 1.x da un Gurú, así que se usa "TrackSalve", que puedes bajar de Aminet.
@@ -1043,10 +1051,18 @@ TUDE FMODE=1x BLANKVIEW NOFASTMEMORY CACHES=NONE <NIL: >NIL:
 
 (Al quitarle la FastMem, evitamos distorsiones de audio en las transiciones de pantalla).
 
-*********ERROR DE LECTURA EN AMBERSTAR AL IR A EMPEZAR LA PARTIDA AUNQUE TENGO BIEN HECHOS LOS ASSIGNS*********
+*********SCRIPT DE LANZAMIENTO DE AMBERSTAR PARA AMIGA1200*******************************
 
-Este juego sólo funciona correctamente si se lanza desde su icono original.
-Si lo lanzas desde el CLI, da ese error, aunque tengas bien hechos los assigns y todo.
+tude fmode=1x blankview nofastmemory caches=none <NIL: >NIL:
+
+PAL
+assign Amberstar_A: Amberfiles
+assign Amberstar_B: Amberfiles
+assign Amberstar_C: Amberfiles
+Amberload
+
+; ¡Y RECUERDA QUE ESTE JUEGO SÓLO FUNCIONA BIEN SI SE LANZA DESDE SU ICONO ORIGINAL!
+; SI NO, DA UN ERROR DE LECTURA CUANDO VAS A EMPEZAR LA PARTIDA, ASÍ NO SE PUEDE LANZAR DESDE LA CLI.
 
 *********CREAR ICONOS PARA WB 1.x********************************************************
 
@@ -1231,7 +1247,7 @@ https://github.com/MiSTer-devel/Distribution_MiSTer#list-of-tags-that-you-may-us
 COMO LO VENIMOS HACIENDO AHORA MISMO:
 
 [mister]
-filter = !cheats !acornatom !acornelectron !adam !adventurevision !alicemc10 !altair8800 !amstrad-pcw !apogee !apple-i !apple-iii !apple-lisa !aquarius !arduboy !atari2600 !atari5200 !atari7800 !atarilynx !ay-3-8500 !bbcmicro !bk0011m !c16 !channelf !arcadia !archie !astrocade !bbcbridgecompanion !c16 !c128 !casio_pv-1000 !casio_pv-2000 !chess !chip8 !coco2 !coco3 !coleco !colecoadam !colecovision !creativision !edsac !eg2000 !enterprise !epochgalaxyii !flappybird !fm-7 !galaksija !gamate !gameandwatch !gamecom !gamegear2p !gameking !gamenwatch !gnw !gameoflife !handheld2p !homelab !intellivision !interact !iq151 !jr100 !jupiter !laser !laser310 !loopy !lynx48 !megacd !megaduck !msx !multicomp !myvision !n64 !next !next-color !neon !ngpc !odyssey2 !ondra_spo186 !orao !oric !other-cores !pc88 !pc8801 !pcjr !pcxt-ega !pdp1 !pet2001 !pmd85 !pocketchallengev2 !pocketstation !pokemonmini !ql !rx78 !s32x !samcoupe !scv !segacd !sgb !sgi-indy !sharpmz !slugcross !sordm5 !specialist !studioii !sun-2 !sun-3 !SunSparcStation20 !superacan !supervision !supervision8000 !super_vision_8000 !svi328 !tandy1000 !tatungeinstein !ti994a !tk2000 !tomyscramble !tomytutor !trs-80 !tsconf !uk101 !uknc !vc4000 !vector-06c !vectrex !vic20 !videobrain !vt52 !wonderswan !wonderswancolor !zx48 !zx81 !zxnext
+filter = !cheats !acornatom !acornelectron !adam !adventurevision !alicemc10 !altair8800 !amstrad-pcw !apogee !apple-i !apple-iii !apple-lisa !aquarius !arduboy !atari2600 !atari5200 !atari7800 !atarilynx !ay-3-8500 !basicmasterl3 !bbcmicro !bk0011m !c16 !channelf !arcadia !archie !astrocade !bbcbridgecompanion !c16 !c128 !casio_pv-1000 !casio_pv-2000 !chess !chip8 !coco2 !coco3 !coleco !colecoadam !colecovision !creativision !edsac !eg2000 !enterprise !epochgalaxyii !flappybird !fm-7 !galaksija !gamate !gameandwatch !gamecom !gamegear2p !gameking !gamenwatch !gnw !gameoflife !handheld2p !homelab !intellivision !interact !iq151 !jr100 !jupiter !laser !laser310 !loopy !lynx48 !megacd !megaduck !msx !multicomp !myvision !n64 !next !next-color !neon !ngpc !odyssey2 !ondra_spo186 !orao !oric !other-cores !pc88 !pc8801 !pcjr !pcxt-ega !pdp1 !pet2001 !pmd85 !pocketchallengev2 !pocketstation !pokemonmini !ql !rx78 !s32x !samcoupe !scv !segacd !sgb !sgi-indy !sharpmz !sharpmz2500 !slugcross !sonysmc777 !sordm5 !specialist !studioii !sun-2 !sun-3 !SunSparcStation20 !superacan !supervision !supervision8000 !super_vision_8000 !svi328 !tandy1000 !tatungeinstein !ti994a !tk2000 !tomyscramble !tomytutor !trs-80 !tsconf !uk101 !uknc !vc4000 !vector-06c !vectrex !vic20 !videobrain !vt52 !wonderswan !wonderswancolor !zx48 !zx81 !zxnext
 
 Y para que no nos instale el core de NeoGeo Pocket, añadimos en "[jtcores]" el filtro "!console":
 
