@@ -1064,6 +1064,15 @@ Amberload
 ; ¡Y RECUERDA QUE ESTE JUEGO SÓLO FUNCIONA BIEN SI SE LANZA DESDE SU ICONO ORIGINAL!
 ; SI NO, DA UN ERROR DE LECTURA CUANDO VAS A EMPEZAR LA PARTIDA, ASÍ NO SE PUEDE LANZAR DESDE LA CLI.
 
+*********ULTIMA 5 / ULTIMA V WHDLOAD CON LOS GRÁFICOS CORRECTOS**************************
+
+El problema es que el juego tiene un archivo llamado "data/ruptile.", así acabado en punto.
+Eso al extraerse en un volúmen FAT32 (como el shared de Linux) es extraído como "data/ruptile", sin el punto.
+Al cargar el juego con WHDLoad, ese archivo no lo encuentra pero tira para adelante y los gráficos salen mal.
+Lo que hay que hacer es descomprimir el LHA desde un volúmen de Amiga, NO desde el shared, o bien
+una vez que tienes el juego pasado a un volúmen de Amiga, renombrar "data/ruptile" a "data/ruptile."
+y ya se ve bien.
+
 *********CREAR ICONOS PARA WB 1.x********************************************************
 
 --Instalamos imagemagick:
