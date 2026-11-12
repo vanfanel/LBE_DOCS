@@ -1100,10 +1100,10 @@ magick ~/Downloads/prince.png -resize 256x80! -filter point imagen_preparada.png
 magick imagen_original.png -resize 256x80! +dither imagen_preparada.png
 
 --Creamos el icono:
-python3 scripts/amiga-icon-converter.py --palette 1 --type 4 --width 256 --height 80 --output "Prince of Persia.info" imagen_preparada.png
+python3 scripts/amiga-icon-converter.py --palette 1 --type 4 --width 256 --height 80 --output "PrinceOfPersia.info" imagen_preparada.png
 
 --Metemos el icono en un ADF para "subírselo" al Amiga:
-rm icons.adf && xdftool icons.adf create + format ICONS DOS0 + write "Prince of Persia.info"
+rm icons.adf && xdftool icons.adf create + format ICONS DOS0 + write "PrinceOfPersia.info"
 
 --Antes de que el icono funcione, tenemos que seleccionarlo, darle en el menú de arriba a Workbench->Info,
   escribir en "Default Tool": "C:IconX"
