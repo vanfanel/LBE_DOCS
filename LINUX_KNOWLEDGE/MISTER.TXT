@@ -1073,6 +1073,26 @@ Lo que hay que hacer es descomprimir el LHA desde un volúmen de Amiga, NO desde
 una vez que tienes el juego pasado a un volúmen de Amiga, renombrar "data/ruptile" a "data/ruptile."
 y ya se ve bien.
 
+*********EYE OF THE BEHOLDER SIN WHDLOAD CON AUTOMAPA EN INGLÉS**************************
+
+--Buscamos en TURRAN FTP el archivo "EOB1&2_ECS_AGA_AUTOMAP_V1_12_WHD.lha"
+
+--Usamos renombramos "data-ecs" o "data-vga" (dependiendo de si queremos la versión ECS o la AGA)
+  a "EyeOfTheBeholder", lo del raíz lo podemos borrar tranquilamente.
+
+--Editamos "languages/eob1.language" y cambiamos FR por GB
+
+--Lanzamos con:
+
+assign libs: libs
+assign fonts: fonts
+eob
+assign libs: sys:libs
+assign fonts: sys:fonts
+
+..Y si no queremos ver la intro, ejecutaríamos "eob2" en vez de "eob".
+El automapa se saca con TAB.
+
 *********CREAR ICONOS PARA WB 1.x********************************************************
 
 --Instalamos imagemagick:
