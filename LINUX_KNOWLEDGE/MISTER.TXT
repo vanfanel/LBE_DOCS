@@ -1116,6 +1116,37 @@ assign SYS: ""
 setprefs >nil: devs/system-configuration
 run DOSBOOT:exc_40
 
+*********POOL OF RADIANCE DESDE WB 1.3***************************************************
+
+El juego viene preparado para instalarse en disco duro y que se juegue lanzándolo desde una consola,
+pero no para jugar desde un icono, porque al hacerlo da un gurú antes de llegar al menú (da un gurú).
+Así que para evitarlo, la idea es que el script asciado al icono sea un "falso script", que lo que hará es
+lanzar una consola desde la que se ejecutará el script de lanzamiento del juego.
+Seguimos estos pasos:
+
+--Instalamos el juego (es sólo copiar el contenido de los diskettes a un directorio del disco duro,
+no hace falta que ejecutes su programa de instalación, hace lo mismo).
+
+--Creamos el script del icono, que simplemente tendrá este contenido:
+
+newcli from jugar
+
+--Creamos el script de lanzamiento del juego en sí, que llamamos "jugar":
+
+assign poolgame: ""
+assign pooldata: ""
+assign poolsave: ""
+assign fonts: fonts
+
+stack 8000
+sys:system/fastmemfirst
+program
+
+assign poolgame:
+assign pooldata:
+assign poolsave:
+assign fonts: sys:fonts
+
 *********CREAR ICONOS PARA WB 1.x********************************************************
 
 --Instalamos imagemagick:
