@@ -1094,6 +1094,28 @@ assign fonts: sys:fonts
 ..Y si no queremos ver la intro, ejecutaríamos "eob2" en vez de "eob".
 El automapa se saca con TAB.
 
+*********PERSONAL NIGHTMARE DESDE DISCO DURO EN WB 1.3 SIN WHDLOAD***********************
+
+--Copiamos los contenidos de los tres discos a un directorio del disco duro.
+
+--Nos bajamos "SetPrefs" de Aminet (https://aminet.net/package/util/cli/SetPrefs) y copiamos el ejecutable a C:
+  (SetPrefs lo usamos para poner el modo de 60 columnas que el juego necesita, porque si no, se ve el texto "apeguñao").
+
+--Creamos este script de lanzamiento:
+
+assign df0: remove
+assign df0: ""
+
+assign DISK0: ""
+assign DISK1: ""
+assign DISK2: ""
+assign DISK3: ""
+
+assign SYS: ""
+
+setprefs >nil: devs/system-configuration
+run DOSBOOT:exc_40
+
 *********CREAR ICONOS PARA WB 1.x********************************************************
 
 --Instalamos imagemagick:
