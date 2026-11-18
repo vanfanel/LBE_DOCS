@@ -11900,6 +11900,38 @@ NAVEGAR POR THREADS DE TWITTER/X SIN TENER CUENTA EN LA RED DEL PUTO NAZI DE MIE
 En vez de "x.com/nombre_usuario", usa "xcancel.com/nombre_usuario" y podrás navegar sin tener que loguearte por todos los twits y respuestas
 de los retrasados que aún usan esa mierda de red.
 
+QUITAR ENCABEZADOS DE UN PDF
+============================
+
+--Instalamos la herramienta:
+sudo apt install python3-pymupdf
+
+--Creamos este script en python:
+
+import pymupdf
+import sys
+
+entrada = sys.argv[1]
+salida = sys.argv[2]
+altura = float(sys.argv[3])  # Milímetros
+
+doc = pymupdf.open(entrada)
+
+for pagina in doc:
+    puntos = altura * 72 / 25.4
+    zona = pymupdf.Rect(
+        0, 0, pagina.rect.width, puntos
+    )
+
+    pagina.add_redact_annot(zona, fill=(1, 1, 1))
+    pagina.apply_redactions()
+
+doc.save(salida, garbage=4, deflate=True)
+doc.close()
+
+--Por ejemplo para quitar los encabezados de las leyes y decretos de la Junta de Extremadura:
+python quitar-encabezados.py original.pdf limpio.pdf 28
+
 DIAGNOSTICAR PROBLEMAS DE RENDIMIENTO CON PERF + HOTSPOT
 ========================================================
 
