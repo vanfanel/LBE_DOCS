@@ -509,22 +509,45 @@ python3 createMSXpack.py
 
 --Copiamos el directorio MSX con todo lo que tiene dentro a la SD de la MiSTer. Lo metemos en /media/fat/games/MSX
 
---En el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos
-(un buen modelo MSX2 PAL muy popular en Europa es el Philips VG 2835).
-Y en "Load FW PACK" cargamos el .MSX del pack de firmware que queramos (tenemos dos: CART_FW y CART_FW_EN). Ahí es donde va
-el firmware del FM PACK y todo es.
+--En el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos.
+Suelo usar los modelos "Sony HB-F1XD" (MSX2) o "Panasonic FS-A1WSX" (MSX2+) y para MSX2 PAL uso Philips VG 2835.
+Y en "Load FW PACK" cargamos el .MSX del pack de firmware que queramos (tenemos dos: CART_FW_EN y CART_FW_JP).
+Ahí es donde va el firmware del FM PACK y todo eso.
 En "SLOT A:" ponemos "FM-PACK" o "SCC" o lo que queramos, y en "SLOT B:" cargamos el juego que queramos, eligiendo el mapper
 correcto para cada juego.
 
+		--CARGAR CARTUCHOS EN MODELOS REALES DE MSX (NO OCM)--
+
+Primero tenemos que cargar la base de datos de cartuchos con la opción "LOAD DB MAPPERS".
+Se descarga de:
+https://github.com/MiSTer-devel/MSX1_MiSTer/raw/refs/heads/MSX/tools/CreateCRC/vampier.db
+OJO: Los cartuchos se suelen meter en el SLOT-2.
+En el SLOT-1 van las expansiones que se necesiten. Para que funcionen esas expansiones tienes que cargar el FW de las expansiones
+con "Load FW PACK" y elegir CART_FW_EN o CART_FW_JP.
+Algunos juegos como Bubble Bobble pueden ser incompatibles con tener un FDC (controlador de floppy) en el SLOT-1.
+
+
 		--ARRANQUE DESDE DISCO DURO--
 
---PARA LA MAYORÍA DE LOS MODELOS DE MSX, EN EL ".VHD" TENDRÁS COMO PRIMER FICHERO EL "NEXTOR.SYS",
-  USAREMOS EL "Sony HB-F1XD" (MSX2) O EL "Panasonic FS-A1WSX" (MSX2+)
-  CONFIGURADO CON:
-  FW PACK: CART_FW_EN
-  SLOT 1: MegaFlashROM SCC+ SD
+	CREACIÓN DE LA IMÁGEN DE DISCO FAT16:
 
---MODELO OCM: NO ARRANCA HASTA QUE CARGUES UN ".VHD" QUE TENGA EL FICHERO "OCM-BIOS.DAT" COMO PRIMER FICHERO DEL DISCO.
+--Crear imagen RAW de 256 MiB
+truncate -s 256M msx.vhd
+
+--Crear MBR y partición FAT16 desde el sector 1
+printf 'label: dos\nunit: sectors\n\n1,524287,6\n' | sudo sfdisk --force msx.vhd
+
+--Formatear FAT16 con mtools
+mformat -i msx.vhd@@512 -T 524287 -h 16 -s 32 -H 1 -c 8 -m 248 -v MSX ::
+
+--SI ES PARA 1CHIPMSX: Copiar la BIOS como primer archivo
+mcopy -i msx.vhd@@512 OCM-BIOS.DAT ::
+
+--SI ES PARA UN MSX NORMAL (no 1ChipMSX) CON MegaFlashROM:
+mcopy -i msx.vhd@@512 NEXTOR.SYS ::
+Configurado con:
+FW PACK: CART_FW_EN
+SLOT 1: MegaFlashROM SCC+ SD
 
 		--NOTAS SOBRE JUEGOS CONCRETOS--
 
