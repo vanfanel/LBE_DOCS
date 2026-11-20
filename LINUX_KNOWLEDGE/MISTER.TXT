@@ -516,9 +516,15 @@ el firmware del FM PACK y todo es.
 En "SLOT A:" ponemos "FM-PACK" o "SCC" o lo que queramos, y en "SLOT B:" cargamos el juego que queramos, eligiendo el mapper
 correcto para cada juego.
 
---MODO 1ChipMSX (OCM): Cargamos la máquina "OCM".
-  RECUERDA QUE NO ARRANCA HASTA QUE CARGUES UN ".VHD" QUE TENGA EL FICHERO "OCM-BIOS.DAT" COMO PRIMER FICHERO DEL DISCO.
-  (Que lógicamente se copia al disco como primer fichero cuando se crea una imágen de disco nueva).
+		--ARRANQUE DESDE DISCO DURO--
+
+--PARA LA MAYORÍA DE LOS MODELOS DE MSX, EN EL ".VHD" TENDRÁS COMO PRIMER FICHERO EL "NEXTOR.SYS",
+  USAREMOS EL "Sony HB-F1XD" (MSX2) O EL "Panasonic FS-A1WSX" (MSX2+)
+  CONFIGURADO CON:
+  FW PACK: CART_FW_EN
+  SLOT 1: MegaFlashROM SCC+ SD
+
+--MODELO OCM: NO ARRANCA HASTA QUE CARGUES UN ".VHD" QUE TENGA EL FICHERO "OCM-BIOS.DAT" COMO PRIMER FICHERO DEL DISCO.
 
 		--NOTAS SOBRE JUEGOS CONCRETOS--
 
