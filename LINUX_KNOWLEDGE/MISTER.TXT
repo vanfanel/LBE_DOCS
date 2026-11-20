@@ -480,38 +480,40 @@ mount -o loop,offset=32256 dos622.vhd /mnt
 NOTAS CORE MSX
 ==============
 
-Tienes TODO el software de MSX1/MSX2 en: https://download.file-hunter.com/
+Tienes TODO el software de MSXen: https://download.file-hunter.com/
 
-Nos bajamos el último core de:
-https://github.com/MiSTer-devel/MSX1_MiSTer/tree/MSX2test/releases
+PARA CREAR LAS MÁQUINAS MSX:
 
-Ahora descargamos descargamos el CreateMSXPack de:
-https://github.com/MiSTer-devel/MSX1_MiSTer/tree/MSX2test/releases
-Y lo descomprimimos.
+--Clonamos el repo del core:
+git clone --depth 1 https://github.com/MiSTer-devel/MSX1_MiSTer.git
 
-Ahora descargamos el romset completo de las BIOS de MSX1 y MSX2 de:
+--Entramos en "tools/CreateMSXpack" 
+
+--Descargamos el pack de las BIOS de todos los MSX desde:
 https://download.file-hunter.com/System%20ROMs/
-(El archivo que se llama "Full Set System Roms")
+(El archivo que se llama "Full Set System ROMs for OpenMSX")
 ...Y metemos su contenido tal cual (es decir, lo directorios "extensions", "machines", "misc"...)
-en el directorio ROM del CreateMSXPack.
+en el directorio ROM de "tools/CreateMSXpack".
 Descargamos también el archivo "Konami's Game Master - Konami (1985) [Japanese version] [RC-735] [GoodMSX] [1271].zip "
 de:
 https://download.file-hunter.com/Games/MSX1/ROM/
 ..Y tras descomprimirlo, lo copiamos como: ROM/extensions/gm2.rom
-Entramos en ROM/extensions/ y descomprimimos mfrsd.gz con: gunzip mfrsd.gz
+Entramos en ROM/extensions/ y descomprimimos un fichero que tenemos que descomprimir con: gunzip mfrsd.gz
 
-Ahora por fin ejecutamos el createMSXpack con:
+-Nos traemos el createMSXpacy.py de los sources del core a donde tengamos el directorio ROMS, y lo ejecutamos con:
 python3 createMSXpack.py
 ...y no nos debería decir que falte nada.
 
-Ahora copiamos el directorio MSX con todo lo que tiene dentro a la SD de la MiSTer. Lo metemos en /media/fat/games/MSX1.
+-Copiamos el directorio MSX con todo lo que tiene dentro a la SD de la MiSTer. Lo metemos en /media/fat/games/MSX
 
-Ahora, en el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos
+-En el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos
 (un buen modelo MSX2 PAL muy popular en Europa es el Philips VG 2835).
 Y en "Load FW PACK" cargamos el .MSX del pack de firmware que queramos (tenemos dos: CART_FW y CART_FW_EN). Ahí es donde va
 el firmware del FM PACK y todo es.
 En "SLOT A:" ponemos "FM-PACK" o "SCC" o lo que queramos, y en "SLOT B:" cargamos el juego que queramos, eligiendo el mapper
 correcto para cada juego.
+
+NOTAS SOBRE JUEGOS CONCRETOS
 
 PARA SNATCHER EN INGLÉS DESDE VHD, NECESITAMOS ARRANCAR CON EL "MegaFlashROM SCC+ SD" EN EL "SLOT A",
 Y MIENTRAS ARRANCA, PRESIONAMOS "S" PARA ACTIVAR EL MODO DE COMPATIBILIDAD CON EL SCC ESPECIAL "SCC-I" QUE USA EL SNATCHER Y SD-SNATCHER.
