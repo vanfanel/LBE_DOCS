@@ -485,7 +485,10 @@ Tienes TODO el software de MSXen: https://download.file-hunter.com/
 PARA CREAR LAS MÁQUINAS MSX:
 
 --Clonamos el repo del core:
-git clone --depth 1 https://github.com/MiSTer-devel/MSX1_MiSTer.git
+git clone --depth 1 -b MSX https://github.com/MiSTer-devel/MSX1_MiSTer.git
+
+--Nos vamos a la rama MSX:
+git checkout MSX
 
 --Entramos en "tools/CreateMSXpack" 
 
@@ -500,23 +503,24 @@ https://download.file-hunter.com/Games/MSX1/ROM/
 ..Y tras descomprimirlo, lo copiamos como: ROM/extensions/gm2.rom
 Entramos en ROM/extensions/ y descomprimimos un fichero que tenemos que descomprimir con: gunzip mfrsd.gz
 
--Nos traemos el createMSXpacy.py de los sources del core a donde tengamos el directorio ROMS, y lo ejecutamos con:
+--Nos traemos el createMSXpacy.py de los sources del core a donde tengamos el directorio ROMS, y lo ejecutamos con:
 python3 createMSXpack.py
 ...y no nos debería decir que falte nada.
 
--Copiamos el directorio MSX con todo lo que tiene dentro a la SD de la MiSTer. Lo metemos en /media/fat/games/MSX
+--Copiamos el directorio MSX con todo lo que tiene dentro a la SD de la MiSTer. Lo metemos en /media/fat/games/MSX
 
---Para el 1ChipMSX, tenemos que cargar el sistema OCM y debemos tener "OCM-BIOS.DAT"
-  que se descarga de https://github.com/MiSTer-devel/MSX_MiSTer/blob/master/BIOS/
-
--En el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos
+--En el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos
 (un buen modelo MSX2 PAL muy popular en Europa es el Philips VG 2835).
 Y en "Load FW PACK" cargamos el .MSX del pack de firmware que queramos (tenemos dos: CART_FW y CART_FW_EN). Ahí es donde va
 el firmware del FM PACK y todo es.
 En "SLOT A:" ponemos "FM-PACK" o "SCC" o lo que queramos, y en "SLOT B:" cargamos el juego que queramos, eligiendo el mapper
 correcto para cada juego.
 
-NOTAS SOBRE JUEGOS CONCRETOS
+--MODO 1ChipMSX (OCM): Cargamos la máquina "OCM".
+  RECUERDA QUE NO ARRANCA HASTA QUE CARGUES UN ".VHD" QUE TENGA EL FICHERO "OCM-BIOS.DAT" COMO PRIMER FICHERO DEL DISCO.
+  El "OCM-BIOS.DAT" SE DESCARGA DE: https://github.com/MiSTer-devel/MSX_MiSTer/blob/master/BIOS/
+
+		--NOTAS SOBRE JUEGOS CONCRETOS--
 
 PARA SNATCHER EN INGLÉS DESDE VHD, NECESITAMOS ARRANCAR CON EL "MegaFlashROM SCC+ SD" EN EL "SLOT A",
 Y MIENTRAS ARRANCA, PRESIONAMOS "S" PARA ACTIVAR EL MODO DE COMPATIBILIDAD CON EL SCC ESPECIAL "SCC-I" QUE USA EL SNATCHER Y SD-SNATCHER.
