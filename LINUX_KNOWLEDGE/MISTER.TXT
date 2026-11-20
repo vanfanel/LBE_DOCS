@@ -506,6 +506,9 @@ python3 createMSXpack.py
 
 -Copiamos el directorio MSX con todo lo que tiene dentro a la SD de la MiSTer. Lo metemos en /media/fat/games/MSX
 
+--Para el 1ChipMSX, tenemos que cargar el sistema OCM y debemos tener "OCM-BIOS.DAT"
+  que se descarga de https://github.com/MiSTer-devel/MSX_MiSTer/blob/master/BIOS/
+
 -En el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos
 (un buen modelo MSX2 PAL muy popular en Europa es el Philips VG 2835).
 Y en "Load FW PACK" cargamos el .MSX del pack de firmware que queramos (tenemos dos: CART_FW y CART_FW_EN). Ahí es donde va
