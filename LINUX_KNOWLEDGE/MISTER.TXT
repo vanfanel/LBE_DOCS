@@ -523,9 +523,13 @@ y se carga con "LOAD DB MAPPERS")
 
 		--MODO 80 COLUMNAS CON LETRA VERDE SOBRE FONDO NEGRO--
 
+Esto es últil tanto para arranque desde disco duro como para ponérselo a diskettes de aventuras conversacionales tipo ZORK, etc.
+
 Tenemos que tener en AUTOEXEC.BAT:
+
 MODE 80
 COLOR 2,1,1
+
 Se podría usar 3 en vez de 2, pero es un verde como más brillante y plasticoso.
 OJO: "COLOR" es un comando del COMMAND2.COM de MSX-DOS2, y MSX-DOS2 sólo es compatible "de serie" con TURBO-R
 a no ser que cargues una ROM de MSX-DOS2.
