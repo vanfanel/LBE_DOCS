@@ -572,6 +572,10 @@ y cambiamos el "block_count" de 4 a 16, y volvemos a ejecutar el python3 createM
   Para ello tenemos que tener ZORK1.COM y el ZORK3.DAT renombrado a ZORK1.DAT
   (Tienen que llamarse ambos así, ZORK1.COM y ZORK1.DAT, no pruebes más nombres porque no funciona).
 
+--PARA OTRAS AVENTURAS DE TEXTO EN FORMATO Z-MACHINE, COMO ADVENT.Z3, DEBES USAR "VEZZA":
+  https://gitlab.com/sijnstra1/vezza
+  La versión de MSX y MSX2 se llama "vezza-MX.com"
+
 ***********Montar un VHD de MSX para la MiSTer******************************************************************************************
 
 ---Averiguamos dónde empieza con parted. Necesitamos saberlo en BYTES para poder pasárselo a mount, NO en sectores como nos lo dice FDISK. Por eso usamos parted:
