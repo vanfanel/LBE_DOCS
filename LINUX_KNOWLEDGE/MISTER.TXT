@@ -568,13 +568,16 @@ https://www.msx.org/wiki/MegaFlashROM_SCC%2B_SD_compatibility_settings
 --PARA SNATCHER EN INGLÉS DESDE FLOPPY, NECESITAMOS TENER 256 KB de RAM, así que editamos el XML de la máquina que queramos, buscamos "RAM MAPPER"
 y cambiamos el "block_count" de 4 a 16, y volvemos a ejecutar el python3 createMSXpack.py
 
---PARA ZORK III A 80 COLUMNAS, lo que hacemos es que usamos el intérprete de ZORK I con los datos de ZORK III.
-  Para ello tenemos que tener ZORK1.COM y el ZORK3.DAT renombrado a ZORK1.DAT
-  (Tienen que llamarse ambos así, ZORK1.COM y ZORK1.DAT, no pruebes más nombres porque no funciona).
-
---PARA OTRAS AVENTURAS DE TEXTO EN FORMATO Z-MACHINE, COMO ADVENT.Z3, DEBES USAR "VEZZA":
+--PARA AVENTURAS DE TEXTO EN FORMATO Z-MACHINE, COMO ADVENT.Z3 O ZORK3 A 80 COLUMNAS, DEBES USAR "VEZZA":
   https://gitlab.com/sijnstra1/vezza
   La versión de MSX y MSX2 se llama "vezza-MX.com"
+  Si quieres que el texto se vea en verde sobre negro, parchea el ejecutable así:
+  printf '\x02' | dd of=vezza-MX.com bs=1 seek=$((0x163E)) count=1 conv=notrunc
+
+--OTRA ALTERNATIVA PARA ZORK3 A 80 COLUMNAS (AUNQUE MEJOR USA VEZZA PARCHEADO PARA TEXTO VERDE SOBRE NEGRO),
+  lo que hacemos es que usamos el intérprete de ZORK I con los datos de ZORK III.
+  Para ello tenemos que tener ZORK1.COM y el ZORK3.DAT renombrado a ZORK1.DAT
+  (Tienen que llamarse ambos así, ZORK1.COM y ZORK1.DAT, no pruebes más nombres porque no funciona).
 
 ***********Montar un VHD de MSX para la MiSTer******************************************************************************************
 
