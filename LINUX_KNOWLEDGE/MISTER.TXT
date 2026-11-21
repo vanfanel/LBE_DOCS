@@ -510,21 +510,16 @@ python3 createMSXpack.py
 --Copiamos el directorio MSX con todo lo que tiene dentro a la SD de la MiSTer. Lo metemos en /media/fat/games/MSX
 
 --En el core, en "Load ROM PACK" cargamos el .MSX del modelo que queramos.
-Suelo usar los modelos "Sony HB-F1XD" (MSX2) o "Panasonic FS-A1WSX" (MSX2+) y para MSX2 PAL uso Philips VG 2835.
+Suelo usar los modelos "Panasonic FS-A1WSX" (MSX2+ y con floppy y FM incluidos sin tener que meterlos en slots)
+o "Sony HB-F1XD" (MSX2) y para MSX2 PAL uso Philips VG 2835.
 Y en "Load FW PACK" cargamos el .MSX del pack de firmware que queramos (tenemos dos: CART_FW_EN y CART_FW_JP).
 Ahí es donde va el firmware del FM PACK y todo eso.
-En "SLOT A:" ponemos "FM-PACK" o "SCC" o lo que queramos, y en "SLOT B:" cargamos el juego que queramos, eligiendo el mapper
-correcto para cada juego.
-
-		--CARGAR CARTUCHOS EN MODELOS REALES DE MSX (NO OCM)--
-
-Primero tenemos que cargar la base de datos de cartuchos con la opción "LOAD DB MAPPERS".
-Se descarga de:
+----SLOT-1 ponemos el juego (el mapper se detecta desde la base de datos que se baja de 
 https://github.com/MiSTer-devel/MSX1_MiSTer/raw/refs/heads/MSX/tools/CreateCRC/vampier.db
-OJO: Los cartuchos se suelen meter en el SLOT-2.
-En el SLOT-1 van las expansiones que se necesiten. Para que funcionen esas expansiones tienes que cargar el FW de las expansiones
-con "Load FW PACK" y elegir CART_FW_EN o CART_FW_JP.
-Algunos juegos como Bubble Bobble pueden ser incompatibles con tener un FDC (controlador de floppy) en el SLOT-1.
+y se carga con "LOAD DB MAPPERS")
+----LOT-2 ponemos la extensión si queremos alguna (FM-PAC, SCC, etc).
+----Si queremos arrancar desde floppy en el Panasonic FS-A1WSX, tenemos que poner "Firmware Switch" en "OFF"
+    para que no se vaya al menú propio de Panasonic.
 
 		--ARRANQUE DESDE DISCO DURO--
 
