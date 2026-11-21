@@ -540,6 +540,9 @@ https://www.msx.org/downloads/colorcom-v100
 
 	CREACIÓN DE LA IMÁGEN DE DISCO FAT16:
 
+--Instalamos las MTOOLS:
+sudo apt-get install mtools
+
 --Crear imagen RAW de 256 MiB
 truncate -s 256M msx.vhd
 
