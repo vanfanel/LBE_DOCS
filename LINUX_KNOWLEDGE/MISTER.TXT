@@ -546,17 +546,17 @@ sudo apt-get install mtools
 --Crear imagen RAW de 256 MiB
 truncate -s 256M msx.vhd
 
---Crear MBR y partición FAT16 desde el sector 1
-printf 'label: dos\nunit: sectors\n\n1,524287,6\n' | sudo sfdisk --force msx.vhd
+--Crear MBR y partición FAT16 desde el sector 128
+printf 'label: dos\nunit: sectors\n\n128,524160,6\n' | sudo sfdisk --force msx.vhd
 
 --Formatear FAT16 con mtools
-mformat -i msx.vhd@@512 -T 524287 -h 16 -s 32 -H 1 -c 8 -m 248 -v MSX ::
+mformat -i msx.vhd@@65536 -T 524160 -h 16 -s 32 -H 128 -c 8 -m 248 -v MSX ::
 
---SI ES PARA 1CHIPMSX: Copiar la BIOS como primer archivo
-mcopy -i msx.vhd@@512 OCM-BIOS.DAT ::
+--SI ES PARA 1CHIPMSX: copiar la BIOS como primer archivo
+mcopy -i msx.vhd@@65536 OCM-BIOS.DAT ::
 
 --SI ES PARA UN MSX NORMAL (no 1ChipMSX) CON MegaFlashROM:
-mcopy -i msx.vhd@@512 NEXTOR.SYS ::
+mcopy -i msx.vhd@@65536 NEXTOR.SYS ::
 Configurado con:
 FW PACK: CART_FW_EN
 SLOT 1: MegaFlashROM SCC+ SD
@@ -592,7 +592,7 @@ Unit?  [compact]? B
 (parted) p                                                                
 
 Number  Start   	End         	      Size                     Type        File system  Flags
- 1      	   65536B    131137535B  131072000B  primary  fat16
+ 1      65536B      131137535B            131072000B               primary     fat16
 
 ---Nos quedamos con el 65536. Y montamos así:
 
