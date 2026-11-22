@@ -477,6 +477,21 @@ mount -o loop,offset=32256 dos622.vhd /mnt
   0x07A1 = 9D
   0x07A2 = 9C
 
+NOTAS CORE PC8801
+=================
+
+REPRODUCIR LAS MÚSICAS DE YUZO KOSHIRO EN EL MUCOM88
+
+--Arrancamos con el disco de MUCOM88 en la primera disketera, y cuando queramos metemos el disco de música que queramos en la segunda.
+
+--Para ver lo que hay en el disco de la segunda disketera, hacemos "list 2"
+
+--Cargamos un fichero, por ejemplo:
+load "gh002
+
+--Lo reproducimos con:
+poll p
+
 NOTAS CORE MSX
 ==============
 
