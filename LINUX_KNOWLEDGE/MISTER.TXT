@@ -973,11 +973,25 @@ xdftool utils.adf format Utilidades
 --Copiamos el directorio que queramos al disco:
 xdftool utils.adf write utils
 
-*********FECHA INCORRECTA EN KS 1.3 / WB 1.3*********************************************
+FECHA INCORRECTA EN KS 1.3 / WB 1.3
+===================================
 
 Debido al "Efecto 2000" del SetClock que trae esta versión del sistema, detecta fechas de los 70's.
 La solución es usar el SetClock 34.3 que se descarga de aquí: https://www.amigaforever.com/classic/download
 Sustituye C:SetClock por la versión corregida y ya.
+
+EMULACIÓN DE JOYSTICK USANDO EL TECLADO EN EL CORE MINIMIG
+==========================================================
+
+Antes de que funcione el teclado como un joystick, debes configurar las teclas que quieres que se usen.
+Para ello, en el menú principal de la MiSTer, ve a "Define Joypad Buttons" y ahí define
+qué teclas quieres usar como si el teclado fuese un joystick.
+Recomiendo: A >Alt, B->Ctrl, X->Shift, Y->Windows.
+
+Luego, en el core, debes pulsar la tecla "Scroll Lock" ("SCRLK") y cuando te salga "Kbd mode: Joy 1" ya debería funcionar.
+
+En el README del core pone que se usan los cursores, Ctrl y Alt, pero son notas antiguas, eso ya no es así,
+tienes que establecer las teclas que quieras usar en el menú de la MiSTer como he dicho, no hay unas teclas fijas ya.
 
 *********Compilar programas en ensamblador de Amiga desde Linux*****************************************
 
@@ -1368,7 +1382,7 @@ https://github.com/MiSTer-devel/Distribution_MiSTer#list-of-tags-that-you-may-us
 COMO LO VENIMOS HACIENDO AHORA MISMO:
 
 [mister]
-filter = !cheats !acornatom !acornelectron !adam !adventurevision !alicemc10 !altair8800 !amstrad-pcw !apogee !apple-i !apple-iii !apple-lisa !aquarius !arduboy !atari2600 !atari5200 !atari7800 !atarilynx !ay-3-8500 !basicmasterl3 !bbcmicro !bk0011m !c16 !channelf !arcadia !archie !astrocade !bbcbridgecompanion !c16 !c128 !casio_pv-1000 !casio_pv-2000 !chess !chip8 !coco2 !coco3 !coleco !colecoadam !colecovision !creativision !edsac !eg2000 !enterprise !epochgalaxyii !flappybird !fm-7 !galaksija !gamate !gameandwatch !gamecom !gamegear2p !gameking !gamenwatch !gnw !gameoflife !handheld2p !homelab !intellivision !interact !iq151 !jr100 !jupiter !laser !laser310 !loopy !lynx48 !megacd !megaduck !msx !multicomp !myvision !n64 !next !next-color !neon !ngpc !odyssey2 !ondra_spo186 !orao !oric !other-cores !pc6001 !pcjr !pcxt-ega !pdp1 !pet2001 !pmd85 !pocketchallengev2 !pocketstation !pokemonmini !ql !rx78 !s32x !samcoupe !scv !segacd !sgb !sgi-indy !sharpmz !sharpmz2500 !slugcross !sonysmc777 !sordm5 !specialist !studioii !sun-2 !sun-3 !SunSparcStation20_55mhz !SunSparcStation20_60mhz !superacan !supervision !supervision8000 !super_vision_8000 !svi328 !tandy1000 !tatungeinstein !ti994a !tk2000 !tomyscramble !tomytutor !trs-80 !tsconf !uk101 !uknc !vc4000 !vector-06c !vectrex !vic20 !videobrain !vt52 !wonderswan !wonderswancolor !zx48 !zx81 !zxnext
+filter = !cheats !acornatom !acornelectron !adam !adventurevision !alicemc10 !altair8800 !amstrad-pcw !apogee !apple-i !apple-iii !apple-lisa !aquarius !arduboy !atari2600 !atari5200 !atari7800 !atarilynx !ay-3-8500 !basicmasterl3 !bbcmicro !bk0011m !c16 !channelf !arcadia !archie !astrocade !bbcbridgecompanion !c16 !c128 !casio_pv-1000 !casio_pv-2000 !chess !chip8 !coco2 !coco3 !coleco !colecoadam !colecovision !creativision !edsac !eg2000 !enterprise !epochgalaxyii !flappybird !fm-7 !galaksija !gamate !gameandwatch !gamecom !gamegear2p !gameking !gamenwatch !gnw !gameoflife !handheld2p !homelab !intellivision !interact !iq151 !jr100 !jupiter !laser !laser310 !loopy !lynx48 !megacd !megaduck !msx1 !multicomp !myvision !n64 !next !next-color !neon !ngpc !odyssey2 !ondra_spo186 !orao !oric !other-cores !pasopia7 !pc6001 !pcjr !pcxt-ega !pdp1 !pet2001 !pmd85 !pocketchallengev2 !pocketstation !pokemonmini !ql !rx78 !s32x !samcoupe !scv !segacd !sgb !sgi-indy !sharpmz !sharpmz2500 !slugcross !sonysmc777 !sordm5 !specialist !studioii !sun-2 !sun-3 !SunSparcStation20_55mhz !SunSparcStation20_60mhz !superacan !supervision !supervision8000 !super_vision_8000 !svi328 !tandy1000 !tatungeinstein !ti994a !tk2000 !tomyscramble !tomytutor !trs-80 !tsconf !uk101 !uknc !vc4000 !vector-06c !vg5000 !vectrex !vic20 !videobrain !vt52 !wonderswan !wonderswancolor !zx48 !zx81 !zxnext
 
 Y para que no nos instale el core de NeoGeo Pocket, añadimos en "[jtcores]" el filtro "!console":
 
